@@ -1,0 +1,146 @@
+.phoneNumberField {
+    position: absolute;
+    left: 0;
+    width: 87px;
+    top: 0;
+    height: 100%;
+    background: rgba(113, 82, 235, 0.27);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: stretch;
+}
+
+.phoneNumberShort {
+    position: absolute;
+    left: 0;
+    width: 69px;
+    top: 0;
+    height: 100%;
+    background: rgba(113, 82, 235, 0.27);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: stretch;
+}
+
+#signUp{
+   
+   /* background: linear-gradient(180deg, rgba(43, 73, 240, 0) 0%,rgb(227 245 252) 100%), url('../../assets/signup/5156620\ 1.png');*/
+   background: url('../../assets/signup/5156620\ 1.png'), #add8e660 -0.005px -145.667px / 90% 124.756% no-repeat;
+   flex: 1 1 auto;
+    background-size: cover;
+    background-position: center;
+    font-family: 'Lexend Deca', sans-serif;
+  }
+
+#signUp input {
+    background-color: transparent;
+}
+
+#signUp h1 {
+    /* font-size: 30px; */
+    font-weight: 700;
+    /* margin-bottom: 36px; */
+}
+
+#signUp h6 {
+    font-size: 16px;
+    font-weight: 700;
+    /* margin-bottom: 26px; */
+}
+
+#signUp label {
+    margin-left: 2px;
+    margin-bottom: 5.87px;
+   
+    color:  #26435F;
+    font-weight: 600;
+    line-height: 19.559px;
+    font-style:normal;
+}
+.inputs{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+.inputs > div {
+    flex-basis: calc(50% - 16px);
+}
+.textGrayed {
+    font-weight: 400;
+    font-size: 11.7354px;
+    line-height: 18px;
+    color: #667085;
+}
+
+.title {
+    font-weight: 700;
+    font-size: 27.9448px;
+    line-height: 36px;
+    letter-spacing: 0.01em;
+    text-transform: capitalize;
+}
+
+.container input:checked ~ .checkmark {
+    background-color: #FFA28D;
+}
+
+.container {
+    display: block;
+    position: relative;
+    padding-left: 22px;
+    cursor: pointer;
+    font-size: 14px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 14px;
+    height: 14px;
+}
+
+.container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 14px;
+    width: 14px;
+    border: 1.5px solid rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+}
+.container input:checked ~ .checkmark {
+    background-color: #9CA3AF;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.container .checkmark:after {
+    left: 50%;
+    top: 50%;
+    width: 3px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: translateX(-50%) translateY(-50%) rotate(45deg);
+}

@@ -9,6 +9,7 @@ import Calendar from "../pages/Calendar/Calendar";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Signup from "../pages/Signup/Signup";
+import OrgSignup from "../pages/OrgSignup/OrgSignup";
 import StudentProfile from "../pages/Profiles/StudentProfile/StudentProfile";
 import TestDetail from "../pages/TestDetail/TestDetail";
 import Users from "../pages/Users/users";
@@ -53,7 +54,7 @@ const AppRoutes = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={isLoggedIn ? <Home /> : <Login />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/signup" element={<OrgSignup />} />
         <Route path="/admin-portal" element={<AdminPortal />} />
         <Route path="/signup/user" element={<UserSignup />} />
         <Route

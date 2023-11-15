@@ -18,7 +18,7 @@ import InputSelect from "../../../../components/InputSelect/InputSelect";
 import Modal from "../../../../components/Modal/Modal";
 
 import Slider from "../../../../components/Slider/Slider";
-import { grades, subjects, timeZones } from "../../../../constants/constants";
+import { grades, subjects } from "../../../../constants/constants";
 import styles from "./style.module.css";
 import CountryCode from "../../../../components/CountryCode/CountryCode";
 import { useSelector } from "react-redux";
@@ -31,6 +31,7 @@ import useOutsideAlerter from "../../../../hooks/useOutsideAlerter";
 import { Country } from "country-state-city";
 import { useUpdateUserOrganizationMutation } from "../../../../app/services/organization";
 import SCheckbox from "../../../../components/CCheckbox/SCheckbox";
+import moment from "moment-timezone";
 // 637b9df1e9beff25e9c2aa83
 export default function ParentEditables({
   userId,
@@ -64,6 +65,7 @@ export default function ParentEditables({
     usePostTutorDetailsMutation();
   const [updatedService, setUpdatedService] = useState({});
   const [loading, setLoading] = useState(false);
+  const timeZones = moment.tz.names(); // String[]
 
   const { organization } = useSelector((state) => state.organization);
   const [textOpen, setTextOpen] = useState(false);
