@@ -243,7 +243,7 @@ export default function TestDetail() {
           Concepts: Concepts === undefined ? "Unavailable" : Concepts,
           Strategies: "Unavailable",
   
-          AnswerChoices,
+          AnswerChoices:AnswerChoices==undefined?'':AnswerChoices,
           // Scoring:20
         };
       } else {
@@ -254,7 +254,7 @@ export default function TestDetail() {
           Concepts: Concepts === undefined ? "Unavailable" : Concepts,
           Strategies,
 
-          AnswerChoices,
+          AnswerChoices:AnswerChoices==undefined?'':AnswerChoices,
           // Scoring:20
         };
       }
@@ -272,7 +272,7 @@ export default function TestDetail() {
       editable = true;
     }
     const updatedQuestions = tempdata.map((question) => {
-      if (testData.testType === "DSAT"|| testData.testType === "DSAT®") {
+      if (testData?.testType?.includes("DSAT")) {
         const { AnswerChoices, ...rest } = question;
         return { ...rest, editable };
       }
@@ -280,7 +280,7 @@ export default function TestDetail() {
     });
 
     let updatedData;
-    if (testData.testType === "DSAT"|| testData.testType === "DSAT®") {
+    if (testData?.testType?.includes("DSAT")) {
       updatedData = allQuestions[idx].map((obj) => ({
         ...obj,
         testType: testData.testType,
@@ -333,18 +333,17 @@ export default function TestDetail() {
         CorrectAnswer: modalData.correctAnswer,
         Concepts: modalData.concept,
         Strategies: modalData.strategy,
-        AnswerChoices:
-          !testData?.testType?.includes("DSAT") ? modalData.AnswerChoices : "A,B,C,D",
+        AnswerChoices: !testData?.testType?.includes("DSAT") ? modalData.AnswerChoices : "A,B,C,D",
         QuestionText: modalData.question,
         QuestionImageUrl: questionImageBase64,
-        ...(testData.testType === "DSAT"|| testData.testType === "DSAT®"
+        ...(testData?.testType?.includes("DSAT")
           ? {
               QuestionImage:
                 extratableitem[modalData.QuestionNumber - 1]?.QImage,
             }
           : {}),
         QuestionType: modalData.questionType,
-        ...(testData.testType === "DSAT" || testData.testType === "DSAT®"
+        ...(testData?.testType?.includes("DSAT")
           ? {
               AnswerImage: extratableitem[modalData.QuestionNumber - 1]?.AImage,
             }
@@ -354,7 +353,7 @@ export default function TestDetail() {
           {
             label: "A",
             text: options[0],
-            ...(testData.testType === "DSAT" || testData.testType === "DSAT®"&&
+            ...(testData?.testType?.includes("DSAT")&&
             optionAImageBase64 !== undefined &&
             optionAImageBase64 !== null
               ? { image: optionAImageBase64 }
@@ -363,7 +362,7 @@ export default function TestDetail() {
           {
             label: "B",
             text: options[1],
-            ...(testData.testType === "DSAT" || testData.testType === "DSAT®"&&
+            ...(testData?.testType?.includes("DSAT")&&
             optionBImageBase64 !== undefined &&
             optionBImageBase64 !== null
               ? { image: optionBImageBase64 }
@@ -372,7 +371,7 @@ export default function TestDetail() {
           {
             label: "C",
             text: options[2],
-            ...(testData.testType === "DSAT" || testData.testType === "DSAT®" &&
+            ...(testData?.testType?.includes("DSAT") &&
             optionCImageBase64 !== undefined &&
             optionCImageBase64 !== null
               ? { image: optionCImageBase64 }
@@ -381,7 +380,7 @@ export default function TestDetail() {
           {
             label: "D",
             text: options[3],
-            ...(testData.testType === "DSAT" || testData.testType === "DSAT®" &&
+            ...(testData?.testType?.includes("DSAT") &&
             optionDImageBase64 !== undefined &&
             optionDImageBase64 !== null
               ? { image: optionDImageBase64 }
