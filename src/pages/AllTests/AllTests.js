@@ -373,6 +373,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
       noArrow: true,
     },
   ];
+  
   useEffect(() => {
     if (
       modalData.testName.trim() === "" ||
