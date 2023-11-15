@@ -1481,8 +1481,8 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                 )}
                 {currentField.name === "service" && (
                   <div className="w-[400px] max-h-[50vh] overflow-y-auto custom-scroller">
-                    <div className="flex flex-col gap-2">-
-                      {console.log({ currentToEdit })}
+                    <div className="flex flex-col gap-2">
+                   
                       {organization?.settings?.servicesAndSpecialization.map(
                         (item, id) => {
                           return (

@@ -55,13 +55,11 @@ import { useLazyGetFeedbacksQuery } from "../../../app/services/dashboard";
 import { BASE_URL, getAuthHeader } from "../../../app/constants/constants";
 import axios from "axios";
 import ProfilePhoto from "../../../components/ProfilePhoto/ProfilePhoto";
-import defaultProfile from "../../../assets/images/defaultProfile.png";
 import YoutubeEmbed from "./YoutubeEmbed/YoutubeEmbed";
 // import CircleButton from "../../../components/CircleButton/CircleButton";
 import BarChart from "../../../components/BarChart/BarChart";
 import Pagination from "../../SuperadminDashboard/Table/Pagination";
 import { getFormattedDate } from "../../../utils/utils";
-import InputSelect from "../../../components/InputSelect/InputSelect";
 
 export default function TutorProfile({ isOwn }) {
   const { firstName, lastName } = useSelector((state) => state.user);
@@ -121,7 +119,7 @@ export default function TutorProfile({ isOwn }) {
 
     setNewServices(temp);
   }, [userDetail, organization]);
- 
+  //console.log("newww", newServices);
   const tableHeaders1 = [
     {
       id: 1,
@@ -129,7 +127,7 @@ export default function TutorProfile({ isOwn }) {
     },
     {
       id: 4,
-      text: "Service",
+      text: "Serivce",
     },
     {
       id: 2,
@@ -289,7 +287,6 @@ export default function TutorProfile({ isOwn }) {
   //console.log("userDetail", { userDetail, toEdit });
   const [tutorTotalReviews, setTutorReviews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [tutorStatus,setTutorStatus] = useState(null);
   console.log("trts", tutorTotalReviews);
   useEffect(() => {
     let userId = "";
@@ -334,7 +331,7 @@ export default function TutorProfile({ isOwn }) {
       });
     });
   }, []);
-
+  // console.log(settings?.Expertise, "settings");
   const handleClose = () => {
     setToEdit((prev) => {
       let tempToEdit = {};
@@ -364,7 +361,7 @@ export default function TutorProfile({ isOwn }) {
       setTutorServices(temp);
     }
   }, [organization]);
-
+  //console.log("servicessss", tutorAdminServices, userDetail);
   useEffect(() => {
     if (userDetail?.tutorServices && tutorAdminServices) {
       //console.log("userDetailttftft",tutorAdminServices,userDetail?.tutorServices);
@@ -558,6 +555,10 @@ export default function TutorProfile({ isOwn }) {
     setSettings(organization.settings);
   }, [organization]);
 
+  // console.log('user', user)
+  // console.log('To-edit', toEdit)
+  //console.log("userdetail", userDetail);
+  // console.log('settings', settings.Expertise)
   const {
     about,
     education,
@@ -578,9 +579,13 @@ export default function TutorProfile({ isOwn }) {
     state,
     country,
   } = userDetail;
+  // console.log('userdetail', tutorLevel)
 
+  // console.log(user);
+  // console.log('settings', settings.servicesAndSpecialization);
   if (Object.keys(user).length < 1) return;
   if (Object.keys(settings).length < 1) return;
+  // if (Object.keys(userDetail).length < 1) return;
   let tutorLevelIcon = TutorLevelOne;
   let tutorLevelTextColor = "text-[#ff4300]";
   let tutorLevelBg = "#FBDB89";
@@ -636,7 +641,8 @@ export default function TutorProfile({ isOwn }) {
       fetchDetails();
     });
   };
-
+  // console.log(isOwn);
+  // console.log(tutorRank);
   const timestamp = userDetail?.createdAt;
   const date = new Date(timestamp);
   const getDateFormat = (date1) => {
@@ -648,9 +654,10 @@ export default function TutorProfile({ isOwn }) {
   const options = { year: "numeric", month: "long", day: "numeric" };
   const formattedDate = date.toLocaleDateString("en-US", options);
 
+  // console.log(formattedDate);
   return (
     <>
-      <div className="w-[83.3vw] mx-auto mb-[100px]">
+      <div className="w-[83.3vw] mx-auto">
         {/* <div className="py-8">
                <p className='text-[#24A3D9] text-xl '>Org</p>
             </div> */}
@@ -724,7 +731,7 @@ export default function TutorProfile({ isOwn }) {
                             src={
                               user.photo
                                 ? `${awsLink}${user.photo}`
-                                : defaultProfile
+                                : "/images/tutor.jpg"
                             }
                             handleChange={handleProfilePhotoChange}
                           />
@@ -767,21 +774,21 @@ export default function TutorProfile({ isOwn }) {
                       </div>
                     </div>
                     {(persona === "tutor" || persona === "admin") && (
-                      <div className="ml-auto mt-auto pt-[8px] pb-[10px] mr-8 flex flex-col gap-2">
-                        <div className="flex gap-4 items-center cursor-pointer  design:mb-0 design:mt-1">
+                      <div className="ml-auto mt-auto pt-[10px] pb-[10px] mr-8">
+                        <div className="flex gap-4 items-center cursor-pointer mb-[10px] design:mb-0 design:mt-1">
                           <img src={mail} alt="mailLogo"></img>
                           <p className="text-white text-[17.503px] text-base-17-5">
                             {user.email}
                           </p>
                         </div>
-                        <div className="flex gap-4 items-center cursor-pointer  design:mb-0">
+                        <div className="flex gap-4 items-center cursor-pointer mb-[10px] design:mb-0">
                           <img src={call} alt="callLogo"></img>
                           <p className="text-white text-[17.503px] text-base-17-5">
                             {user.phoneCode}
                             {user.phone}
                           </p>
                         </div>
-                        <div className="flex gap-4 items-center cursor-pointer  design:mb-0">
+                        <div className="flex gap-4 items-center cursor-pointer mb-[10px] design:mb-0">
                           <img src={linkedin} alt="linkedinLogo"></img>
                           <a
                             className="text-white text-[17.503px] cursor-pointer text-base-17-5"
@@ -1362,9 +1369,9 @@ export default function TutorProfile({ isOwn }) {
             <div className="mt-[50px] border-4 mx-[40px]  border-t border-[#CBD6E2]-300 justify-center border-dotted"></div>
           )}
           {/* address row */}
-          {/* {(isOwn === true || persona === "admin") && (
+          {(isOwn === true || persona === "admin") && (
             <div className="flex justify-between mt-[55px] gap-x-[37px]">
-              <div className="w-[55.32vw]">
+              <div className="w-[53.32vw]">
                 <div className="flex items-center mb-1">
                   {(isOwn === true || persona === "admin") && (
                     <>
@@ -1483,14 +1490,14 @@ export default function TutorProfile({ isOwn }) {
                 </div>
               )}
               {isOwn === true || persona === "admin" ? (
-                <div className="w-[30.10vw]">
-                  <div className="flex items-center">
+                <div className="w-[32.10vw]">
+                  <div className="flex items-center relative z-[99]">
                     <div className="text-[#26435F] text-xl font-semibold text-base-20">
                       Payment Info
                     </div>
                     {persona === "admin" && (
                       <p
-                        className="text-[#667085] relative z-[88] ml-auto underline cursor-pointer font-semibold text-[15px] text-base-15"
+                        className="text-[#667085] ml-auto underline cursor-pointer font-semibold text-[15px] text-base-15"
                         onClick={() =>
                           setToEdit({
                             ...toEdit,
@@ -1515,7 +1522,7 @@ export default function TutorProfile({ isOwn }) {
                                        onClick={() => setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}
                                      
                                     /> */}
-                          {/* <div className="font-normal text-[#B3BDC7]  text-md px-3 py-2 text-base-17-5">
+                          <div className="font-normal text-[#B3BDC7]  text-md px-3 py-2 text-base-17-5">
                             {userDetail?.paymentInfo?.trim()?.length>0?userDetail.paymentInfo:<span className="text-base-15">Use this space to add any payment info about the tutor, such as Account Number, Routing Number, Billing Address, Salary, Reimbursements, etc.</span>}
                           </div>
                         </div>
@@ -1565,23 +1572,32 @@ export default function TutorProfile({ isOwn }) {
                     <div className="text-[#26435F] text-[20px] text-base-20 font-semibold">
                       Tutor Status
                     </div>
-                   
-                  </div>
-                  <InputSelect
-                        value={tutorStatus}
-                        onChange={(val) =>
-                          setTutorStatus(
-                          val
-                          )
+                    {(isOwn === true || persona === "admin") && (
+                      <p
+                        className="text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold text-base-15"
+                        onClick={() =>
+                          setToEdit({
+                            ...toEdit,
+                            tutorLevel: { ...toEdit.tutorLevel, active: true },
+                          })
                         }
-                        optionData={organization?.settings?.tutorStatus}
-                        radio={true}
-                        inputContainerClassName="pt-3 pb-3 border bg-white"
-                        placeholder="Select"
-                        parentClassName="w-full mr-4"
-                        type="select"
-                      />
-               
+                      >
+                        edit
+                      </p>
+                    )}
+                  </div>
+                  <ProfileCard
+                    hideShadow
+                    className="border border-[#00000010]"
+                    bgClassName="bg-white"
+                    body={
+                      <>
+                        <div className="text-[#517CA8] text-lg p-3 min-h-[50px] shadow-[0px_0px_2px_0px_#00000040] rounded-md text-base-17-5">
+                          {userDetail.tutorLevel}
+                        </div>
+                      </>
+                    }
+                  />
 
                   <div className="mt-[33.75px]">
                     <div className="flex justify-between mb-[-10px]">
@@ -1629,7 +1645,7 @@ export default function TutorProfile({ isOwn }) {
                 </div>
               )}
             </div>
-          )}  */}
+          )}
 
           {/* <div className='lg:grid mt-12 px-2 grid-cols-12 grid-ros-6 lg:mt-[60px] gap-5 lg:pl-3'>
 
@@ -1913,7 +1929,6 @@ export default function TutorProfile({ isOwn }) {
             </div> */}
       </div>
       <ParentEditables
-         
         settings={settings}
         fetchDetails={fetchDetails}
         userId={isOwn ? id : params.id}

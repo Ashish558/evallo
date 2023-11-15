@@ -720,11 +720,11 @@ export default function UserSignup() {
                         <div className={` flex items-center  `}>
                           <input
                             type="radio"
-                            className="form-radio hidden"
+                            className="form-radio hidden "
                             id="radioOption"
                           />
                           <div
-                            className={`relative inline-block ml-[2px] w-4 h-4   rounded-full border ${values.role === "parent"
+                            className={`relative inline-block ml-[2px] w-4 h-4   rounded-full border border-[1.25px] ${values.role === "parent"
                               ? "border-[#FFA28D]"
                               : "border-gray-600"
                               } cursor-pointer`}

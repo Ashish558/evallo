@@ -684,7 +684,7 @@ const [toEdit, setToEdit] = useState({
                             <p>
                               <span>
                                 <img
-                                  className="inline-block !w-4 !h-4 mr-2"
+                                  className="inline-block !w-4 !h-4 mr-2 cursor-pointer"
                                   src={emailIcon}
                                   alt="email"
                                 />
@@ -703,7 +703,7 @@ const [toEdit, setToEdit] = useState({
                             <p>
                               <span>
                                 <img
-                                  className="inline-block !w-4 !h-4 mr-2"
+                                  className="inline-block !w-4 !h-4 mr-2 cursor-pointer"
                                   src={phoneIcon}
                                   alt="phone"
                                 />
