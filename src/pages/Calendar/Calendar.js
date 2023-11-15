@@ -1727,7 +1727,15 @@ export default function CalendarPage() {
                   inputContainerClassName="text-[15px] text-primaryDark font-bold border"
                   optionData={['Year', 'Month', 'Week']}
                   onChange={(val) => {
-                    setActiveView(val)
+                    // setActiveView(val)
+                    if(activeView !== 'Year'){
+                      setActiveView('')
+                      setTimeout(() => {
+                        setActiveView(val)
+                      }, 300);
+                    }else{
+                      setActiveView(val)
+                    }
                   }}
                 />
               </span>
