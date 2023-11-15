@@ -52,6 +52,12 @@ const initialState = {
   instruction: "",
 };
 
+const SORT_STATES = {
+  ASCENDING_ORDER: "ASCENDING_ORDER",
+  DESCENDING_ORDER: "DESCENDING_ORDER",
+  UNSORTED: "UNSORTED",
+}
+
 export default function AssignedTests() {
   const [tableData, setTableData] = useState([]);
   const [tableHeaders, setTableHeaders] = useState([]);
@@ -60,7 +66,21 @@ export default function AssignedTests() {
   const [studentNameOptions, setStudentNameOptions] = useState([]);
   const [allAssignedTests, setAllAssignedTests] = useState([]);
   const [filteredTests, setFilteredTests] = useState([]);
+  const [studentNameSortState, setStudentNameSortState] = useState(SORT_STATES.UNSORTED);
+  const [testNameSortState, setTestNameSortState] = useState(SORT_STATES.UNSORTED);
+  const [assignedOnSortState, setAssignedOnSortState] = useState(SORT_STATES.UNSORTED);
+  const [dueOnSortState, setDueOnSortState] = useState(SORT_STATES.UNSORTED);
+  const [assignedBySortState, setAssignedBySortState] = useState(SORT_STATES.UNSORTED);
+  const [statusSortState, setStatusSortState] = useState(SORT_STATES.UNSORTED);
+  const [durationSortState, setDurationSortState] = useState(SORT_STATES.UNSORTED);
+  const [scoreSortState, setScoreSortState] = useState(SORT_STATES.UNSORTED);
   const { dateFormat } = useSelector((state) => state.user);
+
+  console.log("Rendered");
+
+  useEffect(() => {
+    console.log("studentNameSortState changed - " +  studentNameSortState);
+  },[studentNameSortState])
 
   const sortByDueDate = () => {
     setAllAssignedTests((prev) => {
@@ -95,7 +115,10 @@ export default function AssignedTests() {
       return arr;
     });
   };
+
   const sortByName = () => {
+    console.log("allAssignedTests");
+    console.log(allAssignedTests);
     setAllAssignedTests((prev) => {
       let arr = [...prev];
       arr = arr.sort(function (a, b) {
@@ -125,50 +148,123 @@ export default function AssignedTests() {
       return arr;
     });
   };
+
+  const sortByStudentName = () => {
+    // setFilteredTests
+    console.log("sortByStudentName");
+    setStudentNameSortState(SORT_STATES.ASCENDING_ORDER);
+    if(studentNameSortState === SORT_STATES.DESCENDING_ORDER) {
+
+      setAllAssignedTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.studentName < b.studentName) {
+            return -1;
+          }
+          if (a.studentName > b.studentName) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.studentName < b.studentName) {
+            return -1;
+          }
+          if (a.studentName > b.studentName) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setStudentNameSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(studentNameSortState === SORT_STATES.UNSORTED || studentNameSortState === SORT_STATES.ASCENDING_ORDER) {
+
+      setAllAssignedTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.studentName < b.studentName) {
+            return 1;
+          }
+          if (a.studentName > b.studentName) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+      
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.studentName < b.studentName) {
+            return 1;
+          }
+          if (a.studentName > b.studentName) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setStudentNameSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  }
+
   const tempTableHeaders = [
+    // setFilteredTests
     {
       id: 2,
-      text: "Student Name",
-      className: "no-arrow",
-      onCick: sortByName,
+      text: "Student Name", // studentName
+      // className: "no-arrow",
+      onCick: sortByStudentName,
+      willDisplayDownArrow: studentNameSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 3,
       className: "no-arrow",
-      text: "Test Name",
+      text: "Test Name", // testName
     },
     {
       id: 1,
-      text: "Assigned On",
+      text: "Assigned On", // createdAt , assignedOn
       className: "text-left pl-6 no-arrow",
       onCick: sortByAssignedDate,
     },
     {
       id: 7,
-      text: "Due On",
+      text: "Due On", // dueDate
       className: "text-left pl-6 no-arrow",
       onCick: sortByDueDate,
     },
     {
       id: 4,
       className: "no-arrow",
-      text: "Tutor",
+      text: "Tutor", // assignedBy
     },
     {
       id: 5,
       className: "no-arrow",
-      text: "Completion",
+      text: "Completion", // status
     },
 
     {
       id: 6,
       className: "no-arrow",
-      text: "Duration",
+      text: "Duration", // duration
     },
     {
       id: 9,
       className: "no-arrow",
-      text: "Score",
+      text: "Score", // scores
     },
     {
       id: 10,
@@ -1029,7 +1125,7 @@ export default function AssignedTests() {
           )}
           <div className="mt-3">
             <Table
-              noArrow={true}
+              noArrow={false}
               selectedId2={selectedId}
               setSelectedId2={setSelectedId}
               onClick={{ handleResend, handleDelete, handleNavigate }}
