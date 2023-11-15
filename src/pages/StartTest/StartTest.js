@@ -530,7 +530,7 @@ export default function StartTest() {
                     </p>
 
                     <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8] ">
-                      {testHeaderDetails?.name}
+                      {testHeaderDetails?.name?.length>18?testHeaderDetails?.name.substring(0,15)+' ...':testHeaderDetails?.name}
                     </p>
                   </div>
                   <div className="w-full flex mb-3 justify-between">
@@ -598,7 +598,7 @@ export default function StartTest() {
                     </p>
 
                     <p className="inline-block mt-2 font-light  text-[20px] text-[#517CA8]">
-                    {activeSection.description}</p>
+                    -</p>
                   </div>
                 </div>
               </div>

@@ -89,19 +89,19 @@ function App() {
     }
   }, [isLoggedIn]);
 
-  useEffect(() => {
-    const handleTabClose = (event) => {
-      event.preventDefault();
-      console.log("beforeunload event triggered");
-    };
-    window.addEventListener("beforeunload", handleTabClose);
-    return () => {
-      // logOutApi().then(() => {
-      //   console.log("Successfully logged out");
-      // });
-      window.removeEventListener("beforeunload", handleTabClose);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const handleTabClose = (event) => {
+  //     event.preventDefault();
+  //     console.log("beforeunload event triggered");
+  //   };
+  //   window.addEventListener("beforeunload", handleTabClose);
+  //   return () => {
+  //     // logOutApi().then(() => {
+  //     //   console.log("Successfully logged out");
+  //     // });
+  //     window.removeEventListener("beforeunload", handleTabClose);
+  //   };
+  // }, []);
   if (loading) return <Loader />;
 
   return (
