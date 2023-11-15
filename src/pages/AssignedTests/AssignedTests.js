@@ -233,7 +233,7 @@ export default function AssignedTests() {
   }, [modalData.name, modalData.limit, modalData.date, modalData.test]);
 
   const handleMultipleStudent = (student) => {
-    console.log({ student });
+   
     let bool = studentMultiple?.find(
       (student1) => student1?._id === student?._id
     );
@@ -266,6 +266,7 @@ export default function AssignedTests() {
     return `${year}-${month}-${day}`;
   };
   const handleOptionCLose = () => {
+    return
     if (studentMultiple?.length > 0) {
       setModalData((prev) => {
         return { ...prev, name: studentMultiple[0].value };
