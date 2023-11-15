@@ -82,15 +82,15 @@ export default function InputSelect({
               {" "}
             </span>
           ) : (
-            <span className={`mr-5 pl-5 text-[15px] !text-[calc(17*0.050vw)] cursor-default whitespace-nowrap `} >
+            <div className={`mr-5 pl-5 text-[15px] !text-[calc(17*0.050vw)] cursor-default whitespace-nowrap h-full flex items-center justify-between`} >
               <span className={`${valueClassName}`} onClick={handleOption}>{value}</span>
              {IconRight&& <img
-                className={`w-[30px] inline-block relative h-[10px] text-lg cursor-pointer  z-[5000] ${IconRightClass}`}
+                className={`w-[30px] inline-block relative h-[10px] text-lg cursor-pointer  z-[5000] ${IconRightClass} mx-4`}
                 onClick={handleOption}
                 alt="right"
                 src={IconRight}
               />}
-            </span>
+            </div>
           )}
           {/* {selected ? (
           IconRight ? (

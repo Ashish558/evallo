@@ -67,10 +67,10 @@ export const TestItem = ({
     <div className='flex py-[8px] mb-2 last:mb-0'>
       
       <div className='w-1/2'>
-        <h2 className='text-[18px] font-medium'>{testName}</h2>
+        <h2 className='text-[18px] font-medium text-[#517CA8]'>{testName}</h2>
         <div className='flex gap-[12px]'>
-          <h5 className='text-xs opacity-60 font-semibold'>Due date:</h5>
-          <h6 className='text-xs opacity-60 font-medium'>{getFormattedDate(dueDate, dateFormat)}</h6>
+          <h5 className='text-xs opacity-60 font-semibold text-[#517CA8]'>Due date:</h5>
+          <h6 className='text-xs opacity-60 font-medium text-[#517CA8]'>{getFormattedDate(dueDate, dateFormat)}</h6>
         </div>
       </div>
       <div className='flex-1 ml-5'>

@@ -297,7 +297,7 @@ export const getScoreStr = (testType, score, subjects, totalLength) => {
     });
     return {
       cumulative: `C${verbalTotal + MathsTotal} `,
-      right: `V${verbalTotal} M${MathsTotal}`,
+      right: `V${verbalTotal} | M${MathsTotal}`,
     };
   } else if (testType === "DSAT") {
     let rTotal = 0;
@@ -322,7 +322,7 @@ export const getScoreStr = (testType, score, subjects, totalLength) => {
     });
     return {
       cumulative: `C${rTotal + MathsTotal} `,
-      right: `R${rTotal} M${MathsTotal}`,
+      right: `R${rTotal} | M${MathsTotal}`,
     };
   } else {
     let scoreArr = [];
@@ -374,7 +374,7 @@ export const getScoreStr = (testType, score, subjects, totalLength) => {
     let totalSubs = totalLength ? totalLength : 4;
     return {
       cumulative: `C${formattedNumber(total2 / totalSubs)}`,
-      right: scoreStr.join(""),
+      right: scoreStr.join(" | "),
     };
   }
 };

@@ -18,6 +18,7 @@ import StudentTest from "../StudentTest/StudentTest";
 import FilterItems from "../../components/FilterItems/filterItems";
 import { useSelector } from "react-redux";
 import { json, useNavigate } from "react-router-dom";
+import {getFormattedDateTime } from "../../utils/utils";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 const testTypeOptions = ["DSAT®", "SAT®", "ACT®","Other"]
@@ -36,6 +37,12 @@ const tableHeaders = [
   "",
   "",
 ];
+
+const SORT_STATES = {
+  ASCENDING_ORDER: "ASCENDING_ORDER",
+  DESCENDING_ORDER: "DESCENDING_ORDER",
+  UNSORTED: "UNSORTED",
+}
 
 export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
   const { organization } = useSelector((state) => state.organization);
@@ -63,6 +70,11 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
     updatedAt: false,
     testType: false,
   })
+  const [assignmentNameSortState, setAssignmentNameSortState] = useState(SORT_STATES.UNSORTED);
+  const [typeSortState, setTypeSortState] = useState(SORT_STATES.UNSORTED);
+  const [createdOnSortState, setCreatedOnSortState] = useState(SORT_STATES.UNSORTED);
+  const [lastModifiedSortState, setLastModifiedSortState] = useState(SORT_STATES.UNSORTED);
+  const [totalAssignmentsSortState, setTotalAssignmentsSortState] = useState(SORT_STATES.UNSORTED);
 
 
   const sortByString = (st) => {
@@ -78,14 +90,170 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
 
       return arr;
     });
+
     setSortOrder({
       ...sortOrder,
       [st]: !sortOrder[st]
     })
   };
 
+  const sortByAssignmentName = () => {
+    console.log("sortByAssignmentName");
+    if(assignmentNameSortState === SORT_STATES.DESCENDING_ORDER) {
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.testName < b.testName) {
+            return -1;
+          }
+          if (a.testName > b.testName) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setAssignmentNameSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(assignmentNameSortState === SORT_STATES.UNSORTED || assignmentNameSortState === SORT_STATES.ASCENDING_ORDER) {
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.testName < b.testName) {
+            return 1;
+          }
+          if (a.testName > b.testName) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setAssignmentNameSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  }
+
+  const sortByType = () => {
+    console.log("sortByType");
+    if(typeSortState === SORT_STATES.DESCENDING_ORDER) {
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.testType < b.testType) {
+            return -1;
+          }
+          if (a.testType > b.testType) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setTypeSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(typeSortState === SORT_STATES.UNSORTED || typeSortState === SORT_STATES.ASCENDING_ORDER) {
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.testType < b.testType) {
+            return 1;
+          }
+          if (a.testType > b.testType) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setTypeSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  }
+
+  const sortByTotalAssignments = () => {
+    console.log("data");
+    console.log(filteredTests);
+
+    console.log("sortByTotalAssignments");
+    if(totalAssignmentsSortState === SORT_STATES.DESCENDING_ORDER) {
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.no_of_assign < b.no_of_assign) {
+            return -1;
+          }
+          if (a.no_of_assign > b.no_of_assign) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setTotalAssignmentsSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(totalAssignmentsSortState === SORT_STATES.UNSORTED || totalAssignmentsSortState === SORT_STATES.ASCENDING_ORDER) {
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.no_of_assign < b.no_of_assign) {
+            return 1;
+          }
+          if (a.no_of_assign > b.no_of_assign) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setTotalAssignmentsSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  }
+
   const sortBycreateDate = () => {
-    setFilteredTests((prev) => {
+
+    if(createdOnSortState === SORT_STATES.DESCENDING_ORDER) { 
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.createdAt) < new Date(b.createdAt)) {
+            return -1;
+          }
+          if (new Date(a.createdAt) > new Date(b.createdAt)) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setCreatedOnSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(createdOnSortState === SORT_STATES.UNSORTED || createdOnSortState === SORT_STATES.ASCENDING_ORDER) {  
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.createdAt) < new Date(b.createdAt)) {
+            return 1;
+          }
+          if (new Date(a.createdAt) > new Date(b.createdAt)) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setCreatedOnSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+
+    /* setFilteredTests((prev) => {
       let arr = [...prev];
       arr = arr.sort(function (a, b) {
         if (sortOrder.createdAt)
@@ -98,10 +266,49 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
     setSortOrder({
       ...sortOrder,
       createdAt: !sortOrder.createdAt
-    })
+    }) */
   };
+
   const sortByAssignedDate = () => {
-    setFilteredTests((prev) => {
+
+    if(lastModifiedSortState === SORT_STATES.DESCENDING_ORDER) { 
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.updatedAt) < new Date(b.updatedAt)) {
+            return -1;
+          }
+          if (new Date(a.updatedAt) > new Date(b.updatedAt)) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setLastModifiedSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(lastModifiedSortState === SORT_STATES.UNSORTED || lastModifiedSortState === SORT_STATES.ASCENDING_ORDER) {  
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.updatedAt) < new Date(b.updatedAt)) {
+            return 1;
+          }
+          if (new Date(a.updatedAt) > new Date(b.updatedAt)) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setLastModifiedSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+
+    /* setFilteredTests((prev) => {
       let arr = [...prev];
       arr = arr.sort(function (a, b) {
         if (sortOrder.updatedAt)
@@ -114,7 +321,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
     setSortOrder({
       ...sortOrder,
       updatedAt: !sortOrder.updatedAt
-    })
+    }) */
   };
 
   const tableObjHeaders = [
@@ -123,39 +330,47 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
     {
       id: 1,
       text: "Assignment Name",
-      className: "text-left pl-6",
-      onCick: () => sortByString("testName"),
+      // className: "text-left pl-6",
+      // onCick: () => sortByString("testName"),
+      onCick: sortByAssignmentName,
+      willDisplayDownArrow: assignmentNameSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 2,
       text: "Type",
-      onCick: () => sortByString("testType"),
+      // onCick: () => sortByString("testType"),
+      onCick: sortByType,
+      willDisplayDownArrow: typeSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 3,
       text: "Created On",
       onCick: sortBycreateDate,
+      willDisplayDownArrow: createdOnSortState !== SORT_STATES.DESCENDING_ORDER,
     },
 
     {
       id: 4,
       text: "Last Modified",
       onCick: sortByAssignedDate,
+      willDisplayDownArrow: lastModifiedSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 5,
       text: "Total Assignments",
-
+      onCick: sortByTotalAssignments, // no_of_assign
+      willDisplayDownArrow: totalAssignmentsSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 6,
       text: "",
+      noArrow: true,
 
     },
     {
       id: 7,
       text: "",
-
+      noArrow: true,
     },
   ];
   useEffect(() => {
@@ -165,7 +380,14 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
       csvFile === null
     ) {
       setSubmitBtnDisabled(true);
-    } else {
+    } 
+    else if((pdfFile===null || csvFile===null) &&!getTestType(modalData.testType).includes('DSAT')){
+      setSubmitBtnDisabled(true);
+    }
+    else if( csvFile!=null && getTestType(modalData.testType).includes('DSAT') && modalData.testName.length>0){
+      setSubmitBtnDisabled(false);
+    }
+    else {
       setSubmitBtnDisabled(false);
     }
   }, [modalData, csvFile]);
@@ -217,7 +439,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
   const getTestType = (type) => {
     return type === 'SAT®' ? "SAT®" : type === 'ACT®' ? "ACT®" : type === 'DSAT®' ? "DSAT®" : type
   }
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     setLoading(true);
     e.preventDefault();
     setSubmitBtnDisabled(true);
@@ -225,45 +447,19 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
     let body = {
       testName: modalData.testName,
       testType: getTestType(modalData.testType),
+      ...(getTestType(modalData.testType)!=='DSAT'?{pdf:pdfFile}:{}),
+      file:csvFile
     };
+    const formData = new FormData();
 
-    submitTest(body).then(async (res) => {
-      // console.log(res);
-      if (res.error) {
-        alert(res.error.data.message);
-        setLoading(false);
-        return;
-      }
-      let testId = res.data.data.test._id;
-      const formData = new FormData();
-      formData.append("pdf", pdfFile);
-
-      if (pdfFile !== null) {
-        console.log(pdfFile);
+    Object.entries(body).forEach(([key, value]) =>{
+  formData.append(key, value);
+})
+    console.log(formData);
+    
         await axios
-          .post(`${BASE_URL}api/test/addpdf/${testId}`, formData, {
-            headers: getAuthHeader(),
-          })
-          .then((res) => {
-            console.log("pdf post resp", res);
-            alert("PDF UPLOADED");
-            if (csvFile === null) {
-              setModalData(initialState);
-              setModalActive(false);
-              setPDFFile(null);
-            }
-          })
-          .catch((err) => {
-            console.log("pdf err", err.response);
-          });
-      }
-
-      if (csvFile !== null) {
-        const formData = new FormData();
-        formData.append("file", csvFile);
-        await axios
-          .post(`${BASE_URL}api/test/addans/${testId}`, formData, {
-            headers: getAuthHeader(),
+        .post(`${BASE_URL}api/test/add/addNewTest`, formData, {
+              headers: getAuthHeader(),
           })
           .then((res) => {
             alert("CSV UPLOADED");
@@ -274,27 +470,19 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
             setPDFFile(null);
           })
           .catch((err) => {
-            console.log("excel err", err.response);
-            axios.delete(`${BASE_URL}api/test/${testId}`).then((res) => {
-              // console.log(res);
-              setModalData(initialState);
-              setModalActive(false);
-              setCSVFile(null);
-              setPDFFile(null);
-            });
-            if (err.response.data) {
-              if (err.response.data.status === "fail") {
-                alert("Concept field(s) missing.");
-              }
-            }
-          });
-      }
-      setLoading(false);
-      fetchTests();
-      setSubmitBtnDisabled(false);
-      console.log("submitted");
-    });
-  };
+             // setModalData(initialState);
+              // // setModalActive(false);
+              // setCSVFile(null);
+              // setPDFFile(null);
+              if (err?.response?.data) {
+                  alert(err?.response?.data);
+                }
+              });
+              setLoading(false);
+                fetchTests();
+                setSubmitBtnDisabled(false);
+                console.log("submitted");
+      };
 
   useEffect(() => {
     if (tableData.length === 0) return;
@@ -399,7 +587,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
             optionData={optionData}
 
             placeholder="Search"
-            parentClassName="w-290 mr-4"
+            parentClassName="w-[375px] mr-4"
             inputClassName="placeholder:text-[#667085] pl-2 text-base-17-5"
             inputContainerClassName="bg-white border pt-3.5 pb-3.5 !rounded-lg"
             type="select"
@@ -408,8 +596,8 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
             className="bg-[#FFA28D] py-[10px] px-6 flex items-center text-white  rounded-lg  text-[15px] text-base-15"
             onClick={() => setModalActive(true)}
           >
-            <span className="pt-1"> Add New Material</span>
-            <img src={AddIcon} className="ml-1 " alt="add-icon" />
+            <span className="pt-0 text-base-20"> Add New Material</span>
+            <img src={AddIcon} className="ml-1 h-[20px]" alt="add-icon" />
           </button>
         </div>
 
@@ -421,7 +609,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
             data={filteredTests}
             tableHeaders={tableObjHeaders}
             headerObject={true}
-            maxPageSize={10}
+            maxPageSize={30}
             onClick={{ openRemoveTestModal }}
           />
         </div>
@@ -432,29 +620,29 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
           crossBtn={true}
           title="Upload New Material"
           titleClassName="text-start text-sm mb-3"
-          classname={"max-w-[630px] mx-auto"}
+          classname={"max-w-[600px] mx-auto"}
           primaryBtn={{
             text: "Create  ",
             form: "add-test-form",
             onClick: handleSubmit,
             type: "submit",
             className:
-              "!ml-5   py-1 mr-auto mt-7  flex gap-2  h-[49px] disabled:opacity-80 flex items-center !text-[0.8333vw] !font-medium  inline-block bg-[#FFA28D]",
+              "!ml-5 text-sm  py-1 mr-auto mt-7 min-w-[120px]  flex gap-2 px-4  h-[49px] disabled:opacity-80 flex items-center  text-sm !font-medium  inline-block bg-[#FFA28D]",
             disabled: submitBtnDisabled,
             loading: loading,
-            icon: <img src={check} alt="check" className="ml-2 inline-block" />,
+            icon: <img src={check} alt="check" className="ml-2 inline-block mt-[-8px]" />,
           }}
           otherBt={
             <div id={styles.handleFileUpload}>
               <div
                 id={styles.uploadButtons}
-                className="mt-7   px-0  gap-5 flex justify-between"
+                className="mt-7   px-0  gap-5 flex justify-between  "
               >
                 {modalData.testType != 'DSAT®' ? <div id={styles.pdfUpload}>
                   <label
                     htmlFor="pdf"
                     className={`${pdfFile !== null ? "bg-[#26435F] " : "bg-[#26435F] "
-                      } w-[8.9vw] min-w-[160px] text-sm !font-medium`}
+                      } w-[8.9vw] min-w-[160px] text-sm !font-medium text-center pl-5 flex justify-center items-center`}
                   >
                     Upload PDF
                     <img src={upload} alt="Upload" />
@@ -477,7 +665,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
                     className={`${csvFile !== null && styles.fileUploaded
                       ? "bg-[#26435F] "
                       : "bg-[#26435F] "
-                      } w-[11vw] min-w-[185px] text-sm !font-medium`}
+                      } w-[11vw] min-w-[185px] text-sm !font-medium text-center flex justify-center items-center`}
                   >
                     Upload Metadata
                     <img src={upload} alt="Upload" />

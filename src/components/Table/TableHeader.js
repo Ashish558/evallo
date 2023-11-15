@@ -46,12 +46,19 @@ export function TableHeader({ header, dataFor, onClick, setSorted, Icon, headerW
           header === "Student Name"
           ? "text-left pl-7"
           : ""
-          } ${dataFor === "allUsers" ? "text-[17.5px]" : "text-[17.5px]"}
+          } ${dataFor === "allUsers" ? "text-[17.5px]" : "text-[17.5px]"  
+         
+
+        
+        }
+
+        ${header === "Q No."&&"flex-col"}
        `}
       >
         {" "}
 
         {header}
+        {header==="Q No."&&<p >(Raw Score)</p>}
       </div>
     </th>
   );

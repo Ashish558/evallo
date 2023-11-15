@@ -104,19 +104,14 @@ export default function StartTest() {
       } else {
         setIsUnlimited(false);
       }
-      if (res.data.data.test.testId) {
-        console.log(res.data.data.test.testId);
+        console.log('asd',res.data.data);
         setTestHeaderDetails((prev) => ({
           ...prev,
-          testName: testId.testName,
-          instruction: instruction,
-          dateAssigned: getFormattedDate(createdAt, dateFormat),
-          dueDate: getFormattedDate(dueDate, dateFormat),
-        }));
-      }
-      setTestHeaderDetails((prev) => ({
-        ...prev,
-        duration: multiple ? getDuration(multiple) : "Unlimited",
+          testName: res.data.data.test.testId?.testName,
+          instruction: '',
+          dateAssigned: getFormattedDate(res.data.data.test.createdAt, dateFormat),
+          dueDate: getFormattedDate(res.data.data.test.dueDate, dateFormat),
+          duration: multiple ? getDuration(res.data.data.test.multiple) : "Unlimited",
       }));
     });
   }, []);
@@ -505,8 +500,6 @@ export default function StartTest() {
       <div className="py-8 px-5">
         <div className="flex">
           <div className="flex-1">
-            {!testStarted && (
-              <>
                 <p className="text-[#24A3D9] ml-8 !mt-[calc(50*0.052vw)] !mb-[calc(25*0.052vw)] text-base-20">
                   <span
                     onClick={() => navigate("/")}
@@ -527,11 +520,6 @@ export default function StartTest() {
                     {testHeaderDetails.testName}
                   </span>
                 </p>
-              </>
-            )}
-            <p className="text-[#26435F] ml-8 text-[20px] font-bold mb-8">
-              {testHeaderDetails.testName}
-            </p>
             {!testStarted && (
               <div className="grid grid-cols-3 ml-4 w-full text-sm px-4 gap-y-4 mt-2">
                 <div className=" grid grid-flow-col  grid-rows-3 mr-3 justify-start items-start">
@@ -566,7 +554,7 @@ export default function StartTest() {
                     </p>
                   </div>
                 </div>
-                <div className=" grid grid-flow-col  grid-rows-3 mr-3 justify-start items-start">
+                <div className=" grid grid-flow-col  grid-rows-3 justify-start items-start">
                   <div className="w-full flex mb-3 justify-between">
                     <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
                       {" "}
@@ -604,14 +592,13 @@ export default function StartTest() {
                 </div>
                 <div className="w-full flex mb-3 justify-between">
                   <div className="flex flex-col">
-                    <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
+                    <p className="inline-block mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
                       {" "}
                       Instruction from tutor{" "}
                     </p>
 
-                    <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]">
-                      -{" "}
-                    </p>
+                    <p className="inline-block mt-2 font-light  text-[20px] text-[#517CA8]">
+                    {activeSection.description}</p>
                   </div>
                 </div>
               </div>
@@ -649,12 +636,12 @@ export default function StartTest() {
                     <p className="text-[15px] text-[#FFFFFF] font-medium">
                       Time
                     </p>
-                    <p className="text-[25px] text-[#FFFFFF] font-bold">
+                    <p className="text-[25px] text-[#FFFFFF] font-normal">
                       {activeSection.timer + ":00"}
                     </p>
                   </div>
                   <div className="flex flex-col items-start gap-2">
-                    <p className="text-[#26435F] texxt-[17.5] font-bold mb-4">
+                    <p className="text-[#26435F] text-[17.5] font-bold mb-4">
                       Section Instructions:
                     </p>
                     <p className="text-[#26435F] texxt-[17.5] font-normal">
@@ -672,7 +659,7 @@ export default function StartTest() {
                         Warning
                       </p>
                       <p className="text-[#FF6961] text-[15px] font-light">
-                        : Once Started, you will not be able to pause the timer.
+                        : Once you started,you won't be able to pause the timer.
                       </p>
                     </div>
                     <PrimaryButton
@@ -684,10 +671,13 @@ export default function StartTest() {
                   </div>
                 </div>
               )}
-
+              </div>
+              </div>
+              </div>
+              <div className="flex flex-row justify-center">
               {testStarted && (
                 <div
-                  className="mt-[15px] overflow-auto custom-scroller"
+                  className="mt-[15px] w-[60%] overflow-auto custom-scroller"
                   style={{ maxHeight: "calc(100vh - 240px)" }}
                 >
                   {answers.map((item, idx) => {
@@ -696,9 +686,9 @@ export default function StartTest() {
                         key={idx}
                         className="flex justify-between items-center py-5 px-10 bg-white rounded-xl mb-[15px]"
                       >
-                        <p className="font-bold text-[22px] leading-none">
-                          {" "}
-                          {item.QuestionNumber}{" "}
+                        <p className="font-semibold text-[20px] text-[#517CA8] leading-none">
+                          
+                          {item.QuestionNumber<10?'0'+item.QuestionNumber:item.QuestionNumber}
                         </p>
                         {console.log(item)}
                         <TestOption
@@ -708,14 +698,14 @@ export default function StartTest() {
                         />
                         {item.isMarked ? (
                           <button
-                            className="w-[180px] font-semibold pt-2.5 pb-2.5 rounded-lg bg-primaryOrange text-white ml-4"
+                            className="w-[180px] font-semibold pt-2.5 pb-2.5 rounded-lg bg-[#FFCE84] text-white ml-4"
                             onClick={() => handleMark(item._id, false)}
                           >
                             Unmark
                           </button>
                         ) : (
                           <button
-                            className="w-[180px] font-semibold py-3 rounded-lg pt-[8px] pb-[8px] border-2 border-[#D2D2D2] text-[#D2D2D2] ml-4"
+                            className="w-[180px] text-[#FFCE84]  font-semibold py-3 rounded-lg pt-[8px] pb-[8px] border-2 border-[#FFCE84] ml-4"
                             onClick={() => handleMark(item._id, true)}
                           >
                             Mark for Review
@@ -726,11 +716,9 @@ export default function StartTest() {
                   })}
                 </div>
               )}
-            </div>
-          </div>
 
           {/* RIGHT */}
-          <div className="flex-2 ml-8 flex flex-col">
+          <div className="flex-2 w-[40%] ml-8 items-center flex flex-col">
             {testStarted && (
               <Timer
                 handleSubmitSection={handleSubmitSection}
@@ -744,6 +732,7 @@ export default function StartTest() {
             {testStarted && (
               <CurrentSection
                 answers={answers}
+                activeSection={activeSection}
                 submitSection={handleSubmitSection}
                 setSubmitBtnLoading={setSubmitBtnLoading}
                 submitBtnLoading={submitBtnLoading}

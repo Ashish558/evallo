@@ -24,6 +24,7 @@ export default function Table(props) {
     maxPageSize,
     onClick,
     hidePagination,
+    current_usertype,
     setMaxPageSize,
     excludes,
     total_pages,

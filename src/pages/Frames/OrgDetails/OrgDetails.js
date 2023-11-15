@@ -54,6 +54,7 @@ export default function OrgDetails({
       alert("Please Fill All The Fields!")
       return
     } 
+
    let alphadigit= new RegExp("^[a-zA-Z0-9 ]*[a-zA-Z][a-zA-Z0-9 ]*$");
     var regex = /^\d+$/;
     if(!regex.test(values?.zip)&&values?.zip?.length>10){
@@ -65,6 +66,18 @@ export default function OrgDetails({
     alert("Please fill valid details!")
     return
   } 
+  if (values?.address?.length<3) {
+  alert("Address must be at least 3 characters long!")
+  return
+} 
+if (values?.website?.length<3) {
+  alert("Website Address must be at least 3 characters long!")
+  return
+} 
+if (values?.city?.length<3) {
+  alert("City name must be at least 3 characters long!")
+  return
+} 
     setFrames((prev) => {
       console.log(prev);
       return {

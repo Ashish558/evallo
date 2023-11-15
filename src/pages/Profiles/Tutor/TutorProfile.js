@@ -55,6 +55,7 @@ import { useLazyGetFeedbacksQuery } from "../../../app/services/dashboard";
 import { BASE_URL, getAuthHeader } from "../../../app/constants/constants";
 import axios from "axios";
 import ProfilePhoto from "../../../components/ProfilePhoto/ProfilePhoto";
+import defaultProfile from "../../../assets/images/defaultProfile.png";
 import YoutubeEmbed from "./YoutubeEmbed/YoutubeEmbed";
 // import CircleButton from "../../../components/CircleButton/CircleButton";
 import BarChart from "../../../components/BarChart/BarChart";
@@ -120,7 +121,7 @@ export default function TutorProfile({ isOwn }) {
 
     setNewServices(temp);
   }, [userDetail, organization]);
-  //console.log("newww", newServices);
+ 
   const tableHeaders1 = [
     {
       id: 1,
@@ -333,7 +334,7 @@ export default function TutorProfile({ isOwn }) {
       });
     });
   }, []);
-  // console.log(settings?.Expertise, "settings");
+
   const handleClose = () => {
     setToEdit((prev) => {
       let tempToEdit = {};
@@ -363,7 +364,7 @@ export default function TutorProfile({ isOwn }) {
       setTutorServices(temp);
     }
   }, [organization]);
-  //console.log("servicessss", tutorAdminServices, userDetail);
+
   useEffect(() => {
     if (userDetail?.tutorServices && tutorAdminServices) {
       //console.log("userDetailttftft",tutorAdminServices,userDetail?.tutorServices);
@@ -557,10 +558,6 @@ export default function TutorProfile({ isOwn }) {
     setSettings(organization.settings);
   }, [organization]);
 
-  // console.log('user', user)
-  // console.log('To-edit', toEdit)
-  //console.log("userdetail", userDetail);
-  // console.log('settings', settings.Expertise)
   const {
     about,
     education,
@@ -581,13 +578,9 @@ export default function TutorProfile({ isOwn }) {
     state,
     country,
   } = userDetail;
-  // console.log('userdetail', tutorLevel)
 
-  // console.log(user);
-  // console.log('settings', settings.servicesAndSpecialization);
   if (Object.keys(user).length < 1) return;
   if (Object.keys(settings).length < 1) return;
-  // if (Object.keys(userDetail).length < 1) return;
   let tutorLevelIcon = TutorLevelOne;
   let tutorLevelTextColor = "text-[#ff4300]";
   let tutorLevelBg = "#FBDB89";
@@ -643,8 +636,7 @@ export default function TutorProfile({ isOwn }) {
       fetchDetails();
     });
   };
-  // console.log(isOwn);
-  // console.log(tutorRank);
+
   const timestamp = userDetail?.createdAt;
   const date = new Date(timestamp);
   const getDateFormat = (date1) => {
@@ -656,10 +648,9 @@ export default function TutorProfile({ isOwn }) {
   const options = { year: "numeric", month: "long", day: "numeric" };
   const formattedDate = date.toLocaleDateString("en-US", options);
 
-  // console.log(formattedDate);
   return (
     <>
-      <div className="w-[83.3vw] mx-auto">
+      <div className="w-[83.3vw] mx-auto mb-[100px]">
         {/* <div className="py-8">
                <p className='text-[#24A3D9] text-xl '>Org</p>
             </div> */}
@@ -733,7 +724,7 @@ export default function TutorProfile({ isOwn }) {
                             src={
                               user.photo
                                 ? `${awsLink}${user.photo}`
-                                : "/images/tutor.jpg"
+                                : defaultProfile
                             }
                             handleChange={handleProfilePhotoChange}
                           />
@@ -1371,7 +1362,7 @@ export default function TutorProfile({ isOwn }) {
             <div className="mt-[50px] border-4 mx-[40px]  border-t border-[#CBD6E2]-300 justify-center border-dotted"></div>
           )}
           {/* address row */}
-          {(isOwn === true || persona === "admin") && (
+          {/* {(isOwn === true || persona === "admin") && (
             <div className="flex justify-between mt-[55px] gap-x-[37px]">
               <div className="w-[55.32vw]">
                 <div className="flex items-center mb-1">
@@ -1524,7 +1515,7 @@ export default function TutorProfile({ isOwn }) {
                                        onClick={() => setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}
                                      
                                     /> */}
-                          <div className="font-normal text-[#B3BDC7]  text-md px-3 py-2 text-base-17-5">
+                          {/* <div className="font-normal text-[#B3BDC7]  text-md px-3 py-2 text-base-17-5">
                             {userDetail?.paymentInfo?.trim()?.length>0?userDetail.paymentInfo:<span className="text-base-15">Use this space to add any payment info about the tutor, such as Account Number, Routing Number, Billing Address, Salary, Reimbursements, etc.</span>}
                           </div>
                         </div>
@@ -1638,7 +1629,7 @@ export default function TutorProfile({ isOwn }) {
                 </div>
               )}
             </div>
-          )}
+          )}  */}
 
           {/* <div className='lg:grid mt-12 px-2 grid-cols-12 grid-ros-6 lg:mt-[60px] gap-5 lg:pl-3'>
 
@@ -1922,6 +1913,7 @@ export default function TutorProfile({ isOwn }) {
             </div> */}
       </div>
       <ParentEditables
+         
         settings={settings}
         fetchDetails={fetchDetails}
         userId={isOwn ? id : params.id}

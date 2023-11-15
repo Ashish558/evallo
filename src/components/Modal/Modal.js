@@ -52,7 +52,7 @@ export default function Modal({
          {
             <div className={styles.modalContainer}>
                <div className="w-full p-1">
-                  <div ref={handleClose ? selectRef : null} className={`w-full bg-white p-3 py-5 md:py-[33px] md:px-[33px] rounded-lg relative ${classname ? classname : ""
+                  <div ref={handleClose ? selectRef : null} className={`w-full bg-white p-3 py-5 md:py-[27px] md:px-[33px] rounded-lg relative ${classname ? classname : ""
                      }`}
                   >
                      <div className={wrapperClassName ? wrapperClassName : ''} >
@@ -67,7 +67,7 @@ export default function Modal({
 
                         </p>
                         {
-                           underline ? "" : <div className="h-[1.33px] w-full bg-[rgba(0,0,0,0.20)] mb-[36px]"></div>
+                           underline ?  <div className="h-[1.33px] w-full bg-[rgba(0,0,0,0.20)] mb-[36px]"></div> : ""
                         }
                         {body}
 
@@ -116,12 +116,12 @@ export default function Modal({
                         </div>
 
                         {
-                           crossBtn ? '' : <button className={styles.cancelBtn}
+                           crossBtn ?  <button className={styles.cancelBtn}
                               style={cancelBtnStyle}
                               onClick={handleClose}
                            >
-                              <img src={primaryCancel ? primaryCancelIcon : primaryCancelIcon} onClick={handleClose} />
-                           </button>
+                              <img src={primaryCancel ? primaryCancelIcon : primaryCancelIcon} onClick={handleClose} alt="close_btn" />
+                           </button> : ""
                         }
                      </div>
                   </div>
