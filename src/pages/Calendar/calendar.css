@@ -4,6 +4,7 @@
 .calender .fc-theme-standard .fc-toolbar .fc-toolbar-chunk:nth-child(1) {
   display: flex !important;
   align-items: center !important;
+  margin-top: 6px;
 }
 .calender #calendarContainer .fc-direction-ltr.fc-theme-standard{
   padding: 0 !important;
@@ -332,25 +333,25 @@ text-transform: uppercase;
 }
 .calendar .fc-nextButton-button{
   width: 50px !important;
-  height: 50px !important;
+  /* height: 50px !important; */
   border: 2.5px solid #F5F6F7 !important;
 }
 .calendar .fc-prevButton-button{
   width: 50px !important;
-  height: 50px !important;
+  /* height: 50px !important; */
   border: 2.5px solid #F5F6F7 !important;
 }
 .calendar-prevButton-custom{
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  margin-left: 10px !important;  
+  /* margin-left: 10px !important;   */
 }
 .calendar-nextButton-custom{
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  margin-left: 10px !important;  
+  /* margin-left: 10px !important;   */
 }
 .calendar .fc .fc-button-group{
   margin-right: 15rem !important;

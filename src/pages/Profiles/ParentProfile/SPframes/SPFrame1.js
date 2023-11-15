@@ -339,7 +339,7 @@ const SPFrame1 = ({
                 <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
                   Session Notes
                 </p>
-                <div className="bg-white flex-1 h-[660px] rounded-md custom-scroller shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
+                <div className="bg-white flex-1 h-[660px] !w-[calc(755*0.0522vw)] rounded-md custom-scroller shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
                   <div className="p-5">
                     <button
                       onClick={() => {

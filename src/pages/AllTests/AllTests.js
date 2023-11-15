@@ -358,6 +358,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
       noArrow: true,
     },
   ];
+  
   useEffect(() => {
     if (
       modalData.testName.trim() === "" ||
@@ -365,7 +366,14 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
       csvFile === null
     ) {
       setSubmitBtnDisabled(true);
-    } else {
+    } 
+    else if((pdfFile===null || csvFile===null) &&!getTestType(modalData.testType).includes('DSAT')){
+      setSubmitBtnDisabled(true);
+    }
+    else if( csvFile!=null && getTestType(modalData.testType).includes('DSAT') && modalData.testName.length>0){
+      setSubmitBtnDisabled(false);
+    }
+    else {
       setSubmitBtnDisabled(false);
     }
   }, [modalData, csvFile]);
@@ -417,7 +425,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
   const getTestType = (type) => {
     return type === 'SAT®' ? "SAT®" : type === 'ACT®' ? "ACT®" : type === 'DSAT®' ? "DSAT®" : type
   }
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     setLoading(true);
     e.preventDefault();
     setSubmitBtnDisabled(true);
@@ -425,45 +433,19 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
     let body = {
       testName: modalData.testName,
       testType: getTestType(modalData.testType),
+      ...(getTestType(modalData.testType)!=='DSAT'?{pdf:pdfFile}:{}),
+      file:csvFile
     };
+    const formData = new FormData();
 
-    submitTest(body).then(async (res) => {
-      // console.log(res);
-      if (res.error) {
-        alert(res.error.data.message);
-        setLoading(false);
-        return;
-      }
-      let testId = res.data.data.test._id;
-      const formData = new FormData();
-      formData.append("pdf", pdfFile);
-
-      if (pdfFile !== null) {
-        console.log(pdfFile);
+    Object.entries(body).forEach(([key, value]) =>{
+  formData.append(key, value);
+})
+    console.log(formData);
+    
         await axios
-          .post(`${BASE_URL}api/test/addpdf/${testId}`, formData, {
-            headers: getAuthHeader(),
-          })
-          .then((res) => {
-            console.log("pdf post resp", res);
-            alert("PDF UPLOADED");
-            if (csvFile === null) {
-              setModalData(initialState);
-              setModalActive(false);
-              setPDFFile(null);
-            }
-          })
-          .catch((err) => {
-            console.log("pdf err", err.response);
-          });
-      }
-
-      if (csvFile !== null) {
-        const formData = new FormData();
-        formData.append("file", csvFile);
-        await axios
-          .post(`${BASE_URL}api/test/addans/${testId}`, formData, {
-            headers: getAuthHeader(),
+        .post(`${BASE_URL}api/test/add/addNewTest`, formData, {
+              headers: getAuthHeader(),
           })
           .then((res) => {
             alert("CSV UPLOADED");
@@ -474,27 +456,19 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
             setPDFFile(null);
           })
           .catch((err) => {
-            console.log("excel err", err.response);
-            axios.delete(`${BASE_URL}api/test/${testId}`).then((res) => {
-              // console.log(res);
-              setModalData(initialState);
-              setModalActive(false);
-              setCSVFile(null);
-              setPDFFile(null);
-            });
-            if (err.response.data) {
-              if (err.response.data.status === "fail") {
-                alert("Concept field(s) missing.");
-              }
-            }
-          });
-      }
-      setLoading(false);
-      fetchTests();
-      setSubmitBtnDisabled(false);
-      console.log("submitted");
-    });
-  };
+             // setModalData(initialState);
+              // // setModalActive(false);
+              // setCSVFile(null);
+              // setPDFFile(null);
+              if (err?.response?.data) {
+                  alert(err?.response?.data);
+                }
+              });
+              setLoading(false);
+                fetchTests();
+                setSubmitBtnDisabled(false);
+                console.log("submitted");
+      };
 
   useEffect(() => {
     if (tableData.length === 0) return;

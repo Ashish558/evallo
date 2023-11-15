@@ -761,6 +761,8 @@ export default function AssignedTests() {
   const [testsData, setTestsData] = useState([]);
   const [maxPageSize, setMaxPageSize] = useState(10);
   const [validData, setValidData] = useState(true);
+  const [alldata, setalldata] = useState([])
+  const [selectedstudent, setslecetedstudent] = useState([])
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -777,18 +779,25 @@ export default function AssignedTests() {
   }, [modalData.name, modalData.limit, modalData.date, modalData.test]);
 
   const handleMultipleStudent = (student) => {
-    console.log({ student });
+   
     let bool = studentMultiple?.find(
       (student1) => student1?._id === student?._id
     );
     if (bool) {
       let updated = studentMultiple.filter((test) => test?._id !== student._id);
       setStudentMultiple(updated);
+      let updated2= selectedstudent.filter((test)=>test?._id !== student._id)
+      setslecetedstudent(updated2)
     } else {
       setStudentMultiple((prev) => {
         return [...prev, { _id: student?._id, value: student?.value }];
       });
-    }
+      const foundObject = alldata.find(obj => obj._id === student?._id);
+      const updated2=selectedstudent;
+      updated2.push(foundObject);
+      setslecetedstudent(updated2)
+     }
+     checkTextWidth()
   };
   const getCurrentDate = () => {
     const today = new Date();
@@ -803,6 +812,7 @@ export default function AssignedTests() {
     return `${year}-${month}-${day}`;
   };
   const handleOptionCLose = () => {
+    return
     if (studentMultiple?.length > 0) {
       setModalData((prev) => {
         return { ...prev, name: studentMultiple[0].value };
@@ -844,6 +854,7 @@ export default function AssignedTests() {
     navigate(`/profile/${role}/${id}`);
   };
 
+  
   useEffect(() => {
     if (modalData.name.length >= 0) {
       if (persona === "admin") {
@@ -852,6 +863,7 @@ export default function AssignedTests() {
           if (res.error) {
             return;
           }
+          setalldata(res.data.data.students)
           let tempData = res.data.data.students.map((student) => {
             return {
               _id: student._id,
@@ -1108,6 +1120,8 @@ export default function AssignedTests() {
         //alert("Test Assigned!");
         setAssignTestModalActive(false);
         setStudentMultiple([]);
+        setslecetedstudent([])
+        selselectedtext('')
         fetch();
       });
     });
@@ -1328,6 +1342,46 @@ export default function AssignedTests() {
   const [markSelectLoading, setMarkSelectLoading] = useState(false);
   const [resendBulkModalActive, setResendBulkModalActive] = useState(false);
   const [resendSelectLoading, setResendSelectLoading] = useState(false);
+  const [selectedtext,selselectedtext]= useState('');
+  const checkTextWidth = () => {
+    const container = document.querySelector('.student-name-container');
+    const text = document.querySelector('.text-container');
+    console.log(text.innerHTML.length, container);
+  
+    if (text && container) {
+     
+        const limit22 = 3.4;
+        const maxStringLength = Math.floor((container.offsetWidth - 100) / limit22) - 20;
+        let stri = '';
+  
+        let f = false;
+        let tot = 0;
+        console.log(selectedstudent);
+        for (const student of selectedstudent) {
+          console.log(stri.length+ student.firstName.length,maxStringLength);
+          if (stri.length+ student.firstName.length < maxStringLength) {
+            if (f) {
+              stri += ', ' + student.firstName;
+            } else {
+              f = true;
+              stri += student.firstName;
+            }
+          } else {
+            stri += ` ... total ${studentMultiple.length} selected`;
+            break;
+          }
+  
+          tot += student.firstName.length;
+        }
+  
+        console.log('Text has covered the whole width. Needs to be cropped.');
+        console.log('Cropped Text:', stri);
+        selselectedtext(stri)
+    }
+  };
+  
+
+
   return (
     <>
       <div className="w-[83.3333333333vw] mx-auto min-h-screen mb-[40px]">
@@ -1609,8 +1663,7 @@ export default function AssignedTests() {
           body={
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-6  gap-y-0 mb-7">
-                <div className="mb-10">
-                  {console.log(studentMultiple)}
+                <div className="mb-10 student-name-container">
                   <InputSearch
                     label="Student Name"
                     labelClassname="text-base-20 text-[#26435F] mb-1"
@@ -1673,26 +1726,10 @@ export default function AssignedTests() {
                     type="select"
                   /> */}
                   <div className="flex flex-row items-center">
-                    {studentMultiple?.length > 0 ? (
-                      <>
-                        <p className="font-medium whitespace-nowrap text-base-15 mt-1 text-[#667085]">
-                          {" "}
-                          {studentMultiple[0]?.value}
-                        </p>
-                        {studentMultiple?.length > 1 ? (
-                          <>
-                            <p className="font-medium whitespace-nowrap text-base-15 mt-1 text-[#667085]">
-                              , {studentMultiple[1]?.value}
-                            </p>
-                            {studentMultiple?.length > 2 ? (
-                              <p className="font-medium whitespace-nowrap text-base-15 mt-1 text-[#667085]">
-                                ... total {studentMultiple.length} selected
-                              </p>
-                            ) : null}
-                          </>
-                        ) : null}
-                      </>
-                    ) : null}
+                    <p className="font-medium whitespace-nowrap text-container text-base-15 mt-1 text-[#667085]">
+                  {selectedtext}
+                  </p>
+
                   </div>
                 </div>
                 <div>

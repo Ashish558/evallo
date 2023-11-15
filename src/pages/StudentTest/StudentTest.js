@@ -464,12 +464,12 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
       willDisplayDownArrow: statusSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
-      id: 6,
+      id: 5,
       text: "Scores",
       noArrow: true
     },
     {
-      id: 7,
+      id: 6,
       text: "",
       noArrow: true
     },
@@ -503,7 +503,6 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
             studentId: studentId ? studentId : "-",
           
             dueDate: new Date(test.dueDate).toDateString(),
-            assignedBy:assignedBy?.firstName+" "+assignedBy?.lastName,
             duration: multiple ? getDuration(multiple) : "Unlimited",
             status:
               isCompleted === true
@@ -782,6 +781,7 @@ console.log("profile",fromProfile)
             </div>
           )}
           <div className={`mt-6 ${fromProfile ? '!mt-0' : ''}`}>
+            {console.log(tableHeaders)}
             <Table
               testtype={testtype}
               fromProfile={fromProfile}

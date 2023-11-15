@@ -65,7 +65,7 @@ export default function NumericSteppers({
                 className={`flex justify-center !tracking-wider  before:hidden items-center mt-2 mb-2 text-center ${NumericStepperfontSize} font-medium  
             ${i + 1 < parseInt(currentStep) ? "text-[#FFA28D]" : ""} 
              ${i + 1 === parseInt(currentStep) ? " text-[#24A3D9]  " : ""} 
-             ${i + 1 > parseInt(currentStep) ? "opacity-50  text-[#26435F]" : ""}
+             ${i + 1 > parseInt(currentStep) ? "opacity-40  text-[#26435F]" : ""}
              ${i + 1 === parseInt(currentStep) ? "text-[#24A3D9]  " : ""} 
              `}
             >
