@@ -1728,7 +1728,7 @@ export default function CalendarPage() {
                   optionData={['Year', 'Month', 'Week']}
                   onChange={(val) => {
                     // setActiveView(val)
-                    if(activeView !== 'Year'){
+                    if(val !== 'Year'){
                       setActiveView('')
                       setTimeout(() => {
                         setActiveView(val)
