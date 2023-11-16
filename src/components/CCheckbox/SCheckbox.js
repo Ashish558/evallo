@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styles from './style.module.css'
+import { useEffectPreventMountExec } from '../../hooks/useEffectPreventMountExec'
 
 export default function SCheckbox({ stopM, checked, onChange, name, disabled, value, checkMarkClassName, className }) {
    const [checkG, setCheckG] = useState(checked)
@@ -9,11 +10,11 @@ export default function SCheckbox({ stopM, checked, onChange, name, disabled, va
       if (disabled === true || !onChange) return
       onChange(!e)
    }
-
-   useEffect(() => {
-      if (disabled === true || !onChange || true) return
-      onChange(checkG)
-   }, [checkG])
+   
+useEffectPreventMountExec(()=>{
+    if(disabled === true || !onChange) return
+    onChange(checkG)
+},[checkG])
    return (
       <div className={`w-[22px] h-[22px]  ${styles.container} ${!checked ? styles.container2 : styles.container}  ${className}`}
          onClick={(e) => {

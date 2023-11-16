@@ -527,6 +527,7 @@ const CompanyAndBround = () => {
         {/* <div className="w-full h-[2px] bg-[#CBD6E2]"></div> */}
       </div>
       <div>
+
         <PrimaryButton
           onClick={handleSave}
           className={`bg-[#FFA28D]   mt-[25px] ml-10 rounded-md px-[50px] py-[15px] text-sm text-base-20 text-white  `}
@@ -534,6 +535,18 @@ const CompanyAndBround = () => {
           Save
         </PrimaryButton>
       </div>
+
+            <PrimaryButton
+              onClick={handleSave}
+              
+
+              className={`bg-[#FFA28D]   mt-[25px] ml-10 rounded-md px-[50px] py-[15px] text-sm text-base-20 text-white w-[175px] `}
+
+            >
+              Save
+            </PrimaryButton>
+          </div>
+
     </div>
   );
 };

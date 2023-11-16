@@ -21,6 +21,16 @@ thead tr th:nth-child(-n+5) .markerCustom::after {
   height: 25px;
   cursor: pointer;
 }
+
+thead tr th:nth-child(-n+5) .markerCustomUpArrow::after {
+  content: url("../../assets/icons/table_dropdown.svg");
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  transform: rotate(180deg);
+  cursor: pointer;
+}
+
 thead tr th:nth-child(-n+10) .markerCustomAllOrgs::after {
   content: url("../../assets/icons/table_dropdown.svg");
   display: inline-block;

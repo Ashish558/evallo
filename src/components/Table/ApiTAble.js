@@ -130,6 +130,7 @@ export default function ApiTable({
                       setnumberChecked={setnumberChecked}
                       checkedHeader={checkedHeader}
                       fetch={fetch}
+                  
                       extraData={extraData}
                     />
                   </React.Fragment>

@@ -314,7 +314,7 @@ const AdminNavbar = () => {
     setNavData(arr)
   }
  },[activeRoute])
- 
+
   return (
     <>
       <div className="flex justify-around bg-[#26435F] h-[74px] items-center w-full overflow-y-auto w-[100vw]">
@@ -334,7 +334,7 @@ const AdminNavbar = () => {
                 className={`flex items-center mr-8 text-base-17-5 ${isLoggedIn?"cursor-pointer":' cursor-default'} text-base-20`}
                 onClick={() =>isLoggedIn&& handleNavigate(item.path)}
               >
-                { isLoggedIn && item?.path === activeRoute ? (
+                { isLoggedIn && (item?.path === activeRoute) ? (
                   <>
                     <p>
                       <img

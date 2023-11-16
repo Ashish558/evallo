@@ -302,6 +302,43 @@ const Navbar = () => {
       if (path === "") return;
       if (path === "/all-orgs") {
         setShowDashboard(true);
+
+   const handleNavigate = (path) => {
+      if (path === "/exit") {
+         setLogoutModalActive(true);
+      } else if (path === "/logo") {
+         // window.open("https://sevensquarelearning.com/");
+      } else {
+         if (path === "") return;
+         if (path === "/all-orgs") {
+            setShowDashboard(true);
+         }
+         navigate(path);
+      }
+   };
+const [loading2,setLoading2]=useState(false)
+   const logoutUser = () => {
+      setLoading2(true);
+      logOutApi().then((res) => {
+         setLoading2(false);
+         if(res?.error){
+            alert("Something went wrong. Please try again")
+            return 
+         }
+         console.log("Successfully logged out");
+         setLogoutModalActive(false)
+         sessionStorage.clear();
+         localStorage.clear("evalloToken");
+         navigate("/");
+         dispatch(updateIsLoggedIn(false));
+         window.location.reload();
+      });
+   
+   };
+   useEffect(() => {
+      if(location.pathname.includes('/all-tests/')){
+         setActiveRoute('/all-tests');
+
       }
       navigate(path);
     }
@@ -315,6 +352,7 @@ const Navbar = () => {
         alert("Something went wrong. Please try again");
         return;
       }
+
       console.log("Successfully logged out");
       setLogoutModalActive(false);
       sessionStorage.clear();
@@ -344,6 +382,32 @@ const Navbar = () => {
       setNavData(arr);
     }
   }, [activeRoute]);
+
+    else  setActiveRoute(location.pathname);
+   }, [location.pathname]);
+   useEffect(() => {
+
+      if (!isLoggedIn && (activeRoute === '/signup/user' || activeRoute === '/signup' || activeRoute === "/")) {
+         let arr = tutorNav;
+         if (activeRoute === '/')
+            arr[0].path = "/"
+         setNavData(arr)
+      }
+   }, [activeRoute])
+   console.log({navData,activeRoute})
+   return (
+      <>
+         <div className={`flex   bg-[#26435F] h-[72px] items-center w-full shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] ${persona=="superAdmin"?"justify-between px-[5%]":"justify-around"}`}>
+            <div
+               className={`${persona === "superAdmin" ? "translate-x-[-2.3vw]" : ""}`}
+            >
+               <Link to="/">
+                  <div className="flex gap-x-[6px] items-center">
+                  <img className="inline-block w-full" src={evallo_logo} alt="evallo_logo" />
+                  <p  className={`text-[43px] text-white font-bold pt-[3.2px] ${styles.customFont}`}>Evallo</p>
+                  </div>
+               </Link>
+
 
   return (
     <>

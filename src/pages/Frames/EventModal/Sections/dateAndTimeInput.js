@@ -2,19 +2,12 @@ import React from 'react'
 import InputField from '../../../../components/InputField/inputField';
 import InputSelect from '../../../../components/InputSelect/InputSelect';
 import { convertTime12to24, tConvert } from '../../../../utils/utils';
+import moment from "moment-timezone";
 import { times } from '../../../../constants/constants';
-
-const timeZones = [
-   'IST',
-   'AKST',
-   'EST',
-   'HST',
-   'MST',
-   'PST',
-]
 
 export default function DateAndTimeInput({ data, setData, isEditable }) {
 
+   const timeZones = moment.tz.names(); // String[]
 
    return (
       <div className="flex mb-[30px] items-end">

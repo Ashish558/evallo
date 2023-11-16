@@ -15,9 +15,8 @@ const LatestSignUpTableItem = ({ item, onClick }) => {
       setDateFormat(organization2?.settings?.dateFormat)
     }
   },[organization2])
-  console.log("latest",{dateFormat, organization2})
   const handleClick = () => {
-    onClick.redirect(item);
+    onClick?.redirect(item);
   };
   useEffect(()=>{
     if(!item?.assiginedTutors||item?.assiginedTutors?.length===0)
@@ -25,7 +24,7 @@ const LatestSignUpTableItem = ({ item, onClick }) => {
     item?.assiginedTutors?.map((it,idd)=>{
       let userId=it
       getUserDetail({ id: userId }).then((res) => {
-        console.log("response",userId, res?.data);
+        // console.log("response",userId, res?.data);
         if(!res?.data)return 
         const {firstName,lastName}=res.data.data.user
          let fullName=firstName+" "+lastName+", "

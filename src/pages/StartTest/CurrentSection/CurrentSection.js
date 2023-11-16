@@ -3,7 +3,7 @@ import PrimaryButton from '../../../components/Buttons/PrimaryButton';
 import Modal from '../../../components/Modal/Modal';
 import SectionLoader from '../SectionLoader';
 import { useNavigate } from 'react-router-dom';
-export default function CurrentSection({ answers, submitSection, submitBtnLoading }) {
+export default function CurrentSection({ answers,activeSection, submitSection, submitBtnLoading }) {
   const [details, setDetails] = useState(answers);
   const [totalQues, setTotalQues] = useState(0);
   const [attempted, setAttempted] = useState(0);
@@ -39,15 +39,20 @@ export default function CurrentSection({ answers, submitSection, submitBtnLoadin
   };
 
   return (
-    <div className='mt-10 flex-1 flex flex-col'>
-      <p className='font-semibold mb-1'>Total Questions: {totalQues}</p>
-      <p className='font-semibold mb-1'>Attempted: {attempted}</p>
-      <p className='font-semibold mb-1'>Marked for Review: {marked}</p>
-      <PrimaryButton
-        children="Submit Section"
-        className="mt-auto mb-4 w-[300px] h-[60px] text-[21px] text-white"
-        onClick={handleSubmission}
-      />
+    <>
+    <div className='mt-4 flex-1 flex flex-col mb-6 bg-white rounded w-full py-3 px-6'>
+      <p className='font-medium text-[#26435F] text-[20px] mb-1'>Total Questions: {totalQues}</p>
+      <p className='font-medium text-[#38C980] text-[20px] mb-1'>Attempted: {attempted}</p>
+      <p className='font-medium text-[#FF7979] text-[20px] mb-1'>Marked for Review: {marked}</p>
+      <p className='font-medium text-[#FFCE84] text-[20px] mb-6'>Remaining: {totalQues-attempted}</p>
+      
+      <p className='font-light text-[#517CA8] text-[17.5px] mb-1'>Section Instructions:</p>
+      <p className='font-light text-[#517CA8] text-[17.5px] leading-[31.25px] mb-1'>{activeSection.description}</p>
+      </div>  
+      <button className="mt-auto mb-4 w-[200px] rounded bg-[#38C980] h-[75px] text-[20px] font-semibold text-white"
+        onClick={handleSubmission}>
+        Submit Section
+        </button>
       {isLoading && <SectionLoader />}
       {popUp && (
         <Modal
@@ -56,12 +61,12 @@ export default function CurrentSection({ answers, submitSection, submitBtnLoadin
           title="Are you sure you want to Submit the Section?"
           primaryBtn={{
             onClick: handleSubmitConfirm,
-            text: "Submit",
-            className: "bg-[#FF7979] w-[146.67px] h-[46.67px] ml-0 text-white",
+            text: "Yes",
+            className: "!bg-[#38C980] w-[146.67px] h-[46.67px] ml-0 text-white",
             loading: submitBtnLoading,
           }}
         />
       )}
-    </div>
+    </>
   );
 }

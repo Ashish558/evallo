@@ -207,7 +207,7 @@ const AccountOverview = () => {
             parentClassName="text-[#26435F]"
             inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040]  bg-white  border border-white text-[#667085]"
             inputClassName=" text-400 py-0 bg-transparent"
-            label="First Name"
+            label="First name"
             value={values.firstName}
             onChange={(e) =>
               setValues({
@@ -224,7 +224,7 @@ const AccountOverview = () => {
             parentClassName="text-[#26435F]"
             inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040]  bg-white border border-white text-[#667085]"
             inputClassName=" text-400 py-0 bg-transparent"
-            label="Last Name"
+            label="Last name"
             value={values.lastName}
             onChange={(e) =>
               setValues({
@@ -253,7 +253,7 @@ const AccountOverview = () => {
             }}
             error={error.email}
             Tooltip={
-              <span className="absolute top-10 w-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+              <span className="absolute top-10 w-[333px] h-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
                 <h3 className="text-[#24A3D9] font-semibold mb-1">
                   Email Confirmation Sent
                 </h3>
@@ -293,13 +293,17 @@ const AccountOverview = () => {
               error={error.phone}
             />
           </div>
-          <div className="flex justify-start items-end">
+          <div className="flex justify-start items-center">
             <button
               disabled={loading}
               onClick={handleDataUpdate}
+
               className={` bg-[#FFA28D]  py-3 mt-6 rounded-md px-10  text-sm text-[#fff] text-base-17-5 ${
                 loading ? "cursor-wait" : "cursor-pointer"
               }`}
+
+              className={` bg-[#FFA28D]  py-[13.5px] mt-[20px] rounded-md px-10  text-sm text-[#fff] text-base-17-5 ${loading?"cursor-wait":"cursor-pointer"}`}
+
             >
               Save
             </button>
@@ -337,12 +341,16 @@ const AccountOverview = () => {
           </div>
           <div className="flex items-end">
             <div className="flex flex-col w-[35.78vw]">
+
               <label
                 className="text-[#26435F] font-semibold text-base-17-5"
                 htmlFor=""
               >
                 Start Bio
               </label>
+
+              <label className="text-[#26435F] font-semibold text-base-17-5" htmlFor="">Short Bio</label>
+
               <textarea
                 placeholder="Write a short bio about yourself, your interests, how your got started with this choice of career, your strengths and weaknesses, your hobbies, your tutoring style, your educational background, etc. Suggested word length: 200 words."
                 rows={7}

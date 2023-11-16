@@ -52,6 +52,7 @@ import OrgDefaultContent from "./Tabs/OrgDefaultContent/OrgDefaultContent";
 import { timeZones } from "../../constants/constants";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import ToogleBar from "../../components/SettingsCard/ToogleBar";
+import moment from "moment-timezone";
 
 const initialState = {
   name: "",
@@ -97,6 +98,7 @@ export default function SuperAdminSettings() {
   const [tagModalActive, setTagModalActive] = useState(false);
   const [addCodeModalActive, setAddCodeModalActive] = useState(false);
   const [subModalData, setSubModalData] = useState(subModalInitialState);
+  const timeZones = moment.tz.names(); // String[]
 
   const [addTestModalActive, setAddTestModalActive] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
