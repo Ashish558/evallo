@@ -374,53 +374,27 @@ export default function AllTests() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     setLoading(true);
     e.preventDefault();
     setSubmitBtnDisabled(true);
     // console.log(modalData)
     let body = {
       testName: modalData.testName,
-      testType: modalData.testType,
+      testType:modalData.testType,
+      ...(!modalData.testType.includes('DSAT')?{pdf:pdfFile}:{}),
+      file:csvFile
     };
+    const formData = new FormData();
 
-    submitTest(body).then(async (res) => {
-      // console.log(res);
-      if (res.error) {
-        alert(res.error.data.message);
-        setLoading(false);
-        return;
-      }
-      let testId = res.data.data.test._id;
-      const formData = new FormData();
-      formData.append("pdf", pdfFile);
-
-      if (pdfFile !== null) {
-        console.log(pdfFile);
+    Object.entries(body).forEach(([key, value]) =>{
+  formData.append(key, value);
+})
+    console.log(formData);
+    
         await axios
-          .post(`${BASE_URL}api/test/addpdf/${testId}`, formData, {
-            headers: getAuthHeader(),
-          })
-          .then((res) => {
-            console.log("pdf post resp", res);
-            alert("PDF UPLOADED");
-            if (csvFile === null) {
-              setModalData(initialState);
-              setModalActive(false);
-              setPDFFile(null);
-            }
-          })
-          .catch((err) => {
-            console.log("pdf err", err.response);
-          });
-      }
-
-      if (csvFile !== null) {
-        const formData = new FormData();
-        formData.append("file", csvFile);
-        await axios
-          .post(`${BASE_URL}api/test/addans/${testId}`, formData, {
-            headers: getAuthHeader(),
+        .post(`${BASE_URL}api/test/add/addNewTest`, formData, {
+              headers: getAuthHeader(),
           })
           .then((res) => {
             alert("CSV UPLOADED");
@@ -431,27 +405,19 @@ export default function AllTests() {
             setPDFFile(null);
           })
           .catch((err) => {
-            console.log("excel err", err.response);
-            axios.delete(`${BASE_URL}api/test/${testId}`).then((res) => {
-              // console.log(res);
-              setModalData(initialState);
-              setModalActive(false);
-              setCSVFile(null);
-              setPDFFile(null);
-            });
-            if (err.response.data) {
-              if (err.response.data.status === "fail") {
-                alert("Concept field(s) missing.");
-              }
-            }
-          });
-      }
-      setLoading(false);
-      fetchTests();
-      setSubmitBtnDisabled(false);
-      console.log("submitted");
-    });
-  };
+             // setModalData(initialState);
+              // // setModalActive(false);
+              // setCSVFile(null);
+              // setPDFFile(null);
+              if (err?.response?.data) {
+                  alert(err?.response?.data);
+                }
+              });
+              setLoading(false);
+                fetchTests();
+                setSubmitBtnDisabled(false);
+                console.log("submitted");
+      };
 
   useEffect(() => {
     if (tableData.length === 0) return;

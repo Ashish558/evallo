@@ -51,6 +51,7 @@ import { useDeleteAdminMutation } from "../../app/services/superAdmin";
 export default function TableItem({
   item,
   dataFor,
+  awsLink,
   extratableitem,
   index,
   handleAllOrgRefetch,
@@ -599,7 +600,8 @@ export default function TableItem({
               {item.studentName}
             </span>
           </td>
-          <td className="font-medium px-1  min-w-14 py-3">{item.testName}</td>
+          <td className="font-medium px-1  min-w-14 py-3">
+          {item.testName}</td>
           <td className=" text-[17.5px] px-1  min-w-14 py-3  text-center">
             <span onClick={() => onClick.redirect(item)} className="">
               {getFormattedDate(item.assignedOn, dateFormat).replace(/-/g, "/")}
@@ -748,6 +750,7 @@ export default function TableItem({
             excludes.includes(key) ? (
               <React.Fragment key={i}></React.Fragment>
             ) : (
+              key=='testtype'?null:
               <td key={i} className="font-medium px-1  min-w-14 py-4">
                 {key === "status" ? (
                   <div className="flex justify-center">
@@ -780,10 +783,25 @@ export default function TableItem({
                   getFormattedDate(item[key], dateFormat)
                 ) : key === "assignedOn" ? (
                   getFormattedDate(item[key], dateFormat)
-                ) : (
+                ) : key==='testName'?
+                  <>
+                  <div className="flex flex-row items-center">
+                    <div className="min-w-[20px]">
+                  {!item?.testtype.includes("DSAT") && dataFor=='assignedTestsStudents'? <img
+          className='cursor-pointer '
+          src={DownloadIcon}
+          onClick={() => window.open(`${item.pdfLink}`)}
+          width='20px'
+          alt='download'
+        />:null} </div>  <span  className="pl-6">{item[key]}</span>
+        </div>
+                  </>
+                :key=='duration'?(
                   item[key]
-                )}
+                )
+              :null}
               </td>
+                
             )
           )}
           <td className="font-medium px-1  min-w-14 py-4">
