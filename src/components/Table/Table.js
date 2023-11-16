@@ -28,6 +28,7 @@ export default function Table(props) {
     setMaxPageSize,
     excludes,
     total_pages,
+    awsLink,
     handleAllOrgRefetch,
     isCallingApi,
     headerObject,
@@ -166,6 +167,7 @@ export default function Table(props) {
                       key={idx}
                       excludes={excludes}
                       onClick={onClick}
+                      awsLink={awsLink}
                     />
                   </React.Fragment>
                 );

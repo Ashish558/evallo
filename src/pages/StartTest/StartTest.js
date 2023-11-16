@@ -108,7 +108,7 @@ export default function StartTest() {
         setTestHeaderDetails((prev) => ({
           ...prev,
           testName: res.data.data.test.testId?.testName,
-          instruction: '',
+          instruction: res.data.data.test.instruction,
           dateAssigned: getFormattedDate(res.data.data.test.createdAt, dateFormat),
           dueDate: getFormattedDate(res.data.data.test.dueDate, dateFormat),
           duration: multiple ? getDuration(res.data.data.test.multiple) : "Unlimited",
@@ -598,7 +598,7 @@ export default function StartTest() {
                     </p>
 
                     <p className="inline-block mt-2 font-light  text-[20px] text-[#517CA8]">
-                    -</p>
+                    {testHeaderDetails.instruction.length>0?testHeaderDetails.instruction:'-'}</p>
                   </div>
                 </div>
               </div>

@@ -471,6 +471,7 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
   ];
   const [tableHeaders, setTableHeaders] = useState(studentTableHeaders);
   const params = useParams()
+  
   useEffect(() => {
     if (persona === "student") {
       getTest(studentId).then((res) => {
@@ -489,14 +490,13 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
             updatedAt,
           } = test;
           if (testId === null) return;
-          console.log("test inside test", test)
           return {
            // assignedBy: assignedBy ? assignedBy.firstName + " " + assignedBy.lastName : "-",
 
             testName: testId ? testId.testName : "-",
             assignedOn: new Date(createdAt).toDateString(),
             studentId: studentId ? studentId : "-",
-          
+            testtype:testId ? testId.testType : "-",
             dueDate: new Date(test.dueDate).toDateString(),
             duration: multiple ? getDuration(multiple) : "Unlimited",
             status:
@@ -578,6 +578,7 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
           return {
            // assignedBy: assignedBy ? assignedBy.firstName + " " + assignedBy.lastName : "-",
             testName: testId ? testId.testName : "-",
+            testtype:testId ? testId.testType : "-",
             assignedOn:new Date(createdAt).toLocaleDateString(),
             studentId: studentId ? studentId : "-",
             dueDate:new Date(test.dueDate).toLocaleDateString(),
@@ -776,11 +777,11 @@ console.log("profile",fromProfile)
             </div>
           )}
           <div className={`mt-6 ${fromProfile ? '!mt-0' : ''}`}>
-            {console.log(tableHeaders)}
+            {console.log(allTests)}
             <Table
               testtype={testtype}
               fromProfile={fromProfile}
-             
+              awsLink={awsLink}            
               dataFor="assignedTestsStudents"
               headerObject={true}
               data={persona === "parent" ? filteredTests : allTests}
