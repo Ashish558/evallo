@@ -201,7 +201,7 @@ export const instructionFormat = [
     checked: false,
   },
   {
-    text: "In person",
+    text: "In-Person",
     checked: false,
   },
   {

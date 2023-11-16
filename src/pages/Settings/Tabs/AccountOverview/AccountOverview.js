@@ -10,10 +10,10 @@ import resetSendIcon from "../../../../assets/icons/teenyicons_shield-tick-solid
 import tooltipIcon from "../../../../assets/icons/octicon_stop-16.svg";
 import { useState } from "react";
 import Modal from "../../../../components/Modal/Modal";
-import "./style.css";
+import './style.css'
 import { useForgotPasswordMutation } from "../../../../app/services/auth";
-import userPic from "../../../../assets/icons/user_logo.png";
-import camera from "../../../../assets/icons/camera_logo.svg";
+import userPic from '../../../../assets/icons/user_logo.png'
+import camera from '../../../../assets/icons/camera_logo.svg'
 
 import {
   useLazyGetPersonalDetailQuery,
@@ -61,7 +61,7 @@ const AccountOverview = () => {
   const [updateEmail, setUpdateEmail] = useUpdateEmailMutation();
   const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
   const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
-  const [fetchedData, setFetchedData] = useState({});
+  const [fetchedData, setFetchedData] = useState({})
   useEffect(() => {
     userDetails()
       .then((res) => {
@@ -77,64 +77,61 @@ const AccountOverview = () => {
       });
   }, []);
 
-  const isEmail = (val) => {
-    let regEmail =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+   const isEmail=(val)=> {
+    let regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!regEmail.test(val)) {
-      return false;
-    } else {
-      return true;
+       return false
+    }else{
+       return true
     }
-  };
+ }
   const handleEmailUpdate = (email) => {
     console.log("Email Updation invoked", email);
-    if (email?.trim() === "") {
-      alert("Email address can't be empty");
-      return;
+    if(email?.trim()===""){
+      alert("Email address can't be empty")
+      return
     }
-    if (!isEmail(email)) {
-      alert("Enter valid email!");
-      return;
+    if(!isEmail(email)){
+      alert("Enter valid email!")
+      return
     }
-    if (email?.trim() !== "") {
+    if (email?.trim() !== ""){
+    
+    
       updateEmail({ email }).then((res) => {
-        if (res?.data) {
-          alert("Email reset link sent, please verify");
-        } else {
-          alert("Error occured while senting email reset link!");
-        }
+    if(res?.data){
+      alert("Email reset link sent, please verify")
+
+    }
+    else {
+      alert("Error occured while senting email reset link!")
+    }
         console.log("Email Link sent", res);
       });
     }
   };
-  const [loading, setLoading] = useState(false);
+  const [loading,setLoading]=useState(false)
   const handleDataUpdate = () => {
-    const arr = ["email", "firstName", "lastName", "phone", "phoneCode"];
-    let boo = true;
-    let ff = null;
-    arr.forEach((it) => {
-      if (boo && (!values[it] || values[it]?.trim() === "")) {
-        boo = false;
-        alert(it + " can't be empty.");
-        return;
-      }
-    });
-    if (!boo) {
-      return;
+    const arr=["email","firstName","lastName","phone","phoneCode"]
+    let boo=true;
+    let ff=null
+    arr.forEach((it)=>{
+     if(boo&&(!values[it] || values[it]?.trim()==="")){
+        boo=false
+        alert(it+" can't be empty.")
+        return 
     }
-    if (!isEmail(values?.email)) {
-      alert("Enter valid email!");
-      return;
-    }
-    if (
-      values?.email?.trim() === "" ||
-      values?.firstName?.trim() === "" ||
-      values?.lastName?.trim() === "" ||
-      values?.phone?.trim() === "" ||
-      values?.phoneCode?.trim() === ""
-    ) {
-      alert("Please fill all the fields to update your account!");
-      return;
+  })
+  if(!boo){
+    return 
+  }
+  if(!isEmail(values?.email)){
+    alert("Enter valid email!")
+    return
+  }
+    if(values?.email?.trim()===""||values?.firstName?.trim()===""||values?.lastName?.trim()===""||values?.phone?.trim()===""||values?.phoneCode?.trim()===""){
+      alert("Please fill all the fields to update your account!")
+      return 
     }
     setLoading(true);
     const updateUserAccount = async () => {
@@ -143,13 +140,14 @@ const AccountOverview = () => {
         delete reqBody["_id"];
         delete reqBody["email"];
         updateAccount(reqBody)
+
           .then((res) => {
             setLoading(false);
-            if (res?.error) {
-              alert("Error occured while updating!");
+            if(res?.error){
+              alert("Error occured while updating!")
             }
-            if (res?.data) {
-              alert("changes saved!");
+            if(res?.data){
+              alert("changes saved!")
             }
             console.log(res);
           })
@@ -162,8 +160,9 @@ const AccountOverview = () => {
       }
     };
     updateUserAccount();
-    if (fetchedData?.email !== values.email) handleEmailUpdate(values.email);
-    console.log({ fetchedData, values });
+    if (fetchedData?.email !== values.email)
+      handleEmailUpdate(values.email)
+    console.log({ fetchedData, values })
   };
   const showResetConfirmation = () => {
     setReset(true);
@@ -250,6 +249,7 @@ const AccountOverview = () => {
                 ...values,
                 email: e.target.value,
               });
+
             }}
             error={error.email}
             Tooltip={
@@ -295,15 +295,9 @@ const AccountOverview = () => {
           </div>
           <div className="flex justify-start items-center">
             <button
-              disabled={loading}
+               disabled={loading}
               onClick={handleDataUpdate}
-
-              className={` bg-[#FFA28D]  py-3 mt-6 rounded-md px-10  text-sm text-[#fff] text-base-17-5 ${
-                loading ? "cursor-wait" : "cursor-pointer"
-              }`}
-
               className={` bg-[#FFA28D]  py-[13.5px] mt-[20px] rounded-md px-10  text-sm text-[#fff] text-base-17-5 ${loading?"cursor-wait":"cursor-pointer"}`}
-
             >
               Save
             </button>
@@ -312,15 +306,9 @@ const AccountOverview = () => {
         <div className="flex gap-x-[30px]">
           <div>
             <div className="flex items-center relative">
-              <p className="text-base-17-5 font-semibold text-[#26435F] mr-5">
-                Profile Picture
-              </p>
-              <p>
-                <img className=" inline-block" src={userPic} alt="" />
-              </p>
-              <p className="absolute right-0 bottom-0">
-                <img src={camera} alt="" />
-              </p>
+              <p className="text-base-17-5 font-semibold text-[#26435F] mr-5">Profile Picture</p>
+              <p ><img className=" inline-block" src={userPic} alt="" /></p>
+              <p className="absolute right-0 bottom-0"><img src={camera} alt="" /></p>
             </div>
             <InputField
               placeholder="What is your role?"
@@ -341,16 +329,7 @@ const AccountOverview = () => {
           </div>
           <div className="flex items-end">
             <div className="flex flex-col w-[35.78vw]">
-
-              <label
-                className="text-[#26435F] font-semibold text-base-17-5"
-                htmlFor=""
-              >
-                Start Bio
-              </label>
-
               <label className="text-[#26435F] font-semibold text-base-17-5" htmlFor="">Short Bio</label>
-
               <textarea
                 placeholder="Write a short bio about yourself, your interests, how your got started with this choice of career, your strengths and weaknesses, your hobbies, your tutoring style, your educational background, etc. Suggested word length: 200 words."
                 rows={7}
@@ -362,11 +341,11 @@ const AccountOverview = () => {
                 }}
                 value={values.about}
                 onChange={(e) => {
-                  setValues({
-                    ...values,
-                    about: e.target.value,
-                  });
-                }}
+                setValues({
+                  ...values,
+                about: e.target.value,
+                })
+              }}
               ></textarea>
             </div>
             <div className="ml-[38px]">
@@ -389,38 +368,13 @@ const AccountOverview = () => {
               Download
             </button>
           </div> */}
+
         </div>
         <div>
           {reset && (
             <div className="flex gap-2">
-              <p className="bg-[#38C980] rounded-xl text-sm text-white px-3 py-1 text-base-15 flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="19"
-                  className="mr-3 w-[20px] h-[20px]"
-                  viewBox="0 0 20 19"
-                  fill="none"
-                >
-                  <g clip-path="url(#clip0_11846_49283)">
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M9.565 0.332298C9.65942 0.278367 9.76627 0.25 9.875 0.25C9.98374 0.25 10.0906 0.278367 10.185 0.332298L18.935 5.33228C19.0307 5.38692 19.1102 5.46587 19.1655 5.56114C19.2208 5.65641 19.25 5.76461 19.25 5.87477V6.77477C19.25 9.53222 18.3517 12.2146 16.691 14.4159C15.0304 16.6172 12.6977 18.2176 10.0463 18.9747C9.93431 19.0066 9.81569 19.0066 9.70375 18.9747C7.05248 18.2172 4.72008 16.6168 3.05946 14.4155C1.39885 12.2143 0.500375 9.53212 0.5 6.77477L0.5 5.87477C0.500036 5.76461 0.529189 5.65641 0.584507 5.56114C0.639825 5.46587 0.719341 5.38692 0.815 5.33228L9.565 0.332298ZM9.34 13.6385L14.7375 6.88977L13.7625 6.10977L9.16 11.861L5.9 9.14476L5.1 10.1048L9.34 13.6385Z"
-                      fill="white"
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_11846_49283">
-                      <rect
-                        width="18.75"
-                        height="18.7499"
-                        fill="white"
-                        transform="translate(0.5 0.25)"
-                      />
-                    </clipPath>
-                  </defs>
-                </svg>
+              <p className="bg-[rgba(119,221,119,0.2)] rounded-xl text-sm text-[#77DD77] px-3 py-1 text-base-15">
+                <img className="inline-block mr-3" src={resetSendIcon} alt="" />
                 {"Password Reset Link Sent To {email address}"}
               </p>
             </div>
@@ -433,11 +387,11 @@ const AccountOverview = () => {
           classname="!w-[666px] mx-auto"
           underline={true}
           titleClassName="m-0"
+         
           buttonParentClassName="justify-center"
           primaryBtn={{
             text: "Okay",
-            className:
-              "pl-4 px-4 !bg-[#FF7979] text-white w-[146px] h-[46px] !ml-0",
+            className: "pl-4 px-4 !bg-[#FF7979] text-white w-[146px] h-[46px] !ml-0",
             onClick: () => showResetConfirmation(),
             // disabled: submitBtnDisabled,
             // loading: loading
@@ -446,8 +400,7 @@ const AccountOverview = () => {
           body={
             <div className="text-center mb-[30px]">
               <h1 className="text-[21px] text-[#26435F]">
-                A Password Reset Link will be sent to you. Please click on it to
-                change your password.
+                A Password Reset Link will be sent to you. Please click on it to change your password.
               </h1>
               {/* <button
                 onClick={showResetConfirmation}
