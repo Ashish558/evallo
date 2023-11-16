@@ -258,10 +258,14 @@ export default function OrgSignup() {
   };
 
   useEffect(() => {
-    /* const script = document.createElement("script");
+    return;
+    const script = document.createElement("script");
     script.src = "https://otpless.com/auth.js";
     script.id = "otplessIdScript";
-    document.body.appendChild(script); */
+    // script.cid = "TO0UXKO9U0HN2LL17BMI303UJSYZ8YO8";
+    script.setAttribute("cid", "TO0UXKO9U0HN2LL17BMI303UJSYZ8YO8");
+    document.body.appendChild(script);
+
     window.otpless = (otplessUser) => {
      console.log('otpless');
      console.log(otplessUser);
@@ -911,15 +915,16 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                   >
                     Please fill your detail to create your account.
                   </p> */}
-                  <div>
-                  <SecondaryButton
-                      children="Signup with OTPLess"
-                      className="mb-[40px] text-sm mr-6 bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 "
-                      onClick={() => {
-                        SetIsOtplessModalActive(true);
-                      }}
-                    />
-                  </div>
+                  {/* <div>
+                    <SecondaryButton
+                        children="Signup with OTPLess"
+                        className="mb-[40px] text-sm mr-6 bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 "
+                        onClick={() => {
+                          window.otplessInit();
+                          SetIsOtplessModalActive(true);
+                        }}
+                      />
+                  </div> */}
                   <div
                     className={`flex mt-[59px] justify-between lg:mt-1 ${styles.inputs}`}
                   >
