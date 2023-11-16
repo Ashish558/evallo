@@ -448,11 +448,6 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
     },
     {
       id: 4,
-      text: "Assigned By",
-      noArrow: true
-    },
-    {
-      id: 5,
       text: "Duration", // duration
       onCick: sortByDuration,
       willDisplayDownArrow: durationSortState !== SORT_STATES.DESCENDING_ORDER,
