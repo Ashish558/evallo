@@ -364,7 +364,7 @@ const AdminNavbar = () => {
         </div>
         <div className={`flex font-bold ${isLoggedIn?"":"opacity-[0.3]"}`}>
           <div className="flex mr-[24px] text-[#24A3D9] text-xs ">
-            <p className=" ">Pricing</p>
+            <p className=" ">Pricing 	</p>
             <p className="pl-2">
               &#36;
             </p>
