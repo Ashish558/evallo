@@ -17,8 +17,9 @@ export  const CheckboxNew = ({item, handleCheckboxChange,boxData,setBoxData,Dnam
                 type="checkbox"
                 name="hearAboutUs"
                 value=""
+                className='w-[17.5px] h-[17.5px]'
               />
-              <span class={styles.checkmark}></span>
+              <span className={styles.checkmark}></span>
             </div>
             <p
               onClick={() =>
