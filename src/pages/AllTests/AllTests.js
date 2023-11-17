@@ -432,7 +432,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
     // console.log(modalData)
     let body = {
       testName: modalData.testName,
-      testType: getTestType(modalData.testType),
+      testType: getTestType(modalData.testType).includes('®')?getTestType(modalData.testType).slice(0, -1):getTestType(modalData.testType),
       ...(!getTestType(modalData.testType).includes('DSAT')?{pdf:pdfFile}:{}),
       file:csvFile
     };

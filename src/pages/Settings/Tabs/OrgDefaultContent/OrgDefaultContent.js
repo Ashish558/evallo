@@ -381,7 +381,7 @@ export default function AllTests() {
     // console.log(modalData)
     let body = {
       testName: modalData.testName,
-      testType:modalData.testType,
+      testType: modalData.testType.includes('®')?modalData.testType.slice(0, -1):modalData.testType,
       ...(!modalData.testType.includes('DSAT')?{pdf:pdfFile}:{}),
       file:csvFile
     };
