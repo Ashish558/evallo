@@ -716,7 +716,7 @@ export default function TableItem({
       {dataFor === "studentTestsReport" && (
         <tr
           className={`text-[17.5px]   leading-7 ${
-            !item.isCorrect ? "!bg-[#FF79791A]" : "odd:bg-white  "
+            !item.isCorrect ? "!bg-[#FF79791A]/[0.05]" : "odd:bg-white  "
           } `}
         >
           {MapData(item, dataFor)}
@@ -787,11 +787,11 @@ export default function TableItem({
                   <>
                   <div className="flex flex-row items-center">
                     <div className="min-w-[20px]">
-                  {!item?.testtype.includes("DSAT") && dataFor=='assignedTestsStudents'? <img
+                  {!item?.testtype.includes("DSAT") &&  persona=='student' && dataFor=='assignedTestsStudents'? <img
           className='cursor-pointer '
           src={DownloadIcon}
           onClick={() => window.open(`${item.pdfLink}`)}
-          width='20px'
+          width='25px'
           alt='download'
         />:null} </div>  <span  className="pl-6">{item[key]}</span>
         </div>
@@ -804,6 +804,7 @@ export default function TableItem({
                 
             )
           )}
+          {persona==='admin'?null:
           <td className="font-medium px-1  min-w-14 py-4">
             <div className="flex items-center">
               {persona == "student" || (
@@ -843,7 +844,7 @@ export default function TableItem({
                             );
                       }}
                     >
-                      Started
+                      StarASAted
                     </button>
                   ) : (
                     <button
@@ -920,6 +921,7 @@ export default function TableItem({
               )}
             </div>
           </td>
+      }
         </tr>
       )}
       {dataFor === "invoice" && (
@@ -1184,7 +1186,7 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
       <td
         key={i}
         className={`font-medium px-1  min-w-14 py-4 ${
-          data[key] ? "" : "!bg-[#FF79791A]"
+          data[key] ? "" : "!bg-[#FF79791A]/[0.05]"
         }`}
       >
         <div className="flex items-center justify-center">
@@ -1196,8 +1198,12 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
         </div>
       </td>
     ) : key === "QuestionNumber" ? (
-      <td key={i} className="font-medium px-1  py-4">
-        <p className={`font-semibold`}>{data[key]<10&&"0"}{data[key]}</p>
+      <td key={i} className={`font-medium px-1  py-4  ${
+        dataFor === "studentTestsReport" && !data["isCorrect"]
+          ? "!bg-[#FF79791A]/[0.05]"
+          : ""
+      }`}>
+        <p className={`font-semibold ` }>{data[key]<10&&"0"}{data[key]}</p>
       </td>
     ) : dataFor === "invoice" && key === "currentBalance" ? (
       <td key={i} className="font-medium px-1 text-[#009262] py-4">
@@ -1298,9 +1304,10 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
           data[key] === "Cancelled" && "text-[#7C859C]"
         } min-w-14 py-4  ${
           dataFor === "studentTestsReport" && !data["isCorrect"]
-            ? "!bg-[#FF79791A]"
+            ? "!bg-[#FF79791A]/[0.05]"
             : ""
-        } ${dataFor==="testsDetailQuestions"&&"text-left pl-7"}`}
+        } ${dataFor==="testsDetailQuestions"&&"text-left pl-7"} 
+        ${dataFor === "studentTestsReport" && (key==='Concept'||key==='Strategy')?'text-start':null}`}
       >
         {data[key]}
       </td>

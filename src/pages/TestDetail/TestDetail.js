@@ -768,6 +768,13 @@ export default function TestDetail() {
                       <p className=" ml-4 input-heading mb-0.5 font-medium text-[15px]">
                         Correct Answer
                       </p>
+                      {modalData.questionType.includes('Grid-in')?
+                      <input type="text" value={modalData.correctAnswer} className="bg-primary-50 min-w-[160px] outline-none py-[13px] px-2 text-sm font-medium border-0 text-[#38C980]"
+                      onChange={(e) =>
+                        setModalData({ ...modalData, correctAnswer: e.target.value, })
+                      }
+                      />
+                      :
                       <select
                         value={modalData.correctAnswer}
                         className="min-w-[160px] outline-none py-[13px] px-2 text-sm font-medium border-0 text-[#38C980]"
@@ -795,6 +802,7 @@ export default function TestDetail() {
                           D
                         </option>
                       </select>
+          }
                     </div>
                   </div>
                   {!testData?.testType?.includes("DSAT") ? (

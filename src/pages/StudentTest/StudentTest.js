@@ -473,7 +473,7 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
   const params = useParams()
   
   useEffect(() => {
-    if (persona === "student") {
+    if (persona === "student"||persona=='admin') {
       getTest(studentId).then((res) => {
         console.log("all-assigned-tests", res?.data?.data);
         setAwsLink(res?.data?.data?.baseLink);
@@ -787,6 +787,7 @@ console.log("profile",fromProfile)
               data={persona === "parent" ? filteredTests : allTests}
               tableHeaders={studentTableHeaders}
               maxPageSize={10}
+              persona={persona}
               excludes={[
                 "_id",
                 "studentId",
