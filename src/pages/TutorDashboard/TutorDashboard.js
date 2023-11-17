@@ -326,7 +326,7 @@ export default function TutorDashboard() {
           <div className="flex items-start">
             <div className="flex flex-col items-start flex-[7]">
               <div className=" mb-[30px] relative">
-                <p className="text-[#26435F] font-semibold text-xl mb-[20px] ">
+                <p className="text-[#26435F] font-semibold text-xl mb-[12px] ">
                   Latest Students
                 </p>
                 <div className="rounded-[5.333px] bg-[#FFF] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] py-5 px-5 w-[55.52vw] h-[163px] flex justify-center items-center overflow-hidden">
