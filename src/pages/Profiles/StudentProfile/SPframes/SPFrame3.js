@@ -48,12 +48,15 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
         idd = param.id;
       }
       // console.log({idd,hid:userDetail?._id,iff:user?._id})
+      let val=officialTest
+      if(officialTest!=="Other")
+      val=officialTest?.split("®")[0]
       getProgression({
         studentId: user?._id,
         startDate: new Date(2023, 1, 1),
         endDate: new Date(),
         role: "student",
-        testType: officialTest,
+        testType: val,
       }).then((res) => {
         console.log("progression res", res);
         if (res?.data?.scoreProgression) setScore(res?.data?.scoreProgression);
@@ -237,8 +240,11 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
                 inputClassName="bg-transparent"
                 value={officialTest}
                 IconDemography={true}
-                optionData={["SAT", "ACT","DSAT"]}
-                onChange={(e) => setOfficial(e)}
+                optionData={["DSAT®", "SAT®", "ACT®","Other"]}
+                onChange={(e) =>{
+                
+                  setOfficial(e)
+                } }
               />
               {/* <InputSelect
               value={selectedSubject}
@@ -319,7 +325,7 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
                 <RangeDate
                   removeUnderline={true}
                   className="ml-0 !font-normal"
-                  manualHide={true}
+               
                   optionClassName="!w-min"
                   inputContainerClassName="!w-min font-normal"
                   handleRangeData={handleTimeManagement}
@@ -401,7 +407,7 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
                 <RangeDate
                   removeUnderline={true}
                   className="ml-0 !font-normal"
-                  manualHide={true}
+               
                   optionClassName="!w-min"
                   inputContainerClassName="!w-min font-normal"
                   handleRangeData={handleConceptAccuracy}

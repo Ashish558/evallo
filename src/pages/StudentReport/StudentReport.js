@@ -248,7 +248,8 @@ export default function StudentReport() {
          .then(res => {
             if (res.error) return console.log('TEST ERROR', res.error);
             console.log('TEST RESP', res.data.data.test);
-            let { testId, createdAt, timeLimit, multiple, instruction } = res.data.data.test
+            let { testId, createdAt, timeLimit, multiple, instruction,isCompleted,updatedAt
+            } = res.data.data.test
             if (testId === null) {
                testId = {}
             }
@@ -259,6 +260,8 @@ export default function StudentReport() {
                   testName: testId.testName,
                   instruction: instruction,
                   duration: multiple ? getDuration(multiple) : '-',
+                  completedOn:isCompleted? getFormattedDateTime(updatedAt):null,
+
                }
             })
          })
@@ -312,7 +315,7 @@ export default function StudentReport() {
                return {
                   ...prev,
                   startedOn: getFormattedDateTime(createdAt),
-                  completedOn: getFormattedDateTime(updatedAt),
+                  
                }
             })
             setSubjects(subjects.map((sub, idx) => ({ ...sub, idx, selected: idx === 0 ? true : false })))
@@ -361,7 +364,7 @@ export default function StudentReport() {
    // console.log(startDate,startTime,startFormat)
    const [assignDate, assignTime, assignFormat] = (testDetails?.assignedOn?.split(' '))
    // console.log(assignDate,assignTime,assignFormat)
-   const [completeDate, completeTime, completeFormat] = (testDetails?.completedOn?.split(' '))
+   const [completeDate, completeTime, completeFormat] = (testDetails?.completedOn?testDetails?.completedOn?.split(' '):['','','',''])
    // console.log(completeDate,completeTime,completeFormat)
 
    //change table data
@@ -782,7 +785,7 @@ export default function StudentReport() {
                      <div>
                         <p className='inline-block w-[160px] text-[#26435F] text-base-20 font-semibold'> Completed on </p>
                         <span className='inline-block mr-10'>:</span>
-                        <p className='inline-block text-base-20 text-[#26435F]'>  {completeDate} <span className='text-[#24A3D9] font-light text-[17.5px]'>{completeTime} {completeFormat} {organization?.settings?.timeZone}</span></p>
+                        <p className='inline-block text-base-20 text-[#26435F]'>  {completeDate?completeDate:"-"} {completeDate&&<span className='text-[#24A3D9] font-light text-[17.5px]'>{completeTime} {completeFormat} {organization?.settings?.timeZone}</span>}</p>
                      </div>
                      <div >
                         <p className='inline-block w-[160px] text-[#26435F] text-base-20 font-semibold'> Duration </p>
