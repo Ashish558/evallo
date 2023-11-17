@@ -14,6 +14,9 @@ import NumericSteppers from "../../components/NumericSteppers/NumericSteppers";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
 
 import DownArrow from "../../assets/icons/down-chevron.svg";
+import GoogleIcon from "../../assets/icons/google.svg";
+import LinkedinIcon from "../../assets/icons/linkedin-round.svg";
+import AppleIcon from "../../assets/icons/apple.svg";
 
 import selectStyles from "../../components/InputSelect/style.module.css";
 
@@ -925,6 +928,39 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                         }}
                       />
                   </div> */}
+                  <label
+                    className="inline-block text-sm font-semibold ml-0 text-base-17-5"
+                  >
+                    One-Click Sign Up
+                  </label>
+
+                  <div className="flex h-[50px] justify-between w-[180px]" >
+                    <button
+                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]"
+                    >
+                      <img 
+                        className="block"
+                        src={GoogleIcon} />
+                    </button>
+
+                    <button
+                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]"
+                    >
+                      <img 
+                        className="block"
+                        src={LinkedinIcon} />
+                    </button>
+
+                    <button
+                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]"
+                    >
+                      <img 
+                        className="block"
+                        src={AppleIcon} />
+                    </button>
+                  </div>
+
+                  <div className="border-t-[1px] border-[#26435F4D] mb-[35px] mt-[30px] w-full" ></div>
                   <div
                     className={`flex mt-[59px] justify-between lg:mt-1 ${styles.inputs}`}
                   >
