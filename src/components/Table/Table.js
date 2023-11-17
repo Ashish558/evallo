@@ -14,6 +14,7 @@ export default function Table(props) {
   const {
     noArrow,
     dataFor,
+    persona,
     isChecked,
     selectedId2,
     testtype,
@@ -156,6 +157,7 @@ export default function Table(props) {
                 ) : (
                   <React.Fragment key={idx}>
                     <TableItem
+                      persona={persona}
                       testtype={testtype}
                       extratableitem={extratableitem}
                       index={idx}
