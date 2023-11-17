@@ -104,14 +104,19 @@ export default function StartTest() {
       } else {
         setIsUnlimited(false);
       }
-        console.log('asd',res.data.data);
-        setTestHeaderDetails((prev) => ({
-          ...prev,
-          testName: res.data.data.test.testId?.testName,
-          instruction: res.data.data.test.instruction,
-          dateAssigned: getFormattedDate(res.data.data.test.createdAt, dateFormat),
-          dueDate: getFormattedDate(res.data.data.test.dueDate, dateFormat),
-          duration: multiple ? getDuration(res.data.data.test.multiple) : "Unlimited",
+      console.log("asd", res.data.data);
+      setTestHeaderDetails((prev) => ({
+        ...prev,
+        testName: res.data.data.test.testId?.testName,
+        instruction: res.data.data.test.instruction,
+        dateAssigned: getFormattedDate(
+          res.data.data.test.createdAt,
+          dateFormat
+        ),
+        dueDate: getFormattedDate(res.data.data.test.dueDate, dateFormat),
+        duration: multiple
+          ? getDuration(res.data.data.test.multiple)
+          : "Unlimited",
       }));
     });
   }, []);
@@ -496,266 +501,272 @@ export default function StartTest() {
 
   if (subjects.length === 0) return;
   return (
-    <div className="ml-pageLeft bg-lightWhite min-h-screen">
-      <div className="py-8 px-5">
-        <div className="flex">
-          <div className="flex-1">
-                <p className="text-[#24A3D9] ml-8 !mt-[calc(50*0.052vw)] !mb-[calc(25*0.052vw)] text-base-20">
-                  <span
-                    onClick={() => navigate("/")}
-                    className="cursor-pointer"
-                  >
-                    {organization?.company +
-                      "  >  " +
-                      testHeaderDetails?.name +
-                      "  >  "}
-                  </span>
-                  <span
-                    onClick={() => navigate("/all-tests")}
-                    className=" cursor-pointer"
-                  >
-                    {"Assignments > "}{" "}
-                  </span>
-                  <span className="font-semibold">
-                    {testHeaderDetails.testName}
-                  </span>
-                </p>
-            {!testStarted && (
-              <div className="grid grid-cols-3 ml-4 w-full text-sm px-4 gap-y-4 mt-2">
-                <div className=" grid grid-flow-col  grid-rows-3 mr-3 justify-start items-start">
-                  <div className="w-full flex mb-3 justify-between">
-                    <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
-                      {" "}
-                      Student’s Name
-                    </p>
+    <div className="w-screen bg-lightWhite flex justify-center items-center">
+      <div className="w-[83.77vw] min-h-full">
+        <div className="py-8 px-5">
+          <div className="flex">
+            <div className="flex-1">
+              <p className="text-[#24A3D9] ml-8 !mt-[calc(50*0.052vw)] !mb-[calc(25*0.052vw)] text-base-20">
+                <span onClick={() => navigate("/")} className="cursor-pointer">
+                  {organization?.company +
+                    "  >  " +
+                    testHeaderDetails?.name +
+                    "  >  "}
+                </span>
+                <span
+                  onClick={() => navigate("/all-tests")}
+                  className=" cursor-pointer"
+                >
+                  {"Assignments > "}{" "}
+                </span>
+                <span className="font-semibold">
+                  {testHeaderDetails.testName}
+                </span>
+              </p>
+              {!testStarted && (
+                <div className="grid grid-cols-3 ml-4 w-full text-sm px-4 gap-y-4 mt-2">
+                  <div className=" grid grid-flow-col  grid-rows-3 mr-3 justify-start items-start">
+                    <div className="w-full flex mb-3 justify-between">
+                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
+                        {" "}
+                        Student’s Name
+                      </p>
 
-                    <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8] ">
-                      {testHeaderDetails?.name?.length>18?testHeaderDetails?.name.substring(0,15)+' ...':testHeaderDetails?.name}
-                    </p>
+                      <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8] ">
+                        {testHeaderDetails?.name?.length > 18
+                          ? testHeaderDetails?.name.substring(0, 15) + " ..."
+                          : testHeaderDetails?.name}
+                      </p>
+                    </div>
+                    <div className="w-full flex mb-3 justify-between">
+                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
+                        {" "}
+                        Date Assigned{" "}
+                      </p>
+                      {console.log(testHeaderDetails)}
+                      <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]">
+                        {testHeaderDetails.dateAssigned}
+                      </p>
+                    </div>
+                    <div className="w-full flex mb-3 justify-between">
+                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
+                        {" "}
+                        Duration{" "}
+                      </p>
+
+                      <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]">
+                        {testHeaderDetails.duration}
+                      </p>
+                    </div>
+                  </div>
+                  <div className=" grid grid-flow-col  grid-rows-3 justify-start items-start">
+                    <div className="w-full flex mb-3 justify-between">
+                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
+                        {" "}
+                        Due on{" "}
+                      </p>
+
+                      <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8] ">
+                        {testHeaderDetails.dueDate
+                          ? testHeaderDetails.dueDate
+                          : "-"}
+                      </p>
+                    </div>
+                    <div className="w-full flex mb-3 justify-between">
+                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
+                        {" "}
+                        Started on{" "}
+                      </p>
+
+                      <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]">
+                        {testHeaderDetails.startedOn
+                          ? testHeaderDetails.startedOn
+                          : "-"}
+                      </p>
+                    </div>
+                    <div className="w-full flex mb-3 justify-between">
+                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
+                        {" "}
+                        Completed on{" "}
+                      </p>
+
+                      <p className="inline-block w-[160px] font-light  text-[20px] text-[#517CA8]">
+                        -{" "}
+                      </p>
+                    </div>
                   </div>
                   <div className="w-full flex mb-3 justify-between">
-                    <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
-                      {" "}
-                      Date Assigned{" "}
-                    </p>
-                    {console.log(testHeaderDetails)}
-                    <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]">
-                      {testHeaderDetails.dateAssigned}
-                    </p>
-                  </div>
-                  <div className="w-full flex mb-3 justify-between">
-                    <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
-                      {" "}
-                      Duration{" "}
-                    </p>
+                    <div className="flex flex-col">
+                      <p className="inline-block mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
+                        {" "}
+                        Instruction from tutor{" "}
+                      </p>
 
-                    <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]">
-                      {testHeaderDetails.duration}
-                    </p>
+                      <p className="inline-block mt-2 font-light  text-[20px] text-[#517CA8]">
+                        {testHeaderDetails.instruction.length > 0
+                          ? testHeaderDetails.instruction
+                          : "-"}
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <div className=" grid grid-flow-col  grid-rows-3 justify-start items-start">
-                  <div className="w-full flex mb-3 justify-between">
-                    <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
-                      {" "}
-                      Due on{" "}
-                    </p>
+              )}
 
-                    <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8] ">
-                      {testHeaderDetails.dueDate
-                        ? testHeaderDetails.dueDate
-                        : "-"}
-                    </p>
-                  </div>
-                  <div className="w-full flex mb-3 justify-between">
-                    <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
-                      {" "}
-                      Started on{" "}
-                    </p>
-
-                    <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]">
-                      {testHeaderDetails.startedOn
-                        ? testHeaderDetails.startedOn
-                        : "-"}
-                    </p>
-                  </div>
-                  <div className="w-full flex mb-3 justify-between">
-                    <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
-                      {" "}
-                      Completed on{" "}
-                    </p>
-
-                    <p className="inline-block w-[160px] font-light  text-[20px] text-[#517CA8]">
-                      -{" "}
-                    </p>
-                  </div>
-                </div>
-                <div className="w-full flex mb-3 justify-between">
-                  <div className="flex flex-col">
-                    <p className="inline-block mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
-                      {" "}
-                      Instruction from tutor{" "}
-                    </p>
-
-                    <p className="inline-block mt-2 font-light  text-[20px] text-[#517CA8]">
-                    {testHeaderDetails.instruction.length>0?testHeaderDetails.instruction:'-'}</p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            <div>
-              <div className="flex relative w-fit flex-row gap-2 mx-4 mt-12 overflow-x-auto">
-                {subjects.map((item, idx) => {
-                  return (
-                    <PrimaryButton
-                      roundedClass="rounded-0"
-                      children={item.name}
-                      onClick={() => handleSubjectChange(item)}
-                      className={`pt-2 pb-2 px-0 mr-0 rounded-0 text-[17.5px] font-normal w-fit bg-transparent
+              <div>
+                <div className="flex relative w-fit flex-row gap-2 mx-4 mt-12 overflow-x-auto">
+                  {subjects.map((item, idx) => {
+                    return (
+                      <PrimaryButton
+                        roundedClass="rounded-0"
+                        children={item.name}
+                        onClick={() => handleSubjectChange(item)}
+                        className={`pt-2 pb-2 px-0 mr-0 rounded-0 text-[17.5px] font-normal w-fit bg-transparent
                             ${
                               item.selected
                                 ? " text-[#FFA28D] border-b-2 border-b-[#FFA28D]"
                                 : ""
                             } disabled:opacity-60`}
-                      disabled={
-                        testStarted && item.selected === false
-                          ? true
-                          : completedSectionIds.includes(item._id)
-                          ? true
-                          : false
-                      }
-                    />
-                  );
-                })}
-                <div className="bg-gray-300 absolute bottom-[0px] z-10 h-[1px] w-full"></div>
-              </div>
-              {!testStarted && (
-                <div className="border shadow-lg border-1 bg-white pt-[60px] pr-8 pl-12 pb-[50px] m-4 relative">
-                  <div className="bg-[#24A3D9] absolute top-4 right-4 rounded px-4 flex items-center flex-col py-2">
-                    <p className="text-[15px] text-[#FFFFFF] font-medium">
-                      Time
-                    </p>
-                    <p className="text-[25px] text-[#FFFFFF] font-normal">
-                      {activeSection.timer + ":00"}
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-start gap-2">
-                    <p className="text-[#26435F] text-[17.5] font-bold mb-4">
-                      Section Instructions:
-                    </p>
-                    <p className="text-[#26435F] texxt-[17.5] font-normal">
-                      Timer: {activeSection.timer} minutes
-                    </p>
-                    <p className="text-[#26435F] texxt-[17.5] font-normal">
-                      {activeSection.description}
-                    </p>
-                  </div>
-
-                  <div className="flex items-start flex-col mt-16 relative">
-                    <div className="flex flex-row justify-start items-center bg-[#FF696133] py-2 px-5 rounded-20 mb-[15px]">
-                      <img src={Warning} />
-                      <p className="text-red-500 text-[15px] font-medium">
-                        Warning
-                      </p>
-                      <p className="text-[#FF6961] text-[15px] font-light">
-                        : Once you started,you won't be able to pause the timer.
-                      </p>
-                    </div>
-                    <PrimaryButton
-                      children="Start Section"
-                      className="w-[300px] h-[60px] text-[21px] !text-white"
-                      onClick={() => setPopUp(true)}
-                    />
-                    {/* <PrimaryButton children='Start Section' className='w-[300px] h-[60px] text-[21px]' onClick={handleStartTest} /> */}
-                  </div>
-                </div>
-              )}
-              </div>
-              </div>
-              </div>
-              <div className="flex flex-row justify-center">
-              {testStarted && (
-                <div
-                  className="mt-[15px] w-[60%] overflow-auto custom-scroller"
-                  style={{ maxHeight: "calc(100vh - 240px)" }}
-                >
-                  {answers.map((item, idx) => {
-                    return (
-                      <div
-                        key={idx}
-                        className="flex justify-between items-center py-5 px-10 bg-white rounded-xl mb-[15px]"
-                      >
-                        <p className="font-semibold text-[20px] text-[#517CA8] leading-none">
-                          
-                          {item.QuestionNumber<10?'0'+item.QuestionNumber:item.QuestionNumber}
-                        </p>
-                        {console.log(item)}
-                        <TestOption
-                          {...item}
-                          handleResponseChange={handleResponseChange}
-                          handleTimeTaken={handleTimeTaken}
-                        />
-                        {item.isMarked ? (
-                          <button
-                            className="w-[180px] font-semibold pt-2.5 pb-2.5 rounded-lg bg-[#FFCE84] text-white ml-4"
-                            onClick={() => handleMark(item._id, false)}
-                          >
-                            Unmark
-                          </button>
-                        ) : (
-                          <button
-                            className="w-[180px] text-[#FFCE84]  font-semibold py-3 rounded-lg pt-[8px] pb-[8px] border-2 border-[#FFCE84] ml-4"
-                            onClick={() => handleMark(item._id, true)}
-                          >
-                            Mark for Review
-                          </button>
-                        )}
-                      </div>
+                        disabled={
+                          testStarted && item.selected === false
+                            ? true
+                            : completedSectionIds.includes(item._id)
+                            ? true
+                            : false
+                        }
+                      />
                     );
                   })}
+                  <div className="bg-gray-300 absolute bottom-[0px] z-10 h-[1px] w-full"></div>
                 </div>
-              )}
+                {!testStarted && (
+                  <div className="border shadow-lg border-1 bg-white pt-[60px] pr-8 pl-12 pb-[50px] m-4 relative">
+                    <div className="bg-[#24A3D9] absolute top-4 right-4 rounded px-4 flex items-center flex-col py-2">
+                      <p className="text-[15px] text-[#FFFFFF] font-medium">
+                        Time
+                      </p>
+                      <p className="text-[25px] text-[#FFFFFF] font-normal">
+                        {activeSection.timer + ":00"}
+                      </p>
+                    </div>
+                    <div className="flex flex-col items-start gap-2">
+                      <p className="text-[#26435F] text-[17.5] font-bold mb-4">
+                        Section Instructions:
+                      </p>
+                      <p className="text-[#26435F] texxt-[17.5] font-normal">
+                        Timer: {activeSection.timer} minutes
+                      </p>
+                      <p className="text-[#26435F] texxt-[17.5] font-normal">
+                        {activeSection.description}
+                      </p>
+                    </div>
 
-          {/* RIGHT */}
-          <div className="flex-2 w-[40%] ml-8 items-center flex flex-col">
+                    <div className="flex items-start flex-col mt-16 relative">
+                      <div className="flex flex-row justify-start items-center bg-[#FF696133] py-2 px-5 rounded-20 mb-[15px]">
+                        <img src={Warning} />
+                        <p className="text-red-500 text-[15px] font-medium">
+                          Warning
+                        </p>
+                        <p className="text-[#FF6961] text-[15px] font-light">
+                          : Once you started,you won't be able to pause the
+                          timer.
+                        </p>
+                      </div>
+                      <PrimaryButton
+                        children="Start Section"
+                        className="w-[300px] h-[60px] text-[21px] !text-white"
+                        onClick={() => setPopUp(true)}
+                      />
+                      {/* <PrimaryButton children='Start Section' className='w-[300px] h-[60px] text-[21px]' onClick={handleStartTest} /> */}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-row justify-center">
             {testStarted && (
-              <Timer
-                handleSubmitSection={handleSubmitSection}
-                timer={timer}
-                active={testStarted ? true : false}
-                setCountDown={setCountDown}
-                isUnlimited={isUnlimited}
-                duration={testHeaderDetails.duration}
-              />
+              <div
+                className="mt-[15px] w-[60%] overflow-auto custom-scroller"
+                style={{ maxHeight: "calc(100vh - 240px)" }}
+              >
+                {answers.map((item, idx) => {
+                  return (
+                    <div
+                      key={idx}
+                      className="flex justify-between items-center py-5 px-10 bg-white rounded-xl mb-[15px]"
+                    >
+                      <p className="font-semibold text-[20px] text-[#517CA8] leading-none">
+                        {item.QuestionNumber < 10
+                          ? "0" + item.QuestionNumber
+                          : item.QuestionNumber}
+                      </p>
+                      {console.log(item)}
+                      <TestOption
+                        {...item}
+                        handleResponseChange={handleResponseChange}
+                        handleTimeTaken={handleTimeTaken}
+                      />
+                      {item.isMarked ? (
+                        <button
+                          className="w-[180px] font-semibold pt-2.5 pb-2.5 rounded-lg bg-[#FFCE84] text-white ml-4"
+                          onClick={() => handleMark(item._id, false)}
+                        >
+                          Unmark
+                        </button>
+                      ) : (
+                        <button
+                          className="w-[180px] text-[#FFCE84]  font-semibold py-3 rounded-lg pt-[8px] pb-[8px] border-2 border-[#FFCE84] ml-4"
+                          onClick={() => handleMark(item._id, true)}
+                        >
+                          Mark for Review
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             )}
-            {testStarted && (
-              <CurrentSection
-                answers={answers}
-                activeSection={activeSection}
-                submitSection={handleSubmitSection}
-                setSubmitBtnLoading={setSubmitBtnLoading}
-                submitBtnLoading={submitBtnLoading}
-              />
-            )}
+
+            {/* RIGHT */}
+            <div className="flex-2 w-[40%] ml-8 items-center flex flex-col">
+              {testStarted && (
+                <Timer
+                  handleSubmitSection={handleSubmitSection}
+                  timer={timer}
+                  active={testStarted ? true : false}
+                  setCountDown={setCountDown}
+                  isUnlimited={isUnlimited}
+                  duration={testHeaderDetails.duration}
+                />
+              )}
+              {testStarted && (
+                <CurrentSection
+                  answers={answers}
+                  activeSection={activeSection}
+                  submitSection={handleSubmitSection}
+                  setSubmitBtnLoading={setSubmitBtnLoading}
+                  submitBtnLoading={submitBtnLoading}
+                />
+              )}
+            </div>
           </div>
         </div>
-      </div>
 
-      {popUp && (
-        <Modal
-          classname="max-w-[700px] mx-auto"
-          title="Note that the time will begin as soon as you start this section. make sure that you have everything set up."
-          titleClassName="mr-4  mb-4"
-          primaryBtn={{
-            text: "Okay",
-            className: "bg-[#FF7979] w-[146.67px] h-[46.67px] ml-0",
-            onClick: handleStartTest,
-            loading: startBtnLoading,
-          }}
-          handleClose={() => setPopUp(false)}
-        /> 
-      )}
+        {popUp && (
+          <Modal
+            classname="max-w-[700px] mx-auto"
+            title="Note that the time will begin as soon as you start this section. make sure that you have everything set up."
+            titleClassName="mr-4  mb-4"
+            primaryBtn={{
+              text: "Okay",
+              className: "bg-[#FF7979] w-[146.67px] h-[46.67px] ml-0",
+              onClick: handleStartTest,
+              loading: startBtnLoading,
+            }}
+            handleClose={() => setPopUp(false)}
+          />
+        )}
+      </div>
     </div>
   );
 }
