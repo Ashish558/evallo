@@ -44,26 +44,25 @@ export default function InputSelect({
   const [scrollToLetter, setScrollToLetter] = useState(null);
   const optionsRef = useRef(null);
 
-
   useEffect(() => {
     if (scrollToLetter) {
       const regex = new RegExp(`^${scrollToLetter}`, 'i');
       let index = 0
-      const element = optionData.find((item, idx) => {
+      const element = optionData?.find((item, idx) => {
         if (optionType === "object") {
-          if(regex.test(item.name)){
+          if (regex.test(item.name)) {
             index = idx
           }
           return regex.test(item.name)
         } else {
-          if(regex.test(item)){
+          if (regex.test(item)) {
             index = idx
           }
           return regex.test(item)
         }
       });
       if (element && optionsRef.current) {
-        const itemHeight = 35.93; 
+        const itemHeight = 35.93;
         optionsRef.current.scrollTop = itemHeight * index;
       }
       setScrollToLetter(null); // Reset scrollToLetter
@@ -72,17 +71,15 @@ export default function InputSelect({
 
   useEffect(() => {
     const handleKeyPress = (e) => {
-
       setScrollToLetter(e.key);
-
     };
-
-    window.addEventListener('keydown', handleKeyPress);
-
-    return () => {
+    if (selected) {
+      window.addEventListener('keydown', handleKeyPress);
+    } else {
       window.removeEventListener('keydown', handleKeyPress);
-    };
-  }, []);
+    }
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [selected]);
 
   useOutsideAlerter(selectRef, () => setSelected(false));
   const handleOption = () => {
