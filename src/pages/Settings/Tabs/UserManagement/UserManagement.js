@@ -48,6 +48,12 @@ const initialState = {
   userType: "",
 };
 
+const SORT_STATES = {
+  ASCENDING_ORDER: "ASCENDING_ORDER",
+  DESCENDING_ORDER: "DESCENDING_ORDER",
+  UNSORTED: "UNSORTED",
+}
+
 export default function UserManagement() {
   const [modalActive, setModalActive] = useState(false);
   const navigate = useNavigate();
@@ -61,7 +67,12 @@ export default function UserManagement() {
   const [filteredUsersData, setFilteredUsersData] = useState([]);
   const [forgotPassword, forgotPasswordResp] = useForgotPasswordMutation();
   const { role } = useSelector((state) => state.user);
-  const [addManager, setManager] = useAddManagerMutation()
+  const [addManager, setManager] = useAddManagerMutation();
+  const [nameSortState, setNameSortState] = useState(SORT_STATES.UNSORTED);
+  const [emailSortState, setEmailSortState] = useState(SORT_STATES.UNSORTED);
+  const [userTypeSortState, setUserTypeSortState] = useState(SORT_STATES.UNSORTED);
+  const [lastLoginSortState, setLastLoginSortState] = useState(SORT_STATES.UNSORTED);
+
   useEffect(() => {
     setValidData(
       isEmail(modalData.email) &&
@@ -82,67 +93,323 @@ export default function UserManagement() {
   const [settings, setSettings] = useState({
     leadStatus: [],
   });
-  const sortByName = () => {
-    setUsersData((prev) => {
-      let arr = [...prev];
-      arr = arr.sort(function (a, b) {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
-      });
-      return arr;
-    });
 
-    setFilteredUsersData((prev) => {
-      let arr = [...prev];
-      console.log("arr", arr);
-      arr = arr.sort(function (a, b) {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
+  const sortByName = () => {
+
+    if(nameSortState === SORT_STATES.DESCENDING_ORDER) {
+
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.name < b.name) {
+            return -1;
+          }
+          if (a.name > b.name) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
       });
-      return arr;
-    });
+
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.name < b.name) {
+            return -1;
+          }
+          if (a.name > b.name) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setNameSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(nameSortState === SORT_STATES.UNSORTED || nameSortState === SORT_STATES.ASCENDING_ORDER) {
+
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.name < b.name) {
+            return 1;
+          }
+          if (a.name > b.name) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.name < b.name) {
+            return 1;
+          }
+          if (a.name > b.name) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setNameSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  };
+
+  const sortByEmail = () => {
+
+    if(emailSortState === SORT_STATES.DESCENDING_ORDER) {
+
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.email < b.email) {
+            return -1;
+          }
+          if (a.email > b.email) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.email < b.email) {
+            return -1;
+          }
+          if (a.email > b.email) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setEmailSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(emailSortState === SORT_STATES.UNSORTED || emailSortState === SORT_STATES.ASCENDING_ORDER) {
+
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.email < b.email) {
+            return 1;
+          }
+          if (a.email > b.email) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.email < b.email) {
+            return 1;
+          }
+          if (a.email > b.email) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setEmailSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  };
+
+  const sortByUserType = () => {
+
+    if(userTypeSortState === SORT_STATES.DESCENDING_ORDER) {
+
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.userType < b.userType) {
+            return -1;
+          }
+          if (a.userType > b.userType) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.userType < b.userType) {
+            return -1;
+          }
+          if (a.userType > b.userType) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setUserTypeSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(userTypeSortState === SORT_STATES.UNSORTED || userTypeSortState === SORT_STATES.ASCENDING_ORDER) {
+
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.userType < b.userType) {
+            return 1;
+          }
+          if (a.userType > b.userType) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.userType < b.userType) {
+            return 1;
+          }
+          if (a.userType > b.userType) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setUserTypeSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  };
+
+  const sortByLastLogin = () => {
+
+    if(lastLoginSortState === SORT_STATES.DESCENDING_ORDER) { 
+
+      setUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.lastLogin) < new Date(b.lastLogin)) {
+            return -1;
+          }
+          if (new Date(a.lastLogin) > new Date(b.lastLogin)) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.lastLogin) < new Date(b.lastLogin)) {
+            return -1;
+          }
+          if (new Date(a.lastLogin) > new Date(b.lastLogin)) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setLastLoginSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(lastLoginSortState === SORT_STATES.UNSORTED || lastLoginSortState === SORT_STATES.ASCENDING_ORDER) {  
+
+      setUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.lastLogin) < new Date(b.lastLogin)) {
+            return 1;
+          }
+          if (new Date(a.lastLogin) > new Date(b.lastLogin)) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.lastLogin) < new Date(b.lastLogin)) {
+            return 1;
+          }
+          if (new Date(a.lastLogin) > new Date(b.lastLogin)) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setLastLoginSortState(SORT_STATES.DESCENDING_ORDER);
+    }
   };
 
   let tableHeaders = [
     {
       id: 1,
-      text: "Full Name",
+      text: "Full Name", // name
       className: "text-left pl-7",
       onCick: sortByName,
+      willDisplayDownArrow: nameSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 2,
-      text: "Email",
+      text: "Email", // email,
+      onCick: sortByEmail,
+      willDisplayDownArrow: emailSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 3,
-      text: "Usertype",
+      text: "Usertype", // userType
+      onCick: sortByUserType,
+      willDisplayDownArrow: userTypeSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 4,
-      text: "Last login",
+      text: "Last login", // lastLogin
+      onCick: sortByLastLogin,
+      willDisplayDownArrow: lastLoginSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 5,
       text: "Profile",
+      noArrow: true,
     },
     {
       id: 6,
       text: "Password",
+      noArrow: true,
     },
     {
       id: 7,
       text: "",
+      noArrow: true,
     },
   ];
 
@@ -153,18 +420,25 @@ export default function UserManagement() {
         text: "Full Name",
         className: "text-left pl-6",
         onCick: sortByName,
+        willDisplayDownArrow: nameSortState !== SORT_STATES.DESCENDING_ORDER,
       },
       {
         id: 2,
         text: "Usertype",
+        onCick: sortByUserType,
+        willDisplayDownArrow: userTypeSortState !== SORT_STATES.DESCENDING_ORDER,
       },
       {
         id: 3,
         text: "Email",
+        onCick: sortByEmail,
+        willDisplayDownArrow: emailSortState !== SORT_STATES.DESCENDING_ORDER,
       },
       {
         id: 7,
         text: "Last login",
+        onCick: sortByLastLogin,
+        willDisplayDownArrow: lastLoginSortState !== SORT_STATES.DESCENDING_ORDER,
       },
     ];
   }
@@ -675,7 +949,7 @@ const [deleteManager,deleteManagerStatus]=useDeleteManagerMutation()
         <div className="mt-6">
           <Table
             dataFor={role === 'superAdmin' ? "allUsersSuperAdmin" : 'allUsersManager'}
-            noArrow={true}
+            // noArrow={true}
             data={filteredUserData}
             onClick={{
               redirect,
