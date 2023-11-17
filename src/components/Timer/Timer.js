@@ -69,7 +69,7 @@ function Timer({ timer, active, handleSubmitSection, setCountDown, isUnlimited, 
 
    return (
 
-      <div className={`max-w-[190.5px] min-w-[187px] bg-[#24A3D9] rounded mt-4 text-white flex flex-col items-center px-9 py-6 font-bold  ${duration === "-" && 'invisible'}`}>
+      <div className={`max-w-[190.5px] min-w-[187px] max-h-[104px] bg-[#24A3D9] rounded mt-4 text-white flex flex-col items-center px-9 py-6 font-bold  ${duration === "-" && 'invisible'}`}>
          <p className='text-[20px] font-medium'> Timer </p>
          <p className='text-[37.5px] font-bold leading-none'>
             {/* 45:00 */}

@@ -501,7 +501,7 @@ export default function StartTest() {
 
   if (subjects.length === 0) return;
   return (
-    <div className="w-screen bg-lightWhite flex justify-center items-center">
+    <div className="w-screen bg-[#F5F8FA] flex justify-center items-center">
       <div className="w-[83.77vw] min-h-full">
         <div className="py-8 px-5">
           <div className="flex">
@@ -526,20 +526,20 @@ export default function StartTest() {
               {!testStarted && (
                 <div className="grid grid-cols-3 ml-4 w-full text-sm px-4 gap-y-4 mt-2">
                   <div className=" grid grid-flow-col  grid-rows-3 mr-3 justify-start items-start">
-                    <div className="w-full flex mb-3 justify-between">
-                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
+                    <div className="w-[20vw] flex flex-1 flex-grow-1 mb-3 justify-between ">
+                      <p className="inline-block min-w-1/2 mr-4 font-medium text-[20px] text-[#517CA8] ">
                         {" "}
                         Student’s Name
                       </p>
 
-                      <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8] ">
+                      <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]">
                         {testHeaderDetails?.name?.length > 18
                           ? testHeaderDetails?.name.substring(0, 15) + " ..."
                           : testHeaderDetails?.name}
                       </p>
                     </div>
                     <div className="w-full flex mb-3 justify-between">
-                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
+                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] ">
                         {" "}
                         Date Assigned{" "}
                       </p>
@@ -549,7 +549,7 @@ export default function StartTest() {
                       </p>
                     </div>
                     <div className="w-full flex mb-3 justify-between">
-                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
+                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] ">
                         {" "}
                         Duration{" "}
                       </p>
@@ -561,7 +561,7 @@ export default function StartTest() {
                   </div>
                   <div className=" grid grid-flow-col  grid-rows-3 justify-start items-start">
                     <div className="w-full flex mb-3 justify-between">
-                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
+                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] ">
                         {" "}
                         Due on{" "}
                       </p>
@@ -573,7 +573,7 @@ export default function StartTest() {
                       </p>
                     </div>
                     <div className="w-full flex mb-3 justify-between">
-                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
+                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] ">
                         {" "}
                         Started on{" "}
                       </p>
@@ -585,7 +585,7 @@ export default function StartTest() {
                       </p>
                     </div>
                     <div className="w-full flex mb-3 justify-between">
-                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
+                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] ">
                         {" "}
                         Completed on{" "}
                       </p>
@@ -597,7 +597,7 @@ export default function StartTest() {
                   </div>
                   <div className="w-full flex mb-3 justify-between">
                     <div className="flex flex-col">
-                      <p className="inline-block mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
+                      <p className="inline-block mr-4 font-medium  text-[20px] text-[#517CA8] ">
                         {" "}
                         Instruction from tutor{" "}
                       </p>
@@ -625,7 +625,7 @@ export default function StartTest() {
                               item.selected
                                 ? " text-[#FFA28D] border-b-2 border-b-[#FFA28D]"
                                 : ""
-                            } disabled:opacity-60`}
+                            } disabled:`}
                         disabled={
                           testStarted && item.selected === false
                             ? true
@@ -653,9 +653,9 @@ export default function StartTest() {
                         Section Instructions:
                       </p>
                       <p className="text-[#26435F] texxt-[17.5] font-normal">
-                        Timer: {activeSection.timer} minutes
+                        Time: {activeSection.timer} minutes
                       </p>
-                      <p className="text-[#26435F] texxt-[17.5] font-normal">
+                      <p className="text-[#517CA8] texxt-[17.5] font-normal">
                         {activeSection.description}
                       </p>
                     </div>
@@ -673,7 +673,7 @@ export default function StartTest() {
                       </div>
                       <PrimaryButton
                         children="Start Section"
-                        className="w-[300px] h-[60px] text-[21px] !text-white"
+                        className="w-[180px] h-[55px] text-[21px] !text-white py-[10px] px-[20px]"
                         onClick={() => setPopUp(true)}
                       />
                       {/* <PrimaryButton children='Start Section' className='w-[300px] h-[60px] text-[21px]' onClick={handleStartTest} /> */}
@@ -683,17 +683,17 @@ export default function StartTest() {
               </div>
             </div>
           </div>
-          <div className="flex flex-row justify-center">
+          <div className="flex flex-row justify-between  ">
             {testStarted && (
               <div
-                className="mt-[15px] w-[60%] overflow-auto custom-scroller"
+                className="mt-[15px] w-[962px] overflow-auto custom-scroller"
                 style={{ maxHeight: "calc(100vh - 240px)" }}
               >
                 {answers.map((item, idx) => {
                   return (
                     <div
                       key={idx}
-                      className="flex justify-between items-center py-5 px-10 bg-white rounded-xl mb-[15px]"
+                      className="flex justify-between items-center py-5 px-10 bg-white rounded-xl mb-[15px] h-[75px] w-[962px]"
                     >
                       <p className="font-semibold text-[20px] text-[#517CA8] leading-none">
                         {item.QuestionNumber < 10
@@ -728,7 +728,7 @@ export default function StartTest() {
             )}
 
             {/* RIGHT */}
-            <div className="flex-2 w-[40%] ml-8 items-center flex flex-col">
+            <div className="flex flex-col w-[570px] ml-8 items-center ">
               {testStarted && (
                 <Timer
                   handleSubmitSection={handleSubmitSection}
@@ -759,7 +759,7 @@ export default function StartTest() {
             titleClassName="mr-4  mb-4"
             primaryBtn={{
               text: "Okay",
-              className: "bg-[#FF7979] w-[146.67px] h-[46.67px] ml-0",
+              className: "bg-[#FF7979] w-[146.67px] h-[46.67px] flex-shrink-0 ml-0",
               onClick: handleStartTest,
               loading: startBtnLoading,
             }}
