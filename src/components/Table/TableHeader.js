@@ -58,7 +58,7 @@ export function TableHeader({ header, dataFor, onClick, setSorted, Icon, headerW
         {" "}
 
         {header}
-        {header==="Q No."&&<p >(Raw Score)</p>}
+        {/* {header==="Q No."&&<p >(Raw Score)</p>} */}
       </div>
     </th>
   );

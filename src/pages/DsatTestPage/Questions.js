@@ -10,7 +10,7 @@ import AnnotationPopup from './Annotationpopup';
  
 export default function Que(props) {
 
-   const {ques,op,para,initialSeconds,setInitialSeconds,countDown,showtextbox,answerimagecheck,setshowtextbox,showannotate,setshowannotate,setAnswers,quesImg,quesT,answers,siz,index,Setmark,mark,cal,setCal,seq,cutanswers,cutanswer,showcutcheck,cutcheck,markreview,markre,annotation_check,calculator_check,cross_O_check} = props;
+   const {ques,op,para,setAllQuestions_data,initialSeconds,setInitialSeconds,countDown,showtextbox,answerimagecheck,setshowtextbox,showannotate,setshowannotate,setAnswers,quesImg,quesT,answers,siz,index,Setmark,mark,cal,setCal,seq,cutanswers,cutanswer,showcutcheck,cutcheck,markreview,markre,annotation_check,calculator_check,cross_O_check} = props;
    const s ={
     height : "58.2vh"
   }
@@ -24,51 +24,79 @@ export default function Que(props) {
   const [show_ann, setshow_ann] = useState(false);
   const [check, setcheck] = useState(false);
   const [color, setcolor] = useState('yellow');
+  const [selectedt,setslectedt]=useState('')
     const [annotations, setAnnotations] =  useState(Array(siz).fill(null).map(() => []));
     const [hovert, sethovert] = useState(Array(siz).fill());
-    const handleAnnotationChange = (newAnnotationsForIndex) => {
-      if(showannotate){
-    setAnnotations(prevAnnotations => {
-      const updatedAnnotations = [...prevAnnotations];
-      updatedAnnotations[index-1] = newAnnotationsForIndex;
-      return updatedAnnotations;
-    });
-  }
-  };
+  
+  useEffect(() => {
+  const handleTextSelection = () => {
+    const selectedText = window.getSelection().toString();
+    if (selectedText) {
+      setshow_ann(true)
+      console.log(selectedText);
+      setslectedt(window.getSelection().getRangeAt(0))
+    }
+};
+ document.addEventListener('mouseup', handleTextSelection);
 
-  useEffect(()=>{
-    console.log(hovert);
-    console.log(annotations);
-    tippy('mark', {
-      content: hovert[index-1],
-    });
-    setshowtextbox(false)
-    setshowannotate(false)
-  },[hovert])
+// Cleanup listener when the component is unmounted
+return () => {
+    document.removeEventListener('mouseup', handleTextSelection);
+};
+
+}, []);
+useEffect(()=>{
+  console.log('asdasd',showannotate,show_ann);
+
+if(!show_ann&&showannotate){
+setshow_ann(true)
+console.log('Selected Text:', selectedt);
+
+}
+},[selectedt])
+
+useEffect(()=>{
+console.log(showannotate,show_ann);
+if(!showannotate&&show_ann){
+
+const span = document.createElement('span');
+span.style.backgroundColor = color;
+span.style.position='relative'
+const range = selectedt;
+console.log(selectedt);
+try {
+range.surroundContents(span);
+
+// Add a tooltip to the highlighted text
+const tooltip = document.createElement('div');
+tooltip.className = 'hover-float';
+tooltip.innerText = hovert[index-1];;
+
+span.appendChild(tooltip);
+
+// Add a hover event listener to show/hide the tooltip
+span.addEventListener('mouseenter', () => {
+tooltip.style.display = 'block';
+});
+
+span.addEventListener('mouseleave', () => {
+tooltip.style.display = 'none';
+});
+}
+catch (error) {
+  console.log(error);
+}
+console.log(selectedt,hovert[index-1]);
+setshow_ann(false)
+}
+console.log('fin');
+},[showannotate])
 
   useEffect(() => {
-    if(check){
-    setshow_ann(true)
     tippy('mark', {
       content: hovert[index-1],
     });
-  }
-  else {
-    setcheck(true)
-  }
-  }, [annotations]);
-
-  useEffect(() => {
-    tippy('mark', {
-      content: hovert[index-1],
-    });
-  }, [index]);
-
-  useEffect(() => {
-    tippy('mark', {
-      content: hovert[index-1],
-    });
-    }, [color]);
+  },[quesT])
 
   return (
     <div className={` px-20 h-[25rem] relative flex flex-row ${props.check && 'bg-gray-200'} ${!para? 'justify-center' : 'justify-between'} `} style={s}>
@@ -77,31 +105,9 @@ export default function Que(props) {
        :null}
         {
           para?<div className='overflow-y-auto w-1/2 mr-4 pt-5'>
-           {/* <TextAnnotator
-            key={color}
-        content={quesT[index-1].text}
-        value={annotations[index-1]}
-        onChange={handleAnnotationChange}
-        getSpan={(span) => ({
-          ...span,
-          color,
-          underline
-        })}
-        span={({ children, ...spanProps }) => {
-          console.log(spanProps) 
-          return(
-          <Tippy content={hovert[index-1]}>
-            <mark
-            style={{ textDecoration:spanProps.underline,backgroundColor: spanProps.color }}
-              {...spanProps}
->              {children}
-            </mark> 
-          </Tippy>
-          )
-        }}
-      />  */}
-      <div className='dangerouslySetClass' dangerouslySetInnerHTML={{__html:quesT[index-1].text}} />
-         {/* <img src={image} alt="" /> */}
+               <div>
+      <div contentEditable="true" className='dangerouslySetClass' dangerouslySetInnerHTML={{__html:quesT[index-1].text}} />
+        </div>
         </div>:null
         }
         <div className={`mt-5 overflow-y-auto ${props.check && 'hidden'} ${!para? 'flex w-1/2 flex-col':'w-1/2'}` }>
