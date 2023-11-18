@@ -54,7 +54,7 @@ const AppRoutes = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={isLoggedIn ? <Home /> : <Login />} />
-        <Route path="/signup" element={<OrgSignup />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/admin-portal" element={<AdminPortal />} />
         <Route path="/signup/user" element={<UserSignup />} />
         <Route
