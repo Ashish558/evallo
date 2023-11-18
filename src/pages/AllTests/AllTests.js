@@ -583,7 +583,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
             onClick={() => setModalActive(true)}
           >
             <span className="pt-0 text-base-20"> Add New Material</span>
-            <img src={AddIcon} className="ml-1 h-[20px]" alt="add-icon" />
+            <img src={AddIcon} className="ml-1 h-[25px] w-[25px]" alt="add-icon" />
           </button>
         </div>
 
