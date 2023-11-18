@@ -373,7 +373,7 @@ const AccountOverview = () => {
         <div>
           {reset && (
             <div className="flex gap-2">
-              <p className="bg-[rgba(119,221,119,0.2)] rounded-xl text-sm text-[#77DD77] px-3 py-1 text-base-15">
+              <p className="bg-[#38C980] rounded-xl text-sm text-white px-3 py-1 text-base-15">
                 <img className="inline-block mr-3" src={resetSendIcon} alt="" />
                 {"Password Reset Link Sent To {email address}"}
               </p>
