@@ -93,7 +93,7 @@ export default function InputField({
               </div>
             </div>
           }
-          {required && false && (
+          {required && (
             <span className="text-primaryRed inline-block pl-1">*</span>
           )}
         </label>
@@ -174,7 +174,7 @@ export default function InputField({
           />
         )}
 
-        {IconRight2 && <img onClick={DateIconClick} className={`ml-3 cursor-pointer scale-[0.80] ${IconRight2Class}`} src={IconRight2} alt="right icon" />}
+        {IconRight2 && <img onClick={DateIconClick} className={`ml-3 cursor-pointer scale-[0.80] w-[24px] h-[24px] ${IconRight2Class}`} src={IconRight2} alt="right icon" />}
         {right && right}
       </div>
 

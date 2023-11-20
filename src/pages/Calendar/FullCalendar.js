@@ -10,6 +10,9 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import LeftIcon from "../../assets/icons/left-arrow.svg";
 import nextIcon from "../../assets/icons/right-arrow.svg";
 
+//  yearly 
+import multiMonthPlugin from '@fullcalendar/multimonth'
+
 export default function Calendar({
    view, persona, filteredEvents, events, handlePrevClick, handleNextClick, eventContent, getDayHeaders,
    handleDateClick, handleEventClick, calRef
@@ -30,7 +33,7 @@ export default function Calendar({
                ? filteredEvents
                : events
          }
-         height={800}
+         height={700}
          dayMaxEventRows={true}
          stickyHeaderDates={true}
          stickyHeaderToolbar={true}
@@ -42,6 +45,8 @@ export default function Calendar({
             timeGridWeek,
             interactionPlugin,
             dayGridPlugin,
+            //  added just now
+            multiMonthPlugin
          ]}
          firstDay={1}
          slotDuration={"00:60:00"}
