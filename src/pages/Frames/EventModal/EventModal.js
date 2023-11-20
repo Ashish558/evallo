@@ -94,7 +94,7 @@ export default function EventModal({
    refetchSessions,
    defaultEventData
 }) {
-  
+
    const [data, setData] = useState({
       studentName: "",
       tutorName: "",
@@ -137,6 +137,10 @@ export default function EventModal({
       whiteboardLink: '',
       sessionTags: []
    });
+
+   // console.log('defaultEventData---', defaultEventData);
+   // console.log('isUpdating---', isUpdating);
+   // console.log('data---', data);
    const [submitDisabled, setSubmitDisabled] = useState(false)
 
    const [days, setDays] = useState(tempDays);
@@ -171,7 +175,7 @@ export default function EventModal({
    const [services, setServices] = useState([])
    const { id: currentUserId } = useSelector(state => state.user)
    const { organization } = useSelector((state) => state.organization);
-   const [tutorId2,setTutorId2]= useState(null)
+   const [tutorId2, setTutorId2] = useState(null)
    const [isSettingsLoaded, setIsSettingsLoaded] = useState(false);
    const getCheckedItems = (strArr, array) => {
       let checkedItems = array.map((item) => {
@@ -195,7 +199,9 @@ export default function EventModal({
             data.timeZone === '' ||
             data.date === '' ||
             data.session === '' ||
-            data.service === ''
+            data.service === '' ||
+            data.tutorId === '' ||
+            data.studentId === ''
          ) {
             setSubmitDisabled(true)
          } else {
@@ -216,6 +222,8 @@ export default function EventModal({
             data.session === '' ||
             data.service === '' ||
             data.endDate === '' ||
+            data.tutorId === '' ||
+            data.studentId === '' ||
             day.length === 0
          ) {
             setSubmitDisabled(true)
@@ -228,7 +236,7 @@ export default function EventModal({
    useEffect(() => {
       if (defaultEventData !== null && !isUpdating) {
          // console.log(defaultEventData)
-         const { date, tutorId, tutorName } = defaultEventData
+         const { date, tutorId, tutorName, timeZone } = defaultEventData
          let formattedDate = date?.getDate()
          if (formattedDate < 10) {
             formattedDate = `0${formattedDate}`
@@ -248,7 +256,23 @@ export default function EventModal({
          let formattedTime = tConvert(`${hours}:00`)
          let formattedEndTime = tConvert(`${endHours}:00`)
          if (endHours === 24) formattedEndTime = { time: "12:00", timeType: 'AM' }
-         
+
+         let tz = ''
+         if (timeZone === 'Asia/Kolkata') {
+            tz = 'IST'
+         } else if (timeZone === 'US/Alaska') {
+            tz = 'AKST'
+         } else if (timeZone === 'US/Central') {
+            tz = 'CST'
+         } else if (timeZone === 'US/Eastern') {
+            tz = 'EST'
+         } else if (timeZone === 'US/Hawaii') {
+            tz = 'HST'
+         } else if (timeZone === 'US/Mountain') {
+            tz = 'MST'
+         } else if (timeZone === 'US/Pacific') {
+            tz = 'PST'
+         }
          setData((prev) => {
             return {
                ...prev,
@@ -264,18 +288,22 @@ export default function EventModal({
                      ...formattedEndTime
                   }
                },
-         }
-           
+               timeZone: tz ? tz : ''
+            }
+
          })
-          setTutorId2(tutorId)
+         setTutorId2(tutorId)
          setTutor(tutorName ? tutorName : '')
 
       }
-   }, [defaultEventData])
- 
+   }, [defaultEventData, isUpdating])
+   const [stopUpdating, setStopUpdating] = useState(true)
+
    useEffect(() => {
       if (organization?.settings) {
-
+         if (persona === "tutor" && organization && organization?.settings?.permissions?.length > 5 && organization?.settings?.permissions[5]?.choosedValue === false) {
+            setStopUpdating(false)
+         }
          if (Object.keys(organization?.settings).length > 0) {
             // console.log('organization', organization.settings);
             let sessionTags = organization.settings.sessionTags;
@@ -286,7 +314,13 @@ export default function EventModal({
                   items: []
                }
             })
-            setData({ ...data, sessionTags: tempSessionTags })
+            setData((prev) => {
+               return {
+                  ...prev,
+                  sessionTags: tempSessionTags
+               }
+
+            })
             setAllServicesAndSpec(organization.settings.servicesAndSpecialization)
             setServices(organization.settings.Expertise);
             setIsSettingsLoaded(true);
@@ -300,7 +334,7 @@ export default function EventModal({
             `${sessionToUpdate.time.start.time} ${sessionToUpdate.time.start.timeType}`
          );
          // console.log(startTime)
-         console.log("isUpdating")
+         // console.log("isUpdating")
          let startDate = new Date(sessionToUpdate.date)
          const offset = startDate.getTimezoneOffset() * 60000
          if (offset > 0) {
@@ -327,7 +361,7 @@ export default function EventModal({
             rescheduling: sessionToUpdate.resheduling,
             service: sessionToUpdate.service,
             sessionNotes: sessionToUpdate.sessionNotes,
-
+            sessionTags: sessionToUpdate.sessionTags,
             specialization: sessionToUpdate.specialization,
          });
 
@@ -350,7 +384,7 @@ export default function EventModal({
    }, [sessionToUpdate]);
 
    useEffect(() => {
-      if (isSettingsLoaded && isUpdating) {
+      if (isUpdating) {
          setIsProductive(
             getCheckedItems(
                [sessionToUpdate.sessionProductive],
@@ -365,7 +399,7 @@ export default function EventModal({
             updateCheckedArr(sessionToUpdate.studentMood, studentMoods)
          );
       }
-   }, [sessionToUpdate, isSettingsLoaded]);
+   }, [sessionToUpdate]);
 
    const updateCheckedArr = (strArr, arr, setArr) => {
       return arr.map((item) => {
@@ -495,7 +529,9 @@ export default function EventModal({
       // }).catch(err => {
       //    console.log(err)
       // })
-
+      // console.log('s name', data.studentId);
+      // console.log('t name', data.tutorId);
+      // return
 
       if (!isUpdating && data.recurring === true) {
          if (new Date(data.endDate) < new Date()) {
@@ -524,6 +560,20 @@ export default function EventModal({
          reqBody.sessionProductive = ''
       }
       const { start, end } = reqBody.time
+
+      if(reqBody.time.start.timeType === 'am'){
+         reqBody.time.start.timeType = 'AM'
+      }
+      if(reqBody.time.start.timeType === 'pm'){
+         reqBody.time.start.timeType = 'PM'
+      }
+      if(reqBody.time.end.timeType === 'am'){
+         reqBody.time.end.timeType = 'AM'
+      }
+      if(reqBody.time.end.timeType === 'pm'){
+
+         reqBody.time.end.timeType = 'PM'
+      }
       let startTime = convertTime12to24(`${start.time} ${start.timeType}`)
       let endTime = convertTime12to24(`${end.time} ${end.timeType}`)
       let startT = moment(`2016-06-06T${startTime}:00`)
@@ -585,13 +635,36 @@ export default function EventModal({
          reqBody.date = dates
          console.log('dates', dates);
       }
-      // console.log('reqBody', reqBody);
+
+      // if (reqBody.timeZone === 'CST') {
+      //    reqBody.timeZone = "US/Central"
+      // }
+      // if (reqBody.timeZone === 'EST') {
+      //    reqBody.timeZone = "US/Eastern"
+      // }
+      // if (reqBody.timeZone === 'IST') {
+      //    reqBody.timeZone = "Asia/Kolkata"
+      // }
+      // if (reqBody.timeZone === 'AKST') {
+      //    reqBody.timeZone = "US/Alaska"
+      // }
+      // if (reqBody.timeZone === 'HST') {
+      //    reqBody.timeZone = "US/Hawaii"
+      // }
+      // if (reqBody.timeZone === 'MST') {
+      //    reqBody.timeZone = "US/Mountain"
+      // }
+      // if (reqBody.timeZone === 'PST') {
+      //    reqBody.timeZone = "US/Pacific"
+      // }
+
+      // setLoading(false)
       // return
       if (isUpdating && isUpdatingAll) return updateSession(reqBody, isUpdatingAll, sDate);
       if (isUpdating) return updateSession(reqBody, isUpdatingAll, sDate);
 
       submitSession(reqBody).then((res) => {
-         console.log(res)
+         // console.log(res)
          setLoading(false)
          if (res?.error?.data?.message) {
             alert("Error occured while scheduling a session , please try again!")
@@ -603,7 +676,7 @@ export default function EventModal({
 
       })
    }
-   // console.log(data);
+   //console.log(data);
    const handleFeedbackSubmit = (rating) => {
       // console.log(rating)
       // console.log(sessionToUpdate)
@@ -639,7 +712,7 @@ export default function EventModal({
       if (!sessionToUpdate) return
       fetchFeedback()
    }, [sessionToUpdate])
-
+   const [deleteAll, SetDeleteAll] = useState(false)
    const handleDeleteSession = () => {
       setLoading(true)
       deleteSession(sessionToUpdate._id)
@@ -663,23 +736,24 @@ export default function EventModal({
             setEventModalActive(false)
          })
    }
-  useEffect(()=>{
-    if(persona==='tutor'){
-      setData((prev)=>{
-         return {
-            ...prev,
-            tutorId:tutorId2,
-            tutorName:tutor
-         }
-      })
+   useEffect(() => {
+      if (persona === 'tutor') {
+         setData((prev) => {
+            return {
+               ...prev,
+               tutorId: tutorId2,
+               tutorName: tutor
+            }
+         })
 
-    }
-  },[tutorId2])
+      }
+   }, [tutorId2])
+
    useEffect(() => {
       // if (persona === 'tutor') {
       // console.log(data.tutorId);
       if (!data.tutorId) return
-      console.log("tutorDetails", data.tutorId)
+      // console.log("tutorDetails", data.tutorId)
       getUserDetail({ id: data.tutorId })
          .then(res => {
             if (res.error) {
@@ -689,33 +763,33 @@ export default function EventModal({
             // console.log(res.data.data);
             let details = res.data.data.details
             if (details === null) return
-            if (details.tutorServices.length === 0) return alert('Tutor does not have any services')
-            let services = details.tutorServices.map(item => item.service)
+            if (details?.tutorServices?.length === 0) return alert('Tutor does not have any services')
+            let services = details?.tutorServices?.map(item => item.service)
             let tutorServs = []
             allServicesAndSpec.forEach(item => {
                if (services.includes(item.service)) {
                   tutorServs.push(item.service)
                }
             })
-            console.log('servicesallServicesAndSpec', allServicesAndSpec);
-            console.log('services', details.tutorServices, services);
+            // console.log('servicesallServicesAndSpec', allServicesAndSpec);
+            // console.log('services', details.tutorServices, services);
             setServicesAndSpecialization(tutorServs)
          })
       // }
 
    }, [persona, data.tutorId, allServicesAndSpec])
-console.log("data",data,tutor)
+
    useEffect(() => {
       // console.log('all', allServicesAndSpec)
-     
+
       let specs = []
       allServicesAndSpec.map(item => {
          if (item.service === data.service) {
             specs = item.specialization
          }
       })
-      console.log('spec', specs)
-      console.log('servicesAndSpecialization', servicesAndSpecialization,specs)
+      // console.log('spec', specs)
+      // console.log('servicesAndSpecialization', servicesAndSpecialization, specs)
       setSpecializations(specs)
    }, [servicesAndSpecialization, data.service, allServicesAndSpec])
 
@@ -745,8 +819,23 @@ console.log("data",data,tutor)
          }
       }
    }, [isUpdating, sessionToUpdate?.time, data?.time, sessionToUpdate?.date, data?.date])
-
+   const [deleteBulkModalActive, setDeleteBulkModalActive] = useState(false)
    const handleSessiontagChange = (item, tagId) => {
+      console.log("tagssss", data.sessionTags, item, tagId)
+      let check = false;
+      data.sessionTags.map(tag => {
+         if (tag._id === tagId) {
+            check = true;
+         }
+      })
+      console.log("tagss", check)
+      if (!check) {
+         let tempSessionTag = data.sessionTags
+         tempSessionTag.push({ _id: tagId, items: [item] })
+         setData({ ...data, sessionTags: tempSessionTag })
+         return
+      }
+
       const tempSessionTag = data.sessionTags.map(tag => {
          if (tag._id === tagId) {
             let items = [...tag.items]
@@ -761,40 +850,41 @@ console.log("data",data,tutor)
          }
       })
       setData({ ...data, sessionTags: tempSessionTag })
+
    }
    const dataProps = { data, setData }
- //  console.log({isEditable})
+   //  console.log({isEditable})
    return (
       <>
          <Modal
-            classname="max-w-[827px]  mx-auto max-h-[90vh] 2xl:max-h-[700px] overflow-y-hidden"
+            classname="max-w-[827px]  mx-auto  h-[95vh] max-h-[700px] 2xl:max-h-[700px] overflow-y-auto custom-scroller"
             handleClose={() => setEventModalActive(false)}
-
+            wrapperClassName='flex flex-col h-full'
             title={isEditable === false ? 'Session Details' : isUpdating ? "Update Session" : ` ${persona == "tutor" ? "Session Details" : "Schedule New Session"}`}
 
             body={
-               <div  >
-                  <div className="h-[58.61vh] 2xl:max-h-[633px] overflow-y-auto">
+               <>
+                  <div className="overflow-y-auto custom-scroller">
                      <div className="pr-4">
                         <SearchNames setStudent={setStudent}
                            setData={setData} student={student} tutor={tutor} data={data}
                            setTutor={setTutor}
-                           isEditable={isEditable} />
+                           isEditable={isEditable && stopUpdating} />
 
-                        <DateAndTimeInput {...dataProps} isEditable={isEditable} />
+                        <DateAndTimeInput {...dataProps} isEditable={isEditable && stopUpdating} />
 
-                        <div className={`flex mb-3 items-center ${!isEditable? 'pointer-events-none ' : ''} `}>
+                        <div className={`flex mb-3 items-center ${!isEditable ? 'pointer-events-none ' : ''} `}>
                            <CCheckbox checked={data.recurring} name='recurring' onChange={() =>
                               setData({
                                  ...data,
                                  recurring: !data.recurring,
-                              })} disabled={!isEditable} />
+                              })} disabled={!isEditable || !stopUpdating} />
                            <p className="font-medium text-[#26435F] text-[18.6px]">
                               Recurring
                            </p>
                         </div>
 
-                        <DaysEndDate isEditable={isEditable} days={days} setDays={setDays} {...dataProps} />
+                        <DaysEndDate isEditable={isEditable && stopUpdating} days={days} setDays={setDays} {...dataProps} />
 
 
                         <div className="flex mb-7">
@@ -806,7 +896,7 @@ console.log("data",data,tutor)
                                  // console.log(val)
                                  data.service !== val && setData({ ...data, service: val, specialization: '' })
                               }}
-                            
+
                               optionData={servicesAndSpecialization}
                               inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3 text-[#507CA8]
                        `}
@@ -816,7 +906,7 @@ console.log("data",data,tutor)
                          ${persona === "parent" ? " order-2" : ""}
                         `}
                               type="select"
-                              disabled={!isEditable}
+                              disabled={!isEditable || !stopUpdating}
                            />
                            <InputSelect
                               label="Topic"
@@ -836,7 +926,7 @@ console.log("data",data,tutor)
                         ${persona === "parent" ? " order-2" : ""}
                         `}
                               type="select"
-                              disabled={!isEditable}
+                              disabled={!isEditable || !stopUpdating}
 
                            />
 
@@ -882,7 +972,7 @@ console.log("data",data,tutor)
                                     session: e.target.value,
                                  })
                               }
-                              disabled={!isEditable}
+                              disabled={!isEditable || !stopUpdating}
                            />
                            <InputField
                               parentClassName="w-full ml-2"
@@ -897,7 +987,7 @@ console.log("data",data,tutor)
                               onChange={(e) =>
                                  setData({ ...data, whiteboardLink: e.target.value })
                               }
-                              disabled={!isEditable}
+                              disabled={!isEditable || !stopUpdating}
                            />
 
 
@@ -908,7 +998,7 @@ console.log("data",data,tutor)
                         }
                         <div className="h-[1.33px] w-full bg-[rgba(0,0,0,0.20)] mt-[28px]"></div>
                         {/* SESSIONS */}
-                        <SessionInputs {...dataProps} status={status} isEditable={isEditable} />
+                        <SessionInputs {...dataProps} status={status} isEditable={isEditable && stopUpdating} />
 
 
 
@@ -940,14 +1030,14 @@ console.log("data",data,tutor)
                         }
                         {persona !== "student" && persona !== "parent" && (
                            <>
-                              <div className="mt-7 mb-5">
+                              <div className="mt-7 mb-5 w-full  ">
                                  {
                                     allSessionTags.map(tag => {
                                        return <div key={tag._id} >
                                           <p className="font-medium mb-2.5">
                                              {tag.heading}
                                           </p>
-                                          <div className="flex">
+                                          <div className="flex !flex-wrap gap-3">
                                              {tag.items.length > 0 &&
                                                 tag.items.map((item, idx) => {
                                                    const currentUserSession = data.sessionTags.find(dataSessionTag => dataSessionTag._id === tag._id)
@@ -958,12 +1048,14 @@ console.log("data",data,tutor)
                                                    return (
                                                       <div
                                                          key={idx}
-                                                         className="flex mb-3 mr-3"
-                                                         onClick={() =>
-                                                            handleSessiontagChange(
-                                                               item,
-                                                               tag._id,
-                                                            )
+                                                         className="flex mb-4 mr-3"
+                                                         onClick={() => {
+                                                            if (stopUpdating)
+                                                               handleSessiontagChange(
+                                                                  item,
+                                                                  tag._id,
+                                                               )
+                                                         }
                                                          }
                                                       >
                                                          <CCheckbox
@@ -983,9 +1075,11 @@ console.log("data",data,tutor)
                               </div>
 
                               <div className="mb-8">
-                                 <p className="font-medium mb-2.5 text-[#26435F] text-[18.6px]">
-                                    Session Notes
-                                 </p>
+                                 <div>
+                                    <p className="font-medium mb-2.5 text-[#26435F] text-[18.6px]">
+                                       Session Notes
+                                    </p>
+                                 </div>
                                  <textarea
                                     placeholder="Session Notes"
                                     value={data.sessionNotes}
@@ -1025,7 +1119,7 @@ console.log("data",data,tutor)
                                     className="bg-lightWhite w-full outline-0 px-5 py-4 rounded"
                                  ></textarea>
                                  <p className="text-right text-xs text-primary-80">
-                                    0/200
+                                    {data.sessionNotes ? data.sessionNotes.length : '0'}/200
                                  </p>
                               </div>
 
@@ -1035,7 +1129,7 @@ console.log("data",data,tutor)
                      </div>
                   </div>
 
-                  <div>
+                  <div className={styles['bottom-buttons']} >
                      {persona === 'student' ? (
                         <div className="ml-4 mt-5">
                            <p className="font-medium text-center mb-4 text-[18px] text-[#26435F]">
@@ -1057,24 +1151,33 @@ console.log("data",data,tutor)
                         </div>
                      ) : <></>}
                      {
-                        persona !== "student" && persona !== "parent" && <div className="flex justify-center pt-4">
+                        persona !== "student" && persona !== "parent" && stopUpdating && <div className="flex justify-center pt-4">
                            {isUpdating && sessionToUpdate.recurring === true ?
                               <div className="flex flex-1 px-4 justify-between">
                                  <div>
+
                                     <SecondaryButton
                                        children="Delete Current"
-                                       className="text-lg py-3 mr-3 pl-1 pr-1 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
-                                       onClick={handleDeleteSession}
+                                       className="text-lg py-3 mr-3 pl-1 pr-1 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60 text-white"
+                                       onClick={() => {
+                                          setDeleteBulkModalActive(true)
+                                          SetDeleteAll(false)
+                                       }}
+
                                        loading={loading}
                                     />
                                     <SecondaryButton
                                        children="Delete All"
-                                       className="text-lg py-3 mr-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
-                                       onClick={handleDeleteAllSession}
+                                       className="text-lg py-3 mr-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60 text-white"
+                                       onClick={() => {
+                                          setDeleteBulkModalActive(true)
+                                          SetDeleteAll(true)
+                                       }}
+
                                        loading={loading}
                                     />
                                  </div>
-                                 <div>
+                                 <div className="flex items-center">
                                     <PrimaryButton
                                        children="Update Current"
                                        className="text-lg py-3 mr-3 pl-1 pr-1 whitespace-nowrap font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
@@ -1093,10 +1196,15 @@ console.log("data",data,tutor)
                               </div>
                               : isUpdating ?
                                  <>
+
                                     <SecondaryButton
                                        children="Delete"
                                        className="text-lg py-3 mr-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
-                                       onClick={handleDeleteSession}
+                                       onClick={() => {
+                                          setDeleteBulkModalActive(true)
+                                          SetDeleteAll(false)
+                                       }}
+
                                        loading={loading}
                                     />
                                     <PrimaryButton
@@ -1109,9 +1217,9 @@ console.log("data",data,tutor)
                                  </> :
                                  <PrimaryButton
                                     children="Schedule"
-                                    className="text-lg py-3  font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
+                                    className="text-lg py-3 !text-white font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                     onClick={() => handleSubmit()}
-                                    disabled={false}
+                                    disabled={submitDisabled}
                                     loading={loading}
                                  />
                            }
@@ -1125,10 +1233,40 @@ console.log("data",data,tutor)
 
                         </div>
                      }
+                     {deleteBulkModalActive && (
+                        <Modal
+                           title={
+                              <span className="leading-10 text-center">
+                                 Please confirm that you want to delete the session(s).
 
+                              </span>
+                           }
+                           titleClassName="mb-5 leading-10"
+                           cancelBtn={true}
+                           crossBtn={true}
+                           cancelBtnClassName="max-w-140 !bg-transparent !border  !border-[#FFA28D]  text-[#FFA28D]"
+                           primaryBtn={{
+                              text: "Delete",
+                              className: "w-[140px]  pl-4 px-4 !bg-[#FF7979] text-white",
+                              onClick: () => deleteAll ? handleDeleteAllSession() : handleDeleteSession(),
+                              bgDanger: true,
+                              loading: loading,
+                           }}
+                           body={
+                              <>
+                                 <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-10">
+                                    <span className="font-semibold mr-1">⚠️ Note:</span>
+                                    All deleted session data will be lost and you will NOT be able to recover it later. Note that this might also impact the Client's digital wallet accordingly. Read detailed documentation in Evallo’s  <span className="text-[#24A3D9]"> knowledge base.</span>
+                                 </p>
+                              </>
+                           }
+                           handleClose={() => setDeleteBulkModalActive(false)}
+                           classname={"max-w-[700px]  mx-auto"}
+                        />
+                     )}
                   </div>
 
-               </div>
+               </>
             }
          />
       </>

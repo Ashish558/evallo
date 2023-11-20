@@ -10,7 +10,7 @@ import FilterItems from "../../components/FilterItems/filterItems";
 import InputField from "../../components/InputField/inputField";
 import Modal from "../../components/Modal/Modal";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
-import questionMark from "../../assets/images/Vector (6).svg";
+import questionMark from "../../assets/icons/blue_query.svg";
 import toggleRectIcon from "../../assets/icons/toggle-rect.svg";
 import toggleRectActiveIcon from "../../assets/icons/toggle-rect-active.svg";
 import toggleCircleIcon from "../../assets/icons/toggle-circle.svg";
@@ -51,9 +51,9 @@ import AddNewQuestion from "../Frames/AddNewQuestion/AddNewQuestion";
 import { useAddNewQuestionMutation } from "../../app/services/admin";
 import { updateOrganizationSettings } from "../../app/slices/organization";
 import InputSelect from "../../components/InputSelect/InputSelect";
-import { timeZones } from "../../constants/constants";
 import { permissionsStaticData } from "./Tabs/staticData";
 import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
+import moment from "moment-timezone";
 
 // import questionMark from '../../assets/images/question-mark.svg'
 const initialState = {
@@ -64,7 +64,7 @@ const initialState = {
 const subModalInitialState = {
   code: "",
   expiry: "",
-  tests:[],
+  tests: [],
   editing: false,
 };
 
@@ -131,6 +131,7 @@ export default function Settings() {
     tests: [],
   });
   const user = useSelector((state) => state.user);
+  const timeZones = moment.tz.names(); // String[]
 
   useEffect(() => {
     setAdminModalDetails({
@@ -304,7 +305,6 @@ export default function Settings() {
       setSettingsData(organization.settings);
       if (organization?.settings?.permissions)
         setThePermission(organization.settings.permissions);
-      
     }
   };
   //console.log(organization);
@@ -650,7 +650,6 @@ export default function Settings() {
       };
       // //console.log('updatedSetting', updatedSetting);
       updateAndFetchsettingsNew2(updatedSetting);
-     
     } else {
       let updated = [
         ...subscriptionCode,
@@ -665,7 +664,6 @@ export default function Settings() {
       };
       // //console.log('updatedSetting', updatedSetting);
       updateAndFetchsettingsNew2(updatedSetting);
-     
     }
   };
 
@@ -781,7 +779,7 @@ export default function Settings() {
       }));
     }
   };
- 
+
   const changeTab = (num) => {
     navigate(`/settings?tab=${num}`);
     setActiveTab(num);
@@ -803,9 +801,10 @@ export default function Settings() {
         //console.log(res.error);
         return;
       }
-      window.location.reload();
+      //  window.location.reload();
       // //console.log("reshi", res);
-
+    
+      fetchSettings();
       setFetchS(res);
     });
   };
@@ -816,9 +815,9 @@ export default function Settings() {
       setActiveTab(parseInt(activeTab));
     }
   }, [searchParams.get("tab")]);
-   /* new */
+  /* new */
 
-   const subModalInitialServiceState = {
+  const subModalInitialServiceState = {
     service: "",
     specialization: [],
     editing: false,
@@ -864,9 +863,11 @@ export default function Settings() {
     service: "",
     specialization: [],
   });
-  const [addSession2, setSession2] = useState({ heading: "",
-  items: [],});
- 
+  const [addSession2, setSession2] = useState({
+    heading: "",
+    items: [],
+  });
+
   const [addOne, setOne] = useState(false);
   const [loading2, setLoading2] = useState(false);
   useEffect(() => {
@@ -930,7 +931,6 @@ export default function Settings() {
     //console.log("searchTests0", searchedTest);
   }
 
- 
   const onEditService = (code) => {
     setSubModalServiceData({
       ...code,
@@ -1016,15 +1016,24 @@ export default function Settings() {
     // //console.log('updatedSetting', updatedSetting)
   };
 
- 
   console.log({ offersNew, offerImages });
 
-
-  const submitImageModalNew = (file, val, e) => {
-    e.preventDefault();
+  const submitImageModalNew = (file2, val, e) => {
     // //console.log(tagText)
     // //console.log(tagImage)
     // //console.log(selectedImageTag)
+    e.preventDefault();
+    const file = file2;
+    if (!file) {
+      return;
+    }
+    e.target.value = "";
+    let size = file.size / 1024;
+    size = size / 1024;
+    if (size > 1) {
+      alert("File size is larger than than 1MB");
+      return;
+    }
     if (loading2) return;
     const formData = new FormData();
 
@@ -1046,6 +1055,7 @@ export default function Settings() {
         maxContentLength: Infinity,
       })
       .then((res) => {
+        setSaveLoading(false);
         setLoading2(false);
         console.log("resp--", res.data.data.updatedSetting.settings);
         dispatch(
@@ -1108,7 +1118,6 @@ export default function Settings() {
     // updateAndFetchsettings(updatedSetting);
   };
 
-
   const updateAndFetchsettingsNew2 = (updatedSetting) => {
     if (!organization || !settingsData || !updatedSetting) return;
     const settings = {
@@ -1124,14 +1133,16 @@ export default function Settings() {
     updateSetting(body)
       .then((res) => {
         //console.log("updated", res.data.data);
-        alert("Succesfully Added!")
-        setOne(false)
-        setAddServiceModalActive(false)
-        setAddSessionModalActive(false)
-        setAddCodeModalActive(false)
+        alert("Succesfully Added!");
+        setOne(false);
+        setAddServiceModalActive(false);
+        setAddSessionModalActive(false);
+        setAddCodeModalActive(false);
         setServices2({ service: "", specialization: [] });
-        setSession2({ heading: "",
-        items: [] });
+        setSession2({
+          heading: "",
+          items: [],
+        });
         setAddCodeModalActive(false);
         setSubModalData(subModalInitialState);
         setSaveLoading(false);
@@ -1139,7 +1150,7 @@ export default function Settings() {
         dispatch(updateOrganizationSettings(res.data.data.updatedOrg.settings));
       })
       .catch((err) => {
-        alert("Error Occured!")
+        alert("Error Occured!");
         setSaveLoading(false);
         //console.log("err", err);
       });
@@ -1166,7 +1177,7 @@ export default function Settings() {
     };
 
     updateAndFetchsettingsNew2(updatedSetting);
-   //setAddServiceModalActive(false)
+    //setAddServiceModalActive(false)
   };
   const handleAddNewSpecialisation = (e) => {
     if (addServices2?.specialization) {
@@ -1198,7 +1209,7 @@ export default function Settings() {
     };
 
     updateAndFetchsettingsNew2(updatedSetting);
-   //setAddServiceModalActive(false)
+    //setAddServiceModalActive(false)
   };
   const handleAddNewTags = (e) => {
     if (addSession2?.items) {
@@ -1210,10 +1221,8 @@ export default function Settings() {
   };
   const handleTestChange2 = (item) => {
     //console.log("tsests", item);
-    if (subModalData.tests.includes(item._id)) {
-      let updated = subModalData.tests.filter(
-        (test) => test !== item._id
-      );
+    if (subModalData?.tests?.includes(item._id)) {
+      let updated = subModalData.tests.filter((test) => test !== item._id);
       setSubModalData((prev) => ({
         ...prev,
         tests: updated,
@@ -1225,14 +1234,19 @@ export default function Settings() {
       }));
     }
   };
-  console.log({ subModalData,addOne, addServices2, addSession2 });
- 
+  console.log({ subModalData, addOne, addServices2, addSession2 });
+
   return (
     <>
       <div className="  min-h-screen w-[83.6989583333vw] mx-auto">
         <p className="text-[#24A3D9]  !my-[calc(50*0.052vw)] text-base-20">
           <span onClick={() => navigate("/")} className="cursor-pointer ">
-            {organization?.company + "  >  "}
+            {organization?.company +
+              "  >  " +
+              firstName +
+              "  " +
+              lastName +
+              "  >  "}
           </span>
           <span className="font-semibold">Settings</span>
         </p>
@@ -1265,7 +1279,7 @@ export default function Settings() {
                         />
                       )}
                     </span>
-                    <p className="py-2 px-2 pb-3 font-medium  text-base-20  whitespace-nowrap">
+                    <p className="py-2 px-2 pb-3 font-medium  text-base-17-5  whitespace-nowrap">
                       {item.name}{" "}
                     </p>
                   </a>
@@ -1410,77 +1424,77 @@ export default function Settings() {
               title="Manage Referral Codes"
               className={styles["bordered-settings-container"]}
               body={
-                <div >
-                <div className="max-h-[330px] overflow-auto custom-scroller p-1 scrollbar-vertical ">
-                  {subscriptionCode !== undefined &&
-                    subscriptionCode.map((subscription, i) => {
-                      return (
-                        <div
-                          key={i}
-                          className="bg-white shadow-small mb-3 p-3 shadow-[0px_0px_2.500000476837158px_0px_#00000040] rounded-md"
-                        >
-                          <div className="flex items-center justify-between gap-3 pr-8 py-1">
-                            <p className="font-medium text-[#24A3D9] ">
-                              {subscription.code}
-                              <span className="inline-block ml-6 -mt-1 !font-normal text-base-17-5 text-[#517CA8]">
-                                {subscription.expiry} Weeks
-                              </span>
-                            </p>
-                            <div className="flex items-center ml-6 flex-1 flex-wrap  ">
-                              {/* <AddTag
+                <div>
+                  <div className="max-h-[330px] overflow-auto custom-scroller p-1 scrollbar-vertical ">
+                    {subscriptionCode !== undefined &&
+                      subscriptionCode.map((subscription, i) => {
+                        return (
+                          <div
+                            key={i}
+                            className="bg-white shadow-small mb-3 p-3 shadow-[0px_0px_2.500000476837158px_0px_#00000040] rounded-md"
+                          >
+                            <div className="flex items-center justify-between gap-3 pr-8 py-1">
+                              <p className="font-medium text-[#24A3D9] ">
+                                {subscription.code}
+                                <span className="inline-block ml-6 -mt-1 !font-normal text-base-17-5 text-[#517CA8]">
+                                  {subscription.expiry} Weeks
+                                </span>
+                              </p>
+                              <div className="flex items-center ml-6 flex-1 flex-wrap  ">
+                                {/* <AddTag
                               openModal={true}
                               onAddTag={(code) => handleAddTest(subscription)}
                               keyName={subscription.code}
                               text="Add Tests"
                             /> */}
-                              <FilterItems
-                                isString={true}
-                                onlyItems={true}
-                                keyName={subscription.code}
-                                items={subscription.tests}
-                                fetchData={true}
-                                filteredTests={filteredTests}
-                                api="test"
-                                onRemoveFilter={onRemoveCodeTest}
-                                className="pt-1 pb-1 mr-15 text-base-17-5"
-                              />
-                            </div>
-                            <div className="flex items-center gap-x-4">
-                              <ToggleBar
-                                boxClass="!h-[16px]"
-                                toggle={{
-                                  value: !subscription.pause,
-                                  key: "code",
-                                }}
-                                onToggle={() => handlePause(subscription)}
-                              ></ToggleBar>
-
-                              <div
-                                className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
-                                onClick={() => onEditCode(subscription)}
-                              >
-                                <img
-                                  src={EditBlueIcon}
-                                  className="w-4"
-                                  alt="edit"
+                                <FilterItems
+                                  isString={true}
+                                  onlyItems={true}
+                                  keyName={subscription.code}
+                                  items={subscription.tests}
+                                  fetchData={true}
+                                  filteredTests={filteredTests}
+                                  api="test"
+                                  onRemoveFilter={onRemoveCodeTest}
+                                  className="pt-1 pb-1 mr-15 text-base-17-5"
                                 />
                               </div>
-                              <div
-                                className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
-                                onClick={() => onRemoveCode(subscription)}
-                              >
-                                <img
-                                  src={DeleteIcon}
-                                  className="w-4"
-                                  alt="delete"
-                                />
+                              <div className="flex items-center gap-x-4">
+                                <ToggleBar
+                                  boxClass="!h-[16px]"
+                                  toggle={{
+                                    value: !subscription.pause,
+                                    key: "code",
+                                  }}
+                                  onToggle={() => handlePause(subscription)}
+                                ></ToggleBar>
+
+                                <div
+                                  className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
+                                  onClick={() => onEditCode(subscription)}
+                                >
+                                  <img
+                                    src={EditBlueIcon}
+                                    className="w-4"
+                                    alt="edit"
+                                  />
+                                </div>
+                                <div
+                                  className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
+                                  onClick={() => onRemoveCode(subscription)}
+                                >
+                                  <img
+                                    src={DeleteIcon}
+                                    className="w-4"
+                                    alt="delete"
+                                  />
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    })}
-                    </div>
+                        );
+                      })}
+                  </div>
                   <AddTag
                     children="Add New Code"
                     className="px-[18px] py-3 mt-5 bg-primary text-white"
@@ -1594,71 +1608,70 @@ export default function Settings() {
               className={styles["bordered-settings-container"]}
               body={
                 <div>
-                <div className="max-h-[360px] overflow-auto custom-scroller p-1 scrollbar-vertical">
-                  {sessionTags !== undefined &&
-                    sessionTags.map((service, i) => {
-                      return (
-                        <div
-                          key={i}
-                          className="bg-white shadow-small p-4 mb-3 rounded-md"
-                        >
-                          <div className="flex items-center  py-1 justify-between pr-8">
-                            <p className="font-medium text-[#24A3D9]  min-w-[100px]">
-                              {service.heading}
-                            </p>
-                            <div className="flex items-center flex-wrap flex-1 ml-16">
-                              {/* <AddTag
+                  <div className="max-h-[360px] overflow-auto custom-scroller p-1 scrollbar-vertical">
+                    {sessionTags !== undefined &&
+                      sessionTags.map((service, i) => {
+                        return (
+                          <div
+                            key={i}
+                            className="bg-white shadow-small p-4 mb-3 rounded-md"
+                          >
+                            <div className="flex items-center  py-1 justify-between pr-8">
+                              <p className="font-medium text-[#24A3D9]  min-w-[100px]">
+                                {service.heading}
+                              </p>
+                              <div className="flex items-center flex-wrap flex-1 ml-16">
+                                {/* <AddTag
                               onAddTag={handleAddSessionTag}
                               keyName={service.heading}
                               text="Add Items"
                             /> */}
-                              <FilterItems
-                                isString={true}
-                                onlyItems={true}
-                                keyName={service.heading}
-                                items={service.items}
-                                onRemoveFilter={onRemoveSessionTagItem}
-                                className="pt-1 pb-1 mr-15 text-base-17-5"
-                              />
-                            </div>
-                            <div className="flex items-center gap-x-4">
-                              <ToggleBar
-                                boxClass="!h-[16px]"
-                                circleColor="bg-[rgba(119,221,119,1)]"
-                                toggle={{
-                                  value: true,
-                                  key: "code",
-                                }}
-                                manual={true}
-                                // onToggle={() => }
-                              ></ToggleBar>
-                              <div
-                                className=" flex items-center justify-center  rounded-full cursor-pointer"
-                                onClick={() => onEditSession(service)}
-                              >
-                                <img
-                                  src={EditBlueIcon}
-                                  className="w-4"
-                                  alt="edit"
+                                <FilterItems
+                                  isString={true}
+                                  onlyItems={true}
+                                  keyName={service.heading}
+                                  items={service.items}
+                                  onRemoveFilter={onRemoveSessionTagItem}
+                                  className="pt-1 pb-1 mr-15 text-base-17-5"
                                 />
                               </div>
-                              <div
-                                className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
-                                onClick={() => onRemoveSessionTag(service)}
-                              >
-                                <img
-                                  src={DeleteIcon}
-                                  className="w-4"
-                                  alt="delete"
-                                />
+                              <div className="flex items-center gap-x-4">
+                                <ToggleBar
+                                  boxClass="!h-[16px]"
+                                  circleColor="bg-[rgba(119,221,119,1)]"
+                                  toggle={{
+                                    value: true,
+                                    key: "code",
+                                  }}
+                                  manual={true}
+                                  // onToggle={() => }
+                                ></ToggleBar>
+                                <div
+                                  className=" flex items-center justify-center  rounded-full cursor-pointer"
+                                  onClick={() => onEditSession(service)}
+                                >
+                                  <img
+                                    src={EditBlueIcon}
+                                    className="w-4"
+                                    alt="edit"
+                                  />
+                                </div>
+                                <div
+                                  className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
+                                  onClick={() => onRemoveSessionTag(service)}
+                                >
+                                  <img
+                                    src={DeleteIcon}
+                                    className="w-4"
+                                    alt="delete"
+                                  />
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    })}
-
-                     </div>
+                        );
+                      })}
+                  </div>
                   {/* <AddTag
                     children="Add Heading"
                     className="px-[18px] py-3 mt-5 bg-primary text-white"
@@ -1666,14 +1679,14 @@ export default function Settings() {
                     hideIcon={false}
                     onAddTag={onAddSessionTag}
                   /> */}
-                   <button
+                  <button
                     onClick={() => {
                       setOne(true);
                       setAddSessionModalActive(true);
                     }}
                     className="px-2 bg-primary flex items-center text-white font-medium text-[17.5px] pl-3 pr-3 pt-1.4 pb-1.5 rounded-7 mr-[15px]  text-base-17-5 "
                   >
-                    <span>  Add Heading </span>
+                    <span> Add Heading </span>
                     <img src={AddIcon} className="w-4 ml-1" alt="add" />
                   </button>
                 </div>
@@ -1754,7 +1767,7 @@ export default function Settings() {
                                 />
                               </div>
                               <InputField
-                                defaultValue={offer.link}
+                                defaultValue={offer?.link?.trim()}
                                 inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
                                 parentClassName={"mb-3 bg-[#F5F8FA]"}
                                 placeholder={"Hyperlink"}
@@ -1789,7 +1802,7 @@ export default function Settings() {
                     {offersNew?.length > 0 &&
                       offersNew?.map((off, idx) => {
                         return (
-                          <div className="flex-1 flex gap-2 min-w-[250px] ">
+                          <div className="flex-1 relative flex gap-2 min-w-[250px] ">
                             <div className=" relative w-[2px] rounded-md  bg-[#00000030] !h-[300px] mx-4"></div>
 
                             <div className="w-full flex-1">
@@ -1808,44 +1821,33 @@ export default function Settings() {
                     <p className="block ">{xlsFile.name}</p>
                   )} */}
                                 </div>
-                                {!off?.image?.name ? (
-                                  <div className="flex justify-center">
-                                    <label
-                                      htmlFor="file2"
-                                      className="block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ] "
-                                    >
-                                      Choose File
-                                    </label>
-                                    <input
-                                      onChange={(e) => {
-                                        let arr = offersNew;
-                                        arr[idx].image = e.target.files[0];
-                                        setOffersNew([...arr]);
-                                        // setImageName(e.target.files[0].name);
-                                      }}
-                                      id="file2"
-                                      type="file"
-                                    />
-                                  </div>
-                                ) : (
-                                  <div className="flex justify-center flex-col">
-                                    <span className="text-[#517CA8] text-base-15 mb-1">
-                                      {off?.image?.name}
-                                    </span>
-                                    <span
-                                      onClick={(e) =>
-                                        submitImageModalNew(off?.image, off, e)
-                                      }
-                                      className={` cursor-pointer block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center text-base-17-5] ${
-                                        loading2 ? "!cursor-wait" : ""
-                                      }`}
-                                    >
-                                      {loading2
-                                        ? "Submitting..."
-                                        : "Submit File"}
-                                    </span>
-                                  </div>
-                                )}
+
+                                <div className="flex justify-center">
+                                  <label
+                                    htmlFor="file2"
+                                    disabled={loading2}
+                                    className={`block cursor-pointer text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ${
+                                      loading2 ? "cursor-wait" : ""
+                                    }`}
+                                  >
+                                    {loading2 && off?.image
+                                      ? "Submitting..."
+                                      : " Choose File"}
+                                  </label>
+                                  <input
+                                    accept="image/*"
+                                    disabled={loading2}
+                                    onChange={(e) => {
+                                      let arr = offersNew;
+                                      arr[idx].image = e.target.files[0];
+                                      setOffersNew((prev) => [...arr]);
+                                      submitImageModalNew(off?.image, off, e);
+                                      // setImageName(e.target.files[0].name);
+                                    }}
+                                    id="file2"
+                                    type="file"
+                                  />
+                                </div>
 
                                 <label
                                   htmlFor="file"
@@ -1859,11 +1861,11 @@ export default function Settings() {
                                   //   onClick={() => handleImageRemoval(offer)}
                                   className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center  rounded-full cursor-pointer"
                                 >
-                                  <img
+                                  {/* <img
                                     src={DeleteIcon}
                                     className="w-5"
                                     alt="delete"
-                                  />
+                                  /> */}
                                 </div>
                                 {false && (
                                   <span className="text-[#517CA8] text-base-15 mb-1 !text-center flex justify-center items-center">
@@ -1918,9 +1920,30 @@ export default function Settings() {
             />
             <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl text-base-20">
               <p className="pr-2">Set Permissions </p>
-              <p>
-                <img src={questionMark} alt="" />
-              </p>
+              <div className="group relative">
+                <p>
+                  <img
+                    src={questionMark}
+                    alt=""
+                    onClick={() => {
+                      console.log("set perm tool tip");
+                    }}
+                  />
+                </p>
+
+                <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                  <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
+                    Set Permissions
+                  </h3>
+                  <span className="font-light leading-[0.5px] text-[0.69vw]">
+                    Here, you can select Viewing, Editing or Deleting
+                    permissions for various users. Use the toggles below to
+                    select these permissions for specific items related to
+                    specific users. By default, we have set some these up for
+                    you.
+                  </span>
+                </span>
+              </div>
             </div>
 
             <div
@@ -1933,13 +1956,15 @@ export default function Settings() {
                     item.choosedValue === false ? (
                       <div
                         key={id}
-                        className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between text-base-17-5"
+                        className={`${
+                          id === 3 ? "!opacity-[0.7]" : ""
+                        } pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between text-base-17-5`}
                       >
                         <p>{renderColoredText(item.name)}</p>
 
                         <ToggleBar
                           toggle={{ value: item.choosedValue, key: item._id }}
-                          onToggle={togglePermissions}
+                          onToggle={(e) => id !== 3 && togglePermissions(e)}
                         ></ToggleBar>
                       </div>
                     ) : (
@@ -2150,14 +2175,13 @@ export default function Settings() {
                       type="text"
                       value={subModalData.code}
                       isRequired={true}
-                      onChange={(e) =>{
-                        if(!e.target.value?.includes(" "))
-                        setSubModalData({
-                          ...subModalData,
-                          code: e.target.value,
-                        })
-                      }
-                    }
+                      onChange={(e) => {
+                        if (!e.target.value?.includes(" "))
+                          setSubModalData({
+                            ...subModalData,
+                            code: e.target.value,
+                          });
+                      }}
                     />
                   </div>
                   <div className="flex-1">
@@ -2171,19 +2195,22 @@ export default function Settings() {
                       placeholderClass="text-base-17-5"
                       parentClassName=" text-base-17-5 py-0 w-full mr-4"
                       type="text"
-                  
                       value={subModalData.expiry}
-                      onChange={(e) =>{
-                        console.log(e.target.value)
-                        console.log("shivam",e.target,e.target.value)
-                        if(parseInt(e.target.value)<0 || e.target.value<0  )return 
-                        if((/^\d+$/.test(e.target.value) && parseInt(e.target.value)>=0 )|| e.target.value?.length===0  )
-                        setSubModalData({
-                          ...subModalData,
-                          expiry: e.target.value,
-                        })
-                      }
-                    }
+                      onChange={(e) => {
+                        console.log(e.target.value);
+                        console.log("shivam", e.target, e.target.value);
+                        if (parseInt(e.target.value) < 0 || e.target.value < 0)
+                          return;
+                        if (
+                          (/^\d+$/.test(e.target.value) &&
+                            parseInt(e.target.value) >= 0) ||
+                          e.target.value?.length === 0
+                        )
+                          setSubModalData({
+                            ...subModalData,
+                            expiry: e.target.value,
+                          });
+                      }}
                     />
                   </div>
                 </div>
@@ -2207,7 +2234,7 @@ export default function Settings() {
                     optionListClassName="text-base-17-5"
                     optionClassName="text-base-17-5"
                     optionData={filteredTests}
-                    right={<img className="" src={down} />}
+                    rightIcon={down}
                     onOptionClick={(item) => {
                       handleTestChange2(item);
                       // setStudent(item.value);
@@ -2225,7 +2252,12 @@ export default function Settings() {
                   /> */}
                 </div>
                 <div className="flex gap-4 items-center justify-center mt-3">
-                <button disabled={saveLoading} className={`${saveLoading?"cursor-wait":""} rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}>
+                  <button
+                    disabled={saveLoading}
+                    className={`${
+                      saveLoading ? "cursor-wait" : ""
+                    } rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}
+                  >
                     Save{" "}
                   </button>
                   <button
@@ -2251,7 +2283,7 @@ export default function Settings() {
             setAddServiceModalActive(false);
             if (addOne) {
               setServices2({ service: "", specialization: [] });
-              setOne(false)
+              setOne(false);
             } else {
               setSubModalServiceData(subModalInitialServiceState);
             }
@@ -2350,7 +2382,12 @@ export default function Settings() {
                 </div>
                 <div className="w-full border-[1.33px_solid_#00000033] bg-[#00000033] my-5 h-[1.3px]"></div>
                 <div className="flex gap-4 items-center justify-center mt-3">
-                  <button disabled={saveLoading} className={`${saveLoading?"cursor-wait":""} rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}>
+                  <button
+                    disabled={saveLoading}
+                    className={`${
+                      saveLoading ? "cursor-wait" : ""
+                    } rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}
+                  >
                     Save{" "}
                   </button>
                   <button
@@ -2359,7 +2396,7 @@ export default function Settings() {
                       setAddServiceModalActive(false);
                       if (addOne) {
                         setServices2({ service: "", specialization: [] });
-                        setOne(false)
+                        setOne(false);
                       } else {
                         setSubModalServiceData(subModalInitialServiceState);
                       }
@@ -2382,29 +2419,29 @@ export default function Settings() {
           cancelBtnClassName="w-140 "
           handleClose={() => {
             setAddSessionModalActive(false);
-                      if (addOne) {
-                        setSession2({ heading: "",
-                        items: [] });
-                        setOne(false)
-                      } else {
-                        setSubModalSessionData(subModalInitialSessionState);
-                      }
-                    }
-          }
+            if (addOne) {
+              setSession2({
+                heading: "",
+                items: [],
+              });
+              setOne(false);
+            } else {
+              setSubModalSessionData(subModalInitialSessionState);
+            }
+          }}
           body={
             <form
               id="settings-form"
               onSubmit={(e) => {
                 e.preventDefault();
                 if (addOne) {
-                 handleAddNewSession()
+                  handleAddNewSession();
                 } else {
                   handleAddSessionName(
                     selectedSessionData?.heading,
                     subModalSessionData?._id
                   );
                 }
-               
               }}
             >
               <p className="text-base-17-5 mt-[-10px] text-[#667085]">
@@ -2430,9 +2467,13 @@ export default function Settings() {
                       placeholderClass="text-base-17-5"
                       parentClassName=" text-base-17-5 py-0 w-full mr-4"
                       type="text"
-                      value={ addOne ? addSession2?.heading :selectedSessionData?.heading}
+                      value={
+                        addOne
+                          ? addSession2?.heading
+                          : selectedSessionData?.heading
+                      }
                       isRequired={true}
-                      onChange={(e) =>{
+                      onChange={(e) => {
                         if (addOne) {
                           setSession2({
                             ...addSession2,
@@ -2442,43 +2483,59 @@ export default function Settings() {
                           setSelectedSessionData({
                             ...selectedSessionData,
                             heading: e.target.value,
-                          })
+                          });
                         }
-                      }
-                       
-                      }
+                      }}
                     />
                   </div>
                 </div>
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] mt-5">
                   <AddTag
-                    onAddTag={ addOne ? handleAddNewTags :handleAddSessionTag}
-                    keyName={ addOne ? addSession2?.heading :subModalSessionData.heading}
+                    onAddTag={addOne ? handleAddNewTags : handleAddSessionTag}
+                    keyName={
+                      addOne
+                        ? addSession2?.heading
+                        : subModalSessionData.heading
+                    }
                     text="Add Tags"
                   />
                   <FilterItems
                     isString={true}
                     onlyItems={true}
-                    keyName={ addOne ? addSession2?.heading :subModalSessionData.heading}
-                    items={ addOne ? addSession2?.items :subModalSessionData.items}
-                    onRemoveFilter={ addOne ? handleNewSessionRemove :onRemoveSessionTagItem}
+                    keyName={
+                      addOne
+                        ? addSession2?.heading
+                        : subModalSessionData.heading
+                    }
+                    items={
+                      addOne ? addSession2?.items : subModalSessionData.items
+                    }
+                    onRemoveFilter={
+                      addOne ? handleNewSessionRemove : onRemoveSessionTagItem
+                    }
                     className="pt-1 pb-1 mr-15 text-base-17-5"
                   />
                 </div>
                 <div className="w-full border-[1.33px_solid_#00000033] bg-[#00000033] my-5 h-[1.3px]"></div>
                 <div className="flex gap-4 items-center justify-center mt-3">
-                <button disabled={saveLoading} className={`${saveLoading?"cursor-wait":""} rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}>
+                  <button
+                    disabled={saveLoading}
+                    className={`${
+                      saveLoading ? "cursor-wait" : ""
+                    } rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}
+                  >
                     Save{" "}
                   </button>
                   <button
-                  
                     className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-[6px] text-[#FFA28D]  w-[146px]"
                     onClick={() => {
                       setAddSessionModalActive(false);
                       if (addOne) {
-                        setSession2({ heading: "",
-                        items: [] });
-                        setOne(false)
+                        setSession2({
+                          heading: "",
+                          items: [],
+                        });
+                        setOne(false);
                       } else {
                         setSubModalSessionData(subModalInitialSessionState);
                       }
@@ -2607,14 +2664,15 @@ export default function Settings() {
       )}
       {addNewQuestionModalActive && (
         <Modal
-          classname={"max-w-[700px] mx-auto"}
+          classname={"max-w-[650px] mx-auto"}
           titleClassName="text-base-20 mb-[18px]"
           title="Add Question"
           cancelBtn={true}
-          cancelBtnClassName="w-140"
+          buttonParentClassName="justify-center"
+          cancelBtnClassName="w-140 bg-transparent  border-2 border-[#26435F] text-[#26435F]"
           primaryBtn={{
             text: "Add",
-            className: "w-140",
+            className: "w-140 ",
             form: "add-question-form",
             type: "submit",
           }}

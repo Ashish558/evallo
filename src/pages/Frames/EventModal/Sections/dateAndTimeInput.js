@@ -2,20 +2,12 @@ import React from 'react'
 import InputField from '../../../../components/InputField/inputField';
 import InputSelect from '../../../../components/InputSelect/InputSelect';
 import { convertTime12to24, tConvert } from '../../../../utils/utils';
+import moment from "moment-timezone";
 import { times } from '../../../../constants/constants';
-
-const timeZones = [
-   'IST',
-   'AKST',
-   'EST',
-   'HST',
-   'MST',
-   'PST',
-]
 
 export default function DateAndTimeInput({ data, setData, isEditable }) {
 
-   console.log("dateAndTimeInput",data)
+   const timeZones = moment.tz.names(); // String[]
 
    return (
       <div className="flex mb-[30px] items-end">
@@ -44,7 +36,7 @@ export default function DateAndTimeInput({ data, setData, isEditable }) {
             parentClassName="w-full max-w-120 mb-0 "
             type="time"
             optionData={times}
-            inputContainerClassName="bg-lightWhite border-0  pr-3 pt-3.5 pb-3.5 h-full text-[#507CA8] text-[16px]"
+            inputContainerClassName="bg-lightWhite border-0  pr-3 pt-3.5 pb-3.5 h-full text-[#507CA8] text-[16px] lowercase"
             inputClassName="bg-transparent appearance-none  text-[16px]"
             value={`${data.time.start.time} ${data.time.start.timeType}`}
             disabled={!isEditable}
@@ -68,7 +60,7 @@ export default function DateAndTimeInput({ data, setData, isEditable }) {
             parentClassName="w-full max-w-120 self-end"
             type="time"
             placeholderClass="text-[#507CA8]"
-            inputContainerClassName="bg-lightWhite border-0  pr-3 pt-3.5 pb-3.5 h-full text-[#507CA8] "
+            inputContainerClassName="bg-lightWhite border-0  pr-3 pt-3.5 pb-3.5 h-full text-[#507CA8] lowercase"
             inputClassName="bg-transparent appearance-none text-[#507CA8] text-[16px]"
             // value={convertTime12to24(
             //    `${data.time.end.time} ${data.time.end.timeType}`

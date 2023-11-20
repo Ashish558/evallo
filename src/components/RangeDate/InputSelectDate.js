@@ -21,27 +21,30 @@ export default function InputSelect({
   checkbox,
   optionClassName,
   optionType,
+  IconRightClass,
   disabled,
   required,
   optionListClassName,
   IconRight,
   DateSelect,
   setSelectedDate,
+  optionContainerClassName,
+  optionPadding
 }) {
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
   useOutsideAlerter(selectRef, () => setSelected(false));
   const handleOption = () => {
-   
+
     setSelected(!selected);
-    
+
     if (setSelectedDate) setSelectedDate({ sDate: "", eDate: "" });
   };
   useEffect(() => {
     if (!checkbox) setSelected(false);
   }, [value]);
   const handleChange = (optionType, option, idx) => {
-    console.log("handleOption",option)
+    console.log("handleOption", option)
     onChange(optionType, option, idx);
   };
 
@@ -65,7 +68,7 @@ export default function InputSelect({
           } `}
       >
         {Icon && <img src={Icon} className={`mr-5  w-[28px]}`} alt="icon" />}
-      
+
 
         <div
           className={`outline-0 w-full text-right cursor-default relative ${optionClassName ? optionClassName : ""
@@ -79,16 +82,17 @@ export default function InputSelect({
               {" "}
             </span>
           ) : (
-            <span className={`mr-5 pl-5 text-[15px] !text-[calc(17*0.050vw)] cursor-default whitespace-nowrap `} >
-              <span className={`${valueClassName}`} >{value}</span>
-              <img
-              className="w-[30px] inline-block relative h-[10px] text-lg cursor-pointer  z-[5000]"
-              onClick={handleOption}
-              src={IconRight}
-            />
-            </span>
+            <div className={`mr-5 pl-5 text-[15px] !text-[calc(17*0.050vw)] cursor-default whitespace-nowrap h-full flex items-center justify-between`} >
+              <span className={`${valueClassName}`} onClick={handleOption}>{value}</span>
+             {IconRight&& <img
+                className={`w-[30px] inline-block relative h-[10px] text-lg cursor-pointer  z-[5000] ${IconRightClass} mx-4`}
+                onClick={handleOption}
+                alt="right"
+                src={IconRight}
+              />}
+            </div>
           )}
-  {/* {selected ? (
+          {/* {selected ? (
           IconRight ? (
             <img
               className="w-[30px] ml-[-100px]relative h-[30px] text-lg cursor-pointer  z-[5000]"
@@ -115,21 +119,21 @@ export default function InputSelect({
             alt="down-arrow"
           />
         )} */}
-     
+
         </div>
         {selected && (
           <div
-            className={`custom-scroller relative !z-[9999999999] scrollbar-vertical  shadow-md ${styles.options} !shadow-[0px_0px_3px_0px_#00000040]`}
+            className={`custom-scroller relative !z-[9999999999] scrollbar-vertical  shadow-md ${optionContainerClassName} ${styles.options} ${styles.options} !shadow-[0px_0px_3px_0px_#00000040]`}
           >
 
             {optionData?.map((option, idx) => {
               return (
                 <div
-                  className="outline-0 border-0 relative !z-[9999999999] py-2 px-[26px] flex items-center justify-start"
+                  className={`outline-0 border-0 relative !z-[9999999999] py-2 px-[26px] flex items-center justify-start ${optionPadding}`}
                   key={idx}
                   onClick={() => handleChange(optionType, option, idx)}
                 >
-                  <p className={`${optionListClassName} cursor-pointer relative !z-[9999999999]`}>
+                  <p className={`${optionListClassName}  cursor-pointer relative !z-[9999999999] `}>
                     {optionType === "object" ? option.name : option}
                   </p>
                   {radio && (
@@ -150,9 +154,9 @@ export default function InputSelect({
                 </div>
               );
             })}
-           
-            {DateSelect &&<> <p className="px-[26px] text-center text-[15px] underline underline-offset-4 font-semibold py-[15px] !text-[calc(15*0.050vw)]">Custom</p>
-            { DateSelect}
+
+            {DateSelect && <> <p className="px-[26px]  underline underline-offset-4 font-semibold py-2 !text-[calc(17*0.050vw) ]">Custom</p>
+              {DateSelect}
             </>}
           </div>
         )}

@@ -5,36 +5,38 @@ import { useTutorDetails } from "../../hooks/useTutorDetails";
 import styles from "./TutorCarousel.module.css";
 import left from "../../assets/YIcons/VectorleftParent.svg";
 import right from "../../assets/YIcons/VectorrightParent.svg";
-export default function SingleTutor({ idx, tutor }) {
+export default function SingleTutor({turorsLength, idx, tutor, handlePrev,handleNext}) {
   const navigate = useNavigate();
   const { awsLink } = useSelector((state) => state.user);
-  console.log(tutor)
+  console.log(turorsLength,'turorsLength')
   return (
 
     <div key={idx} className="item px-2 h-full  ">
       <div className="flex flex-1 h-full items-center gap-8 my-auto justify-between">
 
-        <div className="w-2/3">
+        <div className="w-2/3 mb-3">
           {/* <h5 className={`${styles.tag}`}>
             {tutor.tutorLevel && `${tutor.tutorLevel} Belt`}
           </h5>
           <p>{tutor?.education}</p> */}
-          <h3 className=" text-[#26435F] text-base-22-5 font-semibold">
+          <h3 className=" text-[#26435F] text-base-22-5 font-semibold h-24 flex justify-start items-start">
             {" "}
             {`${tutor.firstName} ${tutor.lastName}`}{" "}
           </h3>
-          <p className="text-[#517CA8] mt-[25px] text-base-17-5">
+          <div className="w-full flex flex-col flex-1 justify-start items-start">
+          <p className="text-[#517CA8] text-base-17-5">
             {tutor?.tagLine ? tutor?.tagLine : "Test Prep Math Tutoring"}
           </p>
           <p className="text-[#517CA8]  text-base-17-5">
             {tutor?.topic ? tutor?.topic : "No topic"}
           </p>
           <button
-            className="p-2 mt-5 rounded-lg whitespace-nowrap text-sm px-4 bg-[#FFA28D] text-white"
+            className="p-2 mt-2 rounded-lg whitespace-nowrap text-sm px-4 bg-[#FFA28D] text-white"
             onClick={() => tutor._id && navigate(`/profile/tutor/${tutor._id}`)}
           >
             View Profile
           </button>
+          </div>
         </div>
         <div className="  float-right translate-x-[7%] design:translate-x-[0%] h-fit pt-3" >
           <div className="relative ">
@@ -63,10 +65,12 @@ export default function SingleTutor({ idx, tutor }) {
             </svg>
 
           </div>
-          <span className="flex px-9 pt-2 gap-2">
-            <span><img src={left} className="w-2 h-3 m-0 p-0 " /></span>
-            <span><img src={right} className="w-2 h-3 m-0 p-0 " /></span>
+          {
+            turorsLength>=2 && <span className="flex px-9 pt-2 gap-2">
+            <span><img onClick={handlePrev} src={left} className="w-2 h-3 m-0 p-0 cursor-pointer" alt="left"/></span>
+            <span><img onClick={handleNext} src={right} className="w-2 h-3 m-0 p-0 cursor-pointer" alt="right"/></span>
           </span>
+          }
         </div>
       </div>
     </div>

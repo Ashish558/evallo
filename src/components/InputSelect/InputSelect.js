@@ -33,11 +33,54 @@ export default function InputSelect({
   DateSelect,
   IconSearch,
   tableDropdown,
-  customArrow
+  customArrow,
+  customArrowClassName,
+  questionMarkIcon,
+  questionMarkMargin
 }) {
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
   // console.log(selectRef)
+  const [scrollToLetter, setScrollToLetter] = useState(null);
+  const optionsRef = useRef(null);
+
+  useEffect(() => {
+    if (scrollToLetter) {
+      const regex = new RegExp(`^${scrollToLetter}`, 'i');
+      let index = 0
+      const element = optionData?.find((item, idx) => {
+        if (optionType === "object") {
+          if (regex.test(item.name)) {
+            index = idx
+          }
+          return regex.test(item.name)
+        } else {
+          if (regex.test(item)) {
+            index = idx
+          }
+          return regex.test(item)
+        }
+      });
+      if (element && optionsRef.current) {
+        const itemHeight = 35.93;
+        optionsRef.current.scrollTop = itemHeight * index;
+      }
+      setScrollToLetter(null); // Reset scrollToLetter
+    }
+  }, [scrollToLetter, optionData]);
+
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      setScrollToLetter(e.key);
+    };
+    if (selected) {
+      window.addEventListener('keydown', handleKeyPress);
+    } else {
+      window.removeEventListener('keydown', handleKeyPress);
+    }
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [selected]);
+
   useOutsideAlerter(selectRef, () => setSelected(false));
   const handleOption = () => {
     setSelected(!selected);
@@ -74,7 +117,7 @@ export default function InputSelect({
           )}
           <div>
             {label == "Default Time Zone" && (
-              <img className="ml-3" src={questionMark} alt=""></img>
+              <img className={`${questionMarkMargin ? questionMarkMargin : `ml-3`}`} questionMarkIcon src={questionMarkIcon ? questionMarkIcon : questionMark} alt=""></img>
             )}
           </div>
         </div>
@@ -92,19 +135,19 @@ export default function InputSelect({
         {selected ? (
           IconRight ? (
             IconRight
-          ) : !IconLeft&&!hideRight && (
+          ) : !IconLeft && !hideRight && (
             <img
-            src={customArrow ? customArrow :downArrow22?DownArrow2:DownArrow}
-            className={`${customArrow ?`w-[20px] h-[20px] rotate-180`:`w-[15px] h-[12px]`}   ${styles.downArrow}`}
+              src={customArrow ? customArrow : downArrow22 ? DownArrow2 : DownArrow}
+              className={`${customArrow ? `${customArrowClassName ? customArrowClassName : "w-[20px] h-[20px]"}` : `w-[15px] h-[12px]`}   ${styles.downArrow}`}
               alt="down-arrow"
             />
           )
         ) : IconRight ? (
           IconRight
-        ) : !IconLeft&&!hideRight && (
+        ) : !IconLeft && !hideRight && (
           <img
-            src={customArrow ? customArrow :downArrow22?DownArrow2:DownArrow}
-            className={`${customArrow ?`w-[20px] h-[20px]`:`w-[15px] h-[12px]`}   ${styles.downArrow}`}
+            src={customArrow ? customArrow : downArrow22 ? DownArrow2 : DownArrow}
+            className={`${customArrow ? `${customArrowClassName ? customArrowClassName : "w-[20px] h-[20px]"}` : `w-[15px] h-[12px]`} ${styles.downArrow} `}
             alt="down-arrow"
           />
         )}
@@ -126,6 +169,7 @@ export default function InputSelect({
         {selected && (
           <div
             onClick={handleOption}
+            ref={optionsRef}
             className={` custom-scroller  scrollbar-vertical   shadow-[0px_0px_3px_0px_#00000040] ${styles.options} $`}
           >
             {DateSelect && DateSelect}

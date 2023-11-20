@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLazyGetParentsByNameQuery } from "../../../../app/services/admin";
 import { useLazyGetStudentsByNameQuery } from "../../../../app/services/session";
 import ProfilePhoto from "./ProfilePhoto";
+import down from "../../../../assets/YIcons/Group33.svg";
 import caution from "../../../../assets/icons/octicon_stop-16.svg";
 import {
   useUpdateTutorDetailsMutation,
@@ -17,7 +18,7 @@ import InputSelect from "../../../../components/InputSelect/InputSelect";
 import Modal from "../../../../components/Modal/Modal";
 
 import Slider from "../../../../components/Slider/Slider";
-import { grades, subjects, timeZones } from "../../../../constants/constants";
+import { grades, subjects } from "../../../../constants/constants";
 import styles from "./style.module.css";
 import CountryCode from "../../../../components/CountryCode/CountryCode";
 import { useSelector } from "react-redux";
@@ -30,6 +31,7 @@ import useOutsideAlerter from "../../../../hooks/useOutsideAlerter";
 import { Country } from "country-state-city";
 import { useUpdateUserOrganizationMutation } from "../../../../app/services/organization";
 import SCheckbox from "../../../../components/CCheckbox/SCheckbox";
+import moment from "moment-timezone";
 // 637b9df1e9beff25e9c2aa83
 export default function ParentEditables({
   userId,
@@ -39,7 +41,7 @@ export default function ParentEditables({
   toEdit,
   fetchDetails,
   settings,
-  persona,
+
   awsLink,
   selectedScoreIndex,
 }) {
@@ -50,7 +52,7 @@ export default function ParentEditables({
   const [student, setStudent] = useState("");
   const [fetchStudents, studentResponse] = useLazyGetStudentsByNameQuery();
   const [students, setStudents] = useState([]);
-
+  const { role: persona } = useSelector((state) => state.user);
   const [parent, setParent] = useState("");
   const [fetchParents, fetchParentsResp] = useLazyGetParentsByNameQuery();
   const [parents, setParents] = useState([]);
@@ -63,6 +65,7 @@ export default function ParentEditables({
     usePostTutorDetailsMutation();
   const [updatedService, setUpdatedService] = useState({});
   const [loading, setLoading] = useState(false);
+  const timeZones = moment.tz.names(); // String[]
 
   const { organization } = useSelector((state) => state.organization);
   const [textOpen, setTextOpen] = useState(false);
@@ -74,12 +77,12 @@ export default function ParentEditables({
     },
     {
       name: "frame0",
-      title: "Basic Info",
+      title: "Account Details",
       api: "user",
     },
     {
       name: "frame1",
-      title: "Basic Info",
+      title: "Additional Details",
       api: "userDetail",
     },
     {
@@ -136,7 +139,7 @@ export default function ParentEditables({
     },
     {
       name: "notes",
-      title: "Internal Notes",
+      title: "Admin Notes",
       api: "user",
     },
     {
@@ -272,12 +275,16 @@ export default function ParentEditables({
     displayValue: city.name,
   }));
   useEffect(() => {
-    if (!currentToEdit.country) return;
-    if (country.length === 0) {
-      fetch("countryData.json")
-        .then((res) => res.json())
-        .then((data) => setCountry(data));
-    }
+    if (!currentToEdit.hasOwnProperty("country")) return;
+    console.log("countries usseffect ", currentToEdit);
+
+    fetch("/countryData.json")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("countries ", data);
+        setCountry(data);
+      });
+
     const c = currentToEdit.country;
     if (c) {
       const state = country.filter((x) => x.name === c);
@@ -286,7 +293,7 @@ export default function ParentEditables({
     }
   }, [currentToEdit]);
   const [addLink, addLinkStatus] = useAddLinkStudentMutation();
-  //console.log("parentEditables",currentToEdit)
+  console.log("parentEditables", currentToEdit, country);
   const handleProfilePhotoChange = (file) => {
     // //console.log(file)
     let url = "";
@@ -446,18 +453,24 @@ export default function ParentEditables({
     delete reqBody["active"];
     console.log({ reqBody, userId });
     if (reqBody.hasOwnProperty("firstName")) {
-      console.log("fiestName",reqBody.firstName?.length,{ reqBody, userId });
-      if (reqBody.firstName?.length===0 || reqBody.firstName?.trim()?.length===0) {
+      console.log("fiestName", reqBody.firstName?.length, { reqBody, userId });
+      if (
+        reqBody.firstName?.length === 0 ||
+        reqBody.firstName?.trim()?.length === 0
+      ) {
         alert("First name can't be empty.");
         return;
       }
     }
-      if (reqBody.hasOwnProperty("lastName")) {
-        if (reqBody.lastName?.length===0 ||reqBody.lastName?.trim()?.length===0) {
-          alert("Last name can't be empty.");
-          return;
-        }
+    if (reqBody.hasOwnProperty("lastName")) {
+      if (
+        reqBody.lastName?.length === 0 ||
+        reqBody.lastName?.trim()?.length === 0
+      ) {
+        alert("Last name can't be empty.");
+        return;
       }
+    }
     if (reqBody.hasOwnProperty("country")) {
       updateUserAccount(reqBody);
     }
@@ -467,18 +480,18 @@ export default function ParentEditables({
         return;
       }
     }
-    
+
     if (currentToEdit.hasOwnProperty("notes")) {
-      reqBody={
-        internalNotes:[
+      reqBody = {
+        internalNotes: [
           ...currentToEdit.internalNotes,
           {
             note: currentToEdit?.notes,
-     
-        date: new Date(),
-          }
-        ]
-      }
+
+            date: new Date(),
+          },
+        ],
+      };
 
       //  addNotes(reqBody).then((res)=>{
       //   //console.log("internal",{res})
@@ -706,6 +719,7 @@ export default function ParentEditables({
     "serviceSpecializations",
     "personality",
     "subjects",
+    "frame0",
   ];
   //console.log({country,states,currentToEdit})
   return Object.keys(toEdit).map((key) => {
@@ -714,11 +728,13 @@ export default function ParentEditables({
         <Modal
           fetchDetails={fetchDetails}
           key={key}
-          classname={
+          classname={`${
             forCss.includes(currentField.name)
-              ? "max-w-[800px] md:pb-5 mx-auto overflow-visible pb-5"
-              : "max-w-fit md:pb-5 mx-auto overflow-visible pb-5"
-          } /*{ ` max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5`}*/
+              ? "max-w-[850px] md:pb-5 mx-auto overflow-visible pb-5 !px-[20px]":
+              currentField.name==="frame1"
+              ? "max-w-[980px] md:pb-5 mx-auto overflow-visible pb-5 !px-10"
+              : "max-w-fit md:pb-5 mx-auto overflow-visible pb-5 !px-[20px]"
+          } `} /*{ ` max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5`}*/
           title=""
           // primaryBtn={{
           //    text: "Save",
@@ -735,8 +751,8 @@ export default function ParentEditables({
           handleClose={handleClose}
           body={
             <>
-              <div className="flex  ">
-                <div className="mr-5 text-[#26435F] font-bold text-[17px]">
+              <div className="flex  items-center mt-[23px]">
+                <div className="mr-5 text-[#26435F] font-semibold text-[21px]">
                   {currentField.title
                     ? currentField.title
                     : toEdit.tutorServices
@@ -744,7 +760,7 @@ export default function ParentEditables({
                     : ""}
                 </div>
                 <button
-                  className="w-[100px] bg-[#FFA28D] p-1 rounded text-white  text-base pl-3 pr-3 ml-auto"
+                  className="w-[133px] bg-[#FFA28D] py-1  text-white  text-base px-3 ml-auto h-[40px] rounded-lg"
                   onClick={handleSubmit}
                 >
                   Save
@@ -758,9 +774,9 @@ export default function ParentEditables({
               >
                 {/* {currentField.fields && currentField.fields} */}
                 {currentField.name === "frame0" && (
-                  <div className="flex flex-col px-2 it">
-                    <div className="flex gap-3 items-center">
-                      <div className="flex flex-col gap-5">
+                  <div className="flex flex-col px-2 max-h-[60vh] w-full ">
+                    <div className="flex gap-3 items-center w-full">
+                      <div className="flex flex-col gap-5 w-full">
                         <div className="flex !text-sm gap-4 ">
                           <div className="!w-[100px] mr-5">
                             <ProfilePhoto
@@ -778,8 +794,8 @@ export default function ParentEditables({
                             />
                           </div>
                           <InputField
-                            label="First Name"
-                            labelClassname="text-[#26435F]"
+                            label="First name"
+                            labelClassname="text-[#26435F] !font-semibold "
                             placeholder="First Name"
                             inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
                             inputClassName="bg-transparent text-xs   "
@@ -795,8 +811,8 @@ export default function ParentEditables({
                           />
 
                           <InputField
-                            label="Last Name"
-                            labelClassname="text-[#26435F]"
+                            label="Last name"
+                            labelClassname="text-[#26435F] !font-semibold"
                             placeholder="Last Name"
                             inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
                             inputClassName="bg-transparent text-xs   "
@@ -811,13 +827,13 @@ export default function ParentEditables({
                             }
                           />
                         </div>
-                        <div className="flex !text-sm gap-4 ">
+                        <div className="flex !text-sm gap-4 items-center ">
                           <InputFieldDropdown
-                            codeClassName="!bg-white !rounded-sm"
-                            placeholder=""
-                            labelClassname="text-[#26435F]"
-                            inputContainerClassName="!text-xs  !border-none !pr-1  bg-primary-50  !shadow-[0px_0px_2px_0px_#00000040]"
-                            inputClassName="bg-transparent !w-[120px] !text-xs rounded-[4px]  !pr-1 !mr-0"
+                            placeholder="Phone"
+                            labelClassname="text-[#26435F] !font-semibold"
+                            inputContainerClassName="flex gap-1 pt-0 pb-0 px-0 !py-0 !px-0  border-white"
+                            inputClassName=" text-[#667085] text-sm pt-3 pb-3 px-5 !py-[13px] bg-primary-50  text-400 rounded-[5px] "
+                            codeClassName="!px-4 w-[70px] !gap-4 text-[#667085] text-sm !py-[22.5px]  bg-primary-50  text-400 rounded-[5px] "
                             parentClassName="flex-1 "
                             type="number"
                             label="Phone"
@@ -839,7 +855,7 @@ export default function ParentEditables({
                           <InputField
                             IconLeft={caution}
                             label="Email"
-                            labelClassname="text-[#26435F]"
+                            labelClassname="text-[#26435F] font-semibold"
                             placeholder="Email"
                             inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
                             inputClassName="bg-transparent !w-[200px] text-xs   "
@@ -853,24 +869,26 @@ export default function ParentEditables({
                               })
                             }
                             Tooltip={
-                              <span className="absolute top-10 w-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
-                                <h3 className="text-[#24A3D9] font-semibold mb-1">
-                                  Email Confirmation Sent
-                                </h3>
-                                You need to verify your email if
-                                <ul className="list-disc pl-3 mb-2">
-                                  <li>you created a new account.</li>
-                                  <li>you recently changed your email.</li>
-                                </ul>
-                                We have sent you an email verification link to
-                                your current email address to make sure that it
-                                really is you who requested a change.
-                              </span>
+                              !user?.isVerfied && (
+                                <span className="absolute top-10 w-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                                  <h3 className="text-[#24A3D9] font-semibold mb-1">
+                                    Email Confirmation Sent
+                                  </h3>
+                                  You need to verify your email if
+                                  <ul className="list-disc pl-3 mb-2">
+                                    <li>you created a new account.</li>
+                                    <li>you recently changed your email.</li>
+                                  </ul>
+                                  We have sent you an email verification link to
+                                  your current email address to make sure that
+                                  it really is you who requested a change.
+                                </span>
+                              )
                             }
                           />
                           <InputField
                             label="Alternative Email"
-                            labelClassname="text-[#26435F]"
+                            labelClassname="text-[#26435F] font-semibold"
                             placeholder="Alternative Email"
                             inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
                             inputClassName="bg-transparent !w-[200px] text-xs   "
@@ -887,15 +905,18 @@ export default function ParentEditables({
                         </div>
                       </div>
                     </div>
+
                     <div>
                       <div className="flex-1 mt-5">
-                        <p className=" text-sm text-[#26435F] font-semibold">
+                        <p className=" text-base-17-5 text-[#26435F] font-semibold">
                           About
                         </p>
                         <textarea
                           rows="3"
-                          className="mt-1 block w-full h-[100px] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs border border-[0.917px_solid_#D0D5DD] rounded-[6px]
+                          className="mt-1 block w-full h-[100px] bg-[#F6F6F6] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm   border border-[0.917px_solid_#D0D5DD] rounded-[6px]
                 "
+                          placeholder="The parent can add their bio in this space. Here are a few ideas to get started:
+Likes, dislikes, personality, professional details, hobbies, favorite sports, activities, family details, habits, favorite movies and TV shows, music taste, strengths and weaknesses."
                           value={currentToEdit.about}
                           onChange={(e) => {
                             setCurrentToEdit({
@@ -903,24 +924,74 @@ export default function ParentEditables({
                               about: e.target.value,
                             });
                           }}
-                          placeholder=""
                         ></textarea>
                       </div>
                     </div>
+                    {persona === "admin" ? (
+                      <div className=" ">
+                        <div
+                          id="borderDashed2"
+                          className="h-[2px] w-[100%] mt-6 mx-auto my-4"
+                        ></div>
+                        {/* <p className='font-medium mr-4'> Associated Students </p> */}
+                        {/* <div className="max-w-[250px] mx-auto">
+                        <Slider
+                          images={currentToEdit.studentsData}
+                          awsLink={awsLink}
+                        />
+                      </div> */}
+
+                        <InputSearch
+                          right={
+                            <img
+                              className="w-5 h-4 cursor-pointer"
+                              alt="drop"
+                              src={down}
+                            />
+                          }
+                          labelClassname="text-[#26435F] mb-1 text-sm"
+                          label="Associated Students"
+                          placeholder="Select Associated Students"
+                          parentClassName="w-[300px] mb-10"
+                          inputContainerClassName="bg-[#F6F6F6] border-0 pt-3.5 pb-3.5 text-sm hover:cursor-pointer"
+                          inputClassName="bg-[#F6F6F6] text-sm "
+                          type="text"
+                          optionPrefix="s"
+                          value={student}
+                          optionClassName="h-[60px] 2xl:h-[100px]  design:h-[200px]"
+                          checkbox={{
+                            visible: true,
+                            name: "name",
+                            match: currentToEdit.assiginedStudents,
+                          }}
+                          onChange={(e) => setStudent(e.target.value)}
+                          optionData={students}
+                          onOptionClick={(item) => {
+                            // setStudent(item.value);
+                            handleStudentsChange(item);
+                            // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    <div></div>
                   </div>
                 )}
 
                 {currentField.name === "frame1" && (
                   <>
                     <div className="flex flex-col gap-5 !w-[calc(1000*0.0522vw)] min-w-[550px]">
-                      <div className="flex !text-sm gap-4 ">
+                      <div className="flex  justify-between items-center">
                         <InputField
                           label="D.O.B"
-                          labelClassname="text-[#26435F] "
+                          biggerText={true}
+                          labelClassname="text-[#26435F]  !font-medium"
                           placeholder=""
-                          inputContainerClassName="text-xs  bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px] text-base-17-5"
-                          inputClassName="bg-transparent text-xs text-base-17-5 "
-                          parentClassName="flex-1 "
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[11vw] h-[54px]"
+                          inputClassName="bg-transparent text-base  "
+                          parentClassName=""
                           type="date"
                           value={currentToEdit.dob}
                           onChange={(e) =>
@@ -933,12 +1004,12 @@ export default function ParentEditables({
                         />
 
                         <InputSelectNew
-                          labelClassname="text-[#26435F] !font-bold text-base-17-5"
+                          labelClassname="text-[#26435F] text-lg !font-medium"
                           label="Time zone"
-                          placeholder="Time Zone"
-                          inputContainerClassName="text-xs min-h-[42px] bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
-                          inputClassName="bg-transparent min-h-[42px] text-xs  "
-                          parentClassName="flex-1 "
+                          placeholder="Select"
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                          inputClassName="bg-transparent  "
+                          parentClassName=""
                           type="text"
                           value={currentToEdit.timeZone}
                           onChange={(val) =>
@@ -950,33 +1021,43 @@ export default function ParentEditables({
                           optionData={timeZones}
                           radio={true}
                         />
-                        <InputField
-                          labelClassname="text-[#26435F] !font-bold text-base-17-5"
+                        {console.log(currentToEdit)}
+
+                        <InputSelectNew
+                          biggerText={true}
+                          labelClassname="text-[#26435F]  !font-medium"
                           label="Industry"
-                          placeholder="Industry"
-                          inputContainerClassName="text-xs  bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
-                          inputClassName="bg-transparent text-xs  "
-                          parentClassName="flex-1 "
+                          placeholder="Select"
+                          inputContainerClassName="text-base placeholder:text-[#667085]  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                          inputClassName="bg-transparent placeholder:text-[#667085]"
+                          parentClassName=""
+                          optionData={[
+                            "IT",
+                            "Finance",
+                            "Sales",
+                            "Marketing",
+                            "Business",
+                            "Agriculture",
+                          ]}
                           type="text"
-                          optionData={timeZones}
                           value={currentToEdit.industry}
                           onChange={(e) =>
                             setCurrentToEdit({
                               ...currentToEdit,
-                              industry: e.target.value,
+                              industry: e,
                             })
                           }
                         />
                       </div>
 
-                      <div className="flex !text-sm gap-4 ">
+                      <div className="flex  justify-between items-center">
                         <InputSelectNew
-                          labelClassname="text-[#26435F] !font-bold text-base-17-5"
+                          labelClassname="text-[#26435F] text-lg !font-medium"
                           label="Country"
-                          placeholder="Country"
-                          inputContainerClassName="text-xs min-h-[20px] min-h-[42px] bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
-                          inputClassName="bg-transparent min-h-[42px] text-xs  "
-                          parentClassName="flex-1 "
+                          placeholder="Select"
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                          inputClassName="bg-transparent  "
+                          parentClassName=""
                           type="text"
                           optionData={country}
                           optionType={"object"}
@@ -992,12 +1073,13 @@ export default function ParentEditables({
                         />
 
                         <InputField
-                          label="Street adress"
-                          labelClassname="text-[#26435F] text-base-17-5"
-                          placeholder=""
-                          inputContainerClassName="text-xs  bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
-                          inputClassName="bg-transparent text-xs   "
-                          parentClassName="flex-1 "
+                          biggerText={true}
+                          label="Street Address"
+                          labelClassname="text-[#26435F]  !font-medium"
+                          placeholder="Text"
+                          inputContainerClassName="text-base placeholder:text-[#667085] bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[31.40625vw] h-[54px]"
+                          inputClassName="bg-transparent placeholder:text-[#667085] "
+                          parentClassName=""
                           type="text"
                           value={currentToEdit.address}
                           onChange={(e) =>
@@ -1008,14 +1090,14 @@ export default function ParentEditables({
                           }
                         />
                       </div>
-                      <div className="flex !text-sm gap-4 ">
+                      <div className="flex justify-between items-center ">
                         <InputSelectNew
-                          labelClassname="text-[#26435F] !font-bold text-base-17-5"
+                          labelClassname="text-[#26435F] text-lg !font-medium"
                           label="State"
-                          placeholder="State"
-                          inputContainerClassName="text-xs min-h-[42px]  bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
-                          inputClassName="bg-transparent min-h-[42px] text-xs  "
-                          parentClassName="flex-1 "
+                          placeholder="Select"
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                          inputClassName="bg-transparent  "
+                          parentClassName=""
                           type="text"
                           optionData={states}
                           optionType={"object"}
@@ -1029,12 +1111,13 @@ export default function ParentEditables({
                         />
 
                         <InputField
-                          labelClassname="text-[#26435F] !font-bold text-base-17-5"
+                          biggerText={true}
+                          labelClassname="text-[#26435F]  !font-medium"
                           label="City"
-                          placeholder="City"
-                          inputContainerClassName="text-xs  bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
-                          inputClassName="bg-transparent text-xs  "
-                          parentClassName="flex-1 "
+                          placeholder="Select"
+                          inputContainerClassName="text-base placeholder:text-[#667085]  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                          inputClassName="bg-transparent placeholder:text-[#667085]"
+                          parentClassName=""
                           type="text"
                           optionData={timeZones}
                           value={currentToEdit.city}
@@ -1048,11 +1131,12 @@ export default function ParentEditables({
 
                         <InputField
                           label="Zip"
-                          labelClassname="text-[#26435F] text-base-17-5"
-                          placeholder=""
-                          inputContainerClassName="text-xs  bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
-                          inputClassName="bg-transparent text-xs   "
-                          parentClassName="flex-1 "
+                          biggerText={true}
+                          labelClassname="text-[#26435F]  !font-medium"
+                          placeholder="Text"
+                          inputContainerClassName="text-base placeholder:text-[#667085] bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[10.7292vw] h-[54px]"
+                          inputClassName="bg-transparent placeholder:text-[#667085]"
+                          parentClassName=""
                           type="text"
                           value={currentToEdit.pincode}
                           onChange={(e) =>
@@ -1063,6 +1147,43 @@ export default function ParentEditables({
                           }
                         />
                       </div>
+                      {persona === "admin" && (
+                        <div
+                          id="borderDashed"
+                          className="w-[70%] mx-auto !border-[#CBD6E3]"
+                        ></div>
+                      )}
+                      {persona === "admin" && (
+                        <div className="flex justify-between items-center ">
+                          {console.log({ organization })}
+                          <InputSelectNew
+                            labelClassname="text-[#26435F] text-lg !font-medium"
+                            label="Referral Code"
+                            placeholder="Select Referral Code"
+                            inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                            inputClassName="bg-transparent  "
+                            parentClassName=""
+                            type="text"
+                            optionData={organization?.settings?.subscriptionCode?.map(
+                              (it) => {
+                                return {
+                                  ...it,
+                                  name: it.code,
+                                  value: it.code,
+                                };
+                              }
+                            )}
+                            optionType={"object"}
+                            onChange={(e) => {
+                              setCurrentToEdit({
+                                ...currentToEdit,
+                                subscriptionCode: e.code,
+                              });
+                            }}
+                            value={currentToEdit.subscriptionCode}
+                          />
+                        </div>
+                      )}
                     </div>
                   </>
                 )}
@@ -1192,7 +1313,7 @@ export default function ParentEditables({
                 )}
                 {currentField.name === "notes" && (
                   <div>
-                    <div className="flex items-center mb-5 pt-6 w-[400px]">
+                    <div className="flex items-center mb-5 pt-6 w-[500px]">
                       {/* <p className='font-medium mr-4 min-w-[60px]'>  </p> */}
                       <div className="border w-full h-full rounded-md">
                         {textOpen && (
@@ -1210,28 +1331,45 @@ export default function ParentEditables({
                               currentToEdit?.notes?.length == 0 &&
                               setTextOpen(false)
                             }
-                            className={`mt-1 block w-full resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs h-[300px] `}
+                            className={`mt-1 block w-full resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm   placeholder:text-sm h-[250px] `}
                             placeholder=""
                           ></textarea>
                         )}
                         {!textOpen && currentToEdit?.notes?.length == 0 && (
                           <div
                             onClick={() => setTextOpen(true)}
-                            className=" text-[#CBD6E2] text-xs flex-1 text-base-17-5 p-3 h-[300px]"
+                            className=" text-[#CBD6E2] text-xs flex-1 text-base-17-5 !p-5 !pt-5 !pl-7 h-[250px]"
                           >
-                            Add notes about the parent. Here are some ideas to
-                            get you started:
-                            <ul className="list-disc px-4 design:px-5">
-                              <li>How did the initial call go?</li>
-                              <li>What is the parent’s budget?</li>
-                              <li>
+                            Here, you can add notes about the parent. Here are
+                            some ideas to get you started:
+                            <ul className="list-disc px-4 design:px-5 !pl-7 ">
+                              <li className="my-1">
+                                How did the initial call go?
+                              </li>
+                              <li className="my-1">
+                                What did the parent say about the student?
+                              </li>
+                              <li className="my-1">
+                                What is the parent’s budget?
+                              </li>
+                              <li className="my-1">
                                 What timeline do they have in mind for tutoring?
                               </li>
-                              <li>Has the student been tutored before?</li>
-                              <li>
+                              <li className="my-1">
+                                Has the student been tutored before?
+                              </li>
+                              <li className="my-1">
                                 Do they prefer online or offline tutoring?
                               </li>
-                              <li>Does the student have siblings?</li>
+                              <li className="my-1">
+                                What other services might they be interested in?
+                              </li>
+                              <li className="my-1">
+                                Does the student have siblings?
+                              </li>
+                              <li className="my-1">
+                                What is the family demographic?
+                              </li>
                             </ul>
                           </div>
                         )}
@@ -1242,30 +1380,29 @@ export default function ParentEditables({
 
                 {currentField.name === "service" && (
                   <div className="w-[400px] max-h-[50vh] overflow-y-auto custom-scroller">
-                   
-                   <div className="flex flex-col gap-2">
-                     {organization?.settings?.servicesAndSpecialization.map(
-                       (item, id) => {
-                         return (
-                           <div key={id} className="flex gap-5 items-center">
-                             <SCheckbox
-                             stopM={true}
-                               checked={currentToEdit?.service?.includes(
-                                 item?.service
-                               )}
-                               onChange={() =>
-                                 handleServiceChange(item?.service)
-                               }
-                             />
-                             <span className="text-[#26435F]">
-                               {item?.service}
-                             </span>
-                           </div>
-                         );
-                       }
-                     )}
-                   </div>
-                   </div>
+                    <div className="flex flex-col gap-2">
+                      {organization?.settings?.servicesAndSpecialization.map(
+                        (item, id) => {
+                          return (
+                            <div key={id} className="flex gap-5 items-center">
+                              <SCheckbox
+                                stopM={true}
+                                checked={currentToEdit?.service?.includes(
+                                  item?.service
+                                )}
+                                onChange={() =>
+                                  handleServiceChange(item?.service)
+                                }
+                              />
+                              <span className="text-[#26435F]">
+                                {item?.service}
+                              </span>
+                            </div>
+                          );
+                        }
+                      )}
+                    </div>
+                  </div>
                   // // <div>
                   // //   <div className="flex items-center mb-5 pt-1 pb-5">
                   // //     <InputSelect
@@ -1348,7 +1485,7 @@ export default function ParentEditables({
                   <InputSearch
                     labelClassname="hidden"
                     placeholder="Type Parent Name"
-                    parentClassName="w-full  mb-10"
+                    parentClassName="w-[300px]  mb-10"
                     inputContainerClassName="bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
                     inputClassName="bg-[#F3F5F7]"
                     type="text"

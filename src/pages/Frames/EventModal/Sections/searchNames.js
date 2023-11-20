@@ -12,7 +12,7 @@ export default function SearchNames({ setStudent, setData, student, tutor, data,
    const [fetchTutorStudents, tutorStudentsResp] = useLazyGetTutorStudentsByNameQuery();
    const [students, setStudents] = useState([]);
    const { role: persona } = useSelector(state => state.user)
-   // console.log(user);
+
 
    useEffect(() => {
       if (tutor.length > 0) {
@@ -56,7 +56,7 @@ export default function SearchNames({ setStudent, setData, student, tutor, data,
          }
       }
    }, [student]);
-console.log({students,tutors,data})
+
    return (
       <div className="flex mb-[30px]">
          <InputSearch
@@ -70,14 +70,17 @@ console.log({students,tutors,data})
             type="text"
             optionPrefix='s'
             value={student}
-            onChange={(e) => setStudent(e.target.value)}
+            onChange={(e) => {
+               setData({ ...data, studentId: "" });
+               setStudent(e.target.value)
+            }}
             optionData={students}
             disabled={!isEditable}
             onOptionClick={(item) => {
                setStudent(item.value);
-               setData({ ...data, studentId: item._id,studentName: item.value});
+               setData({ ...data, studentId: item._id, studentName: item.value });
             }}
-            
+
          />
          <InputSearch
             label="Tutor Name"
@@ -91,11 +94,14 @@ console.log({students,tutors,data})
             optionPrefix='t'
             value={tutor}
             disabled={persona === 'admin' ? false : true}
-            onChange={(e) => setTutor(e.target.value)}
+            onChange={(e) => {
+               setData({ ...data, tutorId: "" });
+               setTutor(e.target.value)
+            }}
             optionData={tutors}
             onOptionClick={(item) => {
                setTutor(item.value);
-               setData({ ...data, tutorId: item._id,tutorName: item.value });
+               setData({ ...data, tutorId: item._id, tutorName: item.value });
             }}
          />
       </div>

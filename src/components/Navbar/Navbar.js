@@ -1,26 +1,27 @@
 import React from "react";
 import faQuestionCircle from "../../assets/images/Vectorqsn.svg";
-import icon from "../../assets/icons/FIGMA 3.svg";
+import icon from "../../assets/icons/Evallo Logo.svg";
+import evallo_logo from "../../assets/icons/navbar-icons/evallo-logo.svg";
 import logoutIcon from "../../assets/images/Vectorlogout new.svg";
-import Dashboard1 from "../../assets/images/Dashboard 1 new.svg";
-import Dashboard from "../../assets/images/Dashboard 1.svg";
-import UsersIcon from "../../assets/images/Vector (1).png";
+import Dashboard1 from "../../assets/icons/navbar-icons/Dashboard_red.svg";
+import Dashboard from "../../assets/icons/Dashboard_light.svg";
+import UsersIcon from "../../assets/icons/crm_light.svg";
 import StudentIcon from "../../assets/icons/mdi_account-studentstudent.svg";
 import StudentIcon2 from "../../assets/icons/mdi_account-studentstudent2.svg";
-import UsersIcon1 from "../../assets/images/Vector (3).svg";
-import Schedule from "../../assets/images/Vector (2).png";
-import Schedule1 from "../../assets/images/Calendar 1.svg";
-import Assignment from "../../assets/images/Vector (3).png";
-import Assignment1 from "../../assets/images/Vector (4).svg";
-import Content from "../../assets/images/content.png";
-import Content2 from "../../assets/images/content-1.svg";
-import Invoice from "../../assets/images/Vector (5).png";
-import Invoice2 from "../../assets/images/invoicing.png";
+import UsersIcon1 from "../../assets/icons/navbar-icons/crm_red.svg";
+import Schedule from "../../assets/icons/Calendar_light.svg";
+import Schedule1 from "../../assets/icons/navbar-icons/calender-red.png";
+import Assignment from "../../assets/icons/Assignments_light.svg";
+import Assignment1 from "../../assets/icons/navbar-icons/Assignments_red.svg";
+import Content from "../../assets/icons/content-logo_light.svg";
+import Content2 from "../../assets/icons/navbar-icons/contents_red.svg";
+import Invoice from "../../assets/images/invoice-logo.svg";
+import Invoice2 from "../../assets/images/invoice-logo-red.svg";
 import Settings from "../../assets/images/Settings 1 new.svg";
-import Settings1 from "../../assets/images/Settings 1.svg";
+import Settings1 from "../../assets/icons/navbar-icons/settings_red.png";
 import Profile from "../../assets/Navbar/profile.svg";
 import Profile1 from "../../assets/images/Vector (5).svg";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
@@ -28,6 +29,7 @@ import { useEffect } from "react";
 import Modal from "../../components/Modal/Modal";
 import { updateIsLoggedIn } from "../../app/slices/user";
 import { useLazyGetLogoutQuery } from "../../app/services/superAdmin";
+import styles from './navbar.module.css'
 
 const tempnavdata = [
    {
@@ -186,7 +188,7 @@ const supAdminNavData = [
    {
       icon: Dashboard,
       activeIcon: Dashboard1,
-      path: "/dashboard",
+      path: "/",
       excludes: ["student", "parent", "tutor"],
       tooltip: "Dashboard",
    },
@@ -232,7 +234,7 @@ const managerNavData = [
    {
       icon: Dashboard,
       activeIcon: Dashboard1,
-      path: "/dashboard",
+      path: "/",
       excludes: ["student", "parent", "tutor"],
       tooltip: "Dashboard",
    },
@@ -304,20 +306,34 @@ const Navbar = () => {
          navigate(path);
       }
    };
-
+const [loading2,setLoading2]=useState(false)
    const logoutUser = () => {
-      logOutApi().then(() => {
+      setLoading2(true);
+      logOutApi().then((res) => {
+         setLoading2(false);
+         if(res?.error){
+            alert("Something went wrong. Please try again")
+            return 
+         }
          console.log("Successfully logged out");
+         setLogoutModalActive(false)
+         sessionStorage.clear();
+         localStorage.clear("evalloToken");
+         navigate("/");
+         dispatch(updateIsLoggedIn(false));
+         window.location.reload();
       });
-      sessionStorage.clear();
-      localStorage.clear("evalloToken");
-      navigate("/");
-      dispatch(updateIsLoggedIn(false));
-      window.location.reload();
+   
    };
    useEffect(() => {
-      setActiveRoute(location.pathname);
-
+      if(location.pathname.includes('/all-tests/')){
+         setActiveRoute('/all-tests');
+      }
+      else if(location.pathname.includes('/orgadmin-profile/')){
+         setActiveRoute('/all-orgs');
+         console.log(activeRoute)
+      }
+    else  setActiveRoute(location.pathname);
    }, [location.pathname]);
    useEffect(() => {
 
@@ -328,67 +344,70 @@ const Navbar = () => {
          setNavData(arr)
       }
    }, [activeRoute])
-
+   console.log({navData,activeRoute})
    return (
       <>
-         <div className="flex justify-around bg-[#26435F] h-[72px] items-center w-full">
+         <div className={`flex   bg-[#26435F] h-[72px] items-center w-full shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] ${persona=="superAdmin"?"justify-between px-[5%]":"justify-around"}`}>
             <div
-               className={`${persona === "superAdmin" ? "translate-x-[-80px]" : ""}`}
+               className={`${persona === "superAdmin" ? "translate-x-[-2.3vw]" : ""}`}
             >
-               <a href="https://app.evallo.org">
-                  <img className="h-[29.796px]" src={icon} alt="evallo_logo" />
-               </a>
+               <Link to="/">
+                  <div className="flex gap-x-[6px] items-center">
+                  <img className="inline-block w-full" src={evallo_logo} alt="evallo_logo" />
+                  <p  className={`text-[43px] text-white font-bold pt-[3.2px] ${styles.customFont}`}>Evallo</p>
+                  </div>
+               </Link>
 
             </div>
-            <div className={`flex  text-[#FFFFFF] font-semibold text-[13px] ${!isLoggedIn && "opacity-[0.3]"}`}>
+            <div className={`flex  text-[#FFFFFF] font-semibold text-[0.9021vw] ${!isLoggedIn && "opacity-[0.3]"} ${persona === "superAdmin" ? "translate-x-[3.5vw]" : ""}`}>
                {navData.map((item, idx) => {
                   return (
                      <div
                         key={idx}
-                        className={`flex items-center mr-6 ${isLoggedIn ? "cursor-pointer" : ' cursor-default'}`}
+                        className={`flex items-center mr-6 design:mr-10  ${isLoggedIn ? "cursor-pointer" : ' cursor-default'}`}
                         onClick={() => isLoggedIn && handleNavigate(item.path)}
                      >
                         {isLoggedIn && item?.path === activeRoute ? (
                            <>
                               <p>
                                  <img
-                                    className="w-[16px] h-[16px]"
-                                    style={{ height: "16px" }}
+                                    className="w-[16px] h-[16px] design:h-[20px] design:w-[20px]"
+
                                     src={item.activeIcon}
                                     alt=""
                                  />
                               </p>
-                              <p className="pl-[10px] text-[#FFA28D]"> {item.tooltip} </p>
+                              <p className="pl-[10px] text-[#FFA28D] text-text-[0.902vw] "> {item.tooltip} </p>
                            </>
                         ) : (
                            <>
                               <p>
                                  <img
-                                    className="w-[16px] h-[16px]"
+                                    className="w-[16px] h-[16px] design:h-[20px] design:w-[20px]"
                                     src={item.icon}
                                     alt=""
                                  />
                               </p>
-                              <p className="pl-[10px]"> {item.tooltip} </p>
+                              <p className="pl-[10px] text-[0.902vw] "> {item.tooltip} </p>
                            </>
                         )}
                      </div>
                   );
                })}
             </div>
-            <div className={`flex font-bold ${isLoggedIn ? "" : "opacity-[0.3]"}`}>
-               <div className="flex mr-[24px] text-[#24A3D9] text-xs ">
-                  <p className=" ">Pricing 	</p>
-                  <p className="pl-2">
-                     &#36;
+            <div className={`flex ${persona === "superAdmin" ? "translate-x-[-1vw]" : ""} font-bold ${isLoggedIn ? "" : "opacity-[0.3]"}`}>
+             {persona =="parent"||  <div className="cursor-pointer flex mr-[24px] text-[#24A3D9] text-base-16  items-center">
+                  <p className=" text-[0.83vw]">Pricing 	</p>
+                  <p className="pl-2 text-[17px]">
+                   $
                   </p>
-               </div>
-               <div className="flex mr-[24px] text-[#24A3D9] text-xs">
-                  <p className=" ">Help</p>
+               </div>}
+               <div className="cursor-pointer flex mr-[24px] text-[#24A3D9] items-center text-base-16 ">
+                  <p className="text-[0.83vw] ">Help</p>
                   <p>
                      <img
-                        className="w-[16px] h-[14px] ml-2"
-                        style={{ height: "14px" }}
+                        className=" ml-2"
+                      
                         src={faQuestionCircle}
                         alt=""
                      />
@@ -396,16 +415,16 @@ const Navbar = () => {
                </div>
 
                <div
-                  className="flex text-xs cursor-pointer"
+                  className={` flex ${isLoggedIn&& 'cursor-pointer'} items-center `}
                   onClick={() => isLoggedIn && setLogoutModalActive(true)}
                >
                   <div>
-                     <p className="text-[#24A3D9]">Logout</p>
+                     <p className="text-[#24A3D9] text-[0.83vw] !font-semibold">Logout</p>
                   </div>
                   <div>
                      <img
-                        className="w-[16px] h-[14px] ml-2"
-                        style={{ height: "14px" }}
+                        className=" ml-2"
+            
                         src={logoutIcon}
                         alt=""
                      />
@@ -418,7 +437,7 @@ const Navbar = () => {
             <Modal
                title={
                   <>
-                     Are You Sure 
+                     Are You Sure
                      You Want To Log Out?
                   </>
                }
@@ -426,15 +445,16 @@ const Navbar = () => {
                titleClassName="leading-9 text-center whitespace-nowrap mb-[22.67px]"
                cancelBtn={true}
                crossBtn={true}
-               cancelBtnClassName="pt-[17px] pb-[18px] w-[146px] text-[#26435F] font-medium text-base !rounded-[8px] bg-[rgba(38,67,95,0.10)]"
+               cancelBtnClassName="!w-[146px] text-[#26435F] font-medium text-base !rounded-[8px] !bg-[rgba(38,67,95,0.10)] !ml-auto !h-[46px]"
                primaryBtn={{
                   text: "Logout",
-                  className: "text-base bg-[#FF7979] w-[146px] pl-4 pr-4 pt-[17px] pb-[18px] !rounded-[8px] font-medium",
+                  loading:loading2,
+                  className: "text-base bg-[#FF7979] !w-[146px] pl-4 pr-4   !rounded-[8px] font-medium !mr-auto !text-center !bg-[#FF7979] !h-[46px]",
                   onClick: logoutUser,
                }}
                handleClose={() => setLogoutModalActive(false)}
                body={<div className="mb-6"></div>}
-               classname={"!w-[666px] mx-auto !pt-7 !pb-[33px] !rounded-[8px] px-[33.33px]"}
+               classname={"!w-[666px] mx-auto !pt-7 !pb-[33px] !rounded-[8px] px-[33.33px] !text-center"}
             />
          )}
       </>

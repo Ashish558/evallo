@@ -10,7 +10,7 @@ import FilterItems from "../../../components/FilterItems/filterItems";
 import InputField from "../../../components/InputField/inputField";
 import Modal from "../../../components/Modal/Modal";
 import { useLazyGetSettingsQuery } from "../../../app/services/session";
-import questionMark from "../../../assets/images/Vector (6).svg";
+import questionMark from "../../../assets/icons/query-small.svg";
 import toggleRectIcon from "../../../assets/icons/toggle-rect.svg";
 import toggleRectActiveIcon from "../../../assets/icons/toggle-rect-active.svg";
 import toggleCircleIcon from "../../../assets/icons/toggle-circle.svg";
@@ -47,9 +47,9 @@ import styles from "./styles.module.css";
 import { useAddNewQuestionMutation } from "../../../app/services/admin";
 import { updateOrganizationSettings } from "../../../app/slices/organization";
 import InputSelect from "../../../components/InputSelect/InputSelect";
-import { timeZones } from "../../../constants/constants";
 import { permissionsStaticData } from "../../Settings/Tabs/staticData";
 import InputFieldDropdown from "../../../components/InputField/inputFieldDropdown";
+import moment from "moment-timezone";
 
 // import questionMark from '../../../assets/images/question-mark.svg'
 const initialState = {
@@ -60,6 +60,7 @@ const initialState = {
 const subModalInitialState = {
   code: "",
   expiry: "",
+  tests:[],
   editing: false,
 };
 
@@ -115,6 +116,7 @@ export default function Settings({orgData,orgs}) {
   const [getSettings, getSettingsResp] = useLazyGetSettingsQuery();
   const [updateSetting, updateSettingResp] = useUpdateOrgSettingMutation();
   const { awsLink } = useSelector((state) => state.user);
+  const timeZones = moment.tz.names(); // String[]
 
   const [addNewQuestionModalActive, setAddNewQuestionModalActive] =
     useState(false);
@@ -687,15 +689,21 @@ export default function Settings({orgData,orgs}) {
     axios
       .get(`${BASE_URL}api/test`, { headers: getAuthHeader() })
       .then((res) => {
+        console.log("test",{res,orgs})
         if (res.data.data.test) {
-          let arr = res.data.data.test.map((item) => {
-            return {
+          let arr =[]
+           res.data.data.test.map((item) => {
+            if(item&&item._id&&item.testName&&item?.orgId&&
+              item?.orgId===orgs?._id
+
+)
+            arr.push( {
               _id: item._id,
               value: item.testName,
-            };
+            })
           });
           setAllTestData(arr);
-          setFilteredTests(arr);
+          setFilteredTests(arr.slice(0,100));
         }
       });
   };
@@ -1023,11 +1031,24 @@ export default function Settings({orgData,orgs}) {
   console.log({ offersNew, offerImages });
 
 
-  const submitImageModalNew = (file, val, e) => {
-    e.preventDefault();
+  const submitImageModalNew = (file2, val, e) => {
+    
     // //console.log(tagText)
     // //console.log(tagImage)
     // //console.log(selectedImageTag)
+    e.preventDefault();
+    const file=file2
+    if(!file) {
+      
+      return
+    }
+   e.target.value = ''
+   let size=file.size/1024;
+   size=size/1024;
+   if(size>1){
+     alert("File size is larger than than 1MB")
+     return 
+   }
     if (loading2) return;
     const formData = new FormData();
 
@@ -1049,6 +1070,7 @@ export default function Settings({orgData,orgs}) {
         maxContentLength: Infinity,
       })
       .then((res) => {
+        setSaveLoading(false);
         setLoading2(false);
         console.log("resp--", res.data.data.updatedSetting.settings);
         dispatch(
@@ -1213,8 +1235,8 @@ export default function Settings({orgData,orgs}) {
     console.log(e);
   };
   const handleTestChange2 = (item) => {
-    //console.log("tsests", item);
-    if (subModalData.tests.includes(item._id)) {
+    console.log("tsests", subModalData,item);
+    if (subModalData?.tests?.includes(item._id)) {
       let updated = subModalData.tests.filter(
         (test) => test !== item._id
       );
@@ -1233,7 +1255,7 @@ export default function Settings({orgData,orgs}) {
  
   return (
     <>
-      <div className=" h-[400px] p-2 custom-scroller w-[95%] overflow-y-auto mx-auto">
+      <div className=" h-full p-2 custom-scroller w-[95%] overflow-y-auto mx-auto">
       
         <div className=" flex w-full flex-1 items-center mb-[30px]">
           <div
@@ -1303,7 +1325,9 @@ export default function Settings({orgData,orgs}) {
           <div>
             <div className="flex items-center gap-x-8 mb-4">
               <div>
-                <InputSelect
+                <InputSelect 
+                questionMarkMargin='ml-2 pb-1'
+                questionMarkIcon={questionMark}
                   labelClassname="text-base-20 mb-1"
                   inputContainerClassName=" text-base-17-5 shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
                   optionListClassName="text-base-17-5"
@@ -1332,6 +1356,8 @@ export default function Settings({orgData,orgs}) {
             <div className="h-[1.25px] bg-[#CBD6E2] mb-4 mt-8"></div>
             <SettingsCard
               titleClassName="text-base-20"
+              questionMarkMargin='ml-2 '
+              questionMarkIcon={questionMark}
               title="Lead Status Items (Parent / Student)"
               body={
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-4 rounded-5">
@@ -1351,6 +1377,8 @@ export default function Settings({orgData,orgs}) {
             <SettingsCard
               titleClassName="text-base-20"
               title="Tutor Status Items"
+              questionMarkMargin='ml-2 '
+              questionMarkIcon={questionMark}
               body={
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-4 rounded-5 text-base-17-5">
                   <AddTag onAddTag={handleAddTag} keyName="tutorStatus" />
@@ -1368,6 +1396,8 @@ export default function Settings({orgData,orgs}) {
             <div className="h-[1.25px] bg-[#CBD6E2] mb-8"></div>
             <SettingsCard
               titleClassName="text-base-20"
+              questionMarkMargin='ml-2 '
+              questionMarkIcon={questionMark}
               title="Manage Referral Codes"
               className={styles["bordered-settings-container"]}
               body={
@@ -1457,6 +1487,8 @@ export default function Settings({orgData,orgs}) {
             <SettingsCard
               titleClassName="text-base-20"
               title="Manage Services & Topics"
+              questionMarkMargin='ml-2 '
+              questionMarkIcon={questionMark}
               className={styles["bordered-settings-container"]}
               body={
                 <div>
@@ -1552,6 +1584,8 @@ export default function Settings({orgData,orgs}) {
             <SettingsCard
               titleClassName="text-base-20"
               title="Session Tags & Reconciliation"
+              questionMarkMargin='ml-2 '
+              questionMarkIcon={questionMark}
               className={styles["bordered-settings-container"]}
               body={
                 <div>
@@ -1747,10 +1781,10 @@ export default function Settings({orgData,orgs}) {
                         </div>
                       );
                     })}
-                    {offersNew?.length > 0 &&
+  {offersNew?.length > 0 &&
                       offersNew?.map((off, idx) => {
                         return (
-                          <div className="flex-1 flex gap-2 min-w-[250px] ">
+                          <div className="flex-1 relative flex gap-2 min-w-[250px] ">
                             <div className=" relative w-[2px] rounded-md  bg-[#00000030] !h-[300px] mx-4"></div>
 
                             <div className="w-full flex-1">
@@ -1769,44 +1803,39 @@ export default function Settings({orgData,orgs}) {
                     <p className="block ">{xlsFile.name}</p>
                   )} */}
                                 </div>
-                                {!off?.image?.name ? (
+                                
                                   <div className="flex justify-center">
                                     <label
                                       htmlFor="file2"
-                                      className="block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ] "
+                                      disabled={loading2}
+                                      className={`block cursor-pointer text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ${loading2?"cursor-wait":""}`}
                                     >
-                                      Choose File
+                                      {loading2 && off?.image
+
+                                        ? "Submitting..."
+                                        : " Choose File"}
                                     </label>
                                     <input
+                                     accept="image/*"
+
+                                     disabled={loading2}
                                       onChange={(e) => {
                                         let arr = offersNew;
                                         arr[idx].image = e.target.files[0];
-                                        setOffersNew([...arr]);
+                                        setOffersNew((prev)=>(
+                                          [
+                                            ...arr,
+                                          ]
+                                        )
+                                         );
+                                        submitImageModalNew(off?.image, off, e)
                                         // setImageName(e.target.files[0].name);
                                       }}
                                       id="file2"
                                       type="file"
                                     />
                                   </div>
-                                ) : (
-                                  <div className="flex justify-center flex-col">
-                                    <span className="text-[#517CA8] text-base-15 mb-1">
-                                      {off?.image?.name}
-                                    </span>
-                                    <span
-                                      onClick={(e) =>
-                                        submitImageModalNew(off?.image, off, e)
-                                      }
-                                      className={` cursor-pointer block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center text-base-17-5] ${
-                                        loading2 ? "!cursor-wait" : ""
-                                      }`}
-                                    >
-                                      {loading2
-                                        ? "Submitting..."
-                                        : "Submit File"}
-                                    </span>
-                                  </div>
-                                )}
+                               
 
                                 <label
                                   htmlFor="file"
@@ -1820,11 +1849,11 @@ export default function Settings({orgData,orgs}) {
                                   //   onClick={() => handleImageRemoval(offer)}
                                   className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center  rounded-full cursor-pointer"
                                 >
-                                  <img
+                                  {/* <img
                                     src={DeleteIcon}
                                     className="w-5"
                                     alt="delete"
-                                  />
+                                  /> */}
                                 </div>
                                 {false && (
                                   <span className="text-[#517CA8] text-base-15 mb-1 !text-center flex justify-center items-center">
@@ -1892,15 +1921,15 @@ export default function Settings({orgData,orgs}) {
                   <>
                     {item.choosedValue === true ||
                     item.choosedValue === false ? (
-                      <div
+                     <div
                         key={id}
-                        className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between text-base-17-5"
+                        className={`${id===3?"!opacity-[0.7]" :""} pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between text-base-17-5`}
                       >
                         <p>{renderColoredText(item.name)}</p>
 
                         <ToggleBar
                           toggle={{ value: item.choosedValue, key: item._id }}
-                          onToggle={togglePermissions}
+                          onToggle={(e)=>id!==3&&togglePermissions(e)}
                         ></ToggleBar>
                       </div>
                     ) : (
@@ -2139,6 +2168,7 @@ export default function Settings({orgData,orgs}) {
                     />
                   </div>
                 </div>
+                {console.log({filteredTests})}
                 <div className="mt-3 flex-1">
                   <InputSearch
                     label="Select Assignments (optional)"
@@ -2153,7 +2183,7 @@ export default function Settings({orgData,orgs}) {
                     checkbox={{
                       visible: true,
                       name: "test",
-                      match: subModalData.tests,
+                      match: subModalData?.tests,
                     }}
                     onChange={(e) => setSearchedTest(e.target.value)}
                     optionListClassName="text-base-17-5"

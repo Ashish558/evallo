@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -10,6 +9,7 @@ import Calendar from "../pages/Calendar/Calendar";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Signup from "../pages/Signup/Signup";
+import OrgSignup from "../pages/OrgSignup/OrgSignup";
 import StudentProfile from "../pages/Profiles/StudentProfile/StudentProfile";
 import TestDetail from "../pages/TestDetail/TestDetail";
 import Users from "../pages/Users/users";
@@ -43,9 +43,7 @@ import ContributorSettings from "../pages/Settings/ContributorSettings";
 import TestPage from "../pages/DsatTestPage/TestPage";
 import AnnotatorComponent from "../components/annotate";
 import Testinstruction_2 from "../components/TestItem/testinstruction_2";
-
-
-
+import AdminPortal from "../pages/SuperadminDashboard/components/About/AdminPortal";
 
 const AppRoutes = () => {
   const { isLoggedIn } = useSelector((state) => state.user);
@@ -57,14 +55,20 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={isLoggedIn ? <Home /> : <Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/admin-portal" element={<AdminPortal />} />
         <Route path="/signup/user" element={<UserSignup />} />
-        <Route path="/dashboard" element={<RequireAuth isLoggedIn={isLoggedIn}>
-{(persona === "superAdmin" || persona === 'manager') ?
-          <SuperadminDashboard />:<Home />}
-          
-          </RequireAuth>
-          
-          } />
+        <Route
+          path="/"
+          element={
+            <RequireAuth isLoggedIn={isLoggedIn}>
+              {persona === "superAdmin" || persona === "manager" ? (
+                <SuperadminDashboard />
+              ) : (
+                <Home />
+              )}
+            </RequireAuth>
+          }
+        />
         <Route path="/all-orgs" element={<AllOrgs />} />
         <Route path="/verify-email" element={<EmailVerify />} />
         <Route path="/orgadmin-profile/:id" element={<SuperAdminProfile />} />
@@ -84,14 +88,14 @@ const AppRoutes = () => {
             </RequireAuth>
           }
         />
-        <Route
+        {/* <Route
           path="/assigned-tutors"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
               <AssignedTutors />
             </RequireAuth>
           }
-        />
+        /> */}
 
         <Route
           path="/calendar"
@@ -224,11 +228,11 @@ const AppRoutes = () => {
             </RequireAuth>
           }
         />
-         <Route
+        <Route
           path="/testpage/:id/:assignedTestId"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-             <TestPage/>
+              <TestPage />
             </RequireAuth>
           }
         />
@@ -237,12 +241,17 @@ const AppRoutes = () => {
           path="/settings"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-
-              {(persona === "superAdmin" || persona === 'manager') ?
-                <SuperAdminSettings /> : persona === 'student' || persona === 'parent' || persona === 'tutor'
-                  ? <StudentSettings /> : persona === 'contributor' ?
-                    <ContributorSettings /> : <Settings />}
-
+              {persona === "superAdmin" || persona === "manager" ? (
+                <SuperAdminSettings />
+              ) : persona === "student" ||
+                persona === "parent" ||
+                persona === "tutor" ? (
+                <StudentSettings />
+              ) : persona === "contributor" ? (
+                <ContributorSettings />
+              ) : (
+                <Settings />
+              )}
             </RequireAuth>
           }
         />
@@ -261,12 +270,8 @@ const AppRoutes = () => {
               <StartTest />
             </RequireAuth>
           }
-        /><Route
-        path="/ll"
-        element={
-            <AnnotatorComponent />
-        }
-      />
+        />
+        <Route path="/ll" element={<AnnotatorComponent />} />
         <Route path="/adminDashboard" element={<Dashboard></Dashboard>}></Route>
         <Route
           path="/adminContent"

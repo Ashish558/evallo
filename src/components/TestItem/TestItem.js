@@ -3,7 +3,7 @@ import Stat from './../../assets/icons/stat.svg';
 import Download from './../../assets/icons/download.png';
 import { useSelector } from 'react-redux';
 import { useLazyGetTestResponseQuery } from '../../app/services/test';
-import { getDate, getScore, getScoreStr } from '../../utils/utils';
+import { getDate, getFormattedDate, getScore, getScoreStr } from '../../utils/utils';
 import { useNavigate } from 'react-router-dom';
 import LoaderPage from './LoaderPage';
 import TestInstructionpage from './TesInstructionPage.js';
@@ -31,7 +31,7 @@ export const TestItem = ({
   const { role: persona } = useSelector((state) => state.user);
   const [getTestResponse, getTestResponseResp] = useLazyGetTestResponseQuery();
   const navigate = useNavigate();
-
+  const { dateFormat } = useSelector(state => state.user)
   const handleNavigate = () => {
     setIsLoading(true); 
     setIsLoadingPage(true);
@@ -67,23 +67,23 @@ export const TestItem = ({
     <div className='flex py-[8px] mb-2 last:mb-0'>
       
       <div className='w-1/2'>
-        <h2 className='text-[18px] font-medium'>{testName}</h2>
+        <h2 className='text-[18px] font-medium text-[#517CA8]'>{testName}</h2>
         <div className='flex gap-[12px]'>
-          <h5 className='text-xs opacity-60 font-semibold'>Due date:</h5>
-          <h6 className='text-xs opacity-60 font-medium'> {getDate(dueDate)}</h6>
+          <h5 className='text-xs opacity-60 font-semibold text-[#517CA8]'>Due date:</h5>
+          <h6 className='text-xs opacity-60 font-medium text-[#517CA8]'>{getFormattedDate(dueDate, dateFormat)}</h6>
         </div>
       </div>
       <div className='flex-1 ml-5'>
         <div className='flex gap-[12px]'>
           <div className='flex items-center'>
-            <div className='w-[24px]'>
-              <img
-                className='cursor-pointer'
+            <div className='w-[24px] mr-3'>
+             {testype!=="DSAT"&& <img
+                className='cursor-pointer '
                 src={Download}
                 onClick={() => window.open(`${awsLink}${pdfLink}`)}
                 width='34px'
                 alt='download'
-              />
+              />}
             </div>
           </div>
           {
@@ -98,22 +98,18 @@ export const TestItem = ({
   ) : pageState === 'test' ? (
     <TestPage /> 
   ) : isCompleted === true ? (
-    <div
-      className='cursor-pointer text-sm break-al w-full text-sm font-bold bg-[#CBC0F5]/50 px-2 py-2 text-center text-black rounded-[6px]'
+                      <div className='cursor-pointer     bg-[#38C980] px-2 py-2 text-center text-white rounded-[5px] w-[6.25vw] text-base-17-5'
       onClick={handleReportNavigate}
     >
-      {score}
+      {/* {score} */}Report
     </div>
   ) : isStarted === true ? (
-    <div
-      className='cursor-pointer w-full font-bold bg-[#32D583] px-2 py-2 text-center text-white rounded-[6px]'
+                        <div className='cursor-pointer  bg-[#FFCE84] px-2 py-2 text-center text-white rounded-[5px] w-[6.25vw] text-base-17-5'
       onClick={handleNavigate}
     >
       Continue
     </div>
-  ) : (
-    <div
-      className='cursor-pointer w-full font-bold bg-[#F6A429CC] px-2 py-2 text-center text-white rounded-[6px]'
+  ) : (   <div className='cursor-pointer w-[6.25vw]  bg-[#FF7979] px-2 py-2 text-center text-white rounded-[5px] text-base-17-5'
       onClick={handleNavigate}
     >
       Start

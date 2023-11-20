@@ -8,11 +8,12 @@ export default function TableHeader({
   setSorted,
   Icon,
   noArrow,
+  className
 }) {
 
   return (
     <th className={`${styles.customHeader} ${noArrow?"no-arrow":''} py-3   text-sm`}>
-      <div className="flex items-center">
+      <div className={`flex items-center ${className}`}>
         {header}
         {Icon && Icon}
       </div>

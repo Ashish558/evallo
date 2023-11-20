@@ -144,46 +144,31 @@ export const solutionsData = [
 
 export const testPreparationsData = [
   {
-    text: "SAT/ACT/NMSQT",
+    text: "SAT / ACT / NMSQT",
     checked: false,
   },
   {
-    text: "ISEE/SSAT",
+    text: "GMAT / GRE",
     checked: false,
   },
   {
-    text: "GMAT/GRE",
+    text: "Other Tests",
     checked: false,
   },
   {
-    text: "LSAT/MCAT",
+    text: "ISEE / SSAT",
     checked: false,
   },
   {
-    text: "Others",
+    text: "LSAT / MCAT",
     checked: false,
   },
+
 ];
 
 export const tutoringData = [
   {
-    text: "Biology",
-    checked: false,
-  },
-  {
-    text: "Chemistry",
-    checked: false,
-  },
-  {
-    text: "Physics",
-    checked: false,
-  },
-  {
     text: "General Math",
-    checked: false,
-  },
-  {
-    text: "Algebra",
     checked: false,
   },
   {
@@ -191,23 +176,15 @@ export const tutoringData = [
     checked: false,
   },
   {
+    text: "World Languages",
+    checked: false,
+  },
+  {
+    text: "Physics",
+    checked: false,
+  },
+  {
     text: "Calculus",
-    checked: false,
-  },
-  {
-    text: "Computer Science ",
-    checked: false,
-  },
-  {
-    text: "English Reading",
-    checked: false,
-  },
-  {
-    text: "English Writing",
-    checked: false,
-  },
-  {
-    text: "World Language",
     checked: false,
   },
   {
@@ -215,7 +192,23 @@ export const tutoringData = [
     checked: false,
   },
   {
+    text: "Chemistry",
+    checked: false,
+  },
+  {
+    text: "Computer Science ",
+    checked: false,
+  },
+  {
     text: "Geography",
+    checked: false,
+  },
+  {
+    text: "Biology",
+    checked: false,
+  },
+  {
+    text: "English Reading",
     checked: false,
   },
   {
@@ -223,11 +216,19 @@ export const tutoringData = [
     checked: false,
   },
   {
+    text: "Algebra",
+    checked: false,
+  },
+  {
+    text: "English Writing",
+    checked: false,
+  },
+  {
     text: "Political Science",
     checked: false,
   },
   {
-    text: "Others",
+    text: "Other",
     checked: false,
   },
 ];
@@ -238,21 +239,22 @@ export const coachingData = [
     checked: false,
   },
   {
-    text: "Life Coaching",
+    text: "Academic  Coaching",
     checked: false,
   },
   {
-    text: "Academic  Coaching",
+    text: "Other",
+    checked: false,
+  },
+  {
+    text: "Life Coaching",
     checked: false,
   },
   {
     text: "Career  Coaching",
     checked: false,
   },
-  {
-    text: "Others",
-    checked: false,
-  },
+
 ];
 
 export const instructionFormat = [
@@ -265,7 +267,7 @@ export const instructionFormat = [
     checked: false,
   },
   {
-    text: "Classroom",
+    text: "Classroom / Group",
     checked: false,
   },
   {
@@ -292,7 +294,7 @@ export const studentServedData = [
     checked: false,
   },
   {
-    text: "Secondary /High School",
+    text: "Secondary / High School",
     checked: false,
   },
   {
@@ -312,12 +314,12 @@ export const studentServedData = [
 export const rateUsData = "";
 
 export const paymentOptionsData = ['Cash',
-"Quickbooks",
-'Stripe',
-"Paypal",
-'Venmo',
-'Other Payment Apps (like PayPal,Venmo, Zelle ,etc.)',
-'Other Online Payment Gateway (like Stripe, Square ,Razorpay , 2Checkout , etc.)'
+  "Quickbooks",
+  'Stripe',
+  "Paypal",
+  'Venmo',
+  'Other Payment Apps (like PayPal,Venmo, Zelle ,etc.)',
+  'Other Online Payment Gateway (like Stripe, Square ,Razorpay , 2Checkout , etc.)'
 
 ];
 
@@ -326,6 +328,6 @@ export const successfulSignUpMessage = {
   mid: `You've just taken a significant leap towards optimizing your tutoring operations, and we're thrilled to be part of your journey. A verification email is on its way to your inbox as we speak. It includes a link for verifying your account and setting up your password. `,
   last: `If it seems to be taking longer than usual, you might want to check your spam folder just in case. If there's still no sign of it, don't worry. You can simply 
   `,
-  verify:`click here to request a new verification email.`,
+  verify: `click here to request a new verification email.`,
   bottom: `Welcome to a smoother, more efficient way of tutoring!`,
 };

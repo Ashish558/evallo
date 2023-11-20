@@ -42,53 +42,53 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
       });
     }
   }, [userDetail]);
-//  //console.log({ driveLink, dropLink });
+  //  //console.log({ driveLink, dropLink });
   return (
     <div>
-      <div className="bg-white mt-7 px-3 py-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex gap-3 justify-between  text-[#24A3D9]">
+      <div className="bg-white mt-7 px-10 py-2 design:py-4  !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex gap-3 justify-between  text-[#24A3D9] h-[85px]">
         <div className="flex gap-3 text-sm items-center">
           <span>
             <img
-              className="ml-2 !w-6 !h-6 inline-block"
+              className="ml-2 w-[37.5px] h-[37.5px] inline-block"
               src={bod}
               alt="arrow down"
             />
           </span>
-          <span>
-            <p>Birth Year</p>
+          <span className="text-base-17-5">
+            <p >Birth Year</p>
             <p className=" font-semibold ">
-              {userDetail.birthyear ? userDetail.birthyear : " "}
+              {userDetail?.birthyear ? userDetail?.birthyear : "-"}
             </p>
           </span>
         </div>
         <div className="flex gap-3 text-sm items-center">
           <span>
             <img
-              className="ml-2 !w-6 !h-6 inline-block"
+              className="ml-2 w-[37.5px] h-[37.5px] inline-block"
               src={time}
               alt="arrow down"
             />
           </span>
-          <span>
-            <p>Time Zone</p>
+          <span className="text-base-17-5">
+            <p >Time Zone</p>
             <p className=" font-semibold ">
-              {userDetail?.timeZone ? userDetail.timeZone : "-"}
+              {userDetail?.timeZone ? userDetail?.timeZone : "-"}
             </p>
           </span>
         </div>
         <div className="flex gap-3 text-sm items-center">
           <span>
             <img
-              className="ml-2 !w-6 !h-6 inline-block"
+              className="ml-2 w-[37.5px] h-[37.5px] inline-block"
               src={referral}
               alt="arrow down"
             />
           </span>
-          <span>
-            <p>Referral</p>
+          <span className="text-base-17-5">
+            <p >Referral</p>
             <p className=" font-semibold ">
-              {userDetail.subscriptionCode
-                ? userDetail.subscriptionCode
+              {userDetail?.subscriptionCode
+                ? userDetail?.subscriptionCode
                 : "None"}
             </p>
           </span>
@@ -96,13 +96,13 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
         <div className="flex gap-3 text-sm items-center">
           <span>
             <img
-              className="ml-2 !w-6 !h-6 inline-block"
+              className="ml-2 w-[37.5px] h-[37.5px] inline-block"
               src={dropbox}
               alt="arrow down"
             />
           </span>
           <span className="flex flex-col">
-            <a href={dropLink} target="_blank" rel="noreferrer">
+            <a className="text-base-17-5" href={dropLink} target="_blank" rel="noreferrer">
               Dropbox{" "}
               <img
                 className="ml-1 !w-3 !h-2 inline-block"
@@ -114,7 +114,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
               href={driveLink}
               target="_blank"
               rel="noreferrer"
-              className=" font-semibold "
+              className=" font-semibold text-base-17-5"
             >
               Drive
               <img
@@ -125,18 +125,18 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
             </a>
           </span>
         </div>
-        <div className="flex gap-3 text-sm items-center">
+        <div className="flex gap-3 text-base-17-5 items-center">
           <span>
             <img
-              className="ml-2 !w-6 !h-6 inline-block"
+              className="ml-2 w-[37.5px] h-[37.5px] inline-block"
               src={accomodations}
               alt="arrow down"
             />
           </span>
           <span>
-            <p>Accomodations</p>
+            <p className="text-base-17-5">Accomodations</p>
             <p className=" font-semibold ">
-              {userDetail.accomodations ? userDetail.accomodations : "-"}
+              {userDetail?.accomodations ? userDetail?.accomodations : "-"}
             </p>
           </span>
         </div>

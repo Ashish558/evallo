@@ -1,23 +1,25 @@
 import React, { useRef } from "react";
-import { Bubble } from "react-chartjs-2";
+import { Scatter } from "react-chartjs-2";
 import { ChartData, bubbleChartData } from "./ChartData";
 import {
   useGetUserDailyActivityQuery,
   useGetUserDailyActivityRangeMutation,
 } from "../../../app/services/superAdmin";
+import moment from "moment";
 import { groupDatesIntoWeeks, convertToChart } from "../utils";
 import { useEffect } from "react";
 import { useState } from "react";
-import arrow from '../../../assets/icons/arrow-chart.svg'
-import arrow1 from '../../../assets/icons/arrow-up-chart.svg'
+import arrow from "../../../assets/icons/arrow-chart.svg";
+import "chartjs-adapter-moment";
+import arrow1 from "../../../assets/icons/arrow-up-chart.svg";
 const BubbleChart = ({ dateRange }) => {
   const [userDailyActivity, setDailyActivity] = useState([]);
   const [userDailyActivityData, status] =
     useGetUserDailyActivityRangeMutation();
-
+  const [dayDifference, setDayDifference] = useState(0);
   const [dailyuserData, setDailyUserData] = useState("");
   const [chartData, setChartData] = useState("");
-  console.log(chartData)
+  console.log(chartData);
   const plugin = {
     beforeInit(chart) {
       console.log("be");
@@ -43,6 +45,7 @@ const BubbleChart = ({ dateRange }) => {
     };
     fetchActivity();
   }, [dateRange]);
+  const [minDate, setMinDate] = useState(moment());
   useEffect(() => {
     if (userDailyActivity?.length >= 0) {
       let rolesData = {
@@ -52,68 +55,110 @@ const BubbleChart = ({ dateRange }) => {
         student: [],
         superadmin: [],
       };
+      let date2 = dateRange?.startDate;
+
+      let minDate2 = moment();
 
       userDailyActivity?.map((d) => {
-        if (d?.role && rolesData[d?.role])
+        if (
+          d?.role &&
+          rolesData[d?.role] &&
+          new Date(d?.datetime) >= new Date(date2)
+        ) {
+          let date2 = new Date(d?.datetime);
+          date2.setDate(new Date(d?.datetime).getDate() - 0);
+          minDate2 = Math.min(minDate2, date2);
           rolesData[d.role].push({
             date: d.datetime,
             count: d.count,
             totalHours: d.totalHours,
           });
+        }
       });
-
+      const minDate3 = moment.min(minDate2);
+      const currentDate = moment(); // Current date
+      // Calculate the difference in days
+      setDayDifference(currentDate.diff(minDate3, "days"));
+      setMinDate(minDate3);
       Object.keys(rolesData).forEach((key) => {
         rolesData[key] =
           rolesData[key].length > 0 ? groupDatesIntoWeeks(rolesData[key]) : [];
       });
-      console.log(rolesData);
+      console.log("dailyActivity rolesData", rolesData);
       let mainData = convertToChart(rolesData, userDailyActivity);
       setChartData(mainData);
-
     }
-  }, [userDailyActivity]);
-  console.log(chartData)
+  }, [userDailyActivity, dateRange]);
+  console.log("dailyActivity chart", chartData, minDate, dateRange);
   return (
     <div className="bg-[#FFFFFF] relative flex flex-col justify-center items-center border-[1.3px] border-[#FFF]  mt-[6px] rounded-[5.33px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)]">
-      <div className="flex  gap-[10%] p-5  pl-[100px] w-full flex-1 border-b border-[1.33px_solid_#EBEBEB]">
-        <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]"><span className="bg-[#26435F] inline-block  rounded-full w-3 h-3  "></span> Admin</div>
-        <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]"><span className="bg-[#FF7714] inline-block  rounded-full w-3 h-3 text-[#507CA8] "></span> Tutor</div>
-        <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]"><span className="bg-[#24FF00] inline-block  rounded-full w-3 h-3 text-[#507CA8] "></span> Parents</div>
-        <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]"><span className="bg-[#26435F] inline-block  rounded-full w-3 h-3 text-[#507CA8] "></span> Students</div>
-      
+      <div className="flex  gap-[3%] p-5  pl-[100px] w-full flex-1 border-b border-[1.33px_solid_#EBEBEB]">
+        <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]">
+          <span className="bg-[#26435F] inline-block  rounded-full w-3 h-3  "></span>{" "}
+          Admin
+        </div>
+        <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]">
+          <span className="bg-[#FF7714] inline-block  rounded-full w-3 h-3 text-[#507CA8] "></span>{" "}
+          Tutor
+        </div>
+        <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]">
+          <span className="bg-[#24FF00] inline-block  rounded-full w-3 h-3 text-[#507CA8] "></span>{" "}
+          Parents
+        </div>
+        <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]">
+          <span className="bg-[#26435F] inline-block  rounded-full w-3 h-3 text-[#507CA8] "></span>{" "}
+          Students
+        </div>
       </div>
-      
+
       <div className="flex mt-6 relative max-w-full justify-center w-full p-4">
-        <Bubble
-          //  data={chartData ? chartData : bubbleChartData}
-          data={ ChartData}
+        <Scatter
+          data={chartData ? chartData : bubbleChartData}
+          // data={chartData}
+          height={460}
           options={{
+            responsive: true,
+            maintainAspectRatio: false,
+
             layout: {
               padding: {
                 top: 20,
-                bottom:20
+                bottom: 20,
               },
             },
             scales: {
               x: {
-                type: 'category',
+                type: "time",
+                time: {
+                  unit: "week", // Display x-labels in weeks
+                  displayFormats: {
+                    week: "WW ",
+                  },
+                },
+                min: minDate,
+
                 display: true,
                 title: {
                   display: true,
-                  text: 'Weeks',
+                  text: "Weeks",
                   padding: { top: 40 },
-                  color: '#24A3D9',
+                  color: "#24A3D9",
                   font: {
                     weight: 500,
                     size: 18,
                   },
                 },
-                labels: ['', 'Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5','Week 6'],
+
                 ticks: {
-                  color: '#507CA8',
+                  callback: function (value, index, ticks) {
+                    // Customize the tick labels here
+                    return "week " + (index + 1);
+                  },
+
+                  color: "#507CA8",
                   font: {
                     weight: 400,
-                    size: 16,
+                    size: 12,
                   },
                 },
               },
@@ -129,27 +174,23 @@ const BubbleChart = ({ dateRange }) => {
                     size: 16,
                   },
                 },
-                suggestedMin: 0, 
-                suggestedMax: 60, 
-                stepSize: 10, 
+                suggestedMin: 0,
+                suggestedMax: 60,
+                stepSize: 10,
                 ticks: {
-                  color: '#507CA8',
+                  color: "#507CA8",
                   font: {
                     weight: 400,
                     size: 16,
                   },
                 },
               },
-
             },
             plugins: {
-
-
               legend: {
                 display: false,
                 position: "top",
                 align: "center",
-               
 
                 labels: {
                   // boxHeight:400,
@@ -157,15 +198,14 @@ const BubbleChart = ({ dateRange }) => {
                   // radius: 20,
                   font: {
                     size: 15,
-                    family: 'Lexend Deca',
+                    family: "Lexend",
                   },
                   // pointStyleSize:5,
                   // pointStyleHeight:5,
 
                   pointStyle: "circle",
-
                 },
-                  // marginBottom:30,
+                // marginBottom:30,
               },
             },
             title: {
@@ -173,18 +213,20 @@ const BubbleChart = ({ dateRange }) => {
               text: "Bubble Chart",
               fontSize: 20,
             },
-
           }}
         />
-
       </div>
-      <div className="absolute bottom-[10%] flex items-center font-medium text-lg left-[7%] text-[#26435F]">
+      <div className="absolute bottom-[7%] flex items-center font-medium text-lg left-[7%] text-[#507CA8]">
         <div className="bg-[rgba(38,67,95,1)] w-[40px] h-[11px] mr-[13px]"></div>
-        <p>past 12 days</p>
+        <p>past {dayDifference ? dayDifference + 2 : dayDifference} days</p>
       </div>
-      <div className="absolute bottom-[9%] left-[50%]"><img src={arrow} alt="" /></div>
-      <div className="absolute top-[40%] left-[3%]"><img src={arrow1} alt="" /></div>
-    </div >
+      <div className="absolute bottom-[60px] left-[51%]">
+        <img src={arrow} alt="" />
+      </div>
+      <div className="absolute top-[44.7%] left-[40px] design:top-[47%]">
+        <img className="h-[60px]" src={arrow1} alt="" />
+      </div>
+    </div>
   );
 };
 

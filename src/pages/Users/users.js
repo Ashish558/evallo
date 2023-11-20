@@ -9,15 +9,16 @@ import InputField from "../../components/InputField/inputField";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import styles from "./styles.module.css";
 import AddIcon from "../../assets/icons/add.svg";
-import Dropdown from "../../assets/icons/Polygon 2.png";
-import PlusIcon from "../../assets/icons/plus.svg";
+import Dropdown from "../../assets/icons/custom_dropdown.svg";
+import PlusIcon from "../../assets/icons/add_plus.svg";
 import ExportIcon from "../../assets/icons/export.svg";
 import UploadIcon from "../../assets/icons/upload.svg";
 import XIcon from "../../assets/icons/x.png";
-import SearchIcon from "../../assets/icons/search.svg";
+import SearchIcon from "../../assets/icons/Search_shade.svg";
 import fileupload from "../../assets/icons/basil_file-upload-outline (2).svg";
 import { tableData, userTypesList } from "./tempData";
 import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
+import dropdownIcon from '../../assets/icons/coloured_dropdown.svg'
 import { csvHeaders } from "./csvUtlis";
 import {
   useAddUserMutation,
@@ -40,12 +41,12 @@ import {
   useDeleteUserMutation,
   useUnblockUserMutation,
 } from "../../app/services/admin";
-import ques from "../../assets/YIcons/medical-icon_i-information-us.svg";
+import ques from "../../assets/icons/tooltip.svg";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 // import CountryCode from "../../components/CountryCode/CountryCode";
 // import { isPhoneNumber } from "../Signup/utils/util";
-import { checkIfExistInNestedArray } from "../../utils/utils";
+import { checkIfExistInNestedArray, getFormattedDateTime } from "../../utils/utils";
 // import InputSelectNew from "../../components/InputSelectNew/InputSelectNew";
 import InputSearch from "../../components/InputSearch/InputSearch";
 import { useSelector } from "react-redux";
@@ -53,6 +54,7 @@ import axios from "axios";
 // import Loader from "../../components/Loader";
 import LoaderNew from "../../components/Loader/LoaderNew";
 import SCheckbox from "../../components/CCheckbox/SCheckbox";
+import AssignedTutors from "../AssignedTutors/AssignedTutors";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 
@@ -69,7 +71,14 @@ const initialState = {
 export default function Users() {
   const [modalActive, setModalActive] = useState(false);
   const navigate = useNavigate();
-  const { organization } = useSelector((state) => state.organization);
+  const { organization, } = useSelector((state) => state.organization);
+
+  const SORT_STATES = {
+    ASCENDING_ORDER: "ASCENDING_ORDER",
+    DESCENDING_ORDER: "DESCENDING_ORDER",
+    UNSORTED: "UNSORTED",
+  }
+
   const { firstName, lastName } = useSelector((state) => state.user);
   const [modalData, setModalData] = useState(initialState);
   const [validData, setValidData] = useState(true);
@@ -78,6 +87,12 @@ export default function Users() {
   const [specializations, setSpecializations] = useState([]);
   const [numberPrefix, setNumberPrefix] = useState("");
   const [usersData, setUsersData] = useState([]);
+  const [usernameSortState, setUsernameSortState] = useState(SORT_STATES.UNSORTED);
+  const [userTypeSortState, setUserTypeSortState] = useState(SORT_STATES.UNSORTED);
+  const [emailSortState, setEmailSortState]       = useState(SORT_STATES.UNSORTED);
+  const [phoneSortState, setPhoneSortState]       = useState(SORT_STATES.UNSORTED);
+  const [accountStatusSortState, setAccountStatusSortState] = useState(SORT_STATES.UNSORTED);
+  const [joinDateSortState, setJoinDateSortState] = useState(SORT_STATES.UNSORTED);
   const [filteredUsersData, setFilteredUsersData] = useState([]);
   const [bulkUpload, setBulkUpload] = useState(false);
   const [xlsFile, setXlsFile] = useState();
@@ -86,10 +101,10 @@ export default function Users() {
   useEffect(() => {
     setValidData(
       isEmail(modalData.email) &&
-        modalData.firstName &&
-        modalData.lastName &&
-        modalData.userType &&
-        modalData.phone
+      modalData.firstName &&
+      modalData.lastName &&
+      modalData.userType &&
+      modalData.phone
     );
   }, [
     modalData,
@@ -103,54 +118,436 @@ export default function Users() {
   const [settings, setSettings] = useState({
     leadStatus: [],
   });
-  const sortByName = () => {
-    setUsersData((prev) => {
-      let arr = [...prev];
-      arr = arr.sort(function (a, b) {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
-      });
-      return arr;
-    });
 
-    setFilteredUsersData((prev) => {
-      let arr = [...prev];
-      //console.log("arr", arr);
-      arr = arr.sort(function (a, b) {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
+  const sortByName = () => {
+    console.log("sortByName");
+    if(usernameSortState === SORT_STATES.UNSORTED || usernameSortState === SORT_STATES.DESCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.name < b.name) {
+            return -1;
+          }
+          if (a.name > b.name) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
       });
-      return arr;
-    });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (a.name < b.name) {
+            return -1;
+          }
+          if (a.name > b.name) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setUsernameSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(usernameSortState === SORT_STATES.ASCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.name < b.name) {
+            return 1;
+          }
+          if (a.name > b.name) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (a.name < b.name) {
+            return 1;
+          }
+          if (a.name > b.name) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setUsernameSortState(SORT_STATES.DESCENDING_ORDER);
+    }
   };
+
+  const sortByUserType = () => {
+    if(userTypeSortState === SORT_STATES.UNSORTED || userTypeSortState === SORT_STATES.DESCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.userType < b.userType) {
+            return -1;
+          }
+          if (a.userType > b.userType) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (a.userType < b.userType) {
+            return -1;
+          }
+          if (a.userType > b.userType) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setUserTypeSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(userTypeSortState === SORT_STATES.ASCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.userType < b.userType) {
+            return 1;
+          }
+          if (a.userType > b.userType) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (a.userType < b.userType) {
+            return 1;
+          }
+          if (a.userType > b.userType) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setUserTypeSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  };
+
+  const sortByEmail = () => {
+    if(emailSortState === SORT_STATES.UNSORTED || emailSortState === SORT_STATES.DESCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.email < b.email) {
+            return -1;
+          }
+          if (a.email > b.email) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (a.email < b.email) {
+            return -1;
+          }
+          if (a.email > b.email) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setEmailSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(emailSortState === SORT_STATES.ASCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.email < b.email) {
+            return 1;
+          }
+          if (a.email > b.email) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (a.email < b.email) {
+            return 1;
+          }
+          if (a.email > b.email) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setEmailSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  };
+
+  const sortByPhone = () => {
+    if(phoneSortState === SORT_STATES.UNSORTED || phoneSortState === SORT_STATES.DESCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (parseInt(a.phone) < parseInt(b.phone)) {
+            return -1;
+          }
+          if (parseInt(a.phone) > parseInt(b.phone)) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (parseInt(a.phone) < parseInt(a.phone)) {
+            return -1;
+          }
+          if (parseInt(a.phone) > parseInt(a.phone)) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setPhoneSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(phoneSortState === SORT_STATES.ASCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (parseInt(a.phone) < parseInt(a.phone)) {
+            return 1;
+          }
+          if (parseInt(a.phone) > parseInt(a.phone)) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (parseInt(a.phone) < parseInt(a.phone)) {
+            return 1;
+          }
+          if (parseInt(a.phone) > parseInt(a.phone)) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setPhoneSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  };
+
+  const sortByAccountStatus = () => {
+    if(accountStatusSortState === SORT_STATES.UNSORTED || accountStatusSortState === SORT_STATES.DESCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.accountStatus < b.accountStatus) {
+            return -1;
+          }
+          if (a.accountStatus > b.accountStatus) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (a.accountStatus < b.accountStatus) {
+            return -1;
+          }
+          if (a.accountStatus > b.accountStatus) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setAccountStatusSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(accountStatusSortState === SORT_STATES.ASCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.accountStatus < b.accountStatus) {
+            return 1;
+          }
+          if (a.accountStatus > b.accountStatus) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (a.accountStatus < b.accountStatus) {
+            return 1;
+          }
+          if (a.accountStatus > b.accountStatus) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setAccountStatusSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  };
+
+  const sortByJoinDate = () => {
+    if(joinDateSortState === SORT_STATES.UNSORTED || joinDateSortState === SORT_STATES.DESCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (getFormattedDateTime(a.createdAt) < getFormattedDateTime(b.createdAt)) {
+            return -1;
+          }
+          if (getFormattedDateTime(a.createdAt) > getFormattedDateTime(b.createdAt)) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (getFormattedDateTime(a.createdAt) < getFormattedDateTime(b.createdAt)) {
+            return -1;
+          }
+          if (getFormattedDateTime(a.createdAt) > getFormattedDateTime(b.createdAt)) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setJoinDateSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(joinDateSortState === SORT_STATES.ASCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (getFormattedDateTime(a.createdAt) < getFormattedDateTime(b.createdAt)) {
+            return 1;
+          }
+          if (a.createdAt > b.createdAt) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (getFormattedDateTime(a.createdAt) < getFormattedDateTime(b.createdAt)) {
+            return 1;
+          }
+          if (getFormattedDateTime(a.createdAt) > getFormattedDateTime(b.createdAt)) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setJoinDateSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  };
+
+
   const tableHeaders = [
     {
       id: 1,
       text: "Full Name",
       className: "text-left pl-6",
-      onCick: sortByName,
+      onCick: sortByName, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
+      willDisplayDownArrow: usernameSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 2,
       text: "User Type",
+      onCick: sortByUserType, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
+      willDisplayDownArrow: userTypeSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 3,
       text: "Email",
+      onCick: sortByEmail, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
+      willDisplayDownArrow: emailSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 4,
       text: "Phone",
+      onCick: sortByPhone,  // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
+      willDisplayDownArrow: phoneSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 5,
@@ -172,12 +569,18 @@ export default function Users() {
     {
       id: 8,
       text: "Account Status",
+      onCick: sortByAccountStatus, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
+      willDisplayDownArrow: accountStatusSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 9,
       text: "Join Date",
+      onCick: sortByJoinDate, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
+      willDisplayDownArrow: joinDateSortState !== SORT_STATES.DESCENDING_ORDER,
     },
   ];
+
+  console.log(usersData);
 
   const [assignStudentModalActive, setAssignStudentModalActive] =
     useState(false);
@@ -262,13 +665,13 @@ export default function Users() {
 
     console.log("urlParams", urlParams);
     fetchUsers(urlParams).then((res) => {
-      console.log("crm",res)
+      console.log("crm", res)
       if (res?.data?.data) setTotalPages(res?.data?.data?.total_users);
-  
+
       const fetchDetails = async () => {
         let tempData = [];
         await res?.data?.data?.user?.map(async (user) => {
-          console.log("user", user);
+          // console.log("user", user);
           let obj = {
             _id: user._id,
             block: user.block,
@@ -425,12 +828,20 @@ export default function Users() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("add save")
     if (modalData.userType === "") return alert("Fill all the fields");
+    let f = /[a-z]/i.test(modalData?.firstName)
+    f = f && /[a-z]/i.test(modalData?.lastName)
+    if (!f) {
+      alert("Enter a valid name!")
+      return
+    }
     let body = {
       firstName: modalData.firstName,
       lastName: modalData.lastName,
       email: modalData.email,
       phone: `${numberPrefix}${modalData.phone}`,
+      type: "dont send invite."
     };
     setLoading(true);
     if (modalData.userType === "tutor") {
@@ -444,7 +855,7 @@ export default function Users() {
           return;
         }
         fetch();
-        alert("Invitation sent!");
+        alert("User Saved Successfully!");
         setModalData(initialState);
         handleClose();
       });
@@ -460,6 +871,59 @@ export default function Users() {
           return;
         }
         fetch();
+        alert("User Saved Successfully!");
+        setModalData(initialState);
+        handleClose();
+      });
+    }
+  };
+  const [loadingInvite, setLoadingInvite] = useState(false)
+  const handleInvite1 = (e) => {
+
+    e.preventDefault();
+    console.log("add invite")
+    if (modalData.userType === "") return alert("Fill all the fields");
+    let f = /[a-z]/i.test(modalData?.firstName)
+    f = f && /[a-z]/i.test(modalData?.lastName)
+    if (!f) {
+      alert("Enter a valid name!")
+      return
+    }
+    let body = {
+      firstName: modalData.firstName,
+      lastName: modalData.lastName,
+      email: modalData.email,
+      phone: `${numberPrefix}${modalData.phone}`,
+    };
+
+    setLoadingInvite(true);
+    if (modalData.userType === "tutor") {
+      //console.log(body);
+      body.role = modalData.userType.toLowerCase();
+      addUser(body).then((res) => {
+        //console.log(res);
+        setLoadingInvite(false);
+        if (res.error) {
+          alert(res.error.data.message);
+          return;
+        }
+        fetch();
+        alert("Invitation sent!");
+        setModalData(initialState);
+        handleClose();
+      });
+      return;
+    } else {
+      body.role = modalData.userType.toLowerCase();
+      //console.log(body);
+      addUser(body).then((res) => {
+        setLoadingInvite(false);
+        //console.log(res);
+        if (res.error) {
+          alert(res.error.data.message);
+          return;
+        }
+        fetch();
         alert("Invitation sent!");
         setModalData(initialState);
         handleClose();
@@ -468,23 +932,25 @@ export default function Users() {
   };
   const [isChecked, setIsChecked] = useState(false);
 
-  const handleCheckboxChange = () => {
-    if(!isChecked) {
-      let data=filteredUsersData
-     data=data?.slice(0,maxPageSize)
+
+  const handleCheckboxChange = (e) => {
+    if (!isChecked) {
+      let data = filteredUsersData
+      data = data?.slice(0, maxPageSize)
 
       setSelectedId([...data])
     }
     else {
       setSelectedId([])
+      setBulkEdits({})
     }
     setIsChecked(!isChecked);
 
   };
-  useEffect(()=>{
+  useEffect(() => {
     setIsChecked(false)
     setSelectedId([])
- },[filteredUsersData])
+  }, [filteredUsersData])
   const handleClose = () => setModalActive(false);
 
   const redirect = (item) => {
@@ -492,6 +958,8 @@ export default function Users() {
       navigate(`/profile/${item.userType}/${item._id}`);
     }
   };
+
+
 
   const handleTutorStatus = (item) => {
     //console.log(item);
@@ -579,7 +1047,8 @@ export default function Users() {
     if (!settings.servicesAndSpecialization) return;
     let specs = [];
     settings.servicesAndSpecialization.map((service) => {
-      specs.push(...service.specialization);
+      // specs.push(...service.specialization);
+      specs.push(service.service)
     });
     setSpecializations(specs);
     //console.log("specs", specs);
@@ -606,35 +1075,42 @@ export default function Users() {
   const [successFetched, setsuccessFetched] = useState(false);
   const handleBulkExport = async () => {
     setCsvLoad(true);
-    getAllUsers()
-      .then((res) => {
-        let result = res?.data?.data?.user;
+    if (selectedId?.length === 0) {
+      getAllUsers()
+        .then((res) => {
+          let result = res?.data?.data?.user;
 
-        if (result) {
-          let arr = [];
-          result?.forEach((it) => {
-            let obj = {};
-            obj.name = it.firstName + " " + it.lastName;
-            obj._id = it._id;
-            obj.userType = it.role;
-            obj.block = it.block;
-            obj.createdAt = it.createdAt;
-            obj.specialization = it.specialization;
-            obj.tutorStatus = it.userStatus;
-            obj.leadStatus = "";
-            obj.assignedTutor = it.assiginedTutors;
-            obj.phone = it.phone;
-            obj.email = it.email;
-            arr.push(obj);
-          });
-          setCsvData(arr);
-        }
-        setsuccessFetched(true);
-        setCsvLoad(false);
-      })
-      .catch((err) => {
-        setCsvLoad(false);
-      });
+          if (result) {
+            let arr = [];
+            result?.forEach((it) => {
+              let obj = {};
+              obj.name = it.firstName + " " + it.lastName;
+              obj._id = it._id;
+              obj.userType = it.role;
+              obj.block = it.block;
+              obj.createdAt = it.createdAt;
+              obj.specialization = it.specialization;
+              obj.tutorStatus = it.userStatus;
+              obj.leadStatus = "";
+              obj.assignedTutor = it.assiginedTutors;
+              obj.phone = it.phone;
+              obj.email = it.email;
+              arr.push(obj);
+            });
+            setCsvData(arr);
+          }
+          setsuccessFetched(true);
+          setCsvLoad(false);
+        })
+        .catch((err) => {
+          setCsvLoad(false);
+        });
+    }
+    else {
+      setCsvData(selectedId);
+      setsuccessFetched(true);
+      setCsvLoad(false);
+    }
   };
   const [csvLength, setCsvLength] = useState("XX");
   const [students, setStudents] = useState([]);
@@ -686,7 +1162,8 @@ export default function Users() {
           console.log("uploaded", res);
           setXlsFile(null);
           setCsvLength("XX");
-          alert("File Uploaded");
+          alert("Bulk Users Saved!");
+          setBulkUpload(false);
           //setBulkUpload(false)
         })
         .catch((err) => {
@@ -700,15 +1177,17 @@ export default function Users() {
     if (xlsFile !== undefined) {
       const formdata = new FormData();
       formdata.append("file", xlsFile);
+      formdata.append("uploadType", "saveAndInvite");
       await axios
-        .post(`${BASE_URL}api/user/bulkInviteUsers`, formdata, {
+        .post(`${BASE_URL}api/user/bulkUploadUsers`, formdata, {
           headers: getAuthHeader(),
         })
         .then((res) => {
           setInviteUsers(false);
           setXlsFile(null);
           setCsvLength("XX");
-          alert("File Uploaded");
+          setInviteUsers(false);
+          alert("Invite sent to bulk users!");
           // setXlsFile(undefined);
         })
         .catch((err) => {
@@ -718,130 +1197,149 @@ export default function Users() {
         });
     }
   };
-const [selectedId,setSelectedId]=useState([])
-const [addLeadStatus,sls]=useCRMBulkChangeLeadStatusMutation()
-const [addTutorStatus,slst]=useCRMBulkChangeTutorStatusMutation()
-const [addAssignedTutor,slsAt]=useCRMBulkChangeAssignedTutorMutation()
-const [addInviteUser,slsiu]=useCRMBulkInviteUserMutation()
-const [addDeleteUser,slsdu]=useCRMBulkDeleteUserMutation()
-const [bulkEdits,setBulkEdits]=useState({})
-const [checkSave,setChecksave]=useState({ch:0,done:false,count:0})
-const handleSave=()=>{
-  let users=selectedId?.map(ii=>ii?._id)
-  if(!users || users?.length===0) return
-  let b=0;
- 
- // setSaveSelectLoading(true)
-  if(bulkEdits?.leadStatus && bulkEdits?.leadStatus?.value){
-    b++
-    setSaveSelectLoading(true)
-  addLeadStatus({leadStatus:bulkEdits.leadStatus.value,users}).then((res)=>{
-    console.log("successleadStatus",res,checkSave)
-    setChecksave((prev)=>{
-      
-      return {...prev,done:true,count:prev?.count+1}
-    })
-    setSaveSelectLoading(false)
-    setSaveBulkModalActive(false)
-  })
-}
-  if(bulkEdits?.tutorStatus && bulkEdits?.tutorStatus?.value){
-    setSaveSelectLoading(true)
-    b++
-  addTutorStatus({tutorStatus:bulkEdits.tutorStatus.value,users}).then((res)=>{
-    console.log("successtutorStatus",res,checkSave)
-   
-    
-    setSaveSelectLoading(false)
-    setSaveBulkModalActive(false)
-    // if(checkSave?.ch &&  checkSave?.count+1===checkSave?.ch){
-    //   alert("Changes Saved Successfully")
-     
-    //   setChecksave({})
-    // }
-    setChecksave((prev)=>{
-      
-      return {...prev,done:true,count:prev?.count+1}
-    })
-  })
-}
-  if(bulkEdits?.assignedTutor && bulkEdits?.assignedTutor?.id){
-    setSaveSelectLoading(true)
-    b++
-  addAssignedTutor({tutorId:bulkEdits.assignedTutor.id,users}).then((res)=>{
-    console.log("successassignedTutor",res,checkSave)
-    setChecksave((prev)=>{
-      
-      return {...prev,done:true,count:prev?.count+1}
-    })
-    setSaveSelectLoading(false)
-    setSaveBulkModalActive(false)
-  })
-}
-setChecksave((prev)=>{
-      
-  return {done:false,count:0,ch:b}
-})
-if(!b){
-  alert("No filter selected!")
-}
+  const [selectedId, setSelectedId] = useState([])
+  const [addLeadStatus, sls] = useCRMBulkChangeLeadStatusMutation()
+  const [addTutorStatus, slst] = useCRMBulkChangeTutorStatusMutation()
+  const [addAssignedTutor, slsAt] = useCRMBulkChangeAssignedTutorMutation()
+  const [addInviteUser, slsiu] = useCRMBulkInviteUserMutation()
+  const [addDeleteUser, slsdu] = useCRMBulkDeleteUserMutation()
+  const [bulkEdits, setBulkEdits] = useState({})
+  const [checkSave, setChecksave] = useState({ ch: 0, done: false, count: 0 })
+  const handleSave = () => {
+    let users = selectedId?.map(ii => ii?._id)
+    if (!users || users?.length === 0) return
+    let b = 0;
+
+    // setSaveSelectLoading(true)
+    if (bulkEdits?.leadStatus && bulkEdits?.leadStatus?.value) {
+      b++
+      setSaveSelectLoading(true)
+      addLeadStatus({ leadStatus: bulkEdits.leadStatus.value, users }).then((res) => {
+        console.log("successleadStatus", res, checkSave)
+        setChecksave((prev) => {
+
+          return { ...prev, done: true, count: prev?.count + 1 }
+        })
+        setSaveSelectLoading(false)
+        setSaveBulkModalActive(false)
+      })
+    }
+    if (bulkEdits?.tutorStatus && bulkEdits?.tutorStatus?.value) {
+      setSaveSelectLoading(true)
+      b++
+      addTutorStatus({ tutorStatus: bulkEdits.tutorStatus.value, users }).then((res) => {
+        console.log("successtutorStatus", res, checkSave)
 
 
-}
-useEffect(()=>{
-  if(checkSave?.ch>0 && checkSave?.count && checkSave?.ch===checkSave?.count){
-    alert("Changes Saved Successfully!")
-    fetch()
-    setChecksave({})
-    setBulkEdits({})
+        setSaveSelectLoading(false)
+        setSaveBulkModalActive(false)
+        // if(checkSave?.ch &&  checkSave?.count+1===checkSave?.ch){
+        //   alert("Changes Saved Successfully")
+
+        //   setChecksave({})
+        // }
+        setChecksave((prev) => {
+
+          return { ...prev, done: true, count: prev?.count + 1 }
+        })
+      })
+    }
+    if (bulkEdits?.assignedTutor && bulkEdits?.assignedTutor?.id) {
+      setSaveSelectLoading(true)
+      b++
+      addAssignedTutor({ tutorId: bulkEdits.assignedTutor.id, users }).then((res) => {
+        console.log("successassignedTutor", res, checkSave)
+        setChecksave((prev) => {
+
+          return { ...prev, done: true, count: prev?.count + 1 }
+        })
+        setSaveSelectLoading(false)
+        setSaveBulkModalActive(false)
+      })
+    }
+    setChecksave((prev) => {
+
+      return { done: false, count: 0, ch: b }
+    })
+    if (!b) {
+      alert("No filter selected!")
+    }
+
+
   }
-},[checkSave])
+  useEffect(() => {
+    if (checkSave?.ch > 0 && checkSave?.count && checkSave?.ch === checkSave?.count) {
+      alert("Changes Saved Successfully!")
+      fetch()
+      setChecksave({})
+      setBulkEdits({})
+    }
+  }, [checkSave])
 
-console.log({checkSave})
-const bulkSelectInvite=()=>{
-  let users=selectedId?.map(ii=>ii?._id)
-  if(!users || users?.length===0) return
-  setInviteSelectLoading(true)
-  addInviteUser({users}).then((res)=>{
-    console.log("successInvite",res)
-    if(res?.data)
-    alert("User(s) invited successfully!")
+  //console.log({checkSave})
+  const bulkSelectInvite = () => {
+    let users = selectedId?.map(ii => ii?._id)
+    if (!users || users?.length === 0) return
+    setInviteSelectLoading(true)
+    addInviteUser({ users }).then((res) => {
+      console.log("successInvite", res)
+      if (res?.data)
+        alert("User(s) invited successfully!")
 
-    setInviteSelectLoading(false)
-    setInviteBulkModalActive(false)
-    fetch()
-  })
+      setInviteSelectLoading(false)
+      setInviteBulkModalActive(false)
+      fetch()
+    })
 
-}
-const bulkSelectDelete=()=>{
-  let users=selectedId?.map(ii=>ii?._id)
-  if(!users || users?.length===0) return
-  setDeleteSelectLoading(true)
-  addDeleteUser({users}).then((res)=>{
-    console.log("successDelete",res)
-    if(res?.data)
-    alert("User(s) deleted successfully!")
-    setDeleteSelectLoading(false)
-    setDeleteBulkModalActive(false)
-    fetch()
-  })
+  }
+  const bulkSelectDelete = () => {
+    let users = selectedId?.map(ii => ii?._id)
+    if (!users || users?.length === 0) return
+    setDeleteSelectLoading(true)
+    addDeleteUser({ users }).then((res) => {
+      console.log("successDelete", res)
+      if (res?.data)
+        alert("User(s) deleted successfully!")
+      setDeleteSelectLoading(false)
+      setDeleteBulkModalActive(false)
+      fetch()
+    })
 
-}
-const [deleteBulkModalActive,setDeleteBulkModalActive] =useState(false)
-const [deleteSelectLoading,setDeleteSelectLoading]=useState(false)
-const [InviteBulkModalActive,setInviteBulkModalActive] =useState(false)
-const [InviteSelectLoading,setInviteSelectLoading]=useState(false)
-const [SaveBulkModalActive,setSaveBulkModalActive]= useState(false)
-const [saveSelectLoading,setSaveSelectLoading]= useState(false)
+  }
+  const [assignedTutorOpen, setAssignedTutorOpen] = useState(false)
+  const [deleteBulkModalActive, setDeleteBulkModalActive] = useState(false)
+  const [deleteSelectLoading, setDeleteSelectLoading] = useState(false)
+  const [InviteBulkModalActive, setInviteBulkModalActive] = useState(false)
+  const [InviteSelectLoading, setInviteSelectLoading] = useState(false)
+  const [SaveBulkModalActive, setSaveBulkModalActive] = useState(false)
+  const [saveSelectLoading, setSaveSelectLoading] = useState(false)
+  const [showTooltip, setTooltip] = useState(false)
+  const [ adminSelectedForDelete,setAdminSelectedForDelete] = useState(false)
+  useEffect(() => {
+    if (selectedId?.length === 0)
+      setBulkEdits({})
+    setAdminSelectedForDelete(false)
+    if(selectedId?.length>0){
+       
+        let check=selectedId?.find((it)=>it?.userType==="admin")
+        setAdminSelectedForDelete(check?true:false)
+        
+    }
+  }, [selectedId])
+  console.log("selected ",selectedId,adminSelectedForDelete)
 
 
-console.log("users",{selectedId,bulkEdits})
+
+  const numberKey = Object.keys(bulkEdits)?.length > 0
+
+
+  //console.log("users",{selectedId,bulkEdits})
   return (
     <div className="w-[83.6989583333vw] mx-auto  min-h-screen">
       <div className="pb-10  mt-[50px] !mt-[calc(50*0.0522vw)]">
         <div className="flex justify-between items-center mb-3">
           <p className="text-[#24A3D9] mb-6 text-xl text-base-20 cursor-pointer">
-            <span onClick={()=>navigate('/')}>{organization?.company +
+            <span onClick={() => navigate('/')}>{organization?.company +
               "  >  " +
               firstName +
               "  " +
@@ -849,13 +1347,7 @@ console.log("users",{selectedId,bulkEdits})
               "  >  "}</span>
             <span className="font-semibold">CRM</span>
           </p>
-          <button
-            className="bg-[#FFA28D]  text-[15px] justify-center flex py-2 px-3 design:px-4 items-center text-white font-semibold rounded-lg text-base-15"
-            onClick={() => navigate("/assigned-tutors")}
-          >
-            Tutor Mapping
-            <img src={PlusIcon} className="ml-3" alt="PlusIcon" />
-          </button>
+
         </div>
         <div>
           <div className="flex mb-[46px]">
@@ -888,7 +1380,7 @@ console.log("users",{selectedId,bulkEdits})
             </button>
             <button
               onClick={upload}
-              className="bg-[#517CA8] text-base-15 w-[158px] text-[15px] justify-center flex  items-center text-white  rounded-lg mr-[25px]"
+              className="bg-[#517CA8] text-base-15 w-[160px] text-[15px] justify-center flex  items-center text-white  rounded-lg mr-[25px]"
             >
               Bulk Upload{" "}
               <img src={UploadIcon} className="ml-3" alt="UploadIcon" />
@@ -903,9 +1395,15 @@ console.log("users",{selectedId,bulkEdits})
                 </>
               }
               onClick={() => setModalActive(true)}
-              className=" flex items-center text-[15px] !text-white font-semibold py-[10px] px-3 text-base-15"
+              className=" flex items-center  !text-white font-semibold py-[10px]  text-base-17-5 w-[203px] h-[45px] !px-1"
             />
-
+            <button
+              className="bg-[#FFA28D]  text-base-17-5 justify-center flex py-2 pr-[12px] pl-4 design:px-4 items-center text-white font-semibold rounded-lg text-base-15  ml-auto"
+              onClick={() => setAssignedTutorOpen(true)}
+            >
+              Tutor Mapping
+              <img src={PlusIcon} className="ml-3" alt="PlusIcon" />
+            </button>
             {bulkUpload && (
               <Modal
                 title="Bulk Upload"
@@ -969,7 +1467,7 @@ console.log("users",{selectedId,bulkEdits})
                           }}
                           className="  block text-[#FFA28D] border-[1.33px] border-[#FFA28D] bg-white hover:shadow-md ms-3 font-medium rounded-lg  px-[13.33px] py-3 text-center dark:bg-white "
                         >
-                          Save Data and Invite User
+                          Save Data and Invite Users
                         </button>
                       </div>
                     </div>
@@ -982,14 +1480,15 @@ console.log("users",{selectedId,bulkEdits})
               <Modal
                 crossBtn={true}
                 underline={true}
-                title={`Are You Sure You Want to Invite ${csvLength} Users To Join Evallo?`}
+                titleInvite={csvLength}
+
                 classname={"max-w-[781px] mx-auto"}
-                titleClassName={"mb-5 "}
+                titleClassName={"mb-5 text-center"}
                 handleClose={() => setInviteUsers(false)}
                 body={
                   <>
                     <div className="text-center mb-7">
-                      <p className="text-[#517CA8]  text-lg font-light">
+                      <p className="text-[#517CA8]  text-lg ">
                         All users that are invited to the platform will receive
                         an email invitation to create an account within your
                         organization. If you only want to store their data and
@@ -999,7 +1498,7 @@ console.log("users",{selectedId,bulkEdits})
                         <span className="pt-1">
                           If you want to continue inviting the users, please
                           click on the{" "}
-                          <span className="font-normal">
+                          <span className="font-semibold">
                             “Confirm Email Invitations”
                           </span>{" "}
                           button below.
@@ -1014,7 +1513,7 @@ console.log("users",{selectedId,bulkEdits})
                         type="button"
                         onClick={() => {
                           bulkInvite();
-                          setInviteUsers(false);
+
                         }}
                       >
                         Yes, Confirm
@@ -1033,13 +1532,14 @@ console.log("users",{selectedId,bulkEdits})
             )}
           </div>
         </div>
-        <div className="flex justify-between items-center gap-7 mb-6">
+        <div className={`flex justify-between items-center gap-7 mb-6 relative ${showTooltip ? "z-[1]" : "z-[50]"}`}>
           <InputField
+
             IconRight={SearchIcon}
             placeholder="Search"
-            inputClassName="text-base-17-5 pl-4 text-[#667085]"
+            inputClassName="text-base-17-5 pl-4 text-[#667085] placeholder:text-[#667085]"
             parentClassName="w-[22.03125vw]  py-1"
-            inputContainerClassName="text-sm  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1  !py-[15px]"
+            inputContainerClassName="text-base-17-5  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1  !py-[15px]"
             type="text"
             value={filterData.typeName}
             onChange={(e) =>
@@ -1048,10 +1548,12 @@ console.log("users",{selectedId,bulkEdits})
           />
           <InputSelect
             placeholderClass="text-base-17-5"
+            customArrow={dropdownIcon}
+            customArrowClassName={`w-[12px] h-[12px]`}
             optionData={userTypesList}
             optionListClassName="text-base-17-5 text-[#667085]"
             inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
-            placeholder="User Type"
+            placeholder="User type"
             parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085]"
             type="select"
             value={filterData.userType.length > 0 ? filterData.userType[0] : ""}
@@ -1060,8 +1562,8 @@ console.log("users",{selectedId,bulkEdits})
               name: "test",
               match: filterData.userType,
             }}
-            onChange={(val) =>{
-              console.log({val,filterData})
+            onChange={(val) => {
+
               setFilterData({
                 ...filterData,
                 userType: filterData.userType.includes(val)
@@ -1071,11 +1573,13 @@ console.log("users",{selectedId,bulkEdits})
             }}
           />
           <InputSelect
+            customArrow={dropdownIcon}
+            customArrowClassName={`w-[12px] h-[12px]`}
             optionListClassName="text-base-17-5 text-[#667085]"
             placeholderClass="text-base-17-5"
             optionData={settings.leadStatus}
             placeholder="Lead Status"
-            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  border-none text-[#667085]"
+            parentClassName="w-[12.8541666667vw] relative  relative  border-none text-[#667085]"
             inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             type="select"
             checkbox={{
@@ -1094,13 +1598,15 @@ console.log("users",{selectedId,bulkEdits})
             value={filterData.status.length > 0 ? filterData.status[0] : ""}
           />
           <InputSelect
+            customArrow={dropdownIcon}
+            customArrowClassName={`w-[12px] h-[12px]`}
             optionListClassName="text-base-17-5 text-[#667085]"
             placeholderClass="text-base-17-5"
             optionData={specializations}
             placeholder="Services"
-            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085]"
+            parentClassName="w-[12.8541666667vw] relative  relative   text-[#667085] -z-5000"
             type="select"
-            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
+            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px] "
             value={
               filterData.specialization.length > 0
                 ? filterData.specialization[0]
@@ -1122,16 +1628,18 @@ console.log("users",{selectedId,bulkEdits})
           />
 
           <InputSelect
+            customArrow={dropdownIcon}
+            customArrowClassName={`w-[12px] h-[12px]`}
             optionListClassName="text-base-17-5 text-[#667085]"
             placeholderClass="text-base-17-5"
-            optionData={allTutors?.map((iyt)=>{
+            optionData={allTutors?.map((iyt) => {
               return {
                 ...iyt,
-                name:iyt.value,
+                name: iyt.value,
               }
             })}
             placeholder="Tutor"
-            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085]"
+            parentClassName="w-[12.8541666667vw] relative  relative   text-[#667085] -z-5000"
             type="select"
             inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             optionType="object"
@@ -1158,9 +1666,9 @@ console.log("users",{selectedId,bulkEdits})
           />
         </div>
         <div className="flex gap-6 items-center relative z-[10]   mt-[23.75px]">
-          <div className="ml-6 flex gap-3 ">
-            <SCheckbox stopM={true}  checked={isChecked} onChange={handleCheckboxChange} />
-            <span className="inline-block text-[17.5px] text-base-17-5">{selectedId?.length} Selected</span>
+          <div className="ml-6 flex gap-3 items-center">
+            <SCheckbox stopM={true} checked={selectedId.length>0} />
+            <span className="text-[#26435F] inline-block text-[17.5px] text-base-17-5 min-w-[70px] font-medium">{selectedId?.length} Selected</span>
             {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
               <input
                 type="checkbox"
@@ -1176,141 +1684,158 @@ console.log("users",{selectedId,bulkEdits})
           </div>
           <InputSelect
             optionListClassName="text-base-17-5 text-[#667085]"
-            placeholderClass="text-base-17-5 !custom-scroller-2 !w-[125px] overflow-x-auto !text-[#26435F]"
-            optionData={organization?.settings?.leadStatus?.map((iyt)=>{
+            placeholderClass="text-base-17-5 !custom-scroller-2 overflow-x-auto !text-[#26435F] !mr-0"
+            optionData={organization?.settings?.leadStatus?.map((iyt) => {
               return {
-                value:iyt,
-                name:iyt
+                value: iyt,
+                name: iyt
               }
             })}
             hideRight={true}
             placeholder="Lead Status"
-            parentClassName="w-[11.5vw] text-[#26435F]"
+            parentClassName="w-[9.1146vw] text-[#26435F]"
             type="select"
             IconSearch={Dropdown}
-            inputClassName="bg-white border border-white rounded-[4px] w-[125px]"
-            
-            inputContainerClassName="bg-white "
-            
+            inputClassName="bg-white border border-white  w-[125px]"
+
+            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:px-3 2xl:px-4 text-center rounded-[5px]"
+
             optionType="object"
             value={bulkEdits?.leadStatus?.value}
-          
+
             onChange={(val) => {
-              let temp=bulkEdits
-              temp={
+              let temp = bulkEdits
+              temp = {
                 ...temp,
-                leadStatus:{
-                  value:val?.value
+                leadStatus: {
+                  value: val?.value
                 }
-              
-            }
+
+              }
               setBulkEdits(temp)
             }}
           />
-          
+
           <InputSelect
             optionListClassName="text-base-17-5 text-[#667085]"
-            placeholderClass="text-base-17-5 !custom-scroller-2 !w-[125px] overflow-x-auto !text-[#26435F]"
-            optionData={organization?.settings?.tutorStatus?.map((iyt)=>{
+            placeholderClass="text-base-17-5 !custom-scroller-2 overflow-x-auto !text-[#26435F] !mr-0"
+            optionData={organization?.settings?.tutorStatus?.map((iyt) => {
               return {
-                value:iyt,
-                name:iyt
+                value: iyt,
+                name: iyt
               }
             })}
             placeholder="Tutor Status"
-            parentClassName="w-[11.5vw] text-[#26435F]"
+            parentClassName="w-[10vw]  text-[#26435F]"
             type="select"
             IconSearch={Dropdown}
-            inputClassName="bg-white border border-white rounded-[4px] w-[125px]"
-            
-            inputContainerClassName="bg-white "
+            inputClassName="bg-white border border-[rgb(255,255,255)]  w-[125px]"
+
+            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:px-3 2xl:px-4 text-center rounded-[5px]"
             hideRight={true}
             optionType="object"
             value={bulkEdits?.tutorStatus?.value}
-           
+
             onChange={(val) => {
-              let temp=bulkEdits
-              temp={
+              let temp = bulkEdits
+              temp = {
                 ...temp,
-                tutorStatus:{
-                  value:val?.value
+                tutorStatus: {
+                  value: val?.value
                 }
               }
-              
+
               setBulkEdits(temp)
             }}
           />
-         
-           <InputSelect
-           hideRight={true}
-            optionListClassName="text-base-17-5 text-[#667085]"
-            placeholderClass="text-base-17-5 !custom-scroller-2  overflow-x-auto !text-[#26435F]"
-            optionData={allTutors?.map((iyt)=>{
+
+          <InputSelect
+            hideRight={true}
+            optionListClassName="text-base-17-5 text-[#667085] !font-normal"
+            placeholderClass="text-base-17-5 !custom-scroller-2  overflow-x-auto !text-[#26435F] !mr-0 !whitespace-normal !font-normal"
+            optionData={allTutors?.map((iyt) => {
               return {
                 ...iyt,
-                name:iyt.value,
+                name: iyt.value,
               }
             })}
             placeholder="Assigned Tutor"
-            parentClassName="w-[11.5vw] text-[#26435F]"
+            parentClassName="  text-[#26435F] "
             type="select"
             IconSearch={Dropdown}
-            inputClassName="bg-white border border-white rounded-[4px] w-[125px]"
-            
-            inputContainerClassName="bg-white "
-            
+            inputClassName="bg-white border   "
+
+            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:pl-2 2xl:pl-3 rounded-[5px] !font-normal !w-[10.2vw]"
+
             optionType="object"
             value={bulkEdits?.assignedTutor?.value}
-          
+
             onChange={(val) => {
-              console.log({val})
-              let temp=bulkEdits
-              temp={
+
+              let temp = bulkEdits
+              temp = {
                 ...temp,
-                assignedTutor:{
-                  id:val?._id,
-                  value:val?.value
+                assignedTutor: {
+                  id: val?._id,
+                  value: val?.value
                 }
               }
-              
+
               setBulkEdits(temp)
             }}
           />
-         
+
           <div>
-            <button onClick={()=>selectedId?.length>0 && setSaveBulkModalActive(true)} className="bg-[#26435F] text-[15px] px-[25px] py-[10px] rounded-[7.5px] text-white ml-auto text-base-15">
+            <button disabled={selectedId?.length === 0 || !numberKey ? true : false} onClick={() => selectedId?.length > 0 && setSaveBulkModalActive(true)} className={`bg-[rgba(38,67,95,1)] font-medium text-[15px] px-[10px] py-[10px] rounded-[7.5px] text-white ml-auto  h-[43px] w-[5.1563vw] ${selectedId?.length === 0 || !numberKey ? "opacity-75" : ""} `}>
               Save
             </button>
           </div>
-          <div className="flex justify-end flex-1 gap-5 relative ">
-            <button onClick={()=>selectedId?.length>0&&setInviteBulkModalActive(true)} className="bg-[#517CA8] text-[15px] font-semibold relative px-[25px] py-[10px] rounded-[7.5px] text-white  text-base-15">
+          <div className="flex justify-end flex-1 gap-5 design:gap-10 relative z-[50] ">
+
+            <button disabled={selectedId?.length === 0 ? true : false} onClick={() => selectedId?.length > 0 && setInviteBulkModalActive(true)} className={`bg-[#517CA8] opacity-100 text-base-17-5  font-semibold tracking-wider relative px-[20px] py-[10px] rounded-[7.5px] text-white  text-base-17-5 h-[43px] ${selectedId?.length === 0 ? "opacity-75" : ""} `}>
               + Invite Users
               <span className="absolute right-[-10px] z-[500] top-[-10px]">
-                <div className="group relative">
-                  <img src={ques} className="inline-block" />
-                  <span className="absolute  top-14 left-[-100px] z-500 w-[260px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.93)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-3 px-3">
-                    <h3 className="text-[#517CA8] text-left text-[16px] py-0 font-semibold mb-1">
+                <div className="group relative z-[500]">
+                  <img src={ques}
+
+                    onMouseEnter={(e) => {
+                      console.log("mouse enter")
+                      e.preventDefault()
+                      setTooltip(true)
+
+                    }
+                    }
+                    onMouseOut={(e) => {
+                      e.preventDefault()
+                      console.log("mouse leave")
+                      setTooltip(false)
+                    }
+                    }
+                    className="inline-block" alt="ques" />
+                  {showTooltip && 
+                  <span className="absolute top-[-237px]  design:top-[-248px]  left-[-140px] z-5000 w-[336px] design:w-[380px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-[20px] px-[13px]">
+                    <h3 className="text-[#517CA8] text-left text-[0.8333vw] py-0 font-semibold mb-1">
                       Invite Users
-                    </h3>
-                    <span className=" text-left text-base-15 font-medium">
+                    </h3>   <span className=" text-left text-[0.6948vw] font-light relative z-40">
                       This will allow you to invite the selected users to create
                       an account within your Organization’s database. They will
                       receive a verification email to set a new password and
                       logging into the platform. Note that this is useful if you
                       “Saved” user data instead of inviting them when adding
-                      them to the CRM
+                      them to the CRM.
                       <br />
-                      <br />
-                      <span className="text-[#FF7979] ">
+
+                      <span className="text-[#FF7979] font-light text-left">
                         Please ensure that you have consent from the user before
                         inviting them to create an account.
                       </span>
                     </span>
-                  </span>
+
+                  </span>}
                 </div>
               </span>
             </button>
-            <button onClick={()=>selectedId?.length>0&&setDeleteBulkModalActive(true)} className="bg-[#FF7979] text-[15px] flex items-center gap-2 px-[25px] font-semibold py-[10px] rounded-[7.5px] text-white  text-base-15">
+            <button disabled={selectedId?.length === 0||adminSelectedForDelete ? true : false} onClick={() => selectedId?.length > 0 && setDeleteBulkModalActive(true)} className={`bg-[#FF7979] opacity-100 flex items-center gap-2 px-[20px] tracking-wider font-semibold py-[10px] rounded-[5px] text-white  text-base-17-5 ${selectedId?.length === 0 ||adminSelectedForDelete? "opacity-75 cursor-not-allowed" : ""} `}>
               <span>
                 <img
                   src={DeleteIcon2}
@@ -1318,24 +1843,26 @@ console.log("users",{selectedId,bulkEdits})
                   alt="delete"
                 />
               </span>{" "}
-              Delete User(s)
+            <span className="pt-[2px]">  Delete User(s)</span>
             </button>
           </div>
         </div>
 
         <div className="mt-6">
+          {console.log(tableHeaders)}
           <Table
             dataFor="allUsers"
             selectedId2={selectedId}
             setSelectedId2={setSelectedId}
             data={filteredUsersData}
             onClick={{ redirect, handleTutorStatus, handleDelete }}
+            setIsChecked={handleCheckboxChange}
             tableHeaders={tableHeaders}
             headerObject={true}
-            maxPageSize={maxPageSize}
-           
+            maxPageSize={10}
+            isChecked={isChecked}
             isCallingApi={true}
-            
+
             total_pages={Math.ceil(totalPages / maxPageSize)}
             setMaxPageSize={setMaxPageSize}
             currentPage={currentPage}
@@ -1372,11 +1899,12 @@ console.log("users",{selectedId,bulkEdits})
               onSubmit={handleSubmit}
               className="px-[3px] mb-0.5"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-3 gap-y-4 mb-5">
+              <div className="grid grid-cols-1 md:grid-cols-2  gap-x-5 md:gap-x-6  gap-y-4 mb-7">
                 <div>
                   <InputField
                     label="First Name"
-                    labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
+                    biggerText={true}
+                    labelClassname=" mb-0.5 text-[#26435F] !font-semibold "
                     placeholder="First Name"
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
                     inputClassName="bg-transparent"
@@ -1391,8 +1919,9 @@ console.log("users",{selectedId,bulkEdits})
                 </div>
                 <div>
                   <InputField
+                    biggerText={true}
                     label="Last Name"
-                    labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
+                    labelClassname=" mb-0.5 text-[#26435F] !font-semibold !text-lg"
                     isRequired={true}
                     placeholder="Last Name"
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
@@ -1407,11 +1936,12 @@ console.log("users",{selectedId,bulkEdits})
                 </div>
                 <div>
                   <InputField
-                    label="Email Addresss "
-                    labelClassname="ml-4 mt-2 mb-0.5 text-[#26435F] font-semibold"
+                    biggerText={true}
+                    label="Email Address"
+                    labelClassname=" mt-2 mb-0.5 text-[#26435F] !font-semibold !text-lg"
                     isRequired={true}
-                    placeholder="Email Addresss"
-                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                    placeholder="Email Address"
+                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0 !placeholder:!text-[#B3BDC7]"
                     inputClassName="bg-transparent"
                     parentClassName="w-full"
                     type="text"
@@ -1429,26 +1959,27 @@ console.log("users",{selectedId,bulkEdits})
                     }
                     isRequired={true}
                     type="select"
-                    placeholder="Select User Type "
+                    placeholder="Select"
                     label="User Type"
-                    labelClassname="ml-0  text-[#26435F] font-bold"
-                    placeholderClass="text-base-17-5"
+                    labelClassname="ml-0  text-[#26435F] !font-semibold !text-lg"
+                    placeholderClass="text-base-17-5 !text-[#B3BDC7]"
                     optionData={userTypeOptions}
-                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0 "
                     parentClassName="w-full"
                   />
                 </div>
               </div>
-              <div className="flex items-center justify-center gap-4">
-                <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]">
-                  Save User
+              <div className={`flex items-center justify-center gap-4 ${addUserBtnDisabled ? "opacity-80" : ""}`}>
+                <button disabled={addUserBtnDisabled || loading || loadingInvite} className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]">
+                  {loading ? "Saving..." : "Save User"}
                 </button>
+
                 <button
                   className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]  w-[146px]"
-                  onClick={handleSubmit}
-                  disabled={addUserBtnDisabled}
+                  onClick={(e) => handleInvite1(e, "invite")}
+                  disabled={addUserBtnDisabled || loading || loadingInvite}
                 >
-                  Invite User
+                  {loadingInvite ? "Inviting..." : "Invite User"}
                 </button>
               </div>
             </form>
@@ -1561,41 +2092,41 @@ console.log("users",{selectedId,bulkEdits})
         <Modal
           title={
             <span className="leading-10">
-              Are you sure 
-              you want to delete Selected User(s)?
-              
+              Are You Sure
+              You Want To Delete Selected User(s)
+
             </span>
           }
-          titleClassName="mb-5 leading-10"
+          titleClassName="mb-5 leading-10 !text-[21.33px] font-semibold"
           cancelBtn={true}
           crossBtn={true}
-          cancelBtnClassName="max-w-140 !bg-transparent !border  !border-[#FFA28D]  text-[#FFA28D]"
+          cancelBtnClassName="!w-[146px] text-[#FFA28D] border-[1.5px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white  font-medium rounded-lg  px-[10px] py-[17.33px] text-center dark:bg-white dark:hover:bg-[#FFA28D] "
           primaryBtn={{
             text: "Delete",
-            className: "w-[140px]  pl-4 px-4 !bg-[#FF7979] text-white",
+            className: "!w-[146px]  px-4 !bg-[#FF7979] text-white h-[46px]",
             onClick: () => bulkSelectDelete(),
             bgDanger: true,
             loading: deleteSelectLoading,
           }}
           body={
             <>
-             <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-6">
-                    <span className="font-semibold mr-1">⚠️ Note:</span>
-                    Once the users are deleted from your Organization, you will not be able to recover their data. Read detailed documentation in Evallo’s.
-                    <span className="text-[#24A3D9]"> knowledge base.</span>
-                  </p>
+              <p className="text-base -mt-[21px] text-[#667085] mb-6">
+                <span className="font-semibold mr-1">⚠️Note:</span>
+                Once the users are deleted from your Organization, you will not be able to recover their data. Read detailed documentation in Evallo’s{" "}
+                <span className="text-[#24A3D9] underline cursor-pointer">knowledge base.</span>
+              </p>
             </>
           }
           handleClose={() => setDeleteBulkModalActive(false)}
           classname={"max-w-[600px]  mx-auto"}
         />
       )}
-        {SaveBulkModalActive && (
+      {SaveBulkModalActive && (
         <Modal
           title={
             <span className="leading-10">
               Are You Sure You Want to Bulk Edit?
-              
+
             </span>
           }
           titleClassName="mb-5 leading-10"
@@ -1609,66 +2140,68 @@ console.log("users",{selectedId,bulkEdits})
             bgDanger: true,
             loading: saveSelectLoading,
           }}
-          
+
           handleClose={() => setSaveBulkModalActive(false)}
           classname={"max-w-[600px]  mx-auto"}
         />
       )}
-       {InviteBulkModalActive && (
-              <Modal
-                crossBtn={true}
-                underline={true}
-                titleInvite={selectedId?.length}
-                  classname={"max-w-[781px] mx-auto"}
-                titleClassName={"mb-5 "}
-                handleClose={() => InviteBulkModalActive(false)}
-                body={
-                  <>
-                    <div className="text-center mb-7">
-                      <p className="text-[#517CA8]  text-lg font-light">
-                        All users that are invited to the platform will receive
-                        an email invitation to create an account within your
-                        organization. If you only want to store their data and
-                        do not want to invite them to create an account, please
-                        click on “Save Data Only” button.
-                        <br />
-                        <span className="pt-1">
-                          If you want to continue inviting the users, please
-                          click on the{" "}
-                          <span className="font-normal">
-                            “Confirm Email Invitations”
-                          </span>{" "}
-                          button below.
-                        </span>
-                      </p>
-                    </div>
-                    <div className="flex justify-center">
-                      <button
-                        data-modal-target="popup-modal"
-                        data-modal-toggle="popup-modal"
-                        className="block text-white  bg-[#FFA28D] hover:bg-[#FFA28D] mr-[40px] font-medium rounded-lg  px-6 py-[17.33px] text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
-                        type="button"
-                        disabled={InviteSelectLoading}
-                        loading={InviteSelectLoading}
-                        onClick={() => {
-                          
-                          bulkSelectInvite();
-                        }}
-                      >
-                       {InviteSelectLoading?"Inviting...": "Yes, Confirm"}
-                      </button>
-                      <button
-                        type="button"
-                        className="max-w-140 text-[#FFA28D] border-[1.5px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white  font-medium rounded-lg  px-[46px] py-[17.33px] text-center dark:bg-white dark:hover:bg-[#FFA28D]"
-                        onClick={() => setInviteBulkModalActive(false)}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </>
-                }
-              ></Modal>
-            )}
+      {InviteBulkModalActive && (
+        <Modal
+          crossBtn={true}
+          underline={true}
+          titleInvite={selectedId?.length}
+          classname={"max-w-[781px] mx-auto"}
+          titleClassName={"mb-5 text-center"}
+          handleClose={() => setInviteBulkModalActive(false)}
+          body={
+            <>
+              <div className="text-center mb-7">
+                <p className="text-[#517CA8]  text-lg">
+                 <span className=""> All users that are invited to the platform will receive
+                  an email invitation to create an account within your
+                  organization. If you only want to store their data and
+                  do not want to invite them to create an account, please
+                  click on “Save Data Only” button.</span>
+                  <br />
+                  <span className="pt-1">
+                    If you want to continue inviting the users, please
+                    click on the{" "}
+                    <span className="!font-semibold">
+                      “Confirm Email Invitations”
+                    </span>{" "}
+                    button below.
+                  </span>
+                </p>
+              </div>
+              <div className="flex justify-center">
+                <button
+                  data-modal-target="popup-modal"
+                  data-modal-toggle="popup-modal"
+                  className="block text-white  bg-[#FFA28D] hover:bg-[#FFA28D] mr-[40px] font-medium rounded-lg  px-6 py-[10] h-[46px] text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
+                  type="button"
+                  disabled={InviteSelectLoading}
+                  loading={InviteSelectLoading}
+                  onClick={() => {
+
+                    bulkSelectInvite();
+                  }}
+                >
+                  {InviteSelectLoading ? "Inviting..." : "Yes, Confirm"}
+                </button>
+                <button
+                  type="button"
+                  className="w-[146px] text-[#FFA28D] border-[1.5px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white  font-medium rounded-lg  px-[4px] py-[10] h-[46px] text-center dark:bg-white dark:hover:bg-[#FFA28D]"
+                  onClick={() => setInviteBulkModalActive(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </>
+          }
+        ></Modal>
+      )}
+
+      <AssignedTutors assignedTutorOpen={assignedTutorOpen} setAssignedTutorOpen={setAssignedTutorOpen} fetch2={fetch} />
     </div>
   );
 }

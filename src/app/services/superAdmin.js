@@ -105,6 +105,14 @@ export const superAdminServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getAdminPortalToken: builder.query({
+      query: (body) => ({
+        url: `/api/user/superadmin/getOrgToken/${body.id}`,
+        method: "GET",
+       
+        headers: getAuthHeader(),
+      }),
+    }),
     editSuperInvoice: builder.mutation({
       query: (body) => ({
         url: `/api/invoice/${body._id}`,
@@ -159,6 +167,22 @@ export const superAdminServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    deleteAdmin: builder.mutation({
+      query: (body) => ({
+        url: `api/user/superAdmin/deleteOrg`,
+        method: "DELETE",
+        body,
+        headers: getAuthHeader(),
+      }),
+    }),
+    deleteManager: builder.mutation({
+      query: (body) => ({
+        url: `api/user/superAdmin/deleteManager`,
+        method: "DELETE",
+        body,
+        headers: getAuthHeader(),
+      }),
+    }),
   }),
 });
 
@@ -166,6 +190,8 @@ export const {
   useGetAllOrgStatsQuery,
   useGetAllOrgStatsRangeMutation,
   useGetAllTestQuery,
+  useDeleteManagerMutation,
+  useDeleteAdminMutation, 
   useAddManager2Mutation,
   useGetUserStatsByRoleQuery,
   useGetUserStatsByRoleRangeMutation,
@@ -181,7 +207,7 @@ export const {
   useLazyGetLogoutQuery,
   useGetFinancialStatsQuery,
   useGetFinancialStatsRangeMutation,
-
+useLazyGetAdminPortalTokenQuery,
   useGetSpecificActionLogMutation
   
 } = superAdminServicesApi;

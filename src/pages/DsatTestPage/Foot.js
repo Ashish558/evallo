@@ -2,10 +2,15 @@ import React from 'react'
 import {faXmark, faLocationDot,faBookmark,faSquare} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {useState} from 'react'
+import Modal from '../../components/Modal/Modal';
 export default function Foot(props) {
     // const {next,prev  ,ind,s,data ,set} =props  
     const {next,prev ,mark,name ,i,s,data,sectionDetails,sectionindex ,set,answers,handleSubmitSection,tog2,toggle2,markreview} =props  
     const [toggle,setToggle] =useState(false)
+    const [btnloader,setbtnloader]=useState(false)
+    function set_btnloader(){
+      setbtnloader(true);
+    }
     let click =(e)=>
     {
       if(e.target.innerText==1)
@@ -110,12 +115,25 @@ export default function Foot(props) {
         </div>
         }
        <div className=' flex flex-row justify-end items-center w-1/3 '>
-     { i>1? <button  className=' bg-blue-700 rounded-full py-3 px-6 text-white font-semibold mx-2  ' onClick={toggle2?tog2:prev} >Back</button>:null}
+     { i>1? <button  className=' bg-blue-700 rounded-full py-2 px-6 text-white font-semibold mx-2  ' onClick={toggle2?tog2:prev} >Back</button>:null}
 
-       <button className=' bg-blue-700 rounded-full py-2 px-6 text-white font-semibold ' onClick={ i<s?next:!toggle2?tog2:handleSubmitSection} >Next</button>
+       <button className=' bg-blue-700 rounded-full py-2 px-6 text-white font-semibold ' onClick={ i<s?next:!toggle2?tog2:set_btnloader} >{i>=s&&toggle2?'Submit':'Next'}</button>
        </div>
      </footer>
     </div>
+    {btnloader?
+    <div className='max-w-1/2 relative flex justify-center items-center h-full'>
+    <Modal
+             classname="max-w-[700px] mx-auto"
+             title="Are you sure you want to Submit the section?"
+    titleClassName='mr-4  mb-4'
+    primaryBtn={
+       { text: "Submit",className: "bg-[#FF7979] w-[146.67px] h-[46.67px] ml-0",
+       onClick: handleSubmitSection}
+    }
+    handleClose={() => setbtnloader(false)}
+ /></div>:null
+ }
     </>
   )
 }

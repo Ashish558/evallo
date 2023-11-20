@@ -25,6 +25,8 @@ const StudentSettings = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [reset, setReset] = useState(false);
   const [forgotPassword, forgotPasswordResp] = useForgotPasswordMutation();
+  const { firstName, lastName } = useSelector((state) => state.user);
+
   const [error, setError] = useState({
     firstName: "",
     lastName: "",
@@ -157,7 +159,7 @@ const StudentSettings = () => {
     tech: "",
     support: "",
   })
-  const navigate=useNavigate()
+  const navigate = useNavigate()
   const handleFeedback = (message, type) => {
     console.log({ message, feedBack })
     const body = {
@@ -178,17 +180,19 @@ const StudentSettings = () => {
     <div className="w-[83.23vw] mx-auto">
       <div className="flex flex-col gap-10   my-12">
         <div className="text-[#24A3D9] font-lexend-deca text-md design:text-xl  font-semibold leading-normal">
-          <span onClick={()=>navigate('/')} className=" font-medium text-base-20 cursor-pointer">{organization?.company}</span>
-          <span className="font-semibold text-base-20">{"  > Settings"}</span>
+          <span onClick={() => navigate('/')}
+            className=" font-medium text-base-22-5 cursor-pointer">{organization?.company + ' > '}   {firstName + ' ' + lastName}</span>
+
+          <span className="font-semibold text-base-22-5">{"  > Settings"}</span>
         </div>
-        <div className="flex gap-5">
+        <div className="flex gap-6 design:gap-8 items-center">
           <InputField
             placeholder=""
-            labelClassname=" text-md text-[#26435F] font-semibold"
+            labelClassname="mb-1 text-md text-base-20 text-[#26435F] font-semibold"
             parentClassName="text-[#26435F]"
-            inputContainerClassName=" bg-white  border border-white text-[#667085]"
+            inputContainerClassName="h-[50px] bg-white  border border-white text-[#667085]"
             inputClassName=" text-400 bg-transparent"
-            label="First Name"
+            label="First name"
             value={values.firstName}
             onChange={(e) =>
               handleFirstName(e)
@@ -198,11 +202,11 @@ const StudentSettings = () => {
 
           <InputField
             placeholder=""
-            labelClassname=" text-md text-[#26435F] font-semibold"
+            labelClassname="mb-1 text-md text-base-20 text-[#26435F] font-semibold"
             parentClassName="text-[#26435F]"
-            inputContainerClassName=" bg-white border border-white text-[#667085]"
+            inputContainerClassName="h-[50px] bg-white border border-white text-[#667085]"
             inputClassName=" text-400 bg-transparent"
-            label="Last Name"
+            label="Last name"
             value={values.lastName}
             onChange={(e) =>
               setValues({
@@ -216,10 +220,10 @@ const StudentSettings = () => {
           <InputField
             IconLeft={caution}
             placeholder=""
-            labelClassname=" text-md text-[#26435F] font-semibold"
-            parentClassName="text-[#26435F] w-[calc(376*0.05050vw)] min-w-[230px] text-base-17-5"
-            inputContainerClassName=" bg-white border border-white text-[#667085]"
-            inputClassName=" text-400 bg-transparent "
+            labelClassname="mb-1 text-md text-base-20 text-[#26435F] font-semibold"
+            parentClassName="text-[#26435F]"
+            inputContainerClassName=" h-[50px] bg-white border  w-[calc(376*0.05050vw)] min-w-[230px] border-white text-[#667085]"
+            inputClassName=" text-400 bg-transparent"
             label="Email"
 
             value={values.email}
@@ -247,17 +251,17 @@ const StudentSettings = () => {
             }
           />
 
-         <div id="number" >
+          <div id="number" >
             <InputFieldDropdown
               placeholder=""
-              labelClassname=" text-md text-[#26435F] font-semibold mb-[1px]"
-              parentClassName="text-[#26435F] w-[calc(376*0.05050vw)] min-w-[230px] "
-              inputContainerClassName=" bg-white border  border-white text-[#667085]"
-              inputClassName=" text-400 !py-1 !text-[17px] bg-transparent "
+              labelClassname=" text-md text-base-20 text-[#26435F] !mb-2 design:!mb-3 font-semibold"
+              parentClassName="text-[#26435F]"
+              inputContainerClassName="h-[50px] !py-[14px] px-[14px]   flex items-center rounded   bg-white border  min-w-[230px] border-white text-[#667085]  "
+              inputClassName=" outline-0 w-full text-[17.5px]  pl-1 placeholder:text-base-17-5  text-400 bg-transparent  text-base-17-5"
               label="Phone"
               value={values.phone}
               codeColor="bg-white"
-             
+
               codeValue={values.phoneCode}
               handleCodeChange={(e) =>
                 setValues({
@@ -273,14 +277,14 @@ const StudentSettings = () => {
               }
               error={error.phone}
             />
-         </div>
+          </div>
           <div>
             <PrimaryButton
               onClick={handleDataUpdate}
               disabled={saving}
               loading={saving}
 
-              className={`bg-[#FFA28D]   mt-5 ml-10 rounded-md px-10 py-[14.3px] text-sm text-white  `}
+              className={`bg-[#FFA28D]   mt-7 ml-10 rounded-md px-[50px] py-[14.3px] text-sm text-base-20 text-white  `}
 
             >
               Save
@@ -290,12 +294,12 @@ const StudentSettings = () => {
 
         <div className="flex gap-7 flex-1">
           <div>
-            <h1 className="my-0 mb-1 text-[#26435F] font-semibold text-sm">
+            <h1 className="my-0 mb-1 text-[#26435F] font-semibold text-base-20">
               Send Link
             </h1>
             <button
               onClick={handleClose}
-              className="bg-[#517CA8] text-white rounded-md  px-3 py-2 text-sm"
+              className="bg-[#517CA8] text-white rounded-md text-base-17-5  px-5 py-3 text-sm"
             >
               Reset Password
             </button>
@@ -315,7 +319,7 @@ const StudentSettings = () => {
         <div className="flex  gap-x-[100px] mt-16 mb-[163px]">
           <div className="relative w-[33.54vw]">
 
-            <p className=" text-sm text-[#26435F] font-semibold">
+            <p className=" text-sm text-[#26435F] font-semibold text-base-20">
               Submit Feedback
             </p>
             <textarea
@@ -342,7 +346,7 @@ const StudentSettings = () => {
             </button>
           </div>
           <div className=" relative w-[33.54vw]">
-            <p className=" text-sm text-[#26435F] font-semibold ">
+            <p className=" text-sm text-[#26435F] font-semibold text-base-20">
               Request Technical Support
             </p>
 
@@ -355,11 +359,9 @@ const StudentSettings = () => {
                   tech: e.target.value
                 })
               }}
-
               className="mt-1 block w-[33.54vw] h-[352px] resize-none focus:!ring-blue-500 p-5 focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18   placeholder:text-base-18  "
               placeholder=" If you require technical support, please submit your request here and our team will help you out accordingly."
             ></textarea>
-
             <button
               onClick={() => {
                 handleFeedback(feedBack.tech, "")
@@ -374,16 +376,18 @@ const StudentSettings = () => {
       {modalOpen && (
         <Modal
           handleClose={handleClose}
-          classname="w-[500px] mx-auto"
+          crossBtn={true}
+          underline={true}
+          classname="!w-[666px] mx-auto"
           body={
-            <div className="text-center mt-2">
-              <h1 className="font-semibold ">
+            <div className="text-center -mt-4 ">
+              <h1 className="font-normal text-[21px] text-[#26435F]">
                 A Password Reset Link will be sent to you. Please click on it to
                 change your password.
               </h1>
               <button
                 onClick={showResetConfirmation}
-                className="bg-[#FF7979] mt-3 text-white text-sm p-2 px-4 rounded-md"
+                className="bg-[#FF7979] mt-[30px] text-white w-[146px] h-[46px] py-2 px-4 rounded-lg font-medium"
               >
                 Okay
               </button>

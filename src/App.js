@@ -25,7 +25,6 @@ function App() {
   const dispatch = useDispatch();
   const [logOutApi, setLogOutApi] = useLazyGetLogoutQuery();
   const { isLoggedIn } = useSelector((state) => state.user);
-
   const getOrganizationDetail = (id) => {
     if (id === undefined) return;
     fetchOrganization(id).then((res) => {
@@ -43,6 +42,7 @@ function App() {
 
     if (sessionStorage.getItem("token")||localStorage.getItem("evalloToken")) {
       fetchPersonalDetails().then((res) => {
+        console.log("personal details",res)
         if (res.error) {
           return;
         }
@@ -89,19 +89,19 @@ function App() {
     }
   }, [isLoggedIn]);
 
-  useEffect(() => {
-    const handleTabClose = (event) => {
-      event.preventDefault();
-      console.log("beforeunload event triggered");
-    };
-    window.addEventListener("beforeunload", handleTabClose);
-    return () => {
-      // logOutApi().then(() => {
-      //   console.log("Successfully logged out");
-      // });
-      window.removeEventListener("beforeunload", handleTabClose);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const handleTabClose = (event) => {
+  //     event.preventDefault();
+  //     console.log("beforeunload event triggered");
+  //   };
+  //   window.addEventListener("beforeunload", handleTabClose);
+  //   return () => {
+  //     // logOutApi().then(() => {
+  //     //   console.log("Successfully logged out");
+  //     // });
+  //     window.removeEventListener("beforeunload", handleTabClose);
+  //   };
+  // }, []);
   if (loading) return <Loader />;
 
   return (

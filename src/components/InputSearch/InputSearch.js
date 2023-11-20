@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SeacrchIcon from '../../assets/icons/search.svg'
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import CCheckbox from "../CCheckbox/CCheckbox";
@@ -8,6 +8,7 @@ export default function InputSearch({
    parentClassName,
    inputContainerClassName,
    Icon,
+   rightIcon,
    value,
    placeholder,
    label,
@@ -20,11 +21,13 @@ export default function InputSearch({
    right,
    required,
    optionData,
+   optionClassName,
    onOptionClick,
    optionPrefix,
    checkbox,
    disabled,
-   IconSearch
+   IconSearch,
+   onOptionClose
 }) {
 
    const [optionsVisible, setOptionsVisible] = useState(false)
@@ -32,13 +35,16 @@ export default function InputSearch({
    const handleClose = () => {
       setOptionsVisible(false)
    }
-   // console.log('checkbox', checkbox);
-   // console.log('value', value);
-   console.log('optionData', optionData);
+   useEffect(() => {
+      if (optionsVisible === false && onOptionClose) {
+         onOptionClose()
+      }
+   }, [optionsVisible])
+
    useOutsideAlerter(inputRef, handleClose)
 
    return (
-      <div className={` ${parentClassName && parentClassName}`} ref={inputRef} >
+      <div className={` ${parentClassName && parentClassName}`}  >
          <label
             className={`inline-block font-semibold ${labelClassname} w-2/3`}
          >
@@ -46,16 +52,17 @@ export default function InputSearch({
             {required && <span className='text-primaryRed inline-block pl-1'>*</span>}
          </label>
          <div
+            ref={inputRef} 
             className={`py-3 px-6 flex relative items-center rounded-5 ${inputContainerClassName ? inputContainerClassName : ""
                }`}
          >
-            {Icon && <img src={Icon} className="mr-6" />}
+            {Icon && <img onClick={()=>setOptionsVisible(!optionsVisible)} className="mr-4 cursor-pointer" src={Icon}  />}
             {
-               IconRight && <img src={SeacrchIcon} className="mr-4" />
+               IconRight && <img onClick={()=>setOptionsVisible(!optionsVisible)} className="mr-4 cursor-pointer" src={IconRight}  alt="search" />
             }
             {inputLeftField && inputLeftField}
             <input disabled={disabled}
-               className={`outline-0 w-full ${inputClassName ? inputClassName : ""}`}
+               className={`outline-0 w-full ${inputClassName ? inputClassName : ""} ${styles['input']} `}
                placeholder={placeholder}
                value={value}
                type={type ? type : "text"}
@@ -66,15 +73,15 @@ export default function InputSearch({
             // onBlur={()=> setOptionsVisible(false)}
             />
             {
-              (IconSearch ?
-                  <img src={SeacrchIcon} className="ml-4" alt="SeacrchIcon"/>:'')
-                  
-               
+               (IconSearch ?
+                  <img src={SeacrchIcon} onClick={()=>setOptionsVisible(!optionsVisible)} className="ml-4 cursor-pointer" alt="SeacrchIcon" /> : '')
+
+
             }
             {right && right}
-
+{rightIcon&&<img onClick={()=>setOptionsVisible(!optionsVisible)} className="cursor-pointer z-[50] relative" src={rightIcon} alt="drop"/>}
             {optionsVisible &&
-               <div className={`${styles.options} scrollbar-content scrollbar-vertical shadow-xl rounded-t-none`}>
+               <div className={`${styles.options} custom-scroller scrollbar-vertical shadow-xl rounded-t-none ${optionClassName}`}>
                   {optionData?.map((option, idx) => {
 
                      return (
@@ -85,13 +92,13 @@ export default function InputSearch({
                               {option.value}
                            </p>
                            <p className={`text-sm opacity-60 ${checkbox ? 'mr-auto ml-4' : ''}`}>
-                              {option?._id&&optionPrefix ? `${optionPrefix}${option?._id.slice(-5)}` :option?._id&& option?._id.slice(-5)}
+                              {option?._id && optionPrefix ? `${optionPrefix}${option?._id.slice(-5)}` : option?._id && option?._id.slice(-5)}
                            </p>
                            {
                               checkbox &&
                               <div className="flex mb-3">
                                  <CCheckbox
-                                    checked={checkbox.match.includes(option?._id) ? true : false}
+                                    checked={option && option?._id && checkbox?.match?.includes(option?._id) ? true : false}
                                     name='student'
                                  // onChange={() =>
                                  //    setData({

@@ -70,6 +70,10 @@
     visibility: visible;
 }
 
+.customFont{
+    font-family: 'Rajdhani', sans-serif !important;
+}
+
 @media only screen and (max-width: 1024px) {
 
     .selectedIcon {

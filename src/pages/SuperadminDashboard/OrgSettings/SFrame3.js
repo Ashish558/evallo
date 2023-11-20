@@ -75,10 +75,10 @@ const SPFrame3 = ({ userDetail }) => {
 
   console.log("frame1 Stud", { userDetail });
   return (
-    <div className="flex w-full justify-between ">
+    <div className="flex w-full justify-between pl-[5%]">
       
  
-          <div className="bg-white  p-3   flex flex-col flex-1 !h-[400px] overflow-y-auto custom-scroller    ">
+          <div className="bg-white  py-3   flex flex-col flex-1 !h-full overflow-y-auto custom-scroller    ">
             {signupData?.map((it, id) => {
               return (
                 <p key={id} className="flex gap-3 my-2 text-base-17-5">

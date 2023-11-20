@@ -52,6 +52,7 @@ import OrgDefaultContent from "./Tabs/OrgDefaultContent/OrgDefaultContent";
 import { timeZones } from "../../constants/constants";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import ToogleBar from "../../components/SettingsCard/ToogleBar";
+import moment from "moment-timezone";
 
 const initialState = {
   name: "",
@@ -81,7 +82,7 @@ const initialTabs = [
   {
     Icon: org2,
     Icon2: org1,
-    name: "Org Default",
+    name: "Org Defaults",
     selected: false,
   },
   {
@@ -97,6 +98,7 @@ export default function SuperAdminSettings() {
   const [tagModalActive, setTagModalActive] = useState(false);
   const [addCodeModalActive, setAddCodeModalActive] = useState(false);
   const [subModalData, setSubModalData] = useState(subModalInitialState);
+  const timeZones = moment.tz.names(); // String[]
 
   const [addTestModalActive, setAddTestModalActive] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
@@ -177,6 +179,7 @@ export default function SuperAdminSettings() {
   const [modalData, setModalData] = useState(initialState);
   const [fetchedPermissions, setThePermission] = useState([]);
   const dispatch = useDispatch();
+  const [selectedtest, setselectedtest] = useState([])
 
   const handlePermissionOption = (value, key) => {
     let nvalue = value;
@@ -372,7 +375,7 @@ export default function SuperAdminSettings() {
         console.log("err", err);
       });
   };
-
+  const { role: persona } = useSelector((state) => state.user);
   /* new */
   const [addServiceModalActive, setAddServiceModalActive] = useState(false);
   const [addSessionModalActive, setAddSessionModalActive] = useState(false);
@@ -440,7 +443,7 @@ export default function SuperAdminSettings() {
       for (let i = 0; i < 4 - settingsData?.offerImages.length; i++) {
         arr.push({
           link: "",
-          image: "",
+          image: null,
           buttonText: "",
         });
       }
@@ -561,7 +564,9 @@ export default function SuperAdminSettings() {
     // console.log(append)
 
     if (append === "") return;
+    setLoading2(true);
     setSaveLoading(true);
+    
     axios
       .patch(`${BASE_URL}api/user/setting/${append}`, formData, {
         headers: getAuthHeader(),
@@ -569,6 +574,8 @@ export default function SuperAdminSettings() {
         maxContentLength: Infinity,
       })
       .then((res) => {
+        setLoading2(false);
+        setSaveLoading(false)
         // console.log('resp--' ,res.data.data.updatedSetting.settings);
         setTagImage(null);
         setTagText("");
@@ -580,6 +587,7 @@ export default function SuperAdminSettings() {
       })
       .catch((err) => {
         console.log("err", err);
+           setLoading2(false);
         alert("Could not upload image");
         setSaveLoading(false);
       });
@@ -726,16 +734,15 @@ export default function SuperAdminSettings() {
         {
           code: subModalData.code,
           expiry: subModalData.expiry,
-          tests: [],
+          tests: subModalData?.tests,
         },
       ];
       let updatedSetting = {
         subscriptionCode: updated,
       };
       // console.log('updatedSetting', updatedSetting);
-      updateAndFetchsettings(updatedSetting);
-      setAddCodeModalActive(false);
-      setSubModalData(subModalInitialState);
+      updateAndFetchsettingsNew2(updatedSetting);
+     
     }
   };
 
@@ -751,9 +758,12 @@ export default function SuperAdminSettings() {
   }, [searchedTest, allTestData]);
 
   const fetchTests = () => {
-    axios.get(`${BASE_URL}api/test`,{ headers: getAuthHeader() }).then((res) => {
-      if (res.data.data.test) {
-        let arr = res.data.data.test.map((item) => {
+    try {
+    axios.get(`${BASE_URL}api/test/${persona}/getAllTest`,{ headers: getAuthHeader() }).then((res) => {
+      console.log('res', res.data.data);
+     
+      if (res.data.data) {
+        let arr = res.data.data.map((item) => {
           return {
             _id: item._id,
             value: item.testName,
@@ -762,7 +772,10 @@ export default function SuperAdminSettings() {
         setAllTestData(arr);
         setFilteredTests(arr);
       }
-    });
+    });}
+    catch(err) {
+      console.log("fetching tests error",err)
+    }
   };
 //console.log("tests",allTestData,filteredTests)
 
@@ -1014,24 +1027,37 @@ export default function SuperAdminSettings() {
     updateAndFetchsettings(body);
   };
  
-  const submitImageModalNew = (file, val, e) => {
+  const submitImageModalNew = (file2, val, e) => {
     e.preventDefault();
+    const file=file2
+    if(!file) {
+      
+      return
+    }
+   e.target.value = ''
+   let size=file.size/1024;
+   size=size/1024;
+   if(size>1){
+     alert("File size is larger than than 1MB")
+     return 
+   }
     // //console.log(tagText)
     // //console.log(tagImage)
     // //console.log(selectedImageTag)
-
+    console.log({ file, val, link: val?.link });
     const formData = new FormData();
 
     let append = "";
 
     append = "addimage";
     // formData.append("image", file);
-    formData.append("link", val?.link);
+    formData.append("link", val?.link?val?.link:" ");
     formData.append("offer", file);
     formData.append("buttonText", val?.buttonText);
-    console.log({ file, val, link: val?.link });
+   
 
     if (append === "") return;
+    setLoading2(true);
     setSaveLoading(true);
     axios
       .patch(`${BASE_URL}api/user/setting/${append}`, formData, {
@@ -1067,10 +1093,13 @@ export default function SuperAdminSettings() {
         //   // setTagModalActive(false);
         //   fetchSettings();
         // }
-        fetchSettings();
+        setLoading2(false);
         setSaveLoading(false);
+        fetchSettings();
+       
       })
       .catch((err) => {
+        setLoading2(false);
         console.log("err", err);
         alert("Could not upload image");
         setSaveLoading(false);
@@ -1220,7 +1249,7 @@ export default function SuperAdminSettings() {
     console.log(e);
   };
   const handleTestChange2 = (item) => {
-    //console.log("tsests", item);
+    console.log("tsests", item);
     if (subModalData.tests.includes(item._id)) {
       let updated = subModalData.tests.filter(
         (test) => test !== item._id
@@ -1229,11 +1258,17 @@ export default function SuperAdminSettings() {
         ...prev,
         tests: updated,
       }));
+      const up=selectedtest.filter(
+        test=>test!=item.value
+      )
+      setselectedtest(up)
     } else {
       setSubModalData((prev) => ({
         ...prev,
         tests: [...subModalData.tests, item._id],
       }));
+     const selecttt=selectedtest;
+     selecttt.push(item.value);
     }
   };
   return (
@@ -1242,7 +1277,7 @@ export default function SuperAdminSettings() {
         <p className="text-[#24A3D9]  mb-9 ">
           <span className="font-medium text-lg">
             {" "}
-            {organization?.company + "  >  "} Settings
+           Settings
           </span>
         </p>
         <div className="flex justify-between items-center mb-[45px]">
@@ -1649,7 +1684,7 @@ export default function SuperAdminSettings() {
             /> */}
 
             <SettingsCard
-              titleClassName="text-base-20"
+              titleClassName="text-base-20 !text-[#26435F]"
               title="Session Tags & Reconciliation"
               className={styles["bordered-settings-container"]}
               body={
@@ -1740,7 +1775,7 @@ export default function SuperAdminSettings() {
               }
             />
            <SettingsCard
-              titleClassName="text-base-20"
+              titleClassName="text-base-20 !text-[#26435F]"
               title="Edit Announcements"
               toggle={{ value: toggleImage.offer, key: "offer" }}
               onToggle={onToggle}
@@ -1814,8 +1849,10 @@ export default function SuperAdminSettings() {
                                 />
                               </div>
                               <InputField
-                                defaultValue={offer.link}
+                                defaultValue={offer?.link?.trim()}
+
                                 inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
+                                placeholder={"Hyperlink"}
                                 parentClassName={"mb-3 bg-[#F5F8FA]"}
                                 onBlur={(e) =>
                                   handleOfferChange(
@@ -1828,10 +1865,11 @@ export default function SuperAdminSettings() {
                               <InputField
                                 defaultValue={offer.buttonText}
                                 parentClassName={"bg-[#F5F8FA]"}
-                                inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
                                 placeholder={
-                                  "Button (eg. Register, Enroll, View)"
+                                  "Button Text (eg. View, Enroll, etc.)"
                                 }
+                                inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
+                              
                                 onBlur={(e) =>
                                   handleOfferChange(
                                     offer,
@@ -1867,40 +1905,38 @@ export default function SuperAdminSettings() {
                     <p className="block ">{xlsFile.name}</p>
                   )} */}
                                 </div>
-                                {!off?.image?.name ? (
-                                  <div className="flex justify-center">
+                                <div className="flex justify-center">
                                     <label
-                                      htmlFor="file2"
-                                      className="block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ] "
+                                      htmlFor={"file2"+idx}
+                                      disabled={loading2}
+                                      className={`block cursor-pointer text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ${loading2?"cursor-wait":""}`}
                                     >
-                                      Choose File
+                                       {loading2 && off?.image
+
+                                        ? "Submitting..."
+                                        : " Choose File"}
                                     </label>
                                     <input
+                                     accept="image/*"
+                                     disabled={loading2}
+                                       
                                       onChange={(e) => {
+                                        console.log("ee")
                                         let arr = offersNew;
                                         arr[idx].image = e.target.files[0];
-                                        setOffersNew([...arr]);
+                                        setOffersNew((prev)=>(
+                                          [
+                                            ...arr,
+                                          ]
+                                        )
+                                         );
+                                        submitImageModalNew(e.target.files[0], off,e)
                                         // setImageName(e.target.files[0].name);
                                       }}
-                                      id="file2"
+                                      id={"file2"+idx}
                                       type="file"
                                     />
                                   </div>
-                                ) : (
-                                  <div className="flex justify-center flex-col">
-                                    <span className="text-[#517CA8] text-base-15 mb-1">
-                                      {off?.image?.name}
-                                    </span>
-                                    <span
-                                      onClick={(e) =>
-                                        submitImageModalNew(off?.image, off, e)
-                                      }
-                                      className=" cursor-pointer block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center text-base-17-5]"
-                                    >
-                                      Submit File
-                                    </span>
-                                  </div>
-                                )}
 
                                 <label
                                   htmlFor="file"
@@ -1914,11 +1950,11 @@ export default function SuperAdminSettings() {
                                   //   onClick={() => handleImageRemoval(offer)}
                                   className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center  rounded-full cursor-pointer"
                                 >
-                                  <img
+                                  {/* <img
                                     src={DeleteIcon}
                                     className="w-5"
                                     alt="delete"
-                                  />
+                                  /> */}
                                 </div>
                                 {false && (
                                   <span className="text-[#517CA8] text-base-15 mb-1 !text-center flex justify-center items-center">
@@ -1933,7 +1969,7 @@ export default function SuperAdminSettings() {
                                     " text-base-17-5 bg-[#F5F8FA]"
                                   }
                                   parentClassName={"mb-3 bg-[#F5F8FA]"}
-                                  placeholder={"This field is required."}
+                                  placeholder={"Hyperlink"}
                                   required={true}
                                   onChange={(e) => {
                                     let arr = offersNew;
@@ -1948,7 +1984,7 @@ export default function SuperAdminSettings() {
                                     " text-base-17-5 bg-[#F5F8FA]"
                                   }
                                   placeholder={
-                                    "Button (eg. Register, Enroll, View)"
+                                    "Button Text (eg. View, Enroll, etc.)"
                                   }
                                   onChange={(e) => {
                                     let arr = offersNew;
@@ -1972,7 +2008,7 @@ export default function SuperAdminSettings() {
               }
             />
             <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl">
-              <p className="pr-2">Set Permissions </p>
+              <p className="pr-2 !text-[#26435F]">Set Permissions </p>
               <p>
                 <img src={questionMark} alt="" />
               </p>
@@ -1988,17 +2024,17 @@ export default function SuperAdminSettings() {
                     item.choosedValue === false ? (
                       <div
                         key={id}
-                        className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between"
+                        className={` pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between`}
                       >
                         <p>{renderColoredText(item.name)}</p>
 
                         <ToggleBar
                           toggle={{ value: item.choosedValue, key: item._id }}
-                          onToggle={togglePermissions}
+                          onToggle={(e)=>id!==3&&togglePermissions(e)}
                         ></ToggleBar>
                       </div>
                     ) : (
-                      <div className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex justify-between">
+                      <div className={`  pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex justify-between`}>
                         <p>{renderColoredText(item.name)}</p>
 
                         <p>
@@ -2007,7 +2043,7 @@ export default function SuperAdminSettings() {
                               handlePermissionOption(e.target.value, item._id)
                             }
                             id="option"
-                            className="border border-gray-300 px-2  rounded-md text-[#26435F] bg-[#E9ECEF]"
+                            className="border border-gray-300 px-2 w-[200px]  rounded-md text-[#26435F] bg-[#E9ECEF] py-1"
                           >
                             <option value={item.choosedValue}>
                               {`   ${
@@ -2209,6 +2245,8 @@ export default function SuperAdminSettings() {
           }
         />
       )} */}
+        {console.log(subModalData)}
+
  {addCodeModalActive && (
         <Modal
           classname={"max-w-[560px] mx-auto"}
@@ -2219,6 +2257,7 @@ export default function SuperAdminSettings() {
           handleClose={() => {
             setAddCodeModalActive(false);
             setSubModalData(subModalInitialState);
+            setselectedtest([])
           }}
           body={
             <form
@@ -2288,13 +2327,13 @@ export default function SuperAdminSettings() {
                     />
                   </div>
                 </div>
-                <div className="mt-3 flex-1">
+                <div className="mt-3   mb-10 flex-1">
                   <InputSearch
                     label="Select Assignments (optional)"
                     labelClassname="text-base-20 text-[#26435F] mb-0.5"
                     placeholder="Select"
                     placeholderClass="text-base-17-5"
-                    parentClassName=" text-base-17-5 py-0 w-full  mb-10"
+                    parentClassName=" text-base-17-5 py-0 w-full"
                     inputContainerClassName=" text-base-17-5 bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
                     inputClassName="bg-[#F3F5F7]"
                     type="text"
@@ -2316,6 +2355,29 @@ export default function SuperAdminSettings() {
                       // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
                     }}
                   />
+                  <div className="flex flex-row items-center">
+                  {
+                    selectedtest?.length>0?
+                    <>
+                    <p className="font-medium whitespace-nowrap text-base-18 text-[#667085]"> {selectedtest[0]}</p>
+                    {selectedtest?.length>1?<>
+                      <p className="font-medium whitespace-nowrap text-base-18 text-[#667085]">, {selectedtest[1]}</p>
+                      {selectedtest?.length>2?
+                      <>
+                        <p className="font-medium whitespace-nowrap text-base-18 text-[#667085]">, {selectedtest[2]}</p>
+                        {selectedtest.length>3?
+                        <>
+                        <p className="font-medium whitespace-nowrap text-base-18 text-[#667085]">... total {selectedtest.length} selected</p>
+                        </>
+                      :null}
+                      </> :null}
+                      </>
+                    :null}
+                    </>
+                    :null
+
+                  }
+                  </div>
                   {/* <InputField
                   label="Select Assignments (optional)"
                   labelClassname="text-base-20 text-[#26435F] mb-0.5"
@@ -2478,7 +2540,7 @@ export default function SuperAdminSettings() {
         <Modal
           classname={"max-w-[560px] mx-auto"}
           titleClassName="text-base-20 mb-[18px]"
-          title="Add / Edit Sessions"
+          title="Add / Edit Session Tags"
           cancelBtn={false}
           cancelBtnClassName="w-140 "
           handleClose={() => {
@@ -2523,7 +2585,7 @@ export default function SuperAdminSettings() {
                 <div className="flex-1 flex gap-5 ">
                   <div className="flex-1">
                     <InputField
-                      label="Session Name"
+                      label="Session Tag Heading"
                       labelClassname="text-base-20 text-[#26435F] mb-0.5"
                       placeholder="Add a heading for session tags (such as “Topics Covered”)"
                       inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"

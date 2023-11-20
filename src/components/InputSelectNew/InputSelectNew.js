@@ -11,6 +11,8 @@ export default function InputSelectNew({
   iconClass,
   optionsEachClassName,
   value,
+  placeholderClass,
+  inputClassName,
   placeholder,
   label,
   labelClassname,
@@ -29,7 +31,8 @@ export default function InputSelectNew({
   optionListClassName,
   arrowWidth,
   ICON2,
-  labelIcon
+  labelIcon,
+  customFontSize
 }) {
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
@@ -86,12 +89,15 @@ export default function InputSelectNew({
             }`}
           name={label}
         >
-          {value === "" ? (
-            <span className={` ${placeHolderClass ? placeHolderClass : "text-primary-60"}`}> {placeholder} </span>
+         {value === "" || !value ? (
+            <span className={`text-[#667085] text-base-17-5 whitespace-nowrap ${false ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>
+              {" "}
+              {placeholder}{" "}
+            </span>
           ) : (
-            value
+            <span className={`mr-10 ${customFontSize?customFontSize:'text-base-17-5'} whitespace-nowrap ${false ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>{value}</span>
           )}
-          {ICON2 && <img src={ICON2} className={`ml-4 inline-block ${iconClass} `} alt="icon" />}
+          {ICON2 && <img src={ICON2} className={`ml-4 inline-block ${iconClass} mt-[-5px] `} alt="icon" />}
 
         </div>
         {selected && (
@@ -103,11 +109,11 @@ export default function InputSelectNew({
               // //console.log('checkbox.match', checkbox.match);
               return (
                 <div
-                  className={`outline-0 border-0 py-2.5  px-4 flex flex-wrap items-center justify-between ${optionsEachClassName} text-base-17-5`}
+                  className={`outline-0 border-0 py-2.5  px-4 flex flex-wrap items-center justify-between ${optionsEachClassName} text-base-17-5 `}
                   key={idx}
                   onClick={() => handleOptionSelect(option, idx)}
                 >
-                  <p className={`${optionListClassName} text-base-17-5 `}>
+                  <p className={`${optionListClassName} ${customFontSize?customFontSize:"text-base-17-5"}  `}>
                     {optionType !== undefined && optionType === "object"
                       ? option.value
                         ? option.value

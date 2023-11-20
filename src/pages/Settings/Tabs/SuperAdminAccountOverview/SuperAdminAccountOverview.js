@@ -18,6 +18,7 @@ import {
 import { BASE_URL, getAuthHeader } from "../../../../app/constants/constants";
 import { useUpdateEmailMutation } from "../../../../app/services/organization";
 import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
+import styles from './style.module.css'
 const AccountOverview = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [reset, setReset] = useState(false);
@@ -115,6 +116,15 @@ const AccountOverview = () => {
   };
   const handleDataUpdate = () => {
     const updateUserAccount = async () => {
+      if(values?.newPassword?.length>0&&values?.newPassword!==values?.confirmPassword){
+        if(!values?.currentPassword||values?.currentPassword?.trim()===""){
+          alert("Enter current password in case you want to reset your password.");
+          return ;
+        }
+        alert("Confirm Password value does not match with new password.")
+        return 
+      }
+     
       try {
         let reqBody = { ...values };
         delete reqBody["_id"];
@@ -145,8 +155,9 @@ const AccountOverview = () => {
           <InputField
             style={{ color: "blue" }}
             placeholder=""
+            labelClassname="mb-1"
             parentClassName="text-xs text-[#26435F] "
-            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw]"
+            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw] h-[53px]"
             inputClassName="bg-transparent "
             label="First name"
             value={values.firstName}
@@ -161,8 +172,9 @@ const AccountOverview = () => {
 
           <InputField
             placeholder=""
+            labelClassname="mb-1"
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw]"
+            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw] h-[53px]"
             inputClassName="bg-transparent"
             label="Last name"
             value={values.lastName}
@@ -177,8 +189,9 @@ const AccountOverview = () => {
 
           <InputField
             placeholder=""
+            labelClassname="mb-1"
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[21.0416666667vw]"
+            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[21.0416666667vw] h-[53px]"
             inputClassName="bg-transparent border border-white rounded-5"
             label="Email"
             value={values.email}
@@ -208,8 +221,9 @@ const AccountOverview = () => {
 
           <InputFieldDropdown
             placeholder=""
+            labelClassname="mb-1"
             parentClassName="text-xs w-[400px] text-[#26435F] "
-            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 h-[47px] w-[15.26vw]"
+            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 h-[47px] w-[15.26vw] h-[53px]"
             inputClassName="bg-transparent "
             label="Phone"
             value={values.phone}
@@ -239,9 +253,10 @@ const AccountOverview = () => {
         </div>
         <div className="flex gap-10 flex-1">
           <InputField
+            labelClassname="mb-1"
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw]"
+            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw] h-[53px]"
             inputClassName="bg-transparent border border-white rounded-5"
             label="Current password"
             value={values.currentPassword}
@@ -254,9 +269,10 @@ const AccountOverview = () => {
             error={error.currentPassword}
           />
           <InputField
+            labelClassname="mb-1"
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw]"
+            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw] h-[53px]"
             inputClassName="bg-transparent border border-white rounded-5"
             label="New password"
             value={values.newPassword}
@@ -269,10 +285,11 @@ const AccountOverview = () => {
             error={error.newPassword}
           />
           <InputField
+            labelClassname="mb-1"
             style={{ border: "1px solid white !important" }}
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw]"
+            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw] h-[53px]"
             inputClassName="bg-transparent border border-white rounded-5"
             label="Confirm password"
             value={values.confirmPassword}
@@ -287,7 +304,7 @@ const AccountOverview = () => {
           <div>
             <button
               onClick={handleDataUpdate}
-              className="bg-[#FFA28D]  rounded-md my-3 text-white px-[50px] py-3  mt-5 w-[186.67px]"
+              className={`bg-[#FFA28D]  rounded-md my-3 text-white px-[50px] py-2.5  mt-5 w-[186.67px] !font-inter ${styles.UpdateFont} h-[53px]`}
             >
               Update
             </button>

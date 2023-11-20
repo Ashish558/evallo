@@ -1,48 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
 import InputField from "../../components/InputField/inputField";
 import styles from "./signup.module.css";
-
-import OrgDetails from "../Frames/OrgDetails/OrgDetails";
-import SignupLast from "../Frames/SignupLast/SignupLast";
-import FurtherDetails from "../Frames/FurtherDetails/FurtherDetails";
 import axios from "axios";
 import SetPassword from "../Frames/SetPassword/SetPasswordInvited";
 import cuate from "../../assets/signup/cuate.svg";
 import NumericSteppers from "../../components/NumericSteppers/NumericSteppers";
-import CountryCode from "../../components/CountryCode/CountryCode";
 import {
   useAddUserDetailsMutation,
   useSignupMutation,
 } from "../../app/services/auth";
-import {
-  instructionFormat,
-  hearAboutUsData,
-  solutionsData,
-  testPreparationsData,
-  tutoringData,
-  coachingData,
-} from "./data";
-import { getCheckedString } from "../../utils/utils";
-import InputSelect from "../../components/InputSelect/InputSelect";
+
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
-import { validateOtherDetails, validateSignup } from "./utils/util";
+import { validateSignup } from "./utils/util";
 import {
-  useLazyGetTutorDetailsQuery,
+  useLazyGetUserDetailQuery,
   useLazyGetSingleUserQuery,
   useUpdateUserMutation,
   useLazyGetOrganizationQuery,
 } from "../../app/services/users";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Loader from "../../components/Loader";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
-import RadioUnselected from "../../assets/icons/radio-unselected.svg";
-import RadioSelected from "../../assets/icons/radio-selected.svg";
 import OtherDetails from "../Frames/OtherDetails/userDetails";
 import CustomFields from "../Frames/CustomFields/CustomFields";
 import { useGetUserByOrgNameMutation } from "../../app/services/organization";
 import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
-import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
 
 export default function UserSignup() {
@@ -57,6 +39,8 @@ export default function UserSignup() {
   const [getSettings, getSettingsResp] = useLazyGetSettingsQuery();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [stepOneDisabled, setStepOneDisabled] = useState(false)
+  const [stepTwoDisabled, setStepTwoDisabled] = useState(false)
 
   const [values, setValues] = useState({
     firstName: "",
@@ -105,7 +89,7 @@ export default function UserSignup() {
 
   const [signupUser, signupUserResp] = useSignupMutation();
   const [addUserDetails, addUserDetailsResp] = useAddUserDetailsMutation();
-  const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery();
+  const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery();
   const [count, setCount] = useState(0);
   const [organisation, setOrganisation] = useState({});
   const [fetchOrganisation, fetchOrganisationstatus] =
@@ -168,7 +152,7 @@ export default function UserSignup() {
       if (res.data.organisation.length === 0) return;
       if (res.data.organisation[0]) {
         setOrganisation(res.data.organisation[0]);
-        setCustomFields(res.data.organisation[0]?.settings?.customFields);
+        // setCustomFields(res.data.organisation[0]?.settings?.customFields);
       }
     });
   }, [searchParams.get("orgName")]);
@@ -181,17 +165,17 @@ export default function UserSignup() {
     console.log("paramUserId", paramUserId);
 
     setIsAddedByAdmin(true);
-    setFrames((prev) => {
-      return { ...prev, signupActive: false, userDetails: true };
-    });
+    // setFrames((prev) => {
+    //   return { ...prev, signupActive: false, userDetails: true };
+    // });
 
     getDetails(paramUserId).then((res) => {
       if (res.error) {
         return console.log(res.error);
       }
-      console.log("param res", res.data);
+      console.log("user res", res.data);
       if (res.data?.user) {
-        const { firstName, lastName, phone, email, role, associatedOrg } =
+        const { firstName, lastName, phone, email, role, associatedOrg, phoneCode } =
           res.data.user;
         setValues((prev) => {
           return {
@@ -202,8 +186,37 @@ export default function UserSignup() {
             phone,
             email,
             role,
+            phoneCode
           };
         });
+        if(phone){
+          setStepOneDisabled(true)
+        }
+        getUserDetail({ id: paramUserId }).then((res) => {
+          console.log('detail res----', res.data.data);
+          if (res.data.data.userdetails) {
+            let detail = res.data.data.userdetails
+            setOtherDetails({
+              ...otherDetails,
+              FirstName: detail.FirstName,
+              LastName: detail.LastName,
+              Phone: detail.Phone,
+              Email: detail.Email,
+              grade: detail.grade,
+              schoolName: detail.schoolName,
+              PphoneCode: detail.phoneCode
+            })
+            if(phone){
+              setStepTwoDisabled(true)
+            }
+            // setFrames({
+            //   signupActive: false,
+            //   userDetails: false,
+            //   customFields: false,
+            //   setPasswordFields: true,
+            // })
+          }
+        })
         fetchOrganisation(associatedOrg).then((org) => {
           //console.log("organisation details",{org})
           if (org.error) {
@@ -213,7 +226,7 @@ export default function UserSignup() {
 
           if (org?.data?.organisation) {
             setOrganisation(org.data.organisation);
-            setCustomFields(org.data.organisation?.settings?.customFields);
+            // setCustomFields(org.data.organisation?.settings?.customFields);
           }
         });
       }
@@ -265,7 +278,7 @@ export default function UserSignup() {
       };
     });
   };
-  console.log({ customFields });
+
   const resetDetailsErrors = () => {
     setDetailsError((prev) => {
       return {
@@ -316,8 +329,17 @@ export default function UserSignup() {
   useEffect(() => {
     handleNextErrors();
   }, [values]);
-  const [emailExistLoad, setEmailExistLoad] = useState(false);
+
   const handleClick = async () => {
+    var regex = new RegExp("^[a-zA-Z0-9 ]*[a-zA-Z][a-zA-Z0-9 ]*$");
+    let f =regex.test(values?.firstName)
+    f = f && regex.test(values?.lastName)
+    
+   
+    if (!f) {
+      alert("Enter a valid name!")
+      return
+    }
     const emailAlreadyExists = async () => {
       let checked = false;
       if (isAddedByAdmin) {
@@ -372,7 +394,7 @@ export default function UserSignup() {
     let updatedCustomfields = customFields?.map((item) => {
       return {
         _id: item._id,
-        dataType: item.dataType,
+        dataType: "String",
         name: item.name,
         Values: item.value,
       };
@@ -384,8 +406,10 @@ export default function UserSignup() {
         lastName: values.lastName,
         email: values.email,
         phone: values.phone,
+        phoneCode: values.phoneCode,
         role: values.role.toLowerCase(),
         ...otherDetails,
+        PhoneCode: otherDetails.PphoneCode,
         customFields: updatedCustomfields,
         associatedOrg: organisation._id,
       };
@@ -422,7 +446,7 @@ export default function UserSignup() {
         setLoading(true);
         if (isAddedByAdmin) {
           reqBody.userId = values.userId;
-          updateUser(reqBody)
+          signupUser(reqBody)
             .then((res) => {
               setLoading(false);
               console.log(res);
@@ -533,8 +557,8 @@ export default function UserSignup() {
                 {frames.signupActive
                   ? "Sign Up"
                   : frames.setPasswordFields && !isAddedByAdmin
-                  ? "Set Password"
-                  : "Profile Details"}
+                    ? "Set Password"
+                    : "Profile Details"}
               </h1>
 
               <h6 className="mb-[10px]">Sign up with email address</h6>
@@ -542,7 +566,7 @@ export default function UserSignup() {
           ) : (
             <></>
           )}
-          <div className="flex lg:items-center relative bg-white rounded-md py-6 px-5 md:px-[48px] w-[600px]">
+          <div className="flex lg:items-center relative bg-white rounded-md py-6 px-5 md:px-[48px] w-[41.6667vw] min-w-[600px] max-w-[800px] mb-[139px]">
             <div className="w-full py-3">
               <h1
                 className={`hidden lg:block mb-1.5 text-[30px] ${styles.title} `}
@@ -550,26 +574,26 @@ export default function UserSignup() {
                 {frames.signupActive
                   ? ""
                   : frames.setPasswordFields && !isAddedByAdmin
-                  ? "Set Password"
-                  : ""}
+                    ? "Set Password"
+                    : ""}
               </h1>
-
+             
               {currentStep > 0 && !frames.signupSuccessful && (
                 <NumericSteppers
-                  className="mt-3"
+                  className="mt-3 !w-[520px] !mx-auto design:!w-[550px]"
                   fieldNames={
                     customFields?.length > 0 && isAddedByAdmin
                       ? [
-                          "Personal info",
-                          "Student / Parent",
-                          "Further details",
-                          "Set password",
-                        ]
+                        "Personal info",
+                        "Student / Parent",
+                        "Further details",
+                        "Set password",
+                      ]
                       : [
-                          "Personal info",
-                          "Student / Parent",
-                          isAddedByAdmin ? "Set password" : "Further details",
-                        ]
+                        "Personal info",
+                        "Student / Parent",
+                        isAddedByAdmin ? "Set password" : "Further details",
+                      ]
                   }
                   totalSteps={
                     customFields?.length === 0
@@ -583,22 +607,22 @@ export default function UserSignup() {
 
               {frames.signupActive ? (
                 <div>
-                  <div className={`flex mt-[59px]  gap-8 lg:mt-0 `}>
+                  <div className={`flex mt-[59px] justify-between gap-10 lg:mt-0 ${stepOneDisabled ? 'pointer-events-none cursor-not-allowed opacity-70' :''}`}>
                     <InputField
                       placeholder=""
-                      inputContainerClassName="  bg-white   border border-[#D0D5DD]"
-                      parentClassName="text-xs w-[250px]"
-                      labelClassname="mb-1 text-[#26435F] font-bold"
+                      inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
+                      parentClassName="text-base-17-5 w-full "
+                      labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="First Name"
                       value={values.firstName}
                       onChange={(e) => {
-                        const alphabeticOnly = e.target.value.replace(
-                          /[^a-zA-Z]/g,
-                          ""
-                        );
-                        e.target.value = alphabeticOnly;
-                        e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
-                     
+                        // const alphabeticOnly = e.target.value.replace(
+                        //   /[^a-zA-Z]/g,
+                        //   ""
+                        // );
+                        // e.target.value = alphabeticOnly;
+                        // e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
+
                         setValues({
                           ...values,
                           firstName: e.target.value,
@@ -609,18 +633,19 @@ export default function UserSignup() {
                     />
                     <InputField
                       placeholder=""
-                      inputContainerClassName="  bg-white   border border-[#D0D5DD]"
-                      parentClassName="text-xs flex-1"
-                      labelClassname="mb-1 text-[#26435F] font-bold"
+                      inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
+                      parentClassName="text-base-17-5 w-full "
+                      labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="Last Name"
                       value={values.lastName}
                       onChange={(e) => {
-                        const alphabeticOnly = e.target.value.replace(
-                          /[^a-zA-Z]/g,
-                          ""
-                        );
-                        e.target.value = alphabeticOnly;
-                        e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
+
+                        // const alphabeticOnly = e.target.value.replace(
+                        //   /[^a-zA-Z]/g,
+                        //   ""
+                        // );
+                        // e.target.value = alphabeticOnly;
+                        // e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
                         setValues({
                           ...values,
                           lastName: e.target.value,
@@ -630,13 +655,14 @@ export default function UserSignup() {
                       error={error.lastName}
                     />
                   </div>
-                  <div className="flex gap-8 items-center mt-6 mb-6">
+                  <div className={`flex  items-end mt-[30px] mb-[29px] justify-between gap-10 ${stepOneDisabled ? 'pointer-events-none cursor-not-allowed opacity-70' :''}`}>
                     <InputField
-                      labelClassname="mb-1 text-[#26435F] font-bold"
+                      labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="Email"
                       placeholder=""
-                      inputContainerClassName="  bg-white   border border-[#D0D5DD]"
-                      parentClassName="w-[340px] text-xs "
+                      inputClassName={"h-[52.5px]"}
+                      inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
+                      parentClassName=" text-base-17-5  w-full"
                       value={values.email}
                       onChange={(e) =>
                         setValues({
@@ -649,11 +675,12 @@ export default function UserSignup() {
                     />
                     <InputFieldDropdown
                       placeholder=""
-                      inputContainerClassName="  bg-white h-[40px]  border border-[#D0D5DD]"
-                      parentClassName="text-xs w-[300px]"
-                      inputClassName="  bg-transparent text-400 "
-                      labelClassname="mb-1 text-[#26435F]  font-bold text-[#26435F]"
+                      inputContainerClassName="text-base-17-5  bg-white h-[53px]  border border-[#D0D5DD]"
+                      parentClassName="text-base-17-5 w-[85%]"
+                      inputClassName="  bg-transparent text-400 text-base-17-5 h-[52.5px]"
+                      labelClassname="mb-1 text-[#26435F]  !font-medium text-[#26435F] design:mb-2"
                       label="Phone"
+                      codeClassName="!min-w-[40px] "
                       value={values.phone}
                       codeValue={values.phoneCode}
                       handleCodeChange={(e) =>
@@ -676,11 +703,11 @@ export default function UserSignup() {
 
                   <div className="mt-5">
                     <p
-                      className={`mb-3 text-[#26435F] text-[14px]  font-semibold`}
+                      className={`mb-[19px] text-[#26435F] text-base-17-5  font-semibold`}
                     >
                       Are you signing up as a Parent or a Student?
                     </p>
-                    <div className="flex items-center  text-[13.5px] gap-x-6">
+                    <div className={`flex items-center  text-[13.5px] gap-x-6 ${stepOneDisabled || paramUserRole? 'pointer-events-none cursor-not-allowed opacity-70' :''}`}>
                       <div
                         onClick={() => {
                           setValues((prev) => ({
@@ -693,22 +720,21 @@ export default function UserSignup() {
                         <div className={` flex items-center  `}>
                           <input
                             type="radio"
-                            className="form-radio hidden"
+                            className="form-radio hidden "
                             id="radioOption"
                           />
                           <div
-                            className={`relative inline-block ml-[2px] w-4 h-4   rounded-full border ${
-                              values.role === "parent"
-                                ? "border-[#FFA28D]"
-                                : "border-gray-600"
-                            } cursor-pointer`}
+                            className={`relative inline-block ml-[2px] w-4 h-4   rounded-full border border-[1.25px] ${values.role === "parent"
+                              ? "border-[#FFA28D]"
+                              : "border-gray-600"
+                              } cursor-pointer`}
                           >
                             {values.role === "parent" && (
                               <div className="absolute inset-0 my-auto mx-auto w-[8px] h-[8px] rounded-full bg-[#FFA28D]" />
                             )}{" "}
                           </div>
 
-                          <span className="ml-[10px] text-[#507CA8]">
+                          <span className="ml-[10px] text-[#507CA8] text-base-17-5">
                             Parent / Guardian
                           </span>
                         </div>
@@ -729,18 +755,17 @@ export default function UserSignup() {
                             id="radioOption"
                           />
                           <div
-                            className={`relative inline-block w-4 h-4 p-1   rounded-full border ${
-                              values.role === "student"
-                                ? "border-[#FFA28D]"
-                                : "border-gray-600"
-                            } cursor-pointer`}
+                            className={`relative inline-block w-4 h-4 p-1   rounded-full border ${values.role === "student"
+                              ? "border-[#FFA28D]"
+                              : "border-gray-600"
+                              } cursor-pointer`}
                           >
                             {values.role === "student" && (
                               <div className="absolute inset-0 my-auto mx-auto w-[8px] h-[8px] rounded-full bg-[#FFA28D]" />
                             )}{" "}
                           </div>
 
-                          <span className="ml-2 text-[#507CA8]">Student</span>
+                          <span className="ml-2 text-[#507CA8] text-base-17-5">Student</span>
                         </div>
                       </div>
                     </div>
@@ -752,53 +777,52 @@ export default function UserSignup() {
                         onChange={handleCheckboxChangeAge}
                       />
 
-                      <span className="ml-2 text-sm text-[#507CA8]">
+                      <span className="ml-2 text-base-17-5 text-[#507CA8]">
                         I confirm that I am 13 years or older
                       </span>
                     </div>
                   </div>
 
-                  <div className=" gap-x-2 my-5">
+                  <div className=" gap-x-2 mt-5 mb-[50px]">
                     <div className={`flex ${styles.textLight}`}>
                       <CCheckbox
                         checked={values.terms}
                         onChange={handleCheckboxChangeTerms}
                       />
-                      <p className={` ml-2 text-sm text-[#507CA8]`}>
+                      <p className={` ml-2 text-base-17-5 text-[#507CA8]`}>
                         I have carefully read and agree to the{" "}
                         <a
                           href="http://evallo.org/tou"
-                          className="font-semibold text-[#26435F] mr-1"
+                          className="font-medium text-[#26435F] mr-1"
                         >
                           Terms of Use
                         </a>
                         and
                         <a
                           href="http://evallo.org/privacy-policy"
-                          className=" ml-1 font-semibold text-[#26435F]"
+                          className=" ml-1 font-medium text-[#26435F]"
                         >
                           Privacy Policy
                         </a>
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center mt-[30px] justify-between">
-                    <SecondaryButton
+                  <div className="flex items-center mt-[30px] justify-end">
+                    {/* <SecondaryButton
                       children="Go Back"
-                      className="text-sm mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
+                      className="!text-[0.9688vw] mr-6 bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] font-medium h-[53px] rounded-5 w-[7.6042vw]"
                       onClick={() => navigate("/")}
-                    />
+                    /> */}
 
                     <PrimaryButton
-                      className={`w-full bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative ${
-                        loading
-                          ? "cursor-wait opacity-60 pointer-events-none"
-                          : "cursor-pointer"
-                      }`}
+                      className={`bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[8vw]   text-[#FFF] !text-[0.9688vw] font-medium relative h-[50px] design:h-[53px] rounded-5 ${loading
+                        ? "cursor-wait opacity-60 pointer-events-none"
+                        : "cursor-pointer"
+                        }`}
                       disabled={
                         values.email.trim().length === 0 ||
-                        !values.terms ||
-                        !values.ageChecked
+                          !values.terms ||
+                          !values.ageChecked
                           ? true
                           : false
                       }
@@ -813,12 +837,15 @@ export default function UserSignup() {
                   {...valueProps}
                   customFields={customFields}
                   {...otherDetailsProps}
+                  newLoader={loading}
                   handleSignup={handleSignup}
+                  stepTwoDisabled={stepTwoDisabled}
                 />
               ) : frames.customFields ? (
                 <CustomFields
                   {...props}
                   {...valueProps}
+
                   customFields={customFields}
                   setCustomFields={setCustomFields}
                   handleSignup={handleSignup}

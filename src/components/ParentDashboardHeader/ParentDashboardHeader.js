@@ -41,11 +41,11 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
 
   useDisableBodyScroll(ledgerVisible);
   useEffect(() => {
-    fetchSettings().then((res) => {
-      console.log("images loaded", res);
-      setImages(res.data.data.setting.offerImages);
-      console.log(res.data.data.setting);
-    });
+    // fetchSettings().then((res) => {
+    //   console.log("images loaded", res);
+    //   setImages(res.data.data.setting.offerImages);
+    //   console.log(res.data.data.setting);
+    // });
     getUserDetail({ id }).then((res) => {
       // console.log('response', res.data.data);
       const baseLink = res.data.data.baseLink;
@@ -80,6 +80,12 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
   }, []);
 
   useEffect(() => {
+    if (organization?.settings) {
+      console.log({ organization })
+      setImages(organization?.settings?.offerImages)
+    }
+  }, [organization])
+  useEffect(() => {
     if (user.assiginedStudents === undefined) return;
     const fetch = async () => {
       let studentsData = [];
@@ -110,7 +116,9 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
     });
   };
   const openLink = (link) => {
+    console.log({ link })
     window.open(link, '_blank');
+
   }
   console.log("associatedStudents", associatedStudents);
   console.log("selectedStudent", selectedStudent);
@@ -129,13 +137,13 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
       {ledgerVisible && <Ledger setLedgerVisible={setLedgerVisible} />}
 
       <div
-        className="flex flex-row !gap-[calc(68*0.0522vw)] "
+        className="flex flex-row !gap-[calc(68*0.0522vw)] items-center"
         id={styles.parentDashboardHeader}
       >
-        <div className="w-full lg:w-2/3 !w-[calc(1050*0.0522vw)]">
+        <div className=" !w-[calc(1050*0.0522vw)]">
           <div className="flex flex-row justify-between !w-[calc(1050*0.0522vw)]">
-            <div className="w-full lg:w-2/3  !w-[calc(550*0.0522vw)] h-[206px] lg:h-auto ">
-              <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
+            <div className="w-[28.6458vw] h-[250px]">
+              <p className="text-base-20 text-[#26435F] font-semibold text-base-20 mb-1">
                 Announcements
               </p>
 
@@ -185,8 +193,8 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                 {console.log({images})} */}
               </div>
             </div>
-            <div className="w-full lg:w-2/3  !w-[calc(463*0.0522vw)] h-[206px] lg:h-auto ">
-              <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
+            <div className="w-[24.0625vw] h-[250px]">
+              <p className="text-base-20 text-[#26435F] font-semibold text-base-20 mb-1">
                 Invoice Details
               </p>
 
@@ -209,7 +217,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                   disabled={amountToPay === 0}
                   onClick={handlePay}
                 >
-                  {amountToPay !== 0 ? (
+                  {amountToPay !== 0 && false ? (
                     <>Pay Now: $ {amountToPay}</>
                   ) : (
                     <>Coming Soon</>
@@ -225,9 +233,9 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
             <InputSelectNew
               optionType="object"
               label={"Select Student "}
-              labelClassname="text-[#26435F] -mt-2 font-semibold text-base-20 mb-1"
-              iconClass=" translate-y-[0px] ml-3"
-              parentClassName="mb-2"
+              labelClassname="text-[#26435F]  font-semibold text-base-20 mb-[5px]"
+              iconClass=" translate-y-[0px]  mb-1"
+              parentClassName=""
               inputContainerClassName="pt-1 pb-1"
               optionData={associatedStudents.map((item) => ({
                 _id: item._id,
@@ -244,7 +252,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
             />
 
           </div>
-          <div className=".mybox -mt-5 bg-white relative shadow-[0px_0px_2.500001907348633px_0px_#00000040] border-b-4 border-b-[#26435F] h-[215px] rounded-md !w-[calc(489*0.0522vw)]">
+          <div className=".mybox -mt-[30px] bg-white relative shadow-[0px_0px_2.500001907348633px_0px_#00000040] border-b-4 border-b-[#26435F] h-[225px] rounded-md !w-[25.5208vw]">
             <div id="borderLeft" className=""></div>
 
             <div
@@ -260,7 +268,6 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                           ? "No students associated"
                           : selectedStudent.value}
                       </h2>
-
                       {/* <h6 className="text-[10px]">SAT Tutoring <br />Subject Tutoring</h6> */}
 
                       <ul className="text-[12px] text-[#517CA8] my-8 text-base-17-5">

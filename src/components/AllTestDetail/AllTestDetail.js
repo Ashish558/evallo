@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { useLazyGetUserDetailQuery } from '../../app/services/users';
+import { useSelector } from 'react-redux';
+import { getFormattedDate } from '../../utils/utils';
 
 export default function AllTestDetail({ testData }) {
    const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
-
+   const { dateFormat } = useSelector(state => state.user)
    const [detail, setDetail] = useState({
       createdBy: '-',
       updatedBy: '-',
    })
-
+   console.log(testData)
    useEffect(() => {
       if (testData.createdBy) {
          getUserDetail({ id: testData.createdBy })
@@ -39,71 +41,74 @@ export default function AllTestDetail({ testData }) {
    return (
       <div className="max-w-840 flex flex-col w-full px-2 gap-y-2 mt-2">
          <div className='flex justify-between items-center'>
-            <p className="inline-block w-138 font-semibold opacity-60">
+            <p className="inline-block w-138 font-medium  text-[#26435F] ">
                {" "}
                Created on
             </p>
-            <p className="inline-block ">:</p>
+            <p className="inline-block mr-7">:</p>
             <p className="inline-block text-[#24A3D9] w-138 font-semibold">
-               {testData.createdAt?.split("T")[0]}
+               {/* {testData.createdAt?.split("T")[0]} */}
+               {getFormattedDate(testData.createdAt?.split("T")[0], dateFormat)}
             </p>
          </div>
 
          <div className='flex justify-between items-center'>
-            <p className="inline-block w-138 font-semibold opacity-60">
+            <p className="inline-block w-138 font-medium  text-[#26435F] ">
                {" "}
                Created by
             </p>
-            <p className="inline-block ">:</p>
+            <p className="inline-block mr-7">:</p>
             <p className="inline-block text-[#24A3D9]  w-138 font-semibold ">
                {detail.createdBy}
             </p>
          </div>
 
          <div className='flex justify-between items-center'>
-            <p className="inline-block w-138 font-semibold opacity-60">
+            <p className="inline-block w-138 font-medium  text-[#26435F] ">
                {" "}
                Updated on{" "}
             </p>
-            <p className="inline-block ">:</p>
-            <p className="inline-block text-[#24A3D9] w-138 font-semibold ">
+            <p className="inline-block mr-7">:</p>
+            <p className="inline-block text-[#24A3D9] w-138 font-semibold  ">
                {" "}
-               {testData.updatedAt?.split("T")[0]}
+               {/* {testData.updatedAt?.split("T")[0]} */}
+               {getFormattedDate(testData.updatedAt?.split("T")[0], dateFormat)}
             </p>
          </div>
 
          <div className='flex justify-between items-center'>
-            <p className="inline-block w-138 font-semibold opacity-60">
+            <p className="inline-block w-138 font-medium text-[#26435F] ">
                {" "}
                Updated By{" "}
             </p>
-            <p className="inline-block ">:</p>
+            <p className="inline-block mr-7">:</p>
             <p className="inline-block text-[#24A3D9] w-138 font-semibold ">
                {" "}
-               {testData.updatedAt?.split("T")[0]}
+               {detail.updatedBy}
             </p>
          </div>
 
          <div className='flex justify-between items-center'>
-            <p className="inline-block w-138 font-semibold opacity-60">
+            <p className="inline-block w-138 font-medium text-[#26435F]">
                {" "}
                Name{" "}
             </p>
-            <p className="inline-block ">:</p>
+            <p className="inline-block mr-7">:</p>
             <p className="inline-block w-138 text-[#24A3D9] font-semibold ">
                {" "}
                {testData.testName}
             </p>
          </div>
          <div className='flex justify-between items-center'>
-            <p className="inline-block w-138 font-semibold opacity-60">
+            <p className="inline-block w-138 font-medium text-[#26435F]">
                {" "}
                Type{" "}
             </p>
-            <p className="inline-block ">:</p>
+            <p className="inline-block mr-7">:</p>
+            {console.log(testData.testType)}
             <p className="inline-block w-138 text-[#24A3D9] font-semibold ">
                {" "}
-               {testData.testType}&#174;
+               {testData.testType?.includes("®")?testData.testType:testData.testType?.includes("Other")?'Other':(testData.testType)+'®'}
             </p>
          </div>
       </div>
