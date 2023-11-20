@@ -105,9 +105,10 @@ export default function AllTestDetail({ testData }) {
                Type{" "}
             </p>
             <p className="inline-block mr-7">:</p>
+            {console.log(testData.testType)}
             <p className="inline-block w-138 text-[#24A3D9] font-semibold ">
                {" "}
-               {testData.testType?.includes("®")?testData.testType:(testData.testType)+'®'}
+               {testData.testType?.includes("®")?testData.testType:testData.testType?.includes("Other")?'Other':(testData.testType)+'®'}
             </p>
          </div>
       </div>
