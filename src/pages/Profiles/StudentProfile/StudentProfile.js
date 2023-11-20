@@ -862,7 +862,7 @@ const [toEdit, setToEdit] = useState({
                         <p>
                           <span>
                             <img
-                              className="inline-block !w-4 !h-4 mr-2 cursor-pointer"
+                              className="inline-block  w-[22.521px] h-[18px] mr-2 cursor-pointer"
                               src={emailIcon}
                               alt="email"
                             />
@@ -871,7 +871,7 @@ const [toEdit, setToEdit] = useState({
                           <span>
                             <img
                               onClick={() => handleCopyClick(user?.email)}
-                              className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
+                              className="inline-block ml-2 w-[22.521px] h-[18px] mr-2 cursor-pointer"
                               src={copy1}
                               alt="copy"
 
@@ -881,7 +881,7 @@ const [toEdit, setToEdit] = useState({
                         <p>
                           <span>
                             <img
-                              className="inline-block !w-4 !h-4 mr-2 cursor-pointer"
+                              className="inline-block  w-[22.521px] h-[18px] mr-2 cursor-pointer"
                               src={phoneIcon}
                               alt="phone"
                             />

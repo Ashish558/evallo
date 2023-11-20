@@ -19,7 +19,7 @@ export default function SingleTutor({turorsLength, idx, tutor, handlePrev,handle
             {tutor.tutorLevel && `${tutor.tutorLevel} Belt`}
           </h5>
           <p>{tutor?.education}</p> */}
-          <h3 className=" text-[#26435F] text-base-22-5 font-semibold  h-16">
+          <h3 className=" text-[#26435F] text-base-22-5 font-semibold h-24 flex justify-start items-start">
             {" "}
             {`${tutor.firstName} ${tutor.lastName}`}{" "}
           </h3>

@@ -1301,8 +1301,8 @@ export default function CalendarPage() {
           <span className="font-bold">Schedule</span>
         </p>
         <div className="  pb-2 pl-[74px] calendar flex">
-          <div className=" pl-0 pr-0 w-[280px] mr-[10px] calendar-left-side">
-            <div className="w-[280px] " >
+          <div className=" pl-0 pr-0 w-[296px] mr-[10px] calendar-left-side">
+            <div className="w-[296px] h-[262px]" >
               <SimpleCalendar
                 events={
                   persona === "parent" || persona === "tutor"
@@ -1683,7 +1683,7 @@ export default function CalendarPage() {
                 })}
             </div>
           </div>
-          <div className="flex-1 w-4/5 relative  min-h-[600px]" id="calendarContainer">
+          <div className="flex-1 w-[1352px] relative  min-h-[600px] max-h-[868px]" id="calendarContainer">
             {
               activeView === 'Year' ?
                 <div ref={calendarYearlyRef}></div> :

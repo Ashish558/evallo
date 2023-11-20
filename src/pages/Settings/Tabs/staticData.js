@@ -39,7 +39,7 @@ export const instructionFormat = [
     checked: false,
   },
   {
-    text: "In Person",
+    text: "In person",
     checked: false,
   },
   {
