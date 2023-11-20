@@ -210,11 +210,9 @@ export default function Chart({ scoreProgression }) {
       return;
     }
     const datasets = [];
-    let dates=[
+    let dates = [];
 
-    ]
-
-    const labels = [];
+    const labels = [""];
     console.log({ chartData });
     let checkIfKeyExists = {};
     for (let cid = 0; cid < chartData?.length; cid++) {
@@ -232,12 +230,11 @@ export default function Chart({ scoreProgression }) {
       const date = new Date(chartData[cid]?.date).toDateString();
 
       //  //console.log('concepts', concepts)
- 
+
       labels.push(`${testName}`);
-    
+
       dates.push(date);
-     
-    
+
       for (let sid = 0; sid < subjects?.length; sid++) {
         const x = testName;
         const scale = subjects[sid]?.scoreScale;
@@ -248,6 +245,7 @@ export default function Chart({ scoreProgression }) {
             fill: false,
             borderColor: getColor(sid, subjects?.length),
             data: [
+              { x: 0, y: 0, r: 0, label: concepts[sid] },
               { x, y, r: subjects[sid]?.no_of_correct, label: concepts[sid] },
             ],
             backgroundColor: getColor(sid, subjects?.length),
@@ -270,7 +268,7 @@ export default function Chart({ scoreProgression }) {
       labels,
       datasets: datasets,
     });
-    setOptions((prev)=>{
+    setOptions((prev) => {
       return {
         ...prev,
         plugins: {
@@ -279,28 +277,32 @@ export default function Chart({ scoreProgression }) {
             ...prev.plugins.tooltip,
             callbacks: {
               label: function (context, c, d) {
-               
                 return `  ${"Time "} : ${context.parsed.y / 60} minutes`;
               },
             },
-           
+          },
         },
-      },
-      scales: {
-        ...prev.scales,
-        x: {
-          ...prev.scales.x,
-          ticks: {
-            ...prev.scales.x.ticks,
-            callback: function (value, index, ticks) {
-              return index === 0 ? "" :`${labels[index]} \n ${dates[index]}`;
+        scales: {
+          ...prev.scales,
+          x: {
+            ...prev.scales.x,
+            ticks: {
+              ...prev.scales.x.ticks,
+
+              callback: function (value, index, ticks) {
+                const value2 = `${labels[index]}|${dates[index]}`;
+                const lines = value2?.split("|");
+                return index === 0 ? "" : lines.join("\n");
+                return index === 0 ? "" : `${labels[index]} \n ${dates[index]}`;
+              },
+            },
+            font: {
+              size: 12, // Adjust the font size as needed
             },
           },
-          font: {
-            size: 12, // Adjust the font size as needed
-          },
-        }}
-    }})
+        },
+      };
+    });
   }, [chartData]);
   console.log("linnnnnnnn", data);
   return (

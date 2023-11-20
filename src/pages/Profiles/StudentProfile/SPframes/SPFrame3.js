@@ -1,6 +1,5 @@
 import React from "react";
-import Chart from "./ChartStudent";
-import Chart2 from "../../../../components/Chart/Chart";
+
 import LineChart from "./LineChart";
 import styles from "../style.module.css";
 import { useState } from "react";
@@ -12,19 +11,16 @@ import { useEffect } from "react";
 import RangeDate from "../../../../components/RangeDate/RangeDate";
 import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew";
 import { useParams } from "react-router-dom";
+import StudentBubbleChart from "./StudentNewBubbleChart";
 const SPFrame3 = ({ userDetail, isOwn, user }) => {
   const [getProgression, Progstatus] = useScoreProgressionStudentMutation();
   const [getBubbleChart, bubbleChartStatus] = useChartBubbleStudentMutation();
-  const [TimeChartData, setTimeChartData] = useState();
-  const [ConceptualChartData, setConceptualChartData] = useState();
+
   const [scoreProgression, setScore] = useState([]);
   const [spSubject, setspSubject] = useState([]);
   const [selectedspSubject, setSelectedspSubject] = useState([]);
-  const [subjects, setSubjects] = useState([]);
-  const [selectedConceptIdx, setSelectedConceptIdx] = useState(0);
+
   const [selectedSubject, setSelectedSubject] = useState("");
-  const [currentspSubData, setCurrentspSubData] = useState({});
-  const [currentSubData, setCurrentSubData] = useState({});
   const [accsubjects, setAccSubject] = useState([]);
   const param = useParams();
   const [id, setId] = useState(param?.id);
@@ -48,9 +44,8 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
         idd = param.id;
       }
       // console.log({idd,hid:userDetail?._id,iff:user?._id})
-      let val=officialTest
-      if(officialTest!=="Other")
-      val=officialTest?.split("®")[0]
+      let val = officialTest;
+      if (officialTest !== "Other") val = officialTest?.split("®")[0];
       getProgression({
         studentId: user?._id,
         startDate: new Date(2023, 1, 1),
@@ -69,21 +64,20 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
         chartType: "timeManagement",
       }).then((res) => {
         console.log("time res", res);
-        if (res?.data?.chartData) setTimeChartData(res?.data?.chartData);
       });
     }
   }, [userDetail, id, officialTest, user]);
 
   useEffect(() => {
-    if (spSubject[0]?.name) {
-      //setspSubject(spSubject[0]?.name);
-      setSelectedspSubject(spSubject[0]?.name);
+    if (spSubject[0]?.subject) {
+      //setspSubject(spSubject[0]?.subject);
+      setSelectedspSubject(spSubject[0]?.subject);
     }
   }, [spSubject]);
   useEffect(() => {
-    if (accsubjects[0]?.name) {
-      //setaccsubjects(accsubjects[0]?.name);
-      setSelectedSubject(accsubjects[0]?.name);
+    if (accsubjects[0]?.subject) {
+      //setaccsubjects(accsubjects[0]?.subject);
+      setSelectedSubject(accsubjects[0]?.subject);
     }
   }, [accsubjects]);
   const convertDateToRange = (startDate) => {
@@ -110,18 +104,8 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
       console.log("conceptual res", res);
       if (res?.data?.chartData) {
         let temp = [];
-        res?.data?.chartData?.map((it) => {
-          temp.push({
-            concepts: {
-              [it?.conceptName]: it?.total,
-            },
-            timeTaken: it?.accuracy * 100,
-            no_of_correct: it?.noOfCorrect,
-            name: it?.conceptName,
-          });
-        });
-        setAccSubject(temp);
-        setConceptualChartData(temp);
+
+        setAccSubject(res?.data?.chartData);
       } // setConceptualChartData(res?.data?.chartData);
     });
   };
@@ -133,18 +117,8 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
       console.log("time res", res);
       if (res?.data?.chartData) {
         let temp = [];
-        res?.data?.chartData?.map((it) => {
-          temp.push({
-            concepts: {
-              [it?.conceptName]: it?.total,
-            },
-            timeTaken: it?.avgTimeTaken * 60,
-            no_of_correct: it?.noOfCorrect,
-            name: it?.conceptName,
-          });
-        });
-        setspSubject(temp);
-        setTimeChartData(temp);
+
+        setspSubject(res?.data?.chartData);
       }
       // setTimeChartData(res?.data?.chartData);
     });
@@ -156,20 +130,20 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
   useEffect(() => {
     spSubject.map((sub) => {
       if (sub.selected === true) {
-        setSelectedspSubject(sub.name);
+        setSelectedspSubject(sub.subject);
       }
     });
   }, [spSubject]);
   useEffect(() => {
-    accsubjects.map((sub) => {
+    accsubjects?.map((sub) => {
       if (sub.selected === true) {
-        setSelectedSubject(sub.name);
+        setSelectedSubject(sub.subject);
       }
     });
   }, [accsubjects]);
   const handlespSubjectChange = (name) => {
     let updated = spSubject.map((sub) => {
-      if (sub.name === name) {
+      if (sub.subject === name) {
         return { ...sub, selected: true };
       } else {
         return { ...sub, selected: false };
@@ -178,31 +152,22 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
 
     setspSubject(updated);
   };
-  useEffect(() => {
-    subjects.map((sub) => {
-      if (sub.selected === true) {
-        setSelectedSubject(sub.name);
-      }
-    });
-  }, [subjects]);
+
   const handleSubjectChange = (name) => {
-    let updated = accsubjects.map((sub) => {
-      if (sub.name === name) {
+    let updated = accsubjects?.map((sub) => {
+      if (sub.subject === name) {
         return { ...sub, selected: true };
       } else {
         return { ...sub, selected: false };
       }
     });
-    setSubjects(updated);
+    setAccSubject(updated);
   };
-  console.log("sprame3", {
+  console.log("spframe3", {
     accsubjects,
     selectedspSubject,
     spSubject,
-    subjects,
     scoreProgression,
-    TimeChartData,
-    ConceptualChartData,
   });
   return (
     <div className="flex flex-col gap-5 -mt-5 design:gap-10">
@@ -228,25 +193,23 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
         id={styles.chartContainer}
         className="!rounded-md bg-white shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller py-5 pl-5"
       >
-       
-            {" "}
-            <div className="flex-1 relative z-[6000] flex justify-end translate-y-4 mr-3">
-              <InputSelectNew
-                placeholder={""}
-                parentClassName="ml-0  scale-[0.9] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
-                inputContainerClassName=" my-0 py-[5px] px-[40px]"
-                placeHolderClass="text-[#FFA28D] "
-                labelClassname="text-sm"
-                inputClassName="bg-transparent"
-                value={officialTest}
-                IconDemography={true}
-                optionData={["DSAT®", "SAT®", "ACT®","Other"]}
-                onChange={(e) =>{
-                
-                  setOfficial(e)
-                } }
-              />
-              {/* <InputSelect
+        {" "}
+        <div className="flex-1 relative z-[6000] flex justify-end translate-y-4 mr-3">
+          <InputSelectNew
+            placeholder={""}
+            parentClassName="ml-0  scale-[0.9] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
+            inputContainerClassName=" my-0 py-[5px] px-[40px]"
+            placeHolderClass="text-[#FFA28D] "
+            labelClassname="text-sm"
+            inputClassName="bg-transparent"
+            value={officialTest}
+            IconDemography={true}
+            optionData={["DSAT®", "SAT®", "ACT®", "Other"]}
+            onChange={(e) => {
+              setOfficial(e);
+            }}
+          />
+          {/* <InputSelect
               value={selectedSubject}
               labelClassname="hidden"
               parentClassName="w-fit mr-5"
@@ -254,13 +217,14 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
               optionData={subjects.map((item) => item.name)}
               onChange={(val) => handleSubjectChange(val)}
             /> */}
-            </div>
-            {scoreProgression && scoreProgression?.length > 0 ? (
-          
-            <LineChart scoreProgression={scoreProgression} />
-        
+        </div>
+        {scoreProgression && scoreProgression?.length > 0 ? (
+          <LineChart scoreProgression={scoreProgression} />
         ) : (
-          <div id="ssprogress" className=" w-full   z-[5000] min-h-[300px] rounded-md bg-white flex justify-center flex-col text-center items-center">
+          <div
+            id="ssprogress"
+            className=" w-full   z-[5000] min-h-[300px] rounded-md bg-white flex justify-center flex-col text-center items-center"
+          >
             <div className="w-[100%] mx-auto   flex flex-col items-start">
               {/* <button className="bg-[#FF7979] text-white rounded-md p-2 py-1 mb-3">
                 No Assignments Yet
@@ -310,7 +274,7 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
                   inputClassName="bg-transparent"
                   value={selectedspSubject}
                   IconDemography={true}
-                  optionData={spSubject.map((item) => item.name)}
+                  optionData={spSubject.map((item) => item.subject)}
                   onChange={(e) => handlespSubjectChange(e)}
                 />
                 {/* <InputSelect
@@ -325,24 +289,22 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
                 <RangeDate
                   removeUnderline={true}
                   className="ml-0 !font-normal"
-               
                   optionClassName="!w-min"
                   inputContainerClassName="!w-min font-normal"
                   handleRangeData={handleTimeManagement}
                 />
               </div>
-              <Chart
-                setSubjects={setspSubject}
+              <StudentBubbleChart
                 subjects={spSubject}
                 selectedSubject={selectedspSubject}
-                selectedConceptIdx={selectedConceptIdx}
-                setSelectedConceptIdx={setSelectedConceptIdx}
-                currentSubData={currentspSubData}
-                setCurrentSubData={setCurrentspSubData}
+                time={true}
               />
             </>
           ) : (
-            <div id="stime"  className=" w-full  z-[5000] min-h-[300px] rounded-md bg-white flex justify-center flex-col text-center items-center">
+            <div
+              id="stime"
+              className=" w-full  z-[5000] min-h-[300px] rounded-md bg-white flex justify-center flex-col text-center items-center"
+            >
               <div className="w-[70%] mx-auto   flex flex-col items-start">
                 {/* <button className="bg-[#FF7979] text-white rounded-md p-2 py-1 mb-3">
                   No Assignments Yet
@@ -393,7 +355,7 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
                   inputClassName="bg-transparent"
                   value={selectedSubject}
                   IconDemography={true}
-                  optionData={accsubjects.map((item) => item.name)}
+                  optionData={accsubjects.map((item) => item.subject)}
                   onChange={(e) => handleSubjectChange(e)}
                 />
                 {/* <InputSelect
@@ -407,25 +369,22 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
                 <RangeDate
                   removeUnderline={true}
                   className="ml-0 !font-normal"
-               
                   optionClassName="!w-min"
                   inputContainerClassName="!w-min font-normal"
                   handleRangeData={handleConceptAccuracy}
                 />
               </div>
-              <Chart
-                accuracy={true}
-                setSubjects={setSubjects}
+              <StudentBubbleChart
                 subjects={accsubjects}
                 selectedSubject={selectedSubject}
-                selectedConceptIdx={selectedConceptIdx}
-                setSelectedConceptIdx={setSelectedConceptIdx}
-                currentSubData={currentSubData}
-                setCurrentSubData={setCurrentSubData}
+                accuracy={true}
               />
             </>
           ) : (
-            <div id="sconcept" className=" w-full  z-[5000] min-h-[300px] rounded-md bg-white flex justify-center flex-col text-center items-center">
+            <div
+              id="sconcept"
+              className=" w-full  z-[5000] min-h-[300px] rounded-md bg-white flex justify-center flex-col text-center items-center"
+            >
               <div className="w-[70%] mx-auto   flex flex-col items-start">
                 {/* <button className="bg-[#FF7979] text-white rounded-md p-2 py-1 mb-3">
                   No Assignments Yet
