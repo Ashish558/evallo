@@ -4,21 +4,19 @@ import "./Transition.css";
 import "./calendar.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import downIcon from '../../assets/icons/down-pink.svg'
-import upIcon from '../../assets/icons/up-blue.svg'
-import '@fullcalendar/react/dist/vdom'
+import downIcon from "../../assets/icons/down-pink.svg";
+import upIcon from "../../assets/icons/up-blue.svg";
+import "@fullcalendar/react/dist/vdom";
 // import FullCalendar from "@fullcalendar/react";
 import { Calendar } from "@fullcalendar/core"; // must go before plugins
 import interactionPlugin from "@fullcalendar/interaction";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridWeek from "@fullcalendar/timegrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import multiMonthPlugin from '@fullcalendar/multimonth'
-import LeftIcon from "../../assets/icons/left-arrow.svg";
-import nextIcon from "../../assets/icons/right-arrow.svg";
+import multiMonthPlugin from "@fullcalendar/multimonth";
 import up_triangle from "../../assets/icons/Group 32064up triangle.svg";
 import down_triangle from "../../assets/icons/Group 31479down.svg";
-import downArrow from '../../assets/icons/arrow-down-red.svg'
+import downArrow from "../../assets/icons/arrow-down-red.svg";
 // import 'bootstrap/dist/css/bootstrap.css';
 // import 'bootstrap-icons/font/bootstrap-icons.css';
 import SimpleCalendar from "../../components/SimpleCalendar/SimpleCalendar";
@@ -44,7 +42,7 @@ import InputSelect from "../../components/InputSelect/InputSelect";
 // import styles from "./calendar.css";
 import { useLazyGetUserDetailQuery } from "../../app/services/users";
 import { useLazyGetCalenderInsightQuery } from "../../app/services/admin";
-import downBlue from '../../assets/icons/down-blue.svg'
+import downBlue from "../../assets/icons/down-blue.svg";
 import FullCalendar from "./FullCalendar";
 const days = ["S", "M", "T", "W", "T", "F", "S"];
 
@@ -61,16 +59,7 @@ const timeZones = [
   "US/Mountain",
   "US/Pacific",
 ];
-const timeZones2 = [
-  "IST",
-  "AKST",
-  "CST",
-  "EST",
-  "HST",
-  "MST",
-  "PST"
-];
-
+const timeZones2 = ["IST", "AKST", "CST", "EST", "HST", "MST", "PST"];
 
 export default function CalendarPage() {
   const calendarWeekRef = useRef(null);
@@ -80,7 +69,7 @@ export default function CalendarPage() {
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
   const { role: persona } = useSelector((state) => state.user);
-  const userDetail = useSelector((state) => state.user)
+  const userDetail = useSelector((state) => state.user);
   const accordionRefs = useRef([]);
   const accordionImgRefs = useRef([]);
   const accordionRefs2 = useRef([]);
@@ -91,10 +80,9 @@ export default function CalendarPage() {
 
   // //////console.log(sessionToEdit)
   const [associatedStudents, setAssociatedStudents] = useState([]);
-  const { id, timeZone: timeZoneUser } = useSelector((state) => state.user
-  );
+  const { id, timeZone: timeZoneUser } = useSelector((state) => state.user);
 
-  const [currentUserTImeZone, setcurrentUserTImeZone] = useState("")
+  const [currentUserTImeZone, setcurrentUserTImeZone] = useState("");
 
   const time = formatAMPM(new Date());
   const exactTime =
@@ -130,14 +118,11 @@ export default function CalendarPage() {
   useEffect(() => {
     try {
       //////console.log(userDetail)
-      let res = fetchStudents(`${userDetail.id}`).then((res) => {
-
-      });
+      let res = fetchStudents(`${userDetail.id}`).then((res) => {});
     } catch (e) {
       //////console.log(e)
     }
-
-  }, [])
+  }, []);
   const [names, setNames] = useState([]);
   const [name, setName] = useState("");
   const [eventDetails, setEventDetails] = useState([]);
@@ -156,12 +141,12 @@ export default function CalendarPage() {
   const [intialView, setInitialView] = useState("dayGridMonth");
   const [tutors, setTutors] = useState([]);
   const [alldetails, setAllDetails] = useState([]);
-  const [showTutorDetails, setShowTutorDetails] = useState({})
+  const [showTutorDetails, setShowTutorDetails] = useState({});
   const [searchedUser, setSearchedUser] = useState({
     id: "",
     role: "",
   });
-  const [activeView, setActiveView] = useState('Year')
+  const [activeView, setActiveView] = useState("Year");
 
   const refetchSessions = () => {
     // //////console.log(searchedUser);
@@ -174,14 +159,18 @@ export default function CalendarPage() {
   };
 
   useEffect(() => {
-    if (!timeZones?.includes(timeZoneUser) && organization && organization.settings && organization.settings.timeZone)
-      setcurrentUserTImeZone(organization.settings.timeZone)
-  }, [organization])
+    if (
+      !timeZones?.includes(timeZoneUser) &&
+      organization &&
+      organization.settings &&
+      organization.settings.timeZone
+    )
+      setcurrentUserTImeZone(organization.settings.timeZone);
+  }, [organization]);
 
   useEffect(() => {
-    if (timeZones?.includes(timeZoneUser))
-      setcurrentUserTImeZone(timeZoneUser)
-  }, [timeZoneUser])
+    if (timeZones?.includes(timeZoneUser)) setcurrentUserTImeZone(timeZoneUser);
+  }, [timeZoneUser]);
 
   // console.log(moment.tz.names())
   // const regex = /east/i;
@@ -219,13 +208,13 @@ export default function CalendarPage() {
         startHours !== NaN && startDate.setHours(startHours);
         startMinutes !== NaN && startDate.setMinutes(startMinutes);
         // console.log('offset----', offset);
-        let tz = getFullTimeZone(session.timeZone)
+        let tz = getFullTimeZone(session.timeZone);
         // console.log('tz---', tz);
 
         let updatedDate = new Date(
           new Date(
             startDate.toLocaleString("en-US", {
-              timeZone: tz
+              timeZone: tz,
             })
           )
         );
@@ -246,7 +235,7 @@ export default function CalendarPage() {
         //////console.log("alldetails", alldetails)
         let temparray = tutors;
         temparray.push(session.tutorId);
-        setTutors(temparray)
+        setTutors(temparray);
 
         const time = session.time;
         // console.log("admin parent", session);
@@ -288,10 +277,17 @@ export default function CalendarPage() {
         // Convert the offset to milliseconds
         const offsetInMilliseconds = offsetInMinutes * 60 * 1000;
 
-        console.log(`Offset from UTC for ${timezone} in milliseconds: ${offsetInMilliseconds}`);
+        console.log(
+          `Offset from UTC for ${timezone} in milliseconds: ${offsetInMilliseconds}`
+        );
         // //////console.log('userTimezoneOffset', userTimezoneOffset);
         // getStartDate(startDate, userTimezoneOffset, session.timeZone);
-        let up = getStartDate(startDate, userTimezoneOffset, session.timeZone, offsetInMilliseconds);
+        let up = getStartDate(
+          startDate,
+          userTimezoneOffset,
+          session.timeZone,
+          offsetInMilliseconds
+        );
         // console.log('session data---', session.date);
         // console.log('start date---', startDate);
         // console.log('updated date---', up);
@@ -299,8 +295,7 @@ export default function CalendarPage() {
         // console.log('startHours---', startHours);
         // console.log('startMinutes---', startMinutes);
         const startUtc = up.toUTCString();
-        console.log('startUtc---', startUtc);
-
+        console.log("startUtc---", startUtc);
 
         // //////console.log('START DATE', startDate.toDateString());
         // //////console.log('startDate', new Date(startDate.getTime() - userTimezoneOffset + 9 * 3600000))
@@ -367,8 +362,13 @@ export default function CalendarPage() {
   }, [currentUserTImeZone]);
 
   useEffect(() => {
-
-    if (persona === "admin" || (persona === "tutor" && organization && organization?.settings?.permissions?.length > 5 && organization?.settings?.permissions[5]?.choosedValue === true)) {
+    if (
+      persona === "admin" ||
+      (persona === "tutor" &&
+        organization &&
+        organization?.settings?.permissions?.length > 5 &&
+        organization?.settings?.permissions[5]?.choosedValue === true)
+    ) {
       // console.log("org tutor", organization)
       setIsEditable(true);
     } else {
@@ -384,22 +384,22 @@ export default function CalendarPage() {
     }
   }, [persona, alldetails]);
 
-  const [done, setDone] = useState(false)
+  const [done, setDone] = useState(false);
   useEffect(() => {
     if (persona === "parent" && students && done) {
       ////console.log("student",{students})
-      let temp = {}
+      let temp = {};
       students?.map((it) => {
         let n = Object.keys(temp).length;
         temp = {
           ...temp,
           [it?._id]: staticColors[n % staticColors.length],
         };
-      })
+      });
 
       setColorMapping(temp);
     }
-  }, [students, done])
+  }, [students, done]);
 
   useEffect(() => {
     if (persona == "parent") {
@@ -431,7 +431,6 @@ export default function CalendarPage() {
               const url = `/api/session/student/${student}`;
               await fetchUserSessions(url).then((res) => {
                 const tempEvents = res.data.data.session.map((session) => {
-
                   const time = session.time;
                   const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
                   const startTime = convertTime12to24(
@@ -455,7 +454,12 @@ export default function CalendarPage() {
                     new Date(
                       startDate.toLocaleString("en-US", {
                         // timeZone: session.timeZone,
-                        timeZone: session.timeZone === "AKST" ? "America/Anchorage" : session.timeZone === 'HST' ? "Pacific/Honolulu" : session.timeZone,
+                        timeZone:
+                          session.timeZone === "AKST"
+                            ? "America/Anchorage"
+                            : session.timeZone === "HST"
+                            ? "Pacific/Honolulu"
+                            : session.timeZone,
                       })
                     )
                   );
@@ -569,8 +573,6 @@ export default function CalendarPage() {
         });
       });
     }
-
-
   }, [persona]);
 
   // //////console.log(students)
@@ -589,17 +591,18 @@ export default function CalendarPage() {
   }, []);
 
   useEffect(() => {
-    setnewTimeZone(timeZone)
-  }, [timeZone])
+    setnewTimeZone(timeZone);
+  }, [timeZone]);
 
   const getDayHeaders = (arg) => {
     let text = arg.text.split(" ");
-    const date = arg.date.getDate()
+    const date = arg.date.getDate();
     // console.log('darg--', date);
     return (
       <div
-        className={`p-[10px] rounded-7 ${arg.isToday ? "bg-primary border" : ""
-          }  `}
+        className={`p-[10px] rounded-7 ${
+          arg.isToday ? "bg-primary border" : ""
+        }  `}
       >
         {/* <p
           className={`${arg.isToday ? "text-primaryWhite-900" : ""
@@ -614,19 +617,19 @@ export default function CalendarPage() {
           {days[arg.date.getDay()]}
         </p> */}
         <p
-          className={`${arg.isToday ? "text-primaryWhite-900" : ""
-            } text-2xl font-bold font-inter
-                   ${arg.isPast
-              ? "text-[#BEC2CE]"
-              : arg.isFuture
-                ? "text-primary-dark"
-                : ""
-            }`}
+          className={`${
+            arg.isToday ? "text-primaryWhite-900" : ""
+          } text-2xl font-bold font-inter
+                   ${
+                     arg.isPast
+                       ? "text-[#BEC2CE]"
+                       : arg.isFuture
+                       ? "text-primary-dark"
+                       : ""
+                   }`}
         >
           {text[1]}
-          <span className="inline-block ml-2">
-            {date}
-          </span>
+          <span className="inline-block ml-2">{date}</span>
         </p>
       </div>
     );
@@ -662,7 +665,12 @@ export default function CalendarPage() {
     };
     let key = insightData.role;
 
-    if (key === "tutor" || key === "parent" || persona == "parent" || persona === "tutor") {
+    if (
+      key === "tutor" ||
+      key === "parent" ||
+      persona == "parent" ||
+      persona === "tutor"
+    ) {
       key = arg.event._def.extendedProps?.studentId;
     } else {
       key = arg.event._def.extendedProps?.tutorId;
@@ -679,8 +687,9 @@ export default function CalendarPage() {
     return (
       <div className="p-0.5 h-full ">
         <div
-          className={`w-full bg-rose-200 h-[5px] rounded-[5px_5px_0px_0px] relative z-[500] ${textclasses[arg.event._def.extendedProps.sessionStatus]
-            }`}
+          className={`w-full bg-rose-200 h-[5px] rounded-[5px_5px_0px_0px] relative z-[500] ${
+            textclasses[arg.event._def.extendedProps.sessionStatus]
+          }`}
         ></div>
         <div
           style={{
@@ -691,15 +700,13 @@ export default function CalendarPage() {
           className={` h-full p-1 !border-t-none rounded-b-lg `}
         >
           <p
-            className={`text-[#507CA8] font-semibold text-sm text-base-15 ${isCompleted ? "line-through" : ""
-              } `}
+            className={`text-[#507CA8] font-semibold text-sm text-base-15 ${
+              isCompleted ? "line-through" : ""
+            } `}
           >
             {" "}
-            {
-
-            }
-            {arg.event._def.title}{" "}
-            {/* {service + " - " + topic} */}
+            {}
+            {arg.event._def.title} {/* {service + " - " + topic} */}
           </p>
           {/* <p className='text-black opacity-60 text-xs'> {arg.timeText} </p> */}
           <p className="text-[#26435F] opacity-60 text-xs text-base-15">
@@ -707,15 +714,15 @@ export default function CalendarPage() {
             {description}{" "}
           </p>
         </div>
-      </div >
+      </div>
     );
   };
 
   const handleDateClick = (arg) => {
-    console.log('click');
-    if (organization?.settings?.permissions && persona === 'tutor') {
+    console.log("click");
+    if (organization?.settings?.permissions && persona === "tutor") {
       if (organization?.settings?.permissions[5].choosedValue === false) {
-        return
+        return;
       }
     }
     let date = new Date(arg.date);
@@ -733,12 +740,18 @@ export default function CalendarPage() {
         date: arg.date,
         tutorId: currentUserId,
         tutorName: `${firstName} ${lastName}`,
-        timeZone
+        timeZone,
       });
     } else {
       setDefaultEventData({ date: arg.date, timeZone });
     }
-    if (persona === "admin" || (persona === "tutor" && organization && organization?.settings?.permissions?.length > 5 && organization?.settings?.permissions[5]?.choosedValue === true)) {
+    if (
+      persona === "admin" ||
+      (persona === "tutor" &&
+        organization &&
+        organization?.settings?.permissions?.length > 5 &&
+        organization?.settings?.permissions[5]?.choosedValue === true)
+    ) {
       setEventModalActive(true);
     }
 
@@ -774,7 +787,7 @@ export default function CalendarPage() {
 
   const handleInsights = (name, role, item) => {
     getCalenderInsight({ name: name, id: item._id }).then((res) => {
-      setColorMapping({})
+      setColorMapping({});
       if (res.error) {
         // return console.log('insight err', res.error);
       }
@@ -785,20 +798,22 @@ export default function CalendarPage() {
           arr = res?.data?.tutorSessionDetails;
           // arr = arr?.length >= 0 ? arr : [arr];
         }
-        if (role === 'parent') {
-          let parentSessionData = res?.data?.tutorSessionDetails.map(sessionItem => {
-            let sessions = []
-            let tutors = []
-            sessionItem.tutorDetails.map(tutorSession => {
-              sessions.push(...tutorSession.sessionDetailsObj)
-              tutors.push(tutorSession.tutor)
-            })
-            return {
-              student: sessionItem.student,
-              sessionDetailsObj: sessions,
-              tutors
+        if (role === "parent") {
+          let parentSessionData = res?.data?.tutorSessionDetails.map(
+            (sessionItem) => {
+              let sessions = [];
+              let tutors = [];
+              sessionItem.tutorDetails.map((tutorSession) => {
+                sessions.push(...tutorSession.sessionDetailsObj);
+                tutors.push(tutorSession.tutor);
+              });
+              return {
+                student: sessionItem.student,
+                sessionDetailsObj: sessions,
+                tutors,
+              };
             }
-          })
+          );
           setInsightData({
             role: role,
             data: parentSessionData,
@@ -811,17 +826,24 @@ export default function CalendarPage() {
         }
       } else
         setInsightData({
-          message: `User does'nt have any ${role !== "tutor" ? "tutor" : "parent or student"
-            } `,
+          message: ` ${
+            role !== "tutor"
+              ? `"User does'nt have any tutor"`
+              : `User does'nt have any parent or student`
+          } `,
         });
     });
   };
 
   useEffect(() => {
     if (userDetail) {
-      handleInsights(userDetail?.firstName + " " + userDetail?.lastName, persona, { _id: userDetail?.id })
+      handleInsights(
+        userDetail?.firstName + " " + userDetail?.lastName,
+        persona,
+        { _id: userDetail?.id }
+      );
     }
-  }, [userDetail])
+  }, [userDetail]);
 
   useEffect(() => {
     //////console.log("role=" + persona)
@@ -838,7 +860,6 @@ export default function CalendarPage() {
         });
         setNames(tempData);
       });
-
     }
   }, [name]);
   //////console.log({defaultEventData,eventDetails,alldetails})
@@ -959,15 +980,21 @@ export default function CalendarPage() {
 
   const handleEventClick = (info) => {
     //alert("Event")
-    if (organization?.settings?.permissions && persona === 'tutor') {
+    if (organization?.settings?.permissions && persona === "tutor") {
       if (organization?.settings?.permissions[5].choosedValue === false) {
-        return
+        return;
       }
     }
     const session = eventDetails.find(
       (e) => e._id === info.event._def.publicId
     );
-    if (persona === "admin" || (persona === "tutor" && organization && organization?.settings?.permissions?.length > 5 && organization?.settings?.permissions[5]?.choosedValue === true)) {
+    if (
+      persona === "admin" ||
+      (persona === "tutor" &&
+        organization &&
+        organization?.settings?.permissions?.length > 5 &&
+        organization?.settings?.permissions[5]?.choosedValue === true)
+    ) {
       setUpdateEventModalActive(true);
       setSessionToUpdate(session);
     } else {
@@ -1004,19 +1031,28 @@ export default function CalendarPage() {
         // let updatedDateEnd = new Date(item?.updatedDateEnd).toLocaleString(
         // );
         // let updatedDate = new Date(item.updatedDate).toLocaleString('en-US', { timeZone })
-        const utcDate = moment(item.updatedDate, 'ddd, DD MMM YYYY HH:mm:ss [GMT]').utc().format();
+        const utcDate = moment(
+          item.updatedDate,
+          "ddd, DD MMM YYYY HH:mm:ss [GMT]"
+        )
+          .utc()
+          .format();
         const timeZoneOffset = moment.tz(timeZone).utcOffset();
-        const convertedDate = moment.tz(utcDate, timeZone).format()
+        const convertedDate = moment.tz(utcDate, timeZone).format();
         // Convert the updatedDate to UTC
 
-        let updatedDate = moment(item.updatedDate).tz(timeZone).format('YYYY-MM-DD HH:mm:ss');
-        let updatedDateEnd = moment(item.updatedDateEnd).tz(timeZone).format('YYYY-MM-DD HH:mm:ss');
+        let updatedDate = moment(item.updatedDate)
+          .tz(timeZone)
+          .format("YYYY-MM-DD HH:mm:ss");
+        let updatedDateEnd = moment(item.updatedDateEnd)
+          .tz(timeZone)
+          .format("YYYY-MM-DD HH:mm:ss");
         // let updatedDateEnd = new Date(item.updatedDateEnd).toLocaleString('en-US', { timeZone })
 
         // console.log('convertedDate---', moment.tz(item.updatedDate, 'DD/MM/YYYY h:mm a', timeZone));
         // console.log('timeZone---', timeZone);
-        console.log('convertedDate---', convertedDate);
-        console.log('item date---', item.updatedDate);
+        console.log("convertedDate---", convertedDate);
+        console.log("item date---", item.updatedDate);
         // let updatedDate = new Date(item?.updatedDate).toLocaleString("en-US", {
         //   timeZone,
         // });
@@ -1074,7 +1110,61 @@ export default function CalendarPage() {
     setStudents(tempStudents);
   };
 
-  const staticColors = ["#F6935A", "#7DE94A", "#6F7ADE", "#C97BEE", "#FF5733", "#42EADD", "#FFC300", "#9A32CD", "#00BFFF", "#FF1493", "#008000", "#FFD700", "#1E90FF", "#FF4500", "#00FF00", "#8A2BE2", "#FF8C00", "#4169E1", "#FF69B4", "#228B22", "#FFDAB9", "#9932CC", "#FFA07A", "#87CEEB", "#FFB6C1", "#8B008B", "#FF6347", "#00CED1", "#FFA500", "#0000CD", "#DC143C", "#20B2AA", "#FF4500", "#191970", "#FF8C69", "#008080", "#FFA500", "#2E8B57", "#FFD700", "#00008B", "#FFB6C1", "#48D1CC", "#FF69B4", "#8A2BE2", "#FF6347", "#7B68EE", "#FF4500", "#32CD32", "#FFDAB9", "#B22222", "#FF1493", "#00FA9A", "#FFA07A"];
+  const staticColors = [
+    "#F6935A",
+    "#7DE94A",
+    "#6F7ADE",
+    "#C97BEE",
+    "#FF5733",
+    "#42EADD",
+    "#FFC300",
+    "#9A32CD",
+    "#00BFFF",
+    "#FF1493",
+    "#008000",
+    "#FFD700",
+    "#1E90FF",
+    "#FF4500",
+    "#00FF00",
+    "#8A2BE2",
+    "#FF8C00",
+    "#4169E1",
+    "#FF69B4",
+    "#228B22",
+    "#FFDAB9",
+    "#9932CC",
+    "#FFA07A",
+    "#87CEEB",
+    "#FFB6C1",
+    "#8B008B",
+    "#FF6347",
+    "#00CED1",
+    "#FFA500",
+    "#0000CD",
+    "#DC143C",
+    "#20B2AA",
+    "#FF4500",
+    "#191970",
+    "#FF8C69",
+    "#008080",
+    "#FFA500",
+    "#2E8B57",
+    "#FFD700",
+    "#00008B",
+    "#FFB6C1",
+    "#48D1CC",
+    "#FF69B4",
+    "#8A2BE2",
+    "#FF6347",
+    "#7B68EE",
+    "#FF4500",
+    "#32CD32",
+    "#FFDAB9",
+    "#B22222",
+    "#FF1493",
+    "#00FA9A",
+    "#FFA07A",
+  ];
 
   const [colorMapping, setColorMapping] = useState({});
   // console.log("user insights", insightData, colorMapping, userDetail)
@@ -1086,7 +1176,7 @@ export default function CalendarPage() {
         return {
           ...prev,
           [val]: staticColors[Object.keys(prev).length % staticColors.length],
-        }
+        };
       });
     }
     // console.log('map color', colorMapping);
@@ -1094,7 +1184,7 @@ export default function CalendarPage() {
     return staticColors[n % staticColors.length];
   };
   useEffect(() => {
-    setColorMapping({})
+    setColorMapping({});
     //  console.log("insights color",{insightData})
     let temp = {};
     if (insightData && insightData.role === "student") {
@@ -1102,23 +1192,25 @@ export default function CalendarPage() {
         let n = Object.keys(colorMapping).length;
         setColorMapping((prev) => {
           return {
-
             ...prev,
-            [it?.tutor?._id]: staticColors[Object.keys(prev).length % staticColors.length],
-          }
+            [it?.tutor?._id]:
+              staticColors[Object.keys(prev).length % staticColors.length],
+          };
         });
-
       });
     }
-    if (insightData && (insightData.role === "parent" || insightData.role === "tutor")) {
+    if (
+      insightData &&
+      (insightData.role === "parent" || insightData.role === "tutor")
+    ) {
       insightData?.data?.map((it) => {
         let n = Object.keys(colorMapping).length;
         setColorMapping((prev) => {
           return {
-
             ...prev,
-            [it?.student?._id]: staticColors[Object.keys(prev).length % staticColors.length],
-          }
+            [it?.student?._id]:
+              staticColors[Object.keys(prev).length % staticColors.length],
+          };
         });
       });
     }
@@ -1190,8 +1282,8 @@ export default function CalendarPage() {
   useEffect(() => {
     if (tutors) {
       tutors.map((item) => {
-        const letters = '0123456789ABCDEF';
-        let color = '#';
+        const letters = "0123456789ABCDEF";
+        let color = "#";
         for (let i = 0; i < 6; i++) {
           color += letters[Math.floor(Math.random() * 16)];
         }
@@ -1199,7 +1291,7 @@ export default function CalendarPage() {
         //////console.log("map function", map)
       });
     }
-  }, [tutors])
+  }, [tutors]);
   const toggleTutorDetails = (tutorId) => {
     setShowTutorDetails((prevState) => ({
       ...prevState,
@@ -1217,18 +1309,16 @@ export default function CalendarPage() {
           interactionPlugin,
           multiMonthPlugin,
         ],
-        initialView: 'multiMonthYear',
+        initialView: "multiMonthYear",
         multiMonthMaxColumns: 3,
         events:
-          persona === 'parent' || persona === 'tutor'
-            ? filteredEvents
-            : events,
+          persona === "parent" || persona === "tutor" ? filteredEvents : events,
         dayMaxEventRows: true,
         stickyHeaderDates: true,
         stickyHeaderToolbar: true,
         eventMaxStack: 1,
         firstDay: 1,
-        slotDuration: '00:60:00',
+        slotDuration: "00:60:00",
         dateClick: handleDateClick,
         eventClick: (info) => handleEventClick(info),
         // customButtons: {
@@ -1251,16 +1341,15 @@ export default function CalendarPage() {
         // },
         // eventContent: eventContent,
         titleFormat: {
-          day: '2-digit',
+          day: "2-digit",
           month: "short",
           year: "numeric",
         },
         headerToolbar: {
           start: "title prev next",
           center: "",
-          end: ""
-        }
-
+          end: "",
+        },
       });
 
       calendar.render();
@@ -1269,8 +1358,8 @@ export default function CalendarPage() {
 
   useEffect(() => {
     if (calendarWeekRef.current) {
-      calendarWeekRef?.current?.render()
-      calendarMonthRef?.current?.render()
+      calendarWeekRef?.current?.render();
+      calendarMonthRef?.current?.render();
       // if (activeView === 'Month') {
       //   calendarWeekRef.current.changeView("dayGrid")
       // } else {
@@ -1278,19 +1367,19 @@ export default function CalendarPage() {
       // }
       // calendarWeekRef.current.render()
     }
-  }, [activeView])
+  }, [activeView]);
   // console.log('activeView-', activeView);
   // console.log(' organization?.settings?.permissions-----', organization?.settings?.permissions);
   // console.log('events-----', events);
   //console.log('eventDetails',colorMapping,insightData,userDetail,associatedStudents);
   const timeZones = moment.tz.names(); // String[]
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <>
       <div className="lg:ml-pageLeft calender  min-h-screen" id={persona}>
         <p className="text-[#24A3D9] text-base-20 mb-[30px] mt-[50px] pl-[74px]">
-          <span onClick={() => navigate('/')} className="cursor-pointer">
+          <span onClick={() => navigate("/")} className="cursor-pointer">
             {organization?.company +
               "  >  " +
               firstName +
@@ -1302,7 +1391,7 @@ export default function CalendarPage() {
         </p>
         <div className="  pb-2 pl-[74px] calendar flex">
           <div className=" pl-0 pr-0 w-[296px] mr-[10px] calendar-left-side">
-            <div className="w-[296px] h-[262px]" >
+            <div className="w-[296px] h-[262px]">
               <SimpleCalendar
                 events={
                   persona === "parent" || persona === "tutor"
@@ -1315,7 +1404,6 @@ export default function CalendarPage() {
             </div>
             {persona === "parent" ? (
               <div className="mt-10 pr-4">
-
                 {/* <div className="mt-[30px]">
                   {students.map((student, idx) => {
                     return (
@@ -1353,7 +1441,6 @@ export default function CalendarPage() {
               <></>
             ) : (
               <div>
-
                 {/* { //console.log({alldetails})}
                 {alldetails?.map((item) => (
                   <div className="mt-[48px] mb-2">
@@ -1441,7 +1528,7 @@ export default function CalendarPage() {
                 onOptionClick={(item) => {
                   setName(item.value);
                   handleInsights(item.value, item.role, item);
-                  setColorMapping({})
+                  setColorMapping({});
                   fetchSessions(item._id, item.role);
                 }}
               />
@@ -1449,127 +1536,141 @@ export default function CalendarPage() {
             <div className="max-h-[400px] overflow-y-auto custom-scroller">
               {insightData?.data?.length > 0 && insightData?.role !== "tutor"
                 ? insightData?.data?.map((item, id) => {
-                  return (
-                    <div
-                      key={id}
-                      className="transition-shy flex transition-all duration-300 font-semibold box-content flex-col my-3 bg-[#FFFFFF] rounded-md  text-lg  w-[270px] "
-                    >
+                    return (
                       <div
-                        style={{
-                          backgroundColor: insightData?.role === "student" ? colorMapping[item?.tutor?._id] + "40" : colorMapping[item?.student?._id] + "40",
-                          color: insightData?.role === "student" ? colorMapping[item?.tutor?._id] : colorMapping[item?.student?._id],
-                        }}
-                        onClick={() => toggleAccordions(id)}
-                        className="transition-shy cursor-pointer bg-[rgba(255,162,141,0.2)] overflow-hidden relative z-50 py-3 px-5 text-[#FFA28D] mx-0 flex justify-between shadow-sm rounded-t-md w-full  "
+                        key={id}
+                        className="transition-shy flex transition-all duration-300 font-semibold box-content flex-col my-3 bg-[#FFFFFF] rounded-md  text-lg  w-[270px] "
                       >
-                        {item?.tutor ?
-                          item?.tutor?.firstName + " " + item?.tutor?.lastName :
-                          item?.student ?
-                            item?.student?.firstName + "  " + item?.student?.lastName : ''
-                        }
                         <div
                           style={{
-                            backgroundColor: insightData?.role === "student" ? colorMapping[item?.tutor?._id] : colorMapping[item?.student?._id],
+                            backgroundColor:
+                              insightData?.role === "student"
+                                ? colorMapping[item?.tutor?._id] + "40"
+                                : colorMapping[item?.student?._id] + "40",
+                            color:
+                              insightData?.role === "student"
+                                ? colorMapping[item?.tutor?._id]
+                                : colorMapping[item?.student?._id],
                           }}
-                          className="flex justify-center items-center text-center py-auto my-auto w-5 h-5 rounded-3xl "
+                          onClick={() => toggleAccordions(id)}
+                          className="transition-shy cursor-pointer bg-[rgba(255,162,141,0.2)] overflow-hidden relative z-50 py-3 px-5 text-[#FFA28D] mx-0 flex justify-between shadow-sm rounded-t-md w-full  "
                         >
-
-                          <img
-                            ref={(el) => (accordionImgRefs.current[id] = el)}
-                            className="inline-block my-auto text-white"
-                            src={down_triangle}
-                            alt="inscribed triangle"
-                          />
-
-
+                          {item?.tutor
+                            ? item?.tutor?.firstName +
+                              " " +
+                              item?.tutor?.lastName
+                            : item?.student
+                            ? item?.student?.firstName +
+                              "  " +
+                              item?.student?.lastName
+                            : ""}
+                          <div
+                            style={{
+                              backgroundColor:
+                                insightData?.role === "student"
+                                  ? colorMapping[item?.tutor?._id]
+                                  : colorMapping[item?.student?._id],
+                            }}
+                            className="flex justify-center items-center text-center py-auto my-auto w-5 h-5 rounded-3xl "
+                          >
+                            <img
+                              ref={(el) => (accordionImgRefs.current[id] = el)}
+                              className="inline-block my-auto text-white"
+                              src={down_triangle}
+                              alt="inscribed triangle"
+                            />
+                          </div>
                         </div>
-                      </div>
 
-                      <div
-                        ref={(el) => (accordionRefs.current[id] = el)}
-                        className="expanded transition-shy transition-all duration-300 rounded-b-md border border-t-0 border-r-2 border-b-2 border-l-2 border-dotted border-[rgba(255,162,141,1)]"
-                      >
-                        <div className="text-lg px-5 py-2 text-[#26435F]">
-                          {" "}
-                          <p className="flex py-1 overflow-x-auto custom-scroller-2">
-                            {item?.sessionDetailsObj?.length > 0
-                              ? item?.sessionDetailsObj?.map((ser, sid) => {
-                                return (
-                                  (
-                                    <span
-                                      key={sid}
-                                      className="whitespace-nowrap"
-                                    >
-                                      {" "}
-                                      {ser.service}
-                                      {sid !==
-                                        item?.sessionDetailsObj?.length - 1
-                                        ? " , "
-                                        : " "}
-                                    </span>
-                                  )
-                                );
-                              })
-                              : "None"}
-                          </p>
-                          <p className="text-[16px] text-[#7C98B6]">
-                            {item.tutors ?
-                              item.tutors.map((tutor, idx) => {
-                                return `${tutor?.firstName + " " + tutor?.lastName}${idx + 1 < item.tutors?.length ? ',' : ''} `
-                              }) :
-                              item?.tutor?.firstName + " " + item?.tutor?.lastName}
-                          </p>
-                        </div>
-                        <div className="text-lg px-5 py-2 text-[#38C980]">
-                          {" "}
-                          <p>Hours Completed</p>
-                          <p>
+                        <div
+                          ref={(el) => (accordionRefs.current[id] = el)}
+                          className="expanded transition-shy transition-all duration-300 rounded-b-md border border-t-0 border-r-2 border-b-2 border-l-2 border-dotted border-[rgba(255,162,141,1)]"
+                        >
+                          <div className="text-lg px-5 py-2 text-[#26435F]">
                             {" "}
-                            {item?.sessionDetailsObj[0]
-                              ?.no_of_completed_sessions
-                              ? item?.sessionDetailsObj[0]
+                            <p className="flex py-1 overflow-x-auto custom-scroller-2">
+                              {item?.sessionDetailsObj?.length > 0
+                                ? item?.sessionDetailsObj?.map((ser, sid) => {
+                                    return (
+                                      <span
+                                        key={sid}
+                                        className="whitespace-nowrap"
+                                      >
+                                        {" "}
+                                        {ser.service}
+                                        {sid !==
+                                        item?.sessionDetailsObj?.length - 1
+                                          ? " , "
+                                          : " "}
+                                      </span>
+                                    );
+                                  })
+                                : "None"}
+                            </p>
+                            <p className="text-[16px] text-[#7C98B6]">
+                              {item.tutors
+                                ? item.tutors.map((tutor, idx) => {
+                                    return `${
+                                      tutor?.firstName + " " + tutor?.lastName
+                                    }${
+                                      idx + 1 < item.tutors?.length ? "," : ""
+                                    } `;
+                                  })
+                                : item?.tutor?.firstName +
+                                  " " +
+                                  item?.tutor?.lastName}
+                            </p>
+                          </div>
+                          <div className="text-lg px-5 py-2 text-[#38C980]">
+                            {" "}
+                            <p>Hours Completed</p>
+                            <p>
+                              {" "}
+                              {item?.sessionDetailsObj[0]
                                 ?.no_of_completed_sessions
-                              : "0"}
-                          </p>
-                        </div>
-                        <div className="text-lg px-5 py-2 text-[#FF7979]">
-                          <p>Hours Missed</p>
-                          <p>
-                            {item?.sessionDetailsObj[0]?.no_of_missed_sessions
-                              ? item?.sessionDetailsObj[0]
-                                ?.no_of_missed_sessions
-                              : "0"}
-                          </p>
-                        </div>
-                        <div className="text-lg px-5 py-2 text-[#FFCE84]">
-                          <p>Hours Canceled</p>
-                          <p>
-                            {item?.sessionDetailsObj[0]
-                              ?.no_of_cancelled_sessions
-                              ? item?.sessionDetailsObj[0]
+                                ? item?.sessionDetailsObj[0]
+                                    ?.no_of_completed_sessions
+                                : "0"}
+                            </p>
+                          </div>
+                          <div className="text-lg px-5 py-2 text-[#FF7979]">
+                            <p>Hours Missed</p>
+                            <p>
+                              {item?.sessionDetailsObj[0]?.no_of_missed_sessions
+                                ? item?.sessionDetailsObj[0]
+                                    ?.no_of_missed_sessions
+                                : "0"}
+                            </p>
+                          </div>
+                          <div className="text-lg px-5 py-2 text-[#FFCE84]">
+                            <p>Hours Canceled</p>
+                            <p>
+                              {item?.sessionDetailsObj[0]
                                 ?.no_of_cancelled_sessions
-                              : "0"}
-                          </p>
-                        </div>
-                        <div className="text-lg px-5 py-2 text-[#7C98B6]">
-                          <p>Hours Scheduled</p>
-                          <p>
-                            {item?.sessionDetailsObj[0]
-                              ?.no_of_scheduled_sessions
-                              ? item?.sessionDetailsObj[0]
+                                ? item?.sessionDetailsObj[0]
+                                    ?.no_of_cancelled_sessions
+                                : "0"}
+                            </p>
+                          </div>
+                          <div className="text-lg px-5 py-2 text-[#7C98B6]">
+                            <p>Hours Scheduled</p>
+                            <p>
+                              {item?.sessionDetailsObj[0]
                                 ?.no_of_scheduled_sessions
-                              : "0"}
-                          </p>
+                                ? item?.sessionDetailsObj[0]
+                                    ?.no_of_scheduled_sessions
+                                : "0"}
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })
+                    );
+                  })
                 : insightData.message && (
-                  <div className="transition-shy mt-3 cursor-pointer bg-[rgba(255,162,141,0.2)] overflow-hidden relative z-50 py-3 px-5 text-[#FFA28D] mx-0 flex justify-between shadow-sm rounded-t-md w-full  ">
-                    {insightData.message}
-                  </div>
-                )}
+                    <div className="transition-shy mt-3 cursor-pointer bg-[rgba(255,162,141,0.2)] overflow-hidden relative z-50 py-3 px-5 text-[#FFA28D] mx-0 flex justify-between shadow-sm rounded-t-md w-full  ">
+                      {insightData.message}
+                    </div>
+                  )}
               {insightData?.data?.length > 0 &&
                 insightData?.role === "tutor" &&
                 insightData?.data?.map((item, id) => {
@@ -1580,29 +1681,28 @@ export default function CalendarPage() {
                     >
                       <div
                         style={{
-                          backgroundColor: colorMapping[item?.student._id] + "40",
+                          backgroundColor:
+                            colorMapping[item?.student._id] + "40",
                           color: colorMapping[item?.student._id],
-
                         }}
                         onClick={() => toggleAccordions2(id)}
                         className="transition-shy cursor-pointer  overflow-hidden relative z-50 py-3 px-5  mx-0 flex justify-between shadow-sm rounded-t-md w-full  "
                       >
-                        {item?.student?.firstName + " " + item?.student?.lastName}
+                        {item?.student?.firstName +
+                          " " +
+                          item?.student?.lastName}
                         <div
                           style={{
                             backgroundColor: colorMapping[item?.student._id],
                           }}
                           className="flex justify-center items-center text-center py-auto my-auto w-5 h-5 rounded-3xl "
                         >
-
                           <img
                             ref={(el) => (accordionImgRefs2.current[id] = el)}
                             className="inline-block my-auto text-white"
                             src={down_triangle}
                             alt="inscribed triangle"
                           />
-
-
                         </div>
                       </div>
                       <div
@@ -1614,8 +1714,7 @@ export default function CalendarPage() {
                           <p className="flex py-1 overflow-x-auto scrollbar-content">
                             {item?.sessionDetailsObj?.length > 0
                               ? item?.sessionDetailsObj?.map((ser, sid) => {
-                                return (
-                                  (
+                                  return (
                                     <span
                                       key={sid}
                                       className="whitespace-nowrap"
@@ -1623,17 +1722,22 @@ export default function CalendarPage() {
                                       {" "}
                                       {ser.service}
                                       {sid !==
-                                        item?.sessionDetailsObj?.length - 1
+                                      item?.sessionDetailsObj?.length - 1
                                         ? " , "
                                         : " "}
                                     </span>
-                                  )
-                                );
-                              })
+                                  );
+                                })
                               : "None"}
                           </p>
                           <p className="text-[16px] text-[#7C98B6]">
-                            {persona === "tutor" ? userDetail.firstName + " " + userDetail.lastName : item?.tutor?.firstName ? item?.tutor?.firstName + " " + item?.tutor?.lastName : name}
+                            {persona === "tutor"
+                              ? userDetail.firstName + " " + userDetail.lastName
+                              : item?.tutor?.firstName
+                              ? item?.tutor?.firstName +
+                                " " +
+                                item?.tutor?.lastName
+                              : name}
                           </p>
                         </div>
                         <div className="text-lg px-5 py-2 text-[#38C980]">
@@ -1644,7 +1748,7 @@ export default function CalendarPage() {
                             {item?.sessionDetailsObj[0]
                               ?.no_of_completed_sessions
                               ? item?.sessionDetailsObj[0]
-                                ?.no_of_completed_sessions
+                                  ?.no_of_completed_sessions
                               : "0"}
                           </p>
                         </div>
@@ -1653,7 +1757,7 @@ export default function CalendarPage() {
                           <p>
                             {item?.sessionDetailsObj[0]?.no_of_missed_sessions
                               ? item?.sessionDetailsObj[0]
-                                ?.no_of_missed_sessions
+                                  ?.no_of_missed_sessions
                               : "0"}
                           </p>
                         </div>
@@ -1663,7 +1767,7 @@ export default function CalendarPage() {
                             {item?.sessionDetailsObj[0]
                               ?.no_of_cancelled_sessions
                               ? item?.sessionDetailsObj[0]
-                                ?.no_of_cancelled_sessions
+                                  ?.no_of_cancelled_sessions
                               : "0"}
                           </p>
                         </div>
@@ -1673,7 +1777,7 @@ export default function CalendarPage() {
                             {item?.sessionDetailsObj[0]
                               ?.no_of_scheduled_sessions
                               ? item?.sessionDetailsObj[0]
-                                ?.no_of_scheduled_sessions
+                                  ?.no_of_scheduled_sessions
                               : "0"}
                           </p>
                         </div>
@@ -1683,58 +1787,63 @@ export default function CalendarPage() {
                 })}
             </div>
           </div>
-          <div className="flex-1 w-[1352px] relative  min-h-[600px] max-h-[868px]" id="calendarContainer">
-            {
-              activeView === 'Year' ?
-                <div ref={calendarYearlyRef}></div> :
-                activeView === 'Week' ?
-                  <FullCalendar view='timeGridWeek'
-                    persona={persona}
-                    filteredEvents={filteredEvents}
-                    events={events}
-                    calRef={calendarWeekRef}
-                    handlePrevClick={handlePrevClick}
-                    handleNextClick={handleNextClick}
-                    eventContent={eventContent}
-                    getDayHeaders={getDayHeaders}
-                    handleDateClick={handleDateClick}
-                    handleEventClick={handleEventClick}
-                  />
-                  : activeView === 'Month' ?
-                    <FullCalendar view='dayGridMonth'
-                      persona={persona}
-                      filteredEvents={filteredEvents}
-                      events={events}
-                      calRef={calendarMonthRef}
-                      handlePrevClick={handlePrevClick}
-                      handleNextClick={handleNextClick}
-                      eventContent={eventContent}
-                      getDayHeaders={getDayHeaders}
-                      handleDateClick={handleDateClick}
-                      handleEventClick={handleEventClick}
-                    /> : ''
-            }
+          <div
+            className="flex-1 w-[1352px] relative  min-h-[600px] max-h-[868px]"
+            id="calendarContainer"
+          >
+            {activeView === "Year" ? (
+              <div ref={calendarYearlyRef}></div>
+              // <FullCalendar
+              //   view="multiMonthPlugin"
+              //   handleDateClick={handleEventClick}
+              // />
+            ) : activeView === "Week" ? (
+              <FullCalendar
+                view="timeGridWeek"
+                persona={persona}
+                filteredEvents={filteredEvents}
+                events={events}
+                calRef={calendarWeekRef}
+                handlePrevClick={handlePrevClick}
+                handleNextClick={handleNextClick}
+                eventContent={eventContent}
+                getDayHeaders={getDayHeaders}
+                handleDateClick={handleDateClick}
+                handleEventClick={handleEventClick}
+              />
+            ) : activeView === "Month" ? (
+              <FullCalendar
+                view="dayGridMonth"
+                persona={persona}
+                filteredEvents={filteredEvents}
+                events={events}
+                calRef={calendarMonthRef}
+                handlePrevClick={handlePrevClick}
+                handleNextClick={handleNextClick}
+                eventContent={eventContent}
+                getDayHeaders={getDayHeaders}
+                handleDateClick={handleDateClick}
+                handleEventClick={handleEventClick}
+              />
+            ) : (
+              ""
+            )}
 
-            <div
-              className="absolute right-[50px] top-0 flex gap-x-4"
-            >
-
+            <div className="absolute right-[50px] top-0 flex gap-x-4">
               <span id="input">
                 <InputSelect
-                  value={
-                    activeView
-                  }
+                  value={activeView}
                   inputContainerClassName="text-[15px] text-primaryDark font-bold border"
-                  optionData={['Year', 'Month', 'Week']}
+                  optionData={["Year", "Month", "Week"]}
                   onChange={(val) => {
                     // setActiveView(val)
-                    if(val !== 'Year'){
-                      setActiveView('')
+                    if (val !== "Year") {
+                      setActiveView("");
                       setTimeout(() => {
-                        setActiveView(val)
+                        setActiveView(val);
                       }, 300);
-                    }else{
-                      setActiveView(val)
+                    } else {
+                      setActiveView(val);
                     }
                   }}
                 />

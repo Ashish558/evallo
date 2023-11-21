@@ -126,7 +126,6 @@ export default function InputSelect({
         </div>
       }
 
-
       <div
         onClick={() => setSelected(true)}
         className={`py-[13px] px-[21px]  flex items-center rounded relative cursor-pointer z-50 ${inputContainerClassName ? inputContainerClassName : ""
