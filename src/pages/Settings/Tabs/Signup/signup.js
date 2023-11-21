@@ -250,13 +250,13 @@ export default function SignupTab({
               parentClassName="text-xs  text-[#26435F] mb-2"
             />
             <div className="flex gap-1 items-center">
-              <div className="bg-gray-200 border translate-y-[6px] p-2 rounded-[3.5px] border-gray-200 h-[43px] text-[#667085] text-xs px-3 flex items-center">
+              <div className="bg-gray-200 border translate-y-[6px] p-2 rounded-[3.5px] border-gray-200 h-[50px] text-[#667085] text-xs px-3 flex items-center">
                 +91
               </div>
               <InputField
                 placeholder=""
                 parentClassName="text-xs  text-[#26435F] mb-2 "
-                inputContainerClassName="bg-gray-200 border border-gray-200 "
+                inputContainerClassName="bg-gray-200 border border-gray-200 w-[275px] h-[50px]"
                 inputClassName="bg-gray-200 "
                 label=" Phone"
                 labelClassname={"translate-x-[-50px]"}
@@ -401,13 +401,13 @@ export default function SignupTab({
               parentClassName="text-xs  text-[#26435F] mb-2"
             />
             <div className="flex gap-1 items-center">
-              <div className="bg-gray-200 border translate-y-[6px] p-2 rounded-[3.5px] border-gray-200 h-[43px] text-[#667085] text-xs px-3 flex items-center">
+              <div className="bg-gray-200 border translate-y-[6px] p-2 rounded-[3.5px] border-gray-200 h-[50px] text-[#667085] text-xs px-3 flex items-center">
                 +91
               </div>
               <InputField
                 placeholder=""
                 parentClassName="text-xs  text-[#26435F] mb-1.5 "
-                inputContainerClassName="bg-gray-200 border border-gray-200 "
+                inputContainerClassName="bg-gray-200 border border-gray-200 h-[50px] w-[275px]"
                 inputClassName="bg-gray-200 "
                 label=" Student / Parent Phone"
                 labelClassname={"translate-x-[-50px]"}

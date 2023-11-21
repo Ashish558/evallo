@@ -124,16 +124,21 @@ export default function Modal({
                   ""
                 ) : (
                   <button
-                    className={styles.cancelBtn}
+                    className="absolute top-0 right-0 p-4 mr-4"
                     style={cancelBtnStyle}
                     onClick={handleClose}
                   >
+                    <div className="w-full h-full flex justify-center items-center relative ">
                     <img
+                      className=""
                       src={
                         primaryCancel ? primaryCancelIcon : primaryCancelIcon
                       }
+                      alt="close-btn"
                       onClick={handleClose}
+
                     />
+                    </div>
                   </button>
                 )}
               </div>

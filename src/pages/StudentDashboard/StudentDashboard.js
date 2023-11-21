@@ -172,9 +172,9 @@ const StudentDashboard = () => {
       <div className="flex mt-10 pt-[10px] justify-between">
         <div className=" flex-1 w-[70%] ">
           <div className="flex items-center justify-between mb-1 w-[54.43vw] bg-pink-500">
-            <h1 className="text-[#26435F]  text-base-20 font-semibold ">
+            <h1 className="text-[#26435F]  text-base-20 font-semibold flex justify-center items-center">
               Concept Chart
-              <span className="inline-block my-auto ml-2 translate-y-1">
+              <div className="inline-block my-auto ml-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="19"
@@ -187,7 +187,7 @@ const StudentDashboard = () => {
                     fill="#26435F"
                   />
                 </svg>
-              </span>
+              </div>
             </h1>
 
             <div className="flex  justify-end">
