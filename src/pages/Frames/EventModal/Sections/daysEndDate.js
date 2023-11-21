@@ -35,7 +35,7 @@ const setAll=()=>{
                         key={idx}
                         id={day.id}
                         body={day.text}
-                        bodyClassName={`font-medium flex ${day.checked ? ' bg-primary text-white' : 'bg-lightWhite text-[#507CA8]'} mr-1.4 justify-center items-center text-lg w-[54px] h-[54px] rounded-10 `}
+                        bodyClassName={`font-normal flex ${day.checked ? ' bg-primary text-white' : 'bg-lightWhite text-[#507CA8]'} mr-1.4 justify-center items-center text-lg w-[54px] h-[54px] rounded-10 `}
                         className={`${!data.recurring ? 'opacity-50 pointer-events-none' : ''}`}
                         checked={day.checked}
                         onChange={handleDayChange}
@@ -50,7 +50,7 @@ const setAll=()=>{
             labelClassname="ml-3 text-[#26435F] font-medium text-[18.6px] "
             parentClassName={`w-full self-end ${!data.recurring ? 'pointer-events-none' : ''}} `}
             type="date"
-            inputContainerClassName="bg-lightWhite border-0 font-medium pr-3 pt-3.5 pb-3.5 h-[53px]"
+            inputContainerClassName="bg-lightWhite border-0 font-medium pr-3 pt-3.5 pb-3.5 h-[53px] w-[210px]"
             inputClassName="bg-transparent appearance-none font-medium text-[#507CA8]"
             value={data.endDate}
             onChange={(e) =>
