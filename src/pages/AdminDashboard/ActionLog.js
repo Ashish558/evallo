@@ -104,7 +104,7 @@ export default function ActionLog({ actionLog, className }) {
           return (
             <>
               <div key={index} className="flex h-[57px] pl-5 relative ">
-                <p className="text-[#517CA8] pt-6 !font-medium text-[14px] mr-2 w-[calc(143*0.050vw)] text-center !text-[calc(17.5*0.050vw)] whitespace-nowrap">
+                <p className="text-[#517CA8] pt-6 !font-light text-[15px] mr-2 w-[calc(143*0.050vw)] text-center !text-[calc(17.5*0.050vw)] whitespace-nowrap">
                {
                 item?.message &&
                 <>
@@ -123,7 +123,7 @@ export default function ActionLog({ actionLog, className }) {
                   <div className={styles.circle}>
                     <div className={styles.circle2}></div>
                   </div>
-                  <p className="pl-4  font-medium text-[#517CA8] text-[15.5px] !text-[calc(17.5*0.050vw)]">
+                  <p className="pl-4  font-normal text-[#517CA8] !text-[calc(17.5*0.050vw)]">
                     {item?.message}
                   </p>
                 </div>

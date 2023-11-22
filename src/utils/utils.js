@@ -337,7 +337,7 @@ export const getScoreStr = (testType, score, subjects, totalLength) => {
       let firstStr = sub.name.substring(0, 1);
       if (subjects.length > idx + 1) {
         let scr = score[sub.scoreScale] === null ? 0 : score[sub.scoreScale];
-        scoreStr.push(` ${firstStr}${scr} |`);
+        scoreStr.push(` ${firstStr}${scr} `);
       } else {
         let scr = score[sub.scoreScale] === null ? 0 : score[sub.scoreScale];
         scoreStr.push(` ${firstStr}${scr}`);

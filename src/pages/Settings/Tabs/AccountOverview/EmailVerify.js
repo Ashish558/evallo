@@ -26,7 +26,11 @@ const EmailVerify = () => {
     verifyEmail(body)
       .then((res) => {
         console.log({ res, body });
-        navigate("/");
+        if(res?.data){
+          alert("Your Email has been verified successfully. You will be redirected to the login page.");
+          navigate("/");
+        }
+      
       })
       .catch((err) => {
         navigate("/");

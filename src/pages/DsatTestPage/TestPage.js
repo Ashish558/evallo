@@ -674,6 +674,7 @@ export default function TestPage() {
               initialSeconds={initialSeconds}
               setInitialSeconds={setInitialSeconds}
               countDown={countDown}
+              setAllQuestions_data={setAllQuestions_data}
               setshowtextbox={setshowtextbox}
               showtextbox={showtextbox}
               showannotate={showannotate}
@@ -723,11 +724,8 @@ export default function TestPage() {
               siz={size}
             />
           ) : null}
-          {!showtextbox &&
-          info?.length > 0 &&
-          answers?.length > 0 &&
-          cutanswer?.length > 0 &&
-          markreview?.length > 0 ? (
+          {info?.length>0 && answers?.length>0&&cutanswer?.length>0&&markreview?.length>0?
+            
             <Foot
               sectionindex={answer_check?.completed?.length + 1}
               sectionDetails={sectionDetails[answer_check?.completed?.length]}
@@ -750,7 +748,7 @@ export default function TestPage() {
               i={index + 1}
               mark={pages}
             />
-          ) : null}
+            :null}
         </>
       )}
     </div>

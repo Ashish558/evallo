@@ -1693,7 +1693,7 @@ export default function Settings({orgData,orgs}) {
                     see as soon as they log into their Evallo dashboard. You can
                     add a maximum of 4 Announcements at a time. Read detailed
                     documentation in Evallo’s
-                    <span className="text-[#24A3D9]"> knowledge base.</span>
+                    <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
                   </p>
                   <div className="flex items-center gap-5 pr-3  flex-1 !w-[100%] overflow-x-auto custom-scroller-2    [&>*]:mb-[10px] bg-white  gap-x-5 p-4 rounded-br-5 rounded-bl-5 mb-3 !px-6 py-5 ">
                     {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
@@ -2114,7 +2114,7 @@ export default function Settings({orgData,orgs}) {
                 provide them this access and what assignments should show up
                 automatically after they sign up with your organization. Read
                 detailed documentation in Evallo’s{" "}
-                <span className="text-[#24A3D9]"> knowledge base.</span>
+                <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
               </p>
 
               <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
@@ -2260,7 +2260,7 @@ export default function Settings({orgData,orgs}) {
                 specialize in while providing these services. For example, Test
                 Prep can be a “Service” with “SAT” and “ACT” as two topics under
                 it. Read detailed documentation in Evallo's
-                <span className="text-[#24A3D9]"> knowledge base.</span>
+                <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
               </p>
 
               <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
@@ -2397,7 +2397,7 @@ export default function Settings({orgData,orgs}) {
                 used to add further details about the session, such as the
                 topics covered, homework assigned, student mood, etc. Read
                 detailed documentation in Evallo’s
-                <span className="text-[#24A3D9]"> knowledge base.</span>
+                <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
               </p>
 
               <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">

@@ -58,6 +58,9 @@ const Dashboard = () => {
     useGetFilteredActionLogMutation();
   const [filteredActionLog, setFilteredActionLog] = useState([]);
   const [userData, setUserData] = useState([]);
+  const [latestSignUp_flag,setlatestsignup_flag]=useState([1,1,1,1,1,1,1,1,1])
+  const [popular_Service_flag,setpopular_Service_flag] = useState([1,1,1,1,1,1])
+  const [star_client_flag,setstar_client_flag] = useState([1,1,1])
   const handleFetchRevenue = (fetchMutation, body, setValue) => {
     fetchMutation(body)
       .then((res) => {
@@ -101,6 +104,7 @@ const Dashboard = () => {
     });
   };
   const sortByString = (key) => {
+    console.log('asda',key);
     setUserData((prev) => {
       let arr = [...prev];
       arr = arr.sort(function (a, b) {
@@ -128,6 +132,87 @@ const Dashboard = () => {
       });
       return arr;
     });
+    let changeflag=latestSignUp_flag
+    switch (key) {
+      case 'firstName':
+        changeflag[0]=!changeflag[0];
+        break;
+      case 'role':
+        changeflag[1]=!changeflag[1];
+        break;
+      case 'email':
+        changeflag[2]=!changeflag[2];
+        break;
+      case 'phone':
+        changeflag[3]=!changeflag[3];
+        break;
+      case 'userStatus':
+        changeflag[4]=!changeflag[4];
+        break;
+      case 'assiginedTutors':
+        changeflag[6]=!changeflag[6];
+        break;
+      case 'specialization':
+        changeflag[7]=!changeflag[7];
+        break;
+      default:
+        break;
+    }
+    setlatestsignup_flag(changeflag)
+  };
+  const sortByString2 = (key) => {
+    setPopularServices((prev) => {
+      let arr = [...prev];
+      arr = arr.sort(function (a, b) {
+        if (plus && plus[key]) {
+          if (a[key] < b[key]) {
+            return -1;
+          }
+          if (a[key] > b[key]) {
+            return 1;
+          }
+          return 0;
+        } else {
+          if (a[key] < b[key]) {
+            return 1;
+          }
+          if (a[key] > b[key]) {
+            return -1;
+          }
+          return 0;
+        }
+      });
+      return arr;
+    });
+  };
+  const sortByString3 = (key) => {
+    // setPopularServices((prev) => {
+    //   let arr = [...prev];
+    //   arr = arr.sort(function (a, b) {
+    //     if (plus && plus[key]) {
+    //       if (a[key] < b[key]) {
+    //         return -1;
+    //       }
+    //       if (a[key] > b[key]) {
+    //         return 1;
+    //       }
+    //       return 0;
+    //     } else {
+    //       if (a[key] < b[key]) {
+    //         return 1;
+    //       }
+    //       if (a[key] > b[key]) {
+    //         return -1;
+    //       }
+    //       return 0;
+    //     }
+    //   });
+    //   setPlus({
+    //     ...plus,
+    //     [key]: !plus[key],
+    //   });
+    //   return arr;
+    // });
   };
   const sortByType = () => {
     setUserData((prev) => {
@@ -177,51 +262,152 @@ const Dashboard = () => {
       lastSignUp: !plus?.lastSignUp,
     });
   };
+  const star_client=[
+    {
+      id: 1,
+      text: "Client Name",
+      willDisplayDownArrow : popular_Service_flag[0],
+      onCick: () => {sortByString3("Client Name")
+      let finalflag=star_client_flag
+        finalflag[0]=!finalflag[0]
+        setstar_client_flag(finalflag)},
+      },   
+    {
+      id: 2,
+      willDisplayDownArrow : 0,
+      text: "Code",
+      willDisplayDownArrow : popular_Service_flag[1],
+      onCick: () => {sortByString3("Code")
+      let finalflag=star_client_flag
+        finalflag[1]=!finalflag[1]
+        setstar_client_flag(finalflag)},
+      },
+    {
+      id: 3,
+      text: "Referrals",
+      willDisplayDownArrow : popular_Service_flag[2],
+      onCick: () => {sortByString3("Referrals")
+      let finalflag=star_client_flag
+        finalflag[2]=!finalflag[2]
+        setstar_client_flag(finalflag)},
+      },
+  ]
+  const popular_Service=[
+    {
+      id: 1,
+      text: "Service",
+      willDisplayDownArrow : popular_Service_flag[0],
+      onCick: () => {sortByString2("service")
+      let finalflag=popular_Service_flag
+        finalflag[0]=!finalflag[0]
+        setpopular_Service_flag(finalflag)},
+      },   
+    {
+      id: 2,
+      willDisplayDownArrow : 0,
+      text: "Actively Using",
+      willDisplayDownArrow : popular_Service_flag[1],
+      onCick: () => {sortByString2("actively_using")
+      let finalflag=popular_Service_flag
+        finalflag[1]=!finalflag[1]
+        setpopular_Service_flag(finalflag)},
+      },
+    {
+      id: 3,
+      text: "Total Used",
+      willDisplayDownArrow : popular_Service_flag[2],
+      onCick: () => {sortByString2("total_used")
+      let finalflag=popular_Service_flag
+        finalflag[2]=!finalflag[2]
+        setpopular_Service_flag(finalflag)},
+      },
+    {
+      id: 4,
+      text: "Scheduled Hours",
+      willDisplayDownArrow : popular_Service_flag[3],
+      onCick: () => {sortByString2("scheduled_hours")
+      let finalflag=popular_Service_flag
+        finalflag[3]=!finalflag[3]
+        setpopular_Service_flag(finalflag)},
+      },
+    {
+      id: 5,
+      text: "Completed Hours",
+      willDisplayDownArrow : popular_Service_flag[4],
+      onCick: () => {sortByString2("completed_hours")
+      let finalflag=popular_Service_flag
+        finalflag[4]=!finalflag[4]
+        setpopular_Service_flag(finalflag)},
+      },
+    {
+      id: 6,
+      text: "% of Business",
+      willDisplayDownArrow : popular_Service_flag[5],
+      onCick: () => {sortByString2("percent_of_business")
+      let finalflag=popular_Service_flag
+        finalflag[5]=!finalflag[5]
+        setpopular_Service_flag(finalflag)},
+      },
+
+  ]
   const latestSignUpHeaders = [
     {
       id: 1,
       text: "Full Name",
       className: "text-left pl-8",
+      willDisplayDownArrow : latestSignUp_flag[0],
       onCick: () => sortByString("firstName"),
     },
     {
       id: 2,
+      willDisplayDownArrow : 0,
       text: "User Type",
+      willDisplayDownArrow : latestSignUp_flag[1],
       onCick: () => sortByString("role"),
     },
     {
       id: 3,
       text: "Email",
+      willDisplayDownArrow : latestSignUp_flag[2],
       onCick: () => sortByString("email"),
     },
     {
       id: 4,
       text: "Phone",
+      willDisplayDownArrow : latestSignUp_flag[3],
       onCick: () => sortByString("phone"),
     },
     {
       id: 5,
       text: "Assigned Tutor",
+      willDisplayDownArrow : latestSignUp_flag[4],
       onCick: () => sortByString("userStatus"),
     },
     {
       id: 6,
       text: "Lead Status",
-      onCick: () => sortByString("userStatus"),
+      willDisplayDownArrow : latestSignUp_flag[5],
+      onCick: () => {sortByString("userStatus")
+    let finalflag=latestSignUp_flag
+      finalflag[5]=!finalflag[5]
+      setlatestsignup_flag(finalflag)},
     },
     {
       id: 7,
       text: "Tutor Status",
+      willDisplayDownArrow : latestSignUp_flag[6],
       onCick: () => sortByString("assiginedTutors"),
     },
     {
       id: 8,
       text: "Services",
+      willDisplayDownArr5ow : latestSignUp_flag[7],
       onCick: () => sortByString("specialization"),
     },
     {
       id: 9,
       text: "Date Added",
+      willDisplayDownArrow : latestSignUp_flag[8],
       onCick: sortByDate,
     },
   ];
@@ -646,14 +832,8 @@ const Dashboard = () => {
                   noScrollbar={true}
                   data={popularServices}
                   hidePagination={true}
-                  tableHeaders={[
-                    "Service",
-                    "Actively Using",
-                    "Total Used",
-                    "Scheduled Hours",
-                    "Completed Hours",
-                    "% of Business",
-                  ]}
+                  headerObject={true}
+                  tableHeaders={popular_Service}
                   belowBox={true}
                   belowBoxText="Add New Services"
                   belowBoxLink="settings"
@@ -679,7 +859,8 @@ const Dashboard = () => {
                   dummyRowStarClients={popularServices}
                   data={[]}
                   hidePagination={true}
-                  tableHeaders={["Client Name", "Code", "Referrals"]}
+                  tableHeaders={star_client}
+                  headerObject={true}
                   maxPageSize={5}
                   belowBox={true}
                   belowBoxText="Add Referral Codes"

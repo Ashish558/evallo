@@ -67,7 +67,7 @@ const Testinstruction_2 = ({
               </div>
 
               <div className="inline-block min-w-32 font-light  text-[20px] text-[#517CA8]">
-                {testHeaderDetails?.name}
+              {testHeaderDetails?.name?.length>18?testHeaderDetails?.name.substring(0,15)+' ...':testHeaderDetails?.name}
               </div>
             </div>
             <div className="w-full flex mb-3 justify-between">

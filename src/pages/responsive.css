@@ -1,7 +1,11 @@
 .text-base-15 {
   font-size: max(10px, 0.783vw) !important;
 }
-
+.apexcharts-tooltip {
+  background-color: #FFA28DBF; /* Set the background color and transparency for the tooltip */
+  color: #333; /* Set the text color */
+  border: 1px solid #ccc; /* Set the border color */
+}
 .text-base-17-5 {
   font-size: max(12px, 0.9114vw) !important;
 }

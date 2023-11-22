@@ -11,18 +11,13 @@ export default function AnnotationPopup({setAnnotations,index,annotations,sethov
       updatedAnnotations[i-1]=highlightText;
       return updatedAnnotations;})
     console.log(`Saved annotation: ${highlightText}`);
-      const updatedAnnotations = annotations.map(annotation => ({ ...annotation }));
-      const keys = Object?.keys(updatedAnnotations[index-1]);
-      if (updatedAnnotations[index-1] && keys.length) {
-        updatedAnnotations[index-1][keys[keys.length-1]].color = color;
-      }
-      setshowannotate(false)
-      setAnnotations(annotations)
+    setshowannotate(false)
+    setIsEditing(false)
   }
   else{
     setshowannotate(true)
   }
-    setshow_ann(false)
+    
   };
 
   const handleCancel = () => {
