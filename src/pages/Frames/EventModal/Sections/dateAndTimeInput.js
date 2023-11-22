@@ -17,8 +17,8 @@ export default function DateAndTimeInput({ data, setData, isEditable }) {
             label="Session Date"
             biggerText={true}
             labelClassname=" ml-3 text-[#26435F] font-medium "
-            inputContainerClassName="bg-lightWhite border-0  pt-3.5 pb-3.5 h-[53px]"
-            inputClassName="bg-transparent appearance-none text-[#507CA8] text-[16px]"
+            inputContainerClassName="bg-lightWhite border-0  pt-3.5 pb-3.5 h-[53px] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
+            inputClassName="bg-transparent appearance-none text-[#507CA8] text-[16px] "
             value={data.date}
             type="date"
             onChange={(e) =>
@@ -36,7 +36,7 @@ export default function DateAndTimeInput({ data, setData, isEditable }) {
             parentClassName="w-full max-w-120 mb-0 "
             type="time"
             optionData={times}
-            inputContainerClassName="bg-lightWhite border-0  pr-3 pt-3.5 pb-3.5 h-full text-[#507CA8] text-[16px] lowercase"
+            inputContainerClassName="bg-lightWhite border-0  pr-3 pt-3.5 pb-3.5 h-full text-[#507CA8] text-[16px] lowercase shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
             inputClassName="bg-transparent appearance-none  text-[16px]"
             value={`${data.time.start.time} ${data.time.start.timeType}`}
             disabled={!isEditable}
@@ -60,7 +60,7 @@ export default function DateAndTimeInput({ data, setData, isEditable }) {
             parentClassName="w-full max-w-120 self-end"
             type="time"
             placeholderClass="text-[#507CA8]"
-            inputContainerClassName="bg-lightWhite border-0  pr-3 pt-3.5 pb-3.5 h-full text-[#507CA8] lowercase"
+            inputContainerClassName="bg-lightWhite border-0  pr-3 pt-3.5 pb-3.5 h-full text-[#507CA8] lowercase shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
             inputClassName="bg-transparent appearance-none text-[#507CA8] text-[16px]"
             // value={convertTime12to24(
             //    `${data.time.end.time} ${data.time.end.timeType}`
@@ -90,7 +90,7 @@ export default function DateAndTimeInput({ data, setData, isEditable }) {
                setData({ ...data, timeZone: val })
             }
             optionData={timeZones}
-            inputContainerClassName="bg-lightWhite border-0  pl-4 pr-3 pt-3.5 pb-3.5  text-[#507CA8] h-full text-[16px]"
+            inputContainerClassName="bg-lightWhite border-0  pl-4 pr-3 pt-3.5 pb-3.5  text-[#507CA8] h-full text-[16px] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
             inputClassName="bg-transparent appearance-none  text-[#507CA8]"
             placeholder="Time Zone"
             parentClassName="w-full  ml-8   self-end"

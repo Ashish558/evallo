@@ -65,7 +65,7 @@ export default function SearchNames({ setStudent, setData, student, tutor, data,
             labelClassname="font-medium text-lg"
             placeholder="Student Name"
             parentClassName="w-full mr-[66px] text-[#26435F] "
-            inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 text-[#507CA8] h-[53px] text-base"
+            inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 text-[#507CA8] h-[53px] text-base shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
             inputClassName="bg-transparent text-[#507CA8]"
             type="text"
             optionPrefix='s'
@@ -88,7 +88,7 @@ export default function SearchNames({ setStudent, setData, student, tutor, data,
             labelClassname="font-medium text-lg"
             placeholder="Tutor Name"
             parentClassName="w-full text-[#26435F]"
-            inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 text-[#507CA8] h-[53px] text-base"
+            inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 text-[#507CA8] h-[53px] text-base shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
             inputClassName="bg-transparent text-[#507CA8]"
             type="text"
             optionPrefix='t'

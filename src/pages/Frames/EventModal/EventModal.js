@@ -899,7 +899,7 @@ export default function EventModal({
                               }}
 
                               optionData={servicesAndSpecialization}
-                              inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3 text-[#507CA8]
+                              inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3 text-[#507CA8] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]
                        `}
                               inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4 text-[#507CA8]"
                               placeholder="Select Service"
@@ -921,7 +921,7 @@ export default function EventModal({
                               optionData={specializations}
                               inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3 text-[#507CA8]
                        `}
-                              inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4 text-[#507CA8]"
+                              inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4 text-[#507CA8] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
                               placeholder="Topic"
                               parentClassName={`w-full ml-2
                         ${persona === "parent" ? " order-2" : ""}
@@ -964,7 +964,7 @@ export default function EventModal({
                               placeholder="Meeting Link"
                               parentClassName="w-full mr-8"
                               inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 h-[53px]"
-                              inputClassName="bg-transparent text-[16px] text-[#507CA8]"
+                              inputClassName="bg-transparent text-[16px] text-[#507CA8] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
                               type="text"
                               value={data.session}
                               onChange={(e) =>
@@ -982,7 +982,7 @@ export default function EventModal({
                               placeholder="Whiteboard Link"
                               labelClassname="ml-3 text-[#26435F] font-medium text-[18.6px]"
                               inputContainerClassName="bg-lightWhite border-0  pt-3.5 pb-3.5 h-[53px]"
-                              inputClassName="bg-transparent appearance-none text-[16px] text-[#507CA8]"
+                              inputClassName="bg-transparent appearance-none text-[16px] text-[#507CA8] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
                               value={data.whiteboardLink}
                               type="text"
                               onChange={(e) =>
