@@ -159,7 +159,7 @@ export default function Signup() {
   const fetchSettings = () => {
     getSettings().then((res) => {
       // console.log(res);
-      setSettings(res.data.data.setting);
+      setSettings(res?.data?.data?.setting);
     });
   };
   useEffect(() => {
@@ -746,10 +746,16 @@ export default function Signup() {
                         })
                       }
                       onChange={(e) =>
+                       {
+                        const regex = /^[0-9 ]*$/;
+                        const isValid = regex.test(e.target.value);
+                        if(isValid  && e.target.value?.length<12)
                         setValues({
                           ...values,
                           phone: e.target.value,
+
                         })
+                       }
                       }
                       totalErrors={error}
                       codeError={error.phoneCode}

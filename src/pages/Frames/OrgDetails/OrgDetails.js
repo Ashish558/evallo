@@ -50,7 +50,7 @@ export default function OrgDetails({
 
   const handleSubmit = () => {
     if (!handleEmpty(values?.company) || !handleEmpty(values?.companyType) || !handleEmpty(values?.website) || !handleEmpty(values?.address)
-      || !handleEmpty(values?.country) || !handleEmpty(values?.city) || (states?.length>0 &&!handleEmpty(values?.state)) || !handleEmpty(values?.zip)) {
+      || !handleEmpty(values?.country) || !handleEmpty(values?.city) || (states?.length>0 && !handleEmpty(values?.state)) || !handleEmpty(values?.zip)) {
       alert("Please Fill All The Fields!")
       return
     } 
@@ -62,7 +62,7 @@ export default function OrgDetails({
    return 
     }
     if (!alphadigit.test(values?.company) || !alphadigit.test(values?.address)
-    || !alphadigit.test(values?.country) || !alphadigit.test(values?.city) || !alphadigit.test(values?.state)) {
+    || !alphadigit.test(values?.country) || !alphadigit.test(values?.city) || (states?.length>0 && !alphadigit.test(values?.state))) {
     alert("Please fill valid details!")
     return
   } 
@@ -328,10 +328,14 @@ if (values?.city?.length<3) {
             type="text"
             value={values.zip}
             onChange={(e) =>
+             { 
+              const regex = /^[0-9 ]*$/;
+              const isValid = regex.test(e.target.value);
+              if(isValid && e.target.value?.length<10)
               setValues({
                 ...values,
                 zip: e.target.value,
-              })
+              })}
             }
           />
         </div>

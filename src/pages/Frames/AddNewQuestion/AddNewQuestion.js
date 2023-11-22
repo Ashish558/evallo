@@ -22,8 +22,8 @@ export default function AddNewQuestion({ newQuestion, setNewQuestion }) {
             placeholder="Question"
             parentClassName="w-full mr-4"
             type="text"
-            inputContainerClassName={'bg-[#f2f2f2] !py-[15px]'}
-            inputClassName={'bg-[#f2f2f2]'}
+            inputContainerClassName={"bg-[#f2f2f2] !py-[15px]"}
+            inputClassName={"bg-[#f2f2f2]"}
             value={newQuestion.text}
             isRequired={true}
             onChange={(e) =>
@@ -38,11 +38,11 @@ export default function AddNewQuestion({ newQuestion, setNewQuestion }) {
         <div className="flex items-end flex-1 w-[40%]">
           <InputSelect
             value={newQuestion.type}
-            inputContainerClassName={'bg-[#f2f2f2] '}
-            inputClassName={'bg-[#f2f2f2]'}
+            inputContainerClassName={"bg-[#f2f2f2] "}
+            inputClassName={"bg-[#f2f2f2]"}
             labelClassname="hidden"
             parentClassName="w-full mr-5"
-            optionData={["Paragraph", "Checkboxes"]}
+            optionData={["Paragraph", "String", "Dropdown", "Checkboxes"]}
             onChange={(val) =>
               setNewQuestion({
                 ...newQuestion,
@@ -53,7 +53,7 @@ export default function AddNewQuestion({ newQuestion, setNewQuestion }) {
         </div>
       </div>
       {newQuestion.type === "Checkboxes" && (
-        <div className="px-1 flex flex-col gap-y-1" >
+        <div className="px-1 flex flex-col gap-y-1">
           {newQuestion.values.map((item, idx) => {
             return (
               <div className="flex items-center gap-x-3">

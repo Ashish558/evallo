@@ -101,10 +101,14 @@ export default function FurtherDetails({
             type="text"
             value={values.activeStudents}
             onChange={(e) =>
+            {
+              const regex = /^[0-9 ]*$/;
+              const isValid = regex.test(e.target.value);
+              if(isValid)
               setValues({
                 ...values,
                 activeStudents: e.target.value,
-              })
+              })}
             }
           />
           <InputField
@@ -118,10 +122,14 @@ export default function FurtherDetails({
             type="text"
             value={values.activeTutors}
             onChange={(e) =>
+             { 
+              const regex = /^[0-9 ]*$/;
+              const isValid = regex.test(e.target.value);
+              if(isValid)
               setValues({
                 ...values,
                 activeTutors: e.target.value,
-              })
+              })}
             }
           />
         </div>

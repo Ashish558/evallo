@@ -345,7 +345,7 @@ export default function Settings() {
     updateAndFetchsettings(updatedSetting);
   };
 
-  const updateAndFetchsettings = (updatedSetting) => {
+  const updateAndFetchsettings = (updatedSetting,setloadingCustom) => {
     if (!organization || !settingsData || !updatedSetting) return;
     const settings = {
       ...settingsData,
@@ -355,16 +355,18 @@ export default function Settings() {
       settings,
     };
     //console.log("body", body);
-
+    setloadingCustom && setloadingCustom(true)
     setSaveLoading(true);
     updateSetting(body)
       .then((res) => {
         //console.log("updated", res.data.data);
+         setloadingCustom && setloadingCustom(false)
         setSaveLoading(false);
         setSettingsData(res.data.data.updatedOrg.settings);
         dispatch(updateOrganizationSettings(res.data.data.updatedOrg.settings));
       })
       .catch((err) => {
+          setloadingCustom && setloadingCustom(false)
         setSaveLoading(false);
         //console.log("err", err);
       });
