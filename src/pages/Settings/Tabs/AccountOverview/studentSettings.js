@@ -91,7 +91,50 @@ const StudentSettings = () => {
         console.log("Email Link sent", res);
       });
   };
+  function isValidEmail(email) {
+    // Regular expression for a basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  
   const handleDataUpdate = () => {
+    if(values.firstName.length==0){
+      setError((prev) => {
+        return {
+          ...prev,
+          firstName:'Fill valid First Name',
+        };
+      });
+      return;
+    }
+    if(values.lastName.length==0){
+      setError((prev) => {
+        return {
+          ...prev,
+          lastName:'Fill valid Last Name',
+        };
+      });
+      return;
+    }
+    if(values.phone.length<10){
+      setError((prev) => {
+        return {
+          ...prev,
+          phone:'Fill valid Phone Number',
+        };
+      });
+      return;
+    }
+    if(!isValidEmail(values.email)){
+      setError((prev) => {
+        return {
+          ...prev,
+          email:'Fill valid Email id',
+        };
+      });
+      return;
+    }
     setSaving(true)
     const updateUserAccount = async () => {
       try {
@@ -185,6 +228,7 @@ const StudentSettings = () => {
 
           <span className="font-semibold text-base-22-5">{"  > Settings"}</span>
         </div>
+        {console.log(error)}
         <div className="flex gap-6 design:gap-8 items-center">
           <InputField
             placeholder=""
@@ -195,7 +239,11 @@ const StudentSettings = () => {
             label="First name"
             value={values.firstName}
             onChange={(e) =>
-              handleFirstName(e)
+              
+             {const regex = /^[a-zA-Z0-9 ]*$/;
+             const isValid = regex.test(e.target.value);
+             if(isValid)
+             handleFirstName(e)}
             }
             error={error.firstName}
           />
@@ -209,10 +257,13 @@ const StudentSettings = () => {
             label="Last name"
             value={values.lastName}
             onChange={(e) =>
+             {const regex = /^[a-zA-Z0-9 ]*$/;
+             const isValid = regex.test(e.target.value);
+             if(isValid)
               setValues({
                 ...values,
                 lastName: e.target.value,
-              })
+              })}
             }
             error={error.lastName}
           />
@@ -270,10 +321,13 @@ const StudentSettings = () => {
                 })
               }
               onChange={(e) =>
+               {const regex = /^[0-9 ]*$/;
+               const isValid = regex.test(e.target.value);
+               if(isValid  && e.target.value?.length<12)
                 setValues({
                   ...values,
                   phone: e.target.value,
-                })
+                })}
               }
               error={error.phone}
             />

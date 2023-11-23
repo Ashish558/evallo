@@ -1257,7 +1257,7 @@ export default function EventModal({
                               <>
                                  <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-10">
                                     <span className="font-semibold mr-1">⚠️ Note:</span>
-                                    All deleted session data will be lost and you will NOT be able to recover it later. Note that this might also impact the Client's digital wallet accordingly. Read detailed documentation in Evallo’s  <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
+                                    All deleted session data will be lost and you will NOT be able to recover it later. Note that this might also impact the Client's digital wallet accordingly. Read detailed documentation in Evallo’s  <span className="text-[#24A3D9] cursor-pointer" onClick={()=>window.location.href = "https://evallo.org/support"}> knowledge base.</span>
                                  </p>
                               </>
                            }

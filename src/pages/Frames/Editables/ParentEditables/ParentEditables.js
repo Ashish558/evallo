@@ -1527,7 +1527,7 @@ export default function ParentEditables({
                       The hourly rates you set for the tutor here will directly
                       affect automatic invoicing wherever applicable. Read
                       detailed documentation in Evallo’s{" "}
-                      <span onClick={()=>navigate('/support')} className="text-[#24A3D9] cursor-pointer border-b-[0.6px] border-b-[#24A3D9] cursor-pointer">
+                      <span onClick={()=>window.location.href = "https://evallo.org/support"} className="text-[#24A3D9] cursor-pointer border-b-[0.6px] border-b-[#24A3D9] cursor-pointer">
                         {" "}
                         knowledge base.
                       </span>
