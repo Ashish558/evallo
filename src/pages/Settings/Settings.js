@@ -345,7 +345,7 @@ export default function Settings() {
     updateAndFetchsettings(updatedSetting);
   };
 
-  const updateAndFetchsettings = (updatedSetting) => {
+  const updateAndFetchsettings = (updatedSetting,setloadingCustom) => {
     if (!organization || !settingsData || !updatedSetting) return;
     const settings = {
       ...settingsData,
@@ -355,16 +355,18 @@ export default function Settings() {
       settings,
     };
     //console.log("body", body);
-
+    setloadingCustom && setloadingCustom(true)
     setSaveLoading(true);
     updateSetting(body)
       .then((res) => {
         //console.log("updated", res.data.data);
+         setloadingCustom && setloadingCustom(false)
         setSaveLoading(false);
         setSettingsData(res.data.data.updatedOrg.settings);
         dispatch(updateOrganizationSettings(res.data.data.updatedOrg.settings));
       })
       .catch((err) => {
+          setloadingCustom && setloadingCustom(false)
         setSaveLoading(false);
         //console.log("err", err);
       });
@@ -1700,8 +1702,8 @@ export default function Settings() {
               onToggle={onToggle}
               body={
                 <div className=" bg-white w-full  gap-x-5 p-4 rounded-br-5 rounded-bl-5 !pr-4">
-                  <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-6">
-                    <span className="font-semibold mr-1">⚠️ Note:</span>
+                  <p className="text-base-17-5 font-medium mt-[-5px] text-[#667085] mb-6">
+                    <span className="font-bold mr-1">⚠️ Note:</span>
                     Announcements, as the name implies, can be used to announce
                     important aspects of your business. Displayed on the
                     top-left corner in Parent and Student Dashboards, these can
@@ -1711,7 +1713,7 @@ export default function Settings() {
                     see as soon as they log into their Evallo dashboard. You can
                     add a maximum of 4 Announcements at a time. Read detailed
                     documentation in Evallo’s
-                    <span className="text-[#24A3D9]"> knowledge base.</span>
+                    <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
                   </p>
                   <div className="flex items-center gap-5 pr-3  flex-1 !w-[100%] overflow-x-auto custom-scroller-2    [&>*]:mb-[10px] bg-white  gap-x-5 p-4 rounded-br-5 rounded-bl-5 mb-3 !px-6 py-5 ">
                     {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
@@ -1949,6 +1951,7 @@ export default function Settings() {
             <div
               className={`bg-[#FFFFFF] border-[2.5px] px-[82px] border-dotted border-[#CBD6E2] mb-[30px] ${styles.permission}`}
             >
+              {console.log(fetchedPermissions)}
               {fetchedPermissions?.map((item, id) => {
                 return (
                   <>
@@ -1960,7 +1963,31 @@ export default function Settings() {
                           id === 3 ? "!opacity-[0.7]" : ""
                         } pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between text-base-17-5`}
                       >
-                        <p>{renderColoredText(item.name)}</p>
+                        <div className="flex items-center flex-row justify-start"><p>{renderColoredText(item.name)}</p>
+                        {id==5||id==7?<div className="pl-4 group relative">
+                <p>
+                  <img
+                    src={questionMark}
+                    alt=""
+                    onClick={() => {
+                      console.log("set perm tool tip");
+                    }}
+                  />
+                </p>
+
+                <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                  <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
+                 {id==5? 'Set Permissions':
+                  id==7?
+                 ' New Assignment Email Notifications ' :null}                 </h3>
+                  <span className="font-light leading-[0.5px] text-[0.69vw]">
+                  {id==5?'Enable or disable tutor access to add, update or delete sessions scheduled on a calendar. When disabled, tutors in your Organization will only be able to reconcile sessions and add session notes & tags, but will not be able to make any changes to the remaining details of a session. Enable this if you want to provide more autonomy to your tutors. Disable if you want to discourage them from managing their own schedule.':
+                  id==7?
+                  'Select whether you want to send email notifications when a new test is assigned to a student by a tutor or an admin.'
+                  :null}</span>
+                </span>
+              </div>:null}
+              </div>
 
                         <ToggleBar
                           toggle={{ value: item.choosedValue, key: item._id }}
@@ -1970,9 +1997,31 @@ export default function Settings() {
                     ) : (
                       <div
                         className={`pt-[34px] pb-[30px]   text-[#24A3D9] font-medium text-[17.5px] flex justify-between border-b-2 border-[#CBD6E2] ${styles.permission} text-base-17-5`}
-                      >
+                      > <div className="flex items-center flex-row justify-start">
                         <p>{renderColoredText(item.name)}</p>
-
+                        {id==5||id==7?<div className="pl-4 group relative">
+                <p>
+                  <img
+                    src={questionMark}
+                    alt=""
+                    onClick={() => {
+                      console.log("set perm tool tip");
+                    }}
+                  />
+                </p>
+                  
+                <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                  <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
+                 {id==5? 'Set Permissions':
+                  id==7?
+                 ' New Assignment Email Notifications ' :null}                 </h3>
+                  <span className="font-light leading-[0.5px] text-[0.69vw]">
+                  {id==5?'Enable or disable tutor access to add, update or delete sessions scheduled on a calendar. When disabled, tutors in your Organization will only be able to reconcile sessions and add session notes & tags, but will not be able to make any changes to the remaining details of a session. Enable this if you want to provide more autonomy to your tutors. Disable if you want to discourage them from managing their own schedule.':
+                  id==7?
+                  'Select whether you want to send email notifications when a new test is assigned to a student by a tutor or an admin.'
+                  :null}</span>
+                </span>
+              </div>:null} </div>
                         <p>
                           <select
                             onChange={(e) =>
@@ -2158,7 +2207,7 @@ export default function Settings() {
                 provide them this access and what assignments should show up
                 automatically after they sign up with your organization. Read
                 detailed documentation in Evallo’s{" "}
-                <span className="text-[#24A3D9]"> knowledge base.</span>
+                <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
               </p>
 
               <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
@@ -2310,7 +2359,7 @@ export default function Settings() {
                 specialize in while providing these services. For example, Test
                 Prep can be a “Service” with “SAT” and “ACT” as two topics under
                 it. Read detailed documentation in Evallo's
-                <span className="text-[#24A3D9]"> knowledge base.</span>
+                <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
               </p>
 
               <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
@@ -2452,7 +2501,7 @@ export default function Settings() {
                 used to add further details about the session, such as the
                 topics covered, homework assigned, student mood, etc. Read
                 detailed documentation in Evallo’s
-                <span className="text-[#24A3D9]"> knowledge base.</span>
+                <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
               </p>
 
               <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
