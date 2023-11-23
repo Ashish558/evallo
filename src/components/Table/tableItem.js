@@ -65,6 +65,8 @@ export default function TableItem({
   numberChecked,
   setnumberChecked,
   testtype,
+  setAllAssignedTests,
+  setFilteredTests,
 }) {
   const [dateFormat, setDateFormat] = useState("dd/mm/yy");
 
@@ -151,6 +153,20 @@ export default function TableItem({
           );
 
           setScore(`${score.cumulative},${score.right}`);
+
+          setAllAssignedTests((list) => {
+            if(list === undefined || list === null || list.length === 0) return list;
+            const newList = [...list];
+            newList.find(i => i.assignedTestId === item.assignedTestId).scores = score;
+            return newList;
+          });
+
+          setFilteredTests((list) => {
+            if(list === undefined || list === null || list.length === 0) return list;
+            const newList = [...list];
+            newList.find(i => i.assignedTestId === item.assignedTestId).scores = score;
+            return newList;
+          })
         });
       }
     }
