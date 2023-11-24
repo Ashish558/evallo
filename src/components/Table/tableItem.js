@@ -358,13 +358,12 @@ export default function TableItem({
       )}
 
       {dataFor === "allUsers" && (
-        <tr className="odd:bg-white   leading-8">
-          <td className=" text-[17.5px] px-1  min-w-14   text-left">
-            <span className="inline-block cursor-pointer pl-4 pt-[6px]">
-              <div className="flex items-center">
+        <tr className="odd:bg-white h-full leading-8">
+          <td className=" text-[17.5px] min-w-14 h-full text-left  ">
+            <div className="w-full flex justify-center items-center cursor-pointer ">
+              <div className="w-full h-full flex items-center justify-start px-4">
                 {dataFor === "allUsers" ? (
-                  <div className="pt-[3px]">
-                    {" "}
+                  <div className="">
                     <SCheckbox
                       checked={isChecked}
                       stopM={true}
@@ -372,30 +371,16 @@ export default function TableItem({
                     />
                   </div>
                 ) : (
-                  // <label
-                  //   className={`${styles["checkbox-label"]} block text-[#26435F] `}
-                  // >
-                  //   <input
-                  //     type="checkbox"
-                  //     checked={isChecked}
-                  //     onChange={handleCheckboxChange}
-                  //   />
-                  //   <span
-                  //     className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
-                  //       }`}
-                  //   ></span>
-                  // </label>
-
                   ""
                 )}
-                <span
+                <div
                   onClick={() => onClick.redirect(item)}
-                  className="capitalize whitespace-nowrap overflow-hidden text-ellipsis w-[100px]"
+                  className="capitalize whitespace-nowrap overflow-hidden text-ellipsis"
                 >
                   {item.name}
-                </span>
+                </div>
               </div>
-            </span>
+            </div>
           </td>
           <td className=" text-[17.5px] px-1 min-w-14  capitalize">
             <div className="my-[6px]">{item.userType}</div>
