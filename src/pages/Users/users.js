@@ -1835,7 +1835,7 @@ export default function Users() {
                 </div>
               </span>
             </button>
-            <button disabled={selectedId?.length === 0||adminSelectedForDelete ? true : false} onClick={() => selectedId?.length > 0 && setDeleteBulkModalActive(true)} className={`bg-[#FF7979] opacity-100 flex items-center gap-2 px-[20px] tracking-wider font-semibold py-[10px] rounded-[5px] text-white  text-base-17-5 ${selectedId?.length === 0 ||adminSelectedForDelete? "opacity-75 cursor-not-allowed" : ""} `}>
+            <button disabled={selectedId?.length === 0||adminSelectedForDelete ? true : false} onClick={() => selectedId?.length > 0 && setDeleteBulkModalActive(true)} className={`w-[186px] h-[43.75px] pt-[11.664px] ps-[15.748px] pr-[13.127px] pb-[10.1px] bg-[#FF7979] opacity-100 flex items-center gap-2 tracking-wider font-semibold py-[10px] rounded-[5px] text-white  text-base-17-5 ${selectedId?.length === 0 ||adminSelectedForDelete? "opacity-75 cursor-not-allowed" : ""} `}>
               <span>
                 <img
                   src={DeleteIcon2}
@@ -1843,7 +1843,7 @@ export default function Users() {
                   alt="delete"
                 />
               </span>{" "}
-            <span className="pt-[2px]">  Delete User(s)</span>
+            <span className="pt-[2px] flex">  Delete User(s)</span>
             </button>
           </div>
         </div>
@@ -1904,7 +1904,7 @@ export default function Users() {
                   <InputField
                     label="First Name"
                     biggerText={true}
-                    labelClassname=" mb-0.5 text-[#26435F] !font-semibold "
+                    labelClassname=" mb-0.5 text-[#26435F] !font-medium "
                     placeholder="First Name"
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
                     inputClassName="bg-transparent"
@@ -1921,7 +1921,7 @@ export default function Users() {
                   <InputField
                     biggerText={true}
                     label="Last Name"
-                    labelClassname=" mb-0.5 text-[#26435F] !font-semibold !text-lg"
+                    labelClassname=" mb-0.5 text-[#26435F] !font-medium !text-lg"
                     isRequired={true}
                     placeholder="Last Name"
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
@@ -1938,7 +1938,7 @@ export default function Users() {
                   <InputField
                     biggerText={true}
                     label="Email Address"
-                    labelClassname=" mt-2 mb-0.5 text-[#26435F] !font-semibold !text-lg"
+                    labelClassname=" mt-2 mb-0.5 text-[#26435F] !font-medium !text-lg"
                     isRequired={true}
                     placeholder="Email Address"
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0 !placeholder:!text-[#B3BDC7]"
@@ -1961,7 +1961,7 @@ export default function Users() {
                     type="select"
                     placeholder="Select"
                     label="User Type"
-                    labelClassname="ml-0  text-[#26435F] !font-semibold !text-lg"
+                    labelClassname="ml-0  text-[#26435F] !font-medium !text-lg"
                     placeholderClass="text-base-17-5 !text-[#B3BDC7]"
                     optionData={userTypeOptions}
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0 "

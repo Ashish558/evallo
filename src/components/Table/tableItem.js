@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getMonthName } from "../../utils/utils";
+
 import ResendConfirmation from "../../assets/assignedTests/resendConfirmation.svg";
 import UploadIcon from "../../assets/assignedTests/upload.svg";
 import DownloadIcon from "../../assets/icons/download.png";
@@ -269,22 +271,29 @@ export default function TableItem({
   const options = { year: "numeric", month: "long", day: "numeric" };
   const formattedDate = date.toLocaleDateString("en-US", options);
 
-  //console.log(dataFor)
-  const getFormatDate = (inputDate) => {
-    const dateObj = new Date(inputDate);
+     //  format monthName date, year
+     const formatDate= (value)=>{
+      const [ month, day, year] = value.split("-");
+      const monthName = getMonthName(month-1);
+      console.log(
+       { 
+         value : value,
+         day : day,
+         month : month,
+         year : year,
+         monthName :monthName
+        }
+     );
+      
+      const formattedDate = `${monthName}` + " " + `${day}` + `,` + `${year}`;
+      return formattedDate
+     }
 
-    const options = { year: "numeric", month: "short", day: "2-digit" };
-    const formattedDate = dateObj.toLocaleDateString("en-US", options);
-    let dd = formattedDate;
-    let ed = dd.split(" ");
-    let fd = ed[0] + ". " + ed[1] + " " + ed[2];
-    //console.log(formattedDate);
-    return fd;
-  };
   const getPhone = (val) => {
     //console.log(item)
     //console.log(val)
   };
+
 
   const handleSelect = (item2, key) => {
     console.log({ item2, selectedId2 });
@@ -455,7 +464,7 @@ export default function TableItem({
           </td>
           <td className=" text-[17.5px] px-1  min-w-14  text-[#507CA8]">
             <div className="my-[6px] capitalize">
-              {getFormattedDate(item.createdAt, dateFormat)}
+              {formatDate(getFormattedDate(item.createdAt, dateFormat))}
             </div>
           </td>
 
