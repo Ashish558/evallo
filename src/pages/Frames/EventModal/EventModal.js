@@ -562,16 +562,16 @@ export default function EventModal({
       }
       const { start, end } = reqBody.time
 
-      if(reqBody.time.start.timeType === 'am'){
+      if (reqBody.time.start.timeType === 'am') {
          reqBody.time.start.timeType = 'AM'
       }
-      if(reqBody.time.start.timeType === 'pm'){
+      if (reqBody.time.start.timeType === 'pm') {
          reqBody.time.start.timeType = 'PM'
       }
-      if(reqBody.time.end.timeType === 'am'){
+      if (reqBody.time.end.timeType === 'am') {
          reqBody.time.end.timeType = 'AM'
       }
-      if(reqBody.time.end.timeType === 'pm'){
+      if (reqBody.time.end.timeType === 'pm') {
 
          reqBody.time.end.timeType = 'PM'
       }
@@ -897,7 +897,7 @@ export default function EventModal({
                                  // console.log(val)
                                  data.service !== val && setData({ ...data, service: val, specialization: '' })
                               }}
-
+                              required={true}
                               optionData={servicesAndSpecialization}
                               inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3 text-[#507CA8]
                        `}
@@ -966,6 +966,7 @@ export default function EventModal({
                               inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 h-[53px]"
                               inputClassName="bg-transparent text-[16px] text-[#507CA8]"
                               type="text"
+                              required={true}
                               value={data.session}
                               onChange={(e) =>
                                  setData({
@@ -1257,7 +1258,7 @@ export default function EventModal({
                               <>
                                  <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-10">
                                     <span className="font-semibold mr-1">⚠️ Note:</span>
-                                    All deleted session data will be lost and you will NOT be able to recover it later. Note that this might also impact the Client's digital wallet accordingly. Read detailed documentation in Evallo’s  <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
+                                    All deleted session data will be lost and you will NOT be able to recover it later. Note that this might also impact the Client's digital wallet accordingly. Read detailed documentation in Evallo’s  <span className="text-[#24A3D9] cursor-pointer" onClick={() => navigate('/support')}> knowledge base.</span>
                                  </p>
                               </>
                            }

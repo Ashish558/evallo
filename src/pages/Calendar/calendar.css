@@ -195,6 +195,13 @@
 .calender .fc .fc-button-primary {
   background-color: #fff !important;
   color: #adb8cc !important;
+  border: 0 !important;
+}
+.calender .fc .fc-button-primary:active,
+.calender .fc .fc-button-primary:focus{
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
 }
 .calender .fc .fc-button-primary::first-letter {
 text-transform: uppercase;
