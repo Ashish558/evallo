@@ -811,7 +811,7 @@ export default function CalendarPage() {
         }
       } else
         setInsightData({
-          message: `User does'nt have any ${role !== "tutor" ? "tutor" : "parent or student"
+          message: `${role !== "tutor" ? `"User does'nt have any tutor"` : "User does'nt have any parent or student"
             } `,
         });
     });
