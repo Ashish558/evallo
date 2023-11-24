@@ -527,7 +527,7 @@ const Dashboard = () => {
                       <div className="group relative">
                         <p>
                           <img
-                            className="w-[17.8px] h-[17.8px]"
+                            className="w-[18.46px] h-[18.75px]"
                             src={tooltip}
                             alt=""
                           />
@@ -564,7 +564,7 @@ const Dashboard = () => {
                       <div className="group relative">
                         <p>
                           <img
-                            className="w-[18.45px] h-[17.8px]"
+                            className="w-[18.46px] h-[18.75px]"
                             src={tooltip}
                             alt=""
                           />
@@ -601,7 +601,7 @@ const Dashboard = () => {
                       <div className="group relative">
                         <p>
                           <img
-                            className="w-[18.45px] h-[17.8px]"
+                            className="w-[18.46px] h-[18.75px]"
                             src={tooltip}
                             alt=""
                           />
