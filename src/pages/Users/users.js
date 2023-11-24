@@ -1906,7 +1906,7 @@ export default function Users() {
                     biggerText={true}
                     labelClassname=" mb-0.5 text-[#26435F] !font-medium "
                     placeholder="First Name"
-                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                    inputContainerClassName="text-[16px] pt-3.5 pb-3.5 px-5 bg-primary-50 border-0 font-normal placeholder:text-[#B3BDC7]"
                     inputClassName="bg-transparent"
                     parentClassName="w-full"
                     type="text"
@@ -1962,9 +1962,8 @@ export default function Users() {
                     placeholder="Select"
                     label="User Type"
                     labelClassname="ml-0  text-[#26435F] !font-medium !text-lg"
-                    placeholderClass="text-base-17-5 !text-[#B3BDC7]"
                     optionData={userTypeOptions}
-                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0 "
+                    inputContainerClassName="text-[16px] pt-3.5 pb-3.5 px-5 bg-primary-50 border-0 font-normal placeholder:text-[#B3BDC7]"
                     parentClassName="w-full"
                   />
                 </div>
