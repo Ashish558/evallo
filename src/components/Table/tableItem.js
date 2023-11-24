@@ -384,17 +384,17 @@ export default function TableItem({
                 )}
                 <div
                   onClick={() => onClick.redirect(item)}
-                  className="capitalize whitespace-nowrap overflow-hidden text-ellipsis"
+                  className="capitalize whitespace-nowrap overflow-hidden text-ellipsis text-left"
                 >
                   {item.name}
                 </div>
               </div>
             </div>
           </td>
-          <td className=" text-[17.5px] px-1 min-w-14  capitalize">
+          <td className=" text-[17.5px] px-1 min-w-14  capitalize text-left">
             <div className="my-[6px]">{item.userType}</div>
           </td>
-          <td className=" text-[17.5px] px-1  min-w-14  ">
+          <td className=" text-[17.5px] px-1  min-w-14 text-left">
             <div className="my-[6px]">{item?.email?.toLowerCase()}</div>
           </td>
 
@@ -462,7 +462,7 @@ export default function TableItem({
           <td className=" text-[17.5px] px-1  min-w-14  text-[#507CA8]">
             <div className="my-[6px] capitalize">{item?.accountStatus}</div>
           </td>
-          <td className=" text-[17.5px] px-1  min-w-14  text-[#507CA8]">
+          <td className=" text-[17.5px] px-1 min-w-14  text-[#507CA8]">
             <div className="my-[6px] capitalize">
               {formatDate(getFormattedDate(item.createdAt, dateFormat))}
             </div>
