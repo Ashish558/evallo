@@ -1813,10 +1813,11 @@ export default function Users() {
                     }
                     className="inline-block" alt="ques" />
                   {showTooltip && 
-                  <span className="absolute top-[-237px]  design:top-[-248px]  left-[-140px] z-5000 w-[336px] design:w-[380px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-[20px] px-[13px] bg-red-900">
-                    <h3 className="text-[#517CA8] text-left text-[0.8333vw] py-0 font-semibold mb-1 bg-red-400">
+                  <span className="absolute top-[-237px]  design:top-[-248px]  left-[-140px] z-5000 w-[336px] design:w-[380px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-[20px] px-[13px] text-left">
+                    <h3 className="text-[#517CA8] text-left text-[0.8333vw] py-0 font-semibold mb-1">
                       Invite Users
-                    </h3>   <span className=" text-left text-[0.6948vw] font-light relative z-40 bg-purple-400">
+                    </h3>   
+                    <span className="text-[0.6948vw] font-light relative z-40 text-left">
                       This will allow you to invite the selected users to create
                       an account within your Organization’s database. They will
                       receive a verification email to set a new password and
