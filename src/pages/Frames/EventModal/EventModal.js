@@ -902,7 +902,7 @@ export default function EventModal({
                               inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3 text-[#507CA8] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]
                        `}
                               inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4 text-[#507CA8]"
-                              placeholder="Select Service"
+                              placeholder="Select"
                               parentClassName={`w-full mr-8 
                          ${persona === "parent" ? " order-2" : ""}
                         `}
@@ -922,7 +922,7 @@ export default function EventModal({
                               inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3 text-[#507CA8]
                        `}
                               inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4 text-[#507CA8] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
-                              placeholder="Topic"
+                              placeholder="Select"
                               parentClassName={`w-full ml-2
                         ${persona === "parent" ? " order-2" : ""}
                         `}
@@ -961,7 +961,7 @@ export default function EventModal({
                               label="Meeting Link"
                               biggerText={true}
                               labelClassname="ml-3 text-[#26435F] font-medium text-[18.6px]"
-                              placeholder="Meeting Link"
+                              placeholder="Add a meeting link or GPS location here"
                               parentClassName="w-full mr-8"
                               inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 h-[53px]"
                               inputClassName="bg-transparent text-[16px] text-[#507CA8] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
@@ -979,7 +979,7 @@ export default function EventModal({
                               parentClassName="w-full ml-2"
                               label="Whiteboard Link"
                               biggerText={true}
-                              placeholder="Whiteboard Link"
+                              placeholder="Add a relevant whiteboard link here"
                               labelClassname="ml-3 text-[#26435F] font-medium text-[18.6px]"
                               inputContainerClassName="bg-lightWhite border-0  pt-3.5 pb-3.5 h-[53px]"
                               inputClassName="bg-transparent appearance-none text-[16px] text-[#507CA8] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
