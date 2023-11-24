@@ -155,6 +155,9 @@ export default function EventModal({
    const [tutor, setTutor] = useState("");
    const [loading, setLoading] = useState(false)
 
+   // noteType
+   const [noteType, setNoteType] = useState("clients");
+
    const [submitSession, sessionResponse] = useSubmitSessionMutation();
    const [updateUserSession, updateUserSessionResp] = useUpdateSessionMutation();
    const [updateAllUserSession, updateAllUserSessionResp] = useUpdateAllSessionMutation();
@@ -1075,7 +1078,106 @@ export default function EventModal({
                                  }
                               </div>
 
-                              <div className="mb-8">
+                              {persona == "admin" ? <div className="mb-8">
+                                 <div className="w-[320px] h-[30px] flex justify-start items-center border-b border-[#B3BDC7]">
+                                    <p  
+                                    className={`w-[140px] h-[40px] font-medium mb-2.5 text-[#26435F] text-[18.6px] mr-[40px] ${noteType == "clients" ? "border-b-2 border-[#FFA28D]" : "border-0" }`}
+                                    onClick={()=>{
+                                       setNoteType("clients")
+                                    }}>
+                                       Clients Notes
+                                    </p>
+
+                                    <p className={`w-[140px] h-[40px] font-medium mb-2.5 text-[#26435F] text-[18.6px] ${noteType == "internal" ? "border-b-2 border-[#FFA28D]" : "border-0" }`}
+                                      onClick={()=>{
+                                       setNoteType("internal")
+                                    }}
+                                    >
+                                       Internal Notes
+                                    </p>
+                                 </div>
+                                 <div className="py-2">
+                                 {noteType == "clients" ?<textarea
+                                    placeholder="Session notes that are added in this box will be visible to clients (parents and students). If you want to add notes that are hidden from them, please use Internal Notes."
+                                    value={data.sessionNotes}
+                                    onChange={(e) => {
+                                       let internalNotes2 = { note: "", date: "" }
+                                       if (persona === 'tutor' && e.target.value) {
+                                          internalNotes2 = {
+                                             note: e.target.value,
+                                             date: new Date()
+                                          }
+                                       }
+
+                                       let clientNotes2 = { note: "", date: "" }
+                                       if (persona === 'admin' && e.target.value) {
+                                          clientNotes2 = {
+                                             note: e.target.value,
+                                             date: new Date()
+                                          }
+                                       }
+                                       if (persona === 'tutor')
+                                          setData({
+                                             ...data,
+                                             sessionNotes: e.target.value,
+                                             internalNotes: internalNotes2,
+
+                                          })
+                                       if (persona === 'admin')
+                                          setData({
+                                             ...data,
+                                             sessionNotes: e.target.value,
+                                             clientNotes: clientNotes2,
+
+                                          })
+                                    }
+                                    }
+                                    rows={3}
+                                    className="bg-lightWhite outline-0 px-5 py-4 rounded w-full h-[200px]"
+                                 ></textarea>
+                                   :
+                                <textarea
+                                    placeholder="Session notes that are added in this box will be visible to clients (parents and students). If you want to add notes that are hidden from them, please use Internal Notes."
+                                    value={data.sessionNotes}
+                                    onChange={(e) => {
+                                       let internalNotes2 = { note: "", date: "" }
+                                       if (persona === 'tutor' && e.target.value) {
+                                          internalNotes2 = {
+                                             note: e.target.value,
+                                             date: new Date()
+                                          }
+                                       }
+
+                                       let clientNotes2 = { note: "", date: "" }
+                                       if (persona === 'admin' && e.target.value) {
+                                          clientNotes2 = {
+                                             note: e.target.value,
+                                             date: new Date()
+                                          }
+                                       }
+                                       if (persona === 'tutor')
+                                          setData({
+                                             ...data,
+                                             sessionNotes: e.target.value,
+                                             internalNotes: internalNotes2,
+
+                                          })
+                                       if (persona === 'admin')
+                                          setData({
+                                             ...data,
+                                             sessionNotes: e.target.value,
+                                             clientNotes: clientNotes2,
+
+                                          })
+                                    }
+                                    }
+                                    rows={3}
+                                    className="bg-lightWhite w-full h-[200px] outline-0 px-5 py-4 rounded"
+                                 ></textarea>
+                                   }
+                                 </div>
+                                
+                              </div> : <div className="mb-8">
                                  <div>
                                     <p className="font-medium mb-2.5 text-[#26435F] text-[18.6px]">
                                        Session Notes
@@ -1122,7 +1224,7 @@ export default function EventModal({
                                  <p className="text-right text-xs text-primary-80">
                                     {data.sessionNotes ? data.sessionNotes.length : '0'}/200
                                  </p>
-                              </div>
+                              </div>}
 
 
                            </>
