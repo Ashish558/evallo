@@ -1032,20 +1032,20 @@ export default function TutorProfile({ isOwn }) {
                 ) : (
                   <div className="!w-full bg-white  mb-10 !h-full flex-1 flex justify-center  items-center">
                     <div
-                      class="relative ml-5 !w-[90%] my-auto overflow-hidden translate-y-[-15%] !h-[350px]   rounded-lg !bg-fit bg-center bg-no-repeat  text-center"
+                      className="relative ml-5 !w-[90%] my-auto overflow-hidden translate-y-[-15%] !h-[350px]   rounded-lg !bg-fit bg-center bg-no-repeat  text-center"
                       id="highPlace"
                     >
-                      <div class="absolute z-50 bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-fixed">
-                        <div class="flex h-full mx-auto mt-8  max-w-[80%]  items-center justify-center">
-                          <div class="text-[#517CA8]">
-                            <p class="mb-4 text-md font-semibold text-base-20">
+                      <div className="absolute z-50 bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-fixed">
+                        <div className="flex h-full mx-auto mt-8  max-w-[80%]  items-center justify-center">
+                          <div className="text-[#517CA8]">
+                            <p className="mb-4 text-md font-semibold text-base-20">
                               Use this space to add a YouTube video highlighting
                               the tutor or your company.
                             </p>
                             {persona === "admin" || persona === "tutor" ? (
                               <button
                                 type="button"
-                                class="rounded-md bg-[#38C980] p-2 px-4 text-white text-base-17-5"
+                                className="rounded-md bg-[#38C980] p-2 px-4 text-white text-base-17-5"
                                 data-te-ripple-init
                                 onClick={() => {
                                   if (isOwn === true || persona === "admin")
@@ -1064,7 +1064,7 @@ export default function TutorProfile({ isOwn }) {
                             ) : (
                               <button
                                 type="button"
-                                class="rounded-md bg-[#FF7979] p-2 px-4 text-white text-base-17-5"
+                                className="rounded-md bg-[#FF7979] p-2 px-4 text-white text-base-17-5"
                               >
                                 None Added
                               </button>
@@ -1192,7 +1192,7 @@ export default function TutorProfile({ isOwn }) {
                         ) : (
                           <button
                             type="button"
-                            class="rounded-md bg-[#FF7979] p-2 px-4 text-white text-base-17-5"
+                            className="rounded-md bg-[#FF7979] p-2 px-4 text-white text-base-17-5"
                           >
                             None Added
                           </button>

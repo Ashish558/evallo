@@ -102,7 +102,7 @@ export default function ActionLog({ actionLog, className }) {
             ampm = "PM";
           }
           return (
-            <>
+            
               <div key={index} className="flex h-[57px] pl-5 relative ">
                 <p className="text-[#517CA8] pt-6 !font-light text-[15px] mr-2 w-[calc(143*0.050vw)] text-center !text-[calc(17.5*0.050vw)] whitespace-nowrap">
                {
@@ -128,7 +128,7 @@ export default function ActionLog({ actionLog, className }) {
                   </p>
                 </div>
               </div>
-            </>
+          
           );
         })}
       </ul>
