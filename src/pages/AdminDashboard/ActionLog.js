@@ -116,7 +116,12 @@ export default function ActionLog({ actionLog, className }) {
             date = new Date(date.getTime() + offset);
           }
           const hours = date.getHours();
-          const minutes = date.getMinutes()
+          var minutes = date.getMinutes();
+
+          if(0 <= minutes && minutes < 10){
+            minutes = `0` + minutes;
+          }
+
           let ampm = "AM";
           if (hours >= 12) {
             ampm = "PM";
