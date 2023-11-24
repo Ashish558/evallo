@@ -50,7 +50,7 @@ export default function DateAndTimeInput({ data, setData, isEditable }) {
           });
         }}
       />
-      <span className="self-end mb-4 mx-4 font-medium flex justify-center items-center">
+      <div className="h-[53.33px] ms-[20px] mr-[16px] self-end font-medium flex justify-center items-center">
         <svg
           width="13"
           height="2"
@@ -68,7 +68,7 @@ export default function DateAndTimeInput({ data, setData, isEditable }) {
             stroke-linecap="round"
           />
         </svg>
-      </span>
+      </div>
       <InputSelect
         parentClassName="w-full max-w-120 self-end"
         type="time"
