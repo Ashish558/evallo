@@ -1063,7 +1063,7 @@ export default function EventModal({
                                                             checked={checked}
                                                             name="topic"
                                                          />
-                                                         <p className="font-medium text-primary-60 text-sm">
+                                                         <p className="font-medium text-[#507CA8] text-[18.667px]">
                                                             {item}
                                                          </p>
                                                       </div>
