@@ -3,6 +3,8 @@ import { useGetSpecificActionLogQuery } from "../../app/services/adminDashboard"
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getFormattedDate } from "../../utils/utils";
+import { getMonthName } from "../../utils/utils";
+
 export default function ActionLog({ actionLog, className }) {
   const [dateFormat, setDateFormat] = useState("dd/mm/yy");
   const { organization: organization2 } = useSelector(
@@ -75,13 +77,31 @@ export default function ActionLog({ actionLog, className }) {
     headerDate = temp;
   }
 
+  //  format monthName date, year
+    const formatDate= (value)=>{
+       const [ month, day, year] = value.split("-");
+       const monthName = getMonthName(month-1);
+       console.log(
+        { 
+          value : value,
+          day : day,
+          month : month,
+          year : year,
+          monthName :monthName
+         }
+      );
+       
+       const formattedDate = `${monthName}` + " " + `${day}` + `,` + `${year}`;
+       return formattedDate
+      }
+  
   return (
     <div
       className={`flex flex-col h-[330px] max-h-[500px]  shadow-[0px_0px_2px_rgba(0,0,0,0.25)]  rounded-5 bg-[#FFFFFF] w-[65.1042vw] ${className}`}
     >
       <div className=" border-b-[1.6px]  border-b-[#CBD6E2] ">
-        <p className="uppercase  pl-[29px] pt-[16px] pb-2 text-[#26435F] text-base-20">
-          {getFormattedDate(headerDate, dateFormat)}
+        <p className="uppercase  pl-[29px] pt-[16px] pb-2 text-[#26435F] text-base-20 text-[20px] font-normal">
+          {formatDate(getFormattedDate(headerDate, dateFormat))}
         </p>
       </div>
       <ul
