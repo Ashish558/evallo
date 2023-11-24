@@ -16,7 +16,7 @@ export default function DateAndTimeInput({ data, setData, isEditable }) {
         label="Session Date"
         biggerText={true}
         labelClassname=" ml-3 text-[#26435F] font-medium "
-        inputContainerClassName="bg-lightWhite border-0 h-[53.33px] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
+        inputContainerClassName="bg-lightWhite border-0 w-[206.667px] h-[53.33px] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
         inputClassName="bg-transparent appearance-none text-[#507CA8] text-[16px] "
         value={data.date}
         type="date"
