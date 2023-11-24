@@ -27,6 +27,7 @@ import { useState } from "react";
 import RangeDate from "../../components/RangeDate/RangeDate";
 import ArrowDown from "../../assets/Dashboard/sort-down.svg";
 import { useEffect } from "react";
+import SubscriptionAndExtensionModal from "../Frames/SubscriptionAndExtensionModal/SubscriptionAndExtensionModal";
 
 const Dashboard = () => {
   const [latestSignUp, latsestStatus] = useGetLatestSignUpRangeMutation();
@@ -231,6 +232,13 @@ const Dashboard = () => {
 
   return (
     <div className={styles.container}>
+
+      <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
+        <SubscriptionAndExtensionModal
+          className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-3/4 w-9/12"
+        />
+      </div>
+
       <div className=" mt-[28px] bg-#2E2E2E">
         <div className="mt-[calc(50*0.050vw)] flex justify-center">
           <div className="w-[83.33vw]">

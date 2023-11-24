@@ -634,7 +634,9 @@ export default function OrgSignup() {
         setLoading(true);
         signupUser(reqBody)
           .then((res) => {
+            console.log("signupUser");
             console.log(res);
+            return;
             setFrames({
               ...frames,
               signupSuccessful: true,
@@ -695,80 +697,84 @@ export default function OrgSignup() {
    }
   }
 const [emailExistLoad,setEmailExistLoad]=useState(false)
-  const handleClick = () => {
-    const emailAlreadyExists = async () => {
-        setEmailExistLoad(true)
-        let cc=0;
-      let checked = false;
-      try {
-        
-        let data = {
-          workemail: values.email,
-        };
-        //   alert(data.workemail)
-        let result = await axios.post(
-          `${process.env.REACT_APP_BASE_URL}api/user/CheckEmail`,
-          data,
-          {
-            headers: {
-              "content-Type": "application/json",
-            },
-          }
-        );
-        if (result) checked = true;
-        cc++;
-      } catch (e) {
-        console.error(e.response?.data?.message);
-        cc++;
-        setError({
-          ...error,
-          email: e.response?.data?.message,
-        });
-      }
-      try {
-        let data = {
-          company: values.company,
-        };
-        //   alert(data.workemail)
-        let result = await axios.post(
-          `${process.env.REACT_APP_BASE_URL}api/user/CheckCompany`,
-          data,
-          {
-            headers: {
-              "content-Type": "application/json",
-            },
-          }
-        );
-        cc++;
-      } catch (e) {
-        checked = false;
-        cc++;
-        setError({
-          ...error,
-          company: e.response.data.message,
-        });
-      }
-      if (checked === true ) {
-        
-        setFrames({
-          ...frames,
-          signupActive: false,
-          subscription: true,
-        });
-        // setcurrentStep(currentStep => currentStep + 1)
-      }
-      if(cc>=2){
-        setEmailExistLoad(false)
-      }
-    };
-   
-    if(!handleNextErrors(true)){
-      return 
+const handleClick = () => {
+
+  handleSignup();
+  return;
+
+  const emailAlreadyExists = async () => {
+      setEmailExistLoad(true)
+      let cc=0;
+    let checked = false;
+    try {
+      
+      let data = {
+        workemail: values.email,
+      };
+      //   alert(data.workemail)
+      let result = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}api/user/CheckEmail`,
+        data,
+        {
+          headers: {
+            "content-Type": "application/json",
+          },
+        }
+      );
+      if (result) checked = true;
+      cc++;
+    } catch (e) {
+      console.error(e.response?.data?.message);
+      cc++;
+      setError({
+        ...error,
+        email: e.response?.data?.message,
+      });
     }
- 
+    try {
+      let data = {
+        company: values.company,
+      };
+      //   alert(data.workemail)
+      let result = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}api/user/CheckCompany`,
+        data,
+        {
+          headers: {
+            "content-Type": "application/json",
+          },
+        }
+      );
+      cc++;
+    } catch (e) {
+      checked = false;
+      cc++;
+      setError({
+        ...error,
+        company: e.response.data.message,
+      });
+    }
+    if (checked === true ) {
+      
+      setFrames({
+        ...frames,
+        signupActive: false,
+        subscription: true,
+      });
+      // setcurrentStep(currentStep => currentStep + 1)
+    }
+    if(cc>=2){
+      setEmailExistLoad(false)
+    }
+  };
+  
+  if(!handleNextErrors(true)){
+    return 
+  }
+
   else
     emailAlreadyExists();
-  };
+};
  
 
 
@@ -1179,10 +1185,10 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                       } 
                       
                       `}
-                      loading={emailExistLoad}
+                      /* loading={emailExistLoad}
                       disabled={
                         values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
-                      }
+                      } */
                       onClick={handleClick}
                       children={`Next`}
                     />
