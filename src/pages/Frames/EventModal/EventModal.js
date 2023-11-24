@@ -155,6 +155,9 @@ export default function EventModal({
    const [tutor, setTutor] = useState("");
    const [loading, setLoading] = useState(false)
 
+   // noteType
+   const [noteType, setNoteType] = useState("clients");
+
    const [submitSession, sessionResponse] = useSubmitSessionMutation();
    const [updateUserSession, updateUserSessionResp] = useUpdateSessionMutation();
    const [updateAllUserSession, updateAllUserSessionResp] = useUpdateAllSessionMutation();
@@ -899,10 +902,10 @@ export default function EventModal({
                               }}
 
                               optionData={servicesAndSpecialization}
-                              inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3 text-[#507CA8]
+                              inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3 text-[#507CA8] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]
                        `}
                               inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4 text-[#507CA8]"
-                              placeholder="Select Service"
+                              placeholder="Select"
                               parentClassName={`w-full mr-8 
                          ${persona === "parent" ? " order-2" : ""}
                         `}
@@ -921,8 +924,8 @@ export default function EventModal({
                               optionData={specializations}
                               inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3 text-[#507CA8]
                        `}
-                              inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4 text-[#507CA8]"
-                              placeholder="Topic"
+                              inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4 text-[#507CA8] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
+                              placeholder="Select"
                               parentClassName={`w-full ml-2
                         ${persona === "parent" ? " order-2" : ""}
                         `}
@@ -961,10 +964,10 @@ export default function EventModal({
                               label="Meeting Link"
                               biggerText={true}
                               labelClassname="ml-3 text-[#26435F] font-medium text-[18.6px]"
-                              placeholder="Meeting Link"
+                              placeholder="Add a meeting link or GPS location here"
                               parentClassName="w-full mr-8"
                               inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 h-[53px]"
-                              inputClassName="bg-transparent text-[16px] text-[#507CA8]"
+                              inputClassName="bg-transparent text-[16px] text-[#507CA8] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
                               type="text"
                               value={data.session}
                               onChange={(e) =>
@@ -979,10 +982,10 @@ export default function EventModal({
                               parentClassName="w-full ml-2"
                               label="Whiteboard Link"
                               biggerText={true}
-                              placeholder="Whiteboard Link"
+                              placeholder="Add a relevant whiteboard link here"
                               labelClassname="ml-3 text-[#26435F] font-medium text-[18.6px]"
                               inputContainerClassName="bg-lightWhite border-0  pt-3.5 pb-3.5 h-[53px]"
-                              inputClassName="bg-transparent appearance-none text-[16px] text-[#507CA8]"
+                              inputClassName="bg-transparent appearance-none text-[16px] text-[#507CA8] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
                               value={data.whiteboardLink}
                               type="text"
                               onChange={(e) =>
@@ -1063,7 +1066,7 @@ export default function EventModal({
                                                             checked={checked}
                                                             name="topic"
                                                          />
-                                                         <p className="font-medium text-primary-60 text-sm">
+                                                         <p className="font-medium text-[#507CA8] text-[18.667px]">
                                                             {item}
                                                          </p>
                                                       </div>
@@ -1075,7 +1078,106 @@ export default function EventModal({
                                  }
                               </div>
 
-                              <div className="mb-8">
+                              {persona == "admin" ? <div className="mb-8">
+                                 <div className="w-[320px] h-[30px] flex justify-start items-center border-b border-[#B3BDC7]">
+                                    <p  
+                                    className={`w-[140px] h-[40px] font-medium mb-2.5 text-[#26435F] text-[18.6px] mr-[40px] ${noteType == "clients" ? "border-b-2 border-[#FFA28D]" : "border-0" }`}
+                                    onClick={()=>{
+                                       setNoteType("clients")
+                                    }}>
+                                       Clients Notes
+                                    </p>
+
+                                    <p className={`w-[140px] h-[40px] font-medium mb-2.5 text-[#26435F] text-[18.6px] ${noteType == "internal" ? "border-b-2 border-[#FFA28D]" : "border-0" }`}
+                                      onClick={()=>{
+                                       setNoteType("internal")
+                                    }}
+                                    >
+                                       Internal Notes
+                                    </p>
+                                 </div>
+                                 <div className="py-2">
+                                 {noteType == "clients" ?<textarea
+                                    placeholder="Session notes that are added in this box will be visible to clients (parents and students). If you want to add notes that are hidden from them, please use Internal Notes."
+                                    value={data.sessionNotes}
+                                    onChange={(e) => {
+                                       let internalNotes2 = { note: "", date: "" }
+                                       if (persona === 'tutor' && e.target.value) {
+                                          internalNotes2 = {
+                                             note: e.target.value,
+                                             date: new Date()
+                                          }
+                                       }
+
+                                       let clientNotes2 = { note: "", date: "" }
+                                       if (persona === 'admin' && e.target.value) {
+                                          clientNotes2 = {
+                                             note: e.target.value,
+                                             date: new Date()
+                                          }
+                                       }
+                                       if (persona === 'tutor')
+                                          setData({
+                                             ...data,
+                                             sessionNotes: e.target.value,
+                                             internalNotes: internalNotes2,
+
+                                          })
+                                       if (persona === 'admin')
+                                          setData({
+                                             ...data,
+                                             sessionNotes: e.target.value,
+                                             clientNotes: clientNotes2,
+
+                                          })
+                                    }
+                                    }
+                                    rows={3}
+                                    className="bg-lightWhite outline-0 px-5 py-4 rounded w-full h-[200px]"
+                                 ></textarea>
+                                   :
+                                <textarea
+                                    placeholder="Session notes that are added in this box will be visible to clients (parents and students). If you want to add notes that are hidden from them, please use Internal Notes."
+                                    value={data.sessionNotes}
+                                    onChange={(e) => {
+                                       let internalNotes2 = { note: "", date: "" }
+                                       if (persona === 'tutor' && e.target.value) {
+                                          internalNotes2 = {
+                                             note: e.target.value,
+                                             date: new Date()
+                                          }
+                                       }
+
+                                       let clientNotes2 = { note: "", date: "" }
+                                       if (persona === 'admin' && e.target.value) {
+                                          clientNotes2 = {
+                                             note: e.target.value,
+                                             date: new Date()
+                                          }
+                                       }
+                                       if (persona === 'tutor')
+                                          setData({
+                                             ...data,
+                                             sessionNotes: e.target.value,
+                                             internalNotes: internalNotes2,
+
+                                          })
+                                       if (persona === 'admin')
+                                          setData({
+                                             ...data,
+                                             sessionNotes: e.target.value,
+                                             clientNotes: clientNotes2,
+
+                                          })
+                                    }
+                                    }
+                                    rows={3}
+                                    className="bg-lightWhite w-full h-[200px] outline-0 px-5 py-4 rounded"
+                                 ></textarea>
+                                   }
+                                 </div>
+                                
+                              </div> : <div className="mb-8">
                                  <div>
                                     <p className="font-medium mb-2.5 text-[#26435F] text-[18.6px]">
                                        Session Notes
@@ -1122,7 +1224,7 @@ export default function EventModal({
                                  <p className="text-right text-xs text-primary-80">
                                     {data.sessionNotes ? data.sessionNotes.length : '0'}/200
                                  </p>
-                              </div>
+                              </div>}
 
 
                            </>

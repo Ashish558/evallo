@@ -3,6 +3,7 @@ import { getFormattedDate } from "../../utils/utils";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useLazyGetTutorDetailsQuery } from "../../app/services/users";
+import { getMonthName } from "../../utils/utils";
 
 
 const LatestSignUpTableItem = ({ item, onClick }) => {
@@ -38,7 +39,25 @@ const LatestSignUpTableItem = ({ item, onClick }) => {
       })
     })
     
-  },[item])
+  },[item]);
+
+   //  format monthName date, year
+   const formatDate= (value)=>{
+    const [ month, day, year] = value.split("-");
+    const monthName = getMonthName(month-1);
+    console.log(
+     { 
+       value : value,
+       day : day,
+       month : month,
+       year : year,
+       monthName :monthName
+      }
+   );
+    
+    const formattedDate = `${monthName}` + " " + `${day}` + `,` + `${year}`;
+    return formattedDate
+   }
   return (
     <tr className=" leading-8 ">
       <td className="  text-[17.5px] px-[16px]  min-w-14 py-4 text-left">
@@ -77,7 +96,7 @@ const LatestSignUpTableItem = ({ item, onClick }) => {
       <td className=" text-[17.5px] px-[16px]  min-w-14 py-4">
         <div >
           {/* {new Date(item.lastSignUp).toDateString()} */}
-        {  getFormattedDate(item.lastSignUp, dateFormat)}
+        {  formatDate(getFormattedDate(item.lastSignUp, dateFormat))}
         
         </div>
       </td>
