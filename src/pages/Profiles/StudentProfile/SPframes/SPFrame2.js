@@ -9,6 +9,7 @@ import sat from "../../../../assets/YIcons/Official SAT® scores.svg";
 import { useLazyGetTotalHoursQuery } from "../../../../app/services/session";
 import { useSelector } from "react-redux";
 import { getFormattedDate } from "../../../../utils/utils";
+import { getFormattedDateWithSlash } from "../../../../utils/utils";
 
 const SPFrame2 = ({
   userDetail,
@@ -74,27 +75,27 @@ const SPFrame2 = ({
       <div className="flex mt-0 justify-between gap-5 design:gap-10">
         <div className="flex-1 h-[200px] design:h-[230px] gap-7  flex flex-col">
           <div className="flex-1  flex justify-between">
-            <p className=" text-sm text-[#26435F] font-semibold text-base-20">
+            <p className=" text-[20px] text-[#26435F] font-semibold text-base-20">
               Hours Tutored
               <span className=" text-[#FFA28D] text-2xl block mt-1">{totalHours}</span>
             </p>
-            <p className=" text-sm text-[#26435F] font-semibold text-base-20">
+            <p className=" text-[20px] text-[#26435F] font-semibold text-base-20">
               No. Of Sessions
               <span className=" text-[#FFA28D] text-2xl block mt-1">90</span>
             </p>
           </div>
-          <div className="flex-1  flex justify-between">
-            <p className=" text-sm text-[#26435F] font-semibold text-base-20">
+          <div className="flex-1  flex justify-between items-center ">
+            <p className=" text-[20px] text-[#26435F] font-semibold text-base-20">
               No. of Assignments
               <span className=" text-[#FFA28D] text-2xl block mt-1">
                 {totalTest}
               </span>
             </p>
-            <p className=" text-sm text-[#26435F] font-semibold text-base-20 w-[122px] text-left">
+            <p className=" text-[20px] text-[#26435F] font-semibold text-base-20 w-[165px] text-left ">
               Join Date
               <span className=" text-[#FFA28D] text-xl block mt-1">
                 {/* {new Date(userDetail?.createdAt).toLocaleDateString()} */}
-                {getFormattedDate(userDetail?.createdAt, dateFormat)}
+                {getFormattedDateWithSlash(userDetail?.createdAt, dateFormat)}
               </span>
             </p>
           </div>
