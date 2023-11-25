@@ -124,7 +124,7 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
 
 
 
-  const [startFull, endFull] = latestDateFormat.split(" - ");
+  let [startFull, endFull] = latestDateFormat.split(" - ");
 
 
   const [, , endYear] = startFull.split("-");
@@ -132,8 +132,31 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
 
   const [startMonth, startDay] = startFull.split("-");
 
-
-  const formattedStartDate = `${startMonth}-${startDay}-${endYear}`;
+  function formatDate(inputDate) {
+    // Split the input date into day, month, and year
+    const [day, month, year] = inputDate.split('-');
+  
+    // Create a new Date object with the provided components
+    const dateObj = new Date(`${month} ${day}, ${year}`);
+    try {
+      
+    
+    // Format the month to three-letter abbreviation with all letters in uppercase
+    const formattedMonth = new Intl.DateTimeFormat('en-US', { month: 'short' })
+      .formatToParts(dateObj)
+      .find(part => part.type === 'month').value.toUpperCase();
+  
+    // Construct the final formatted date
+    const formattedDate = `${day}-${formattedMonth}-${year}`;
+  
+    return formattedDate;
+  } catch (error) {
+      console.log(error);
+  }
+  }
+  
+  const formattedStartDate =formatDate(`${startMonth}-${startDay}-${endYear}`);
+  endFull=formatDate(endFull)
   const formattedDateRange = `${formattedStartDate}  -  ${endFull}`;
   // console.log(formattedDateRange);
 

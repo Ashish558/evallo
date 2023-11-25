@@ -37,6 +37,7 @@ import { sessionSchema } from "./schema/schema";
 import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 import { useLazyGetTutorDetailsQuery } from "../../../app/services/users";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const timeZones = ["IST"];
 const tempDays = [
@@ -142,7 +143,7 @@ export default function EventModal({
    // console.log('isUpdating---', isUpdating);
    // console.log('data---', data);
    const [submitDisabled, setSubmitDisabled] = useState(false)
-
+   const navigate=useNavigate()
    const [days, setDays] = useState(tempDays);
    const [topics, setTopics] = useState([]);
    const [studentMoods, setStudentMoods] = useState([]);
@@ -1256,7 +1257,7 @@ export default function EventModal({
                               <>
                                  <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-10">
                                     <span className="font-semibold mr-1">⚠️ Note:</span>
-                                    All deleted session data will be lost and you will NOT be able to recover it later. Note that this might also impact the Client's digital wallet accordingly. Read detailed documentation in Evallo’s  <span className="text-[#24A3D9]"> knowledge base.</span>
+                                    All deleted session data will be lost and you will NOT be able to recover it later. Note that this might also impact the Client's digital wallet accordingly. Read detailed documentation in Evallo’s  <span className="text-[#24A3D9] cursor-pointer" onClick={()=>window.location.href = process.env.REACT_APP_SUPPORT_LINK}> knowledge base.</span>
                                  </p>
                               </>
                            }

@@ -66,7 +66,28 @@ const SPFrame2 = ({
 
     userDetailSave(reqBody);
   };
-
+  function formatDate(inputDate) {
+    // Split the input date into day, month, and year
+    const [day, month, year] = inputDate.split('-');
+  
+    // Create a new Date object with the provided components
+    const dateObj = new Date(`${month} ${day}, ${year}`);
+    try {
+      
+    
+    // Format the month to three-letter abbreviation with all letters in uppercase
+    const formattedMonth = new Intl.DateTimeFormat('en-US', { month: 'short' })
+      .formatToParts(dateObj)
+      .find(part => part.type === 'month').value.toUpperCase();
+  
+    // Construct the final formatted date
+    const formattedDate = `${day}-${formattedMonth}-${year}`;
+  
+    return formattedDate;
+  } catch (error) {
+      console.log(error);
+  }
+  }
 
   return (
     <div>
@@ -94,7 +115,7 @@ const SPFrame2 = ({
               Join Date
               <span className=" text-[#FFA28D] text-xl block mt-1">
                 {/* {new Date(userDetail?.createdAt).toLocaleDateString()} */}
-                {getFormattedDate(userDetail?.createdAt, dateFormat)}
+                {formatDate(getFormattedDate(userDetail?.createdAt, dateFormat))}
               </span>
             </p>
           </div>
@@ -144,7 +165,7 @@ const SPFrame2 = ({
                     <div className="mx-2 flex flex-col text-xs text-base-15">
                       <p className="text-[#517CA8]">
                         {it.createdAt
-                          ? getFormattedDate(it.createdAt, dateFormat)
+                          ? formatDate(getFormattedDate(it.createdAt, dateFormat))
                           : "NA"}
                       </p>
 
@@ -223,7 +244,7 @@ const SPFrame2 = ({
                     <div className="mx-2 flex flex-col text-xs text-base-15">
                       <p className="text-[#517CA8]">
                         {it.createdAt
-                          ? getFormattedDate(it.createdAt, dateFormat)
+                          ? formatDate(getFormattedDate(it.createdAt, dateFormat))
                           : "NA"}
                       </p>
 

@@ -253,21 +253,7 @@ const AccountOverview = () => {
                 });
               }}
               error={error.email}
-              Tooltip={
-                <span className="absolute top-10 w-[333px] h-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
-                  <h3 className="text-[#24A3D9] font-semibold mb-1">
-                    Email Confirmation Sent
-                  </h3>
-                  You need to verify your email if
-                  <ul className="list-disc pl-3 mb-2">
-                    <li>you created a new account.</li>
-                    <li>you recently changed your email.</li>
-                  </ul>
-                  We have sent you an email verification link to your current
-                  email address to make sure that it really is you who requested
-                  a change.
-                </span>
-              }
+             
             />
             <div id="number">
               <InputFieldDropdown

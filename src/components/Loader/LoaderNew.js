@@ -1,8 +1,9 @@
 import React from "react";
 
-const LoaderNew = () => {
+const LoaderNew = ({className}) => {
   return (
-    <span role="status" className="relative z-[5000] py-0">
+    <div className={className} >
+    <span role="status" className={`relative z-[5000] py-0`}>
       <svg
         aria-hidden="true"
         className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
@@ -21,6 +22,7 @@ const LoaderNew = () => {
       </svg>
       <span className="sr-only">Loading...</span>
     </span>
+    </div>
   );
 };
 

@@ -1936,7 +1936,7 @@ export default function AssignedTests() {
                 not be able to attempt any remaining sections and will be able
                 to access the score report. Read detailed documentation in
                 Evallo’s{" "}
-                <span className="text-[#24A3D9]  border-b border-b-[#24A3D9]">
+                <span className="text-[#24A3D9]  border-b border-b-[#24A3D9] cursor-pointer" onClick={()=>window.location.href = process.env.REACT_APP_SUPPORT_LINK}>
                   {" "}
                   knowledge base.
                 </span>
@@ -1973,7 +1973,7 @@ export default function AssignedTests() {
                 Instead, it will resend the email with the PDF file (containing
                 the assignment content) attached to it. Read detailed
                 documentation in Evallo’s{" "}
-                <span className="text-[#24A3D9]  border-b border-b-[#24A3D9]">
+                <span className="text-[#24A3D9] cursor-pointer border-b border-b-[#24A3D9]" onClick={()=>window.location.href = process.env.REACT_APP_SUPPORT_LINK}>
                   {" "}
                   knowledge base.
                 </span>

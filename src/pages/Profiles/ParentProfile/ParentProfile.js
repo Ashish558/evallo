@@ -174,6 +174,9 @@ export default function StudentProfile({ isOwn }) {
       console.error('Failed to copy text: ', err);
     }
   }
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
   const handleClose = () => {
     setToEdit((prev) => {
       let tempToEdit = {};
