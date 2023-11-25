@@ -2113,7 +2113,7 @@ export default function Users() {
               <p className="text-base -mt-[21px] text-[#667085] mb-6">
                 <span className="font-semibold mr-1">⚠️Note:</span>
                 Once the users are deleted from your Organization, you will not be able to recover their data. Read detailed documentation in Evallo’s{" "}
-                <span className="text-[#24A3D9] underline cursor-pointer" onClick={()=>navigate('/support')}>knowledge base.</span>
+                <span className="text-[#24A3D9] underline cursor-pointer font-medium" onClick={()=>navigate('/support')}>knowledge base.</span>
               </p>
             </>
           }
