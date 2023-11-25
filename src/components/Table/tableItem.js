@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getMonthName } from "../../utils/utils";
+
 import ResendConfirmation from "../../assets/assignedTests/resendConfirmation.svg";
 import UploadIcon from "../../assets/assignedTests/upload.svg";
 import DownloadIcon from "../../assets/icons/download.png";
@@ -65,6 +67,8 @@ export default function TableItem({
   numberChecked,
   setnumberChecked,
   testtype,
+  setAllAssignedTests,
+  setFilteredTests,
 }) {
   const [dateFormat, setDateFormat] = useState("dd/mm/yy");
 
@@ -151,6 +155,20 @@ export default function TableItem({
           );
 
           setScore(`${score.cumulative},${score.right}`);
+
+          setAllAssignedTests((list) => {
+            if(list === undefined || list === null || list.length === 0) return list;
+            const newList = [...list];
+            newList.find(i => i.assignedTestId === item.assignedTestId).scores = score;
+            return newList;
+          });
+
+          setFilteredTests((list) => {
+            if(list === undefined || list === null || list.length === 0) return list;
+            const newList = [...list];
+            newList.find(i => i.assignedTestId === item.assignedTestId).scores = score;
+            return newList;
+          })
         });
       }
     }
@@ -269,22 +287,29 @@ export default function TableItem({
   const options = { year: "numeric", month: "long", day: "numeric" };
   const formattedDate = date.toLocaleDateString("en-US", options);
 
-  //console.log(dataFor)
-  const getFormatDate = (inputDate) => {
-    const dateObj = new Date(inputDate);
+     //  format monthName date, year
+     const formatDate= (value)=>{
+      const [ month, day, year] = value.split("-");
+      const monthName = getMonthName(month-1);
+      console.log(
+       { 
+         value : value,
+         day : day,
+         month : month,
+         year : year,
+         monthName :monthName
+        }
+     );
+      
+      const formattedDate = `${monthName}` + " " + `${day}` + `,` + `${year}`;
+      return formattedDate
+     }
 
-    const options = { year: "numeric", month: "short", day: "2-digit" };
-    const formattedDate = dateObj.toLocaleDateString("en-US", options);
-    let dd = formattedDate;
-    let ed = dd.split(" ");
-    let fd = ed[0] + ". " + ed[1] + " " + ed[2];
-    //console.log(formattedDate);
-    return fd;
-  };
   const getPhone = (val) => {
     //console.log(item)
     //console.log(val)
   };
+
 
   const handleSelect = (item2, key) => {
     console.log({ item2, selectedId2 });
@@ -358,13 +383,12 @@ export default function TableItem({
       )}
 
       {dataFor === "allUsers" && (
-        <tr className="odd:bg-white   leading-8">
-          <td className=" text-[17.5px] px-1  min-w-14   text-left">
-            <span className="inline-block cursor-pointer pl-4 pt-[6px]">
-              <div className="flex items-center">
+        <tr className="odd:bg-white h-full leading-8">
+          <td className=" text-[17.5px] min-w-14 h-full text-left  ">
+            <div className="w-full flex justify-center items-center cursor-pointer ">
+              <div className="w-full h-full flex items-center justify-start px-4">
                 {dataFor === "allUsers" ? (
-                  <div className="pt-[3px]">
-                    {" "}
+                  <div className="">
                     <SCheckbox
                       checked={isChecked}
                       stopM={true}
@@ -372,35 +396,21 @@ export default function TableItem({
                     />
                   </div>
                 ) : (
-                  // <label
-                  //   className={`${styles["checkbox-label"]} block text-[#26435F] `}
-                  // >
-                  //   <input
-                  //     type="checkbox"
-                  //     checked={isChecked}
-                  //     onChange={handleCheckboxChange}
-                  //   />
-                  //   <span
-                  //     className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
-                  //       }`}
-                  //   ></span>
-                  // </label>
-
                   ""
                 )}
-                <span
+                <div
                   onClick={() => onClick.redirect(item)}
-                  className="capitalize whitespace-nowrap overflow-hidden text-ellipsis w-[100px]"
+                  className="capitalize whitespace-nowrap overflow-hidden text-ellipsis text-left"
                 >
                   {item.name}
-                </span>
+                </div>
               </div>
-            </span>
+            </div>
           </td>
-          <td className=" text-[17.5px] px-1 min-w-14  capitalize">
+          <td className=" text-[17.5px] px-1 min-w-14  capitalize text-left">
             <div className="my-[6px]">{item.userType}</div>
           </td>
-          <td className=" text-[17.5px] px-1  min-w-14  ">
+          <td className=" text-[17.5px] px-1  min-w-14 text-left">
             <div className="my-[6px]">{item?.email?.toLowerCase()}</div>
           </td>
 
@@ -468,9 +478,9 @@ export default function TableItem({
           <td className=" text-[17.5px] px-1  min-w-14  text-[#507CA8]">
             <div className="my-[6px] capitalize">{item?.accountStatus}</div>
           </td>
-          <td className=" text-[17.5px] px-1  min-w-14  text-[#507CA8]">
+          <td className=" text-[17.5px] px-1 min-w-14  text-[#507CA8]">
             <div className="my-[6px] capitalize">
-              {getFormattedDate(item.createdAt, dateFormat)}
+              {formatDate(getFormattedDate(item.createdAt, dateFormat))}
             </div>
           </td>
 

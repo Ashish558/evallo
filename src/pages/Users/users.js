@@ -18,7 +18,7 @@ import SearchIcon from "../../assets/icons/Search_shade.svg";
 import fileupload from "../../assets/icons/basil_file-upload-outline (2).svg";
 import { tableData, userTypesList } from "./tempData";
 import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
-import dropdownIcon from '../../assets/icons/coloured_dropdown.svg'
+import dropdownIcon from "../../assets/icons/coloured_dropdown.svg";
 import { csvHeaders } from "./csvUtlis";
 import {
   useAddUserMutation,
@@ -46,7 +46,10 @@ import { useLazyGetSettingsQuery } from "../../app/services/session";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 // import CountryCode from "../../components/CountryCode/CountryCode";
 // import { isPhoneNumber } from "../Signup/utils/util";
-import { checkIfExistInNestedArray, getFormattedDateTime } from "../../utils/utils";
+import {
+  checkIfExistInNestedArray,
+  getFormattedDateTime,
+} from "../../utils/utils";
 // import InputSelectNew from "../../components/InputSelectNew/InputSelectNew";
 import InputSearch from "../../components/InputSearch/InputSearch";
 import { useSelector } from "react-redux";
@@ -71,13 +74,13 @@ const initialState = {
 export default function Users() {
   const [modalActive, setModalActive] = useState(false);
   const navigate = useNavigate();
-  const { organization, } = useSelector((state) => state.organization);
+  const { organization } = useSelector((state) => state.organization);
 
   const SORT_STATES = {
     ASCENDING_ORDER: "ASCENDING_ORDER",
     DESCENDING_ORDER: "DESCENDING_ORDER",
     UNSORTED: "UNSORTED",
-  }
+  };
 
   const { firstName, lastName } = useSelector((state) => state.user);
   const [modalData, setModalData] = useState(initialState);
@@ -87,12 +90,20 @@ export default function Users() {
   const [specializations, setSpecializations] = useState([]);
   const [numberPrefix, setNumberPrefix] = useState("");
   const [usersData, setUsersData] = useState([]);
-  const [usernameSortState, setUsernameSortState] = useState(SORT_STATES.UNSORTED);
-  const [userTypeSortState, setUserTypeSortState] = useState(SORT_STATES.UNSORTED);
-  const [emailSortState, setEmailSortState]       = useState(SORT_STATES.UNSORTED);
-  const [phoneSortState, setPhoneSortState]       = useState(SORT_STATES.UNSORTED);
-  const [accountStatusSortState, setAccountStatusSortState] = useState(SORT_STATES.UNSORTED);
-  const [joinDateSortState, setJoinDateSortState] = useState(SORT_STATES.UNSORTED);
+  const [usernameSortState, setUsernameSortState] = useState(
+    SORT_STATES.UNSORTED
+  );
+  const [userTypeSortState, setUserTypeSortState] = useState(
+    SORT_STATES.UNSORTED
+  );
+  const [emailSortState, setEmailSortState] = useState(SORT_STATES.UNSORTED);
+  const [phoneSortState, setPhoneSortState] = useState(SORT_STATES.UNSORTED);
+  const [accountStatusSortState, setAccountStatusSortState] = useState(
+    SORT_STATES.UNSORTED
+  );
+  const [joinDateSortState, setJoinDateSortState] = useState(
+    SORT_STATES.UNSORTED
+  );
   const [filteredUsersData, setFilteredUsersData] = useState([]);
   const [bulkUpload, setBulkUpload] = useState(false);
   const [xlsFile, setXlsFile] = useState();
@@ -101,10 +112,10 @@ export default function Users() {
   useEffect(() => {
     setValidData(
       isEmail(modalData.email) &&
-      modalData.firstName &&
-      modalData.lastName &&
-      modalData.userType &&
-      modalData.phone
+        modalData.firstName &&
+        modalData.lastName &&
+        modalData.userType &&
+        modalData.phone
     );
   }, [
     modalData,
@@ -121,7 +132,10 @@ export default function Users() {
 
   const sortByName = () => {
     console.log("sortByName");
-    if(usernameSortState === SORT_STATES.UNSORTED || usernameSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (
+      usernameSortState === SORT_STATES.UNSORTED ||
+      usernameSortState === SORT_STATES.DESCENDING_ORDER
+    ) {
       setUsersData((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -135,7 +149,7 @@ export default function Users() {
         });
         return arr;
       });
-  
+
       setFilteredUsersData((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
@@ -152,8 +166,7 @@ export default function Users() {
       });
 
       setUsernameSortState(SORT_STATES.ASCENDING_ORDER);
-    }
-    else if(usernameSortState === SORT_STATES.ASCENDING_ORDER) {
+    } else if (usernameSortState === SORT_STATES.ASCENDING_ORDER) {
       setUsersData((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -167,7 +180,7 @@ export default function Users() {
         });
         return arr;
       });
-  
+
       setFilteredUsersData((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
@@ -188,7 +201,10 @@ export default function Users() {
   };
 
   const sortByUserType = () => {
-    if(userTypeSortState === SORT_STATES.UNSORTED || userTypeSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (
+      userTypeSortState === SORT_STATES.UNSORTED ||
+      userTypeSortState === SORT_STATES.DESCENDING_ORDER
+    ) {
       setUsersData((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -202,7 +218,7 @@ export default function Users() {
         });
         return arr;
       });
-  
+
       setFilteredUsersData((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
@@ -219,8 +235,7 @@ export default function Users() {
       });
 
       setUserTypeSortState(SORT_STATES.ASCENDING_ORDER);
-    }
-    else if(userTypeSortState === SORT_STATES.ASCENDING_ORDER) {
+    } else if (userTypeSortState === SORT_STATES.ASCENDING_ORDER) {
       setUsersData((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -234,7 +249,7 @@ export default function Users() {
         });
         return arr;
       });
-  
+
       setFilteredUsersData((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
@@ -255,7 +270,10 @@ export default function Users() {
   };
 
   const sortByEmail = () => {
-    if(emailSortState === SORT_STATES.UNSORTED || emailSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (
+      emailSortState === SORT_STATES.UNSORTED ||
+      emailSortState === SORT_STATES.DESCENDING_ORDER
+    ) {
       setUsersData((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -269,7 +287,7 @@ export default function Users() {
         });
         return arr;
       });
-  
+
       setFilteredUsersData((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
@@ -286,8 +304,7 @@ export default function Users() {
       });
 
       setEmailSortState(SORT_STATES.ASCENDING_ORDER);
-    }
-    else if(emailSortState === SORT_STATES.ASCENDING_ORDER) {
+    } else if (emailSortState === SORT_STATES.ASCENDING_ORDER) {
       setUsersData((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -301,7 +318,7 @@ export default function Users() {
         });
         return arr;
       });
-  
+
       setFilteredUsersData((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
@@ -322,7 +339,10 @@ export default function Users() {
   };
 
   const sortByPhone = () => {
-    if(phoneSortState === SORT_STATES.UNSORTED || phoneSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (
+      phoneSortState === SORT_STATES.UNSORTED ||
+      phoneSortState === SORT_STATES.DESCENDING_ORDER
+    ) {
       setUsersData((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -336,7 +356,7 @@ export default function Users() {
         });
         return arr;
       });
-  
+
       setFilteredUsersData((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
@@ -353,8 +373,7 @@ export default function Users() {
       });
 
       setPhoneSortState(SORT_STATES.ASCENDING_ORDER);
-    }
-    else if(phoneSortState === SORT_STATES.ASCENDING_ORDER) {
+    } else if (phoneSortState === SORT_STATES.ASCENDING_ORDER) {
       setUsersData((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -368,7 +387,7 @@ export default function Users() {
         });
         return arr;
       });
-  
+
       setFilteredUsersData((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
@@ -389,7 +408,10 @@ export default function Users() {
   };
 
   const sortByAccountStatus = () => {
-    if(accountStatusSortState === SORT_STATES.UNSORTED || accountStatusSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (
+      accountStatusSortState === SORT_STATES.UNSORTED ||
+      accountStatusSortState === SORT_STATES.DESCENDING_ORDER
+    ) {
       setUsersData((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -403,7 +425,7 @@ export default function Users() {
         });
         return arr;
       });
-  
+
       setFilteredUsersData((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
@@ -420,8 +442,7 @@ export default function Users() {
       });
 
       setAccountStatusSortState(SORT_STATES.ASCENDING_ORDER);
-    }
-    else if(accountStatusSortState === SORT_STATES.ASCENDING_ORDER) {
+    } else if (accountStatusSortState === SORT_STATES.ASCENDING_ORDER) {
       setUsersData((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -435,7 +456,7 @@ export default function Users() {
         });
         return arr;
       });
-  
+
       setFilteredUsersData((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
@@ -456,29 +477,44 @@ export default function Users() {
   };
 
   const sortByJoinDate = () => {
-    if(joinDateSortState === SORT_STATES.UNSORTED || joinDateSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (
+      joinDateSortState === SORT_STATES.UNSORTED ||
+      joinDateSortState === SORT_STATES.DESCENDING_ORDER
+    ) {
       setUsersData((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
-          if (getFormattedDateTime(a.createdAt) < getFormattedDateTime(b.createdAt)) {
+          if (
+            getFormattedDateTime(a.createdAt) <
+            getFormattedDateTime(b.createdAt)
+          ) {
             return -1;
           }
-          if (getFormattedDateTime(a.createdAt) > getFormattedDateTime(b.createdAt)) {
+          if (
+            getFormattedDateTime(a.createdAt) >
+            getFormattedDateTime(b.createdAt)
+          ) {
             return 1;
           }
           return 0;
         });
         return arr;
       });
-  
+
       setFilteredUsersData((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
         arr = arr.sort(function (a, b) {
-          if (getFormattedDateTime(a.createdAt) < getFormattedDateTime(b.createdAt)) {
+          if (
+            getFormattedDateTime(a.createdAt) <
+            getFormattedDateTime(b.createdAt)
+          ) {
             return -1;
           }
-          if (getFormattedDateTime(a.createdAt) > getFormattedDateTime(b.createdAt)) {
+          if (
+            getFormattedDateTime(a.createdAt) >
+            getFormattedDateTime(b.createdAt)
+          ) {
             return 1;
           }
           return 0;
@@ -487,12 +523,14 @@ export default function Users() {
       });
 
       setJoinDateSortState(SORT_STATES.ASCENDING_ORDER);
-    }
-    else if(joinDateSortState === SORT_STATES.ASCENDING_ORDER) {
+    } else if (joinDateSortState === SORT_STATES.ASCENDING_ORDER) {
       setUsersData((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
-          if (getFormattedDateTime(a.createdAt) < getFormattedDateTime(b.createdAt)) {
+          if (
+            getFormattedDateTime(a.createdAt) <
+            getFormattedDateTime(b.createdAt)
+          ) {
             return 1;
           }
           if (a.createdAt > b.createdAt) {
@@ -502,15 +540,21 @@ export default function Users() {
         });
         return arr;
       });
-  
+
       setFilteredUsersData((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
         arr = arr.sort(function (a, b) {
-          if (getFormattedDateTime(a.createdAt) < getFormattedDateTime(b.createdAt)) {
+          if (
+            getFormattedDateTime(a.createdAt) <
+            getFormattedDateTime(b.createdAt)
+          ) {
             return 1;
           }
-          if (getFormattedDateTime(a.createdAt) > getFormattedDateTime(b.createdAt)) {
+          if (
+            getFormattedDateTime(a.createdAt) >
+            getFormattedDateTime(b.createdAt)
+          ) {
             return -1;
           }
           return 0;
@@ -521,7 +565,6 @@ export default function Users() {
       setJoinDateSortState(SORT_STATES.DESCENDING_ORDER);
     }
   };
-
 
   const tableHeaders = [
     {
@@ -546,7 +589,7 @@ export default function Users() {
     {
       id: 4,
       text: "Phone",
-      onCick: sortByPhone,  // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
+      onCick: sortByPhone, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
       willDisplayDownArrow: phoneSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
@@ -570,7 +613,8 @@ export default function Users() {
       id: 8,
       text: "Account Status",
       onCick: sortByAccountStatus, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
-      willDisplayDownArrow: accountStatusSortState !== SORT_STATES.DESCENDING_ORDER,
+      willDisplayDownArrow:
+        accountStatusSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 9,
@@ -665,7 +709,7 @@ export default function Users() {
 
     console.log("urlParams", urlParams);
     fetchUsers(urlParams).then((res) => {
-      console.log("crm", res)
+      console.log("crm", res);
       if (res?.data?.data) setTotalPages(res?.data?.data?.total_users);
 
       const fetchDetails = async () => {
@@ -828,20 +872,20 @@ export default function Users() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("add save")
+    console.log("add save");
     if (modalData.userType === "") return alert("Fill all the fields");
-    let f = /[a-z]/i.test(modalData?.firstName)
-    f = f && /[a-z]/i.test(modalData?.lastName)
+    let f = /[a-z]/i.test(modalData?.firstName);
+    f = f && /[a-z]/i.test(modalData?.lastName);
     if (!f) {
-      alert("Enter a valid name!")
-      return
+      alert("Enter a valid name!");
+      return;
     }
     let body = {
       firstName: modalData.firstName,
       lastName: modalData.lastName,
       email: modalData.email,
       phone: `${numberPrefix}${modalData.phone}`,
-      type: "dont send invite."
+      type: "dont send invite.",
     };
     setLoading(true);
     if (modalData.userType === "tutor") {
@@ -877,17 +921,16 @@ export default function Users() {
       });
     }
   };
-  const [loadingInvite, setLoadingInvite] = useState(false)
+  const [loadingInvite, setLoadingInvite] = useState(false);
   const handleInvite1 = (e) => {
-
     e.preventDefault();
-    console.log("add invite")
+    console.log("add invite");
     if (modalData.userType === "") return alert("Fill all the fields");
-    let f = /[a-z]/i.test(modalData?.firstName)
-    f = f && /[a-z]/i.test(modalData?.lastName)
+    let f = /[a-z]/i.test(modalData?.firstName);
+    f = f && /[a-z]/i.test(modalData?.lastName);
     if (!f) {
-      alert("Enter a valid name!")
-      return
+      alert("Enter a valid name!");
+      return;
     }
     let body = {
       firstName: modalData.firstName,
@@ -932,25 +975,22 @@ export default function Users() {
   };
   const [isChecked, setIsChecked] = useState(false);
 
-
   const handleCheckboxChange = (e) => {
     if (!isChecked) {
-      let data = filteredUsersData
-      data = data?.slice(0, maxPageSize)
+      let data = filteredUsersData;
+      data = data?.slice(0, maxPageSize);
 
-      setSelectedId([...data])
-    }
-    else {
-      setSelectedId([])
-      setBulkEdits({})
+      setSelectedId([...data]);
+    } else {
+      setSelectedId([]);
+      setBulkEdits({});
     }
     setIsChecked(!isChecked);
-
   };
   useEffect(() => {
-    setIsChecked(false)
-    setSelectedId([])
-  }, [filteredUsersData])
+    setIsChecked(false);
+    setSelectedId([]);
+  }, [filteredUsersData]);
   const handleClose = () => setModalActive(false);
 
   const redirect = (item) => {
@@ -958,8 +998,6 @@ export default function Users() {
       navigate(`/profile/${item.userType}/${item._id}`);
     }
   };
-
-
 
   const handleTutorStatus = (item) => {
     //console.log(item);
@@ -1048,7 +1086,7 @@ export default function Users() {
     let specs = [];
     settings.servicesAndSpecialization.map((service) => {
       // specs.push(...service.specialization);
-      specs.push(service.service)
+      specs.push(service.service);
     });
     setSpecializations(specs);
     //console.log("specs", specs);
@@ -1105,8 +1143,7 @@ export default function Users() {
         .catch((err) => {
           setCsvLoad(false);
         });
-    }
-    else {
+    } else {
       setCsvData(selectedId);
       setsuccessFetched(true);
       setCsvLoad(false);
@@ -1197,141 +1234,134 @@ export default function Users() {
         });
     }
   };
-  const [selectedId, setSelectedId] = useState([])
-  const [addLeadStatus, sls] = useCRMBulkChangeLeadStatusMutation()
-  const [addTutorStatus, slst] = useCRMBulkChangeTutorStatusMutation()
-  const [addAssignedTutor, slsAt] = useCRMBulkChangeAssignedTutorMutation()
-  const [addInviteUser, slsiu] = useCRMBulkInviteUserMutation()
-  const [addDeleteUser, slsdu] = useCRMBulkDeleteUserMutation()
-  const [bulkEdits, setBulkEdits] = useState({})
-  const [checkSave, setChecksave] = useState({ ch: 0, done: false, count: 0 })
+  const [selectedId, setSelectedId] = useState([]);
+  const [addLeadStatus, sls] = useCRMBulkChangeLeadStatusMutation();
+  const [addTutorStatus, slst] = useCRMBulkChangeTutorStatusMutation();
+  const [addAssignedTutor, slsAt] = useCRMBulkChangeAssignedTutorMutation();
+  const [addInviteUser, slsiu] = useCRMBulkInviteUserMutation();
+  const [addDeleteUser, slsdu] = useCRMBulkDeleteUserMutation();
+  const [bulkEdits, setBulkEdits] = useState({});
+  const [checkSave, setChecksave] = useState({ ch: 0, done: false, count: 0 });
   const handleSave = () => {
-    let users = selectedId?.map(ii => ii?._id)
-    if (!users || users?.length === 0) return
+    let users = selectedId?.map((ii) => ii?._id);
+    if (!users || users?.length === 0) return;
     let b = 0;
 
     // setSaveSelectLoading(true)
     if (bulkEdits?.leadStatus && bulkEdits?.leadStatus?.value) {
-      b++
-      setSaveSelectLoading(true)
-      addLeadStatus({ leadStatus: bulkEdits.leadStatus.value, users }).then((res) => {
-        console.log("successleadStatus", res, checkSave)
-        setChecksave((prev) => {
-
-          return { ...prev, done: true, count: prev?.count + 1 }
-        })
-        setSaveSelectLoading(false)
-        setSaveBulkModalActive(false)
-      })
+      b++;
+      setSaveSelectLoading(true);
+      addLeadStatus({ leadStatus: bulkEdits.leadStatus.value, users }).then(
+        (res) => {
+          console.log("successleadStatus", res, checkSave);
+          setChecksave((prev) => {
+            return { ...prev, done: true, count: prev?.count + 1 };
+          });
+          setSaveSelectLoading(false);
+          setSaveBulkModalActive(false);
+        }
+      );
     }
     if (bulkEdits?.tutorStatus && bulkEdits?.tutorStatus?.value) {
-      setSaveSelectLoading(true)
-      b++
-      addTutorStatus({ tutorStatus: bulkEdits.tutorStatus.value, users }).then((res) => {
-        console.log("successtutorStatus", res, checkSave)
+      setSaveSelectLoading(true);
+      b++;
+      addTutorStatus({ tutorStatus: bulkEdits.tutorStatus.value, users }).then(
+        (res) => {
+          console.log("successtutorStatus", res, checkSave);
 
+          setSaveSelectLoading(false);
+          setSaveBulkModalActive(false);
+          // if(checkSave?.ch &&  checkSave?.count+1===checkSave?.ch){
+          //   alert("Changes Saved Successfully")
 
-        setSaveSelectLoading(false)
-        setSaveBulkModalActive(false)
-        // if(checkSave?.ch &&  checkSave?.count+1===checkSave?.ch){
-        //   alert("Changes Saved Successfully")
-
-        //   setChecksave({})
-        // }
-        setChecksave((prev) => {
-
-          return { ...prev, done: true, count: prev?.count + 1 }
-        })
-      })
+          //   setChecksave({})
+          // }
+          setChecksave((prev) => {
+            return { ...prev, done: true, count: prev?.count + 1 };
+          });
+        }
+      );
     }
     if (bulkEdits?.assignedTutor && bulkEdits?.assignedTutor?.id) {
-      setSaveSelectLoading(true)
-      b++
-      addAssignedTutor({ tutorId: bulkEdits.assignedTutor.id, users }).then((res) => {
-        console.log("successassignedTutor", res, checkSave)
-        setChecksave((prev) => {
-
-          return { ...prev, done: true, count: prev?.count + 1 }
-        })
-        setSaveSelectLoading(false)
-        setSaveBulkModalActive(false)
-      })
+      setSaveSelectLoading(true);
+      b++;
+      addAssignedTutor({ tutorId: bulkEdits.assignedTutor.id, users }).then(
+        (res) => {
+          console.log("successassignedTutor", res, checkSave);
+          setChecksave((prev) => {
+            return { ...prev, done: true, count: prev?.count + 1 };
+          });
+          setSaveSelectLoading(false);
+          setSaveBulkModalActive(false);
+        }
+      );
     }
     setChecksave((prev) => {
-
-      return { done: false, count: 0, ch: b }
-    })
+      return { done: false, count: 0, ch: b };
+    });
     if (!b) {
-      alert("No filter selected!")
+      alert("No filter selected!");
     }
-
-
-  }
+  };
   useEffect(() => {
-    if (checkSave?.ch > 0 && checkSave?.count && checkSave?.ch === checkSave?.count) {
-      alert("Changes Saved Successfully!")
-      fetch()
-      setChecksave({})
-      setBulkEdits({})
+    if (
+      checkSave?.ch > 0 &&
+      checkSave?.count &&
+      checkSave?.ch === checkSave?.count
+    ) {
+      alert("Changes Saved Successfully!");
+      fetch();
+      setChecksave({});
+      setBulkEdits({});
     }
-  }, [checkSave])
+  }, [checkSave]);
 
   //console.log({checkSave})
   const bulkSelectInvite = () => {
-    let users = selectedId?.map(ii => ii?._id)
-    if (!users || users?.length === 0) return
-    setInviteSelectLoading(true)
+    let users = selectedId?.map((ii) => ii?._id);
+    if (!users || users?.length === 0) return;
+    setInviteSelectLoading(true);
     addInviteUser({ users }).then((res) => {
-      console.log("successInvite", res)
-      if (res?.data)
-        alert("User(s) invited successfully!")
+      console.log("successInvite", res);
+      if (res?.data) alert("User(s) invited successfully!");
 
-      setInviteSelectLoading(false)
-      setInviteBulkModalActive(false)
-      fetch()
-    })
-
-  }
+      setInviteSelectLoading(false);
+      setInviteBulkModalActive(false);
+      fetch();
+    });
+  };
   const bulkSelectDelete = () => {
-    let users = selectedId?.map(ii => ii?._id)
-    if (!users || users?.length === 0) return
-    setDeleteSelectLoading(true)
+    let users = selectedId?.map((ii) => ii?._id);
+    if (!users || users?.length === 0) return;
+    setDeleteSelectLoading(true);
     addDeleteUser({ users }).then((res) => {
-      console.log("successDelete", res)
-      if (res?.data)
-        alert("User(s) deleted successfully!")
-      setDeleteSelectLoading(false)
-      setDeleteBulkModalActive(false)
-      fetch()
-    })
-
-  }
-  const [assignedTutorOpen, setAssignedTutorOpen] = useState(false)
-  const [deleteBulkModalActive, setDeleteBulkModalActive] = useState(false)
-  const [deleteSelectLoading, setDeleteSelectLoading] = useState(false)
-  const [InviteBulkModalActive, setInviteBulkModalActive] = useState(false)
-  const [InviteSelectLoading, setInviteSelectLoading] = useState(false)
-  const [SaveBulkModalActive, setSaveBulkModalActive] = useState(false)
-  const [saveSelectLoading, setSaveSelectLoading] = useState(false)
-  const [showTooltip, setTooltip] = useState(false)
-  const [ adminSelectedForDelete,setAdminSelectedForDelete] = useState(false)
+      console.log("successDelete", res);
+      if (res?.data) alert("User(s) deleted successfully!");
+      setDeleteSelectLoading(false);
+      setDeleteBulkModalActive(false);
+      fetch();
+    });
+  };
+  const [assignedTutorOpen, setAssignedTutorOpen] = useState(false);
+  const [deleteBulkModalActive, setDeleteBulkModalActive] = useState(false);
+  const [deleteSelectLoading, setDeleteSelectLoading] = useState(false);
+  const [InviteBulkModalActive, setInviteBulkModalActive] = useState(false);
+  const [InviteSelectLoading, setInviteSelectLoading] = useState(false);
+  const [SaveBulkModalActive, setSaveBulkModalActive] = useState(false);
+  const [saveSelectLoading, setSaveSelectLoading] = useState(false);
+  const [showTooltip, setTooltip] = useState(false);
+  const [adminSelectedForDelete, setAdminSelectedForDelete] = useState(false);
   useEffect(() => {
-    if (selectedId?.length === 0)
-      setBulkEdits({})
-    setAdminSelectedForDelete(false)
-    if(selectedId?.length>0){
-       
-        let check=selectedId?.find((it)=>it?.userType==="admin")
-        setAdminSelectedForDelete(check?true:false)
-        
+    if (selectedId?.length === 0) setBulkEdits({});
+    setAdminSelectedForDelete(false);
+    if (selectedId?.length > 0) {
+      let check = selectedId?.find((it) => it?.userType === "admin");
+      setAdminSelectedForDelete(check ? true : false);
     }
-  }, [selectedId])
-  console.log("selected ",selectedId,adminSelectedForDelete)
+  }, [selectedId]);
+  console.log("selected ", selectedId, adminSelectedForDelete);
 
-
-
-  const numberKey = Object.keys(bulkEdits)?.length > 0
-
+  const numberKey = Object.keys(bulkEdits)?.length > 0;
 
   //console.log("users",{selectedId,bulkEdits})
   return (
@@ -1339,15 +1369,16 @@ export default function Users() {
       <div className="pb-10  mt-[50px] !mt-[calc(50*0.0522vw)]">
         <div className="flex justify-between items-center mb-3">
           <p className="text-[#24A3D9] mb-6 text-xl text-base-20 cursor-pointer">
-            <span onClick={() => navigate('/')}>{organization?.company +
-              "  >  " +
-              firstName +
-              "  " +
-              lastName +
-              "  >  "}</span>
+            <span onClick={() => navigate("/")}>
+              {organization?.company +
+                "  >  " +
+                firstName +
+                "  " +
+                lastName +
+                "  >  "}
+            </span>
             <span className="font-semibold">CRM</span>
           </p>
-
         </div>
         <div>
           <div className="flex mb-[46px]">
@@ -1481,7 +1512,6 @@ export default function Users() {
                 crossBtn={true}
                 underline={true}
                 titleInvite={csvLength}
-
                 classname={"max-w-[781px] mx-auto"}
                 titleClassName={"mb-5 text-center"}
                 handleClose={() => setInviteUsers(false)}
@@ -1513,7 +1543,6 @@ export default function Users() {
                         type="button"
                         onClick={() => {
                           bulkInvite();
-
                         }}
                       >
                         Yes, Confirm
@@ -1532,9 +1561,12 @@ export default function Users() {
             )}
           </div>
         </div>
-        <div className={`flex justify-between items-center gap-7 mb-6 relative ${showTooltip ? "z-[1]" : "z-[50]"}`}>
+        <div
+          className={`flex justify-between items-center gap-7 mb-6 relative ${
+            showTooltip ? "z-[1]" : "z-[50]"
+          }`}
+        >
           <InputField
-
             IconRight={SearchIcon}
             placeholder="Search"
             inputClassName="text-base-17-5 pl-4 text-[#667085] placeholder:text-[#667085]"
@@ -1563,13 +1595,12 @@ export default function Users() {
               match: filterData.userType,
             }}
             onChange={(val) => {
-
               setFilterData({
                 ...filterData,
                 userType: filterData.userType.includes(val)
                   ? filterData.userType.filter((item) => item !== val)
                   : [...filterData.userType, val],
-              })
+              });
             }}
           />
           <InputSelect
@@ -1636,7 +1667,7 @@ export default function Users() {
               return {
                 ...iyt,
                 name: iyt.value,
-              }
+              };
             })}
             placeholder="Tutor"
             parentClassName="w-[12.8541666667vw] relative  relative   text-[#667085] -z-5000"
@@ -1667,8 +1698,10 @@ export default function Users() {
         </div>
         <div className="flex gap-6 items-center relative z-[10]   mt-[23.75px]">
           <div className="ml-6 flex gap-3 items-center">
-            <SCheckbox stopM={true} checked={selectedId.length>0} />
-            <span className="text-[#26435F] inline-block text-[17.5px] text-base-17-5 min-w-[70px] font-medium">{selectedId?.length} Selected</span>
+            <SCheckbox stopM={true} checked={selectedId.length > 0} />
+            <span className="text-[#26435F] inline-block text-[17.5px] text-base-17-5 min-w-[70px] font-medium opacity-[0.8]">
+              {selectedId?.length} Selected
+            </span>
             {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
               <input
                 type="checkbox"
@@ -1688,8 +1721,8 @@ export default function Users() {
             optionData={organization?.settings?.leadStatus?.map((iyt) => {
               return {
                 value: iyt,
-                name: iyt
-              }
+                name: iyt,
+              };
             })}
             hideRight={true}
             placeholder="Lead Status"
@@ -1697,22 +1730,18 @@ export default function Users() {
             type="select"
             IconSearch={Dropdown}
             inputClassName="bg-white border border-white  w-[125px]"
-
             inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:px-3 2xl:px-4 text-center rounded-[5px]"
-
             optionType="object"
             value={bulkEdits?.leadStatus?.value}
-
             onChange={(val) => {
-              let temp = bulkEdits
+              let temp = bulkEdits;
               temp = {
                 ...temp,
                 leadStatus: {
-                  value: val?.value
-                }
-
-              }
-              setBulkEdits(temp)
+                  value: val?.value,
+                },
+              };
+              setBulkEdits(temp);
             }}
           />
 
@@ -1722,30 +1751,28 @@ export default function Users() {
             optionData={organization?.settings?.tutorStatus?.map((iyt) => {
               return {
                 value: iyt,
-                name: iyt
-              }
+                name: iyt,
+              };
             })}
             placeholder="Tutor Status"
             parentClassName="w-[10vw]  text-[#26435F]"
             type="select"
             IconSearch={Dropdown}
             inputClassName="bg-white border border-[rgb(255,255,255)]  w-[125px]"
-
             inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:px-3 2xl:px-4 text-center rounded-[5px]"
             hideRight={true}
             optionType="object"
             value={bulkEdits?.tutorStatus?.value}
-
             onChange={(val) => {
-              let temp = bulkEdits
+              let temp = bulkEdits;
               temp = {
                 ...temp,
                 tutorStatus: {
-                  value: val?.value
-                }
-              }
+                  value: val?.value,
+                },
+              };
 
-              setBulkEdits(temp)
+              setBulkEdits(temp);
             }}
           />
 
@@ -1757,85 +1784,112 @@ export default function Users() {
               return {
                 ...iyt,
                 name: iyt.value,
-              }
+              };
             })}
             placeholder="Assigned Tutor"
             parentClassName="  text-[#26435F] "
             type="select"
             IconSearch={Dropdown}
             inputClassName="bg-white border   "
-
-            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:pl-2 2xl:pl-3 rounded-[5px] !font-normal !w-[10.2vw]"
-
+            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] w-[175px] px-[20px] lg:pl-2 2xl:pl-3 rounded-[5px] !font-normal !w-[10.2vw]"
             optionType="object"
             value={bulkEdits?.assignedTutor?.value}
-
             onChange={(val) => {
-
-              let temp = bulkEdits
+              let temp = bulkEdits;
               temp = {
                 ...temp,
                 assignedTutor: {
                   id: val?._id,
-                  value: val?.value
-                }
-              }
+                  value: val?.value,
+                },
+              };
 
-              setBulkEdits(temp)
+              setBulkEdits(temp);
             }}
           />
 
           <div>
-            <button disabled={selectedId?.length === 0 || !numberKey ? true : false} onClick={() => selectedId?.length > 0 && setSaveBulkModalActive(true)} className={`bg-[rgba(38,67,95,1)] font-medium text-[15px] px-[10px] py-[10px] rounded-[7.5px] text-white ml-auto  h-[43px] w-[5.1563vw] ${selectedId?.length === 0 || !numberKey ? "opacity-75" : ""} `}>
+            <button
+              disabled={selectedId?.length === 0 || !numberKey ? true : false}
+              onClick={() =>
+                selectedId?.length > 0 && setSaveBulkModalActive(true)
+              }
+              className={`bg-[rgba(38,67,95,1)] font-medium text-[15px] px-[10px] py-[10px] rounded-[7.5px] text-white ml-auto  h-[43px] w-[5.1563vw] ${
+                selectedId?.length === 0 || !numberKey ? "opacity-75" : ""
+              } `}
+            >
               Save
             </button>
           </div>
           <div className="flex justify-end flex-1 gap-5 design:gap-10 relative z-[50] ">
-
-            <button disabled={selectedId?.length === 0 ? true : false} onClick={() => selectedId?.length > 0 && setInviteBulkModalActive(true)} className={`bg-[#517CA8] opacity-100 text-base-17-5  font-semibold tracking-wider relative px-[20px] py-[10px] rounded-[7.5px] text-white  text-base-17-5 h-[43px] ${selectedId?.length === 0 ? "opacity-75" : ""} `}>
+            <button
+              disabled={selectedId?.length === 0 ? true : false}
+              onClick={() =>
+                selectedId?.length > 0 && setInviteBulkModalActive(true)
+              }
+              className={`bg-[#517CA8] opacity-100 text-base-17-5  font-semibold tracking-wider relative px-[20px] py-[10px] rounded-[7.5px] text-white  text-base-17-5 h-[43px] ${
+                selectedId?.length === 0 ? "opacity-75" : ""
+              } `}
+            >
               + Invite Users
               <span className="absolute right-[-10px] z-[500] top-[-10px]">
                 <div className="group relative z-[500]">
-                  <img src={ques}
-
+                  <img
+                    src={ques}
                     onMouseEnter={(e) => {
-                      console.log("mouse enter")
-                      e.preventDefault()
-                      setTooltip(true)
-
-                    }
-                    }
+                      console.log("mouse enter");
+                      e.preventDefault();
+                      setTooltip(true);
+                    }}
                     onMouseOut={(e) => {
-                      e.preventDefault()
-                      console.log("mouse leave")
-                      setTooltip(false)
-                    }
-                    }
-                    className="inline-block" alt="ques" />
-                  {showTooltip && 
-                  <span className="absolute top-[-237px]  design:top-[-248px]  left-[-140px] z-5000 w-[336px] design:w-[380px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-[20px] px-[13px]">
-                    <h3 className="text-[#517CA8] text-left text-[0.8333vw] py-0 font-semibold mb-1">
-                      Invite Users
-                    </h3>   <span className=" text-left text-[0.6948vw] font-light relative z-40">
-                      This will allow you to invite the selected users to create
-                      an account within your Organization’s database. They will
-                      receive a verification email to set a new password and
-                      logging into the platform. Note that this is useful if you
-                      “Saved” user data instead of inviting them when adding
-                      them to the CRM.
-                      <br />
-
-                      <span className="text-[#FF7979] font-light text-left">
-                        Please ensure that you have consent from the user before
-                        inviting them to create an account.
+                      e.preventDefault();
+                      console.log("mouse leave");
+                      setTooltip(false);
+                    }}
+                    className="inline-block"
+                    alt="ques"
+                  />
+                  {showTooltip && (
+                    <span className="absolute top-[-237px]  design:top-[-248px]  left-[-140px] z-5000 w-[336px] design:w-[380px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-[20px] px-[13px] text-left">
+                      <h3 className="text-[#517CA8] text-left text-[0.8333vw] py-0 font-semibold mb-1">
+                        Invite Users
+                      </h3>
+                      <span className="text-[0.6948vw] font-light relative z-40 text-left">
+                        This will allow you to invite the selected users to
+                        create an account within your Organization’s database.
+                        They will receive a verification email to set a new
+                        password and logging into the platform. Note that this
+                        is useful if you “Saved” user data instead of inviting
+                        them when adding them to the CRM.
+                        <br />
+                        <span className="text-[#FF7979] font-light text-left">
+                          Please ensure that you have consent from the user
+                          before inviting them to create an account.
+                        </span>
                       </span>
                     </span>
-
-                  </span>}
+                  )}
                 </div>
               </span>
             </button>
-            <button disabled={true || selectedId?.length === 0||adminSelectedForDelete ? true : false} onClick={() => false && selectedId?.length > 0 && setDeleteBulkModalActive(true)} className={`bg-[#FF7979] opacity-100 flex items-center gap-2 px-[20px] tracking-wider font-semibold py-[10px] rounded-[5px] text-white  text-base-17-5 ${selectedId?.length === 0||true ||adminSelectedForDelete? "opacity-75 cursor-not-allowed" : ""} `}>
+
+            <button
+              disabled={
+                true || selectedId?.length === 0 || adminSelectedForDelete
+                  ? true
+                  : false
+              }
+              onClick={() =>
+                false &&
+                selectedId?.length > 0 &&
+                setDeleteBulkModalActive(true)
+              }
+              className={`bg-[#FF7979] opacity-100 flex items-center gap-2 px-[20px] tracking-wider font-semibold py-[10px] rounded-[5px] text-white  text-base-17-5 ${
+                selectedId?.length === 0 || true || adminSelectedForDelete
+                  ? "opacity-75 cursor-not-allowed"
+                  : ""
+              } `}
+            >
               <span>
                 <img
                   src={DeleteIcon2}
@@ -1843,7 +1897,7 @@ export default function Users() {
                   alt="delete"
                 />
               </span>{" "}
-            <span className="pt-[2px]">  Delete User(s)</span>
+              <span className="pt-[2px] flex"> Delete User(s)</span>
             </button>
           </div>
         </div>
@@ -1862,7 +1916,6 @@ export default function Users() {
             maxPageSize={10}
             isChecked={isChecked}
             isCallingApi={true}
-
             total_pages={Math.ceil(totalPages / maxPageSize)}
             setMaxPageSize={setMaxPageSize}
             currentPage={currentPage}
@@ -1904,9 +1957,9 @@ export default function Users() {
                   <InputField
                     label="First Name"
                     biggerText={true}
-                    labelClassname=" mb-0.5 text-[#26435F] !font-semibold "
+                    labelClassname=" mb-0.5 text-[#26435F] !font-medium "
                     placeholder="First Name"
-                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                    inputContainerClassName="text-[16px] pt-3.5 pb-3.5 px-5 bg-primary-50 border-0 font-normal placeholder:text-[#B3BDC7]"
                     inputClassName="bg-transparent"
                     parentClassName="w-full"
                     type="text"
@@ -1921,7 +1974,7 @@ export default function Users() {
                   <InputField
                     biggerText={true}
                     label="Last Name"
-                    labelClassname=" mb-0.5 text-[#26435F] !font-semibold !text-lg"
+                    labelClassname=" mb-0.5 text-[#26435F] !font-medium !text-lg"
                     isRequired={true}
                     placeholder="Last Name"
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
@@ -1938,7 +1991,7 @@ export default function Users() {
                   <InputField
                     biggerText={true}
                     label="Email Address"
-                    labelClassname=" mt-2 mb-0.5 text-[#26435F] !font-semibold !text-lg"
+                    labelClassname=" mt-2 mb-0.5 text-[#26435F] !font-medium !text-lg"
                     isRequired={true}
                     placeholder="Email Address"
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0 !placeholder:!text-[#B3BDC7]"
@@ -1961,16 +2014,22 @@ export default function Users() {
                     type="select"
                     placeholder="Select"
                     label="User Type"
-                    labelClassname="ml-0  text-[#26435F] !font-semibold !text-lg"
-                    placeholderClass="text-base-17-5 !text-[#B3BDC7]"
+                    labelClassname="ml-0  text-[#26435F] !font-medium !text-lg"
                     optionData={userTypeOptions}
-                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0 "
+                    inputContainerClassName="text-[16px] pt-3.5 pb-3.5 px-5 bg-primary-50 border-0 font-normal placeholder:text-[#B3BDC7]"
                     parentClassName="w-full"
                   />
                 </div>
               </div>
-              <div className={`flex items-center justify-center gap-4 ${addUserBtnDisabled ? "opacity-80" : ""}`}>
-                <button disabled={addUserBtnDisabled || loading || loadingInvite} className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]">
+              <div
+                className={`flex items-center justify-center gap-4 ${
+                  addUserBtnDisabled ? "opacity-80" : ""
+                }`}
+              >
+                <button
+                  disabled={addUserBtnDisabled || loading || loadingInvite}
+                  className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]"
+                >
                   {loading ? "Saving..." : "Save User"}
                 </button>
 
@@ -2092,9 +2151,7 @@ export default function Users() {
         <Modal
           title={
             <span className="leading-10">
-              Are You Sure
-              You Want To Delete Selected User(s)
-
+              Are You Sure You Want To Delete Selected User(s)
             </span>
           }
           titleClassName="mb-5 leading-10 !text-[21.33px] font-semibold"
@@ -2112,8 +2169,15 @@ export default function Users() {
             <>
               <p className="text-base -mt-[21px] text-[#667085] mb-6">
                 <span className="font-semibold mr-1">⚠️Note:</span>
-                Once the users are deleted from your Organization, you will not be able to recover their data. Read detailed documentation in Evallo’s{" "}
-                <span className="text-[#24A3D9] underline cursor-pointer" onClick={()=>navigate('/support')}>knowledge base.</span>
+                Once the users are deleted from your Organization, you will not
+                be able to recover their data. Read detailed documentation in
+                Evallo’s{" "}
+                <span
+                  className="text-[#24A3D9] underline cursor-pointer"
+                  onClick={() => navigate("/support")}
+                >
+                  knowledge base.
+                </span>
               </p>
             </>
           }
@@ -2126,7 +2190,6 @@ export default function Users() {
           title={
             <span className="leading-10">
               Are You Sure You Want to Bulk Edit?
-
             </span>
           }
           titleClassName="mb-5 leading-10"
@@ -2140,7 +2203,6 @@ export default function Users() {
             bgDanger: true,
             loading: saveSelectLoading,
           }}
-
           handleClose={() => setSaveBulkModalActive(false)}
           classname={"max-w-[600px]  mx-auto"}
         />
@@ -2157,15 +2219,18 @@ export default function Users() {
             <>
               <div className="text-center mb-7">
                 <p className="text-[#517CA8]  text-lg">
-                 <span className=""> All users that are invited to the platform will receive
-                  an email invitation to create an account within your
-                  organization. If you only want to store their data and
-                  do not want to invite them to create an account, please
-                  click on “Save Data Only” button.</span>
+                  <span className="">
+                    {" "}
+                    All users that are invited to the platform will receive an
+                    email invitation to create an account within your
+                    organization. If you only want to store their data and do
+                    not want to invite them to create an account, please click
+                    on “Save Data Only” button.
+                  </span>
                   <br />
                   <span className="pt-1">
-                    If you want to continue inviting the users, please
-                    click on the{" "}
+                    If you want to continue inviting the users, please click on
+                    the{" "}
                     <span className="!font-semibold">
                       “Confirm Email Invitations”
                     </span>{" "}
@@ -2182,7 +2247,6 @@ export default function Users() {
                   disabled={InviteSelectLoading}
                   loading={InviteSelectLoading}
                   onClick={() => {
-
                     bulkSelectInvite();
                   }}
                 >
@@ -2201,7 +2265,11 @@ export default function Users() {
         ></Modal>
       )}
 
-      <AssignedTutors assignedTutorOpen={assignedTutorOpen} setAssignedTutorOpen={setAssignedTutorOpen} fetch2={fetch} />
+      <AssignedTutors
+        assignedTutorOpen={assignedTutorOpen}
+        setAssignedTutorOpen={setAssignedTutorOpen}
+        fetch2={fetch}
+      />
     </div>
   );
 }

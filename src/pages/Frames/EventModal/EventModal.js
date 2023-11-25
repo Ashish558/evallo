@@ -143,7 +143,7 @@ export default function EventModal({
    // console.log('isUpdating---', isUpdating);
    // console.log('data---', data);
    const [submitDisabled, setSubmitDisabled] = useState(false)
-   const navigate=useNavigate()
+   const navigate = useNavigate()
    const [days, setDays] = useState(tempDays);
    const [topics, setTopics] = useState([]);
    const [studentMoods, setStudentMoods] = useState([]);
@@ -154,6 +154,9 @@ export default function EventModal({
    const [specializations, setSpecializations] = useState([])
    const [tutor, setTutor] = useState("");
    const [loading, setLoading] = useState(false)
+
+   // noteType
+   const [noteType, setNoteType] = useState("clients");
 
    const [submitSession, sessionResponse] = useSubmitSessionMutation();
    const [updateUserSession, updateUserSessionResp] = useUpdateSessionMutation();
@@ -178,6 +181,20 @@ export default function EventModal({
    const { organization } = useSelector((state) => state.organization);
    const [tutorId2, setTutorId2] = useState(null)
    const [isSettingsLoaded, setIsSettingsLoaded] = useState(false);
+   const [editingAllowed, setEditingAllowed] = useState(true)
+
+   useEffect(() => {
+      if (organization?.settings?.permissions && persona === 'tutor') {
+         if (organization?.settings?.permissions[5].choosedValue === false) {
+            setEditingAllowed(false)
+         } else {
+            setEditingAllowed(true)
+         }
+      } else {
+         setEditingAllowed(true)
+      }
+   }, [organization])
+
    const getCheckedItems = (strArr, array) => {
       let checkedItems = array.map((item) => {
          return strArr.includes(item.text)
@@ -562,16 +579,16 @@ export default function EventModal({
       }
       const { start, end } = reqBody.time
 
-      if(reqBody.time.start.timeType === 'am'){
+      if (reqBody.time.start.timeType === 'am') {
          reqBody.time.start.timeType = 'AM'
       }
-      if(reqBody.time.start.timeType === 'pm'){
+      if (reqBody.time.start.timeType === 'pm') {
          reqBody.time.start.timeType = 'PM'
       }
-      if(reqBody.time.end.timeType === 'am'){
+      if (reqBody.time.end.timeType === 'am') {
          reqBody.time.end.timeType = 'AM'
       }
-      if(reqBody.time.end.timeType === 'pm'){
+      if (reqBody.time.end.timeType === 'pm') {
 
          reqBody.time.end.timeType = 'PM'
       }
@@ -768,7 +785,7 @@ export default function EventModal({
             let services = details?.tutorServices?.map(item => item.service)
             let tutorServs = []
             allServicesAndSpec.forEach(item => {
-               if (services.includes(item.service)) {
+               if (services?.includes(item.service)) {
                   tutorServs.push(item.service)
                }
             })
@@ -866,7 +883,7 @@ export default function EventModal({
             body={
                <>
                   <div className="overflow-y-auto custom-scroller">
-                     <div className="pr-4">
+                     <div className={`pr-4 ${editingAllowed ? '' : 'disabled pointer-events-none'}`}>
                         <SearchNames setStudent={setStudent}
                            setData={setData} student={student} tutor={tutor} data={data}
                            setTutor={setTutor}
@@ -897,12 +914,12 @@ export default function EventModal({
                                  // console.log(val)
                                  data.service !== val && setData({ ...data, service: val, specialization: '' })
                               }}
-
+                              required={true}
                               optionData={servicesAndSpecialization}
-                              inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3 text-[#507CA8]
+                              inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3 text-[#507CA8] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]
                        `}
                               inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4 text-[#507CA8]"
-                              placeholder="Select Service"
+                              placeholder="Select"
                               parentClassName={`w-full mr-8 
                          ${persona === "parent" ? " order-2" : ""}
                         `}
@@ -921,8 +938,8 @@ export default function EventModal({
                               optionData={specializations}
                               inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3 text-[#507CA8]
                        `}
-                              inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4 text-[#507CA8]"
-                              placeholder="Topic"
+                              inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4 text-[#507CA8] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
+                              placeholder="Select"
                               parentClassName={`w-full ml-2
                         ${persona === "parent" ? " order-2" : ""}
                         `}
@@ -961,11 +978,12 @@ export default function EventModal({
                               label="Meeting Link"
                               biggerText={true}
                               labelClassname="ml-3 text-[#26435F] font-medium text-[18.6px]"
-                              placeholder="Meeting Link"
+                              placeholder="Add a meeting link or GPS location here"
                               parentClassName="w-full mr-8"
                               inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 h-[53px]"
-                              inputClassName="bg-transparent text-[16px] text-[#507CA8]"
+                              inputClassName="bg-transparent text-[16px] text-[#507CA8] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
                               type="text"
+                              required={true}
                               value={data.session}
                               onChange={(e) =>
                                  setData({
@@ -979,10 +997,10 @@ export default function EventModal({
                               parentClassName="w-full ml-2"
                               label="Whiteboard Link"
                               biggerText={true}
-                              placeholder="Whiteboard Link"
+                              placeholder="Add a relevant whiteboard link here"
                               labelClassname="ml-3 text-[#26435F] font-medium text-[18.6px]"
                               inputContainerClassName="bg-lightWhite border-0  pt-3.5 pb-3.5 h-[53px]"
-                              inputClassName="bg-transparent appearance-none text-[16px] text-[#507CA8]"
+                              inputClassName="bg-transparent appearance-none text-[16px] text-[#507CA8] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
                               value={data.whiteboardLink}
                               type="text"
                               onChange={(e) =>
@@ -1063,7 +1081,7 @@ export default function EventModal({
                                                             checked={checked}
                                                             name="topic"
                                                          />
-                                                         <p className="font-medium text-primary-60 text-sm">
+                                                         <p className="font-medium text-[#507CA8] text-[18.667px]">
                                                             {item}
                                                          </p>
                                                       </div>
@@ -1075,7 +1093,106 @@ export default function EventModal({
                                  }
                               </div>
 
-                              <div className="mb-8">
+                              {persona == "admin" ? <div className="mb-8">
+                                 <div className="w-[320px] h-[30px] flex justify-start items-center border-b border-[#B3BDC7]">
+                                    <p
+                                       className={`w-[140px] h-[40px] font-medium mb-2.5 text-[#26435F] text-[18.6px] mr-[40px] ${noteType == "clients" ? "border-b-2 border-[#FFA28D]" : "border-0"}`}
+                                       onClick={() => {
+                                          setNoteType("clients")
+                                       }}>
+                                       Clients Notes
+                                    </p>
+
+                                    <p className={`w-[140px] h-[40px] font-medium mb-2.5 text-[#26435F] text-[18.6px] ${noteType == "internal" ? "border-b-2 border-[#FFA28D]" : "border-0"}`}
+                                       onClick={() => {
+                                          setNoteType("internal")
+                                       }}
+                                    >
+                                       Internal Notes
+                                    </p>
+                                 </div>
+                                 <div className="py-2">
+                                    {noteType == "clients" ? <textarea
+                                       placeholder="Session notes that are added in this box will be visible to clients (parents and students). If you want to add notes that are hidden from them, please use Internal Notes."
+                                       value={data.sessionNotes}
+                                       onChange={(e) => {
+                                          let internalNotes2 = { note: "", date: "" }
+                                          if (persona === 'tutor' && e.target.value) {
+                                             internalNotes2 = {
+                                                note: e.target.value,
+                                                date: new Date()
+                                             }
+                                          }
+
+                                          let clientNotes2 = { note: "", date: "" }
+                                          if (persona === 'admin' && e.target.value) {
+                                             clientNotes2 = {
+                                                note: e.target.value,
+                                                date: new Date()
+                                             }
+                                          }
+                                          if (persona === 'tutor')
+                                             setData({
+                                                ...data,
+                                                sessionNotes: e.target.value,
+                                                internalNotes: internalNotes2,
+
+                                             })
+                                          if (persona === 'admin')
+                                             setData({
+                                                ...data,
+                                                sessionNotes: e.target.value,
+                                                clientNotes: clientNotes2,
+
+                                             })
+                                       }
+                                       }
+                                       rows={3}
+                                       className="bg-lightWhite outline-0 px-5 py-4 rounded w-full h-[200px]"
+                                    ></textarea>
+                                       :
+                                       <textarea
+                                          placeholder="Session notes that are added in this box will be visible to clients (parents and students). If you want to add notes that are hidden from them, please use Internal Notes."
+                                          value={data.sessionNotes}
+                                          onChange={(e) => {
+                                             let internalNotes2 = { note: "", date: "" }
+                                             if (persona === 'tutor' && e.target.value) {
+                                                internalNotes2 = {
+                                                   note: e.target.value,
+                                                   date: new Date()
+                                                }
+                                             }
+
+                                             let clientNotes2 = { note: "", date: "" }
+                                             if (persona === 'admin' && e.target.value) {
+                                                clientNotes2 = {
+                                                   note: e.target.value,
+                                                   date: new Date()
+                                                }
+                                             }
+                                             if (persona === 'tutor')
+                                                setData({
+                                                   ...data,
+                                                   sessionNotes: e.target.value,
+                                                   internalNotes: internalNotes2,
+
+                                                })
+                                             if (persona === 'admin')
+                                                setData({
+                                                   ...data,
+                                                   sessionNotes: e.target.value,
+                                                   clientNotes: clientNotes2,
+
+                                                })
+                                          }
+                                          }
+                                          rows={3}
+                                          className="bg-lightWhite w-full h-[200px] outline-0 px-5 py-4 rounded"
+                                       ></textarea>
+                                    }
+                                 </div>
+
+                              </div> : <div className="mb-8">
                                  <div>
                                     <p className="font-medium mb-2.5 text-[#26435F] text-[18.6px]">
                                        Session Notes
@@ -1122,7 +1239,7 @@ export default function EventModal({
                                  <p className="text-right text-xs text-primary-80">
                                     {data.sessionNotes ? data.sessionNotes.length : '0'}/200
                                  </p>
-                              </div>
+                              </div>}
 
 
                            </>
@@ -1257,7 +1374,7 @@ export default function EventModal({
                               <>
                                  <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-10">
                                     <span className="font-semibold mr-1">⚠️ Note:</span>
-                                    All deleted session data will be lost and you will NOT be able to recover it later. Note that this might also impact the Client's digital wallet accordingly. Read detailed documentation in Evallo’s  <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
+                                    All deleted session data will be lost and you will NOT be able to recover it later. Note that this might also impact the Client's digital wallet accordingly. Read detailed documentation in Evallo’s  <span className="text-[#24A3D9] cursor-pointer" onClick={() => navigate('/support')}> knowledge base.</span>
                                  </p>
                               </>
                            }

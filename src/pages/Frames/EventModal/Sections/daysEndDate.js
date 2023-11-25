@@ -50,8 +50,8 @@ const setAll=()=>{
             labelClassname="ml-3 text-[#26435F] font-medium text-[18.6px] "
             parentClassName={`w-full self-end ${!data.recurring ? 'pointer-events-none' : ''}} `}
             type="date"
-            inputContainerClassName="bg-lightWhite border-0 font-medium pr-3 pt-3.5 pb-3.5 h-[53px]"
-            inputClassName="bg-transparent appearance-none font-medium text-[#507CA8]"
+            inputContainerClassName="bg-lightWhite border-0 font-normal pr-3 pt-3.5 pb-3.5 h-[53px]"
+            inputClassName="bg-transparent appearance-none font-normal text-[#507CA8] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
             value={data.endDate}
             onChange={(e) =>
                setData({

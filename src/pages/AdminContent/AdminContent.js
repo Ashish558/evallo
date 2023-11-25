@@ -32,7 +32,7 @@ const AdminContent = () => {
     }
 
     return (
-        <div class={`${styles.container} relative`}>
+        <div className={`${styles.container} relative`}>
             <AdminNavbar></AdminNavbar>
             <section className='mx-[80px] min-h-[74vh]'>
                 <div className='mt-6'>

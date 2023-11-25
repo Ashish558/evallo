@@ -93,7 +93,7 @@ export default function InputField({
               </div>
             </div>
           }
-          {required && false && (
+          {required && (
             <span className="text-primaryRed inline-block pl-1">*</span>
           )}
         </label>

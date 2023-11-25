@@ -1253,7 +1253,7 @@ export default function Settings() {
           <span className="font-semibold">Settings</span>
         </p>
         <div className="shivam-tabs rounded-md">
-          <ul class="tabs group">
+          <ul className="tabs group">
             {tabs.map((item, idx) => {
               return (
                 <li
