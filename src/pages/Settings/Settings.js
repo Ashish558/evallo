@@ -2073,6 +2073,8 @@ export default function Settings() {
           <SignupTab
             setAddNewQuestionModalActive={setAddNewQuestionModalActive}
             fetchS={fetchS}
+            orgData={user}
+            fetchSettings={fetchSettings}
             organization={organization}
             updateAndFetchsettings={updateAndFetchsettings}
           />

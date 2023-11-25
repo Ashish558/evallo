@@ -1587,9 +1587,9 @@ export default function AssignedTests() {
                         ?.choosedValue)) && (
                     <div
                       onClick={() =>
-                        selectedId?.length > 0 && setDeleteBulkModalActive(true)
+                        false && selectedId?.length > 0 && setDeleteBulkModalActive(true)
                       }
-                      className="gap-x-[5px] cursor-pointer px-1 w-[5.9375vw] py-[9px] bg-[#FFF] rounded-5 ml-6 flex items-center justify-center text-base-17-5"
+                      className="opacity-70 !cursor-not-allowed pointer-events-none gap-x-[5px] px-1 w-[5.9375vw] py-[9px] bg-[#FFF] rounded-5 ml-6 flex items-center justify-center text-base-17-5"
                     >
                       <p>Delete</p>
                       <p>

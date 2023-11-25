@@ -180,42 +180,41 @@ const SPFrame1 = ({
             >
               <div className=" flex-1 !max-h-[140px] overflow-y-auto custom-scroller ">
                 <div className="">
-                  {userDetail?.associatedDocs?.length > 0 ? (
-                    userDetail?.associatedDocs?.map((it, id) => {
-                      return (
-                        <p
-                          key={id}
-                          className="flex flex-1 mt-1 text-[#517CA8] w-full text-xs justify-between px-3 py-1"
-                        >
-                          <a
-                            className="w-[70%] break-words text-base-15"
-                            href={it?.public_url}
-                            target="_blank"
+                  {userDetail?.associatedDocs?.length > 0
+                    ? userDetail?.associatedDocs?.map((it, id) => {
+                        return (
+                          <p
+                            key={id}
+                            className="flex flex-1 mt-1 text-[#517CA8] w-full text-xs justify-between px-3 py-1"
                           >
-                            {it?.key}
-                          </a>
-                          <img
-                            onClick={() =>
-                              (persona === "tutor" || persona === "admin") &&
-                              reduceArr2(id, true)
-                            }
-                            src={BCut}
-                            className="text-xs !h-[20px] !w-[20px] inline-block"
-                            alt="cut"
-                          />
-                        </p>
-                      );
-                    })
-                  ) : (persona==="student" || persona==="parent")&& (
-                    <div className="flex flex-col justify-center items-center h-full">
-                      {(persona === "student" || persona !== "parent") && (
-                        <button className="bg-[#FF7979] text-white rounded-md p-2 py-1">
-                          No Links Added
-                        </button>
+                            <a
+                              className="w-[70%] break-words text-base-15"
+                              href={it?.public_url}
+                              target="_blank"
+                            >
+                              {it?.key}
+                            </a>
+                            <img
+                              onClick={() =>
+                                (persona === "tutor" || persona === "admin") &&
+                                reduceArr2(id, true)
+                              }
+                              src={BCut}
+                              className="text-xs !h-[20px] !w-[20px] inline-block"
+                              alt="cut"
+                            />
+                          </p>
+                        );
+                      })
+                    : (persona === "student" || persona === "parent") && (
+                        <div className="flex flex-col justify-center items-center h-full">
+                          {(persona === "student" || persona !== "parent") && (
+                            <button className="bg-[#FF7979] text-white rounded-md p-2 py-1">
+                              No Links Added
+                            </button>
+                          )}
+                        </div>
                       )}
-                    </div>
-                  )}
-
                 </div>
                 {persona === "student" || persona === "parent" ? (
                   <> </>
@@ -390,7 +389,15 @@ const SPFrame1 = ({
                 className="w-full h-full rounded-md bg-white flex justify-center flex-col text-center items-center"
               >
                 <div className="flex flex-col justify-center items-center h-full">
-                  <button className="bg-[#38C980] text-white rounded-md p-2 py-1">
+                  <button
+                    onClick={() =>
+                      setToEdit({
+                        ...toEdit,
+                        subjects: { ...toEdit.subjects, active: true },
+                      })
+                    }
+                    className="bg-[#38C980] text-white rounded-md p-2 py-1"
+                  >
                     Add Subjects +
                   </button>
                 </div>{" "}

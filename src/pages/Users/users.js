@@ -1835,7 +1835,7 @@ export default function Users() {
                 </div>
               </span>
             </button>
-            <button disabled={selectedId?.length === 0||adminSelectedForDelete ? true : false} onClick={() => selectedId?.length > 0 && setDeleteBulkModalActive(true)} className={`bg-[#FF7979] opacity-100 flex items-center gap-2 px-[20px] tracking-wider font-semibold py-[10px] rounded-[5px] text-white  text-base-17-5 ${selectedId?.length === 0 ||adminSelectedForDelete? "opacity-75 cursor-not-allowed" : ""} `}>
+            <button disabled={true || selectedId?.length === 0||adminSelectedForDelete ? true : false} onClick={() => false && selectedId?.length > 0 && setDeleteBulkModalActive(true)} className={`bg-[#FF7979] opacity-100 flex items-center gap-2 px-[20px] tracking-wider font-semibold py-[10px] rounded-[5px] text-white  text-base-17-5 ${selectedId?.length === 0||true ||adminSelectedForDelete? "opacity-75 cursor-not-allowed" : ""} `}>
               <span>
                 <img
                   src={DeleteIcon2}

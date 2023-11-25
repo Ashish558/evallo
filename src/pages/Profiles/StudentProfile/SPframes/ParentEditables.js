@@ -265,12 +265,12 @@ export default function ParentEditables({
     },
     {
       name: "satScores",
-      title: 'Official SAT® Scores',
+      title: "Official SAT® Scores",
       api: "userDetail",
     },
     {
       name: "actScores",
-      title: 'Official ACT® Scores',
+      title: "Official ACT® Scores",
       api: "userDetail",
     },
     {
@@ -428,13 +428,31 @@ export default function ParentEditables({
   //          //console.log(res);
   //       })
   // }, [])
-
+  const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
     let reqBody = { ...currentToEdit };
     delete reqBody["active"];
     //console.log({reqBody,userId});
+    const isEmpty = (val) => {
+      if (!val || val?.trim()?.length === 0) return true;
+      return false;
+    };
+    if (currentField.name === "frame0") {
+      if (isEmpty(currentToEdit.firstName)) {
+        alert("first name cannot be empty.");
+        return;
+      }
+      if (isEmpty(currentToEdit.lastName)) {
+        alert("last name cannot be empty.");
+        return;
+      }
+      if (!emailValidation.test(currentToEdit.email)) {
+        alert("Enter valid email.");
+        return;
+      }
+    }
     if (currentToEdit.hasOwnProperty("notes")) {
       reqBody = {
         internalNotes: [
@@ -481,6 +499,7 @@ export default function ParentEditables({
 
       //console.log({reqBody,currentToEdit});
       // return
+
       updateDetails({ id: userId, fields: reqBody }).then((res) => {
         //console.log(res);
         setLoading(false);
@@ -664,7 +683,7 @@ export default function ParentEditables({
       } else {
         let newserv =
           organization.settings?.servicesAndSpecialization[
-          currentToEdit.selectedIdx
+            currentToEdit.selectedIdx
           ];
         updated.push({ ...newserv, price: value });
         setUpdatedService({ ...newserv, price: value });
@@ -723,8 +742,8 @@ export default function ParentEditables({
                   {currentField.title
                     ? currentField.title
                     : toEdit.tutorServices
-                      ? "Service"
-                      : ""}
+                    ? "Service"
+                    : ""}
                 </div>
                 <button
                   className="w-[125px] bg-[#FFA28D] p-1 rounded-[7.5px] text-white  text-base pl-3 pr-3 ml-auto h-[37.5px]"
@@ -769,12 +788,15 @@ export default function ParentEditables({
                             parentClassName=""
                             type="text"
                             value={currentToEdit.firstName}
-                            onChange={(e) =>
-                              setCurrentToEdit({
-                                ...currentToEdit,
-                                firstName: e.target.value,
-                              })
-                            }
+                            onChange={(e) => {
+                              const regex = /^[a-zA-Z ]*$/;
+                              const isValid = regex.test(e.target.value);
+                              if (isValid)
+                                setCurrentToEdit({
+                                  ...currentToEdit,
+                                  firstName: e.target.value,
+                                });
+                            }}
                           />
 
                           <InputField
@@ -786,14 +808,17 @@ export default function ParentEditables({
                             parentClassName=""
                             type="text"
                             value={currentToEdit.lastName}
-                            onChange={(e) =>
-                              setCurrentToEdit({
-                                ...currentToEdit,
-                                lastName: e.target.value,
-                              })
-                            }
+                            onChange={(e) => {
+                              const regex = /^[a-zA-Z ]*$/;
+                              const isValid = regex.test(e.target.value);
+                              if (isValid)
+                                setCurrentToEdit({
+                                  ...currentToEdit,
+                                  lastName: e.target.value,
+                                });
+                            }}
                           />
-                           <InputField
+                          <InputField
                             label="School / College"
                             labelClassname="text-[#26435F]"
                             placeholder="School / College"
@@ -857,25 +882,28 @@ export default function ParentEditables({
                               label="Student Phone"
                               value={currentToEdit.phone}
                               codeValue={currentToEdit.phoneCode}
-                              handleCodeChange={(e) =>
+                              handleCodeChange={(e) => {
                                 setCurrentToEdit({
                                   ...currentToEdit,
                                   phoneCode: e.target.value,
-                                })
-                              }
-                              onChange={(e) =>
-                                setCurrentToEdit({
-                                  ...currentToEdit,
-                                  phone: e.target.value,
-                                })
-                              }
+                                });
+                              }}
+                              onChange={(e) => {
+                                const regex = /^[0-9 ]*$/;
+                                const isValid = regex.test(e.target.value);
+                                if (isValid && e.target.value?.length < 11)
+                                  setCurrentToEdit({
+                                    ...currentToEdit,
+                                    phone: e.target.value,
+                                  });
+                              }}
                             />
                           </div>
                           <InputSelectNew
                             optionData={grades}
                             labelClassname={`text-[#26435F] !font-bold ${styles.customFontFamily}`}
                             label="Grade"
-                            placeholder="Select"  
+                            placeholder="Select"
                             inputContainerClassName="text-xs  bg-primary-50 !py-3 border-0 !rounded-[5px] !shadow-[0px_0px_2px_0px_#00000040] h-[50px] w-[7.13542vw]"
                             inputClassName="bg-transparent text-xs  "
                             parentClassName=""
@@ -917,7 +945,11 @@ export default function ParentEditables({
 
                           <InputSearch
                             right={
-                              <img className="w-5 h-4 cursor-pointer" alt="drop" src={down} />
+                              <img
+                                className="w-5 h-4 cursor-pointer"
+                                alt="drop"
+                                src={down}
+                              />
                             }
                             labelClassname="text-[#26435F] mb-1 text-sm"
                             label="Associated Parent"
@@ -1423,9 +1455,12 @@ export default function ParentEditables({
                             onClick={() => setTextOpen(true)}
                             className=" text-[#CBD6E2] text-xs flex-1 text-base-17-5 p-3 h-[150px] bg-[#F6F6F6]                              "
                           >
-                        Use this space to add notes about the student that are only visible to you as the Org Admin.
-
-Here are some ideas to get you started: personality, preferences, goals, sports, habits, academic scores, activities, family, likes or dislikes, and schedule preferences.
+                            Use this space to add notes about the student that
+                            are only visible to you as the Org Admin. Here are
+                            some ideas to get you started: personality,
+                            preferences, goals, sports, habits, academic scores,
+                            activities, family, likes or dislikes, and schedule
+                            preferences.
                           </div>
                         )}
                       </div>
@@ -1484,7 +1519,6 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                 {currentField.name === "service" && (
                   <div className="w-[400px] max-h-[50vh] overflow-y-auto custom-scroller">
                     <div className="flex flex-col gap-2">
-                   
                       {organization?.settings?.servicesAndSpecialization.map(
                         (item, id) => {
                           return (
@@ -1493,7 +1527,6 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                                 stopM={true}
                                 checked={currentToEdit?.service?.includes(
                                   item?.service
-
                                 )}
                                 onChange={() =>
                                   handleServiceChange(item?.service)
@@ -1921,8 +1954,8 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                       <p className="font-medium mr-4 min-w-[150px]">
                         {currentToEdit.selectedIdx !== undefined
                           ? organization.settings.servicesAndSpecialization[
-                            currentToEdit.selectedIdx
-                          ].service
+                              currentToEdit.selectedIdx
+                            ].service
                           : ""}
                       </p>
                       <InputField
@@ -2695,8 +2728,8 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                                 <div className="text-md  rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[120px] h-[40px] text-[#FFA28D]">
                                   {currentToEdit.satScores[selectedScoreIndex]
                                     ?.maths +
-                                    currentToEdit.satScores[selectedScoreIndex]
-                                      ?.verbal ? (
+                                  currentToEdit.satScores[selectedScoreIndex]
+                                    ?.verbal ? (
                                     currentToEdit.satScores[selectedScoreIndex]
                                       ?.maths +
                                     currentToEdit.satScores[selectedScoreIndex]
@@ -2708,25 +2741,25 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                                   )}
                                 </div>
                               </div>
-                         <div className="mt-[15px]">
-                         <InputField
-                        label="Test Date"
-                        labelClassname="text-[#26435F]"
-                        placeholder=""
-                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]  !h-[50px] w-[206px] text-[#507CA8]"
-                        inputClassName="bg-transparent text-xs   "
-                        parentClassName=""
-                        type="date"
-                        value={currentToEdit.dob}
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            dob: e.target.value,
-                            birthyear: e.target.value?.split("-")[0],
-                          })
-                        }
-                      />
-                         </div>
+                              <div className="mt-[15px]">
+                                <InputField
+                                  label="Test Date"
+                                  labelClassname="text-[#26435F]"
+                                  placeholder=""
+                                  inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]  !h-[50px] w-[206px] text-[#507CA8]"
+                                  inputClassName="bg-transparent text-xs   "
+                                  parentClassName=""
+                                  type="date"
+                                  value={currentToEdit.dob}
+                                  onChange={(e) =>
+                                    setCurrentToEdit({
+                                      ...currentToEdit,
+                                      dob: e.target.value,
+                                      birthyear: e.target.value?.split("-")[0],
+                                    })
+                                  }
+                                />
+                              </div>
                               <div className="mt-5 border-1  border-t-2 mb-[30px] border-[1.25px_solid_#00000033] justify-center "></div>
                             </div>
                           );
@@ -2825,8 +2858,8 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                                 },
                               });
                             }}
-                          // tempScores[selectedScoreIndex].maths = checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800)
-                          // //console.log('tempScores', tempScores);
+                            // tempScores[selectedScoreIndex].maths = checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800)
+                            // //console.log('tempScores', tempScores);
                           />
 
                           <div className="text-md  rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[120px] text-[#FFA28D]h-[40px]">
@@ -2834,10 +2867,10 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                               currentToEdit.baseLineScore?.satBaseLineScore
                                 ?.maths
                             ) +
-                              parseInt(
-                                currentToEdit.baseLineScore?.satBaseLineScore
-                                  ?.verbal
-                              ) ? (
+                            parseInt(
+                              currentToEdit.baseLineScore?.satBaseLineScore
+                                ?.verbal
+                            ) ? (
                               parseInt(
                                 currentToEdit.baseLineScore?.satBaseLineScore
                                   ?.maths
@@ -2976,18 +3009,18 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                               currentToEdit.baseLineScore?.actBaseLineScore
                                 ?.maths
                             ) +
-                              parseInt(
-                                currentToEdit.baseLineScore?.actBaseLineScore
-                                  ?.science
-                              ) +
-                              parseInt(
-                                currentToEdit.baseLineScore?.actBaseLineScore
-                                  ?.reading
-                              ) +
-                              parseInt(
-                                currentToEdit.baseLineScore?.actBaseLineScore
-                                  ?.english
-                              ) ? (
+                            parseInt(
+                              currentToEdit.baseLineScore?.actBaseLineScore
+                                ?.science
+                            ) +
+                            parseInt(
+                              currentToEdit.baseLineScore?.actBaseLineScore
+                                ?.reading
+                            ) +
+                            parseInt(
+                              currentToEdit.baseLineScore?.actBaseLineScore
+                                ?.english
+                            ) ? (
                               parseInt(
                                 currentToEdit.baseLineScore?.actBaseLineScore
                                   ?.maths
@@ -3273,9 +3306,9 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
 
                                   <div className="text-md py-2 rounded-[4px] flex items-center  font-semibold  text-center py-auto px-2 bg-primary-50 border-0 !w-[120px] text-[#FFA28D] !h-[40px] ">
                                     {it?.maths +
-                                      it?.science +
-                                      it?.reading +
-                                      it?.english ? (
+                                    it?.science +
+                                    it?.reading +
+                                    it?.english ? (
                                       it?.maths +
                                       it?.science +
                                       it?.reading +
@@ -3287,25 +3320,24 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                                     )}
                                   </div>
                                 </div>
-                                  <InputField
-                        label="Test Date"
-                        labelClassname="text-[#26435F]"
-                        placeholder=""
-                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]  !h-[50px] w-[206px] text-[#507CA8]"
-                        inputClassName="bg-transparent text-xs   "
-                        parentClassName=""
-                        type="date"
-                        value={currentToEdit.dob}
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            dob: e.target.value,
-                            birthyear: e.target.value?.split("-")[0],
-                          })
-                        }
-                      />
-                                <div className="mt-5 border-1  border-t-2 mb-[30px] border-[1.25px_solid_#00000033] justify-center ">
-                            </div>
+                                <InputField
+                                  label="Test Date"
+                                  labelClassname="text-[#26435F]"
+                                  placeholder=""
+                                  inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]  !h-[50px] w-[206px] text-[#507CA8]"
+                                  inputClassName="bg-transparent text-xs   "
+                                  parentClassName=""
+                                  type="date"
+                                  value={currentToEdit.dob}
+                                  onChange={(e) =>
+                                    setCurrentToEdit({
+                                      ...currentToEdit,
+                                      dob: e.target.value,
+                                      birthyear: e.target.value?.split("-")[0],
+                                    })
+                                  }
+                                />
+                                <div className="mt-5 border-1  border-t-2 mb-[30px] border-[1.25px_solid_#00000033] justify-center "></div>
                               </div>
                             );
                           }

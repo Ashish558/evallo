@@ -16,10 +16,13 @@ import ToggleBar from "../../../../components/SettingsCard/ToogleBar";
 import AddTag from "../../../../components/Buttons/AddTag";
 import Loader from "../../../../components/Loader";
 import LoaderNew from "../../../../components/Loader/LoaderNew";
+import { useAddNewQuestionMutation } from "../../../../app/services/admin";
 export default function SignupTab({
   setAddNewQuestionModalActive,
   fetchS,
   updateAndFetchsettings,
+  orgData,
+  fetchSettings,
 }) {
   const { organization } = useSelector((state) => state.organization);
 
@@ -215,7 +218,30 @@ export default function SignupTab({
       setQuestionSelected(null);
     }
   };
-  console.log({ customFields });
+  
+  const submitNewQuestion = (e) => {
+    e.preventDefault();
+    if (organization?.settings?.customFields?.length === 5)
+      return alert("Only 5 fields are allowed");
+   
+
+    let updatedCustomFields = customFields;
+    updatedCustomFields = updatedCustomFields.map((item) => ({
+      name: item.name,
+      Values: item.Values,
+      dataType: item.dataType,
+    }));
+    updatedCustomFields.push({
+      dataType: "Paragraph",
+      text: "",
+      values: [],
+    });
+    const body2 = {
+      customFields: updatedCustomFields,
+    };
+    updateAndFetchsettings(body2, setLoadingCustom);
+  };
+ 
   return (
     <div className="">
       <div className="mb-[40px]">
@@ -493,6 +519,7 @@ export default function SignupTab({
                       <span className="text-base-17-5 ">{idx + 1}. </span>
                       <input
                         value={item.name}
+                        placeholder="Type your question here."
                         className="bg-transparent w-[90%] py-1 outline-none border-none text-base-17-5 "
                         onChange={(e) => {
                           let updatedCustomFields = customFields?.map((it) => {
@@ -629,7 +656,7 @@ export default function SignupTab({
           children={"Add New Question "}
           Icon={plus1}
           className="text-base-17-5 text-white"
-          onClick={() => setAddNewQuestionModalActive(true)}
+          onClick={(e) => submitNewQuestion(e)}
         />
         {loadingCustom && (
           <div className="bg-transparent w-full h-full z-[999999] pointer-events-none cursor-not-allowed absolute top-0 grid items-center place-items-center">
