@@ -973,7 +973,11 @@ export default function StudentReport() {
   // console.log('responseData', responseData)
   // console.log('answerKey', answerKey)
 
-  console.log({ displayScore });
+  console.log({ displayScore, subjects });
+  const [startSectionDate, startSectionTime, startSectionFormat] =
+    selectedSubject?.startSectionTime
+      ? getFormattedDateTime(selectedSubject?.startSectionTime)?.split(" ")
+      : "- - -";
   return (
     <div className="px-[80px]  min-h-screen">
       <div className="py-14 px-5">
@@ -1206,10 +1210,10 @@ export default function StudentReport() {
                     </p>
                     <p className=" mb-2 text-[#517CA8] text-base-17-5">
                       {" "}
-                      {startDate}
+                      {startSectionDate}
                     </p>
                     <p className=" mb-2 text-[#24A3D9] text-base-17-5 font-normal">
-                      {startTime} {startFormat}{" "}
+                      {startSectionTime} {startSectionFormat}{" "}
                       {organization?.settings?.timeZone}
                     </p>
                     {/* <p className='font-semibold mb-2 opacity-0'>04:25 PM EST</p> */}
