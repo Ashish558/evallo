@@ -64,7 +64,7 @@ export const sessionServicesApi = createApi({
                search: name
             },
             method: "GET",
-            headers: getAuthHeader()
+           
          }),
       }),
       submitSession: builder.mutation({

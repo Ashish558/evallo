@@ -34,7 +34,7 @@ export const userServicesApi = createApi({
       query: (id) => ({
         url: `api/user/one/${id}`,
         method: "GET",
-        headers: getAuthHeader(),
+       
       }),
     }),
     getParentTutors: builder.query({
@@ -56,7 +56,7 @@ export const userServicesApi = createApi({
       query: (body) => ({
         url: `api/user/${body.id}`,
         method: "GET",
-        headers: getAuthHeader(),
+      
       }),
     }),
     getTutorDetails: builder.query({
@@ -174,7 +174,7 @@ export const userServicesApi = createApi({
       query: (id) => ({
         url: `api/user/org/details/${id}`,
         method: "GET",
-        headers: getAuthHeader(),
+       
       }),
     }),
     updateUserAccount: builder.mutation({
