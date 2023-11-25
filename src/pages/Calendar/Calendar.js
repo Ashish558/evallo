@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import moment from "moment-timezone";
 import "./Transition.css";
 import "./calendar.css";
+import styles from './calendar.module.css'
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import downIcon from '../../assets/icons/down-pink.svg'
@@ -162,7 +163,7 @@ export default function CalendarPage() {
     role: "",
   });
   const [activeView, setActiveView] = useState('Year')
-
+  const [timeZoneSearchText, setTimeZoneSearchText] = useState('')
   const refetchSessions = () => {
     // //////console.log(searchedUser);
     if (persona === "tutor") {
@@ -172,6 +173,8 @@ export default function CalendarPage() {
       fetchSessions(searchedUser.id, searchedUser.role);
     }
   };
+
+  const timeZones = moment.tz.names(); // String[]
 
   useEffect(() => {
     if (!timeZones?.includes(timeZoneUser) && organization && organization.settings && organization.settings.timeZone)
@@ -183,7 +186,20 @@ export default function CalendarPage() {
       setcurrentUserTImeZone(timeZoneUser)
   }, [timeZoneUser])
 
-  // console.log(moment.tz.names())
+  const [allTimezones, setAllTimezones] = useState(timeZones.map(tz => ({ value: tz })))
+
+  useEffect(() => {
+    const regexPattern = new RegExp(timeZoneSearchText, "i");
+    const matches = timeZones.filter(str => regexPattern.test(str));
+    setAllTimezones(matches.map(tz => ({ value: tz })))
+  }, [timeZoneSearchText])
+
+  const handleSelectedTimezoneChange = val => {
+    setnewTimeZone(val.value)
+    setTimeZoneSearchText(val.value)
+  }
+
+
   // const regex = /east/i;
   // const eastStrings = c.filter(str => regex.test(str));
   // console.log(eastStrings)
@@ -363,6 +379,8 @@ export default function CalendarPage() {
     // //////console.log(currentUserTImeZone);
     if (timeZones.includes(currentUserTImeZone)) {
       setTimeZone(currentUserTImeZone);
+      setnewTimeZone(currentUserTImeZone)
+      setTimeZoneSearchText(currentUserTImeZone)
     }
   }, [currentUserTImeZone]);
 
@@ -579,14 +597,27 @@ export default function CalendarPage() {
     if (calendarWeekRef.current) {
       const prevBtn = document.getElementsByClassName(
         "calendar-prevButton-custom"
-      )[0].parentElement;
+      )[0]?.parentElement;
       if (prevBtn) prevBtn.classList.add("calendar-prev-button");
       const nextBtn = document.getElementsByClassName(
         "calendar-nextButton-custom"
-      )[0].parentElement;
+      )[0]?.parentElement;
       if (nextBtn) nextBtn.classList.add("calendar-prev-button");
     }
   }, []);
+
+  useEffect(() => {
+    if (calendarMonthRef.current) {
+      const prevBtn = document.getElementsByClassName(
+        "calendar-prevButton-custom"
+      )[0]?.parentElement;
+      if (prevBtn) prevBtn.classList.add("calendar-prev-button");
+      const nextBtn = document.getElementsByClassName(
+        "calendar-nextButton-custom"
+      )[0]?.parentElement;
+      if (nextBtn) nextBtn.classList.add("calendar-prev-button");
+    }
+  }, [calendarMonthRef.current]);
 
   useEffect(() => {
     setnewTimeZone(timeZone)
@@ -639,6 +670,16 @@ export default function CalendarPage() {
 
   const handleNextClick = (arg) => {
     const calendarAPI = calendarWeekRef?.current?.getApi();
+    calendarAPI?.next();
+  };
+
+  const handlePrevClickMonth = (arg) => {
+    const calendarAPI = calendarMonthRef?.current?.getApi();
+    calendarAPI?.prev();
+  };
+
+  const handleNextClickMonth = (arg) => {
+    const calendarAPI = calendarMonthRef?.current?.getApi();
     calendarAPI?.next();
   };
 
@@ -1218,7 +1259,7 @@ export default function CalendarPage() {
           multiMonthPlugin,
         ],
         initialView: 'multiMonthYear',
-        multiMonthMaxColumns: 3,
+        multiMonthMaxColumns: 4,
         events:
           persona === 'parent' || persona === 'tutor'
             ? filteredEvents
@@ -1251,12 +1292,12 @@ export default function CalendarPage() {
         // },
         // eventContent: eventContent,
         titleFormat: {
-          day: '2-digit',
+          day: 'numeric',
           month: "short",
           year: "numeric",
         },
         headerToolbar: {
-          start: "title prev next",
+          start: "prev title next",
           center: "",
           end: ""
         }
@@ -1283,9 +1324,19 @@ export default function CalendarPage() {
   // console.log(' organization?.settings?.permissions-----', organization?.settings?.permissions);
   // console.log('events-----', events);
   //console.log('eventDetails',colorMapping,insightData,userDetail,associatedStudents);
-  const timeZones = moment.tz.names(); // String[]
   const navigate = useNavigate()
 
+  const handleViewChange = view => {
+      if (view !== 'Year') {
+        setActiveView('')
+        setTimeout(() => {
+          setActiveView(view)
+        }, 300);
+      } else {
+        setActiveView(view)
+      }
+  }
+  
   return (
     <>
       <div className="lg:ml-pageLeft calender  min-h-screen" id={persona}>
@@ -1706,8 +1757,8 @@ export default function CalendarPage() {
                       filteredEvents={filteredEvents}
                       events={events}
                       calRef={calendarMonthRef}
-                      handlePrevClick={handlePrevClick}
-                      handleNextClick={handleNextClick}
+                      handlePrevClick={handlePrevClickMonth}
+                      handleNextClick={handleNextClickMonth}
                       eventContent={eventContent}
                       getDayHeaders={getDayHeaders}
                       handleDateClick={handleDateClick}
@@ -1720,7 +1771,7 @@ export default function CalendarPage() {
             >
 
               <span id="input">
-                <InputSelect
+                {/* <InputSelect
                   value={
                     activeView
                   }
@@ -1728,25 +1779,50 @@ export default function CalendarPage() {
                   optionData={['Year', 'Month', 'Week']}
                   onChange={(val) => {
                     // setActiveView(val)
-                    if(val !== 'Year'){
+                    if (val !== 'Year') {
                       setActiveView('')
                       setTimeout(() => {
                         setActiveView(val)
                       }, 300);
-                    }else{
+                    } else {
                       setActiveView(val)
                     }
                   }}
-                />
+                /> */}
+                <div className="flex gap-x-0 items-center">
+                  <button className={`${styles.viewSelectButton} ${activeView === 'Year' ? styles.activeView : ''}`}
+                    onClick={() => handleViewChange("Year")} >
+                    Year
+                  </button>
+                  <button className={`${styles.viewSelectButton} ${activeView === 'Month' ? styles.activeView : ''}`}
+                    onClick={() => handleViewChange("Month")}>
+                    Month
+                  </button>
+                  <button className={`${styles.viewSelectButton} ${activeView === 'Week' ? styles.activeView : ''}`}
+                    onClick={() => handleViewChange("Week")}>
+                    Week
+                  </button>
+                </div>
               </span>
               <span id="input">
-                <InputSelect
+                {/* <InputSelect
                   value={newTimeZone}
                   inputContainerClassName="text-[15px] text-primaryDark font-bold border"
                   customArrow={downArrow}
                   optionData={timeZones}
                   onChange={(val) => setTimeZone(val)}
-                />
+                /> */}
+                <InputSearch optionData={allTimezones}
+                  value={timeZoneSearchText}
+                  onChange={e => setTimeZoneSearchText(e.target.value)}
+                  required="true"
+                  labelClassname="hidden"
+                  placeholder="Search Timezone"
+                  onOptionClick={val => handleSelectedTimezoneChange(val)}
+                  parentClassName="w-full mr-[66px] text-[#26435F] "
+                  optionClassName='overflow-auto text-red'
+                  inputContainerClassName="bg-lightWhite border border-primaryOrange pt-3.5 pb-3.5 text-[#507CA8] h-[53px] text-base"
+                  inputClassName="bg-transparent text-[#FFA28D]" />
               </span>
               {/* <div class="inline-flex rounded shadow-sm mt-1">
     <button class="px-2 py-1 text-xs font-medium text-blue-700 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 focus:z-10 focus:text-orange-700 dark:bg-gray-700 dark:border-gray-600 dark:text-dark dark:hover:text-orange dark:hover:bg-gray-600 dark:focus:text-orange" >
