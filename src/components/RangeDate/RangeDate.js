@@ -180,7 +180,8 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
               <input
                 type="date"
                 name="sdate"
-                className="rounded-md  p-1 text-[#FFA28D] py-1 px-[26px]"
+                className="rounded-md  p-1 text-[#FFA28D] py-1 px-[26px] uppercase"
+                 placeholder="MM/DD/YYYY"
                 value={selectDate.sDate}
                 max={selectDate.eDate}
                 onChange={(e) => handleLocalDate(e.target.value, "sDate")}
@@ -192,9 +193,10 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
                 type="date"
                 min={selectDate.sDate}
                 name="edate"
-                className="rounded-md  text-[#FFA28D] py-1 px-[26px]"
+                className="rounded-md  text-[#FFA28D] py-1 px-[26px] uppercase"
                 value={selectDate.eDate}
-                placeholder="Start Date"
+                
+                 placeholder="MM/DD/YYYY"
                 onChange={(e) => handleLocalDate(e.target.value, "eDate")}
               />
             </div>

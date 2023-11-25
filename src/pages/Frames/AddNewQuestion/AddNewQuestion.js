@@ -19,7 +19,7 @@ export default function AddNewQuestion({ newQuestion, setNewQuestion }) {
           <InputField
             label="Question"
             labelClassname=" mb-1 text-[#26435F]  text-base-20"
-            placeholder="Question"
+            placeholder="Add"
             parentClassName="w-full mr-4"
             type="text"
             inputContainerClassName={"bg-[#f2f2f2] !py-[15px]"}

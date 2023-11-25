@@ -869,8 +869,8 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
           }}
           children={"Close"}
         />
-        <div class=" modal-container" id="modalContainer">
-          <div class="modal">
+        <div className=" modal-container" id="modalContainer">
+          <div className="modal">
             <div id="otpless-login-page"></div>
           </div>
         </div>
