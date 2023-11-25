@@ -762,7 +762,7 @@ export default function ParentEditables({
                         <div className="flex !text-sm gap-4 justify-between">
                           <InputField
                             label="First name"
-                            labelClassname="text-[#26435F]"
+                            labelClassname="text-[#26435F] font-medium my-2"
                             placeholder="First name"
                             inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040]  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] !w-[10.05208vw]"
                             inputClassName="bg-transparent text-xs   "
@@ -779,7 +779,7 @@ export default function ParentEditables({
 
                           <InputField
                             label="Last name"
-                            labelClassname="text-[#26435F]"
+                            labelClassname="text-[#26435F] font-medium my-2"
                             placeholder="Last name"
                             inputContainerClassName="text-xs  !shadow-[0px_0px_2px_0px_#00000040] bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] !w-[10.05208vw]"
                             inputClassName="bg-transparent text-xs   "
@@ -795,7 +795,7 @@ export default function ParentEditables({
                           />
                            <InputField
                             label="School / College"
-                            labelClassname="text-[#26435F]"
+                            labelClassname="text-[#26435F] font-medium my-2"
                             placeholder="School / College"
                             inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] w-[14.89583vw]"
                             inputClassName="bg-transparent text-xs   "
@@ -815,7 +815,7 @@ export default function ParentEditables({
                             IconLeft={caution}
                             hideTooltip={hideTooltip}
                             label="Email"
-                            labelClassname="text-[#26435F]"
+                            labelClassname="text-[#26435F] font-medium my-2"
                             placeholder="Email Id"
                             inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040]  bg-primary-50 border-0 !py-3 !px-1 !rounded-[5px] h-[50px] w-[15.625vw]"
                             inputClassName="bg-transparent !w-[200px] text-xs   "
@@ -850,7 +850,7 @@ export default function ParentEditables({
                             <InputFieldDropdown
                               codeClassName="!bg-white !rounded-sm"
                               placeholder="Student's Phone"
-                              labelClassname="text-[#26435F]"
+                              labelClassname="text-[#26435F] font-medium my-2"
                               inputContainerClassName="!text-xs  !border-none  bg-primary-50  !shadow-[0px_0px_2px_0px_#00000040] h-[50px] w-[14.32292vw]"
                               inputClassName="bg-transparent !w-[90px] !text-xs rounded-[4px] "
                               parentClassName=""
@@ -873,10 +873,10 @@ export default function ParentEditables({
                           </div>
                           <InputSelectNew
                             optionData={grades}
-                            labelClassname={`text-[#26435F] !font-bold ${styles.customFontFamily}`}
+                            labelClassname={`text-[#26435F] font-medium  my-2`}
                             label="Grade"
                             placeholder="Select"  
-                            inputContainerClassName="text-xs  bg-primary-50 !py-3 border-0 !rounded-[5px] !shadow-[0px_0px_2px_0px_#00000040] h-[50px] w-[7.13542vw]"
+                            inputContainerClassName="!text-xs bg-primary-50 !py-3 border-0 !rounded-[5px] !shadow-[0px_0px_2px_0px_#00000040] h-[50px] w-[7.13542vw]"
                             inputClassName="bg-transparent text-xs  "
                             parentClassName=""
                             type="text"
@@ -890,7 +890,7 @@ export default function ParentEditables({
                     </div>
                     <div>
                       <div className="flex-1 mt-5">
-                        <p className=" text-sm text-[#26435F] font-semibold">
+                        <p className=" text-[17.5px] text-[#26435F] font-medium">
                           About
                         </p>
                         <textarea
