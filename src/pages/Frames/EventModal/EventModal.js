@@ -143,7 +143,7 @@ export default function EventModal({
    // console.log('isUpdating---', isUpdating);
    // console.log('data---', data);
    const [submitDisabled, setSubmitDisabled] = useState(false)
-   const navigate=useNavigate()
+   const navigate = useNavigate()
    const [days, setDays] = useState(tempDays);
    const [topics, setTopics] = useState([]);
    const [studentMoods, setStudentMoods] = useState([]);
@@ -181,6 +181,20 @@ export default function EventModal({
    const { organization } = useSelector((state) => state.organization);
    const [tutorId2, setTutorId2] = useState(null)
    const [isSettingsLoaded, setIsSettingsLoaded] = useState(false);
+   const [editingAllowed, setEditingAllowed] = useState(true)
+
+   useEffect(() => {
+      if (organization?.settings?.permissions && persona === 'tutor') {
+         if (organization?.settings?.permissions[5].choosedValue === false) {
+            setEditingAllowed(false)
+         } else {
+            setEditingAllowed(true)
+         }
+      } else {
+         setEditingAllowed(true)
+      }
+   }, [organization])
+
    const getCheckedItems = (strArr, array) => {
       let checkedItems = array.map((item) => {
          return strArr.includes(item.text)
@@ -771,7 +785,7 @@ export default function EventModal({
             let services = details?.tutorServices?.map(item => item.service)
             let tutorServs = []
             allServicesAndSpec.forEach(item => {
-               if (services.includes(item.service)) {
+               if (services?.includes(item.service)) {
                   tutorServs.push(item.service)
                }
             })
@@ -869,7 +883,7 @@ export default function EventModal({
             body={
                <>
                   <div className="overflow-y-auto custom-scroller">
-                     <div className="pr-4">
+                     <div className={`pr-4 ${editingAllowed ? '' : 'disabled pointer-events-none'}`}>
                         <SearchNames setStudent={setStudent}
                            setData={setData} student={student} tutor={tutor} data={data}
                            setTutor={setTutor}
@@ -1081,103 +1095,103 @@ export default function EventModal({
 
                               {persona == "admin" ? <div className="mb-8">
                                  <div className="w-[320px] h-[30px] flex justify-start items-center border-b border-[#B3BDC7]">
-                                    <p  
-                                    className={`w-[140px] h-[40px] font-medium mb-2.5 text-[#26435F] text-[18.6px] mr-[40px] ${noteType == "clients" ? "border-b-2 border-[#FFA28D]" : "border-0" }`}
-                                    onClick={()=>{
-                                       setNoteType("clients")
-                                    }}>
+                                    <p
+                                       className={`w-[140px] h-[40px] font-medium mb-2.5 text-[#26435F] text-[18.6px] mr-[40px] ${noteType == "clients" ? "border-b-2 border-[#FFA28D]" : "border-0"}`}
+                                       onClick={() => {
+                                          setNoteType("clients")
+                                       }}>
                                        Clients Notes
                                     </p>
 
-                                    <p className={`w-[140px] h-[40px] font-medium mb-2.5 text-[#26435F] text-[18.6px] ${noteType == "internal" ? "border-b-2 border-[#FFA28D]" : "border-0" }`}
-                                      onClick={()=>{
-                                       setNoteType("internal")
-                                    }}
+                                    <p className={`w-[140px] h-[40px] font-medium mb-2.5 text-[#26435F] text-[18.6px] ${noteType == "internal" ? "border-b-2 border-[#FFA28D]" : "border-0"}`}
+                                       onClick={() => {
+                                          setNoteType("internal")
+                                       }}
                                     >
                                        Internal Notes
                                     </p>
                                  </div>
                                  <div className="py-2">
-                                 {noteType == "clients" ?<textarea
-                                    placeholder="Session notes that are added in this box will be visible to clients (parents and students). If you want to add notes that are hidden from them, please use Internal Notes."
-                                    value={data.sessionNotes}
-                                    onChange={(e) => {
-                                       let internalNotes2 = { note: "", date: "" }
-                                       if (persona === 'tutor' && e.target.value) {
-                                          internalNotes2 = {
-                                             note: e.target.value,
-                                             date: new Date()
+                                    {noteType == "clients" ? <textarea
+                                       placeholder="Session notes that are added in this box will be visible to clients (parents and students). If you want to add notes that are hidden from them, please use Internal Notes."
+                                       value={data.sessionNotes}
+                                       onChange={(e) => {
+                                          let internalNotes2 = { note: "", date: "" }
+                                          if (persona === 'tutor' && e.target.value) {
+                                             internalNotes2 = {
+                                                note: e.target.value,
+                                                date: new Date()
+                                             }
                                           }
-                                       }
 
-                                       let clientNotes2 = { note: "", date: "" }
-                                       if (persona === 'admin' && e.target.value) {
-                                          clientNotes2 = {
-                                             note: e.target.value,
-                                             date: new Date()
+                                          let clientNotes2 = { note: "", date: "" }
+                                          if (persona === 'admin' && e.target.value) {
+                                             clientNotes2 = {
+                                                note: e.target.value,
+                                                date: new Date()
+                                             }
                                           }
+                                          if (persona === 'tutor')
+                                             setData({
+                                                ...data,
+                                                sessionNotes: e.target.value,
+                                                internalNotes: internalNotes2,
+
+                                             })
+                                          if (persona === 'admin')
+                                             setData({
+                                                ...data,
+                                                sessionNotes: e.target.value,
+                                                clientNotes: clientNotes2,
+
+                                             })
                                        }
-                                       if (persona === 'tutor')
-                                          setData({
-                                             ...data,
-                                             sessionNotes: e.target.value,
-                                             internalNotes: internalNotes2,
+                                       }
+                                       rows={3}
+                                       className="bg-lightWhite outline-0 px-5 py-4 rounded w-full h-[200px]"
+                                    ></textarea>
+                                       :
+                                       <textarea
+                                          placeholder="Session notes that are added in this box will be visible to clients (parents and students). If you want to add notes that are hidden from them, please use Internal Notes."
+                                          value={data.sessionNotes}
+                                          onChange={(e) => {
+                                             let internalNotes2 = { note: "", date: "" }
+                                             if (persona === 'tutor' && e.target.value) {
+                                                internalNotes2 = {
+                                                   note: e.target.value,
+                                                   date: new Date()
+                                                }
+                                             }
 
-                                          })
-                                       if (persona === 'admin')
-                                          setData({
-                                             ...data,
-                                             sessionNotes: e.target.value,
-                                             clientNotes: clientNotes2,
+                                             let clientNotes2 = { note: "", date: "" }
+                                             if (persona === 'admin' && e.target.value) {
+                                                clientNotes2 = {
+                                                   note: e.target.value,
+                                                   date: new Date()
+                                                }
+                                             }
+                                             if (persona === 'tutor')
+                                                setData({
+                                                   ...data,
+                                                   sessionNotes: e.target.value,
+                                                   internalNotes: internalNotes2,
 
-                                          })
-                                    }
-                                    }
-                                    rows={3}
-                                    className="bg-lightWhite outline-0 px-5 py-4 rounded w-full h-[200px]"
-                                 ></textarea>
-                                   :
-                                <textarea
-                                    placeholder="Session notes that are added in this box will be visible to clients (parents and students). If you want to add notes that are hidden from them, please use Internal Notes."
-                                    value={data.sessionNotes}
-                                    onChange={(e) => {
-                                       let internalNotes2 = { note: "", date: "" }
-                                       if (persona === 'tutor' && e.target.value) {
-                                          internalNotes2 = {
-                                             note: e.target.value,
-                                             date: new Date()
+                                                })
+                                             if (persona === 'admin')
+                                                setData({
+                                                   ...data,
+                                                   sessionNotes: e.target.value,
+                                                   clientNotes: clientNotes2,
+
+                                                })
                                           }
-                                       }
-
-                                       let clientNotes2 = { note: "", date: "" }
-                                       if (persona === 'admin' && e.target.value) {
-                                          clientNotes2 = {
-                                             note: e.target.value,
-                                             date: new Date()
                                           }
-                                       }
-                                       if (persona === 'tutor')
-                                          setData({
-                                             ...data,
-                                             sessionNotes: e.target.value,
-                                             internalNotes: internalNotes2,
-
-                                          })
-                                       if (persona === 'admin')
-                                          setData({
-                                             ...data,
-                                             sessionNotes: e.target.value,
-                                             clientNotes: clientNotes2,
-
-                                          })
+                                          rows={3}
+                                          className="bg-lightWhite w-full h-[200px] outline-0 px-5 py-4 rounded"
+                                       ></textarea>
                                     }
-                                    }
-                                    rows={3}
-                                    className="bg-lightWhite w-full h-[200px] outline-0 px-5 py-4 rounded"
-                                 ></textarea>
-                                   }
                                  </div>
-                                
+
                               </div> : <div className="mb-8">
                                  <div>
                                     <p className="font-medium mb-2.5 text-[#26435F] text-[18.6px]">

@@ -162,7 +162,7 @@ export default function CalendarPage() {
     id: "",
     role: "",
   });
-  const [activeView, setActiveView] = useState('Year')
+  const [activeView, setActiveView] = useState('Week')
   const [timeZoneSearchText, setTimeZoneSearchText] = useState('')
   const refetchSessions = () => {
     // //////console.log(searchedUser);
@@ -1000,11 +1000,11 @@ export default function CalendarPage() {
 
   const handleEventClick = (info) => {
     //alert("Event")
-    if (organization?.settings?.permissions && persona === 'tutor') {
-      if (organization?.settings?.permissions[5].choosedValue === false) {
-        return
-      }
-    }
+    // if (organization?.settings?.permissions && persona === 'tutor') {
+    //   if (organization?.settings?.permissions[5].choosedValue === false) {
+    //     return
+    //   }
+    // }
     const session = eventDetails.find(
       (e) => e._id === info.event._def.publicId
     );
