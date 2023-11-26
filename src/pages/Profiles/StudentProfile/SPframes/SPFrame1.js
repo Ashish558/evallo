@@ -180,42 +180,41 @@ const SPFrame1 = ({
             >
               <div className=" flex-1 !max-h-[140px] overflow-y-auto custom-scroller ">
                 <div className="">
-                  {userDetail?.associatedDocs?.length > 0 ? (
-                    userDetail?.associatedDocs?.map((it, id) => {
-                      return (
-                        <p
-                          key={id}
-                          className="flex flex-1 mt-1 text-[#517CA8] w-full text-xs justify-between px-3 py-1"
-                        >
-                          <a
-                            className="w-[70%] break-words text-base-15"
-                            href={it?.public_url}
-                            target="_blank"
+                  {userDetail?.associatedDocs?.length > 0
+                    ? userDetail?.associatedDocs?.map((it, id) => {
+                        return (
+                          <p
+                            key={id}
+                            className="flex flex-1 mt-1 text-[#517CA8] w-full text-xs justify-between px-3 py-1"
                           >
-                            {it?.key}
-                          </a>
-                          <img
-                            onClick={() =>
-                              (persona === "tutor" || persona === "admin") &&
-                              reduceArr2(id, true)
-                            }
-                            src={BCut}
-                            className="text-xs !h-[20px] !w-[20px] inline-block"
-                            alt="cut"
-                          />
-                        </p>
-                      );
-                    })
-                  ) : (persona==="student" || persona==="parent")&& (
-                    <div className="flex flex-col justify-center items-center h-full">
-                      {(persona === "student" || persona !== "parent") && (
-                        <button className="bg-[#FF7979] text-white rounded-md p-2 py-1">
-                          No Links Added
-                        </button>
+                            <a
+                              className="w-[70%] break-words text-base-15"
+                              href={it?.public_url}
+                              target="_blank"
+                            >
+                              {it?.key}
+                            </a>
+                            <img
+                              onClick={() =>
+                                (persona === "tutor" || persona === "admin") &&
+                                reduceArr2(id, true)
+                              }
+                              src={BCut}
+                              className="text-xs !h-[20px] !w-[20px] inline-block"
+                              alt="cut"
+                            />
+                          </p>
+                        );
+                      })
+                    : (persona === "student" || persona === "parent") && (
+                        <div className="flex flex-col justify-center items-center h-full">
+                          {(persona === "student" || persona !== "parent") && (
+                            <button className="bg-[#FF7979] text-white rounded-md p-2 py-1">
+                              No Links Added
+                            </button>
+                          )}
+                        </div>
                       )}
-                    </div>
-                  )}
-
                 </div>
                 {persona === "student" || persona === "parent" ? (
                   <> </>
@@ -288,7 +287,7 @@ const SPFrame1 = ({
             />
           </p>
 
-          <div className="w-full relative h-full p-1 flex flex-col gap-2  rounded-md items-center overflow-y-auto custom-scroller">
+          <div className="w-full relative p-1 flex flex-1 h-[300px] flex-col gap-2  rounded-md items-center overflow-y-auto custom-scroller">
             {/* {settings ? (
               settings.interest.length > 0 &&
               userDetail?.interest.map((id, idx) => {
@@ -334,8 +333,28 @@ const SPFrame1 = ({
                 return (
                   <div
                     key={idx}
-                    className="bg-white p-2 h-min  text-[#517CA8] text-base-17-5 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040]  w-full"
+                    className="bg-white p-[20px] h-[56px] text-[#517CA8] text-base-17-5 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] w-full flex justify-start items-center"
                   >
+                    {/*  icon container */}
+
+                    <div className="mr-[18.75px]">
+                      {it === "Soccer" ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="26"
+                          height="25"
+                          viewBox="0 0 26 25"
+                          fill="none"
+                        >
+                          <path
+                            d="M21.5049 3.66118C19.1439 1.30024 16.0049 0 12.666 0C9.32714 0 6.18813 1.30024 3.82715 3.66118C1.46621 6.02212 0.166016 9.16113 0.166016 12.5C0.166016 15.8389 1.46621 18.9779 3.82715 21.3389C6.18808 23.6998 9.32714 25 12.666 25C16.0049 25 19.1439 23.6998 21.5049 21.3389C23.8658 18.9779 25.166 15.8389 25.166 12.5C25.166 9.16113 23.8658 6.02212 21.5049 3.66118ZM13.3984 4.2436L16.3511 2.09834C18.5593 2.88306 20.4458 4.3519 21.7547 6.24897L20.6859 9.53833L16.9192 10.7623L13.3984 8.20444V4.2436ZM8.9809 2.09839L11.9336 4.2436V8.20454L8.41333 10.762L4.64634 9.53809L3.57744 6.24878C4.88628 4.35181 6.77275 2.88306 8.9809 2.09839ZM4.14013 19.4982C2.63032 17.6622 1.70073 15.3319 1.63472 12.7904L4.1937 10.9312L7.96045 12.1551L9.30522 16.294L6.97719 19.4982H4.14013ZM16.3429 22.9045C15.1922 23.3124 13.9547 23.5352 12.666 23.5352C11.3773 23.5352 10.1399 23.3124 8.98925 22.9045L8.1622 20.3592L10.4902 17.1551L14.8419 17.1549L17.17 20.3591L16.3429 22.9045ZM21.192 19.4981H18.355L16.0269 16.2939L17.3717 12.1554L21.1386 10.9315L23.6973 12.7906C23.6313 15.332 22.7017 17.6622 21.192 19.4981Z"
+                            fill="#517CA8"
+                          />
+                        </svg>
+                      ) : (
+                        ""
+                      )}
+                    </div>
                     {it}
                   </div>
                 );
