@@ -8,6 +8,9 @@ import SubscriptionChoosingModal from "../SubscriptionChoosingModal/Subscription
 import { useLazyGetSubscriptionsInfoQuery } from "../../../app/services/orgSignup";
 import { extensionPlansInfo } from "../../OrgSignup/DummyData/ExtensionPlansInfo";
 import ReviewProduct from "../ReviewProduct/ReviewProduct";
+import ExtensionsChoosingModal from "../ExtensionsChoosingModal/ExtensionsChoosingModal";
+import VerticalNumericSteppers from "../../../components/VerticalNumericSteppers/VerticalNumericSteppers";
+import { extensionsData } from "./data";
 
 function SubscriptionAndExtensionModal({
     className
@@ -45,8 +48,10 @@ function SubscriptionAndExtensionModal({
         extensions: false,
         review: false,
     });
+    const [currentModalIndex, SetCurrentModalIndex] = useState(0);
     const [subscriptionPlanInfo, SetSubscriptionPlanInfo] = useState([]);
     const [extensionPlansData, SetExtensionPlansData] = useState([]);
+    const [extensions, setExtensions] = useState(extensionsData);
     const [subscriptionsInfoFromAPI, SetSubscriptionsInfoFromAPI] = useState([]);
     const [chosenSubscriptionPlanName, SetChosenSubscriptionPlanName] = useState("");
 
@@ -195,6 +200,28 @@ function SubscriptionAndExtensionModal({
         fetchSubscriptionsInfo();
     }, []);
 
+    useEffect(() => {
+        if(frames.orgDetails) {
+            SetCurrentModalIndex(0);
+            return;
+        }
+
+        if(frames.subscription) {
+            SetCurrentModalIndex(1);
+            return;
+        }
+
+        if(frames.extensions) {
+            SetCurrentModalIndex(2);
+            return;
+        }
+
+        if(frames.review) {
+            SetCurrentModalIndex(3);
+            return;
+        }
+    }, [frames]);
+
     const onBackToPreviousStepClicked = () => {
         setFrames(frames => {
             if (frames.orgDetails) return frames;
@@ -239,7 +266,13 @@ function SubscriptionAndExtensionModal({
 
     return (
         <div className={`aspect-[1400/900] bg-[#FFFFFF] flex rounded-[15px]  ${className}`} >
-            <div className="w-1/12" ></div>
+            <div className="h-[500px] w-1/12" >
+                <VerticalNumericSteppers
+                    className="ml-[40px] mt-[50px] h-full"
+                    labels={["Account", "Subscription", "Extensions", "Review"]}
+                    currentIndex={currentModalIndex}
+                />
+            </div>
 
             <div className={`ml-[90px] w-9/12`} >
                 <div className="flex mt-[20px] w-full" >
@@ -294,7 +327,11 @@ function SubscriptionAndExtensionModal({
                                 SetChosenSubscriptionPlanName={SetChosenSubscriptionPlanName}
                             />
                         ) : frames.extensions ? (
-                            <></>
+                            <ExtensionsChoosingModal
+                                extensions={extensions}
+                                setExtensions={setExtensions}
+                                extensionPlansInfo={extensionPlansData}
+                            />
                         ) : frames.review ? (
                             <ReviewProduct
                             />
