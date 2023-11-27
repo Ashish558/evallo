@@ -228,7 +228,7 @@ const StudentDashboard = () => {
           </div>
           <div
             id={styles.chartContainer}
-            className="!rounded-md w-[54.43vw] flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller h-[390px] bg-red-900"
+            className="!rounded-md w-[54.43vw] flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller h-[390px] "
           >
            {accsubjects && accsubjects?.length>0 ?<>
              <Chart

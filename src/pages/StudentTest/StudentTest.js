@@ -78,6 +78,7 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
   const [dueDateSortState, setDueDateSortState] = useState(SORT_STATES.UNSORTED);
   const [durationSortState, setDurationSortState] = useState(SORT_STATES.UNSORTED);
   const [statusSortState, setStatusSortState] = useState(SORT_STATES.UNSORTED);
+  const [scoreSortState, setScoreSortState] = useState(SORT_STATES.UNSORTED);
 
   const sortByAssignmentName = () => {
     if(assignmentNameSortState === SORT_STATES.DESCENDING_ORDER) {
@@ -425,6 +426,139 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
     }
   }
 
+  const sortByScore = () => {
+    /* console.log("sortByScore");
+    console.log(filteredTests); */
+    const hasProperScoresProperty = (item) => {
+      if(item.scores === "-" || item.scores === undefined || item.scores === null || Object.keys(item).length === 0) {
+        return false;
+      }
+
+      if(item.scores.cumulative === undefined || item.scores.cumulative === null) {
+        return false;
+      }
+
+      return true;
+    }
+
+    if(scoreSortState === SORT_STATES.DESCENDING_ORDER) {
+
+      setAllTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          
+          if(!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+            return -1;
+          }
+
+          if(!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
+            return -1;
+          }
+
+          if(hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+            return 1;
+          }
+
+          if (a.scores.cumulative < b.scores.cumulative) {
+            return -1;
+          }
+          if (a.scores.cumulative > b.scores.cumulative) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setfilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          
+          if(!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+            return -1;
+          }
+
+          if(!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
+            return -1;
+          }
+
+          if(hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+            return 1;
+          }
+          
+          if (a.scores.cumulative < b.scores.cumulative) {
+            return -1;
+          }
+          if (a.scores.cumulative > b.scores.cumulative) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setScoreSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(scoreSortState === SORT_STATES.UNSORTED || scoreSortState === SORT_STATES.ASCENDING_ORDER) {
+
+      setAllTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+
+          if(!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+            return -1;
+          }
+
+          if(!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
+            return 1;
+          }
+
+          if(hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+            return -1;
+          }
+
+          if (a.scores.cumulative < b.scores.cumulative) {
+            return 1;
+          }
+          if (a.scores.cumulative > b.scores.cumulative) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+      
+      setfilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+
+          if(!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+            return -1;
+          }
+
+          if(!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
+            return 1;
+          }
+
+          if(hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+            return -1;
+          }
+
+          if (a.scores.cumulative < b.scores.cumulative) {
+            return 1;
+          }
+          if (a.scores.cumulative > b.scores.cumulative) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setScoreSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  }
+
   const studentTableHeaders = [
     {
       id: 1,
@@ -461,7 +595,8 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
     {
       id: 5,
       text: "Scores",
-      noArrow: true
+      onCick: sortByScore,
+      willDisplayDownArrow: scoreSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 6,
@@ -799,6 +934,8 @@ console.log("profile",fromProfile)
                 "assignedTestId",
                 "updatedAt",
               ]}
+              setAllTestsForStudentTest={setAllTests}
+              setfilteredTestsForStudentTest={setfilteredTests}
             />
           </div>
         </div>

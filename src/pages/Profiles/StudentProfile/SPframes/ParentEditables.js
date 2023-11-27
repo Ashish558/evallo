@@ -718,8 +718,8 @@ export default function ParentEditables({
           key={key}
           classname={
             forCss.includes(currentField.name)
-              ? "max-w-[800px] md:pb-5 mx-auto overflow-visible pb-5"
-              : "max-w-fit md:pb-5 mx-auto overflow-visible pb-5"
+              ? "max-w-[800px] md:pb-5 mx-auto overflow-visible pb-5 "
+              : "max-w-fit md:pb-5 mx-auto overflow-visible pb-5 "
           } /*{ ` max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5`}*/
           title=""
           // primaryBtn={{
@@ -781,7 +781,7 @@ export default function ParentEditables({
                         <div className="flex !text-sm gap-4 justify-between">
                           <InputField
                             label="First name"
-                            labelClassname="text-[#26435F]"
+                            labelClassname="text-[#26435F] font-medium my-2"
                             placeholder="First name"
                             inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040]  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] !w-[10.05208vw]"
                             inputClassName="bg-transparent text-xs   "
@@ -801,7 +801,7 @@ export default function ParentEditables({
 
                           <InputField
                             label="Last name"
-                            labelClassname="text-[#26435F]"
+                            labelClassname="text-[#26435F] font-medium my-2"
                             placeholder="Last name"
                             inputContainerClassName="text-xs  !shadow-[0px_0px_2px_0px_#00000040] bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] !w-[10.05208vw]"
                             inputClassName="bg-transparent text-xs   "
@@ -820,7 +820,7 @@ export default function ParentEditables({
                           />
                           <InputField
                             label="School / College"
-                            labelClassname="text-[#26435F]"
+                            labelClassname="text-[#26435F] font-medium my-2"
                             placeholder="School / College"
                             inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] w-[14.89583vw]"
                             inputClassName="bg-transparent text-xs   "
@@ -840,7 +840,7 @@ export default function ParentEditables({
                             IconLeft={caution}
                             hideTooltip={hideTooltip}
                             label="Email"
-                            labelClassname="text-[#26435F]"
+                            labelClassname="text-[#26435F] font-medium my-2"
                             placeholder="Email Id"
                             inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040]  bg-primary-50 border-0 !py-3 !px-1 !rounded-[5px] h-[50px] w-[15.625vw]"
                             inputClassName="bg-transparent !w-[200px] text-xs   "
@@ -855,15 +855,15 @@ export default function ParentEditables({
                             }
                             Tooltip={
                               !user?.isVerfied && (
-                                <span className="absolute top-10 w-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                                <span className="absolute top-10 w-[333px] h-[167px] scale-0 rounded bg-gray-800 px-[13px] py-[20px] text-xs text-white group-hover:scale-100 font-light">
                                   <h3 className="text-[#24A3D9] font-semibold mb-1">
                                     Email Confirmation Sent
                                   </h3>
                                   You need to verify your email if
-                                  <ul className="list-disc pl-3 mb-2">
+                                  <div className="list-disc mb-2 px-1">
                                     <li>you created a new account.</li>
                                     <li>you recently changed your email.</li>
-                                  </ul>
+                                  </div>
                                   We have sent you an email verification link to
                                   your current email address to make sure that
                                   it really is you who requested a change.
@@ -875,7 +875,7 @@ export default function ParentEditables({
                             <InputFieldDropdown
                               codeClassName="!bg-white !rounded-sm"
                               placeholder="Student's Phone"
-                              labelClassname="text-[#26435F]"
+                              labelClassname="text-[#26435F] font-medium my-2"
                               inputContainerClassName="!text-xs  !border-none  bg-primary-50  !shadow-[0px_0px_2px_0px_#00000040] h-[50px] w-[14.32292vw]"
                               inputClassName="bg-transparent !w-[90px] !text-xs rounded-[4px] "
                               parentClassName=""
@@ -901,7 +901,7 @@ export default function ParentEditables({
                           </div>
                           <InputSelectNew
                             optionData={grades}
-                            labelClassname={`text-[#26435F] !font-bold ${styles.customFontFamily}`}
+                            labelClassname={`text-[#26435F] font-medium  my-2`}
                             label="Grade"
                             placeholder="Select"
                             inputContainerClassName="text-xs  bg-primary-50 !py-3 border-0 !rounded-[5px] !shadow-[0px_0px_2px_0px_#00000040] h-[50px] w-[7.13542vw]"
@@ -918,7 +918,7 @@ export default function ParentEditables({
                     </div>
                     <div>
                       <div className="flex-1 mt-5">
-                        <p className=" text-sm text-[#26435F] font-semibold">
+                        <p className=" text-[17.5px] text-[#26435F] font-medium">
                           About
                         </p>
                         <textarea
@@ -1032,7 +1032,7 @@ export default function ParentEditables({
                         label="D.O.B"
                         labelClassname="text-[#26435F]"
                         placeholder=""
-                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] !w-[10.09896vw] !h-[50px]"
+                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] !w-[10.09896vw] !h-[50px] text-[#667085]"
                         inputClassName="bg-transparent text-xs   "
                         parentClassName=""
                         type="date"
@@ -1130,7 +1130,7 @@ export default function ParentEditables({
                       <InputField
                         label="Accomodations"
                         labelClassname="text-[#26435F]"
-                        placeholder=""
+                        placeholder="Select"
                         inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] !w-[10.09896vw] !h-[50px]"
                         inputClassName="bg-transparent text-xs   "
                         parentClassName=""
@@ -1428,7 +1428,7 @@ export default function ParentEditables({
                 )}
                 {currentField.name === "notes" && (
                   <div>
-                    <div className="flex items-center mb-5 pt-0 w-[400px] ">
+                    <div className="flex items-center mb-5 pt-0 w-[660px]">
                       {/* <p className='font-medium mr-4 min-w-[60px]'>  </p> */}
                       <div className="border w-full h-full rounded-md">
                         {textOpen && (
@@ -1517,12 +1517,15 @@ export default function ParentEditables({
                   </div>
                 )}
                 {currentField.name === "service" && (
-                  <div className="w-[400px] max-h-[50vh] overflow-y-auto custom-scroller">
+                  <div className="w-[660px] max-h-[50vh] overflow-y-auto custom-scroller">
                     <div className="flex flex-col gap-2">
                       {organization?.settings?.servicesAndSpecialization.map(
                         (item, id) => {
                           return (
-                            <div key={id} className="flex gap-5 items-center">
+                            <div
+                              key={id}
+                              className=" gap-5 flex justify-start items-center"
+                            >
                               <SCheckbox
                                 stopM={true}
                                 checked={currentToEdit?.service?.includes(
@@ -3066,7 +3069,7 @@ export default function ParentEditables({
                                         labelClassname="hidden"
                                         placeholder="English"
                                         inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0 !font-semibold h-[40px]"
-                                        inputClassName="bg-transparent pl-4 rounded-[4px] placeholder:text-sm"
+                                        inputClassName="bg-transparent pl-4 rounded-[4px] placeholder:text-sm placeholder-[#CBD6E2]"
                                         parentClassName="flex-1 !text-sm w-[120px]"
                                         type="number"
                                         pattern={""}
@@ -3127,7 +3130,7 @@ export default function ParentEditables({
                                         labelClassname="hidden"
                                         placeholder="Math"
                                         inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0 !font-semibold h-[40px]"
-                                        inputClassName="bg-transparent pl-4 rounded-[4px]"
+                                        inputClassName="bg-transparent pl-4 rounded-[4px] placeholder-[#CBD6E2]"
                                         parentClassName="flex-1 w-[120px]"
                                         type="number"
                                         value={
@@ -3187,7 +3190,7 @@ export default function ParentEditables({
                                         labelClassname="hidden"
                                         placeholder="Reading"
                                         inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0 !font-semibold h-[40px]"
-                                        inputClassName="bg-transparent pl-4 rounded-[4px]"
+                                        inputClassName="bg-transparent pl-4 rounded-[4px] placeholder-[#CBD6E2]"
                                         parentClassName="flex-1 w-[120px]"
                                         type="number"
                                         value={
@@ -3247,7 +3250,7 @@ export default function ParentEditables({
                                         labelClassname="hidden"
                                         placeholder="Science"
                                         inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0 !font-semibold h-[40px]"
-                                        inputClassName="bg-transparent pl-4 rounded-[4px]"
+                                        inputClassName="bg-transparent pl-4 rounded-[4px] placeholder-[#CBD6E2]"
                                         parentClassName="flex-1 w-[120px]"
                                         type="number"
                                         value={

@@ -1347,7 +1347,7 @@ export default function ParentEditables({
                                     value={currentToEdit.address}
                                     onChange={e => setCurrentToEdit({ ...currentToEdit, address: e.target.value })} />
                               </div> */}
-                    <div className="grid grid-cols-12 gap-4">
+                    <div className="max-w-[1107px] flex justify-between items-center">
                       <div className="col-span-6">
                         <div>
                           <p className={styles.address}>Country</p>
@@ -1356,7 +1356,7 @@ export default function ParentEditables({
                           labelClassname="text-[#26435F] text-lg !font-medium hidden"
                           label="Country"
                           placeholder="Select"
-                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-full h-[54px]"
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[350px] h-[54px]"
                           inputClassName="bg-transparent  "
                           parentClassName=""
                           type="text"
@@ -1380,7 +1380,7 @@ export default function ParentEditables({
                         <InputField
                           labelClassname="hidden"
                           placeholder="Street Address"
-                          inputContainerClassName="text-sm !py-[17px] px-5 bg-primary-50 "
+                          inputContainerClassName="text-sm !py-[17px] px-5 bg-primary-50 w-[503px]"
                           inputClassName="bg-transparent rounded-[4px]"
                           parentClassName="flex-1"
                           type="text"
@@ -1395,7 +1395,7 @@ export default function ParentEditables({
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-12 gap-4 mt-5">
+                    <div className="w-full flex justify-between items-center mt-5 ">
                       <div className="col-span-6">
                         <div>
                           <p className={styles.address}>State</p>
@@ -1404,7 +1404,7 @@ export default function ParentEditables({
                           labelClassname="text-[#26435F] text-lg !font-medium hidden"
                           label="State"
                           placeholder="Select"
-                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-full h-[54px]"
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[350px] h-[54px]"
                           inputClassName="bg-transparent  "
                           parentClassName=""
                           type="text"
@@ -1427,7 +1427,7 @@ export default function ParentEditables({
                           labelClassname="text-[#26435F] text-lg !font-medium hidden"
                           label="State"
                           placeholder="Select"
-                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-full h-[54px]"
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[305px] h-[54px]"
                           inputClassName="bg-transparent  "
                           parentClassName=""
                           type="text"
@@ -1450,7 +1450,7 @@ export default function ParentEditables({
                         <InputField
                           labelClassname="hidden"
                           placeholder="zip"
-                          inputContainerClassName="text-sm !py-[17px] px-5 bg-primary-50 border-"
+                          inputContainerClassName="text-sm !py-[17px] px-5 bg-primary-50 w-[170px] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
                           inputClassName="bg-transparent rounded-[4px]"
                           parentClassName="flex-1"
                           type="text"
@@ -1561,7 +1561,7 @@ export default function ParentEditables({
                   <div className="">
                     <p className="text-base-15 text-[#667085]">
                       <span className="font-semibold ">
-                        <div className="h-3 w-4 text-[10px] pb-1 mb-1 scale-90 translate-y-[-1px] inline-block">
+                        <div className="text-[16px] pb-1 mb-1 translate-y-[-1px] inline-block">
                           ⚠️
                         </div>{" "}
                         Note:
@@ -1569,7 +1569,7 @@ export default function ParentEditables({
                       The hourly rates you set for the tutor here will directly
                       affect automatic invoicing wherever applicable. Read
                       detailed documentation in Evallo’s{" "}
-                      <span onClick={()=>navigate('/support')} className="text-[#24A3D9] cursor-pointer border-b-[0.6px] border-b-[#24A3D9] cursor-pointer">
+                      <span onClick={()=>navigate('/support')} className="text-[#24A3D9] cursor-pointer border-b-[0.6px] border-b-[#24A3D9] h-[8px]">
                         {" "}
                         knowledge base.
                       </span>
@@ -1754,8 +1754,8 @@ export default function ParentEditables({
                                   rows="3"
                                   maxLength={100}
                                   value={it?.content}
-                                  placeholder="Add the review received by the tutor in this paragraph text space.
-                        Suggested word limit: 100 words."
+                                  placeholder=" Add the review received by the tutor in this paragraph text space.
+                                   Suggested word limit: 100 words."
                                   onChange={(e) => {
                                     let temp = currentToEdit?.tutorReviews;
                                     temp[id].content = e.target.value;

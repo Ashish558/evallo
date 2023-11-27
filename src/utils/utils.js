@@ -89,6 +89,39 @@ export const getFormattedDate = (argDate, format) => {
   return dateFormatted;
 };
 
+export const getFormattedDateWithSlash = (argDate, format) => {
+  if (argDate === undefined) return "-";
+
+  let date = new Date(argDate);
+
+  const offset = date.getTimezoneOffset() * 60000;
+  if (offset > 0) {
+    // startDate = startDate + offset
+    date = new Date(date.getTime() + offset);
+  }
+  let year = date.getFullYear();
+  let month = date.getMonth();
+  let dateNum = date.getDate();
+  month = month + 1;
+  if (month < 10) {
+    month = `0${month}`;
+  }
+  if (dateNum < 10) {
+    dateNum = `0${dateNum}`;
+  }
+  let dateFormatted = "";
+  if (format === "dd/mm/yy") {
+    dateFormatted = `${dateNum}/${month}/${year}`;
+  } else if (format === "mm/dd/yy") {
+    dateFormatted = `${month}/${dateNum}/${year}`;
+  } else {
+    dateFormatted = `${year}/${month}/${dateNum}`;
+  }
+  return dateFormatted;
+};
+
+
+
 export const getFormattedDateTime = (argDate) => {
   const date = new Date(argDate);
   if (argDate === undefined) return "-";
@@ -106,6 +139,7 @@ export const getFormattedDateTime = (argDate) => {
   // return dateFormatted
   return date.toLocaleString().replace(",", "").replace(/:.. /, " ");
 };
+
 
 export function capitalize(str) {
   var splitStr = str.toLowerCase().split(" ");

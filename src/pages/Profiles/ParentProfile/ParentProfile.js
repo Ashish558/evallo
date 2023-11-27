@@ -643,13 +643,13 @@ const [toEdit, setToEdit] = useState({
                       </div>
                       {(persona !== "tutor" || ((persona === 'tutor') && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <div className="flex mt-1 text-base-17-5 items-center text-[#F3F5F7]">
                         <p>
-                          <span>
+                          {persona == "admin" ? "" :<span>
                             <img
                               className="inline-block !w-4 !h-4 mr-2"
                               src={emailIcon}
                               alt="email"
                             />
-                          </span>
+                          </span> }
                           {user?.email}
                           <span>
                             <img
