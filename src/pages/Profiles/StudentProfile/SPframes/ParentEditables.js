@@ -265,12 +265,12 @@ export default function ParentEditables({
     },
     {
       name: "satScores",
-      title: 'Official SAT® Scores',
+      title: "Official SAT® Scores",
       api: "userDetail",
     },
     {
       name: "actScores",
-      title: 'Official ACT® Scores',
+      title: "Official ACT® Scores",
       api: "userDetail",
     },
     {
@@ -664,7 +664,7 @@ export default function ParentEditables({
       } else {
         let newserv =
           organization.settings?.servicesAndSpecialization[
-          currentToEdit.selectedIdx
+            currentToEdit.selectedIdx
           ];
         updated.push({ ...newserv, price: value });
         setUpdatedService({ ...newserv, price: value });
@@ -699,8 +699,8 @@ export default function ParentEditables({
           key={key}
           classname={
             forCss.includes(currentField.name)
-              ? "max-w-[800px] md:pb-5 mx-auto overflow-visible pb-5"
-              : "max-w-fit md:pb-5 mx-auto overflow-visible pb-5"
+              ? "max-w-[800px] md:pb-5 mx-auto overflow-visible pb-5 "
+              : "max-w-fit md:pb-5 mx-auto overflow-visible pb-5 "
           } /*{ ` max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5`}*/
           title=""
           // primaryBtn={{
@@ -723,8 +723,8 @@ export default function ParentEditables({
                   {currentField.title
                     ? currentField.title
                     : toEdit.tutorServices
-                      ? "Service"
-                      : ""}
+                    ? "Service"
+                    : ""}
                 </div>
                 <button
                   className="w-[125px] bg-[#FFA28D] p-1 rounded-[7.5px] text-white  text-base pl-3 pr-3 ml-auto h-[37.5px]"
@@ -762,7 +762,7 @@ export default function ParentEditables({
                         <div className="flex !text-sm gap-4 justify-between">
                           <InputField
                             label="First name"
-                            labelClassname="text-[#26435F]"
+                            labelClassname="text-[#26435F] font-medium my-2"
                             placeholder="First name"
                             inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040]  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] !w-[10.05208vw]"
                             inputClassName="bg-transparent text-xs   "
@@ -779,7 +779,7 @@ export default function ParentEditables({
 
                           <InputField
                             label="Last name"
-                            labelClassname="text-[#26435F]"
+                            labelClassname="text-[#26435F] font-medium my-2"
                             placeholder="Last name"
                             inputContainerClassName="text-xs  !shadow-[0px_0px_2px_0px_#00000040] bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] !w-[10.05208vw]"
                             inputClassName="bg-transparent text-xs   "
@@ -793,9 +793,9 @@ export default function ParentEditables({
                               })
                             }
                           />
-                           <InputField
+                          <InputField
                             label="School / College"
-                            labelClassname="text-[#26435F]"
+                            labelClassname="text-[#26435F] font-medium my-2"
                             placeholder="School / College"
                             inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] w-[14.89583vw]"
                             inputClassName="bg-transparent text-xs   "
@@ -815,7 +815,7 @@ export default function ParentEditables({
                             IconLeft={caution}
                             hideTooltip={hideTooltip}
                             label="Email"
-                            labelClassname="text-[#26435F]"
+                            labelClassname="text-[#26435F] font-medium my-2"
                             placeholder="Email Id"
                             inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040]  bg-primary-50 border-0 !py-3 !px-1 !rounded-[5px] h-[50px] w-[15.625vw]"
                             inputClassName="bg-transparent !w-[200px] text-xs   "
@@ -830,15 +830,15 @@ export default function ParentEditables({
                             }
                             Tooltip={
                               !user?.isVerfied && (
-                                <span className="absolute top-10 w-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                                <span className="absolute top-10 w-[333px] h-[167px] scale-0 rounded bg-gray-800 px-[13px] py-[20px] text-xs text-white group-hover:scale-100 font-light">
                                   <h3 className="text-[#24A3D9] font-semibold mb-1">
                                     Email Confirmation Sent
                                   </h3>
                                   You need to verify your email if
-                                  <ul className="list-disc pl-3 mb-2">
+                                  <div className="list-disc mb-2 px-1">
                                     <li>you created a new account.</li>
                                     <li>you recently changed your email.</li>
-                                  </ul>
+                                  </div>
                                   We have sent you an email verification link to
                                   your current email address to make sure that
                                   it really is you who requested a change.
@@ -850,7 +850,7 @@ export default function ParentEditables({
                             <InputFieldDropdown
                               codeClassName="!bg-white !rounded-sm"
                               placeholder="Student's Phone"
-                              labelClassname="text-[#26435F]"
+                              labelClassname="text-[#26435F] font-medium my-2"
                               inputContainerClassName="!text-xs  !border-none  bg-primary-50  !shadow-[0px_0px_2px_0px_#00000040] h-[50px] w-[14.32292vw]"
                               inputClassName="bg-transparent !w-[90px] !text-xs rounded-[4px] "
                               parentClassName=""
@@ -873,10 +873,10 @@ export default function ParentEditables({
                           </div>
                           <InputSelectNew
                             optionData={grades}
-                            labelClassname={`text-[#26435F] !font-bold ${styles.customFontFamily}`}
+                            labelClassname={`text-[#26435F] font-medium  my-2`}
                             label="Grade"
-                            placeholder="Select"  
-                            inputContainerClassName="text-xs  bg-primary-50 !py-3 border-0 !rounded-[5px] !shadow-[0px_0px_2px_0px_#00000040] h-[50px] w-[7.13542vw]"
+                            placeholder="Select"
+                            inputContainerClassName="!text-xs bg-primary-50 !py-3 border-0 !rounded-[5px] !shadow-[0px_0px_2px_0px_#00000040] h-[50px] w-[7.13542vw]"
                             inputClassName="bg-transparent text-xs  "
                             parentClassName=""
                             type="text"
@@ -890,7 +890,7 @@ export default function ParentEditables({
                     </div>
                     <div>
                       <div className="flex-1 mt-5">
-                        <p className=" text-sm text-[#26435F] font-semibold">
+                        <p className=" text-[17.5px] text-[#26435F] font-medium">
                           About
                         </p>
                         <textarea
@@ -917,7 +917,11 @@ export default function ParentEditables({
 
                           <InputSearch
                             right={
-                              <img className="w-5 h-4 cursor-pointer" alt="drop" src={down} />
+                              <img
+                                className="w-5 h-4 cursor-pointer"
+                                alt="drop"
+                                src={down}
+                              />
                             }
                             labelClassname="text-[#26435F] mb-1 text-sm"
                             label="Associated Parent"
@@ -1000,7 +1004,7 @@ export default function ParentEditables({
                         label="D.O.B"
                         labelClassname="text-[#26435F]"
                         placeholder=""
-                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] !w-[10.09896vw] !h-[50px]"
+                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] !w-[10.09896vw] !h-[50px] text-[#667085]"
                         inputClassName="bg-transparent text-xs   "
                         parentClassName=""
                         type="date"
@@ -1098,7 +1102,7 @@ export default function ParentEditables({
                       <InputField
                         label="Accomodations"
                         labelClassname="text-[#26435F]"
-                        placeholder=""
+                        placeholder="Select"
                         inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] !w-[10.09896vw] !h-[50px]"
                         inputClassName="bg-transparent text-xs   "
                         parentClassName=""
@@ -1396,7 +1400,7 @@ export default function ParentEditables({
                 )}
                 {currentField.name === "notes" && (
                   <div>
-                    <div className="flex items-center mb-5 pt-0 w-[400px] ">
+                    <div className="flex items-center mb-5 pt-0 w-[660px]">
                       {/* <p className='font-medium mr-4 min-w-[60px]'>  </p> */}
                       <div className="border w-full h-full rounded-md">
                         {textOpen && (
@@ -1421,11 +1425,17 @@ export default function ParentEditables({
                         {!textOpen && currentToEdit?.notes?.length === 0 && (
                           <div
                             onClick={() => setTextOpen(true)}
-                            className=" text-[#CBD6E2] text-xs flex-1 text-base-17-5 p-3 h-[150px] bg-[#F6F6F6]                              "
+                            className=" text-[#CBD6E2] flex-1 h-[210px] flex flex-col justify-start items-start pl-[20px] pr-[15px] pt-[10px] bg-[#F6F6F6]  text-[18.667px] text-left"
                           >
-                        Use this space to add notes about the student that are only visible to you as the Org Admin.
-
-Here are some ideas to get you started: personality, preferences, goals, sports, habits, academic scores, activities, family, likes or dislikes, and schedule preferences.
+                            <div classname="text-left w-full flex justify-start items-center">
+                            Use this space to add notes about the student that
+                            are only visible to you as the Org Admin.
+                            </div> 
+                            Here are
+                            some ideas to get you started: personality,
+                            preferences, goals, sports, habits, academic scores,
+                            activities, family, likes or dislikes, and schedule
+                            preferences.
                           </div>
                         )}
                       </div>
@@ -1482,18 +1492,19 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                   </div>
                 )}
                 {currentField.name === "service" && (
-                  <div className="w-[400px] max-h-[50vh] overflow-y-auto custom-scroller">
+                  <div className="w-[660px] max-h-[50vh] overflow-y-auto custom-scroller">
                     <div className="flex flex-col gap-2">
-                   
                       {organization?.settings?.servicesAndSpecialization.map(
                         (item, id) => {
                           return (
-                            <div key={id} className="flex gap-5 items-center">
+                            <div
+                              key={id}
+                              className=" gap-5 flex justify-start items-center"
+                            >
                               <SCheckbox
                                 stopM={true}
                                 checked={currentToEdit?.service?.includes(
                                   item?.service
-
                                 )}
                                 onChange={() =>
                                   handleServiceChange(item?.service)
@@ -1921,8 +1932,8 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                       <p className="font-medium mr-4 min-w-[150px]">
                         {currentToEdit.selectedIdx !== undefined
                           ? organization.settings.servicesAndSpecialization[
-                            currentToEdit.selectedIdx
-                          ].service
+                              currentToEdit.selectedIdx
+                            ].service
                           : ""}
                       </p>
                       <InputField
@@ -2695,8 +2706,8 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                                 <div className="text-md  rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[120px] h-[40px] text-[#FFA28D]">
                                   {currentToEdit.satScores[selectedScoreIndex]
                                     ?.maths +
-                                    currentToEdit.satScores[selectedScoreIndex]
-                                      ?.verbal ? (
+                                  currentToEdit.satScores[selectedScoreIndex]
+                                    ?.verbal ? (
                                     currentToEdit.satScores[selectedScoreIndex]
                                       ?.maths +
                                     currentToEdit.satScores[selectedScoreIndex]
@@ -2708,25 +2719,25 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                                   )}
                                 </div>
                               </div>
-                         <div className="mt-[15px]">
-                         <InputField
-                        label="Test Date"
-                        labelClassname="text-[#26435F]"
-                        placeholder=""
-                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]  !h-[50px] w-[206px] text-[#507CA8]"
-                        inputClassName="bg-transparent text-xs   "
-                        parentClassName=""
-                        type="date"
-                        value={currentToEdit.dob}
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            dob: e.target.value,
-                            birthyear: e.target.value?.split("-")[0],
-                          })
-                        }
-                      />
-                         </div>
+                              <div className="mt-[15px]">
+                                <InputField
+                                  label="Test Date"
+                                  labelClassname="text-[#26435F]"
+                                  placeholder=""
+                                  inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]  !h-[50px] w-[206px] text-[#507CA8]"
+                                  inputClassName="bg-transparent text-xs   "
+                                  parentClassName=""
+                                  type="date"
+                                  value={currentToEdit.dob}
+                                  onChange={(e) =>
+                                    setCurrentToEdit({
+                                      ...currentToEdit,
+                                      dob: e.target.value,
+                                      birthyear: e.target.value?.split("-")[0],
+                                    })
+                                  }
+                                />
+                              </div>
                               <div className="mt-5 border-1  border-t-2 mb-[30px] border-[1.25px_solid_#00000033] justify-center "></div>
                             </div>
                           );
@@ -2825,8 +2836,8 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                                 },
                               });
                             }}
-                          // tempScores[selectedScoreIndex].maths = checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800)
-                          // //console.log('tempScores', tempScores);
+                            // tempScores[selectedScoreIndex].maths = checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800)
+                            // //console.log('tempScores', tempScores);
                           />
 
                           <div className="text-md  rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[120px] text-[#FFA28D]h-[40px]">
@@ -2834,10 +2845,10 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                               currentToEdit.baseLineScore?.satBaseLineScore
                                 ?.maths
                             ) +
-                              parseInt(
-                                currentToEdit.baseLineScore?.satBaseLineScore
-                                  ?.verbal
-                              ) ? (
+                            parseInt(
+                              currentToEdit.baseLineScore?.satBaseLineScore
+                                ?.verbal
+                            ) ? (
                               parseInt(
                                 currentToEdit.baseLineScore?.satBaseLineScore
                                   ?.maths
@@ -2976,18 +2987,18 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                               currentToEdit.baseLineScore?.actBaseLineScore
                                 ?.maths
                             ) +
-                              parseInt(
-                                currentToEdit.baseLineScore?.actBaseLineScore
-                                  ?.science
-                              ) +
-                              parseInt(
-                                currentToEdit.baseLineScore?.actBaseLineScore
-                                  ?.reading
-                              ) +
-                              parseInt(
-                                currentToEdit.baseLineScore?.actBaseLineScore
-                                  ?.english
-                              ) ? (
+                            parseInt(
+                              currentToEdit.baseLineScore?.actBaseLineScore
+                                ?.science
+                            ) +
+                            parseInt(
+                              currentToEdit.baseLineScore?.actBaseLineScore
+                                ?.reading
+                            ) +
+                            parseInt(
+                              currentToEdit.baseLineScore?.actBaseLineScore
+                                ?.english
+                            ) ? (
                               parseInt(
                                 currentToEdit.baseLineScore?.actBaseLineScore
                                   ?.maths
@@ -3033,7 +3044,7 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                                         labelClassname="hidden"
                                         placeholder="English"
                                         inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0 !font-semibold h-[40px]"
-                                        inputClassName="bg-transparent pl-4 rounded-[4px] placeholder:text-sm"
+                                        inputClassName="bg-transparent pl-4 rounded-[4px] placeholder:text-sm placeholder-[#CBD6E2]"
                                         parentClassName="flex-1 !text-sm w-[120px]"
                                         type="number"
                                         pattern={""}
@@ -3094,7 +3105,7 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                                         labelClassname="hidden"
                                         placeholder="Math"
                                         inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0 !font-semibold h-[40px]"
-                                        inputClassName="bg-transparent pl-4 rounded-[4px]"
+                                        inputClassName="bg-transparent pl-4 rounded-[4px] placeholder-[#CBD6E2]"
                                         parentClassName="flex-1 w-[120px]"
                                         type="number"
                                         value={
@@ -3154,7 +3165,7 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                                         labelClassname="hidden"
                                         placeholder="Reading"
                                         inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0 !font-semibold h-[40px]"
-                                        inputClassName="bg-transparent pl-4 rounded-[4px]"
+                                        inputClassName="bg-transparent pl-4 rounded-[4px] placeholder-[#CBD6E2]"
                                         parentClassName="flex-1 w-[120px]"
                                         type="number"
                                         value={
@@ -3214,7 +3225,7 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                                         labelClassname="hidden"
                                         placeholder="Science"
                                         inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0 !font-semibold h-[40px]"
-                                        inputClassName="bg-transparent pl-4 rounded-[4px]"
+                                        inputClassName="bg-transparent pl-4 rounded-[4px] placeholder-[#CBD6E2]"
                                         parentClassName="flex-1 w-[120px]"
                                         type="number"
                                         value={
@@ -3273,9 +3284,9 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
 
                                   <div className="text-md py-2 rounded-[4px] flex items-center  font-semibold  text-center py-auto px-2 bg-primary-50 border-0 !w-[120px] text-[#FFA28D] !h-[40px] ">
                                     {it?.maths +
-                                      it?.science +
-                                      it?.reading +
-                                      it?.english ? (
+                                    it?.science +
+                                    it?.reading +
+                                    it?.english ? (
                                       it?.maths +
                                       it?.science +
                                       it?.reading +
@@ -3287,25 +3298,24 @@ Here are some ideas to get you started: personality, preferences, goals, sports,
                                     )}
                                   </div>
                                 </div>
-                                  <InputField
-                        label="Test Date"
-                        labelClassname="text-[#26435F]"
-                        placeholder=""
-                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]  !h-[50px] w-[206px] text-[#507CA8]"
-                        inputClassName="bg-transparent text-xs   "
-                        parentClassName=""
-                        type="date"
-                        value={currentToEdit.dob}
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            dob: e.target.value,
-                            birthyear: e.target.value?.split("-")[0],
-                          })
-                        }
-                      />
-                                <div className="mt-5 border-1  border-t-2 mb-[30px] border-[1.25px_solid_#00000033] justify-center ">
-                            </div>
+                                <InputField
+                                  label="Test Date"
+                                  labelClassname="text-[#26435F]"
+                                  placeholder=""
+                                  inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]  !h-[50px] w-[206px] text-[#507CA8]"
+                                  inputClassName="bg-transparent text-xs   "
+                                  parentClassName=""
+                                  type="date"
+                                  value={currentToEdit.dob}
+                                  onChange={(e) =>
+                                    setCurrentToEdit({
+                                      ...currentToEdit,
+                                      dob: e.target.value,
+                                      birthyear: e.target.value?.split("-")[0],
+                                    })
+                                  }
+                                />
+                                <div className="mt-5 border-1  border-t-2 mb-[30px] border-[1.25px_solid_#00000033] justify-center "></div>
                               </div>
                             );
                           }

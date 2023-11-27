@@ -2721,7 +2721,7 @@ export default function Settings() {
           cancelBtnClassName="w-140 bg-transparent  border-2 border-[#26435F] text-[#26435F]"
           primaryBtn={{
             text: "Add",
-            className: "w-140 ",
+            className: "w-[147px] h-[46px] ",
             form: "add-question-form",
             type: "submit",
           }}

@@ -871,7 +871,7 @@ export default function ParentEditables({
                             Tooltip={
                               !user?.isVerfied && (
                                 <span className="absolute top-10 w-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
-                                  <h3 className="text-[#24A3D9] font-semibold mb-1">
+                                  <h3 className="text-[#24A3D9] font-semibold mb-1 ">
                                     Email Confirmation Sent
                                   </h3>
                                   You need to verify your email if

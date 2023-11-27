@@ -8,6 +8,7 @@ import UpArrow from "../../assets/icons/upArrow.svg";
 export default function InputSelectNew({
   parentClassName,
   Icon,
+  biggerText,
   iconClass,
   optionsEachClassName,
   value,
@@ -55,7 +56,7 @@ export default function InputSelectNew({
       onClick={() => setSelected(!selected)}
     >
       {label && (
-        <label className={`font-semibold  inline-block ${labelClassname}`}>
+        <label className={`font-semibold  inline-block ${biggerText ? "text-lg" : 'text-base-17-5'} ${labelClassname}`}>
           {label}
           {required && (
             <span className="text-primaryRed inline-block pl-1">*</span>

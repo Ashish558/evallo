@@ -51,7 +51,7 @@ export default function Modal({
           <div className="w-full p-1">
             <div
               ref={handleClose ? selectRef : null}
-              className={`w-full bg-white p-3 py-2  md:px-[33px] rounded-lg relative ${
+              className={`w-full bg-white p-3 py-[28px] md:px-[33px] rounded-lg relative ${
                 classname ? classname : ""
               }`}
             >
@@ -124,7 +124,7 @@ export default function Modal({
                   ""
                 ) : (
                   <button
-                    className="absolute top-0 right-0 p-4 mr-4"
+                    className="absolute top-0 right-0 py-[28px] mr-[36px]"
                     style={cancelBtnStyle}
                     onClick={handleClose}
                   >

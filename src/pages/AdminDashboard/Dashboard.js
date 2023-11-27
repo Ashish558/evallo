@@ -854,7 +854,7 @@ const Dashboard = () => {
                   <p>Coming soon</p>
                 </div> */}
                 <Table
-                  noArrow={true}
+                  noArrow={false}
                   headerWidth="!px-1.5"
                   dummyRowStarClients={popularServices}
                   data={[]}
