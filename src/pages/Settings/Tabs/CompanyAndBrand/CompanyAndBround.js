@@ -317,36 +317,61 @@ const CompanyAndBround = () => {
                   alt="orgDefaultLogo"
                 />
               )}
-              <div
-                className={`${styles["upload-container"]} ${
-                  !logoUrl ? styles["upload-container-centered"] : ""
-                } `}
-              >
-                <div className="flex flex-col ">
-                  <p className="block mx-auto mt-[-25px]">
-                    <img src={UploadIcon} alt="logo" />
-                  </p>
-                  <p
-                    className={`text-[#FFFFFF] text-[15px] bg-[#517CA8] rounded-[5px] pt-3 mt-[12.5px] pb-2 px-4 ${
-                      uploading ? "cursor-wait" : "cursor-pointer"
-                    }`}
-                    onClick={() => inpuRef.current.click()}
-                  >
-                    {uploading ? "Uploading..." : "Choose file"}
-                  </p>
-                  <p className="text-[#517CA8] text-[12.5px] mt-[12.5px] text-center font-light">
-                    Less then 1 MB
-                  </p>
+              {!logoUrl ? (
+                <div
+                  className={`${styles["upload-container"]} ${
+                    !logoUrl ? styles["upload-container-centered"] : ""
+                  } `}
+                >
+                  <div className="flex flex-col ">
+                    <p className="block mx-auto mt-[-25px]">
+                      <img src={UploadIcon} alt="logo" />
+                    </p>
+                    <p
+                      className={`text-[#FFFFFF] text-[15px] bg-[#517CA8] rounded-[5px] pt-3 mt-[12.5px] pb-2 px-4 ${
+                        uploading ? "cursor-wait" : "cursor-pointer"
+                      }`}
+                      onClick={() => inpuRef.current.click()}
+                    >
+                      {uploading ? "Uploading..." : "Choose file"}
+                    </p>
+                    <p className="text-[#517CA8] text-[12.5px] mt-[12.5px] text-center font-light">
+                      Less then 1 MB
+                    </p>
+                  </div>
+                  <input
+                    className="hidden"
+                    type="file"
+                    ref={inpuRef}
+                    accept="image/*"
+                    disabled={uploading}
+                    onChange={(e) => handleLogoChange(e)}
+                  />
                 </div>
-                <input
-                  className="hidden"
-                  type="file"
-                  ref={inpuRef}
-                  accept="image/*"
-                  disabled={uploading}
-                  onChange={(e) => handleLogoChange(e)}
-                />
-              </div>
+              ) : (
+                <div
+                  className={`absolute  right-2 bottom-1`}
+                >
+                  <div className="flex flex-col ">
+                    <p
+                      className={`block mx-auto mt-[-25px]  ${
+                        uploading ? "cursor-wait" : "cursor-pointer"
+                      }`}
+                      onClick={() => inpuRef.current.click()}
+                    >
+                      <img src={UploadIcon} alt="logo" />
+                    </p>
+                  </div>
+                  <input
+                    className="hidden"
+                    type="file"
+                    ref={inpuRef}
+                    accept="image/*"
+                    disabled={uploading}
+                    onChange={(e) => handleLogoChange(e)}
+                  />
+                </div>
+              )}
             </div>
           </div>
           <div className="flex flex-col  gap-4 flex-1 py-auto">
@@ -480,11 +505,14 @@ const CompanyAndBround = () => {
                   label="Zip Code"
                   value={values.zip}
                   totalErrors={error}
-                  onChange={(e) =>
+                  onChange={(e) =>{
+                    const regex = /^[0-9 ]*$/;
+                    const isValid = regex.test(e.target.value);
+                    if (isValid && e.target.value?.length < 11)
                     setValues({
                       ...values,
                       zip: e.target.value,
-                    })
+                    })}
                   }
                   error={error.zip}
                 />

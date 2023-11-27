@@ -187,7 +187,7 @@ const AccountOverview = () => {
       alert("Password reset link sent to your email.");
     });
   };
-
+console.log({fetchedData})
   return (
     <div>
       <div className="flex flex-col gap-10 py-[25px]">
@@ -228,42 +228,37 @@ const AccountOverview = () => {
             />
 
             <InputField
-              IconLeft={caution}
-              hideTooltip={hideTooltip}
-              label="Email"
-              labelClassname="text-[#26435F] font-medium"
+              IconLeft={fetchedData?.isVerified?null:                caution}
               placeholder=""
               inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] border-0 !rounded-[5px] bg-white !shadow-[0px_0px_2.500000476837158px_0px_#00000040] "
               inputClassName="bg-white w-[376px] h-[22px] pt-[13.752px] pe-[14.688px] pb-[14.248px] ps-[15px] text-xs"
               parentClassName=""
               type="text"
               value={values.email}
-              onChange={(e) =>
+              onChange={(e) =>{
                 setValues({
                   ...values,
                   email: e.target.value,
-                })
-              }
+                });
+              }}
+              error={error.email}
               Tooltip={
-                
-                  <span className="absolute top-10 w-[333px] h-[167px] scale-0 rounded bg-gray-800 px-[13px] py-[20px] text-xs text-white group-hover:scale-100 font-light">
-                    <h3 className="text-[#24A3D9] font-semibold mb-1">
-                      Email Confirmation Sent
-                    </h3>
-                    You need to verify your email if
-                    <div className="list-disc mb-2 px-1">
-                      <li>you created a new account.</li>
-                      <li>you recently changed your email.</li>
-                    </div>
-                    We have sent you an email verification link to your current
-                    email address to make sure that it really is you who
-                    requested a change.
-                  </span>
-                
+                <span className="absolute top-10 w-[333px] h-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                  <h3 className="text-[#24A3D9] font-semibold mb-1">
+                    Email Confirmation Sent
+                  </h3>
+                  You need to verify your email if
+                  <ul className="list-disc pl-3 mb-2">
+                    <li>you created a new account.</li>
+                    <li>you recently changed your email.</li>
+                  </ul>
+                  We have sent you an email verification link to your current
+                  email address to make sure that it really is you who requested
+                  a change.
+                </span>
               }
             />
-
-            <div id="number" className="ms-[37px]">
+            <div id="number">
               <InputFieldDropdown
                 placeholder=""
                 labelClassname="font-medium text-base"

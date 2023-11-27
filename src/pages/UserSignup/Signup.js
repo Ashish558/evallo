@@ -106,7 +106,7 @@ export default function UserSignup() {
   const fetchSettings = () => {
     getSettings().then((res) => {
       // console.log(res);
-      setSettings(res.data.data.setting);
+      setSettings(res?.data?.data?.setting);
     });
   };
   useEffect(() => {
@@ -156,9 +156,12 @@ export default function UserSignup() {
       }
     });
   }, [searchParams.get("orgName")]);
-
+ 
   const paramUserId = searchParams.get("userid");
   const paramUserRole = searchParams.get("role");
+  
+  
+
   useEffect(() => {
     if (!paramUserId) return;
     if (!paramUserRole) return;
@@ -226,15 +229,17 @@ export default function UserSignup() {
 
           if (org?.data?.organisation) {
             setOrganisation(org.data.organisation);
-            // setCustomFields(org.data.organisation?.settings?.customFields);
+            setCustomFields(org.data.organisation?.settings?.customFields);
           }
         });
+       
       }
       const { user, userdetails } = res.data.user;
       let user_detail = { ...userdetails };
       console.log("user", user);
     });
-  }, [paramUserId, paramUserRole]);
+   
+  }, [searchParams]);
 
   useEffect(() => {
     setCount(1);
@@ -566,7 +571,7 @@ export default function UserSignup() {
           ) : (
             <></>
           )}
-          <div className="flex lg:items-center relative bg-white rounded-md py-6 px-5 md:px-[48px] w-[41.6667vw] min-w-[600px] max-w-[800px] mb-[139px]">
+          <div className={`flex lg:items-center relative bg-white rounded-md py-6 px-5 md:px-[48px] w-[43vw] min-w-[620px] max-w-[800px] mb-[139px] ${  customFields?.length > 0 && isAddedByAdmin ? "!w-[45vw] min-w-[650px]":""}` } >
             <div className="w-full py-3">
               <h1
                 className={`hidden lg:block mb-1.5 text-[30px] ${styles.title} `}
@@ -577,10 +582,10 @@ export default function UserSignup() {
                     ? "Set Password"
                     : ""}
               </h1>
-             
+            
               {currentStep > 0 && !frames.signupSuccessful && (
                 <NumericSteppers
-                  className="mt-3 !w-[520px] !mx-auto design:!w-[550px]"
+                  className={`mt-3 !w-[520px] !mx-auto design:!w-[550px] ${  customFields?.length > 0 && isAddedByAdmin ? "!w-[650px] design:!w-[650px]":""}`}
                   fieldNames={
                     customFields?.length > 0 && isAddedByAdmin
                       ? [
@@ -689,11 +694,14 @@ export default function UserSignup() {
                           phoneCode: e.target.value,
                         })
                       }
-                      onChange={(e) =>
+                      onChange={(e) =>{
+                        const regex = /^[0-9 ]*$/;
+                        const isValid = regex.test(e.target.value);
+                        if (isValid && e.target.value?.length < 11)
                         setValues({
                           ...values,
                           phone: e.target.value,
-                        })
+                        })}
                       }
                       totalErrors={error}
                       error={error.phone}

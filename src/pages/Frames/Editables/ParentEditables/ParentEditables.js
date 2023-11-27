@@ -500,12 +500,47 @@ export default function ParentEditables({
       handleAddReview();
       return;
     }
+    if(currentField.name === "videoLink"){
+      const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+     let check=false
+        if (!urlRegex.test(currentToEdit.videoLink)) check = true;
+      
+
+      if (check) {
+        alert("Enter valid video url!");
+        return;
+      }
+    }
     if (currentField.name === "profileData") {
       let body = { ...reqBody };
       delete body["firstName"];
       delete body["lastName"];
       delete body["phones"];
       delete body["phoneCode"];
+      const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+        let check = false;
+        const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+      
+          if (!urlRegex.test(currentToEdit?.linkedIn)) check = true;
+        
+         if(!emailValidation.test(currentToEdit.email)){
+          alert("Enter valid email!");
+          return;
+         }
+         if(!currentToEdit.firstName || currentToEdit.firstName?.trim()?.length===0){
+          alert("first name cannot be empty!");
+          return;
+         }
+         if(!currentToEdit.lastName || currentToEdit.lastName?.trim()?.length===0){
+          alert("last name cannot be empty!");
+          return;
+         }
+        if (check) {
+          alert("Enter valid linkedin url!");
+          return;
+        }
+       
+      
       updateTutorDetails({ id: userId, fields: reqBody }).then((res) => {
         console.log("patched", res);
         setLoading(false);
@@ -910,10 +945,14 @@ export default function ParentEditables({
                           />
                         }
                         onChange={(e) =>
-                          setCurrentToEdit({
+                          {
+                            const regex = /^[0-9 ]*$/;
+                        const isValid = regex.test(e.target.value);
+                        if(isValid  && e.target.value?.length<11)
+                            setCurrentToEdit({
                             ...currentToEdit,
                             phone: e.target.value,
-                          })
+                          })}
                         }
                       />
                     </div>
@@ -1416,11 +1455,14 @@ export default function ParentEditables({
                           parentClassName="flex-1"
                           type="text"
                           value={currentToEdit.pincode}
-                          onChange={(e) =>
+                          onChange={(e) =>{
+                            const regex = /^[0-9 ]*$/;
+                            const isValid = regex.test(e.target.value);
+                            if(isValid  && e.target.value?.length<11)
                             setCurrentToEdit({
                               ...currentToEdit,
                               pincode: e.target.value,
-                            })
+                            })}
                           }
                         />
                       </div>
@@ -1949,12 +1991,15 @@ export default function ParentEditables({
                                 inputContainerClassName="text-sm pt-3 pb-3 !px-2 bg-primary-50 border-white !text-[18.667px]"
                                 inputClassName="bg-transparent text-[#667085] text-400"
                                 value={currentToEdit.firstName}
-                                onChange={(e) =>
+                                onChange={(e) =>{
+                                  const regex = /^[a-zA-Z ]*$/;
+                                  const isValid = regex.test(e.target.value);
+                                  if(isValid)
                                   setCurrentToEdit({
                                     ...currentToEdit,
                                     firstName: e.target.value,
                                   })
-                                }
+                                }}
                               />
                             </div>
                             <div className=" col-span-4">
@@ -1970,11 +2015,14 @@ export default function ParentEditables({
                                 inputContainerClassName="text-sm pt-3 pb-3 !px-2 bg-primary-50 border-white"
                                 inputClassName="bg-transparent text-[#667085] text-400"
                                 value={currentToEdit.lastName}
-                                onChange={(e) =>
+                                onChange={(e) =>{
+                                  const regex = /^[a-zA-Z ]*$/;
+                                  const isValid = regex.test(e.target.value);
+                                  if(isValid)
                                   setCurrentToEdit({
                                     ...currentToEdit,
                                     lastName: e.target.value,
-                                  })
+                                  })}
                                 }
                               />
                             </div>
@@ -2077,11 +2125,14 @@ export default function ParentEditables({
                                         phoneCode: e.target.value,
                                       })
                                     }
-                                    onChange={(e) =>
+                                    onChange={(e) =>{
+                                      const regex = /^[0-9 ]*$/;
+                        const isValid = regex.test(e.target.value);
+                        if(isValid  && e.target.value?.length<11)
                                       setCurrentToEdit({
                                         ...currentToEdit,
                                         phone: e.target.value,
-                                      })
+                                      })}
                                     }
                                   />
                                 </div>

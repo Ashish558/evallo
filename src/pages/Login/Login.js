@@ -222,7 +222,7 @@ export default function Login({ setLoginFormActive }) {
                   totalErrors={error}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      handleSubmit();
+                      handleSubmit(e);
                     }
                   }}
                 />
