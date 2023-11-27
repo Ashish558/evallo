@@ -717,7 +717,7 @@ export default function CalendarPage() {
     if (arg.event._def.extendedProps.topic) {
       topic = arg.event._def.extendedProps.topic;
     }
-    // console.log({key:arg.event._def.extendedProps})
+
     return (
       <div className="p-0.5 h-full ">
         <div
@@ -726,7 +726,7 @@ export default function CalendarPage() {
         ></div>
         <div
           style={{
-            background: colorMapping[key] + "50",
+            background: colorMapping[key] ? `${colorMapping[key]}50` : '#24A3D933',
             border: "1.87px solid " + colorMapping[key],
             borderTop: "none",
           }}
@@ -736,15 +736,11 @@ export default function CalendarPage() {
             className={`text-[#507CA8] font-semibold text-sm text-base-15 ${isCompleted ? "line-through" : ""
               } `}
           >
-            {" "}
-            {
-
-            }
             {arg.event._def.title}{" "}
             {/* {service + " - " + topic} */}
           </p>
           {/* <p className='text-black opacity-60 text-xs'> {arg.timeText} </p> */}
-          <p className="text-[#26435F] opacity-60 text-xs text-base-15">
+          <p className="text-[#26435F] text-xs text-base-15">
             {" "}
             {description}{" "}
           </p>
