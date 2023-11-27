@@ -62,20 +62,10 @@ const AccountOverview = () => {
   const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
   const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
   const [fetchedData, setFetchedData] = useState({});
-  useEffect(() => {
-    userDetails()
-      .then((res) => {
-        setValues({
-          ...res?.data.data.user,
-        });
-        setFetchedData({
-          ...res?.data.data.user,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  
+  // tooltip handler state
+  const [hideTooltip, setTooltip] = useState(false);
+
 
   const isEmail = (val) => {
     let regEmail =
@@ -238,29 +228,47 @@ const AccountOverview = () => {
 
             <InputField
               IconLeft={caution}
-              placeholder=""
-              labelClassname="font-medium text-base"
-              parentClassName="text-[#26435F]"
-              inputContainerClassName=" !shadow-[0px_0px_2.500000476837158px_0px_#00000040]  bg-white  text-[#667085] mr-[38px]"
-              inputClassName=" text-400 py-0 bg-transparent w-[calc(377*0.0522vw)]"
+              hideTooltip={hideTooltip}
               label="Email"
-              // IconRight={tooltipIcon}
+              labelClassname="text-[#26435F] font-medium"
+              placeholder=""
+              inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] border-0 !rounded-[5px] bg-white !shadow-[0px_0px_2.500000476837158px_0px_#00000040] "
+              inputClassName="bg-white w-[376px] h-[22px] pt-[13.752px] pe-[14.688px] pb-[14.248px] ps-[15px] text-xs"
+              parentClassName=""
+              type="text"
               value={values.email}
-              onChange={(e) => {
+              onChange={(e) =>
                 setValues({
                   ...values,
                   email: e.target.value,
-                });
-              }}
-              error={error.email}
+                })
+              }
+              Tooltip={
+                
+                  <span className="absolute top-10 w-[333px] h-[167px] scale-0 rounded bg-gray-800 px-[13px] py-[20px] text-xs text-white group-hover:scale-100 font-light">
+                    <h3 className="text-[#24A3D9] font-semibold mb-1">
+                      Email Confirmation Sent
+                    </h3>
+                    You need to verify your email if
+                    <div className="list-disc mb-2 px-1">
+                      <li>you created a new account.</li>
+                      <li>you recently changed your email.</li>
+                    </div>
+                    We have sent you an email verification link to your current
+                    email address to make sure that it really is you who
+                    requested a change.
+                  </span>
+                
+              }
             />
-            <div id="number">
+
+            <div id="number" className="ms-[37px]">
               <InputFieldDropdown
                 placeholder=""
                 labelClassname="font-medium text-base"
                 parentClassName="text-[#26435F] "
                 inputContainerClassName="!shadow-[0px_0px_2.500000476837158px_0px_#00000040]  bg-white  text-[#667085]"
-                inputClassName="text-400 py-0 bg-transparent w-[calc(377*0.0522vw)]"
+                inputClassName="text-400 py-[7.5px] bg-transparent w-[calc(377*0.0522vw)]"
                 label="Phone"
                 value={values.phone}
                 codeValue={values.phoneCode}
@@ -400,7 +408,9 @@ const AccountOverview = () => {
                   </defs>
                 </svg>
 
-                <div className="ms-3">{"Password Reset Link Sent To {email address}"}</div>
+                <div className="ms-3">
+                  {"Password Reset Link Sent To {email address}"}
+                </div>
               </p>
             </div>
           )}
