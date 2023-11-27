@@ -1,4 +1,9 @@
+import {
+    useEffect,
+    useState
+} from "react";
 import SubscriptionSelectionWidget from "../../../components/SubscriptionSelectionWidget/SubscriptionSelectionWidget";
+import { SubscriptionPackDescriptions } from "./DummyData/SubscriptionPackDescriptions";
 
 function SubscriptionChoosingModal({
     className,
@@ -7,6 +12,12 @@ function SubscriptionChoosingModal({
     chosenSubscriptionPlanName,
     SetChosenSubscriptionPlanName
 }) {
+    const [productDescriptions, SetProductDescriptions] = useState([]);
+
+    useEffect(() => {
+        SetProductDescriptions(SubscriptionPackDescriptions);
+    },[])
+
     return (
         <div
             className={`flex h-full w-full ${className}`}
@@ -68,9 +79,26 @@ function SubscriptionChoosingModal({
             </div>
             
             <div
-                className="border-l-[1px] border-[#E3E3E3] h-full w-1/2"
+                className="border-l-[1px] border-[#E3E3E3] flex flex-col h-full w-1/2"
             >
                 <div className="font-[200] ml-[30px] mt-[30px] text-[#FFA28D] text-[12px]" >What’s Included?</div>
+                <div className="ml-[35px] overflow-y-scroll w-11/12" >
+                    {
+                        !(productDescriptions === undefined || productDescriptions === null || productDescriptions.length === 0) ?
+                        (
+                            productDescriptions.map(item => {
+                                return (
+                                    <div className="flex mb-[5px]" >
+                                        <div className="bg-[#B3BDC7] mt-[7px] rounded-full h-[3px] w-[3px]" ></div>
+                                        <div className="leading-[0.8rem] ml-[10px] w-11/12" >
+                                            <span className="text-[#7C98B6] text-[10px] " >{item.title}</span><span className="font-thin text-[#B3BDC7] text-[10px]" >{" - " + item.description}</span>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        ) : (<></>)
+                    }
+                </div>
             </div>
         </div>
     )

@@ -7,6 +7,7 @@ import OrgDetailsForm from "../OrgDetailsForm/OrgDetailsForm";
 import SubscriptionChoosingModal from "../SubscriptionChoosingModal/SubscriptionChoosingModal";
 import { useLazyGetSubscriptionsInfoQuery } from "../../../app/services/orgSignup";
 import { extensionPlansInfo } from "../../OrgSignup/DummyData/ExtensionPlansInfo";
+import ReviewProduct from "../ReviewProduct/ReviewProduct";
 
 function SubscriptionAndExtensionModal({
     className
@@ -72,6 +73,10 @@ function SubscriptionAndExtensionModal({
             productInfo.ccRequired = product.product.metadata.cc_required === "yes" ? true : false;
             productInfo.pricePerMonth = product.unit_amount / 100;
             productInfo.currency = product.currency;
+
+            if(i === 0) {
+                SetChosenSubscriptionPlanName(product.product.name);
+            }
     
             SetSubscriptionPlanInfo(plans => {
               // if product info already exists in the list then don't do anything
@@ -291,7 +296,8 @@ function SubscriptionAndExtensionModal({
                         ) : frames.extensions ? (
                             <></>
                         ) : frames.review ? (
-                            <></>
+                            <ReviewProduct
+                            />
                         ) : (<></>)
                     }
                 </div>
