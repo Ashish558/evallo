@@ -630,8 +630,7 @@ export default function CalendarPage() {
     // console.log('darg--', date);
     return (
       <div
-        className={`p-[10px] rounded-7 ${arg.isToday ? "bg-primary border" : ""
-          }  `}
+        className={`p-[10px] rounded-7`}
       >
         {/* <p
           className={`${arg.isToday ? "text-primaryWhite-900" : ""
@@ -646,12 +645,12 @@ export default function CalendarPage() {
           {days[arg.date.getDay()]}
         </p> */}
         <p
-          className={`${arg.isToday ? "text-primaryWhite-900" : ""
+          className={`${arg.isToday ? "text-white" : "text-white"
             } text-2xl font-bold font-inter
                    ${arg.isPast
-              ? "text-[#BEC2CE]"
+              ? "text-[#fff]"
               : arg.isFuture
-                ? "text-primary-dark"
+                ? "text-white"
                 : ""
             }`}
         >
@@ -1747,6 +1746,7 @@ export default function CalendarPage() {
                     getDayHeaders={getDayHeaders}
                     handleDateClick={handleDateClick}
                     handleEventClick={handleEventClick}
+                    className={'calendar-weekly-view'}
                   />
                   : activeView === 'Month' ?
                     <FullCalendar view='dayGridMonth'
@@ -1760,6 +1760,7 @@ export default function CalendarPage() {
                       getDayHeaders={getDayHeaders}
                       handleDateClick={handleDateClick}
                       handleEventClick={handleEventClick}
+                      className={'calendar-monthly-view'}
                     /> : ''
             }
 
