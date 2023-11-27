@@ -189,7 +189,7 @@ const AccountOverview = () => {
 
   return (
     <div>
-      <div className="flex flex-col gap-10  ">
+      <div className="flex flex-col gap-10 py-[25px]">
         <div className="gap-8  flex justify-between items-center">
           <div className="w-4/5 flex justify-start items-center ">
             <InputField
@@ -306,12 +306,12 @@ const AccountOverview = () => {
               <p className="text-base-17-5 font-semibold text-[#26435F] mr-5">
                 Profile Picture
               </p>
-              <p>
+              <p className="">
                 <img className=" inline-block" src={userPic} alt="" />
               </p>
-              <p className="absolute right-0 bottom-0">
-                <img src={camera} alt="" />
-              </p>
+          
+                <img src={camera} className="absolute right-0 bottom-0 mx-5" alt="camera-icon" />
+             
             </div>
             <InputField
               placeholder="What is your role?"
