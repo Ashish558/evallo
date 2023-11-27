@@ -197,6 +197,7 @@ export default function CalendarPage() {
   const handleSelectedTimezoneChange = val => {
     setnewTimeZone(val.value)
     setTimeZoneSearchText(val.value)
+    setTimeZone(val.value)
   }
 
 
@@ -1056,8 +1057,8 @@ export default function CalendarPage() {
 
         // console.log('convertedDate---', moment.tz(item.updatedDate, 'DD/MM/YYYY h:mm a', timeZone));
         // console.log('timeZone---', timeZone);
-        console.log('convertedDate---', convertedDate);
-        console.log('item date---', item.updatedDate);
+        // console.log('convertedDate---', convertedDate);
+        // console.log('item date---', item.updatedDate);
         // let updatedDate = new Date(item?.updatedDate).toLocaleString("en-US", {
         //   timeZone,
         // });
@@ -1092,7 +1093,7 @@ export default function CalendarPage() {
   //       setTimeZone(res.data?.data?.userdetails?.timeZone)
   //    );
   // }, []);
-
+// console.log('tz-', timeZone);
   useEffect(() => {
     if (calendarWeekRef.current === null) return;
     if (calendarWeekRef.current === undefined) return;
