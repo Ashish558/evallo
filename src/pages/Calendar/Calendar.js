@@ -630,8 +630,7 @@ export default function CalendarPage() {
     // console.log('darg--', date);
     return (
       <div
-        className={`p-[10px] rounded-7 ${arg.isTodday ? "bg-primary border" : ""
-          }  `}
+        className={`p-[10px] rounded-7`}
       >
         {/* <p
           className={`${arg.isToday ? "text-primaryWhite-900" : ""
@@ -646,7 +645,7 @@ export default function CalendarPage() {
           {days[arg.date.getDay()]}
         </p> */}
         <p
-          className={`${arg.isdToday ? "text-white" : "text-white"
+          className={`${arg.isToday ? "text-white" : "text-white"
             } text-2xl font-bold font-inter
                    ${arg.isPast
               ? "text-[#fff]"
