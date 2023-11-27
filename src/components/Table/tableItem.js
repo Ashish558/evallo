@@ -769,7 +769,7 @@ export default function TableItem({
                   </div>
                 ) : key === "scores" ? (
                   <div
-                    className="cursor-pointer ms-[60px] w-[300px] text-center"
+                    className={`cursor-pointer ${persona == "student" ? "ms-[60px] w-[300px]" : ""} text-center`}
                     onClick={() =>
                       item.isCompleted === true &&
                       navigate(
