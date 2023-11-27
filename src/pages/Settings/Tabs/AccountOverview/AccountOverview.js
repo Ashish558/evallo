@@ -253,7 +253,6 @@ const AccountOverview = () => {
                 });
               }}
               error={error.email}
-             
             />
             <div id="number">
               <InputFieldDropdown
@@ -373,9 +372,35 @@ const AccountOverview = () => {
         <div>
           {reset && (
             <div className="flex gap-2">
-              <p className="bg-[#38C980] rounded-xl text-sm text-white px-3 py-1 text-base-15">
-                <img className="inline-block mr-3" src={resetSendIcon} alt="" />
-                {"Password Reset Link Sent To {email address}"}
+              <p className="bg-[#38C980] rounded-xl text-sm text-white px-3 py-1 text-base-15 flex justify-center items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="19"
+                  viewBox="0 0 20 19"
+                  fill="none"
+                >
+                  <g clip-path="url(#clip0_9876_45449)">
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M9.565 0.332298C9.65942 0.278367 9.76627 0.25 9.875 0.25C9.98374 0.25 10.0906 0.278367 10.185 0.332298L18.935 5.33228C19.0307 5.38692 19.1102 5.46587 19.1655 5.56114C19.2208 5.65641 19.25 5.76461 19.25 5.87477V6.77477C19.25 9.53222 18.3517 12.2146 16.691 14.4159C15.0304 16.6172 12.6977 18.2176 10.0463 18.9747C9.93431 19.0066 9.81569 19.0066 9.70375 18.9747C7.05248 18.2172 4.72008 16.6168 3.05946 14.4155C1.39885 12.2143 0.500375 9.53212 0.5 6.77477L0.5 5.87477C0.500036 5.76461 0.529189 5.65641 0.584507 5.56114C0.639825 5.46587 0.719341 5.38692 0.815 5.33228L9.565 0.332298ZM9.34 13.6385L14.7375 6.88977L13.7625 6.10977L9.16 11.861L5.9 9.14476L5.1 10.1048L9.34 13.6385Z"
+                      fill="white"
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_9876_45449">
+                      <rect
+                        width="18.75"
+                        height="18.7499"
+                        fill="white"
+                        transform="translate(0.5 0.25)"
+                      />
+                    </clipPath>
+                  </defs>
+                </svg>
+
+                <div className="ms-3">{"Password Reset Link Sent To {email address}"}</div>
               </p>
             </div>
           )}
@@ -400,7 +425,8 @@ const AccountOverview = () => {
           body={
             <div className="text-center mb-[30px]">
               <h1 className="text-[21px] text-[#26435F]">
-                A Password Reset Link Will Be Sent To You. Please Click On It To Change Your Password.
+                A Password Reset Link Will Be Sent To You. Please Click On It To
+                Change Your Password.
               </h1>
               {/* <button
                 onClick={showResetConfirmation}
