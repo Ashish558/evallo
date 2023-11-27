@@ -400,7 +400,7 @@ export default function TutorProfile({ isOwn }) {
       console.log("details", details);
       // const { } = res.data.data.user
       // const { service } = res.data.data.userdetails
-
+  console.log({organization,})
       const promiseState = async (state) =>
         new Promise((resolve) => {
           resolve(
@@ -418,6 +418,7 @@ export default function TutorProfile({ isOwn }) {
                   lastName,
                   tagLine,
                   phone,
+                  email,
                   phoneCode,
                   linkedIn: !details ? "" : details?.linkedIn,
                   about: !details ? "" : details?.about,
@@ -428,7 +429,7 @@ export default function TutorProfile({ isOwn }) {
                 tutorAddress: {
                   ...prevToEdit.addressData,
                   city: !details ? "" : details?.city,
-                  country: !details ? "" : details?.country,
+                  country: !details || !details?.country ? organization.country : details?.country,
                   pincode: !details ? "" : details?.pincode,
                   state: !details ? "" : details?.state,
                   address: !details ? "" : details?.address,
@@ -543,7 +544,7 @@ export default function TutorProfile({ isOwn }) {
 
   useEffect(() => {
     fetchDetails();
-  }, [params.id]);
+  }, [params.id,organization]);
 
   useEffect(() => {
     // fetchSettings()

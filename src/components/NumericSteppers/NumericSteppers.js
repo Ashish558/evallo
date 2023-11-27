@@ -15,7 +15,7 @@ export default function NumericSteppers({
     <div
       className={`lg:mt-6 relative ${
         currentStep === 5 ? "mb-[30px]" : "mb-[30px] mx-5"
-      } flex justify-between ${className ? className : ""} `}
+      } flex justify-between items-start ${className ? className : ""} `}
     >
       {[...Array(totalSteps)].map((x, i) =>
         customFields?.length === 0 &&
@@ -74,7 +74,7 @@ export default function NumericSteppers({
           </div>
         )
       )}
-      <div className="absolute top-[-23px] left-[-16.5%] w-screen">
+      <div className="hidden absolute top-[-23px] left-[-16.5%] w-screen">
         <div className="flex gap-0.5">
           {[...Array(totalSteps)].map((x, i) => (
             <div

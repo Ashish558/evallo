@@ -409,7 +409,15 @@ const SPFrame1 = ({
                 className="w-full h-full rounded-md bg-white flex justify-center flex-col text-center items-center"
               >
                 <div className="flex flex-col justify-center items-center h-full">
-                  <button className="bg-[#38C980] text-white rounded-md p-2 py-1">
+                  <button
+                    onClick={() =>
+                      setToEdit({
+                        ...toEdit,
+                        subjects: { ...toEdit.subjects, active: true },
+                      })
+                    }
+                    className="bg-[#38C980] text-white rounded-md p-2 py-1"
+                  >
                     Add Subjects +
                   </button>
                 </div>{" "}

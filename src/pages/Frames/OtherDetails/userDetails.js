@@ -16,25 +16,25 @@ import leftDrop from "../../../assets/icons/Polygon 2.svg";
 import CCheckbox from "../../../components/CCheckbox/CCheckbox";
 
 const GradesData = [
-  "Nursery",
-  "Lower Kindergarten",
-  "Upper Kindergarten",
-  "1st",
-  "2nd",
-  "3rd",
-  "4th",
-  "5th",
-  "6th",
-  "7th",
-  "8th",
-  "9th",
-  "10th",
-  "11th",
-  "12th",
-  "College 1st Year",
-  "College 2nd Year",
-  "College 3rd Year",
-  "College 4th Year",
+"Preschool",
+"Grade 1",
+"Grade 2",
+"Grade 3",
+"Grade 4",
+"Grade 5",
+"Grade 6",
+"Grade 7",
+"Grade 8",
+"Grade 9",
+"Grade 10",
+"Grade 11",
+"Grade 12",
+"College Freshman",
+"College Sophomore",
+"College Junior",
+"College Senior",
+"Master's Student",
+"Ph.D. Student"
 ];
 export default function UserDetails({
   setFrames,
@@ -196,8 +196,10 @@ export default function UserDetails({
           value={otherDetails.Phone}
           onChange={(e) => {
             const inputText = e.target.value;
-            const numberOnly = inputText.replace(/\D/g, '')
-            setOtherDetails({ ...otherDetails, Phone: numberOnly })
+            const regex = /^[0-9 ]*$/;
+            const isValid = regex.test(e.target.value);
+            if (isValid && e.target.value?.length < 11)
+            setOtherDetails({ ...otherDetails, Phone: inputText })
           }}
           totalErrors={detailsError}
           error={detailsError.Phone}

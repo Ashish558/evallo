@@ -6,7 +6,7 @@ import EditableText from "../../../../components/EditableText/EditableText";
 import { useUpdateUserDetailsMutation } from "../../../../app/services/users";
 import act from "../../../../assets/YIcons/Official ACT® scores.svg";
 import sat from "../../../../assets/YIcons/Official SAT® scores.svg";
-import { useLazyGetTotalHoursQuery } from "../../../../app/services/session";
+import { useLazyGetSessionQuery, useLazyGetTotalHoursQuery } from "../../../../app/services/session";
 import { useSelector } from "react-redux";
 import { getFormattedDate } from "../../../../utils/utils";
 import { getFormattedDateWithSlash } from "../../../../utils/utils";
@@ -27,6 +27,8 @@ const SPFrame2 = ({
   const [updateDetails, updateDetailsResp] = useUpdateUserDetailsMutation();
   const [totalHours, setTotalHours] = useState(0);
   const [getHours, getHoursStatus] = useLazyGetTotalHoursQuery();
+  const [getTotalSessions, setGetTotalSessions] = useLazyGetSessionQuery()
+  const [totalSessions, setTotalSessions] = useState()
   const reduceArr = (id, key, update) => {
     //  //console.log({toEdit})
     let temp = [];
@@ -47,6 +49,9 @@ const SPFrame2 = ({
         }
       });
     }
+    getTotalSessions().then((res)=>{
+      console.log("total sessions",res)
+    })
   }, [userId]);
   const dateFormat = settings?.dateFormat || "dd/mm/yyyy";
   const handleSubmit = (key, e) => {

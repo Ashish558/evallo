@@ -402,6 +402,7 @@ const [toEdit, setToEdit] = useState({
         country,
         city,
         state: state1,
+        Email:alternateEmailAddress,
         subscriptionCode,
       } = res.data.data.userdetails;
 
@@ -423,6 +424,7 @@ const [toEdit, setToEdit] = useState({
                   ...prev.frame0.schoolName,
                   schoolName,
                   about,
+                  alternateEmail:alternateEmailAddress
                   //  assiginedStudents:studentsData?.map(student => student?._id)
                 },
                 frame1: {

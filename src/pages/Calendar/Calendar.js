@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import moment from "moment-timezone";
 import "./Transition.css";
 import "./calendar.css";
+import styles from './calendar.module.css'
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import downIcon from '../../assets/icons/down-pink.svg'
@@ -161,8 +162,8 @@ export default function CalendarPage() {
     id: "",
     role: "",
   });
-  const [activeView, setActiveView] = useState('Year')
-
+  const [activeView, setActiveView] = useState('Week')
+  const [timeZoneSearchText, setTimeZoneSearchText] = useState('')
   const refetchSessions = () => {
     // //////console.log(searchedUser);
     if (persona === "tutor") {
@@ -172,6 +173,8 @@ export default function CalendarPage() {
       fetchSessions(searchedUser.id, searchedUser.role);
     }
   };
+
+  const timeZones = moment.tz.names(); // String[]
 
   useEffect(() => {
     if (!timeZones?.includes(timeZoneUser) && organization && organization.settings && organization.settings.timeZone)
@@ -183,7 +186,21 @@ export default function CalendarPage() {
       setcurrentUserTImeZone(timeZoneUser)
   }, [timeZoneUser])
 
-  // console.log(moment.tz.names())
+  const [allTimezones, setAllTimezones] = useState(timeZones.map(tz => ({ value: tz })))
+
+  useEffect(() => {
+    const regexPattern = new RegExp(timeZoneSearchText, "i");
+    const matches = timeZones.filter(str => regexPattern.test(str));
+    setAllTimezones(matches.map(tz => ({ value: tz })))
+  }, [timeZoneSearchText])
+
+  const handleSelectedTimezoneChange = val => {
+    setnewTimeZone(val.value)
+    setTimeZoneSearchText(val.value)
+    setTimeZone(val.value)
+  }
+
+
   // const regex = /east/i;
   // const eastStrings = c.filter(str => regex.test(str));
   // console.log(eastStrings)
@@ -363,6 +380,8 @@ export default function CalendarPage() {
     // //////console.log(currentUserTImeZone);
     if (timeZones.includes(currentUserTImeZone)) {
       setTimeZone(currentUserTImeZone);
+      setnewTimeZone(currentUserTImeZone)
+      setTimeZoneSearchText(currentUserTImeZone)
     }
   }, [currentUserTImeZone]);
 
@@ -579,14 +598,27 @@ export default function CalendarPage() {
     if (calendarWeekRef.current) {
       const prevBtn = document.getElementsByClassName(
         "calendar-prevButton-custom"
-      )[0].parentElement;
+      )[0]?.parentElement;
       if (prevBtn) prevBtn.classList.add("calendar-prev-button");
       const nextBtn = document.getElementsByClassName(
         "calendar-nextButton-custom"
-      )[0].parentElement;
+      )[0]?.parentElement;
       if (nextBtn) nextBtn.classList.add("calendar-prev-button");
     }
   }, []);
+
+  useEffect(() => {
+    if (calendarMonthRef.current) {
+      const prevBtn = document.getElementsByClassName(
+        "calendar-prevButton-custom"
+      )[0]?.parentElement;
+      if (prevBtn) prevBtn.classList.add("calendar-prev-button");
+      const nextBtn = document.getElementsByClassName(
+        "calendar-nextButton-custom"
+      )[0]?.parentElement;
+      if (nextBtn) nextBtn.classList.add("calendar-prev-button");
+    }
+  }, [calendarMonthRef.current]);
 
   useEffect(() => {
     setnewTimeZone(timeZone)
@@ -598,8 +630,7 @@ export default function CalendarPage() {
     // console.log('darg--', date);
     return (
       <div
-        className={`p-[10px] rounded-7 ${arg.isToday ? "bg-primary border" : ""
-          }  `}
+        className={`p-[10px] rounded-7`}
       >
         {/* <p
           className={`${arg.isToday ? "text-primaryWhite-900" : ""
@@ -614,12 +645,12 @@ export default function CalendarPage() {
           {days[arg.date.getDay()]}
         </p> */}
         <p
-          className={`${arg.isToday ? "text-primaryWhite-900" : ""
-            } text-2xl font-bold font-inter
+          className={`${arg.isToday ? "text-white" : "text-white"
+            } text-2xl font-bold font-inter whitespace-nowrap
                    ${arg.isPast
-              ? "text-[#BEC2CE]"
+              ? "text-[#fff]"
               : arg.isFuture
-                ? "text-primary-dark"
+                ? "text-white"
                 : ""
             }`}
         >
@@ -639,6 +670,16 @@ export default function CalendarPage() {
 
   const handleNextClick = (arg) => {
     const calendarAPI = calendarWeekRef?.current?.getApi();
+    calendarAPI?.next();
+  };
+
+  const handlePrevClickMonth = (arg) => {
+    const calendarAPI = calendarMonthRef?.current?.getApi();
+    calendarAPI?.prev();
+  };
+
+  const handleNextClickMonth = (arg) => {
+    const calendarAPI = calendarMonthRef?.current?.getApi();
     calendarAPI?.next();
   };
 
@@ -675,7 +716,7 @@ export default function CalendarPage() {
     if (arg.event._def.extendedProps.topic) {
       topic = arg.event._def.extendedProps.topic;
     }
-    // console.log({key:arg.event._def.extendedProps})
+
     return (
       <div className="p-0.5 h-full ">
         <div
@@ -684,7 +725,7 @@ export default function CalendarPage() {
         ></div>
         <div
           style={{
-            background: colorMapping[key] + "50",
+            background: colorMapping[key] ? `${colorMapping[key]}50` : '#24A3D933',
             border: "1.87px solid " + colorMapping[key],
             borderTop: "none",
           }}
@@ -694,15 +735,11 @@ export default function CalendarPage() {
             className={`text-[#507CA8] font-semibold text-sm text-base-15 ${isCompleted ? "line-through" : ""
               } `}
           >
-            {" "}
-            {
-
-            }
             {arg.event._def.title}{" "}
             {/* {service + " - " + topic} */}
           </p>
           {/* <p className='text-black opacity-60 text-xs'> {arg.timeText} </p> */}
-          <p className="text-[#26435F] opacity-60 text-xs text-base-15">
+          <p className="text-[#26435F] text-xs text-base-15">
             {" "}
             {description}{" "}
           </p>
@@ -959,11 +996,11 @@ export default function CalendarPage() {
 
   const handleEventClick = (info) => {
     //alert("Event")
-    if (organization?.settings?.permissions && persona === 'tutor') {
-      if (organization?.settings?.permissions[5].choosedValue === false) {
-        return
-      }
-    }
+    // if (organization?.settings?.permissions && persona === 'tutor') {
+    //   if (organization?.settings?.permissions[5].choosedValue === false) {
+    //     return
+    //   }
+    // }
     const session = eventDetails.find(
       (e) => e._id === info.event._def.publicId
     );
@@ -1015,8 +1052,8 @@ export default function CalendarPage() {
 
         // console.log('convertedDate---', moment.tz(item.updatedDate, 'DD/MM/YYYY h:mm a', timeZone));
         // console.log('timeZone---', timeZone);
-        console.log('convertedDate---', convertedDate);
-        console.log('item date---', item.updatedDate);
+        // console.log('convertedDate---', convertedDate);
+        // console.log('item date---', item.updatedDate);
         // let updatedDate = new Date(item?.updatedDate).toLocaleString("en-US", {
         //   timeZone,
         // });
@@ -1051,7 +1088,7 @@ export default function CalendarPage() {
   //       setTimeZone(res.data?.data?.userdetails?.timeZone)
   //    );
   // }, []);
-
+// console.log('tz-', timeZone);
   useEffect(() => {
     if (calendarWeekRef.current === null) return;
     if (calendarWeekRef.current === undefined) return;
@@ -1218,7 +1255,7 @@ export default function CalendarPage() {
           multiMonthPlugin,
         ],
         initialView: 'multiMonthYear',
-        multiMonthMaxColumns: 3,
+        multiMonthMaxColumns: 4,
         events:
           persona === 'parent' || persona === 'tutor'
             ? filteredEvents
@@ -1251,12 +1288,12 @@ export default function CalendarPage() {
         // },
         // eventContent: eventContent,
         titleFormat: {
-          day: '2-digit',
+          day: 'numeric',
           month: "short",
           year: "numeric",
         },
         headerToolbar: {
-          start: "title prev next",
+          start: "prev title next",
           center: "",
           end: ""
         }
@@ -1283,9 +1320,19 @@ export default function CalendarPage() {
   // console.log(' organization?.settings?.permissions-----', organization?.settings?.permissions);
   // console.log('events-----', events);
   //console.log('eventDetails',colorMapping,insightData,userDetail,associatedStudents);
-  const timeZones = moment.tz.names(); // String[]
   const navigate = useNavigate()
 
+  const handleViewChange = view => {
+      if (view !== 'Year') {
+        setActiveView('')
+        setTimeout(() => {
+          setActiveView(view)
+        }, 300);
+      } else {
+        setActiveView(view)
+      }
+  }
+  
   return (
     <>
       <div className="lg:ml-pageLeft calender  min-h-screen" id={persona}>
@@ -1699,6 +1746,7 @@ export default function CalendarPage() {
                     getDayHeaders={getDayHeaders}
                     handleDateClick={handleDateClick}
                     handleEventClick={handleEventClick}
+                    className={'calendar-weekly-view'}
                   />
                   : activeView === 'Month' ?
                     <FullCalendar view='dayGridMonth'
@@ -1706,12 +1754,13 @@ export default function CalendarPage() {
                       filteredEvents={filteredEvents}
                       events={events}
                       calRef={calendarMonthRef}
-                      handlePrevClick={handlePrevClick}
-                      handleNextClick={handleNextClick}
+                      handlePrevClick={handlePrevClickMonth}
+                      handleNextClick={handleNextClickMonth}
                       eventContent={eventContent}
                       getDayHeaders={getDayHeaders}
                       handleDateClick={handleDateClick}
                       handleEventClick={handleEventClick}
+                      className={'calendar-monthly-view'}
                     /> : ''
             }
 
@@ -1720,7 +1769,7 @@ export default function CalendarPage() {
             >
 
               <span id="input">
-                <InputSelect
+                {/* <InputSelect
                   value={
                     activeView
                   }
@@ -1728,25 +1777,50 @@ export default function CalendarPage() {
                   optionData={['Year', 'Month', 'Week']}
                   onChange={(val) => {
                     // setActiveView(val)
-                    if(val !== 'Year'){
+                    if (val !== 'Year') {
                       setActiveView('')
                       setTimeout(() => {
                         setActiveView(val)
                       }, 300);
-                    }else{
+                    } else {
                       setActiveView(val)
                     }
                   }}
-                />
+                /> */}
+                <div className="flex gap-x-0 items-center">
+                  <button className={`${styles.viewSelectButton} ${activeView === 'Year' ? styles.activeView : ''}`}
+                    onClick={() => handleViewChange("Year")} >
+                    Year
+                  </button>
+                  <button className={`${styles.viewSelectButton} ${activeView === 'Month' ? styles.activeView : ''}`}
+                    onClick={() => handleViewChange("Month")}>
+                    Month
+                  </button>
+                  <button className={`${styles.viewSelectButton} ${activeView === 'Week' ? styles.activeView : ''}`}
+                    onClick={() => handleViewChange("Week")}>
+                    Week
+                  </button>
+                </div>
               </span>
               <span id="input">
-                <InputSelect
+                {/* <InputSelect
                   value={newTimeZone}
                   inputContainerClassName="text-[15px] text-primaryDark font-bold border"
                   customArrow={downArrow}
                   optionData={timeZones}
                   onChange={(val) => setTimeZone(val)}
-                />
+                /> */}
+                <InputSearch optionData={allTimezones}
+                  value={timeZoneSearchText}
+                  onChange={e => setTimeZoneSearchText(e.target.value)}
+                  required="true"
+                  labelClassname="hidden"
+                  placeholder="Search Timezone"
+                  onOptionClick={val => handleSelectedTimezoneChange(val)}
+                  parentClassName="w-full mr-[66px] text-[#26435F] "
+                  optionClassName='overflow-auto text-red'
+                  inputContainerClassName="bg-lightWhite border border-primaryOrange pt-3.5 pb-3.5 text-[#507CA8] h-[53px] text-base"
+                  inputClassName="bg-transparent text-[#FFA28D]" />
               </span>
               {/* <div class="inline-flex rounded shadow-sm mt-1">
     <button class="px-2 py-1 text-xs font-medium text-blue-700 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 focus:z-10 focus:text-orange-700 dark:bg-gray-700 dark:border-gray-600 dark:text-dark dark:hover:text-orange dark:hover:bg-gray-600 dark:focus:text-orange" >

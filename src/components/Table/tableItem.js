@@ -69,6 +69,8 @@ export default function TableItem({
   testtype,
   setAllAssignedTests,
   setFilteredTests,
+  setAllTestsForStudentTest,
+  setfilteredTestsForStudentTest,
 }) {
   const [dateFormat, setDateFormat] = useState("dd/mm/yy");
 
@@ -130,6 +132,20 @@ export default function TableItem({
           );
 
           setScore(`${score.cumulative} ${score.right}`);
+
+          setAllTestsForStudentTest((list) => {
+            if(list === undefined || list === null || list.length === 0) return list;
+            const newList = [...list];
+            newList.find(i => i.assignedTestId === item.assignedTestId).scores = score;
+            return newList;
+          });
+
+          setfilteredTestsForStudentTest((list) => {
+            if(list === undefined || list === null || list.length === 0) return list;
+            const newList = [...list];
+            newList.find(i => i.assignedTestId === item.assignedTestId).scores = score;
+            return newList;
+          })
         });
       }
     }
@@ -1153,8 +1169,8 @@ export default function TableItem({
               {/* {new Date(item.createdAt).toLocaleDateString()} */}
             </div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4 cursor-pointer">
-            <div className="my-[6px]">
+          <td className="opacity-70 !cursor-not-allowed pointer-events-none font-medium text-[17.5px] px-1  min-w-14 py-4 cursor-pointer">
+            <div className="my-[6px] opacity-70 !cursor-not-allowed pointer-events-none">
               <img
                 onClick={() => setDeleteAdminModalActive(true)}
                 src={DeleteIconAllOrgs}

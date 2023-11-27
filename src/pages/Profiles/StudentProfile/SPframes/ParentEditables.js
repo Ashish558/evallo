@@ -428,13 +428,31 @@ export default function ParentEditables({
   //          //console.log(res);
   //       })
   // }, [])
-
+  const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
     let reqBody = { ...currentToEdit };
     delete reqBody["active"];
     //console.log({reqBody,userId});
+    const isEmpty = (val) => {
+      if (!val || val?.trim()?.length === 0) return true;
+      return false;
+    };
+    if (currentField.name === "frame0") {
+      if (isEmpty(currentToEdit.firstName)) {
+        alert("first name cannot be empty.");
+        return;
+      }
+      if (isEmpty(currentToEdit.lastName)) {
+        alert("last name cannot be empty.");
+        return;
+      }
+      if (!emailValidation.test(currentToEdit.email)) {
+        alert("Enter valid email.");
+        return;
+      }
+    }
     if (currentToEdit.hasOwnProperty("notes")) {
       reqBody = {
         internalNotes: [
@@ -481,6 +499,7 @@ export default function ParentEditables({
 
       //console.log({reqBody,currentToEdit});
       // return
+
       updateDetails({ id: userId, fields: reqBody }).then((res) => {
         //console.log(res);
         setLoading(false);
@@ -769,12 +788,15 @@ export default function ParentEditables({
                             parentClassName=""
                             type="text"
                             value={currentToEdit.firstName}
-                            onChange={(e) =>
-                              setCurrentToEdit({
-                                ...currentToEdit,
-                                firstName: e.target.value,
-                              })
-                            }
+                            onChange={(e) => {
+                              const regex = /^[a-zA-Z ]*$/;
+                              const isValid = regex.test(e.target.value);
+                              if (isValid)
+                                setCurrentToEdit({
+                                  ...currentToEdit,
+                                  firstName: e.target.value,
+                                });
+                            }}
                           />
 
                           <InputField
@@ -786,12 +808,15 @@ export default function ParentEditables({
                             parentClassName=""
                             type="text"
                             value={currentToEdit.lastName}
-                            onChange={(e) =>
-                              setCurrentToEdit({
-                                ...currentToEdit,
-                                lastName: e.target.value,
-                              })
-                            }
+                            onChange={(e) => {
+                              const regex = /^[a-zA-Z ]*$/;
+                              const isValid = regex.test(e.target.value);
+                              if (isValid)
+                                setCurrentToEdit({
+                                  ...currentToEdit,
+                                  lastName: e.target.value,
+                                });
+                            }}
                           />
                           <InputField
                             label="School / College"
@@ -857,18 +882,21 @@ export default function ParentEditables({
                               label="Student Phone"
                               value={currentToEdit.phone}
                               codeValue={currentToEdit.phoneCode}
-                              handleCodeChange={(e) =>
+                              handleCodeChange={(e) => {
                                 setCurrentToEdit({
                                   ...currentToEdit,
                                   phoneCode: e.target.value,
-                                })
-                              }
-                              onChange={(e) =>
-                                setCurrentToEdit({
-                                  ...currentToEdit,
-                                  phone: e.target.value,
-                                })
-                              }
+                                });
+                              }}
+                              onChange={(e) => {
+                                const regex = /^[0-9 ]*$/;
+                                const isValid = regex.test(e.target.value);
+                                if (isValid && e.target.value?.length < 11)
+                                  setCurrentToEdit({
+                                    ...currentToEdit,
+                                    phone: e.target.value,
+                                  });
+                              }}
                             />
                           </div>
                           <InputSelectNew
@@ -876,7 +904,7 @@ export default function ParentEditables({
                             labelClassname={`text-[#26435F] font-medium  my-2`}
                             label="Grade"
                             placeholder="Select"
-                            inputContainerClassName="!text-xs bg-primary-50 !py-3 border-0 !rounded-[5px] !shadow-[0px_0px_2px_0px_#00000040] h-[50px] w-[7.13542vw]"
+                            inputContainerClassName="text-xs  bg-primary-50 !py-3 border-0 !rounded-[5px] !shadow-[0px_0px_2px_0px_#00000040] h-[50px] w-[7.13542vw]"
                             inputClassName="bg-transparent text-xs  "
                             parentClassName=""
                             type="text"
@@ -1425,13 +1453,10 @@ export default function ParentEditables({
                         {!textOpen && currentToEdit?.notes?.length === 0 && (
                           <div
                             onClick={() => setTextOpen(true)}
-                            className=" text-[#CBD6E2] flex-1 h-[210px] flex flex-col justify-start items-start pl-[20px] pr-[15px] pt-[10px] bg-[#F6F6F6]  text-[18.667px] text-left"
+                            className=" text-[#CBD6E2] text-xs flex-1 text-base-17-5 p-3 h-[150px] bg-[#F6F6F6]                              "
                           >
-                            <div classname="text-left w-full flex justify-start items-center">
                             Use this space to add notes about the student that
-                            are only visible to you as the Org Admin.
-                            </div> 
-                            Here are
+                            are only visible to you as the Org Admin. Here are
                             some ideas to get you started: personality,
                             preferences, goals, sports, habits, academic scores,
                             activities, family, likes or dislikes, and schedule
