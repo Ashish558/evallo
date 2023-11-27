@@ -446,6 +446,7 @@ export default function ParentEditables({
       return true;
     }
   }
+  const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -480,7 +481,12 @@ export default function ParentEditables({
         return;
       }
     }
-
+    if (currentToEdit.hasOwnProperty("email")&&!emailValidation.test(currentToEdit.email)) {
+      alert("Enter valid email.");
+      return;
+    }
+  
+   
     if (currentToEdit.hasOwnProperty("notes")) {
       reqBody = {
         internalNotes: [
@@ -517,6 +523,16 @@ export default function ParentEditables({
         // handleClose()
       });
     };
+    
+    if( currentToEdit.hasOwnProperty("alternateEmail") && currentToEdit?.alternateEmail?.length>0 ){
+      console.log({currentField,currentToEdit})
+      if (!emailValidation.test(currentToEdit.alternateEmail)) {
+      //  alert("Enter valid alternate email.");
+      //  return;
+      }
+     // else 
+      userDetailSave({Email:currentToEdit?.alternateEmail});
+    }
     if (currentField.api === "user") {
       updateFields({ id: userId, fields: reqBody }).then((res) => {
         //console.log(res);

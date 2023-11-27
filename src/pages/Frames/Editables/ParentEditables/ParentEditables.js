@@ -1455,11 +1455,14 @@ export default function ParentEditables({
                           parentClassName="flex-1"
                           type="text"
                           value={currentToEdit.pincode}
-                          onChange={(e) =>
+                          onChange={(e) =>{
+                            const regex = /^[0-9 ]*$/;
+                            const isValid = regex.test(e.target.value);
+                            if(isValid  && e.target.value?.length<11)
                             setCurrentToEdit({
                               ...currentToEdit,
                               pincode: e.target.value,
-                            })
+                            })}
                           }
                         />
                       </div>

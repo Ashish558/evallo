@@ -683,14 +683,9 @@ export default function StudentReport() {
         enabled: true,
         shared: false,
 
-        style: {
-          background: "rgba(255, 255, 255, 0.5)", // Set the background color and transparency for the tooltip
-
-          opacity: 0.5, // Set the opacity for the tooltip
-        },
         custom: function ({ series, seriesIndex, dataPointIndex, w }) {
           console.log({ series, timeSeriesOptions, timeSeries });
-          return `<div className="bg-[#FFA28DBF] p-4 px-6 text-[16px] text-white rounded-[8px]">
+          return `<div className="!bg-[#FFA28DBF]  p-4 px-6 text-[16px] text-white rounded-[8px]">
             #${dataPointIndex + 1}.
             <br/>
            <span className="font-semibold text-[17px]">
@@ -787,6 +782,15 @@ export default function StudentReport() {
         xaxis: {
           ...prev.xaxis,
           categories: concepts,
+          labels: {
+            // show: false,
+            style: {
+              fontFamily: "Inter",
+              fontWeight: 500,
+              fontSize: "16px",
+              colors: "#517CA8",
+            },
+          },
         },
         tooltip: {
           ...prev.tooltip,
@@ -795,7 +799,7 @@ export default function StudentReport() {
               sectionMetaData.concepts[conceptsLablel[dataPointIndex]];
             console.log("timee", { scaleData, sectionMetaData });
             let pers = 100 - (series[0][dataPointIndex] * 100) / totalCQ;
-            return `<div className="bg-[#FFA28DBF] p-4 px-6 text-[16px]  text-white rounded-[8px]">
+            return `<div className="!bg-[#FFA28DBF] p-4 px-6 text-[16px]  text-white rounded-[8px]">
             <span className="font-semibold text-[17px]">
             ${conceptsLablel[dataPointIndex]}
             </span>

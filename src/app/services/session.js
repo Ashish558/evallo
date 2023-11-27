@@ -75,6 +75,14 @@ export const sessionServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
+      getSession: builder.query({
+         query: (body) => ({
+            url: `/api/session`,
+            method: "GET",
+     
+            headers: getAuthHeader()
+         })
+      }),
       updateSession: builder.mutation({
          query: (payload) => ({
             url: `/api/session/${payload.id}`,
@@ -198,6 +206,7 @@ export const sessionServicesApi = createApi({
 });
 
 export const {
+   useLazyGetSessionQuery,
    useLazyGetTutorsByNameQuery,
    useLazyGetStudentsByNameQuery,
    useLazyGetTutorStudentsByNameQuery,
