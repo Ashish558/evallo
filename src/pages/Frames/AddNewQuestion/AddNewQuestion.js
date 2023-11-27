@@ -19,12 +19,12 @@ export default function AddNewQuestion({ newQuestion, setNewQuestion }) {
           <InputField
             label="Question"
             labelClassname=" mb-1 text-[#26435F]  text-base-20"
-            placeholder="Add"
+            placeholder=""
             parentClassName="w-full mr-4"
             type="text"
             inputContainerClassName={"bg-[#f2f2f2] !py-[15px]"}
             inputClassName={"bg-[#f2f2f2]"}
-            value={newQuestion.text}
+            value={newQuestion.text == "Add" ? "" : newQuestion.text }
             isRequired={true}
             onChange={(e) =>
               setNewQuestion({
