@@ -157,18 +157,24 @@ export default function TableItem({
           setScore(`${score.cumulative},${score.right}`);
 
           setAllAssignedTests((list) => {
-            if(list === undefined || list === null || list.length === 0) return list;
+            if (list === undefined || list === null || list.length === 0)
+              return list;
             const newList = [...list];
-            newList.find(i => i.assignedTestId === item.assignedTestId).scores = score;
+            newList.find(
+              (i) => i.assignedTestId === item.assignedTestId
+            ).scores = score;
             return newList;
           });
 
           setFilteredTests((list) => {
-            if(list === undefined || list === null || list.length === 0) return list;
+            if (list === undefined || list === null || list.length === 0)
+              return list;
             const newList = [...list];
-            newList.find(i => i.assignedTestId === item.assignedTestId).scores = score;
+            newList.find(
+              (i) => i.assignedTestId === item.assignedTestId
+            ).scores = score;
             return newList;
-          })
+          });
         });
       }
     }
@@ -287,29 +293,26 @@ export default function TableItem({
   const options = { year: "numeric", month: "long", day: "numeric" };
   const formattedDate = date.toLocaleDateString("en-US", options);
 
-     //  format monthName date, year
-     const formatDate= (value)=>{
-      const [ month, day, year] = value.split("-");
-      const monthName = getMonthName(month-1);
-      console.log(
-       { 
-         value : value,
-         day : day,
-         month : month,
-         year : year,
-         monthName :monthName
-        }
-     );
-      
-      const formattedDate = `${monthName}` + " " + `${day}` + `,` + `${year}`;
-      return formattedDate
-     }
+  //  format monthName date, year
+  const formatDate = (value) => {
+    const [month, day, year] = value.split("-");
+    const monthName = getMonthName(month - 1);
+    console.log({
+      value: value,
+      day: day,
+      month: month,
+      year: year,
+      monthName: monthName,
+    });
+
+    const formattedDate = `${monthName}` + " " + `${day}` + `,` + `${year}`;
+    return formattedDate;
+  };
 
   const getPhone = (val) => {
     //console.log(item)
     //console.log(val)
   };
-
 
   const handleSelect = (item2, key) => {
     console.log({ item2, selectedId2 });
@@ -610,8 +613,7 @@ export default function TableItem({
               {item.studentName}
             </span>
           </td>
-          <td className="font-medium px-1  min-w-14 py-3">
-          {item.testName}</td>
+          <td className="font-medium px-1  min-w-14 py-3">{item.testName}</td>
           <td className=" text-[17.5px] px-1  min-w-14 py-3  text-center">
             <span onClick={() => onClick.redirect(item)} className="">
               {getFormattedDate(item.assignedOn, dateFormat).replace(/-/g, "/")}
@@ -759,8 +761,7 @@ export default function TableItem({
           {Object.keys(item).map((key, i) =>
             excludes.includes(key) ? (
               <React.Fragment key={i}></React.Fragment>
-            ) : (
-              key=='testtype'?null:
+            ) : key == "testtype" ? null : (
               <td key={i} className="font-medium px-1  min-w-14 py-4">
                 {key === "status" ? (
                   <div className="flex justify-center">
@@ -768,7 +769,7 @@ export default function TableItem({
                   </div>
                 ) : key === "scores" ? (
                   <div
-                    className="cursor-pointer"
+                    className="cursor-pointer ms-[60px] w-[300px] text-center"
                     onClick={() =>
                       item.isCompleted === true &&
                       navigate(
@@ -793,145 +794,149 @@ export default function TableItem({
                   getFormattedDate(item[key], dateFormat)
                 ) : key === "assignedOn" ? (
                   getFormattedDate(item[key], dateFormat)
-                ) : key==='testName'?
+                ) : key === "testName" ? (
                   <>
-                  <div className="flex flex-row items-center">
-                    <div className="min-w-[20px]">
-                  {!item?.testtype.includes("DSAT") &&  persona=='student' && dataFor=='assignedTestsStudents'? <img
-          className='cursor-pointer '
-          src={DownloadIcon}
-          onClick={() => window.open(`${item.pdfLink}`)}
-          width='25px'
-          alt='download'
-        />:null} </div>  <span  className="pl-6">{item[key]}</span>
-        </div>
+                    <div className="flex flex-row items-center ">
+                      <div className="min-w-[20px] ">
+                        {!item?.testtype.includes("DSAT") &&
+                        persona == "student" &&
+                        dataFor == "assignedTestsStudents" ? (
+                          <img
+                            className="cursor-pointer  w-[35px] h-[35px]"
+                            src={DownloadIcon}
+                            onClick={() => window.open(`${item.pdfLink}`)}
+                        
+                            alt="download"
+                          />
+                        ) : null}{" "}
+                      </div>{" "}
+                      <span className="pl-6">{item[key]}</span>
+                    </div>
                   </>
-                :key=='duration'?(
+                ) : key == "duration" ? (
                   item[key]
-                )
-              :null}
+                ) : null}
               </td>
-                
             )
           )}
-          {persona==='admin'?null:
-          <td className="font-medium px-1  min-w-14 py-4">
-            <div className="flex items-center">
-              {persona == "student" || (
-                <img
-                  src={DownloadIcon}
-                  alt="DownloadIcon"
-                  className="w-[30px] cursor-pointer"
-                  onClick={() => handlePdfNavigate()}
-                />
-              )}
-              {persona === "parent" ? (
-                <>
-                  {item.isCompleted ? (
-                    <button
-                      className="px-2.5 py-1.8 bg-[#38C980] rounded-5 flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
-                      onClick={() =>
-                        navigate(
-                          `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`
-                        )
-                      }
-                    >
-                      Report
-                    </button>
-                  ) : item.status == "started" ? (
-                    <button
-                      className="px-2.5 py-1.8  rounded-5 flex items-center leading-none bg-[#FFCE84] text-white ml-4 w-[120px] h-[31px] justify-center"
-                      onClick={() => {
-                        const indexx = testtype.findIndex(
-                          (obj) => obj.testId === item.testId
-                        );
-                        testtype[indexx].testtype == "DSAT"
-                          ? navigate(
-                              `/testpage/${item.testId}/${item.assignedTestId}`
-                            )
-                          : navigate(
-                              `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`
-                            );
-                      }}
-                    >
-                      StarASAted
-                    </button>
-                  ) : (
-                    <button
-                      disabled
-                      className="px-2.5 py-1.8 rounded-5 bg-[#D4D9DF] flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
-                      onClick={() => {
-                        const indexx = testtype.findIndex(
-                          (obj) => obj.testId === item.testId
-                        );
-                        testtype[indexx].testtype == "DSAT"
-                          ? navigate(
-                              `/testpage/${item.testId}/${item.assignedTestId}`
-                            )
-                          : navigate(
-                              `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`
-                            );
-                      }}
-                    >
-                      Not Started
-                    </button>
-                  )}
-                </>
-              ) : (
-                <>
-                  {item.isCompleted ? (
-                    <button
-                      className="px-2.5 py-1.8 bg-[#38C980] rounded-5 flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
-                      onClick={() =>
-                        navigate(
-                          `/assigned-tests/${item.testId}/${item.assignedTestId}/report/`
-                        )
-                      }
-                    >
-                      Report
-                    </button>
-                  ) : item.isStarted ? (
-                    <button
-                      className="px-2.5 py-1.8  rounded-5 flex items-center leading-none bg-[#FFCE84] text-white ml-4 w-[120px] h-[31px] justify-center"
-                      onClick={() => {
-                        const indexx = testtype.findIndex(
-                          (obj) => obj.testId === item.testId
-                        );
-                        testtype[indexx].testtype == "DSAT"
-                          ? navigate(
-                              `/testpage/${item.testId}/${item.assignedTestId}`
-                            )
-                          : navigate(
-                              `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
-                            );
-                      }}
-                    >
-                      Continue
-                    </button>
-                  ) : (
-                    <button
-                      className="px-2.5 py-1.8 rounded-5 bg-[#FF7979] flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
-                      onClick={() => {
-                        const indexx = testtype.findIndex(
-                          (obj) => obj.testId === item.testId
-                        );
-                        testtype[indexx].testtype == "DSAT"
-                          ? navigate(
-                              `/testpage/${item.testId}/${item.assignedTestId}`
-                            )
-                          : navigate(
-                              `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
-                            );
-                      }}
-                    >
-                      Start
-                    </button>
-                  )}
-                </>
-              )}
-            </div>
-          </td>
-      }
+          {persona === "admin" ? null : (
+            <td className="font-medium px-1  min-w-14 py-4">
+              <div className="flex items-center">
+                {persona == "student" || (
+                  <img
+                    src={DownloadIcon}
+                    alt="DownloadIcon"
+                    className="w-[30px] cursor-pointer"
+                    onClick={() => handlePdfNavigate()}
+                  />
+                )}
+                {persona === "parent" ? (
+                  <>
+                    {item.isCompleted ? (
+                      <button
+                        className="px-2.5 py-1.8 bg-[#38C980] rounded-5 flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
+                        onClick={() =>
+                          navigate(
+                            `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`
+                          )
+                        }
+                      >
+                        Report
+                      </button>
+                    ) : item.status == "started" ? (
+                      <button
+                        className="px-2.5 py-1.8  rounded-5 flex items-center leading-none bg-[#FFCE84] text-white ml-4 w-[120px] h-[31px] justify-center"
+                        onClick={() => {
+                          const indexx = testtype.findIndex(
+                            (obj) => obj.testId === item.testId
+                          );
+                          testtype[indexx].testtype == "DSAT"
+                            ? navigate(
+                                `/testpage/${item.testId}/${item.assignedTestId}`
+                              )
+                            : navigate(
+                                `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`
+                              );
+                        }}
+                      >
+                        StarASAted
+                      </button>
+                    ) : (
+                      <button
+                        disabled
+                        className="px-2.5 py-1.8 rounded-5 bg-[#D4D9DF] flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
+                        onClick={() => {
+                          const indexx = testtype.findIndex(
+                            (obj) => obj.testId === item.testId
+                          );
+                          testtype[indexx].testtype == "DSAT"
+                            ? navigate(
+                                `/testpage/${item.testId}/${item.assignedTestId}`
+                              )
+                            : navigate(
+                                `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`
+                              );
+                        }}
+                      >
+                        Not Started
+                      </button>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {item.isCompleted ? (
+                      <button
+                        className="px-2.5 py-1.8 bg-[#38C980] rounded-5 flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
+                        onClick={() =>
+                          navigate(
+                            `/assigned-tests/${item.testId}/${item.assignedTestId}/report/`
+                          )
+                        }
+                      >
+                        Report
+                      </button>
+                    ) : item.isStarted ? (
+                      <button
+                        className="px-2.5 py-1.8  rounded-5 flex items-center leading-none bg-[#FFCE84] text-white ml-4 w-[120px] h-[31px] justify-center"
+                        onClick={() => {
+                          const indexx = testtype.findIndex(
+                            (obj) => obj.testId === item.testId
+                          );
+                          testtype[indexx].testtype == "DSAT"
+                            ? navigate(
+                                `/testpage/${item.testId}/${item.assignedTestId}`
+                              )
+                            : navigate(
+                                `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
+                              );
+                        }}
+                      >
+                        Continue
+                      </button>
+                    ) : (
+                      <button
+                        className="px-2.5 py-1.8 rounded-5 bg-[#FF7979] flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
+                        onClick={() => {
+                          const indexx = testtype.findIndex(
+                            (obj) => obj.testId === item.testId
+                          );
+                          testtype[indexx].testtype == "DSAT"
+                            ? navigate(
+                                `/testpage/${item.testId}/${item.assignedTestId}`
+                              )
+                            : navigate(
+                                `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
+                              );
+                        }}
+                      >
+                        Start
+                      </button>
+                    )}
+                  </>
+                )}
+              </div>
+            </td>
+          )}
         </tr>
       )}
       {dataFor === "invoice" && (
@@ -942,7 +947,7 @@ export default function TableItem({
       {dataFor === "testsDetailQuestions" && (
         <tr className="bg-white text-[17.5px]   leading-7 mt-[10px]">
           {MapData(item, dataFor, excludes)}
-          {testtype === "DSAT"||testtype === "DSAT®" ? (
+          {testtype === "DSAT" || testtype === "DSAT®" ? (
             <>
               <td>
                 <div
@@ -996,7 +1001,13 @@ export default function TableItem({
       {dataFor === "allTests" && (
         <tr className="odd:bg-white font-medium text-[17.5px]  lead">
           <td className="text-left pl-10">{item.testName}</td>
-          <td>{ item.testType.endsWith('®')?item.testType:item.testType.includes('Other')?item.testType:item.testType+'®'}</td>
+          <td>
+            {item.testType.endsWith("®")
+              ? item.testType
+              : item.testType.includes("Other")
+              ? item.testType
+              : item.testType + "®"}
+          </td>
           <td> {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
           <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
           <td> {item.no_of_assign !== null ? item.no_of_assign : "-"} </td>
@@ -1030,7 +1041,11 @@ export default function TableItem({
             <span className="">{item.testName}</span>
           </td>
           <td className=" pl-5 !text-center ">
-            {item.testType === "Other" ? "ACT®" : item.testType.endsWith('®')?item.testType:item.testType+'®'}
+            {item.testType === "Other"
+              ? "ACT®"
+              : item.testType.endsWith("®")
+              ? item.testType
+              : item.testType + "®"}
           </td>
           <td className=" pl-5 !text-center ">
             {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}
@@ -1208,12 +1223,18 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
         </div>
       </td>
     ) : key === "QuestionNumber" ? (
-      <td key={i} className={`font-medium px-1  py-4  ${
-        dataFor === "studentTestsReport" && !data["isCorrect"]
-          ? "!bg-[#FF79791A]/[0.05]"
-          : ""
-      }`}>
-        <p className={`font-semibold ` }>{data[key]<10&&"0"}{data[key]}</p>
+      <td
+        key={i}
+        className={`font-medium px-1  py-4  ${
+          dataFor === "studentTestsReport" && !data["isCorrect"]
+            ? "!bg-[#FF79791A]/[0.05]"
+            : ""
+        }`}
+      >
+        <p className={`font-semibold `}>
+          {data[key] < 10 && "0"}
+          {data[key]}
+        </p>
       </td>
     ) : dataFor === "invoice" && key === "currentBalance" ? (
       <td key={i} className="font-medium px-1 text-[#009262] py-4">
@@ -1316,8 +1337,13 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
           dataFor === "studentTestsReport" && !data["isCorrect"]
             ? "!bg-[#FF79791A]/[0.05]"
             : ""
-        } ${dataFor==="testsDetailQuestions"&&"text-left pl-7"} 
-        ${dataFor === "studentTestsReport" && (key==='Concept'||key==='Strategy')?'text-start':null}`}
+        } ${dataFor === "testsDetailQuestions" && "text-left pl-7"} 
+        ${
+          dataFor === "studentTestsReport" &&
+          (key === "Concept" || key === "Strategy")
+            ? "text-start"
+            : null
+        }`}
       >
         {data[key]}
       </td>

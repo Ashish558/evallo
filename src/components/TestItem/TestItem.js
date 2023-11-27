@@ -69,19 +69,18 @@ export const TestItem = ({
       <div className='w-1/2'>
         <h2 className='text-[18px] font-medium text-[#517CA8]'>{testName}</h2>
         <div className='flex gap-[12px]'>
-          <h5 className='text-xs opacity-60 font-semibold text-[#517CA8]'>Due date:</h5>
-          <h6 className='text-xs opacity-60 font-medium text-[#517CA8]'>{getFormattedDate(dueDate, dateFormat)}</h6>
+          <h5 className='text-xs opacity-60 font-light text-[#517CA8]'>Due date:</h5>
+          <h6 className='text-xs opacity-60 font-light text-[#517CA8]'>{getFormattedDate(dueDate, dateFormat)}</h6>
         </div>
       </div>
       <div className='flex-1 ml-5'>
         <div className='flex gap-[12px]'>
           <div className='flex items-center'>
-            <div className='w-[24px] mr-3'>
+            <div className=' mr-3  p-1'>
              {testype!=="DSAT"&& <img
-                className='cursor-pointer '
+                className='cursor-pointer h-[35px]'
                 src={Download}
                 onClick={() => window.open(`${awsLink}${pdfLink}`)}
-                width='34px'
                 alt='download'
               />}
             </div>

@@ -30,6 +30,7 @@ export default function Modal({
   wrapperClassName,
   btnClassName,
   buttonParentClassName,
+  cancelIconState
 }) {
   const selectRef = useRef();
   // console.log(selectRef)
@@ -44,6 +45,9 @@ export default function Modal({
       document.body.style.overflow = "unset";
     };
   }, []);
+
+  console.log(cancelIconState , underline);
+
   return (
     <>
       {
@@ -130,7 +134,7 @@ export default function Modal({
                   >
                     <div className="w-full h-full flex justify-center items-center relative ">
                     <img
-                      className=""
+                      className={`${cancelIconState ? "block" : "hidden"}`}
                       src={
                         primaryCancel ? primaryCancelIcon : primaryCancelIcon
                       }
