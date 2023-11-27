@@ -235,7 +235,7 @@ console.log({fetchedData})
               parentClassName=""
               type="text"
               value={values.email}
-              onChange={(e) =>
+              onChange={(e) =>{
                 setValues({
                   ...values,
                   email: e.target.value,
