@@ -646,7 +646,7 @@ export default function CalendarPage() {
         </p> */}
         <p
           className={`${arg.isToday ? "text-white" : "text-white"
-            } text-2xl font-bold font-inter
+            } text-2xl font-bold font-inter whitespace-nowrap
                    ${arg.isPast
               ? "text-[#fff]"
               : arg.isFuture
