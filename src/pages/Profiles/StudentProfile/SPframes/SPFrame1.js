@@ -338,7 +338,7 @@ const SPFrame1 = ({
                     {/*  icon container */}
 
                     <div className="mr-[18.75px]">
-                      {it === "Soccer" ? (
+                      {/* {it === "Soccer" ? (
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="26"
@@ -353,7 +353,7 @@ const SPFrame1 = ({
                         </svg>
                       ) : (
                         ""
-                      )}
+                      )} */}
                     </div>
                     {it}
                   </div>
