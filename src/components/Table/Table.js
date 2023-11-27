@@ -48,7 +48,9 @@ export default function Table(props) {
     noScrollbar,
     dummyRowStarClients,
     setAllAssignedTests,
-    setFilteredTests
+    setFilteredTests,
+    setAllTestsForStudentTest,
+    setfilteredTestsForStudentTest,
   } = props;
   const [dummy, setDummy] = useState([]);
   const [tableData, setTableData] = useState(data);
@@ -174,6 +176,8 @@ export default function Table(props) {
                       awsLink={awsLink}
                       setAllAssignedTests={setAllAssignedTests}
                       setFilteredTests={setFilteredTests}
+                      setAllTestsForStudentTest={setAllTestsForStudentTest}
+                      setfilteredTestsForStudentTest={setfilteredTestsForStudentTest}
                     />
                   </React.Fragment>
                 );
