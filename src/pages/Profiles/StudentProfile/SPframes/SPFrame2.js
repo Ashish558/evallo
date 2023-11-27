@@ -8,7 +8,9 @@ import act from "../../../../assets/YIcons/Official ACT® scores.svg";
 import sat from "../../../../assets/YIcons/Official SAT® scores.svg";
 import { useLazyGetTotalHoursQuery } from "../../../../app/services/session";
 import { useSelector } from "react-redux";
-import { getFormattedDate, getMonthName } from "../../../../utils/utils";
+import { getFormattedDate } from "../../../../utils/utils";
+import { getFormattedDateWithSlash } from "../../../../utils/utils";
+import { getMonthName } from "../../../../utils/utils";
 
 const SPFrame2 = ({
   userDetail,
@@ -40,14 +42,14 @@ const SPFrame2 = ({
   useEffect(() => {
     if (userId) {
       getHours(userId).then((res) => {
-        console.log("tutored hours",res)
-        if(res?.data){
-          setTotalHours(res?.data?.total_hours)
+        console.log("tutored hours", res);
+        if (res?.data) {
+          setTotalHours(res?.data?.total_hours);
         }
       });
     }
   }, [userId]);
-  const  dateFormat  = settings?.dateFormat||"dd/mm/yyyy";
+  const dateFormat = settings?.dateFormat || "dd/mm/yyyy";
   const handleSubmit = (key, e) => {
     //e.preventDefault();
     // setLoading(true);
@@ -98,23 +100,25 @@ const SPFrame2 = ({
       <div className="flex mt-0 justify-between gap-5 design:gap-10">
         <div className="flex-1 h-[200px] design:h-[230px] gap-7  flex flex-col">
           <div className="flex-1  flex justify-between">
-            <p className=" text-sm text-[#26435F] font-semibold text-base-20">
+            <p className=" text-[20px] text-[#26435F] font-semibold text-base-20">
               Hours Tutored
-              <span className=" text-[#FFA28D] text-2xl block mt-1">{totalHours}</span>
+              <span className=" text-[#FFA28D] text-2xl block mt-1">
+                {totalHours}
+              </span>
             </p>
-            <p className=" text-sm text-[#26435F] font-semibold text-base-20">
+            <p className=" text-[20px] text-[#26435F] font-semibold text-base-20">
               No. Of Sessions
               <span className=" text-[#FFA28D] text-2xl block mt-1">{session_no}</span>
             </p>
           </div>
-          <div className="flex-1  flex justify-between">
-            <p className=" text-sm text-[#26435F] font-semibold text-base-20">
+          <div className="flex-1  flex justify-between items-center ">
+            <p className=" text-[20px] text-[#26435F] font-semibold text-base-20">
               No. of Assignments
               <span className=" text-[#FFA28D] text-2xl block mt-1">
                 {totalTest}
               </span>
             </p>
-            <p className=" text-sm text-[#26435F] font-semibold text-base-20 w-[122px] text-left">
+            <p className=" text-[20px] text-[#26435F] font-semibold text-base-20 w-[165px] text-left ">
               Join Date
               <span className=" text-[#FFA28D] text-xl block mt-1">
                 {console.log('user detail',userDetail)}
@@ -158,26 +162,32 @@ const SPFrame2 = ({
                 return (
                   <div
                     key={idx}
-                    className="beforeDot  p-2  flex-1 flex  w-full"
+                    className="beforeDot p-2 flex w-full h-[45.75px]"
                   >
-                    <img
-                      src={dot}
-                      className="inline-block !w-2 !h-2 mt-2"
-                      alt="dot"
-                    />
+                    <div className="h-full w-3 flex justify-start items-start py-0.5">
+                      <img
+                        src={dot}
+                        className="inline-block !w-2 !h-2"
+                        alt="dot"
+                      />
+                    </div>
                     <div className="mx-2 flex flex-col text-xs text-base-15">
-                      <p className="text-[#517CA8]">
+                      <p className="text-[#517CA8] mb-[6.25px]">
                         {it.createdAt
                           ? formatDate(getFormattedDate(it.createdAt, dateFormat))
                           : "NA"}
                       </p>
 
-                      <p className="font-bold">
-                        <span className="text-[#24A3D9]">
-                          C{it?.maths + it?.verbal+" "}
+                      <p className="">
+                        <span className="text-[#24A3D9] font-medium">
+                          <span className="font-bold">C</span>{" "}
+                          {it?.maths + it?.verbal + " "}
                         </span>
                         <span className="text-[#517CA8]">
-                          | M{it?.maths} V{it?.verbal}
+                          {" "}
+                          | <span className="font-bold">M</span>
+                          {it?.maths} <span className="font-bold">V</span>
+                          {it?.verbal}
                         </span>
                       </p>
                     </div>
@@ -237,26 +247,36 @@ const SPFrame2 = ({
                 return (
                   <div
                     key={idx}
-                    className="beforeDot  p-2  flex-1 flex  w-full"
+                    className="beforeDot p-2 h-[45.75px] flex w-full"
                   >
-                    <img
-                      src={dot}
-                      className="inline-block !w-2 !h-2 mt-2"
-                      alt="dot"
-                    />
+                    <div className="h-full w-3 flex justify-start items-start py-0.5">
+                      <img
+                        src={dot}
+                        className="inline-block !w-2 !h-2"
+                        alt="dot"
+                      />
+                    </div>
                     <div className="mx-2 flex flex-col text-xs text-base-15">
-                      <p className="text-[#517CA8]">
+                      <p className="text-[#517CA8] mb-[6.25px]">
                         {it.createdAt
                           ? formatDate(getFormattedDate(it.createdAt, dateFormat))
                           : "NA"}
                       </p>
 
-                      <p className="font-bold">
+                      <p className="font-medium">
                         <span className="text-[#24A3D9]">
-                          C{it?.english + it?.science + it?.maths + it?.reading+" "}
+                          <span className="font-bold">C</span>
+                          {it?.english +
+                            it?.science +
+                            it?.maths +
+                            it?.reading +
+                            " "}
                         </span>
-                        <span className="text-[#517CA8]">
-                          | E{it?.english} R{it?.reading} M{it?.maths} S
+                        <span className="text-[#517CA8] font-medium">
+                          | <span className="font-bold">E</span>
+                          {it?.reading} <span className="font-bold">M</span>
+                          {it?.english} <span className="font-bold">R</span>
+                          {it?.maths} <span className="font-bold">S</span>
                           {it?.science}
                         </span>
                       </p>
@@ -305,24 +325,33 @@ const SPFrame2 = ({
           <div className="w-full bg-white relative h-full p-1 flex flex-col gap-1 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] rounded-md its-center overflow-y-auto custom-scroller">
             {userDetail?.baseLineScore ? (
               <>
-                <div className="beforeDot  p-2  flex-1 flex  w-full">
-                  <img
-                    src={dot}
-                    className="inline-block !w-2 !h-2 mt-2"
-                    alt="dot"
-                  />
+                <div className="beforeDot  p-2 h-[45.75px] flex  w-full">
+                  <div className="h-full w-4 flex justify-start items-start py-0.5">
+                    <img
+                      src={dot}
+                      className="inline-block !w-2 !h-2"
+                      alt="dot"
+                    />
+                  </div>
                   <div className="mx-2 flex flex-col text-xs text-base-15">
-                    <p className="text-[#517CA8]">SAT BaseLine Scores</p>
+                    <p className="text-[#517CA8] mb-[6.25px]">
+                      SAT BaseLine Scores
+                    </p>
 
-                    <p  className="font-bold">
+                    <p className="font-medium">
                       <span className="text-[#24A3D9]">
-                        C
+                        <span className="font-bold">C</span>
                         {userDetail?.baseLineScore?.satBaseLineScore?.maths +
-                          userDetail?.baseLineScore?.satBaseLineScore?.verbal+" "}
+                          userDetail?.baseLineScore?.satBaseLineScore?.verbal +
+                          " "}
                       </span>
                       <span className="text-[#517CA8]">
-                        | M{userDetail?.baseLineScore?.satBaseLineScore?.maths}{" "}
-                        V{userDetail?.baseLineScore?.satBaseLineScore?.verbal}
+                        |<span className="font-bold">M</span>
+                        {
+                          userDetail?.baseLineScore?.satBaseLineScore?.maths
+                        }{" "}
+                        <span className="font-bold">V</span>
+                        {userDetail?.baseLineScore?.satBaseLineScore?.verbal}
                       </span>
                     </p>
                   </div>
@@ -332,29 +361,40 @@ const SPFrame2 = ({
                     alt="cancelIcon"
                   />
                 </div>
-                <div className="beforeDot  p-2  flex-1 flex  w-full">
-                  <img
-                    src={dot}
-                    className="inline-block !w-2 !h-2 mt-2"
-                    alt="dot"
-                  />
-                  <div className="mx-2 flex flex-col text-xs text-base-15">
-                    <p className="text-[#517CA8] text-base-15">
+                <div className="beforeDot  p-2 h-[45.75px] flex  w-full">
+                  <div className="h-full w-4 flex justify-start items-start py-0.5">
+                    <img
+                      src={dot}
+                      className="inline-block !w-2 !h-2"
+                      alt="dot"
+                    />
+                  </div>
+                  <div className="mx-2 flex flex-col text-xs text-base-15 ">
+                    <p className="text-[#517CA8] text-base-15 mb-[6.25px]">
                       ACT BaseLine Scores
                     </p>
 
-                    <p className="font-bold">
+                    <p className="font-medium">
                       <span className="text-[#24A3D9]">
-                        C
+                        <span className="font-bold">C</span>
                         {userDetail.baseLineScore?.actBaseLineScore?.english +
                           userDetail.baseLineScore?.actBaseLineScore?.science +
                           userDetail.baseLineScore?.actBaseLineScore?.maths +
-                          userDetail.baseLineScore?.actBaseLineScore?.reading+" "}
+                          userDetail.baseLineScore?.actBaseLineScore?.reading +
+                          " "}
                       </span>
                       <span className="text-[#517CA8]">
-                        | E{userDetail.baseLineScore?.actBaseLineScore?.english}{" "}
-                        R{userDetail.baseLineScore?.actBaseLineScore?.reading} M
-                        {userDetail.baseLineScore?.actBaseLineScore?.maths} S
+                        |<span className="font-bold">E</span>
+                        {
+                          userDetail.baseLineScore?.actBaseLineScore?.english
+                        }{" "}
+                        <span className="font-bold">M</span>
+                        {userDetail.baseLineScore?.actBaseLineScore?.maths}{" "}
+                        <span className="font-bold">R</span>
+                        {
+                          userDetail.baseLineScore?.actBaseLineScore?.reading
+                        }{" "}
+                        <span className="font-bold">S</span>
                         {userDetail.baseLineScore?.actBaseLineScore?.science}
                       </span>
                     </p>

@@ -197,6 +197,7 @@ export default function CalendarPage() {
   const handleSelectedTimezoneChange = val => {
     setnewTimeZone(val.value)
     setTimeZoneSearchText(val.value)
+    setTimeZone(val.value)
   }
 
 
@@ -629,8 +630,7 @@ export default function CalendarPage() {
     // console.log('darg--', date);
     return (
       <div
-        className={`p-[10px] rounded-7 ${arg.isToday ? "bg-primary border" : ""
-          }  `}
+        className={`p-[10px] rounded-7`}
       >
         {/* <p
           className={`${arg.isToday ? "text-primaryWhite-900" : ""
@@ -645,12 +645,12 @@ export default function CalendarPage() {
           {days[arg.date.getDay()]}
         </p> */}
         <p
-          className={`${arg.isToday ? "text-primaryWhite-900" : ""
+          className={`${arg.isToday ? "text-white" : "text-white"
             } text-2xl font-bold font-inter
                    ${arg.isPast
-              ? "text-[#BEC2CE]"
+              ? "text-[#fff]"
               : arg.isFuture
-                ? "text-primary-dark"
+                ? "text-white"
                 : ""
             }`}
         >
@@ -716,7 +716,7 @@ export default function CalendarPage() {
     if (arg.event._def.extendedProps.topic) {
       topic = arg.event._def.extendedProps.topic;
     }
-    // console.log({key:arg.event._def.extendedProps})
+
     return (
       <div className="p-0.5 h-full ">
         <div
@@ -725,7 +725,7 @@ export default function CalendarPage() {
         ></div>
         <div
           style={{
-            background: colorMapping[key] + "50",
+            background: colorMapping[key] ? `${colorMapping[key]}50` : '#24A3D933',
             border: "1.87px solid " + colorMapping[key],
             borderTop: "none",
           }}
@@ -735,15 +735,11 @@ export default function CalendarPage() {
             className={`text-[#507CA8] font-semibold text-sm text-base-15 ${isCompleted ? "line-through" : ""
               } `}
           >
-            {" "}
-            {
-
-            }
             {arg.event._def.title}{" "}
             {/* {service + " - " + topic} */}
           </p>
           {/* <p className='text-black opacity-60 text-xs'> {arg.timeText} </p> */}
-          <p className="text-[#26435F] opacity-60 text-xs text-base-15">
+          <p className="text-[#26435F] text-xs text-base-15">
             {" "}
             {description}{" "}
           </p>
@@ -1056,8 +1052,8 @@ export default function CalendarPage() {
 
         // console.log('convertedDate---', moment.tz(item.updatedDate, 'DD/MM/YYYY h:mm a', timeZone));
         // console.log('timeZone---', timeZone);
-        console.log('convertedDate---', convertedDate);
-        console.log('item date---', item.updatedDate);
+        // console.log('convertedDate---', convertedDate);
+        // console.log('item date---', item.updatedDate);
         // let updatedDate = new Date(item?.updatedDate).toLocaleString("en-US", {
         //   timeZone,
         // });
@@ -1092,7 +1088,7 @@ export default function CalendarPage() {
   //       setTimeZone(res.data?.data?.userdetails?.timeZone)
   //    );
   // }, []);
-
+// console.log('tz-', timeZone);
   useEffect(() => {
     if (calendarWeekRef.current === null) return;
     if (calendarWeekRef.current === undefined) return;
@@ -1750,6 +1746,7 @@ export default function CalendarPage() {
                     getDayHeaders={getDayHeaders}
                     handleDateClick={handleDateClick}
                     handleEventClick={handleEventClick}
+                    className={'calendar-weekly-view'}
                   />
                   : activeView === 'Month' ?
                     <FullCalendar view='dayGridMonth'
@@ -1763,6 +1760,7 @@ export default function CalendarPage() {
                       getDayHeaders={getDayHeaders}
                       handleDateClick={handleDateClick}
                       handleEventClick={handleEventClick}
+                      className={'calendar-monthly-view'}
                     /> : ''
             }
 
