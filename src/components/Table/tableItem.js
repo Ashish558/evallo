@@ -785,7 +785,9 @@ export default function TableItem({
                   </div>
                 ) : key === "scores" ? (
                   <div
-                    className={`cursor-pointer ${persona == "student" ? "ms-[60px] w-[300px]" : ""} text-center`}
+                    className={`cursor-pointer ${
+                      persona == "student" ? "ms-[60px] w-[300px]" : ""
+                    } text-center`}
                     onClick={() =>
                       item.isCompleted === true &&
                       navigate(
@@ -818,14 +820,23 @@ export default function TableItem({
                         persona == "student" &&
                         dataFor == "assignedTestsStudents" ? (
                           <img
-                            className="cursor-pointer  w-[35px] h-[35px]"
+                            className="cursor-pointer w-[35px] h-[35px]"
                             src={DownloadIcon}
                             onClick={() => window.open(`${item.pdfLink}`)}
-                        
                             alt="download"
                           />
                         ) : null}{" "}
                       </div>{" "}
+                      {persona == "parent" && (
+                        <div>
+                          <img
+                            src={DownloadIcon}
+                            alt="DownloadIcon"
+                            className={`w-[30px] cursor-pointer`}
+                            onClick={() => handlePdfNavigate()}
+                          />
+                        </div>
+                      )}
                       <span className="pl-6">{item[key]}</span>
                     </div>
                   </>
@@ -842,7 +853,9 @@ export default function TableItem({
                   <img
                     src={DownloadIcon}
                     alt="DownloadIcon"
-                    className="w-[30px] cursor-pointer"
+                    className={`${
+                      persona == "parent" ? "hidden" : "block"
+                    } w-[30px] cursor-pointer`}
                     onClick={() => handlePdfNavigate()}
                   />
                 )}
