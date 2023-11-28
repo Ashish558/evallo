@@ -334,6 +334,11 @@ function SubscriptionAndExtensionModal({
                             />
                         ) : frames.review ? (
                             <ReviewProduct
+                                chosenSubscriptionPlanName={chosenSubscriptionPlanName}
+                                subscriptionsInfo={subscriptionPlanInfo}
+                                setFrames={setFrames}
+                                extensions={extensions}
+                                extensionPlansInfo={extensionPlansData}
                             />
                         ) : (<></>)
                     }
