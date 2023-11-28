@@ -8,7 +8,7 @@ import downR from "../../assets/YIcons/downR.svg"
 import { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { getFormattedDate } from "../../utils/utils";
+import { getFormattedDate, getMonthName } from "../../utils/utils";
 import DateIcon from "../../assets/icons/solar_calendar-date-outline.svg"
 
 const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, className, manualHide, inputContainerClassName }) => {
@@ -124,7 +124,7 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
 
 
 
-  const [startFull, endFull] = latestDateFormat.split(" - ");
+  let [startFull, endFull] = latestDateFormat.split(" - ");
 
 
   const [, , endYear] = startFull.split("-");
@@ -132,8 +132,25 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
 
   const [startMonth, startDay] = startFull.split("-");
 
+  const formatDate= (value)=>{
+    const [ month, day, year] = value.split("-");
+    const monthName = getMonthName(day-1);
+    console.log(
+     { 
+       value : value,
+       day : day,
+       month : month,
+       year : year,
+       monthName :monthName
+      }
+   );
+    
+    const formattedDate = `${monthName}` + " " + `${year}` + `,` + `${month}`;
+    return formattedDate
+   }
 
-  const formattedStartDate = `${startMonth}-${startDay}-${endYear}`;
+  const formattedStartDate =formatDate(`${startMonth}-${startDay}-${endYear}`);
+  endFull=formatDate(endFull)
   const formattedDateRange = `${formattedStartDate}  -  ${endFull}`;
   // console.log(formattedDateRange);
 

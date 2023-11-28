@@ -6,6 +6,7 @@ import Modal from "../Modal/Modal";
 import Warning from "../../assets/images/warning.png";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { getMonthName } from "../../utils/utils";
 
 const Testinstruction_2 = ({
   setloader,
@@ -21,6 +22,13 @@ const Testinstruction_2 = ({
   completedSectionIds,
   activeSection,
 }) => {
+  const formatDate2= (value)=>{
+    const [ day, month, year] = value.split("-");
+    const monthName = getMonthName(month-1);
+    
+    const formattedDate = `${day}` + "/" + `${month}` + `/` + `${year}`;
+    return formattedDate
+   }
   const [popup, setpopup] = useState(false);
   const navigate = useNavigate();
   const { organization } = useSelector((state) => state.organization);
@@ -61,12 +69,12 @@ const Testinstruction_2 = ({
         <div className="grid grid-cols-3 ml-4 min-w-full text-sm px-4 gap-y-4 mt-2">
           <div className="min-w-full grid grid-flow-col grid-rows-3 mr-3 justify-start items-start">
             <div className="min-w-full flex mb-3 justify-between">
-              <div className="inline-block min-w-32 mr-4 font-medium text-[20px] text-[#517CA8] opacity-60">
+              <div className="inline-block min-w-30 mr-4 font-medium text-[20px] text-[#517CA8] opacity-60">
                 {" "}
                 Student’s Name
               </div>
 
-              <div className="inline-block min-w-32 font-light  text-[20px] text-[#517CA8]">
+              <div className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]">
               {testHeaderDetails?.name?.length>18?testHeaderDetails?.name.substring(0,15)+' ...':testHeaderDetails?.name}
               </div>
             </div>
@@ -77,7 +85,7 @@ const Testinstruction_2 = ({
               </p>
            
               <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]">
-                {testHeaderDetails.dateAssigned}
+                {formatDate2(testHeaderDetails.dateAssigned)}
               </p>
             </div>
             <div className="w-full flex mb-3 justify-between">
@@ -99,7 +107,7 @@ const Testinstruction_2 = ({
               </p>
 
               <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8] ">
-                {testHeaderDetails.dueDate ? testHeaderDetails.dueDate : "-"}
+                {testHeaderDetails.dueDate ? formatDate2(testHeaderDetails.dueDate) : "-"}
               </p>
             </div>
             <div className="w-full flex mb-3 justify-between">
@@ -110,7 +118,7 @@ const Testinstruction_2 = ({
 
               <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]">
                 {testHeaderDetails.startedOn
-                  ? testHeaderDetails.startedOn
+                  ? formatDate2(testHeaderDetails.startedOn)
                   : "-"}
               </p>
             </div>
@@ -135,7 +143,7 @@ const Testinstruction_2 = ({
               </p>
 
               <p className="inline-block w-full font-light  text-[20px] text-[#517CA8]">
-              {testHeaderDetails.instruction
+              {testHeaderDetails.instruction?.length
                   ? testHeaderDetails.instruction
                   : "-"}
               </p>
