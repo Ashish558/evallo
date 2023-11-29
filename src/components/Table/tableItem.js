@@ -175,7 +175,12 @@ export default function TableItem({
           setAllAssignedTests((list) => {
             if (list === undefined || list === null || list.length === 0)
               return list;
+            if (list === undefined || list === null || list.length === 0)
+              return list;
             const newList = [...list];
+            newList.find(
+              (i) => i.assignedTestId === item.assignedTestId
+            ).scores = score;
             newList.find(
               (i) => i.assignedTestId === item.assignedTestId
             ).scores = score;
@@ -185,11 +190,17 @@ export default function TableItem({
           setFilteredTests((list) => {
             if (list === undefined || list === null || list.length === 0)
               return list;
+            if (list === undefined || list === null || list.length === 0)
+              return list;
             const newList = [...list];
             newList.find(
               (i) => i.assignedTestId === item.assignedTestId
             ).scores = score;
+            newList.find(
+              (i) => i.assignedTestId === item.assignedTestId
+            ).scores = score;
             return newList;
+          });
           });
         });
       }
