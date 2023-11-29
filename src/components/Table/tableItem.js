@@ -533,7 +533,7 @@ export default function TableItem({
       )}
       {dataFor === "allUsersSuperAdmin" && (
         <tr className="odd:bg-white even:!shadow-[0px_0px_3.00000476837158px_0px_#00000040]  leading-8">
-          <td className="font-medium text-[17.5px] px-1  min-w-14   text-center">
+          <td className="font-normal text-[17.5px] px-1  min-w-14   text-center">
             <span
               className="inline-block cursor-pointer"
               onClick={() => onClick.redirect(item)}
@@ -541,13 +541,13 @@ export default function TableItem({
               {item.name}
             </span>
           </td>
-          <td className="font-medium text-[17.5px] !pl-6 pr-1 min-w-14 text-left">
+          <td className="font-normal text-[17.5px] !pl-6 pr-1 min-w-14 text-left">
             <div className="">{item.email}</div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 ">
+          <td className="font-normal text-[17.5px] px-1  min-w-14 ">
             <div className="">{item.userType}</div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 ">
+          <td className="font-normal text-[17.5px] px-1  min-w-14 ">
             {item?.lastLogin ? (
               <div className="">
                 {/* {new Date(item?.lastLogin).toDateString().split(' ')[1] }. {new Date(item?.lastLogin).getDate() }, {new Date(item?.lastLogin).getFullYear()} */}
@@ -557,15 +557,15 @@ export default function TableItem({
               "None"
             )}
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 ">
+          <td className="font-normal text-[17.5px] px-1  min-w-14 ">
             <div className="cursor-pointer">
-              <span style={{ textDecoration: "underline" }}>edit</span>
+              <span className="font-['Inter']" style={{ textDecoration: "underline" }}>edit</span>
             </div>
           </td>
-          <td className="font-medium ">
+          <td className="font-normal">
             <div className="">
               <button
-                className="rounded-[5.33px] bg-[rgba(38,67,95,0.23)] text-[#517CA8] px-[17px]  py-1  text-base-18"
+                className="rounded-[5.33px] bg-[rgba(38,67,95,0.23)] text-[#517CA8] px-[17px]  py-1  text-base-18 font-['Inter']"
                 onClick={() => onClick.handleResetPassword(item.email)}
               >
                 Reset
@@ -577,7 +577,7 @@ export default function TableItem({
             {item.userType !== "admin" &&
             item.userType !== "superAdmin" &&
             item.userType !== "superadmin" ? (
-              <div className=" flex items-center justify-center">
+              <div className=" flex items-center justify-start">
                 <img
                   src={TrashIcon2}
                   className="cursor-pointer"
@@ -1193,9 +1193,10 @@ export default function TableItem({
               {/* {new Date(item.createdAt).toLocaleDateString()} */}
             </div>
           </td>
-          <td className="opacity-70 !cursor-not-allowed pointer-events-none font-medium text-[17.5px] px-1  min-w-14 py-4 cursor-pointer">
-            <div className="my-[6px] opacity-70 !cursor-not-allowed pointer-events-none">
+          <td className={`opacity-70 !cursor-not-allowed pointer-events-none font-medium text-[17.5px] px-1 ${persona == "superAdmin" ? "min-w-[158px] flex justify-center items-center" : "min-w-14" }  py-4 cursor-pointer`}>
+            <div className="my-[6px] opacity-70 ">
               <img
+                 className="cursor-pointer"
                 onClick={() => setDeleteAdminModalActive(true)}
                 src={DeleteIconAllOrgs}
                 alt="delete"
@@ -1204,6 +1205,8 @@ export default function TableItem({
           </td>
         </tr>
       )}
+
+
       {deleteAdminModalActive && (
         <Modal
           title={
@@ -1214,7 +1217,8 @@ export default function TableItem({
                 : item.company}
             </span>
           }
-          titleClassName="mb-5 leading-10 text-center"
+          modalSize = "w-[666.67px] h-[194.67px]"
+          titleClassName="mb-[22px] leading-10 text-center"
           cancelBtn={true}
           crossBtn={true}
           cancelBtnClassName="!w-[146px] text-[#26435F] font-medium text-base !rounded-[8px] !bg-[rgba(38,67,95,0.10)]  !h-[46px]"

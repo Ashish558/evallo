@@ -150,7 +150,7 @@ const AccountOverview = () => {
   };
   return (
     <div>
-      <div className="flex flex-col gap-10 ">
+      <div className="flex flex-col gap-10">
         <div className="flex gap-10 " style={{ verticalAlign: "center" }}>
           <InputField
             style={{ color: "blue" }}
@@ -158,7 +158,7 @@ const AccountOverview = () => {
             labelClassname="mb-1"
             parentClassName="text-xs text-[#26435F] "
             inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw] h-[53px]"
-            inputClassName="bg-transparent "
+            inputClassName="bg-transparent  font-normal text-[#667085]"
             label="First name"
             value={values.firstName}
             onChange={(e) =>
@@ -175,7 +175,7 @@ const AccountOverview = () => {
             labelClassname="mb-1"
             parentClassName="text-xs text-[#26435F]"
             inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw] h-[53px]"
-            inputClassName="bg-transparent"
+            inputClassName="bg-transparent font-normal text-[#667085]"
             label="Last name"
             value={values.lastName}
             onChange={(e) =>
@@ -192,7 +192,7 @@ const AccountOverview = () => {
             labelClassname="mb-1"
             parentClassName="text-xs text-[#26435F]"
             inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[21.0416666667vw] h-[53px]"
-            inputClassName="bg-transparent border border-white rounded-5"
+            inputClassName="bg-transparent border border-white rounded-5 font-normal text-[#667085]"
             label="Email"
             value={values.email}
             onChange={(e) => {
@@ -224,7 +224,7 @@ const AccountOverview = () => {
             labelClassname="mb-1"
             parentClassName="text-xs w-[400px] text-[#26435F] "
             inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 h-[47px] w-[15.26vw] h-[53px]"
-            inputClassName="bg-transparent "
+            inputClassName="bg-transparent  font-normal text-[#667085]"
             label="Phone"
             value={values.phone}
             codeValue={values.phoneCode}
@@ -257,7 +257,7 @@ const AccountOverview = () => {
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
             inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw] h-[53px]"
-            inputClassName="bg-transparent border border-white rounded-5"
+            inputClassName="bg-transparent border border-white rounded-5 font-normal text-[#667085]"
             label="Current password"
             value={values.currentPassword}
             onChange={(e) =>
@@ -273,7 +273,7 @@ const AccountOverview = () => {
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
             inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw] h-[53px]"
-            inputClassName="bg-transparent border border-white rounded-5"
+            inputClassName="bg-transparent border border-white rounded-5 font-normal text-[#667085]"
             label="New password"
             value={values.newPassword}
             onChange={(e) =>
@@ -290,7 +290,7 @@ const AccountOverview = () => {
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
             inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw] h-[53px]"
-            inputClassName="bg-transparent border border-white rounded-5"
+            inputClassName="bg-transparent border border-white rounded-5 font-normal text-[#667085]"
             label="Confirm password"
             value={values.confirmPassword}
             onChange={(e) =>

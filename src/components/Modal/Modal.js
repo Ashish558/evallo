@@ -12,6 +12,7 @@ import { useRef } from "react";
 export default function Modal({
   title,
   titleClassName,
+  modalSize,
   body,
   cancelBtn,
   cancelBtnClassName,
@@ -55,13 +56,13 @@ export default function Modal({
           <div className="w-full p-1">
             <div
               ref={handleClose ? selectRef : null}
-              className={`w-full bg-white p-3 py-[28px] md:px-[33px] rounded-lg relative ${
+              className={`${modalSize ? modalSize : "w-full"} bg-white pt-[28px] pb-[33.34px] md:px-[33.33px] rounded-lg relative ${
                 classname ? classname : ""
               }`}
             >
               <div className={wrapperClassName ? wrapperClassName : ""}>
                 <p
-                  className={`font-semibold text-xl md:text-[21px] text-left text-[#26435F]
+                  className={`font-semibold text-xl md:text-[21px] text-left text-[#26435F] 
                ${titleClassName ? titleClassName : "mb-[18px]"} `}
                 >
                   {title}
