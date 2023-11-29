@@ -5,8 +5,48 @@ import SecondaryButton from "../../../../components/Buttons/SecondaryButton";
 import octIcon from "../../../../assets/icons/octicon_stop-16.svg";
 import maleProfileImage from "../../../../assets/profile/male.svg";
 import camIcon from "../../../../assets/profile/camera.svg";
+import mastercardIcon from "../../../../assets/BankCard/mastercard.svg";
 
 import styles from "./styles.module.css";
+import BankCardInfoWidget from "../../../../components/BankCard/BankCardInfoWidget";
+
+function BankCardWidgetContainer({
+    className,
+    style,
+    bankCardClassName,
+    bankCardStyle,
+    cardLogo,
+    deleteButtonClassName,
+    deleteButtonStyle,
+    onDeleteClicked,
+    isDefault,
+    cardNumber,
+    cardNumberLastFourDigits,
+}) {
+    return (
+        <div className={`flex flex-col items-end ${className}`} style={{...style}} >
+            <BankCardInfoWidget
+                className={`aspect-[270/106] w-[270px] ${bankCardClassName}`}
+                style={{...bankCardStyle}}
+                isDefault={isDefault}
+                cardLogo={cardLogo}
+                cardNumber={cardNumber}
+                cardNumberLastFourDigits={cardNumberLastFourDigits}
+            />
+
+            <PrimaryButton
+                style={{width: "80px", ...deleteButtonStyle}}
+                className={` flex justify-center mt-[10px] bg-[#FFA28D]  disabled:opacity-60  rounded-[10px] text-white text-sm font-medium relative px-[10px] py-[7px] ${deleteButtonClassName}`}
+                /* loading={emailExistLoad}
+                disabled={
+                    values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
+                } */
+                onClick={onDeleteClicked}
+                children={`Delete`}
+            />
+        </div>
+    )
+}
 
 function AccountOverviewWithSubscriptionInfo() {
     return (
@@ -190,7 +230,40 @@ function AccountOverviewWithSubscriptionInfo() {
                         className="bg-[#fff] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)]"
                         style={{width: "100%", height: "42.75%"}}
                     >
+                        <div 
+                            className="flex items-center justify-between ml-[30px] mt-[20px]" 
+                            style={{width: "92%"}}    
+                        >
+                            <div className="font-[500] text-[#26435F] text-[14px]" >Manage Payments</div>
+                            <button className="font-[300] text-[#24A3D9] text-[12px] underline" >View Past Transactions</button>
+                        </div>
+                        
+                        <div className="font-[100] ml-[30px] text-[12px]" >
+                            <span className="text-[#26435F]" >Read more documentation about payment methods on Evallo’s </span>
+                            <button className="inline text-[#24A3D9]" >knowledge base.</button>
+                        </div>
 
+                        <div className="font-[500] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Saved Cards</div>
+
+                        <div className={`flex ml-[30px] pl-[1px] pb-[20px] pt-[10px] overflow-x-scroll ${styles.cardsContainer}`} style={{width: "92%"}}  >
+
+                            <BankCardWidgetContainer
+                                className="mr-[20px]"
+                                isDefault={true}
+                            />
+
+                            <BankCardWidgetContainer
+                                className="mr-[20px]"
+                                isDefault={false}
+                                cardLogo={mastercardIcon}
+                                cardNumber={"245234234125"}
+                            />
+                            
+
+                            <button className="border-[#FFA28D] border-[3px] border-dashed rounded-[5px] aspect-[270/106] h-[106px] w-[270px]" >
+                                <span className="text-[#FFA28D] text-[12px]" >Add New Payment Method</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
