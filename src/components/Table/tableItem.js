@@ -202,7 +202,7 @@ export default function TableItem({
             return newList;
           });
           });
-        });
+        
       }
     }
   }, [dataFor, item]);
