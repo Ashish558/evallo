@@ -1,3 +1,7 @@
+import {
+    useState,
+    useEffect,
+} from "react";
 import InputField from "../../../../components/InputField/inputField";
 import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
 import PrimaryButton from "../../../../components/Buttons/PrimaryButton";
@@ -6,9 +10,14 @@ import octIcon from "../../../../assets/icons/octicon_stop-16.svg";
 import maleProfileImage from "../../../../assets/profile/male.svg";
 import camIcon from "../../../../assets/profile/camera.svg";
 import mastercardIcon from "../../../../assets/BankCard/mastercard.svg";
-
 import styles from "./styles.module.css";
 import BankCardInfoWidget from "../../../../components/BankCard/BankCardInfoWidget";
+import ActiveSubscriptionWidget from "../../../../components/ActiveSubscriptionWidget/ActiveSubscriptionWidget";
+import ActiveExtensionWidget from "../../../../components/ActiveExtensionWidget/ActiveExtensionWidget";
+import {
+    useLazyGetPersonalDetailQuery,
+    useUpdateUserAccountMutation,
+  } from "../../../../app/services/users";
 
 function BankCardWidgetContainer({
     className,
@@ -49,6 +58,50 @@ function BankCardWidgetContainer({
 }
 
 function AccountOverviewWithSubscriptionInfo() {
+    const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
+
+    const [values, setValues] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        phoneCode: "",
+        company: "",
+        role: "",
+        userId: "",
+        registrationAs: "Company",
+
+        orgName: "",
+        companyType: "",
+        website: "",
+        address: "",
+        country: "",
+        state: "",
+        zip: "",
+        city: "",
+
+        activeStudents: "",
+        activeTutors: "",
+        services: [],
+    });
+
+    useEffect(() => {
+        userDetails()
+        .then((res) => {
+            console.log("userDetails");
+            console.log(res);
+            setValues({
+                ...res?.data.data.user,
+            });
+            /* setFetchedData({
+                ...res?.data.data.user,
+            }); */
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }, []);
+
     return (
         <div className="flex w-full" >
             <div className="flex justify-between h-[700px] mb-[50px] w-full" >
@@ -83,7 +136,7 @@ function AccountOverviewWithSubscriptionInfo() {
                             labelClassname="text-[#26435F] font-semibold"
                             inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[40px] text-md"
                         
-                            // value={values.firstName}
+                            value={values.firstName}
                             /* onChange={(e) =>
                                 setValues({
                                     ...values,
@@ -102,7 +155,7 @@ function AccountOverviewWithSubscriptionInfo() {
                             labelClassname="text-[#26435F] font-semibold"
                             inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[40px] text-md"
                         
-                            // value={values.firstName}
+                            value={values.lastName}
                             /* onChange={(e) =>
                                 setValues({
                                     ...values,
@@ -122,7 +175,7 @@ function AccountOverviewWithSubscriptionInfo() {
                         labelClassname="text-[#26435F] font-semibold"
                         inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[40px] text-md"
                     
-                        // value={values.firstName}
+                        value={values.role}
                         /* onChange={(e) =>
                             setValues({
                                 ...values,
@@ -142,7 +195,7 @@ function AccountOverviewWithSubscriptionInfo() {
                         labelClassname="text-[#26435F] font-semibold"
                         inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[40px] text-md"
                     
-                        // value={values.firstName}
+                        value={values.email}
                         /* onChange={(e) =>
                             setValues({
                                 ...values,
@@ -160,8 +213,8 @@ function AccountOverviewWithSubscriptionInfo() {
                       labelClassname="text-[#26435F] font-semibold"
                       inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
                       label="Phone"
-                      /* value={values.phone}
-                      codeValue={values.phoneCode} */
+                      value={values.phone}
+                      codeValue={values.phoneCode}
                       
                       /* handleCodeChange={(e) =>
                         setValues({
@@ -208,7 +261,7 @@ function AccountOverviewWithSubscriptionInfo() {
                         />
 
                         <SecondaryButton
-                            style={{width: "46.05%"}}
+                            style={{width: "46.05%", backgroundColor: "#fff"}}
                             children={<span className="font-[500] text-[14px] text-[#26435F]" >Reset Password</span>}
                             className="bg-[#fff] px-[0px] rounded-[10px] shadow-[0px_0px_10px_rgba(0,0,0,0.1)]"
                         />
@@ -223,7 +276,83 @@ function AccountOverviewWithSubscriptionInfo() {
                         className="bg-[#fff] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)]"
                         style={{width: "100%", height: "54.75%"}}
                     >
+                        <div className="font-[600] ml-[30px] mt-[30px] text-[#26435F] text-[14px]" >Manage Your Subscription Plan</div>
+                        <div className="ml-[30px]" >
+                            <span className="font-[200] text-[#26435F] text-[12px]">For detailed breakdown of features, please visit our </span>
+                            <button className="font-[200] inline text-[#24A3D9] text-[12px]" >pricing page.</button>
+                        </div>
 
+                        <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Active Subscription</div>
+
+                        <div 
+                            className="flex justify-between ml-[30px] mt-[5px]" 
+                            style={{width: "92%"}}
+                        >
+                            <ActiveSubscriptionWidget
+                                style={{width: "65%"}}
+                                canChangePlan={true}
+                                planDisplayName={"Professional"}
+                                subscriptionPricePerMonth={29}
+                                activeTutorsAllowed={10}
+                            />
+
+                            <div className="flex flex-col items-end" >
+                                <div className="flex" >
+                                    <span className="font-[100] text-[#517CA8] text-[12px]" >Subscription Start Date{" - "}</span>
+                                    <span className="font-[400] text-[#517CA8] text-[12px]" >{"{Date}"}</span>
+                                </div>
+
+                                <div className="flex mt-[3px]" >
+                                    <span className="font-[100] text-[#517CA8] text-[12px]" >Auto-Renewal Date{" - "}</span>
+                                    <span className="font-[400] text-[#517CA8] text-[12px]" >{"{Date}"}</span>
+                                </div>
+
+                                <div className="flex mt-[3px]" >
+                                    <span className="font-[100] text-[#517CA8] text-[12px]" >Monthly Cost (after discount){" - "}</span>
+                                    <span className="font-[400] text-[#517CA8] text-[12px]" >{"{Cost}"}</span>
+                                </div>
+
+                                <div className="grow" ></div>
+
+                                <button className="font-[400] underline text-[#24A3D9] text-[12px]" >Enable Auto-Renew</button>
+                            </div>
+                        </div>
+
+                        <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Active Extensions</div>
+
+                        <div 
+                            className="flex justify-between ml-[30px] mt-[5px]" 
+                            style={{width: "92%"}}
+                        >
+                            <ActiveExtensionWidget
+                                style={{width: "65%"}}
+                                canChangePlan={true}
+                                planDisplayName={"Assignments"}
+                                subscriptionPricePerMonth={109}
+                                productQuantity={1500}
+                            />
+
+                            <div className="flex flex-col items-end" >
+                                <div className="flex" >
+                                    <span className="font-[100] text-[#517CA8] text-[12px]" >Subscription Start Date{" - "}</span>
+                                    <span className="font-[400] text-[#517CA8] text-[12px]" >{"{Date}"}</span>
+                                </div>
+
+                                <div className="flex mt-[3px]" >
+                                    <span className="font-[100] text-[#517CA8] text-[12px]" >Auto-Renewal Date{" - "}</span>
+                                    <span className="font-[400] text-[#517CA8] text-[12px]" >{"{Date}"}</span>
+                                </div>
+
+                                <div className="flex mt-[3px]" >
+                                    <span className="font-[100] text-[#517CA8] text-[12px]" >Monthly Cost (after discount){" - "}</span>
+                                    <span className="font-[400] text-[#517CA8] text-[12px]" >{"{Cost}"}</span>
+                                </div>
+
+                                <div className="grow" ></div>
+
+                                <button className="font-[400] underline text-[#24A3D9] text-[12px]" >Enable Auto-Renew</button>
+                            </div>
+                        </div>
                     </div>
 
                     <div
