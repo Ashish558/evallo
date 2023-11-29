@@ -7,6 +7,7 @@ import downArrow from "../../assets/icons/down-chevron.svg";
 import upArrow from "../../assets/icons/upArrow.svg";
 export default function InputFieldDropdown({
   parentClassName,
+  parentStyle,
   inputContainerClassName,
   Icon,
   iconSize,
@@ -97,7 +98,7 @@ export default function InputFieldDropdown({
   }, []);
   console.log({ toggleOptions, codeValue });
   return (
-    <div className={`relative text-sm ${parentClassName && parentClassName} `}>
+    <div className={`relative text-sm ${parentClassName && parentClassName} `} style={{...parentStyle}} >
       {label && (
         <label className={`inline-block font-semibold text-base-17-5  ${labelClassname} ml-0 `}>
           {label}

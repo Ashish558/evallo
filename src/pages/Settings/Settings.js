@@ -52,6 +52,7 @@ import InputSelect from "../../components/InputSelect/InputSelect";
 import { timeZones } from "../../constants/constants";
 import { permissionsStaticData } from "./Tabs/staticData";
 import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
+import AccountOverviewWithSubscriptionInfo from "./Tabs/AccountOverviewWithSubscriptionInfo/AccountOverviewWithSubscriptionInfo";
 
 // import questionMark from '../../assets/images/question-mark.svg'
 const initialState = {
@@ -1526,7 +1527,7 @@ export default function Settings() {
             updateAndFetchsettings={updateAndFetchsettings}
           />
         )}
-        {activeTab === 3 && <AccountOverview />}
+        {activeTab === 3 && <AccountOverviewWithSubscriptionInfo />}
       </div>
       {modalActive && (
         <Modal

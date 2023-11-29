@@ -7,6 +7,7 @@ import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 
 export default function InputField({
   parentClassName,
+  parentStyle,
   inputContainerClassName,
   Icon,
   IconRight2Click,
@@ -56,7 +57,7 @@ export default function InputField({
   }, [value])
 
   return (
-    <div className={`relative text-sm ${parentClassName && parentClassName}`}>
+    <div className={`relative text-sm ${parentClassName && parentClassName}`} style={{...parentStyle}} >
       {label && (
         <label
           className={`inline-block text-sm font-semibold ${labelClassname} ml-0 text-base-17-5`}
