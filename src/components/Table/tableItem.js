@@ -789,6 +789,7 @@ export default function TableItem({
             excludes.includes(key) ? (
               <React.Fragment key={i}></React.Fragment>
             ) : key == "testtype" ? null : (
+            ) : key == "testtype" ? null : (
               <td key={i} className="font-medium px-1  min-w-14 py-4">
                 {key === "status" ? (
                   <div className="flex justify-center">
@@ -824,6 +825,7 @@ export default function TableItem({
                 ) : key === "assignedOn" ? (
                   getFormattedDate(item[key], dateFormat)
                 ) : key === "testName" ? (
+                ) : key === "testName" ? (
                   <>
                     <div className="flex flex-row items-center ">
                       <div className="min-w-[20px] ">
@@ -852,7 +854,9 @@ export default function TableItem({
                     </div>
                   </>
                 ) : key == "duration" ? (
+                ) : key == "duration" ? (
                   item[key]
+                ) : null}
                 ) : null}
               </td>
             )
@@ -988,6 +992,7 @@ export default function TableItem({
         <tr className="bg-white text-[17.5px]   leading-7 mt-[10px]">
           {MapData(item, dataFor, excludes)}
           {testtype === "DSAT" || testtype === "DSAT®" ? (
+          {testtype === "DSAT" || testtype === "DSAT®" ? (
             <>
               <td>
                 <div
@@ -1048,6 +1053,13 @@ export default function TableItem({
               ? item.testType
               : item.testType + "®"}
           </td>
+          <td>
+            {item.testType.endsWith("®")
+              ? item.testType
+              : item.testType.includes("Other")
+              ? item.testType
+              : item.testType + "®"}
+          </td>
           <td> {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
           <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
           <td> {item.no_of_assign !== null ? item.no_of_assign : "-"} </td>
@@ -1081,6 +1093,11 @@ export default function TableItem({
             <span className="">{item.testName}</span>
           </td>
           <td className=" pl-5 !text-center ">
+            {item.testType === "Other"
+              ? "ACT®"
+              : item.testType.endsWith("®")
+              ? item.testType
+              : item.testType + "®"}
             {item.testType === "Other"
               ? "ACT®"
               : item.testType.endsWith("®")
@@ -1279,6 +1296,18 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
           {data[key] < 10 && "0"}
           {data[key]}
         </p>
+      <td
+        key={i}
+        className={`font-medium px-1  py-4  ${
+          dataFor === "studentTestsReport" && !data["isCorrect"]
+            ? "!bg-[#FF79791A]/[0.05]"
+            : ""
+        }`}
+      >
+        <p className={`font-semibold `}>
+          {data[key] < 10 && "0"}
+          {data[key]}
+        </p>
       </td>
     ) : dataFor === "invoice" && key === "currentBalance" ? (
       <td key={i} className="font-medium px-1 text-[#009262] py-4">
@@ -1381,6 +1410,13 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
           dataFor === "studentTestsReport" && !data["isCorrect"]
             ? "!bg-[#FF79791A]/[0.05]"
             : ""
+        } ${dataFor === "testsDetailQuestions" && "text-left pl-7"} 
+        ${
+          dataFor === "studentTestsReport" &&
+          (key === "Concept" || key === "Strategy")
+            ? "text-start"
+            : null
+        }`}
         } ${dataFor === "testsDetailQuestions" && "text-left pl-7"} 
         ${
           dataFor === "studentTestsReport" &&
