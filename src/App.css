@@ -46,3 +46,10 @@ nav .active {
 #root {
   display: contents;
 }
+
+
+/* removing default svg for <input type="date" ></input */
+
+.removeDefaultDatePickerIcon::-webkit-calendar-picker-indicator {
+  display: none;
+}
