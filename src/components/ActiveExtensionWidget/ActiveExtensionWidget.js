@@ -28,18 +28,19 @@ function ActiveExtensionWidget({
     SetSubscriptionDiscount,
     freeTrialExpiryDate,
     productQuantity,
+    handleChangePlan
 }) {
     const [couponCode, SetcouponCode] = useState("");
     const [couponDiscountPercent, SetCouponDiscountPercent] = useState(0);
     const [applyCoupon, applyCouponResp] = useLazyApplyCouponQuery();
     const [isCouponApplyProcessOnGoing, SetIsCouponApplyProcessOnGoing] = useState(false);
 
-    const handleChangePlan = () => {
+    /* const handleChangePlan = () => {
         if(!setFrames) return;
         setFrames((prev) => {
             return { ...prev, review: false, subscription: true };
         });
-    }
+    } */
 
     const OnPressApplyCoupon = async () => {
         if(couponCode === "") return;
@@ -98,7 +99,18 @@ function ActiveExtensionWidget({
                     <SecondaryButton 
                         children={<span className="text-[#7C98B6] text-[12px]" >Change Plan</span>}
                         className={"bg-white drop-shadow-[0px_0px_1px_rgba(0,0,0,0.25)] px-[7px] py-[1px] text-[#7C98B6]"}
-                        onClick={handleChangePlan}
+                        style={{
+                            backgroundColor: "#fff",
+                            paddingRight: "7px",
+                            paddingLeft: "7px",
+                            paddingTop: "1px",
+                            paddingBottom: "1px",
+                        }}
+                        onClick={() => {
+                            if(handleChangePlan.constructor && handleChangePlan.constructor.name === "Function") {
+                                handleChangePlan();
+                            }
+                        }}
                         disabled={!canChangePlan}
                     />
                 </div>

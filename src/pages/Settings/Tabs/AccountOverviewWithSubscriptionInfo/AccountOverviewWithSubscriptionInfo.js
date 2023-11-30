@@ -14,6 +14,9 @@ import styles from "./styles.module.css";
 import BankCardInfoWidget from "../../../../components/BankCard/BankCardInfoWidget";
 import ActiveSubscriptionWidget from "../../../../components/ActiveSubscriptionWidget/ActiveSubscriptionWidget";
 import ActiveExtensionWidget from "../../../../components/ActiveExtensionWidget/ActiveExtensionWidget";
+import SubscriptionAndExtensionModal from "../../../Frames/SubscriptionAndExtensionModal/SubscriptionAndExtensionModal";
+import { useLazyGetSubscriptionsInfoQuery } from "../../../../app/services/orgSignup";
+
 import {
     useLazyGetPersonalDetailQuery,
     useUpdateUserAccountMutation,
@@ -84,6 +87,11 @@ function AccountOverviewWithSubscriptionInfo() {
         activeTutors: "",
         services: [],
     });
+    const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
+    const [subscriptionsInfoFromAPI, SetSubscriptionsInfoFromAPI] = useState([]);
+    const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(false);
+    const [openSubscriptionModal, SetOpenSubscriptionModal] = useState(false);
+    const [openExtensionsModal, SetOpenExtensionsModal] = useState(false);
 
     useEffect(() => {
         userDetails()
@@ -102,8 +110,57 @@ function AccountOverviewWithSubscriptionInfo() {
         });
     }, []);
 
+    const fetchSubscriptionsInfo = () => {
+        getSubscriptionsInfo().then((res) => {
+          console.warn("Subscriptions info");
+          console.warn(res.data)
+          SetSubscriptionsInfoFromAPI(res.data.data);
+        }).catch((error) => {
+          console.error("Error while fetching subscriptions info")
+          console.error(error)
+        })
+      }
+    
+    useEffect(() => {
+        if(subscriptionsInfoFromAPI && subscriptionsInfoFromAPI.length > 0) return;
+        fetchSubscriptionsInfo();
+    }, []);
+
+    function OnActiveSubscriptionChangePlanClicked() {
+        SetIsSubscriptionAndExtensionModalActive(true);
+        SetOpenSubscriptionModal(true);
+    }
+
+    function OnActiveExtensionChangePlanClicked() {
+        SetIsSubscriptionAndExtensionModalActive(true);
+        SetOpenExtensionsModal(true);
+    }
+
+    function OnSubscriptionAndExtensionModalCancelClicked() {
+        SetIsSubscriptionAndExtensionModalActive(false);
+        SetOpenSubscriptionModal(false);
+        SetOpenExtensionsModal(false);
+    }
+
     return (
         <div className="flex w-full" >
+
+            {
+                isSubscriptionAndExtensionModalActive ? (
+                    <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
+                        <SubscriptionAndExtensionModal
+                            className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-5/6 w-9/12"
+                            openedFromAccountOverview={true}
+                            openSubscriptionModal={openSubscriptionModal}
+                            openExtensionsModal={openExtensionsModal}
+                            OnCancelClicked={OnSubscriptionAndExtensionModalCancelClicked}
+                            subscriptionsInfoFromAPI_Param={subscriptionsInfoFromAPI}
+                        />
+                    </div>
+                ) : (<></>)
+            }
+            
+
             <div className="flex justify-between h-[700px] mb-[50px] w-full" >
                 <div 
                     className="bg-[#fff] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)]" 
@@ -294,6 +351,7 @@ function AccountOverviewWithSubscriptionInfo() {
                                 planDisplayName={"Professional"}
                                 subscriptionPricePerMonth={29}
                                 activeTutorsAllowed={10}
+                                handleChangePlan={OnActiveSubscriptionChangePlanClicked}
                             />
 
                             <div className="flex flex-col items-end" >
@@ -330,6 +388,7 @@ function AccountOverviewWithSubscriptionInfo() {
                                 planDisplayName={"Assignments"}
                                 subscriptionPricePerMonth={109}
                                 productQuantity={1500}
+                                handleChangePlan={OnActiveExtensionChangePlanClicked}
                             />
 
                             <div className="flex flex-col items-end" >

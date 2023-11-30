@@ -13,7 +13,12 @@ import VerticalNumericSteppers from "../../../components/VerticalNumericSteppers
 import { extensionsData } from "./data";
 
 function SubscriptionAndExtensionModal({
-    className
+    className,
+    openSubscriptionModal,
+    openExtensionsModal,
+    openedFromAccountOverview,
+    OnCancelClicked,
+    subscriptionsInfoFromAPI_Param,
 }) {
     const [values, setValues] = useState({
         firstName: "",
@@ -48,6 +53,7 @@ function SubscriptionAndExtensionModal({
         extensions: false,
         review: false,
     });
+    const [restrictedIndices, SetRestrictedIndices] = useState([]);
     const [currentModalIndex, SetCurrentModalIndex] = useState(0);
     const [subscriptionPlanInfo, SetSubscriptionPlanInfo] = useState([]);
     const [extensionPlansData, SetExtensionPlansData] = useState([]);
@@ -57,14 +63,10 @@ function SubscriptionAndExtensionModal({
 
     const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
 
-    const fetchSubscriptionsInfo = () => {
-        getSubscriptionsInfo().then((res) => {
-          console.warn("Subscriptions info");
-          console.warn(res.data)
-          // subscriptionsInfoFromAPI = res.data.data;
-          const productList = res.data.data;
-          // collecting info for subscriptions
-          for(let i = 0; i < productList.length; i++) {
+    function loadSubscriptionAndExtensionInfo(productList) {
+        if(!(productList.constructor && productList.constructor.name === "Array")) return;
+
+        for(let i = 0; i < productList.length; i++) {
             let product = productList[i];
             if(product.product.metadata.type !== "default") continue;
     
@@ -189,7 +191,16 @@ function SubscriptionAndExtensionModal({
             */
           }
     
-          SetSubscriptionsInfoFromAPI(res.data.data);
+          SetSubscriptionsInfoFromAPI(productList);
+    }
+
+    function fetchSubscriptionsInfo(){
+        getSubscriptionsInfo().then((res) => {
+          console.warn("Subscriptions info");
+          console.warn(res.data)
+          // subscriptionsInfoFromAPI = res.data.data;
+          const productList = res.data.data;
+          loadSubscriptionAndExtensionInfo(productList)
         }).catch((error) => {
           console.error("Error while fetching subscriptions info")
           console.error(error)
@@ -197,6 +208,14 @@ function SubscriptionAndExtensionModal({
     }
     
     useEffect(() => {
+        if(subscriptionsInfoFromAPI_Param && subscriptionsInfoFromAPI_Param.length > 0) {
+            loadSubscriptionAndExtensionInfo(subscriptionsInfoFromAPI_Param);
+            return;
+        }
+        if(subscriptionsInfoFromAPI && subscriptionsInfoFromAPI.length > 0) {
+            loadSubscriptionAndExtensionInfo(subscriptionsInfoFromAPI);
+            return;
+        }
         fetchSubscriptionsInfo();
     }, []);
 
@@ -221,6 +240,34 @@ function SubscriptionAndExtensionModal({
             return;
         }
     }, [frames]);
+
+    useEffect(() => {
+        if(openedFromAccountOverview && openSubscriptionModal) {
+            setFrames({
+                orgDetails: false,
+                subscription: true,
+                extensions: false,
+                review: false,
+            })
+            return;
+        }
+
+        if(openedFromAccountOverview && openExtensionsModal) {
+            setFrames({
+                orgDetails: false,
+                subscription: false,
+                extensions: true,
+                review: false,
+            })
+            return;
+        }
+    }, []);
+
+    useEffect(() => {
+        if(openedFromAccountOverview) {
+            SetRestrictedIndices([0]);
+        }
+    },[openedFromAccountOverview]);
 
     const onBackToPreviousStepClicked = () => {
         setFrames(frames => {
@@ -271,13 +318,14 @@ function SubscriptionAndExtensionModal({
                     className="ml-[40px] mt-[50px] h-full"
                     labels={["Account", "Subscription", "Extensions", "Review"]}
                     currentIndex={currentModalIndex}
+                    restrictedIndices={restrictedIndices}
                 />
             </div>
 
             <div className={`ml-[90px] w-9/12`} >
                 <div className="flex mt-[20px] w-full" >
                     {
-                        frames.orgDetails ? (
+                        frames.orgDetails || openedFromAccountOverview && frames.subscription ? (
                             <></>
                         ) : (
                             <button className="text-[#B3BDC7]" onClick={onBackToPreviousStepClicked} >
@@ -345,6 +393,19 @@ function SubscriptionAndExtensionModal({
                 </div>
 
                 <div className="flex mt-[20px] w-full" >
+                    {
+                        openedFromAccountOverview ? (
+                            <button 
+                                className="font-[600] text-[#B3BDC7] text-[14px]" 
+                                onClick={() => {
+                                    if(OnCancelClicked.constructor && OnCancelClicked.constructor.name === "Function") {
+                                        OnCancelClicked();
+                                    }
+                                }}
+                            >Cancel</button>
+                        ) : (<></>)
+                    }
+                    
                     <div className="grow" ></div>
                     <PrimaryButton
                       className={`w-full flex justify-center  bg-[#FFA28D]  disabled:opacity-60 max-w-[150px]  rounded text-white text-sm font-medium relative py-[9px]      
