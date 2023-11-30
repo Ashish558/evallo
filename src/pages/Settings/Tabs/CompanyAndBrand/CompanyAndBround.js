@@ -27,6 +27,7 @@ import {
 } from "../../../../app/services/organization";
 import { object } from "prop-types";
 import axios from "axios";
+import { trim } from "jquery";
 
 const CompanyAndBround = () => {
   const { organization } = useSelector((state) => state.organization);
@@ -89,6 +90,19 @@ const CompanyAndBround = () => {
   };
 
   const updateUserAccount = async () => {
+    if (!isEmail(values?.supportEmail)) {
+      alert("Enter valid support email!");
+      return;
+    }
+    const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+
+    if (
+      values?.website?.trim()?.length > 0 &&
+      !urlRegex.test(values?.website)
+    ) {
+      alert("Enter valid website link!");
+      return;
+    }
     try {
       updateUserOrg(values)
         .then((res) => {
@@ -139,6 +153,15 @@ const CompanyAndBround = () => {
       }
     });
     return f;
+  };
+  const isEmail = (val) => {
+    let regEmail =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!regEmail.test(val)) {
+      return false;
+    } else {
+      return true;
+    }
   };
   const handleSave = async () => {
     setError({});
@@ -349,9 +372,7 @@ const CompanyAndBround = () => {
                   />
                 </div>
               ) : (
-                <div
-                  className={`absolute  right-2 bottom-1`}
-                >
+                <div className={`absolute  right-2 bottom-1`}>
                   <div className="flex flex-col ">
                     <p
                       className={`block mx-auto mt-[-25px]  ${
@@ -505,15 +526,16 @@ const CompanyAndBround = () => {
                   label="Zip Code"
                   value={values.zip}
                   totalErrors={error}
-                  onChange={(e) =>{
+                  onChange={(e) => {
                     const regex = /^[0-9 ]*$/;
                     const isValid = regex.test(e.target.value);
                     if (isValid && e.target.value?.length < 11)
-                    setValues({
-                      ...values,
-                      zip: e.target.value,
-                    })}
-                  }
+                      setValues({
+                        ...values,
+                        zip: e.target.value,
+                      });
+                    else e.target.value = values?.zip || "";
+                  }}
                   error={error.zip}
                 />
               </div>

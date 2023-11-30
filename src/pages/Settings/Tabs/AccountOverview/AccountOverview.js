@@ -137,7 +137,7 @@ const AccountOverview = () => {
           .then((res) => {
             setLoading(false);
             if (res?.error) {
-              alert("Error occured while updating!");
+              alert("Error occured while updating!",res?.error?.message);
             }
             if (res?.data) {
               alert("changes saved!");

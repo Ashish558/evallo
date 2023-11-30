@@ -263,7 +263,7 @@ export default function Login({ setLoginFormActive }) {
                     <span className="cursor-text">Don’t have an account?{" "}</span>
                     <span
                       className={`text-[#24A3D9] cursor-pointer relative  font-bold     inline-block `}
-                      onClick={() => navigate("/signup")}
+                      onClick={() => navigate("/signup?step=1")}
                     >
                       Sign up
                     </span>
