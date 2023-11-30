@@ -3,6 +3,7 @@ import React, {
     useEffect,
 } from "react";
 import ExtensionSelectionWidget from "../../../components/ExtensionSelectionWidget/ExtensionSelectionWidget";
+import styles from "./style.module.css";
 
 function ExtensionsChoosingModal({
     className,
@@ -68,13 +69,7 @@ function ExtensionsChoosingModal({
                     </div>
                 </div>
 
-                <div className="ml-[30px] mt-[20px] " style={{width: "89%"}} >
-                    {/* <ExtensionSelectionWidget
-                        className="w-full"
-                        planDisplayName="Assignments"
-                        productGraphStatement="Maximum number of Assignments per month"
-                        onChange={() => {handleCheckboxChange("Assignments / Content", extensions, setExtensions)}}
-                    /> */}
+                <div className={`ml-[30px] mt-[20px] px-[4px] py-[7px] ${styles.extensionsListContainer}`} style={{width: "91%", height: "80%"}} >
 
                     {
                         extensions?.map((item,index) => {
@@ -82,9 +77,19 @@ function ExtensionsChoosingModal({
                             if(extensionPlansInfo[0]?.planName === "") return (<React.Fragment key={index}></React.Fragment>)
                             let extension = extensionPlansInfo.find(i => i.planName === item.text)
                             if(!extension || extension === undefined || extension === null) return (<React.Fragment key={index}></React.Fragment>)
+                            if(extension.isComingSoon) {
+                                return (
+                                    <ExtensionSelectionWidget
+                                        className="mb-[20px] w-full"
+                                        planDisplayName={extension.planDisplayName}
+                                        descriptionInDisabledState={extension.description}
+                                        isDisabled={true}
+                                    />
+                                )
+                            }
                             return (
                                 <ExtensionSelectionWidget
-                                    className="w-full"
+                                    className="mb-[20px] w-full"
                                     extensions={extensions}
                                     setExtensions={setExtensions}
                                     planName={extension.planName}

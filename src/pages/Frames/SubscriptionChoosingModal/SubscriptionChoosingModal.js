@@ -4,13 +4,16 @@ import {
 } from "react";
 import SubscriptionSelectionWidget from "../../../components/SubscriptionSelectionWidget/SubscriptionSelectionWidget";
 import { SubscriptionPackDescriptions } from "./DummyData/SubscriptionPackDescriptions";
+import { CurrencyNameToSymbole } from "../../../utils/utils";
+import greenCheckIcon from "../../../assets/icons/green-check-icon.svg";
 
 function SubscriptionChoosingModal({
     className,
     subscriptionPlanInfo,
     subscriptionsInfoFromAPI,
     chosenSubscriptionPlanName,
-    SetChosenSubscriptionPlanName
+    SetChosenSubscriptionPlanName,
+    activeSubscriptionName,
 }) {
     const [productDescriptions, SetProductDescriptions] = useState([]);
 
@@ -40,6 +43,35 @@ function SubscriptionChoosingModal({
                         const freeTrialStatement = plan.freeTrialDays === 0 ? "Free Trial Not Available" :
                                                 plan.freeTrialDays >= 30 ?  `${plan.freeTrialDays / 30} Months Free Trial` :
                                                 `${plan.freeTrialDays} Days Free Trial`;
+
+
+                        if(plan.planName === activeSubscriptionName) {
+                            return (
+                                <div className="mb-[25px] ml-[30px] mt-[25px] w-9/12" >
+                                    <div className="flex w-full" >
+                                        <img 
+                                            src={greenCheckIcon}
+                                        />
+                                        <div className="ml-[20px]" >
+                                            <div 
+                                                className={`font-[600] text-[12px]`}
+                                            >
+                                                <span className="text-[#26435F]" >{plan.planDisplayName + " - "}</span>
+                                                <span className="text-[#24A3D9]" >{CurrencyNameToSymbole(plan.currency)}{plan.pricePerMonth}/month</span>
+                                            </div>
+
+                                            <div className="font-[100] text-[12px]">
+                                            Active Tutors Allowed - {plan.activeTutorsAllowed === Infinity ? "unlimited" : plan.activeTutorsAllowed}
+                                            </div>
+
+                                            <div className="text-[#38C980] text-[12px]" >
+                                                Free Trial till
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        }
 
                         return (
                             <SubscriptionSelectionWidget

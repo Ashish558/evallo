@@ -89,6 +89,17 @@ function AccountOverviewWithSubscriptionInfo() {
     });
     const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
     const [subscriptionsInfoFromAPI, SetSubscriptionsInfoFromAPI] = useState([]);
+    const [activeSubscriptionName, SetActiveSubscriptionName] = useState("Professional");
+    const [activeSubscriptionInfo, SetActiveSubscriptionInfo] = useState({
+        planDisplayName: "",
+        activeTutorsAllowed: 0,
+        currency: "",
+        subscriptionPricePerMonth: 0,
+        freeTrialExpiryDate: null,
+        subscriptionStartDate: null,
+        monthlyCostAfterDiscount: 0,
+        autoRenewalDate: null,
+    });
     const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(false);
     const [openSubscriptionModal, SetOpenSubscriptionModal] = useState(false);
     const [openExtensionsModal, SetOpenExtensionsModal] = useState(false);
@@ -109,6 +120,27 @@ function AccountOverviewWithSubscriptionInfo() {
             console.log(err);
         });
     }, []);
+
+    useEffect(() => {
+        if(!(subscriptionsInfoFromAPI && subscriptionsInfoFromAPI.length > 0)) return;
+
+        for(let i = 0; i < subscriptionsInfoFromAPI.length; i++) {
+            let product = subscriptionsInfoFromAPI[i];
+            if(product.product.metadata.type !== "default") continue;
+            if(product.product.name !== activeSubscriptionName) continue;
+
+            SetActiveSubscriptionInfo({
+                planDisplayName: product.product.name,
+                activeTutorsAllowed: parseInt(product.product.metadata.active_tutors),
+                currency: product.currency,
+                subscriptionPricePerMonth: product.unit_amount / 100,
+                monthlyCostAfterDiscount: product.unit_amount / 100,
+                subscriptionStartDate: new Date(),
+            });
+
+            return;
+        }
+    }, [subscriptionsInfoFromAPI]);
 
     const fetchSubscriptionsInfo = () => {
         getSubscriptionsInfo().then((res) => {
@@ -155,6 +187,7 @@ function AccountOverviewWithSubscriptionInfo() {
                             openExtensionsModal={openExtensionsModal}
                             OnCancelClicked={OnSubscriptionAndExtensionModalCancelClicked}
                             subscriptionsInfoFromAPI_Param={subscriptionsInfoFromAPI}
+                            activeSubscriptionName={activeSubscriptionName}
                         />
                     </div>
                 ) : (<></>)
@@ -348,9 +381,9 @@ function AccountOverviewWithSubscriptionInfo() {
                             <ActiveSubscriptionWidget
                                 style={{width: "65%"}}
                                 canChangePlan={true}
-                                planDisplayName={"Professional"}
-                                subscriptionPricePerMonth={29}
-                                activeTutorsAllowed={10}
+                                planDisplayName={activeSubscriptionInfo.planDisplayName}
+                                subscriptionPricePerMonth={activeSubscriptionInfo.subscriptionPricePerMonth}
+                                activeTutorsAllowed={activeSubscriptionInfo.activeTutorsAllowed}
                                 handleChangePlan={OnActiveSubscriptionChangePlanClicked}
                             />
 

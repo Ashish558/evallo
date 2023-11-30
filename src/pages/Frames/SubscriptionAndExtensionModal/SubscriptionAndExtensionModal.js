@@ -11,6 +11,7 @@ import ReviewProduct from "../ReviewProduct/ReviewProduct";
 import ExtensionsChoosingModal from "../ExtensionsChoosingModal/ExtensionsChoosingModal";
 import VerticalNumericSteppers from "../../../components/VerticalNumericSteppers/VerticalNumericSteppers";
 import { extensionsData } from "./data";
+import { comingSoonExtensionData } from "./DummyData/ComingSoonExtensionData";
 
 function SubscriptionAndExtensionModal({
     className,
@@ -19,6 +20,7 @@ function SubscriptionAndExtensionModal({
     openedFromAccountOverview,
     OnCancelClicked,
     subscriptionsInfoFromAPI_Param,
+    activeSubscriptionName,
 }) {
     const [values, setValues] = useState({
         firstName: "",
@@ -190,6 +192,12 @@ function SubscriptionAndExtensionModal({
             productInfo.extensionPriceOption = []
             */
           }
+
+          SetExtensionPlansData(extData => {
+            const newExtData = [...extData, ...comingSoonExtensionData];
+
+            return newExtData;
+          })
     
           SetSubscriptionsInfoFromAPI(productList);
     }
@@ -373,6 +381,7 @@ function SubscriptionAndExtensionModal({
                                 subscriptionsInfoFromAPI={subscriptionsInfoFromAPI}
                                 chosenSubscriptionPlanName={chosenSubscriptionPlanName}
                                 SetChosenSubscriptionPlanName={SetChosenSubscriptionPlanName}
+                                activeSubscriptionName={activeSubscriptionName}
                             />
                         ) : frames.extensions ? (
                             <ExtensionsChoosingModal
