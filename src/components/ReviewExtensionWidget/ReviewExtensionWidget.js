@@ -19,8 +19,8 @@ function ReviewExtensionWidget({
     activeStudentsAllowed = 0,
     ccRequired = false,
     currency = "usd",
-    subscriptionPricePerMonth,
-    freeTrialDays,
+    subscriptionPricePerMonth = 0,
+    freeTrialDays = 0,
     setFrames,
     setcurrentStep,
     chosenSubscriptionObjectFromAPI,
@@ -64,8 +64,8 @@ function ReviewExtensionWidget({
         <div className={`flex flex-col pb-[20px] pl-[20px] pr-[30px] pt-[20px] rounded-[5px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] w-full ${className}`}>
             <div className="flex justify-between">
                 <div>
-                    <div className="font-semibold text-[#26435F] text-[16px]">{planDisplayName + " - " + CurrencyNameToSymbole(currency) + subscriptionPricePerMonth + "/month"}</div>
-                    <div className="font-[200] text-[#26435F] text-sm">{productInfoStatement}</div>
+                    <div className="font-semibold text-[#26435F] text-[14px]">{planDisplayName + " - " + CurrencyNameToSymbole(currency) + (subscriptionPricePerMonth !== undefined ? subscriptionPricePerMonth : 0) + "/month"}</div>
+                    <div className="font-[200] text-[#26435F] text-[12px]">{productInfoStatement}</div>
                     {
                         (() => {
                             const freeTrialStatement = freeTrialDays === 0 ? "Free Trial Not Available" :
@@ -74,13 +74,13 @@ function ReviewExtensionWidget({
 
                             if(freeTrialDays === 0) {
                                 return (
-                                    <div className="font-[100] text-[#26435F] text-[14px]" >
+                                    <div className="font-[100] text-[#26435F] text-[12px]" >
                                         Free Trial Not Available
                                     </div>
                                 )
                             }
                             return (
-                                <div className="font-[500] text-sm text-[#38C980]">
+                                <div className="font-[500] text-[12px] text-[#38C980]">
                                     {freeTrialStatement}
                                 </div>
                             )
@@ -89,7 +89,10 @@ function ReviewExtensionWidget({
                 </div>
                 <div className="flex flex-col items-end">
                     <SecondaryButton 
-                        children={"Change Plan"}
+                        children={<span className="text-[#7C98B6] text-[14px]" >Change Plan</span>}
+                        style={{
+                            backgroundColor: "#fff",
+                        }}
                         className={"bg-white drop-shadow-[0px_0px_1px_rgba(0,0,0,0.25)] px-[15px] py-[2px] text-[#7C98B6]"}
                         onClick={handleChangePlan}
                         disabled={!canChangePlan}

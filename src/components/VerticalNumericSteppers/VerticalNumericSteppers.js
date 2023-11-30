@@ -6,6 +6,7 @@ function VerticalNumericSteppers({
     labels,
     currentIndex,
     restrictedIndices,
+    completedIndices,
 }) {
 
     console.log(restrictedIndices);
@@ -29,8 +30,9 @@ function VerticalNumericSteppers({
                                 <div className="flex flex-col items-center" >
                                     <div className={`aspect-square flex items-center justify-center rounded-[8px] align-middle text-[#fff] text-center w-[35px]
                                                      ${styles.numContainer}
-                                                     ${isRestricted ? styles.restricted : ""}
+                                                     ${isRestricted ? styles.restricted : currentIndex > index ? styles.completed : ""}
                                                      ${currentIndex === index ? styles.currentIndex : ""}
+                                                     
                                     `}
                                     >
                                         <div
@@ -43,7 +45,7 @@ function VerticalNumericSteppers({
                                     </div>
                                     <div className={`font-[100] text-[14px]
                                                     ${styles.label}
-                                                    ${isRestricted ? styles.restricted : ""}
+                                                    ${isRestricted ? styles.restricted : currentIndex > index ? styles.completed : ""}
                                                     ${currentIndex === index ? styles.currentIndex : ""}
                                                      
                                     `} >{item}</div>
@@ -52,6 +54,7 @@ function VerticalNumericSteppers({
                                     index < labels.length - 1 ? (
                                         <div className={`border-l-[1px] mt-[5px] mb-[5px] grow
                                                          ${styles.verticalLine}
+                                                         ${isRestricted ? styles.restricted : currentIndex > index ? styles.completed : ""}
                                                          ${currentIndex === index ? styles.currentIndex : ""}
                                         `} >
                                         </div>

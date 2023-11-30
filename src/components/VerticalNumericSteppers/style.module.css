@@ -15,6 +15,11 @@
     box-shadow: 0px 0px 10px rgba(141,141,141,0.25);
 }
 
+.numContainer.completed {
+    background-color: #FFA28D;
+    box-shadow: 0px 0px 10px rgba(141, 141, 141, 0.25);
+}
+
 .label {
     color: #B3BDC7;
 }
@@ -27,10 +32,22 @@
     color: #E0E0E0;
 }
 
+.label.completed {
+    color: #FFA28D;
+}
+
 .verticalLine {
     border-color: #B3BDC7;
 }
 
+.verticalLine.restricted {
+    border-color: #E0E0E0;
+}
+
 .verticalLine.currentIndex {
     border-color: #24A3D9;
+}
+
+.verticalLine.completed {
+    border-color: #FFA28D;
 }

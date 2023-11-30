@@ -5,6 +5,7 @@ import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import InputField from "../../../components/InputField/inputField";
 import { CurrencyNameToSymbole } from "../../../utils/utils";
 import ReviewExtensionWidget from "../../../components/ReviewExtensionWidget/ReviewExtensionWidget";
+import { useEffect } from "react";
 
 function ReviewProduct({
     className,
@@ -29,6 +30,22 @@ function ReviewProduct({
             return false;
         })
     );
+    const [totalPrice, SetTotalPrice] = useState(0);
+
+    useState(() => {
+        SetTotalPrice(
+            chosenSubscriptionPlan.pricePerMonth
+        )
+    }, [chosenSubscriptionPlan]);
+
+    useEffect(() => {
+        if(chosenSubscriptionPlan.ccRequired) {
+            SetIsCardRequired(true);
+            return;
+        }
+
+        SetIsCardRequired(false);
+    }, [chosenSubscriptionPlan])
 
     return (
         <div
@@ -47,7 +64,7 @@ function ReviewProduct({
 
                 <div className="font-[500] ml-[30px] mt-[25px] text-[#FFA28D] text-[14px]" >Subscription</div>
 
-                <div className="ml-[30px] w-11/12" >
+                <div className="ml-[30px]" style={{width: "85%"}} >
 
                     <ReviewSubscriptionWidget
                         className="w-full"
@@ -60,29 +77,32 @@ function ReviewProduct({
                         freeTrialDays={chosenSubscriptionPlan ? chosenSubscriptionPlan.freeTrialDays : null}
                     />
 
-                    <div className="flex w-full" >
+                    <div className="flex items-center mt-[7px] w-full" >
                         <InputField
                             placeholder="Add Promo Code"
                             parentClassName="text-xs"
                             label=""
                             labelClassname="text-[#26435F] font-semibold"
-                            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
+                            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[40px] text-md"
                             
-                            value={couponForSubscription}
-                            onChange={(e) => {
+                            // value={couponForSubscription}
+                            /* onChange={(e) => {
                                 // setValues({
                                 //   ...values,
                                 //   firstName: e.target.value,
                                 // })
                                 SetCouponForSubscription(e.target.value);
-                            }}
+                            }} */
                             //   totalErrors={error}
                             //   error={error.firstName}
                         />
 
                         <PrimaryButton
                             children={"Apply"}
-                            className={"h-5/6 ml-[10px] px-[10px]"}
+                            className={"h-[30px] ml-[10px] px-[10px]"}
+                            style={{
+                                // height: "10%",
+                            }}
                             // onClick={OnPressApplyCoupon}
                             // loading={isCouponApplyProcessOnGoing}
                         />
@@ -96,89 +116,91 @@ function ReviewProduct({
                     </div>
                 </div>
 
-                <div className="font-[500] ml-[30px] mt-[25px] text-[#FFA28D] text-[14px]" >Extensions</div>
+                {
+                    (chosenExtensionPlans === undefined || chosenExtensionPlans === null || chosenExtensionPlans.length === 0) ? (<></>) :
+                    (
+                        <>
+                            <div className="font-[500] ml-[30px] mt-[25px] text-[#FFA28D] text-[14px]" >Extensions</div>
 
-                <div className="ml-[30px] w-11/12 " >
-                    {(chosenExtensionPlans === undefined || chosenExtensionPlans === null || chosenExtensionPlans.length === 0) ? (<></>) :
-                    
-                        (<>
-                        
-                        {chosenExtensionPlans.map((item, index) => {
-                            const chosenPackageName = extensions.find(i => i.text === item.planName).packageName;
-                            const chosenPackage = item.extensionPriceOption.find(pack => pack.planName === chosenPackageName);
-                            /* const extObjectFromAPI = chosenExtentionObjectsFromAPI.find(i => {
-                                return i.product.name === item.planName && i.lookup_key === chosenPackageName;
-                            }) */
+                            <div className="ml-[30px] " style={{width: "85%"}} >
+                                <>
+                                    {chosenExtensionPlans.map((item, index) => {
+                                        const chosenPackageName = extensions.find(i => i.text === item.planName).packageName;
+                                        const chosenPackage = item.extensionPriceOption.find(pack => pack.planName === chosenPackageName);
+                                        /* const extObjectFromAPI = chosenExtentionObjectsFromAPI.find(i => {
+                                            return i.product.name === item.planName && i.lookup_key === chosenPackageName;
+                                        }) */
 
-                            // const extDiscount = extensionDiscounts.find(i => i.planName === item.planName);
-                            return (
-                                <React.Fragment key={index} >
-                                    <ReviewExtensionWidget
-                                        canChangePlan={true}
-                                        setFrames={setFrames}
-                                        planName={item.planName}
-                                        planDisplayName={item.planDisplayName}
-                                        extensionPriceOption={chosenPackage}
-                                        productInfoStatement="Maximum Number of Assignments per month - 500"
-                                    />
+                                        // const extDiscount = extensionDiscounts.find(i => i.planName === item.planName);
+                                        return (
+                                            <React.Fragment key={index} >
+                                                <ReviewExtensionWidget
+                                                    canChangePlan={true}
+                                                    setFrames={setFrames}
+                                                    planName={item.planName}
+                                                    planDisplayName={item.planDisplayName}
+                                                    extensionPriceOption={chosenPackage}
+                                                    productInfoStatement="Maximum Number of Assignments per month - 500"
+                                                />
 
-                                    <div className="flex w-full" >
-                                        <InputField
-                                            placeholder="Add Promo Code"
-                                            parentClassName="text-xs"
-                                            label=""
-                                            labelClassname="text-[#26435F] font-semibold"
-                                            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
-                                            
-                                            value={couponForSubscription}
-                                            onChange={(e) => {
-                                                // setValues({
-                                                //   ...values,
-                                                //   firstName: e.target.value,
-                                                // })
-                                                SetCouponForSubscription(e.target.value);
-                                            }}
-                                            //   totalErrors={error}
-                                            //   error={error.firstName}
-                                        />
+                                                <div className="flex items-center mt-[7px] w-full" >
+                                                    <InputField
+                                                        placeholder="Add Promo Code"
+                                                        parentClassName="text-xs"
+                                                        label=""
+                                                        labelClassname="text-[#26435F] font-semibold"
+                                                        inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[40px] text-md"
+                                                        
+                                                        // value={couponForSubscription}
+                                                        /* onChange={(e) => {
+                                                            // setValues({
+                                                            //   ...values,
+                                                            //   firstName: e.target.value,
+                                                            // })
+                                                            SetCouponForSubscription(e.target.value);
+                                                        }} */
+                                                        //   totalErrors={error}
+                                                        //   error={error.firstName}
+                                                    />
 
-                                        <PrimaryButton
-                                            children={"Apply"}
-                                            className={"h-5/6 ml-[10px] px-[10px]"}
-                                            // onClick={OnPressApplyCoupon}
-                                            // loading={isCouponApplyProcessOnGoing}
-                                        />
+                                                    <PrimaryButton
+                                                        children={"Apply"}
+                                                        className={"h-[30px] ml-[10px] px-[10px]"}
+                                                        // onClick={OnPressApplyCoupon}
+                                                        // loading={isCouponApplyProcessOnGoing}
+                                                    />
 
-                                        <div className="grow" ></div>
+                                                    <div className="grow" ></div>
 
-                                        <div className="flex flex-col items-end text-[#24A3D9]" >
-                                            <div>{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + chosenSubscriptionPlan.pricePerMonth}</div>
-                                            <div>1 Month</div>
-                                        </div>
-                                    </div>
-                                </React.Fragment>
-                            )
-                            /* return (
-                                <CheckOutExtensionsReview
-                                    className={"mt-[25px]"}
-                                    canChangePlan={!(isPaymentSuccessfull && isCCRequired)}
-                                    canAddPromoCode={true}
-                                    planName={item.planName}
-                                    planDisplayName={item.planDisplayName}
-                                    extensionPriceOption={chosenPackage}
-                                    subscriptionPricePerMonth={chosenPackage.pricePerMonth}
-                                    setFrames={setFrames}
-                                    setcurrentStep={setcurrentStep}
-                                    chosenExtentionObjectFromAPI={extObjectFromAPI}
-                                    extensionDiscount={extDiscount}
-                                    SetExtensionDiscounts={SetExtensionDiscounts}
-                                />
-                            ) */
-                        })}
-
-                        </>)
-                    }
-                </div>
+                                                    <div className="flex flex-col items-end text-[#24A3D9]" >
+                                                        <div>{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + chosenSubscriptionPlan.pricePerMonth}</div>
+                                                        <div>1 Month</div>
+                                                    </div>
+                                                </div>
+                                            </React.Fragment>
+                                        )
+                                        /* return (
+                                            <CheckOutExtensionsReview
+                                                className={"mt-[25px]"}
+                                                canChangePlan={!(isPaymentSuccessfull && isCCRequired)}
+                                                canAddPromoCode={true}
+                                                planName={item.planName}
+                                                planDisplayName={item.planDisplayName}
+                                                extensionPriceOption={chosenPackage}
+                                                subscriptionPricePerMonth={chosenPackage.pricePerMonth}
+                                                setFrames={setFrames}
+                                                setcurrentStep={setcurrentStep}
+                                                chosenExtentionObjectFromAPI={extObjectFromAPI}
+                                                extensionDiscount={extDiscount}
+                                                SetExtensionDiscounts={SetExtensionDiscounts}
+                                            />
+                                        ) */
+                                    })}
+                                </>
+                            </div>
+                        </>
+                    )
+                }
 
             </div>
 
@@ -187,9 +209,9 @@ function ReviewProduct({
                     <div className="flex" >
                         <div className="font-[500] text-[#26435F] text-[14px]" >Subscription</div>
                         <div className="border-dotted border-b-[1px] border-[#26435F] grow" ></div>
-                        <div className="font-[500] text-[#26435F] text-[14px]" >$0.00</div>
+                        <div className="font-[500] text-[#26435F] text-[14px]" >{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + chosenSubscriptionPlan.pricePerMonth}</div>
                     </div>
-                    <div className="text-[#7C98B6] text-[12px]" >Professional Plan</div>
+                    <div className="text-[#7C98B6] text-[12px]" >{chosenSubscriptionPlan.planDisplayName} Plan</div>
 
                     <div className="flex mt-[10px]" >
                         <div className="font-[500] text-[#26435F] text-[14px]" >Extensions</div>
@@ -201,7 +223,7 @@ function ReviewProduct({
                     <div className="flex mt-[10px]" >
                         <div className="font-[500] text-[#24A3D9] text-[16px]" >Total</div>
                         <div className="border-dotted border-b-[1px] border-[#24A3D9] grow" ></div>
-                        <div className="font-[500] text-[#24A3D9] text-[16px]" >$0.00</div>
+                        <div className="font-[500] text-[#24A3D9] text-[16px]" >{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + totalPrice}</div>
                     </div>
                 </div>
 
