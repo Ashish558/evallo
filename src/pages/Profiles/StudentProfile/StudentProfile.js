@@ -863,7 +863,7 @@ const [toEdit, setToEdit] = useState({
                         <p>
                           <span>
                             <img
-                              className="inline-block  w-[22.521px] h-[18px] mr-2 cursor-pointer"
+                              className="inline-block  w-[22.521px] h-[18px] mr-2 cursor-pointer "
                               src={emailIcon}
                               alt="email"
                             />

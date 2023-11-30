@@ -25,9 +25,9 @@ export function TableHeaderNew({
       } ${flag ? styles["no-arrow"] : ""}`}
     >
       <div
-        className={`flex  ${
-          header.text === "Email" || header.text === "Phone" || header.text === "Assignment Name"
-            ? "justify-start"
+        className={`flex   ${
+          header.text === "Email" || header.text === "Phone" || header.text === "Assignment Name" || header.text === "Assignment"
+            ? `justify-start ${header.text === "Assignment" ? "ps-6 overflow-hidden" : ""}`
             : "justify-center"
         } items-center ${
           noArrow || header.noArrow

@@ -1280,26 +1280,26 @@ export default function SuperAdminSettings() {
            Settings
           </span>
         </p>
-        <div className="flex justify-between items-center mb-[45px]">
+        <div className="w-[1706.67px] flex justify-between items-center mb-[45px]">
           <div className={`${styles.tabsContainer} w-full`}>
             {tabs.map((item, idx) => {
               return (
                 <div
-                  className={`${styles.tab} w-[200px] ${
+                  className={`${styles.tab} w-[200px]  ${
                     activeTab === idx + 1 ? styles.selectedTab : ""
                   } cursor-pointer`}
                   onClick={() => changeTab(idx + 1)}
                 >
-                  <div className={` flex justify-center w-full`}>
+                  <div className={` flex justify-center w-full `}>
                     <div>
                       {activeTab === idx + 1 && (
-                        <img src={item.Icon} alt="item-logo" />
+                        <img src={item.Icon} className="" alt="item-logo" />
                       )}
                       {activeTab === idx + 1 || (
-                        <img src={item.Icon2} alt="item-logo" />
+                        <img src={item.Icon2} className="" alt="item-logo" />
                       )}
                     </div>
-                    <p>{item.name} </p>
+                    <p className="">{item.name} </p>
                   </div>
                   {activeTab === idx + 1 && (
                     <img
@@ -1347,7 +1347,7 @@ export default function SuperAdminSettings() {
             <div className="flex items-center gap-x-[50px] mb-4">
               <div>
                 <InputSelect
-                  labelClassname="mb-1"
+                  labelClassname="mb-1 text-[20px]"
                   IconRight={
                     <img
                       src={down}
@@ -1367,7 +1367,7 @@ export default function SuperAdminSettings() {
                 />
               </div>
               <InputSelect
-                labelClassname="mb-1"
+                labelClassname="mb-1 text-[20px]"
                 placeholder="Select"
                 IconRight={
                   <img
@@ -1388,6 +1388,7 @@ export default function SuperAdminSettings() {
             </div>
             <div className="h-[1.25px] bg-[#CBD6E2] mb-[21px] mt-[37px]"></div>
             <SettingsCard
+              titleClassName="font-medium text-[20px] !text-[#26435F]"
               title="Lead Status Items (Parent / Student)"
               body={
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-6 rounded-5">
@@ -1405,6 +1406,7 @@ export default function SuperAdminSettings() {
             />
             <div className="h-[1.25px] bg-[#CBD6E2] my-[21px]"></div>
             <SettingsCard
+              titleClassName="font-medium text-[20px] !text-[#26435F]"
               title="Tutor Status Items"
               body={
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-6 rounded-5">
@@ -1423,6 +1425,7 @@ export default function SuperAdminSettings() {
             <div className="h-[1.25px] bg-[#CBD6E2] mt-[21px] mb-[37px]"></div>
             <SettingsCard
               title=" Manage Referral Codes"
+              titleClassName="font-medium text-[20px] !text-[#26435F]"
               className={`${styles["bordered-settings-container"]}`}
               body={
                 <div className="max-h-[360px] overflow-auto custom-scroller p-1 scrollbar-vertical ">
@@ -1522,6 +1525,7 @@ export default function SuperAdminSettings() {
             />
 
             <SettingsCard
+              titleClassName="font-medium text-[20px] !text-[#26435F] "
               title="Manage Services and Topics"
               className={styles["bordered-settings-container"]}
               body={
@@ -1684,8 +1688,8 @@ export default function SuperAdminSettings() {
             /> */}
 
             <SettingsCard
-              titleClassName="text-base-20 !text-[#26435F]"
-              title="Session Tags & Reconciliation"
+              titleClassName="font-medium text-[20px] !text-[#26435F] "
+              title="Session Tags & Reconciliation "
               className={styles["bordered-settings-container"]}
               body={
                 <div className="">
@@ -1775,7 +1779,7 @@ export default function SuperAdminSettings() {
               }
             />
            <SettingsCard
-              titleClassName="text-base-20 !text-[#26435F]"
+              titleClassName="font-medium text-[17.5px] !text-[#26435F]"
               title="Edit Announcements"
               toggle={{ value: toggleImage.offer, key: "offer" }}
               onToggle={onToggle}
@@ -2090,7 +2094,7 @@ export default function SuperAdminSettings() {
         <Modal
           classname={"max-w-840 mx-auto"}
           title="Edit Details"
-          titleClassName="mb-[18px]"
+          titleClassName="font-medium mb-[18px]"
           cancelBtn={true}
           cancelBtnClassName="w-140"
           primaryBtn={{
@@ -2188,7 +2192,7 @@ export default function SuperAdminSettings() {
         <Modal
           classname={"max-w-[700px] mx-auto"}
           title="Add / Edit Subscription Code"
-          titleClassName="mb-[18px]"
+          titleClassName="font-medium mb-[18px]"
           cancelBtn={false}
           cancelBtnClassName="w-0"
           primaryBtn={{
@@ -2250,7 +2254,7 @@ export default function SuperAdminSettings() {
  {addCodeModalActive && (
         <Modal
           classname={"max-w-[560px] mx-auto"}
-          titleClassName="text-base-20 mb-[18px]"
+          titleClassName="font-medium text-base-20 mb-[18px]"
           title="Add / Edit Referral Code"
           cancelBtn={false}
           cancelBtnClassName="w-140 "
@@ -2406,7 +2410,7 @@ export default function SuperAdminSettings() {
       {addServiceModalActive && (
         <Modal
           classname={"max-w-[560px] mx-auto"}
-          titleClassName="text-base-20 mb-[18px]"
+          titleClassName="font-medium text-base-20 mb-[18px]"
           title="Add / Edit Services"
           cancelBtn={false}
           cancelBtnClassName="w-140 "
@@ -2539,7 +2543,7 @@ export default function SuperAdminSettings() {
       {addSessionModalActive && (
         <Modal
           classname={"max-w-[560px] mx-auto"}
-          titleClassName="text-base-20 mb-[18px]"
+          titleClassName="font-medium text-base-20 mb-[18px]"
           title="Add / Edit Session Tags"
           cancelBtn={false}
           cancelBtnClassName="w-140 "
@@ -2659,7 +2663,7 @@ export default function SuperAdminSettings() {
         <Modal
           classname={"max-w-[700px] mx-auto"}
           title="Add Tests"
-          titleClassName="mb-[18px]"
+          titleClassName="font-medium mb-[18px]"
           cancelBtn={false}
           cancelBtnClassName="w-0"
           primaryBtn={{
@@ -2708,7 +2712,7 @@ export default function SuperAdminSettings() {
         <Modal
           classname={"max-w-[540px] mx-auto"}
           title=""
-          titleClassName="mb-[18px]"
+          titleClassName="font-medium mb-[18px]"
           cancelBtn={true}
           cancelBtnClassName="w-140 hidden"
           primaryBtn={{
@@ -2767,7 +2771,7 @@ export default function SuperAdminSettings() {
         <Modal
           classname={"max-w-[700px] mx-auto"}
           title="Add Question"
-          titleClassName="mb-[18px]"
+          titleClassName="font-medium mb-[18px]"
           cancelBtn={true}
           cancelBtnClassName="w-140"
           primaryBtn={{
