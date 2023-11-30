@@ -301,19 +301,21 @@ export default function Settings() {
   };
 
   const fetchSettings = () => {
-    if (organization.settings) {
-      setSettingsData(organization.settings);
-      if (organization?.settings?.permissions)
-        setThePermission(organization.settings.permissions);
-    }
+    getSettings().then((res) => {
+       console.log("get settings",res);
+      setSettingsData(res?.data?.data?.setting?res?.data?.data?.setting:organization?.settings);
+      
+      setThePermission(res?.data?.data?.setting?.permissions?res?.data?.data?.setting?.permissions:organization?.settings?.permissions);
+    });
+
   };
-  //console.log(organization);
+
   const onRemoveTextImageTag = (item, key, idx) => {
     let updatedField = settingsData[key].filter((item, i) => i !== idx);
     let updatedSetting = {
       [key]: updatedField,
     };
-    // //console.log(updatedSetting)
+    
     updateAndFetchsettings(updatedSetting);
   };
 
@@ -345,7 +347,7 @@ export default function Settings() {
     updateAndFetchsettings(updatedSetting);
   };
 
-  const updateAndFetchsettings = (updatedSetting,setloadingCustom) => {
+  const updateAndFetchsettings = (updatedSetting, setloadingCustom) => {
     if (!organization || !settingsData || !updatedSetting) return;
     const settings = {
       ...settingsData,
@@ -355,18 +357,18 @@ export default function Settings() {
       settings,
     };
     //console.log("body", body);
-    setloadingCustom && setloadingCustom(true)
+    setloadingCustom && setloadingCustom(true);
     setSaveLoading(true);
     updateSetting(body)
       .then((res) => {
         //console.log("updated", res.data.data);
-         setloadingCustom && setloadingCustom(false)
+        setloadingCustom && setloadingCustom(false);
         setSaveLoading(false);
         setSettingsData(res.data.data.updatedOrg.settings);
         dispatch(updateOrganizationSettings(res.data.data.updatedOrg.settings));
       })
       .catch((err) => {
-          setloadingCustom && setloadingCustom(false)
+        setloadingCustom && setloadingCustom(false);
         setSaveLoading(false);
         //console.log("err", err);
       });
@@ -618,13 +620,12 @@ arr[idx] = modifiedObject;
         return { ...serv };
       }
     });
-    ////console.log("upper",updated)
+    
     let updatedSetting = {
       servicesAndSpecialization: updated,
     };
-    updateAndFetchsettings(updatedSetting);
-    // //console.log('updatedSetting', updatedSetting)
-  };
+     updateAndFetchsettings(updatedSetting);
+     };
 
   const handleAddSessionTag = (text, key) => {
     let tempSettings = { ...settingsData };
@@ -867,7 +868,7 @@ arr[idx] = modifiedObject;
       }
       //  window.location.reload();
       // //console.log("reshi", res);
-    
+
       fetchSettings();
       setFetchS(res);
     });
@@ -934,6 +935,54 @@ arr[idx] = modifiedObject;
 
   const [addOne, setOne] = useState(false);
   const [loading2, setLoading2] = useState(false);
+  const onRemoveSpecialization2 = (text, service) => {
+   
+
+    let arr = [...selectedServiceData?.specialization];
+
+    arr = arr.filter((it) => it !== text);
+
+    setSelectedServiceData({
+      ...selectedServiceData,
+      specialization: arr,
+    });
+  };
+  const onRemoveSessionTagItem2 = (text, heading) => {
+   
+    let arr = [...selectedSessionData?.items];
+
+    arr = arr.filter((it) => it !== text);
+
+    setSelectedSessionData({
+      ...selectedSessionData,
+      items: arr,
+    });
+  
+  };
+  const handleAddSpecialization2 = (text, key) => {
+    let tempSettings = { ...settingsData };
+
+    let arr = [...selectedServiceData?.specialization];
+    arr.push(text);
+    setSelectedServiceData({
+      ...selectedServiceData,
+      specialization: arr,
+    });
+     };
+  const handleAddSessionTag2 = (text, key) => {
+    let arr = [...selectedSessionData?.items];
+
+    arr.push(text);
+
+    setSelectedSessionData({
+      ...selectedSessionData,
+      items: arr,
+    });
+
+   
+  
+  };
+  console.log({ selectedServiceData });
   useEffect(() => {
     if (settingsData && settingsData?.offerImages) {
       let arr = [];
@@ -1035,28 +1084,25 @@ arr[idx] = modifiedObject;
     updateAndFetchsettings(updatedSetting);
   };
 
-  const handleAddServiceName = (text, key) => {
+  const handleAddServiceName2 = (text, key) => {
     let tempSettings = { ...settingsData };
 
     let updated = servicesAndSpecialization.map((serv) => {
       if (serv._id === key) {
-        return {
-          ...serv,
-          service: text,
-        };
+        return selectedServiceData;
       } else {
         return { ...serv };
       }
     });
-    ////console.log("upper",updated)
+   
     let updatedSetting = {
       servicesAndSpecialization: updated,
     };
     updateAndFetchsettings(updatedSetting);
     setAddServiceModalActive(false);
     setSubModalServiceData(subModalInitialServiceState);
-    // //console.log('updatedSetting', updatedSetting)
-  };
+     };
+
   const handleAddSessionName = (text, key) => {
     let tempSettings = { ...settingsData };
 
@@ -1079,7 +1125,24 @@ arr[idx] = modifiedObject;
     setSubModalSessionData(subModalInitialSessionState);
     // //console.log('updatedSetting', updatedSetting)
   };
+  const handleAddSessionName2 = (text, key) => {
+    let tempSettings = { ...settingsData };
 
+    let updated = sessionTags.map((serv) => {
+      if (serv._id === key) {
+        return selectedSessionData
+      } else {
+        return { ...serv };
+      }
+    });
+   
+    let updatedSetting = {
+      sessionTags: updated,
+    };
+    updateAndFetchsettings(updatedSetting);
+    setAddSessionModalActive(false);
+    setSubModalSessionData(subModalInitialSessionState);
+      };
   console.log({ offersNew, offerImages });
 
   const submitImageModalNew = (file2, val, e) => {
@@ -1775,7 +1838,13 @@ arr[idx] = modifiedObject;
                     see as soon as they log into their Evallo dashboard. You can
                     add a maximum of 4 Announcements at a time. Read detailed
                     documentation in Evallo’s
-                    <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
+                    <span
+                      className="text-[#24A3D9] cursor-pointer"
+                      onClick={() => navigate("/support")}
+                    >
+                      {" "}
+                      knowledge base.
+                    </span>
                   </p>
                   <div className="flex items-center gap-5 pr-3  flex-1 !w-[100%] overflow-x-auto custom-scroller-2    [&>*]:mb-[10px] bg-white  gap-x-5 p-4 rounded-br-5 rounded-bl-5 mb-3 !px-6 py-5 ">
                     {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
@@ -2075,31 +2144,39 @@ arr[idx] = modifiedObject;
                           id === 3 ? "!opacity-[0.7]" : ""
                         } pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between text-base-17-5`}
                       >
-                        <div className="flex items-center flex-row justify-start"><p>{renderColoredText(item.name)}</p>
-                        {id==5||id==7?<div className="pl-4 group relative">
-                <p>
-                  <img
-                    src={questionMark}
-                    alt=""
-                    onClick={() => {
-                      console.log("set perm tool tip");
-                    }}
-                  />
-                </p>
+                        <div className="flex items-center flex-row justify-start">
+                          <p>{renderColoredText(item.name)}</p>
+                          {id == 5 || id == 7 ? (
+                            <div className="pl-4 group relative">
+                              <p>
+                                <img
+                                  src={questionMark}
+                                  alt=""
+                                  onClick={() => {
+                                    console.log("set perm tool tip");
+                                  }}
+                                />
+                              </p>
 
-                <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
-                  <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
-                 {id==5? 'Set Permissions':
-                  id==7?
-                 ' New Assignment Email Notifications ' :null}                 </h3>
-                  <span className="font-light leading-[0.5px] text-[0.69vw]">
-                  {id==5?'Enable or disable tutor access to add, update or delete sessions scheduled on a calendar. When disabled, tutors in your Organization will only be able to reconcile sessions and add session notes & tags, but will not be able to make any changes to the remaining details of a session. Enable this if you want to provide more autonomy to your tutors. Disable if you want to discourage them from managing their own schedule.':
-                  id==7?
-                  'Select whether you want to send email notifications when a new test is assigned to a student by a tutor or an admin.'
-                  :null}</span>
-                </span>
-              </div>:null}
-              </div>
+                              <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                                <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
+                                  {id == 5
+                                    ? "Set Permissions"
+                                    : id == 7
+                                    ? " New Assignment Email Notifications "
+                                    : null}{" "}
+                                </h3>
+                                <span className="font-light leading-[0.5px] text-[0.69vw]">
+                                  {id == 5
+                                    ? "Enable or disable tutor access to add, update or delete sessions scheduled on a calendar. When disabled, tutors in your Organization will only be able to reconcile sessions and add session notes & tags, but will not be able to make any changes to the remaining details of a session. Enable this if you want to provide more autonomy to your tutors. Disable if you want to discourage them from managing their own schedule."
+                                    : id == 7
+                                    ? "Select whether you want to send email notifications when a new test is assigned to a student by a tutor or an admin."
+                                    : null}
+                                </span>
+                              </span>
+                            </div>
+                          ) : null}
+                        </div>
 
                         <ToggleBar
                           toggle={{ value: item.choosedValue, key: item._id }}
@@ -2109,31 +2186,41 @@ arr[idx] = modifiedObject;
                     ) : (
                       <div
                         className={`pt-[34px] pb-[30px]   text-[#24A3D9] font-medium text-[17.5px] flex justify-between border-b-2 border-[#CBD6E2] ${styles.permission} text-base-17-5`}
-                      > <div className="flex items-center flex-row justify-start">
-                        <p>{renderColoredText(item.name)}</p>
-                        {id==5||id==7?<div className="pl-4 group relative">
-                <p>
-                  <img
-                    src={questionMark}
-                    alt=""
-                    onClick={() => {
-                      console.log("set perm tool tip");
-                    }}
-                  />
-                </p>
-                  
-                <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
-                  <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
-                 {id==5? 'Set Permissions':
-                  id==7?
-                 ' New Assignment Email Notifications ' :null}                 </h3>
-                  <span className="font-light leading-[0.5px] text-[0.69vw]">
-                  {id==5?'Enable or disable tutor access to add, update or delete sessions scheduled on a calendar. When disabled, tutors in your Organization will only be able to reconcile sessions and add session notes & tags, but will not be able to make any changes to the remaining details of a session. Enable this if you want to provide more autonomy to your tutors. Disable if you want to discourage them from managing their own schedule.':
-                  id==7?
-                  'Select whether you want to send email notifications when a new test is assigned to a student by a tutor or an admin.'
-                  :null}</span>
-                </span>
-              </div>:null} </div>
+                      >
+                        {" "}
+                        <div className="flex items-center flex-row justify-start">
+                          <p>{renderColoredText(item.name)}</p>
+                          {id == 5 || id == 7 ? (
+                            <div className="pl-4 group relative">
+                              <p>
+                                <img
+                                  src={questionMark}
+                                  alt=""
+                                  onClick={() => {
+                                    console.log("set perm tool tip");
+                                  }}
+                                />
+                              </p>
+
+                              <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                                <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
+                                  {id == 5
+                                    ? "Set Permissions"
+                                    : id == 7
+                                    ? " New Assignment Email Notifications "
+                                    : null}{" "}
+                                </h3>
+                                <span className="font-light leading-[0.5px] text-[0.69vw]">
+                                  {id == 5
+                                    ? "Enable or disable tutor access to add, update or delete sessions scheduled on a calendar. When disabled, tutors in your Organization will only be able to reconcile sessions and add session notes & tags, but will not be able to make any changes to the remaining details of a session. Enable this if you want to provide more autonomy to your tutors. Disable if you want to discourage them from managing their own schedule."
+                                    : id == 7
+                                    ? "Select whether you want to send email notifications when a new test is assigned to a student by a tutor or an admin."
+                                    : null}
+                                </span>
+                              </span>
+                            </div>
+                          ) : null}{" "}
+                        </div>
                         <p>
                           <select
                             onChange={(e) =>
@@ -2321,7 +2408,13 @@ arr[idx] = modifiedObject;
                 provide them this access and what assignments should show up
                 automatically after they sign up with your organization. Read
                 detailed documentation in Evallo’s{" "}
-                <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
+                <span
+                  className="text-[#24A3D9] cursor-pointer"
+                  onClick={() => navigate("/support")}
+                >
+                  {" "}
+                  knowledge base.
+                </span>
               </p>
 
               <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
@@ -2459,7 +2552,7 @@ arr[idx] = modifiedObject;
                 if (addOne) {
                   handleAddNewService();
                 } else {
-                  handleAddServiceName(
+                  handleAddServiceName2(
                     selectedServiceData?.service,
                     subModalServiceData?._id
                   );
@@ -2473,7 +2566,13 @@ arr[idx] = modifiedObject;
                 specialize in while providing these services. For example, Test
                 Prep can be a “Service” with “SAT” and “ACT” as two topics under
                 it. Read detailed documentation in Evallo's
-                <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
+                <span
+                  className="text-[#24A3D9] cursor-pointer"
+                  onClick={() => navigate("/support")}
+                >
+                  {" "}
+                  knowledge base.
+                </span>
               </p>
 
               <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
@@ -2515,7 +2614,7 @@ arr[idx] = modifiedObject;
                     onAddTag={
                       addOne
                         ? handleAddNewSpecialisation
-                        : handleAddSpecialization
+                        : handleAddSpecialization2
                     }
                     keyName={
                       addOne
@@ -2530,15 +2629,15 @@ arr[idx] = modifiedObject;
                     keyName={
                       addOne
                         ? addServices2?.service
-                        : subModalServiceData.service
+                        : selectedServiceData.service
                     }
                     items={
                       addOne
                         ? addServices2?.specialization
-                        : subModalServiceData.specialization
+                        : selectedServiceData.specialization
                     }
                     onRemoveFilter={
-                      addOne ? handleNewServiceRemove : onRemoveSpecialization
+                      addOne ? handleNewServiceRemove : onRemoveSpecialization2
                     }
                     className="pt-1 pb-1 mr-15 text-base-17-5"
                   />
@@ -2600,7 +2699,7 @@ arr[idx] = modifiedObject;
                 if (addOne) {
                   handleAddNewSession();
                 } else {
-                  handleAddSessionName(
+                  handleAddSessionName2(
                     selectedSessionData?.heading,
                     subModalSessionData?._id
                   );
@@ -2615,7 +2714,13 @@ arr[idx] = modifiedObject;
                 used to add further details about the session, such as the
                 topics covered, homework assigned, student mood, etc. Read
                 detailed documentation in Evallo’s
-                <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
+                <span
+                  className="text-[#24A3D9] cursor-pointer"
+                  onClick={() => navigate("/support")}
+                >
+                  {" "}
+                  knowledge base.
+                </span>
               </p>
 
               <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
@@ -2654,7 +2759,7 @@ arr[idx] = modifiedObject;
                 </div>
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] mt-5">
                   <AddTag
-                    onAddTag={addOne ? handleAddNewTags : handleAddSessionTag}
+                    onAddTag={addOne ? handleAddNewTags : handleAddSessionTag2}
                     keyName={
                       addOne
                         ? addSession2?.heading
@@ -2668,13 +2773,13 @@ arr[idx] = modifiedObject;
                     keyName={
                       addOne
                         ? addSession2?.heading
-                        : subModalSessionData.heading
+                        : selectedSessionData.heading
                     }
                     items={
-                      addOne ? addSession2?.items : subModalSessionData.items
+                      addOne ? addSession2?.items : selectedSessionData.items
                     }
                     onRemoveFilter={
-                      addOne ? handleNewSessionRemove : onRemoveSessionTagItem
+                      addOne ? handleNewSessionRemove : onRemoveSessionTagItem2
                     }
                     className="pt-1 pb-1 mr-15 text-base-17-5"
                   />

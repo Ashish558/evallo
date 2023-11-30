@@ -27,7 +27,13 @@ export const adminServicesApi = createApi({
             headers: getAuthHeader()
          }),
       }),
-
+      getExportData: builder.query({
+         query: (name) => ({
+            url: `api/user/details/getExportData`,
+            method: "GET",
+            headers: getAuthHeader()
+         }),
+      }),
       addInvoice: builder.mutation({
          query: (body) => ({
             url: `/api/invoice `,
@@ -191,6 +197,8 @@ export const adminServicesApi = createApi({
 });
 
 export const {
+   useLazyGetExportDataQuery,
+
    useCRMEditReviewMutation,
    useCRMBulkresentMutation,
    useCRMBulkmarkcompletedMutation,
