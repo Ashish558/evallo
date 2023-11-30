@@ -463,19 +463,81 @@ export default function Settings() {
     //console.log(updatedSetting);
     updateAndFetchsettings(updatedSetting);
   };
-  const handleImageRemoval = (offer) => {
-    //console.log(offer);
-    const arr = offerImages.filter((item) => {
-      return item._id !== offer._id;
+  const handleaddimage=(idx,file)=>{
+//     const arr = [...offerImages]; // Create a shallow copy of the array
+// // Create a new object with the same properties as the first object in arr
+// console.log(file);
+// const modifiedObject = { ...arr[idx], image: file };
+
+// // Update the array with the modified object
+// arr[idx] = modifiedObject;
+// console.log('asdasd',arr);
+//    let updatedSetting = {
+//      offerImages: arr,
+//    };
+//    console.log(arr);
+
+//   updateAndFetchsettings(updatedSetting);
+// user/setting/updateSpecificImg
+const formData = new FormData();
+
+    formData.append("file", file);
+    formData.append("imageIndex", idx);
+  
+axios.patch(`${BASE_URL}api/user/setting/updateSpecificImg`, formData, {
+  headers: getAuthHeader(),
+  maxBodyLength: Infinity,
+  maxContentLength: Infinity,
+}).then((res) => {
+  console.log(res.data.data.setting.settings);
+  dispatch(
+    updateOrganizationSettings(res.data.data.setting.settings)
+  );
+  setTagImage(null);
+  setTagText("");
+  setSelectedImageTag("");
+  setImageName("");
+  setTagModalActive(false);
+  fetchSettings();
+  setSaveLoading(false);
+})
+.catch((err) => {
+  console.log("err", err);
+  alert("Could not upload image");
+  setSaveLoading(false);
+});
+ }
+ const handleImageRemoval = (idx) => {
+   console.log(idx);
+  if(offerImages[idx]?.link==''&& offerImages[idx]?.buttonText==''){
+   const arr = offerImages.filter((item,i) => {
+     return i!==idx;
     });
     let updatedSetting = {
       offerImages: arr,
     };
+    console.log('arasrra r',arr);
+
     updateAndFetchsettings(updatedSetting);
+  }
+  else{
+     const arr = [...offerImages]; // Create a shallow copy of the array
+// Create a new object with the same properties as the first object in arr
+const modifiedObject = { ...arr[idx], image: '' };
+
+// Update the array with the modified object
+arr[idx] = modifiedObject;
+   console.log(idx,arr);
+   let updatedSetting = {
+     offerImages: arr,
+   };
+  updateAndFetchsettings(updatedSetting);
+ }
   };
-  const handleOfferChange = (offer, key, value) => {
-    let updatedField = settingsData.offerImages.map((item) => {
-      if (item._id === offer._id) {
+  const handleOfferChange = (i, key, value) => {
+    console.log('asASAsaS',key,value,i);
+    let updatedField = settingsData.offerImages.map((item,idx) => {
+      if (idx==i) {
         return { ...item, [key]: value };
       } else {
         return item;
@@ -1808,27 +1870,77 @@ export default function Settings() {
                     className="pt-1 pb-1 mr-15 text-base-17-5"
                   /> */}
 
-                    {offerImages?.map((offer) => {
+                    {offerImages?.map((offer,i) => {
                       return (
                         <div className="flex-1" key={offer._id}>
                           <div className="relative">
                             {toggleImage.offer && (
                               <div className=" overflow-hidden mb-5">
                                 <div className="flex">
-                                  <div className="w-[300px] h-[150px]">
+                                {offer.image!==''?
+                                <div className="w-[300px] h-[150px]">
                                     <img
                                       src={`${awsLink}${offer.image}`}
                                       alt="offer-image3"
                                       className="w-full h-full object-cover rounded-7"
                                     />
                                   </div>
+                                     : <div className="w-[300px] h-[150px] flex-1">
+                                     <div className="flex w-[100%] bg-[#F5F8FA] rounded-md mb-8 flex-col justify-center items-center">
+                                       <div className="mt-[20px] mb-[10px] items-center flex justify-center">
+                                         <img
+                                           src={fileupload}
+                                           alt="fileuploadIcon"
+                                         ></img>
+                                       </div>
+       
+                                       <div className="flex items-center text-center justify-center text-base-15">
+                                         {/* {xlsFile == undefined ? (
+                           <p className=""></p>
+                         ) : (
+                           <p className="block ">{xlsFile.name}</p>
+                         )} */}
+                                       </div>
+       
+                                       <div className="flex justify-center">
+                                         <label
+                                           htmlFor="file3"
+                                           className={`block cursor-pointer text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ${
+                                             loading2 ? "cursor-wait" : ""
+                                           }`}
+                                         >
+                                           {loading2 && offer?.image
+                                             ? "Submitting..."
+                                             : " Choose File"}
+                                         </label>
+                                         <input
+                                           accept="image/*"
+                                           onChange={(e) => {
+                                             console.log('szszs',e.target.files[0]);
+                                             handleaddimage(i, e.target.files[0])
+                                             // setImageName(e.target.files[0].name);
+                                           }}
+                                           id="file3"
+                                           type="file"
+                                         />
+                                       </div>
+       
+                                       <label
+                                         htmlFor="file"
+                                         className="block text-xs items-center justify-center  rounded-[5px]  px-4 py-2 font-normal text-center text-[#517CA8] text-base-15"
+                                       >
+                                         Less than 1 MB
+                                       </label>
+                                     </div>
+                                   </div>
+                           }
                                   <div className="w-[1.25px] h-[150px] bg-[#CBD6E2] ml-5" />
                                 </div>
                               </div>
                             )}
                             <div>
-                              <div
-                                onClick={() => handleImageRemoval(offer)}
+                            {offer.image!==''&&<div
+                                onClick={() => handleImageRemoval(i)}
                                 className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center  rounded-full cursor-pointer"
                               >
                                 <img
@@ -1836,7 +1948,7 @@ export default function Settings() {
                                   className="w-5"
                                   alt="delete"
                                 />
-                              </div>
+                              </div>}
                               <InputField
                                 defaultValue={offer?.link?.trim()}
                                 inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
@@ -1844,7 +1956,7 @@ export default function Settings() {
                                 placeholder={"Hyperlink"}
                                 onBlur={(e) =>
                                   handleOfferChange(
-                                    offer,
+                                    i,
                                     "link",
                                     e.target.value
                                   )
@@ -1859,7 +1971,7 @@ export default function Settings() {
                                 }
                                 onBlur={(e) =>
                                   handleOfferChange(
-                                    offer,
+                                    i,
                                     "buttonText",
                                     e.target.value
                                   )

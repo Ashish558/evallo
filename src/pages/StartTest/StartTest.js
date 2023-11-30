@@ -546,17 +546,18 @@ export default function StartTest() {
                       </p>
                     </div>
                     <div className="w-full flex mb-3 justify-between">
-                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] ">
+                      <p className="inline-block w-1/2 font-medium  text-[20px] text-[#517CA8]">
                         {" "}
                         Date Assigned{" "}
                       </p>
                       {console.log(testHeaderDetails)}
-                      <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]">
-                        {formatDate2(testHeaderDetails.dateAssigned)}
+
+                      <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]  ">
+
                       </p>
                     </div>
                     <div className="w-full flex mb-3 justify-between">
-                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] ">
+                      <p className="inline-block w-1/2 font-medium  text-[20px] text-[#517CA8] ">
                         {" "}
                         Duration{" "}
                       </p>
@@ -764,6 +765,8 @@ export default function StartTest() {
             classname="max-w-[700px] mx-auto"
             title="Note that the time will begin as soon as you start this section. make sure that you have everything set up."
             titleClassName="mr-4  mb-4"
+            underline={true}
+            cancelIconState={false}
             primaryBtn={{
               text: "Okay",
               className: "bg-[#FF7979] w-[146.67px] h-[46.67px] flex-shrink-0 ml-0",

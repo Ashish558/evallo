@@ -19,17 +19,21 @@ export default function SingleTutor({turorsLength, idx, tutor, handlePrev,handle
             {tutor.tutorLevel && `${tutor.tutorLevel} Belt`}
           </h5>
           <p>{tutor?.education}</p> */}
-          <h3 className=" text-[#26435F] text-base-22-5 font-semibold h-24 flex justify-start items-start">
+          <h3 className=" text-[#26435F] text-base-22-5 font-semibold h-14 flex justify-start items-start">
             {" "}
             {`${tutor.firstName} ${tutor.lastName}`}{" "}
           </h3>
-          <div className="w-full flex flex-col flex-1 justify-start items-start">
+          <div className="w-full h-32 flex flex-col flex-1 flex-grow-1 justify-between items-start pb-4">
+          
+          <div className="flex flex-col justify-start items-start">
           <p className="text-[#517CA8] text-base-17-5">
             {tutor?.tagLine ? tutor?.tagLine : "Test Prep Math Tutoring"}
           </p>
           <p className="text-[#517CA8]  text-base-17-5">
             {tutor?.topic ? tutor?.topic : "No topic"}
           </p>
+          </div>
+
           <button
             className="p-2 mt-2 rounded-lg whitespace-nowrap text-sm px-4 bg-[#FFA28D] text-white"
             onClick={() => tutor._id && navigate(`/profile/tutor/${tutor._id}`)}
