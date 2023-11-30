@@ -946,7 +946,7 @@ const [deleteManager,deleteManagerStatus]=useDeleteManagerMutation()
     <div className=" bg-lightWhite min-h-screen">
       <div className="py-14 pt-0 ">
 
-        <div className="w-[1706.67px] mt-6">
+        <div className="w-full mt-6">
           <Table
             dataFor={role === 'superAdmin' ? "allUsersSuperAdmin" : 'allUsersManager'}
             // noArrow={true}
