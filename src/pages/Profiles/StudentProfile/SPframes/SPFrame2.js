@@ -16,6 +16,7 @@ const SPFrame2 = ({
   userDetail,
   settings,
   editable,
+  session_no,
   userId,
   fetchDetails,
   setToEdit,
@@ -73,22 +74,30 @@ const SPFrame2 = ({
 
     userDetailSave(reqBody);
   };
+  const formatDate= (value)=>{
+    const [ month, day, year] = value.split("-");
+    const monthName = getMonthName(day-1);
+    console.log(
+     { 
+       value : value,
+       day : day,
+       month : month,
+       year : year,
+       monthName :monthName
+      }
+   );
+    
+    const formattedDate = `${monthName}` + " " + `${month}` + `,` + `${year}`;
+    return formattedDate
+   }
 
-  //  format monthName date, year
-  const formatDate = (value) => {
-    const [month, day, year] = value.split("-");
-    const monthName = getMonthName(month - 1);
-    console.log({
-      value: value,
-      day: day,
-      month: month,
-      year: year,
-      monthName: monthName,
-    });
-
-    const formattedDate = `${monthName}` + " " + `${day}` + `,` + `${year}`;
-    return formattedDate;
-  };
+   const formatDate2= (value)=>{
+    const [ day, month, year] = value.split("-");
+    const monthName = getMonthName(month-1);
+    
+    const formattedDate = `${day}` + "/" + `${month}` + `/` + `${year}`;
+    return formattedDate
+   }
 
   return (
     <div>
@@ -104,7 +113,7 @@ const SPFrame2 = ({
             </p>
             <p className=" text-[20px] text-[#26435F] font-semibold text-base-20">
               No. Of Sessions
-              <span className=" text-[#FFA28D] text-2xl block mt-1">90</span>
+              <span className=" text-[#FFA28D] text-2xl block mt-1">{session_no}</span>
             </p>
           </div>
           <div className="flex-1  flex justify-between items-center ">
@@ -117,8 +126,8 @@ const SPFrame2 = ({
             <p className=" text-[20px] text-[#26435F] font-semibold text-base-20 w-[165px] text-left ">
               Join Date
               <span className=" text-[#FFA28D] text-xl block mt-1">
-                {/* {new Date(userDetail?.createdAt).toLocaleDateString()} */}
-                {getFormattedDateWithSlash(userDetail?.createdAt, dateFormat)}
+                {console.log('user detail',userDetail)}
+                {formatDate2(getFormattedDate(userDetail?.createdAt, dateFormat))}
               </span>
             </p>
           </div>
@@ -170,9 +179,7 @@ const SPFrame2 = ({
                     <div className="mx-2 flex flex-col text-xs text-base-15">
                       <p className="text-[#517CA8] mb-[6.25px]">
                         {it.createdAt
-                          ? formatDate(
-                              getFormattedDate(it.createdAt, dateFormat)
-                            )
+                          ? formatDate(getFormattedDate(it.createdAt, dateFormat))
                           : "NA"}
                       </p>
 
@@ -257,9 +264,7 @@ const SPFrame2 = ({
                     <div className="mx-2 flex flex-col text-xs text-base-15">
                       <p className="text-[#517CA8] mb-[6.25px]">
                         {it.createdAt
-                          ? formatDate(
-                              getFormattedDate(it.createdAt, dateFormat)
-                            )
+                          ? formatDate(getFormattedDate(it.createdAt, dateFormat))
                           : "NA"}
                       </p>
 

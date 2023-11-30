@@ -28,6 +28,7 @@ import {
   getCheckedString,
   getDuration,
   getFormattedDate,
+  getMonthName,
 } from "../../utils/utils";
 import Modal from "../../components/Modal/Modal";
 import Warning from "../../assets/images/warning.png";
@@ -89,7 +90,13 @@ export default function StartTest() {
   const [continueTest, continueTestResp] = useLazyContinueTestQuery();
   const [completedSectionIds, setCompletedSectionIds] = useState([]);
   const [popUp, setPopUp] = useState(false);
-
+  const formatDate2= (value)=>{
+    const [ day, month, year] = value.split("-");
+    const monthName = getMonthName(month-1);
+    
+    const formattedDate = `${day}` + "/" + `${month}` + `/` + `${year}`;
+    return formattedDate
+   }
   useEffect(() => {
     let params = {};
     let url = `/api/test/myassigntest/${assignedTestId}`;
@@ -544,8 +551,9 @@ export default function StartTest() {
                         Date Assigned{" "}
                       </p>
                       {console.log(testHeaderDetails)}
+
                       <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]  ">
-                        {testHeaderDetails.dateAssigned}
+
                       </p>
                     </div>
                     <div className="w-full flex mb-3 justify-between">
@@ -568,7 +576,7 @@ export default function StartTest() {
 
                       <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8] ">
                         {testHeaderDetails.dueDate
-                          ? testHeaderDetails.dueDate
+                          ? formatDate2(testHeaderDetails.dueDate)
                           : "-"}
                       </p>
                     </div>
@@ -580,7 +588,7 @@ export default function StartTest() {
 
                       <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]">
                         {testHeaderDetails.startedOn
-                          ? testHeaderDetails.startedOn
+                          ? formatDate2(testHeaderDetails.startedOn)
                           : "-"}
                       </p>
                     </div>

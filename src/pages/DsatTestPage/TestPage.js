@@ -183,13 +183,13 @@ export default function TestPage() {
         setTestHeaderDetails((prev) => ({
           ...prev,
           testName: testId.testName,
-          instruction: instruction,
-          dateAssigned: getFormattedDate(createdAt, dateFormat),
-          dueDate: getFormattedDate(dueDate, dateFormat),
         }));
       }
       setTestHeaderDetails((prev) => ({
         ...prev,
+        instruction: instruction,
+        dateAssigned: getFormattedDate(createdAt, dateFormat),
+        dueDate: getFormattedDate(dueDate, dateFormat),
         duration: multiple ? getDuration(multiple) : "Unlimited",
       }));
     });
