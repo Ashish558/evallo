@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { createRef, useEffect, useRef, useState } from 'react'
 import {faBookmark} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Calculator from './Calculator';
@@ -7,6 +7,7 @@ import Tippy from '@tippyjs/react';
 import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css'; // Import the CSS
 import AnnotationPopup from './Annotationpopup';
+import { MathJax, MathJaxContext } from "better-react-mathjax";
  
 export default function Que(props) {
 
@@ -97,8 +98,30 @@ console.log('fin');
       content: hovert[index-1],
     });
   },[quesT])
-
-  return (
+  function addBackslash(string) {
+    // Initialize an empty string to store the result
+    let result = "";
+    // Split the string by spaces and loop through each word
+    for (let word of string.split(" ")) {
+      // Add a backslash and the word to the result
+      result += " \\ " + word + " ";
+    }
+    console.log(result);
+     // Trim the trailing space and return the result
+    return result.trim();
+  }
+ 
+const config = {
+  loader: { load: ["input/asciimath"] },
+  asciimath: {
+    displaystyle: true,
+    delimiters: [
+      ["$", "$"],
+      ["`", "`"]
+    ]
+  }
+};
+   return (
     <div className={` px-20 h-[25rem] relative flex flex-row ${props.check && 'bg-gray-200'} ${!para? 'justify-center' : 'justify-between'} `} style={s}>
        {showannotate?
         <AnnotationPopup show_ann={show_ann} index={index} annotations={annotations} setAnnotations={setAnnotations} setshow_ann={setshow_ann} setIsEditing={setshowannotate} isEditing={showannotate} color={color} i={index} underline={underline} sethovert={sethovert} setunderline={setunderline} setcolor={setcolor} />
@@ -122,8 +145,19 @@ console.log('fin');
           :null}
           </div>
          <hr className=' border border-black' />
-         <div className='flex flex-col items-start justify-center'>
-        { ques?<h1 className='py-3'>{ques}</h1>:null}
+         <div className='mathjax-box flex py-3 flex-col items-start justify-center'>
+       {ques!=null && ques?.length>0? index%2===0?<h1>
+        <MathJaxContext config={config}>
+       <MathJax hideUntilTypeset={"first"} inline dynamic>
+       `{addBackslash(ques)}` 
+        </MathJax>
+                </MathJaxContext></h1>:
+                <MathJaxContext config={config}>
+                <MathJax hideUntilTypeset={"first"} inline dynamic>
+                `{addBackslash(ques)}` 
+                 </MathJax>
+                         </MathJaxContext>
+                :null}
         {quesImg!='' && quesImg!=='no'?<img  className='max-w-8 max-h-8' src={quesImg}/>:null}
         </div>
           {answers[index-1].QuestionType=="Grid-in"?
