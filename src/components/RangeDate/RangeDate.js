@@ -5,26 +5,16 @@ import InputSelect from "./InputSelectDate";
 import { calculateDateRange, getModifiedDate } from "./utils";
 import styles from "./rangeDate.module.css";
 import downR from "../../assets/YIcons/downR.svg"
-import { useState , useEffect , useRef } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { getFormattedDate } from "../../utils/utils";
 import DateIcon from "../../assets/icons/solar_calendar-date-outline.svg"
-import customeDatePickerIcon from "../../assets/icons/custom-date-picker-icon.svg";
 
 const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, className, manualHide, inputContainerClassName }) => {
 
   const [dateFormat, setDateFormat] = useState("dd/mm/yy")
-  const { organization: organization2 } = useSelector((state) => state.organization);
-
-  const sdate = useRef(null);
-  const edate = useRef(null);
-
-  const handleCustomButtonChange = (ref) =>{
-      if(ref.current)
-         ref.current.click();
-  }
-
-
+  const { organization: organization2 } = useSelector((state) => state.organization)
   useEffect(() => {
     if (organization2 && organization2?.settings) {
       setDateFormat(organization2?.settings?.dateFormat)
@@ -186,43 +176,30 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
               <label htmlFor="sdate">Start Date</label>
 
             </div>
-           
-              <div className="w-full flex justify-center items-center bg-white">
+            <div className="flex flex-col">
               <input
                 type="date"
                 name="sdate"
-                className="rounded-md w-[105px] p-1 text-[#FFA28D] py-1 uppercase removeDefaultDatePickerIcon select-none outline-none"
-                id="sdate"
-                ref={sdate}
+                className="rounded-md  p-1 text-[#FFA28D] py-1 px-[26px] uppercase"
                  placeholder="MM/DD/YYYY"
                 value={selectDate.sDate}
                 max={selectDate.eDate}
                 onChange={(e) => handleLocalDate(e.target.value, "sDate")}
               />
-                <img src={customeDatePickerIcon} className="w-[12px] h-[11.21px] ms-[10px] cursor-pointer" alt="customDatePickerIcon" onClick={()=>{
-                  handleCustomButtonChange(sdate)
-                }} />
-              </div>
               <div className="text-[9px] text-[#517CA8]  w-full px-[26px] pt-[15px]">
                 <label htmlFor="edate">End Date</label>
               </div>
-              <div className="w-full flex justify-center items-center bg-white">
               <input
                 type="date"
                 min={selectDate.sDate}
                 name="edate"
-                ref={edate}
-                className="rounded-md w-[105px] text-[#FFA28D] py-1 uppercase removeDefaultDatePickerIcon select-none outline-none bg-transparent"
+                className="rounded-md  text-[#FFA28D] py-1 px-[26px] uppercase"
                 value={selectDate.eDate}
-                id="edate"
+                
                  placeholder="MM/DD/YYYY"
                 onChange={(e) => handleLocalDate(e.target.value, "eDate")}
               />
-                <img src={customeDatePickerIcon} className="w-[12px] h-[11.21px] ms-[10px] cursor-pointer" alt="customDatePickerIcon" onClick={()=>{
-                     handleCustomButtonChange(edate)
-                }} />
-              </div>
-       
+            </div>
             <div className="w-full flex px-[26px]">
               <p className="ml-[0px]">
                 <button

@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./style.module.css";
+import DownArrow from "../../assets/icons/down-chevron.svg";
+import UpArrow from "../../assets/icons/chevron-up-solid (1).svg";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import CCheckbox from "../CCheckbox/CCheckbox";
-import "../../pages/responsive.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function InputSelect({
   parentClassName,
@@ -49,7 +51,7 @@ export default function InputSelect({
   return (
     <div
       ref={selectRef}
-      className={`${selected && "relative z-5000 "} ${parentClassName ? parentClassName : ""
+      className={`${selected && "relative z-5000"} ${parentClassName ? parentClassName : ""
         } ${disabled === true ? "pointer-events-none" : ""} `}
     >
       {label && (
@@ -62,7 +64,7 @@ export default function InputSelect({
       )}
 
       <div
-        className={`py-[10px]  lg:py-[10px]  border border-[#D0D5DD] flex items-center justify-end rounded relative z-50 ${inputContainerClassName ? inputContainerClassName : ""
+        className={`py-[10px]  lg:py-[10px]  border border-[#D0D5DD] flex items-center justify-end rounded relative  z-50 ${inputContainerClassName ? inputContainerClassName : ""
           } `}
       >
         {Icon && <img src={Icon} className={`mr-5  w-[28px]}`} alt="icon" />}
@@ -121,17 +123,17 @@ export default function InputSelect({
         </div>
         {selected && (
           <div
-            className={`custom-scroller removeDefaultScrollStyling  relative !z-[9999999999] scrollbar-vertical  shadow-md ${optionContainerClassName} ${styles.options} ${styles.options} !shadow-[0px_0px_3px_0px_#00000040]`}
+            className={`custom-scroller relative !z-[9999999999] scrollbar-vertical  shadow-md ${optionContainerClassName} ${styles.options} ${styles.options} !shadow-[0px_0px_3px_0px_#00000040]`}
           >
 
             {optionData?.map((option, idx) => {
               return (
                 <div
-                  className={`outline-0 border-0 relative bg-red-900 !z-[9999999999] py-2 px-[26px] flex items-center justify-start ${optionPadding}`}
+                  className={`outline-0 border-0 relative !z-[9999999999] py-2 px-[26px] flex items-center justify-start ${optionPadding}`}
                   key={idx}
                   onClick={() => handleChange(optionType, option, idx)}
                 >
-                  <p className={`${optionListClassName}  cursor-pointer relative !z-[9999999999]`}>
+                  <p className={`${optionListClassName}  cursor-pointer relative !z-[9999999999] `}>
                     {optionType === "object" ? option.name : option}
                   </p>
                   {radio && (
