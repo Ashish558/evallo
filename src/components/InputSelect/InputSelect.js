@@ -30,7 +30,9 @@ export default function InputSelect({
   DateSelect,
   IconSearch,
   tableDropdown,
-  customArrow
+  customArrow,
+  customArrowClassName,
+  downArrowClassName,
 }) {
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
@@ -92,7 +94,7 @@ export default function InputSelect({
           ) : !IconLeft && (
             <img
             src={customArrow ? customArrow :DownArrow}
-            className={`${customArrow ?`w-[20px] h-[20px] rotate-180`:`w-[15px] h-[12px]`}   ${styles.downArrow}`}
+            className={`${customArrow ?`w-[20px] h-[20px] rotate-180 ${customArrowClassName}`:`w-[15px] h-[12px]`}   ${styles.downArrow} ${downArrowClassName}`}
               alt="down-arrow"
             />
           )
@@ -101,7 +103,7 @@ export default function InputSelect({
         ) : !IconLeft && (
           <img
             src={customArrow ? customArrow :DownArrow}
-            className={`${customArrow ?`w-[20px] h-[20px]`:`w-[15px] h-[12px]`}   ${styles.downArrow}`}
+            className={`${customArrow ?`w-[20px] h-[20px] ${customArrowClassName}`:`w-[15px] h-[12px]`}   ${styles.downArrow} ${downArrowClassName}`}
             alt="down-arrow"
           />
         )}

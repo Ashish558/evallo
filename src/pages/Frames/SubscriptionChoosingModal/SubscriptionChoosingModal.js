@@ -100,8 +100,8 @@ function SubscriptionChoosingModal({
                                         })
                                     }) */
 
-                                    const chosenSubscriptionFromAPI = subscriptionsInfoFromAPI.find(item => item.id === plan.id)
-                                    sessionStorage.setItem("chosenSubscriptionFromAPI", JSON.stringify(chosenSubscriptionFromAPI));
+                                    /* const chosenSubscriptionFromAPI = subscriptionsInfoFromAPI.find(item => item.id === plan.id)
+                                    sessionStorage.setItem("chosenSubscriptionFromAPI", JSON.stringify(chosenSubscriptionFromAPI)); */
                                 }}
                                 
                             />

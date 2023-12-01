@@ -17,10 +17,10 @@ function SubscriptionAndExtensionModal({
     className,
     openSubscriptionModal,
     openExtensionsModal,
-    openedFromAccountOverview,
+    openedFromAccountOverview = false,
     OnCancelClicked,
     subscriptionsInfoFromAPI_Param,
-    activeSubscriptionName,
+    activeSubscriptionName = "",
 }) {
     const [values, setValues] = useState({
         firstName: "",
@@ -61,7 +61,9 @@ function SubscriptionAndExtensionModal({
     const [extensionPlansData, SetExtensionPlansData] = useState([]);
     const [extensions, setExtensions] = useState(extensionsData);
     const [subscriptionsInfoFromAPI, SetSubscriptionsInfoFromAPI] = useState([]);
-    const [chosenSubscriptionPlanName, SetChosenSubscriptionPlanName] = useState("");
+    const [chosenSubscriptionPlanName, SetChosenSubscriptionPlanName] = useState(
+        (openedFromAccountOverview ? activeSubscriptionName : "Professional")
+    );
 
     const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
 
@@ -83,9 +85,9 @@ function SubscriptionAndExtensionModal({
             productInfo.pricePerMonth = product.unit_amount / 100;
             productInfo.currency = product.currency;
 
-            if(i === 0) {
+            /* if(i === 0) {
                 SetChosenSubscriptionPlanName(product.product.name);
-            }
+            } */
     
             SetSubscriptionPlanInfo(plans => {
               // if product info already exists in the list then don't do anything
@@ -319,6 +321,27 @@ function SubscriptionAndExtensionModal({
         })
     }
 
+    const onSaveAndNextClicked = () => {
+        setFrames(frames => {
+            if (frames.review) return frames;
+            if (frames.subscription) return {
+                ...frames,
+                subscription: false,
+                extensions: true
+            }
+            if (frames.extensions) return {
+                ...frames,
+                extensions: false,
+                review: true
+            }
+            if (frames.orgDetails) return {
+                ...frames,
+                orgDetails: false,
+                subscription: true
+            }
+        })
+    }
+
     return (
         <div className={`aspect-[1400/900] bg-[#FFFFFF] flex rounded-[15px]  ${className}`} >
             <div className="h-[500px] w-1/12" >
@@ -417,14 +440,21 @@ function SubscriptionAndExtensionModal({
                     
                     <div className="grow" ></div>
                     <PrimaryButton
-                      className={`w-full flex justify-center  bg-[#FFA28D]  disabled:opacity-60 max-w-[150px]  rounded text-white text-sm font-medium relative py-[9px]      
+                      style={(
+                        frames.review ? {
+                            backgroundColor: "#38C980"
+                        } : {
+                            backgroundColor: "#FFA28D"
+                        }
+                      )}
+                      className={`w-full flex justify-center disabled:opacity-60 max-w-[150px]  rounded text-white text-sm font-medium relative py-[9px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)]   
                       `}
                       /* loading={emailExistLoad}
                       disabled={
                         values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
                       } */
-                    //   onClick={handleClick}
-                      children={`Save & Next`}
+                      onClick={onSaveAndNextClicked}
+                      children={(frames.review ? "Checkout" : "Save & Next")}
                     />
                 </div>
 

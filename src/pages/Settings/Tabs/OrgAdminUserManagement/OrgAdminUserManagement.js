@@ -14,6 +14,8 @@ import { updateOrganizationSettings } from "../../../../app/slices/organization"
 import ToggleBar from "../../../../components/SettingsCard/ToogleBar";
 import InputSelect from "../../../../components/InputSelect/InputSelect";
 import questionMark from "../../../../assets/images/Vector (6).svg";
+import SCheckbox from "../../../../components/CCheckbox/SCheckbox";
+import downChevronEnabledState from "../../../../assets/icons/down-chevron-dark-blue.svg";
 
 function OrgAdminUserManagement() {
     const dispatch = useDispatch();
@@ -233,13 +235,14 @@ function OrgAdminUserManagement() {
                     Currently, your `}<span className="font-[600]" >{currentSubscriptionName}</span>{` subscription plan allows `}<span className="font-[600]" >{tutorLimit}</span>{` number of Active Tutor slots. Please fill them below.`}
                 </div>
 
-                <div className="flex mt-[50px] h-[700px]" >
+                <div className={`flex mt-[50px] ${styles.tutorSelectionContainer}`} >
                     <div
                         className="flex flex-col flex-wrap"
-                        style={{width: "75%"}}
+                        style={{width: "70%"}}
                     >
                         {
                             activeTutorNamesList.map((item, index) => {
+                              const isDisabled = index >= 2;
                                 return (
                                     <React.Fragment>
                                         <div className="flex mb-[15px] items-center h-[40px]" >
@@ -250,11 +253,15 @@ function OrgAdminUserManagement() {
                                                 inputContainerClassName=" text-base-17-5 h-full shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
                                                 optionListClassName="text-base-17-5" 
                                                 optionClassName="text-base-17-5"
-                                                // optionData={timeZones}
+                                                optionData={["Ryan", "Bruce"]}
+                                                placeholder={"Select"}
                                                 placeholderClass="text-base-17-5" 
                                                 parentClassName=" ml-[10px] text-base-17-5 py-0 h-full w-[230px]"
+                                                disabled={isDisabled}
+                                                customArrow={isDisabled ? null : downChevronEnabledState}
+                                                downArrowClassName="h-[15px] w-[15px]"
                                                 // label="Default Time Zone"
-                                                // value={settingsData.timeZone}
+                                                value={""}
                                                 // onChange={(val) => handleChange("timeZone", val)}
                                             />
                                         </div>
@@ -264,7 +271,21 @@ function OrgAdminUserManagement() {
                         }
                     </div>
 
-                    <div></div>
+                    <div className="ml-[20px]" >
+                      <div className="flex items-center" >
+                        <SCheckbox
+                          checked={true}
+                        />
+                        <div className="font-[300] text-[#507CA8] text-[12px]" >Enable autofill when spots are empty</div>
+                      </div>
+
+                      <div className="flex items-center mt-[20px]" >
+                        <SCheckbox
+                          checked={true}
+                        />
+                        <div className="font-[300] text-[#507CA8] text-[12px] w-[250px]" >Notify tutors when their account status is changed by an Admin</div>
+                      </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -101,8 +101,13 @@ function AccountOverviewWithSubscriptionInfo() {
         autoRenewalDate: null,
     });
     const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(false);
+    const [isResetPasswordModalActive, SetIsResetPasswordModalActive] = useState(false);
     const [openSubscriptionModal, SetOpenSubscriptionModal] = useState(false);
     const [openExtensionsModal, SetOpenExtensionsModal] = useState(false);
+
+    useEffect(() => {
+        console.log("activeSubscriptionName - " + activeSubscriptionName);
+    },[activeSubscriptionName])
 
     useEffect(() => {
         userDetails()
@@ -168,6 +173,18 @@ function AccountOverviewWithSubscriptionInfo() {
         SetOpenExtensionsModal(true);
     }
 
+    function OnResetPasswordClicked() {
+        SetIsResetPasswordModalActive(true);
+    }
+
+    function OnResetPasswordModalCancelClicked() {
+        SetIsResetPasswordModalActive(false);
+    }
+
+    function OnResetPasswordModalSendClicked() {
+        SetIsResetPasswordModalActive(false);
+    }
+
     function OnSubscriptionAndExtensionModalCancelClicked() {
         SetIsSubscriptionAndExtensionModalActive(false);
         SetOpenSubscriptionModal(false);
@@ -192,7 +209,38 @@ function AccountOverviewWithSubscriptionInfo() {
                     </div>
                 ) : (<></>)
             }
-            
+
+            {
+                isResetPasswordModalActive ? (
+                    <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
+                        <div className="relative flex flex-col items-center bg-[#fff] rounded-[8px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 aspect-[666/190] w-[600px]" >
+                            <div className="font-[100] mt-[20px] text-center text-[#26435F] text-[21px] w-11/12" >
+                            A Password Reset Link will be sent to you. Please click on it to change your password.
+                            </div>
+
+                            <div className="flex justify-between mt-[20px] w-6/12" >
+                                <SecondaryButton
+                                    style={{width: "46.05%", backgroundColor: "#fff"}}
+                                    children={<span className="font-[500] text-[14px] text-[#FF7979]" >Cancel</span>}
+                                    className="bg-[#fff] border-[#FF7979] border-[1px] px-[0px] rounded-[10px]"
+                                    onClick={OnResetPasswordModalCancelClicked}
+                                />
+
+                                <PrimaryButton
+                                    style={{width: "46.05%"}}
+                                    className={` flex justify-center  bg-[#FFA28D]  disabled:opacity-60  rounded-[10px] text-white text-sm font-medium relative py-[9px]`}
+                                    /* loading={emailExistLoad}
+                                    disabled={
+                                        values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
+                                    } */
+                                    onClick={OnResetPasswordModalSendClicked}
+                                    children={`Okay`}
+                                />    
+                            </div>
+                        </div>
+                    </div>
+                ) : (<></>)
+            } 
 
             <div className="flex justify-between h-[700px] mb-[50px] w-full" >
                 <div 
@@ -354,6 +402,7 @@ function AccountOverviewWithSubscriptionInfo() {
                             style={{width: "46.05%", backgroundColor: "#fff"}}
                             children={<span className="font-[500] text-[14px] text-[#26435F]" >Reset Password</span>}
                             className="bg-[#fff] px-[0px] rounded-[10px] shadow-[0px_0px_10px_rgba(0,0,0,0.1)]"
+                            onClick={OnResetPasswordClicked}
                         />
                     </div>
                 </div>

@@ -2,3 +2,37 @@
     border-bottom: 0px;
     /* border-bottom: 2px solid #CBD6E2; */
  }
+
+.tutorSelectionContainer {
+
+}
+
+@media screen and (min-width: 600px) {
+    .tutorSelectionContainer {
+        height: 600px;
+    }
+}
+
+@media screen and (min-width: 800px) {
+    .tutorSelectionContainer {
+        height: 600px;
+    }
+}
+
+@media screen and (min-width: 1400px) {
+    .tutorSelectionContainer {
+        height: 600px;
+    }
+}
+
+@media screen and (min-width: 1700px) {
+    .tutorSelectionContainer {
+        height: 600px;
+    }
+}
+
+@media screen and (min-width: 1920px) {
+    .tutorSelectionContainer {
+        height: 600px;
+    }
+}
