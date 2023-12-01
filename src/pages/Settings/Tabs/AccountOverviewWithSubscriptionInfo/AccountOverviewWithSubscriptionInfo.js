@@ -10,6 +10,7 @@ import octIcon from "../../../../assets/icons/octicon_stop-16.svg";
 import maleProfileImage from "../../../../assets/profile/male.svg";
 import camIcon from "../../../../assets/profile/camera.svg";
 import mastercardIcon from "../../../../assets/BankCard/mastercard.svg";
+import ShieldIcon from "../../../../assets/icons/shield-tick-solid.svg";
 import styles from "./styles.module.css";
 import BankCardInfoWidget from "../../../../components/BankCard/BankCardInfoWidget";
 import ActiveSubscriptionWidget from "../../../../components/ActiveSubscriptionWidget/ActiveSubscriptionWidget";
@@ -21,6 +22,8 @@ import {
     useLazyGetPersonalDetailQuery,
     useUpdateUserAccountMutation,
   } from "../../../../app/services/users";
+import Modal from "../../../../components/Modal/Modal";
+import Modal2 from "../../../../components/Modal2/Modal2";
 
 function BankCardWidgetContainer({
     className,
@@ -102,6 +105,8 @@ function AccountOverviewWithSubscriptionInfo() {
     });
     const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(false);
     const [isResetPasswordModalActive, SetIsResetPasswordModalActive] = useState(false);
+    const [isPasswordResetLinkSentModalActive, SetIsPasswordResetLinkSentModalActive] = useState(false);
+    const [isCancelSubscriptionModalActive, SetIsCancelSubscriptionModalActive] = useState(true);
     const [openSubscriptionModal, SetOpenSubscriptionModal] = useState(false);
     const [openExtensionsModal, SetOpenExtensionsModal] = useState(false);
 
@@ -183,6 +188,33 @@ function AccountOverviewWithSubscriptionInfo() {
 
     function OnResetPasswordModalSendClicked() {
         SetIsResetPasswordModalActive(false);
+        SetIsPasswordResetLinkSentModalActive(true);
+
+        const makePasswordResetLinkSentModalDisappearAfterFewSeconds = () => {
+            setTimeout(() => {
+                SetIsPasswordResetLinkSentModalActive(false);
+            }, 1500);
+        }
+
+        makePasswordResetLinkSentModalDisappearAfterFewSeconds();
+    }
+
+    function OnCancelSubscriptionClicked() {
+        SetIsCancelSubscriptionModalActive(true);
+    }
+
+    function OnCancelSubscriptionModalCancelSubscriptionButtonClicked() {
+        SetIsCancelSubscriptionModalActive(false);
+    }
+
+    function OnCancelSubscriptionModalCrossIconClicked() {
+        SetIsCancelSubscriptionModalActive(false);
+    }
+
+    function OnCancelSubscriptionModalChangePlanClicked() {
+        SetIsCancelSubscriptionModalActive(false);
+        SetOpenSubscriptionModal(true);
+        SetIsSubscriptionAndExtensionModalActive(true);
     }
 
     function OnSubscriptionAndExtensionModalCancelClicked() {
@@ -240,7 +272,62 @@ function AccountOverviewWithSubscriptionInfo() {
                         </div>
                     </div>
                 ) : (<></>)
-            } 
+            }
+
+            {
+                isPasswordResetLinkSentModalActive ? (
+                    <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
+                        <div className="relative bg-[#38C980] flex items-center px-[25px] py-[5px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-fit" >
+                            <img src={ShieldIcon} />
+                            <div className="ml-[10px] text-[#fff]" >Password Reset Link Sent To {values.email}</div>
+                        </div>
+                    </div>
+                ) : (<></>)
+            }
+
+            {
+                isCancelSubscriptionModalActive ? (
+                    <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
+                        <Modal2
+                            className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 aspect-[497/266] w-[25.88vw]"
+                            title="Cancel Subscription"
+                            titleClassName="font-[600] text-[20px]"
+                            headerClassName={`pl-[20px] pr-[20px] pb-[10px] pt-[30px]`}
+                            OnCrossIconClicked={OnCancelSubscriptionModalCrossIconClicked}
+                        >
+                            <div 
+                                className="flex flex-col items-center w-full"
+                            >
+                                <div className="mt-[20px] text-[#517CA8] text-[13px] w-11/12" >
+                                ⚠️ <span className="font-[600]" >Note:</span> If you cancel the plan, you will lose ALL access to your Evallo account after the subscription reaches expiry date.
+                                </div>
+                                <div className="flex items-center justify-between 2xl:mt-[0px] design:mt-[40px] w-9/12" >
+                                    <SecondaryButton
+                                        style={{width: "46.05%", backgroundColor: "#fff"}}
+                                        children={<span className="font-[500] text-[12px] text-[#FF7979]" >Cancel Subscription</span>}
+                                        className="bg-[#fff] px-[0px] rounded-[10px]"
+                                        onClick={OnCancelSubscriptionModalCancelSubscriptionButtonClicked}
+                                    />
+
+                                    <PrimaryButton
+                                        style={{width: "46.05%"}}
+                                        className={` flex justify-center px-[0px] 2xl:px-[5px] bg-[#FFA28D]  disabled:opacity-60  rounded-[10px] text-white text-sm font-medium relative py-[9px]`}
+                                        /* loading={emailExistLoad}
+                                        disabled={
+                                            values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
+                                        } */
+                                        onClick={OnCancelSubscriptionModalChangePlanClicked}
+                                        children={<span className="text-[12px]" >Change Plan Instead</span>}
+                                    />   
+                                </div>
+                            </div>
+                        </Modal2>
+                    </div>
+                ) : (<></>)
+            }
+
+            
+
 
             <div className="flex justify-between h-[700px] mb-[50px] w-full" >
                 <div 
@@ -454,7 +541,7 @@ function AccountOverviewWithSubscriptionInfo() {
 
                                 <div className="grow" ></div>
 
-                                <button className="font-[400] underline text-[#24A3D9] text-[12px]" >Enable Auto-Renew</button>
+                                <button className="font-[400] underline text-[#24A3D9] text-[12px]" onClick={OnCancelSubscriptionClicked} >Cancel Subscription</button>
                             </div>
                         </div>
 
