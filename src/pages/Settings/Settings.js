@@ -35,6 +35,8 @@ import AccOverviewLogo from "../../assets/icons/account overview.svg";
 import AccOverviewLogo2 from "../../assets/icons/account-overview 2.svg";
 import ClientsSignupLogo from "../../assets/icons/Client sign up 1.svg";
 import ClientsSignupLogo2 from "../../assets/icons/Client sign up 2.svg";
+import UserManagementLogo1 from "../../assets/icons/User-Management-1.svg";
+import UserManagementLogo2 from "../../assets/icons/User-Management-2.svg";
 import EditBlueIcon from "../../assets/icons/edit-blue.svg";
 import InputSearch from "../../components/InputSearch/InputSearch";
 import { useSelector, useDispatch } from "react-redux";
@@ -53,6 +55,7 @@ import { timeZones } from "../../constants/constants";
 import { permissionsStaticData } from "./Tabs/staticData";
 import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
 import AccountOverviewWithSubscriptionInfo from "./Tabs/AccountOverviewWithSubscriptionInfo/AccountOverviewWithSubscriptionInfo";
+import OrgAdminUserManagement from "./Tabs/OrgAdminUserManagement/OrgAdminUserManagement";
 
 // import questionMark from '../../assets/images/question-mark.svg'
 const initialState = {
@@ -90,6 +93,12 @@ const initialTabs = [
     Icon: ClientsSignupLogo2,
     Icon2: ClientsSignupLogo,
     name: "Clients Sign Up",
+    selected: false,
+  },
+  {
+    Icon: UserManagementLogo2,
+    Icon2: UserManagementLogo1,
+    name: "User Management",
     selected: false,
   },
 ];
@@ -855,7 +864,7 @@ export default function Settings() {
           {tabs.map((item, idx) => {
               return (
                 <li
-                className={`" ${activeTab === idx + 1?'active':''}`}
+                className={`${activeTab === idx + 1?'active':''}`}
                   onClick={() => changeTab(idx + 1)}
                 >
                   <a className={`"w-full cursor-pointer flex justify-center items-center ${activeTab === idx + 1?'!text-[#26435F]':'!text-white'}`}>
@@ -1528,6 +1537,7 @@ export default function Settings() {
           />
         )}
         {activeTab === 3 && <AccountOverviewWithSubscriptionInfo />}
+        {activeTab === 5 && <OrgAdminUserManagement />}
       </div>
       {modalActive && (
         <Modal
