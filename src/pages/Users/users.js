@@ -625,7 +625,6 @@ export default function Users() {
     },
   ];
 
-  console.log(usersData);
 
   const [assignStudentModalActive, setAssignStudentModalActive] =
     useState(false);
@@ -1602,7 +1601,7 @@ export default function Users() {
             placeholder="Search"
             inputClassName="text-base-17-5 pl-4 text-[#667085] placeholder:text-[#667085]"
             parentClassName="w-[22.03125vw]  py-1"
-            inputContainerClassName="text-base-17-5  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1  !py-[15px]"
+            inputContainerClassName="text-base-17-5  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1  !py-[14.5px]"
             type="text"
             value={filterData.typeName}
             onChange={(e) =>
@@ -1615,7 +1614,7 @@ export default function Users() {
             customArrowClassName={`w-[12px] h-[12px]`}
             optionData={userTypesList}
             optionListClassName="text-base-17-5 text-[#667085]"
-            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
+            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[15px]"
             placeholder="User type"
             parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085]"
             type="select"
@@ -1934,7 +1933,6 @@ export default function Users() {
         </div>
 
         <div className="mt-6">
-          {console.log(tableHeaders)}
           <Table
             dataFor="allUsers"
             selectedId2={selectedId}
