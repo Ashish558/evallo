@@ -347,7 +347,7 @@ const [loading2,setLoading2]=useState(false)
 
    return (
       <>
-         <div className={`flex   bg-[#26435F] h-[72px] items-center w-full shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] ${persona=="superAdmin"?"justify-between px-[5%]":"justify-around"}`}>
+         <div className={`flex bg-[#26435F] h-[72px] items-center w-full shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] ${persona=="superAdmin"?"justify-between px-[5%]":"justify-around"}`}>
             <div
                className={`${persona === "superAdmin" ? "translate-x-[-2.3vw]" : ""}`}
             >
