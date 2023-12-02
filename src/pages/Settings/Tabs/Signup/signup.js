@@ -898,7 +898,7 @@ export default function SignupTab({
                                       idx <= 1
                                         ? " opacity-0 pointer-events-none cursor-default"
                                         : "cursor-pointer"
-                                    }`}
+                                    } mr-3`}
                                     src={DeleteIcon}
                                     alt="del"
                                   />

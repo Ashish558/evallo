@@ -1391,7 +1391,9 @@ export default function Users() {
   console.log("selected ", selectedId, adminSelectedForDelete);
 
   const numberKey = Object.keys(bulkEdits)?.length > 0;
-
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
   //console.log("users",{selectedId,bulkEdits})
   return (
     <div className="w-[83.6989583333vw] mx-auto  min-h-screen">

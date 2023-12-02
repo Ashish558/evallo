@@ -93,14 +93,31 @@ const StudentSettings = () => {
         console.log("Email Link sent", res);
       });
   };
+  const handleEmpty = (val) => {
+    if (!val || val.length === 0 || val?.trim()?.length === 0) {
+      return true;
+    }
+    return false;
+  };
   const handleDataUpdate = () => {
-    setSaving(true)
+  
+    let arr=["firstName", "lastName", "email"]
+    let  emptyCheck=false;
+    for (let i=0; i<arr.length; i++) {
+      if(handleEmpty(values[arr[i]])) {
+        alert(`${arr[i]} cannot be empty.`)
+       emptyCheck=true;
+        return false;
+      }
+    }
+    if(emptyCheck) return false;
+   
     const updateUserAccount = async () => {
       try {
         let reqBody = { ...values };
         delete reqBody["_id"];
         delete reqBody["email"];
-
+        setSaving(true)
         updateAccount(reqBody)
           .then((res) => {
             alert("Account details updated succesfully")
