@@ -14,6 +14,7 @@ import "./style.css";
 import { useForgotPasswordMutation } from "../../../../app/services/auth";
 import userPic from "../../../../assets/icons/user_logo.png";
 import camera from "../../../../assets/icons/camera_logo.svg";
+import passwordResetTickIcon from "../../../../assets/icons/password-reset-tick-icon.svg";
 
 import {
   useLazyGetPersonalDetailQuery,
@@ -62,20 +63,10 @@ const AccountOverview = () => {
   const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
   const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
   const [fetchedData, setFetchedData] = useState({});
-  useEffect(() => {
-    userDetails()
-      .then((res) => {
-        setValues({
-          ...res?.data.data.user,
-        });
-        setFetchedData({
-          ...res?.data.data.user,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  
+  // tooltip handler state
+  const [hideTooltip, setTooltip] = useState(false);
+
 
   const isEmail = (val) => {
     let regEmail =
@@ -146,7 +137,7 @@ const AccountOverview = () => {
           .then((res) => {
             setLoading(false);
             if (res?.error) {
-              alert("Error occured while updating!");
+              alert("Error occured while updating!",res?.error?.message);
             }
             if (res?.data) {
               alert("changes saved!");
@@ -196,10 +187,10 @@ const AccountOverview = () => {
       alert("Password reset link sent to your email.");
     });
   };
-
+console.log({fetchedData})
   return (
     <div>
-      <div className="flex flex-col gap-10  ">
+      <div className="flex flex-col gap-10 py-[25px]">
         <div className="gap-8  flex justify-between items-center">
           <div className="w-4/5 flex justify-start items-center ">
             <InputField
@@ -207,7 +198,7 @@ const AccountOverview = () => {
               labelClassname="font-medium text-base"
               parentClassName="text-[#26435F]"
               inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040]  bg-white  border border-white text-[#667085] mr-[38px]"
-              inputClassName=" text-400 py-0 bg-transparent "
+              inputClassName="font-normal py-0 bg-transparent "
               label="First name"
               value={values.firstName}
               onChange={(e) =>
@@ -224,7 +215,7 @@ const AccountOverview = () => {
               labelClassname="font-medium text-base"
               parentClassName="text-[#26435F]"
               inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040]  bg-white border border-white text-[#667085] mr-[38px]"
-              inputClassName=" text-400 py-0 bg-transparent"
+              inputClassName="font-normal py-0 bg-transparent"
               label="Last name"
               value={values.lastName}
               onChange={(e) =>
@@ -237,23 +228,35 @@ const AccountOverview = () => {
             />
 
             <InputField
-              IconLeft={caution}
+              IconLeft={fetchedData?.isVerified?null:                caution}
               placeholder=""
-              labelClassname="font-medium text-base"
-              parentClassName="text-[#26435F]"
-              inputContainerClassName=" !shadow-[0px_0px_2.500000476837158px_0px_#00000040]  bg-white  text-[#667085] mr-[38px]"
-              inputClassName=" text-400 py-0 bg-transparent w-[calc(377*0.0522vw)]"
-              label="Email"
-              // IconRight={tooltipIcon}
+              inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] border-0 !rounded-[5px] bg-white !shadow-[0px_0px_2.500000476837158px_0px_#00000040] "
+              inputClassName="bg-white w-[376px] h-[22px] pt-[13.752px] pe-[14.688px] pb-[14.248px] ps-[15px] text-xs font-normal"
+              parentClassName=""
+              type="text"
               value={values.email}
-              onChange={(e) => {
+              onChange={(e) =>{
                 setValues({
                   ...values,
                   email: e.target.value,
                 });
               }}
               error={error.email}
-             
+              Tooltip={
+                <span className="absolute top-10 w-[333px] h-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                  <h3 className="text-[#24A3D9] font-semibold mb-1">
+                    Email Confirmation Sent
+                  </h3>
+                  You need to verify your email if
+                  <ul className="list-disc pl-3 mb-2">
+                    <li>you created a new account.</li>
+                    <li>you recently changed your email.</li>
+                  </ul>
+                  We have sent you an email verification link to your current
+                  email address to make sure that it really is you who requested
+                  a change.
+                </span>
+              }
             />
             <div id="number">
               <InputFieldDropdown
@@ -261,7 +264,7 @@ const AccountOverview = () => {
                 labelClassname="font-medium text-base"
                 parentClassName="text-[#26435F] "
                 inputContainerClassName="!shadow-[0px_0px_2.500000476837158px_0px_#00000040]  bg-white  text-[#667085]"
-                inputClassName="text-400 py-0 bg-transparent w-[calc(377*0.0522vw)]"
+                inputClassName="font-normal py-[7.5px] bg-transparent w-[calc(377*0.0522vw)]"
                 label="Phone"
                 value={values.phone}
                 codeValue={values.phoneCode}
@@ -299,12 +302,12 @@ const AccountOverview = () => {
               <p className="text-base-17-5 font-semibold text-[#26435F] mr-5">
                 Profile Picture
               </p>
-              <p>
+              <p className="">
                 <img className=" inline-block" src={userPic} alt="" />
               </p>
-              <p className="absolute right-0 bottom-0">
-                <img src={camera} alt="" />
-              </p>
+          
+                <img src={camera} className="absolute right-0 bottom-0 mx-5" alt="camera-icon" />
+             
             </div>
             <InputField
               placeholder="What is your role?"
@@ -373,9 +376,14 @@ const AccountOverview = () => {
         <div>
           {reset && (
             <div className="flex gap-2">
-              <p className="bg-[#38C980] rounded-xl text-sm text-white px-3 py-1 text-base-15">
-                <img className="inline-block mr-3" src={resetSendIcon} alt="" />
-                {"Password Reset Link Sent To {email address}"}
+              <p className="bg-[#38C980] rounded-xl text-sm text-white px-3 py-1 text-base-15 flex justify-center items-center">
+                
+                {/*  svg here */}
+                <img src={passwordResetTickIcon} alt="password-reset-tick-icpn" />
+
+                <div className="ms-3">
+                  {"Password Reset Link Sent To {email address}"}
+                </div>
               </p>
             </div>
           )}
@@ -400,7 +408,8 @@ const AccountOverview = () => {
           body={
             <div className="text-center mb-[30px]">
               <h1 className="text-[21px] text-[#26435F]">
-                A Password Reset Link Will Be Sent To You. Please Click On It To Change Your Password.
+                A Password Reset Link Will Be Sent To You. Please Click On It To
+                Change Your Password.
               </h1>
               {/* <button
                 onClick={showResetConfirmation}

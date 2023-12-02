@@ -13,7 +13,7 @@ import {
   accuracyOptions,
 } from "./tempData";
 import Table from "../../components/Table/Table";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import BarGraph from "../../components/BarGraph/BarGraph";
 import {
   useLazyGetAnswersQuery,
@@ -102,6 +102,12 @@ export default function StudentReport() {
 
   const navigate = useNavigate();
 
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    
+    window.scrollTo(0, 0);
+  }, [pathname]);
   useEffect(() => {
     if (persona === "parent" || persona === "student") {
       setTableHeaders(tableHeadersParent);
@@ -683,17 +689,12 @@ export default function StudentReport() {
         enabled: true,
         shared: false,
 
-        style: {
-          background: "rgba(255, 255, 255, 0.5)", // Set the background color and transparency for the tooltip
-
-          opacity: 0.5, // Set the opacity for the tooltip
-        },
         custom: function ({ series, seriesIndex, dataPointIndex, w }) {
           console.log({ series, timeSeriesOptions, timeSeries });
-          return `<div class="bg-[#FFA28DBF] p-4 px-6 text-[16px] text-white rounded-[8px]">
+          return `<div className="!bg-[#FFA28DBF]  p-4 px-6 text-[16px] text-white rounded-[8px]">
             #${dataPointIndex + 1}.
             <br/>
-           <span class="font-semibold text-[17px]">
+           <span className="font-semibold text-[17px]">
            ${series[0][dataPointIndex]}
             secs </span> <br/>
            ${selectedSubject.name}
@@ -787,6 +788,15 @@ export default function StudentReport() {
         xaxis: {
           ...prev.xaxis,
           categories: concepts,
+          labels: {
+            // show: false,
+            style: {
+              fontFamily: "Inter",
+              fontWeight: 500,
+              fontSize: "16px",
+              colors: "#517CA8",
+            },
+          },
         },
         tooltip: {
           ...prev.tooltip,
@@ -795,12 +805,12 @@ export default function StudentReport() {
               sectionMetaData.concepts[conceptsLablel[dataPointIndex]];
             console.log("timee", { scaleData, sectionMetaData });
             let pers = 100 - (series[0][dataPointIndex] * 100) / totalCQ;
-            return `<div class="bg-[#FFA28DBF] p-4 px-6 text-[16px]  text-white rounded-[8px]">
-            <span class="font-semibold text-[17px]">
+            return `<div className="!bg-[#FFA28DBF] p-4 px-6 text-[16px]  text-white rounded-[8px]">
+            <span className="font-semibold text-[17px]">
             ${conceptsLablel[dataPointIndex]}
             </span>
               <br/>
-             <span class="">
+             <span className="">
             Incorrect ${series[0][dataPointIndex]}/${totalCQ}
                </span> <br/>
               ${pers.toFixed(2)}% Accuracy
@@ -973,7 +983,11 @@ export default function StudentReport() {
   // console.log('responseData', responseData)
   // console.log('answerKey', answerKey)
 
-  console.log({ displayScore });
+  console.log({ displayScore, subjects });
+  const [startSectionDate, startSectionTime, startSectionFormat] =
+    selectedSubject?.startSectionTime
+      ? getFormattedDateTime(selectedSubject?.startSectionTime)?.split(" ")
+      : "- - -";
   return (
     <div className="px-[80px]  min-h-screen">
       <div className="py-14 px-5">
@@ -1206,10 +1220,10 @@ export default function StudentReport() {
                     </p>
                     <p className=" mb-2 text-[#517CA8] text-base-17-5">
                       {" "}
-                      {startDate}
+                      {startSectionDate}
                     </p>
                     <p className=" mb-2 text-[#24A3D9] text-base-17-5 font-normal">
-                      {startTime} {startFormat}{" "}
+                      {startSectionTime} {startSectionFormat}{" "}
                       {organization?.settings?.timeZone}
                     </p>
                     {/* <p className='font-semibold mb-2 opacity-0'>04:25 PM EST</p> */}

@@ -8,7 +8,6 @@ import SignupLast from "../Frames/SignupLast/SignupLast";
 import FurtherDetails from "../Frames/FurtherDetails/FurtherDetails";
 import SignupSuccessful from "../Frames/SignupSuccessful/SignupSuccessful";
 
-
 import cuate from "../../assets/signup/cuate.svg";
 import NumericSteppers from "../../components/NumericSteppers/NumericSteppers";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
@@ -70,7 +69,26 @@ export default function Signup() {
   const [lastLoginDisabled, setLastLoginDisabled] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isAddedByAdmin, setIsAddedByAdmin] = useState(false);
+  const [queryParams] = useSearchParams();
+  useEffect(() => {
+    const currentParams = Object.fromEntries([...queryParams]);
+   
+    if (currentParams.hasOwnProperty("step") && currentParams.step) {
+      let step=currentParams.step
 
+      let arr = {
+        signupActive:step==1?true:false,
+        orgDetails: step==2?true:false,
+        furtherDetails: step==3?true:false,
+        requirements: step==4?true:false,
+      }
+      console.log("popstep",arr)
+      setFrames( arr);
+      setcurrentStep(step)
+    }
+  }, [queryParams]);
+  console.log("frames")
+ 
   const [values, setValues] = useState({
     firstName: "",
     lastName: "",
@@ -103,7 +121,6 @@ export default function Signup() {
     phone: "",
     subscriptionCode: "",
     company: "",
-
   });
 
   const [otherDetails, setOtherDetails] = useState({
@@ -407,13 +424,9 @@ export default function Signup() {
                 signupSuccessful: true,
                 requirements: false,
               });
-            }
-            else {
+            } else {
               alert("Something went worng, please try again!");
             }
-
-
-
 
             // navigate("/");
           })
@@ -432,10 +445,9 @@ export default function Signup() {
     phone: "",
     subscriptionCode: "",
     company: "",
-
-  })
+  });
   const handleNextErrors = (alsoSet) => {
-    resetErrors()
+    resetErrors();
     const result = validateSignup(values);
 
     if (result.data !== true) {
@@ -443,11 +455,9 @@ export default function Signup() {
         return {
           [result.data]: result.message,
         };
-      })
-    }
-    else {
-      setValidated({
-      })
+      });
+    } else {
+      setValidated({});
     }
     if (alsoSet) {
       let flag = true;
@@ -455,29 +465,23 @@ export default function Signup() {
         if (isValidated[it] && isValidated[it].length > 0) {
           flag = false;
         }
-      })
-      resetErrors()
-      let arr = { ...isValidated }
-      setError(arr)
+      });
+      resetErrors();
+      let arr = { ...isValidated };
+      setError(arr);
 
       return flag;
     }
-  }
-  const [emailExistLoad, setEmailExistLoad] = useState(false)
+  };
+  const [emailExistLoad, setEmailExistLoad] = useState(false);
   const handleClick = () => {
-    // let f = /[a-z]/i.test(values?.firstName)
-    // f = f && /[a-z]/i.test(values?.lastName)
-    // f = f && /[a-z]/i.test(values?.company)
-    // if (!f) {
-    //   alert("Enter a valid name!")
-    //   return
-    // }
+    
+    console.log("clicked called");
     const emailAlreadyExists = async () => {
-      setEmailExistLoad(true)
+      setEmailExistLoad(true);
       let cc = 0;
       let checked = false;
       try {
-
         let data = {
           workemail: values.email?.toLocaleLowerCase(),
         };
@@ -525,32 +529,26 @@ export default function Signup() {
         });
       }
       if (checked === true) {
-
         setFrames({
           ...frames,
           signupActive: false,
           orgDetails: true,
         });
+        navigate("/signup?step=2");
       }
       if (cc >= 2) {
-        setEmailExistLoad(false)
+        setEmailExistLoad(false);
       }
     };
 
     if (!handleNextErrors(true)) {
-      return
-    }
-
-    else
-      emailAlreadyExists();
+      return;
+    } else emailAlreadyExists();
   };
 
-
-
   useEffect(() => {
-
-    handleNextErrors()
-  }, [values])
+    handleNextErrors();
+  }, [values]);
 
   // console.log(isLinkedEmail);
   useEffect(() => {
@@ -622,7 +620,7 @@ export default function Signup() {
     //setcurrentStep(1);
     navigate("/");
   };
-  let namesValidChars="1234567890abcdefghijklmnopqrstuvwxyz ";
+  let namesValidChars = "1234567890abcdefghijklmnopqrstuvwxyz ";
   return (
     <div className="   pb-6 bg-primary relative" id={styles.signUp}>
       {/* <AdminNavbar></AdminNavbar> */}
@@ -635,8 +633,8 @@ export default function Signup() {
                 {frames.signupActive
                   ? "Sign Up"
                   : frames.setPassword
-                    ? ""
-                    : "Profile Details"}
+                  ? ""
+                  : "Profile Details"}
               </h1>
 
               <h6 className="mb-[10px]">Sign up with email address</h6>
@@ -644,12 +642,26 @@ export default function Signup() {
           ) : (
             <></>
           )}
-          <div className={`flex lg:items-center relative bg-white rounded-md py-4   ${frames.requirements ?"!w-[980px] !pl-[76px] !pr-[91px]" : "w-[800px] px-[50px]"} ${frames?.signupSuccessful ? "!w-[980px] !px-[115px] " : ""} `}>
-          
+          <div
+            className={`flex lg:items-center relative bg-white rounded-md py-4   ${
+              frames.requirements
+                ? "!w-[980px] !pl-[76px] !pr-[91px]"
+                : "w-[800px] px-[50px]"
+            } ${frames?.signupSuccessful ? "!w-[980px] !px-[115px] " : ""} `}
+          >
             <div className="w-full">
               {currentStep > 0 && (
-                <NumericSteppers  NumericStepperfontSize="text-[18.6px]"className={" !w-[700px] !mx-auto "} fieldNames={["Personal Info", "Org Details", "Further Details", "Requirements"]} totalSteps={4} currentStep={currentStep}
-
+                <NumericSteppers
+                  NumericStepperfontSize="text-[18.6px]"
+                  className={" !w-[700px] !mx-auto "}
+                  fieldNames={[
+                    "Personal Info",
+                    "Org Details",
+                    "Further Details",
+                    "Requirements",
+                  ]}
+                  totalSteps={4}
+                  currentStep={currentStep}
                 />
               )}
               {frames.signupActive ? (
@@ -666,22 +678,20 @@ export default function Signup() {
                       placeholder=""
                       parentClassName="text-md"
                       label="First name"
-
                       biggerText={true}
                       labelClassname="!text-[18.67px] text-[#26435F] font-semibold"
                       inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
                       pattern="[a-zA-Z0-9]+"
                       value={values.firstName}
-                      onChange={(e) =>{
+                      onChange={(e) => {
                         const regex = /^[a-zA-Z0-9 ]*$/;
                         const isValid = regex.test(e.target.value);
-                        if(isValid)
-                        setValues({
-                          ...values,
-                          firstName: e.target.value,
-                        })
-                      }
-                    }
+                        if (isValid)
+                          setValues({
+                            ...values,
+                            firstName: e.target.value,
+                          });
+                      }}
                       totalErrors={error}
                       error={error.firstName}
                     />
@@ -694,17 +704,15 @@ export default function Signup() {
                       label="Last name"
                       pattern="[a-zA-Z0-9]+"
                       value={values.lastName}
-                      onChange={(e) =>{
+                      onChange={(e) => {
                         const regex = /^[a-zA-Z0-9 ]*$/;
                         const isValid = regex.test(e.target.value);
-                        if(isValid)
-                        setValues({
-                          ...values,
-                          lastName: e.target.value,
-                        })
-                      }
-                      }
-
+                        if (isValid)
+                          setValues({
+                            ...values,
+                            lastName: e.target.value,
+                          });
+                      }}
                       totalErrors={error}
                       error={error.lastName}
                     />
@@ -745,18 +753,15 @@ export default function Signup() {
                           phoneCode: e.target.value,
                         })
                       }
-                      onChange={(e) =>
-                       {
+                      onChange={(e) => {
                         const regex = /^[0-9 ]*$/;
                         const isValid = regex.test(e.target.value);
-                        if(isValid  && e.target.value?.length<12)
-                        setValues({
-                          ...values,
-                          phone: e.target.value,
-
-                        })
-                       }
-                      }
+                        if (isValid && e.target.value?.length < 11)
+                          setValues({
+                            ...values,
+                            phone: e.target.value,
+                          });
+                      }}
                       totalErrors={error}
                       codeError={error.phoneCode}
                       error={error.phone}
@@ -810,10 +815,11 @@ export default function Signup() {
                       </div>
 
                       <p
-                        className={`${values.registrationAs === "Individual"
-                          ? "text-[#FFA28D] font-medium "
-                          : "text-[#26435F] font-medium"
-                          }  translaye-y-[-8px] translate-x-[-6px] tracking-wide text-[18.67px]`}
+                        className={`${
+                          values.registrationAs === "Individual"
+                            ? "text-[#FFA28D] font-medium "
+                            : "text-[#26435F] font-medium"
+                        }  translaye-y-[-8px] translate-x-[-6px] tracking-wide text-[18.67px]`}
                       >
                         {" "}
                         Individual{" "}
@@ -843,22 +849,21 @@ export default function Signup() {
                         />
                       </div>
                       <p
-                        className={`${values.registrationAs === "Company"
-                        ? "text-[#FFA28D] font-medium "
-                        : "text-[#26435F] font-medium"
-                          }  translaye-y-[-8px] translate-x-[-6px] tracking-wide text-[18.67px]`}
+                        className={`${
+                          values.registrationAs === "Company"
+                            ? "text-[#FFA28D] font-medium "
+                            : "text-[#26435F] font-medium"
+                        }  translaye-y-[-8px] translate-x-[-6px] tracking-wide text-[18.67px]`}
                       >
                         {" "}
                         Company{" "}
                       </p>
                     </div>
-
                   </div>
                   <div className="mt-[40px] flex">
-
                     <div className="flex items-center">
-
-                      <SCheckbox checked={isChecked}
+                      <SCheckbox
+                        checked={isChecked}
                         stopM={true}
                         className="scale-[1.27]"
                         uncheckColor={"bg-[#9CA3AF]"}
@@ -867,7 +872,6 @@ export default function Signup() {
 
                       <span className="text-[13px] text-[#26435F]  font-semibold">
                         {" "}
-
                       </span>
                     </div>
                     <p className="text-[18.67px] text-[#26435F] font-medium  leading-5 ml-1 mr-3 pl-2">
@@ -892,15 +896,20 @@ export default function Signup() {
                       onClick={handleBack}
                     />
                     <PrimaryButton
-                      className={` flex !py-[12.5px] font-medium !px-[51.5px] justify-center  bg-[#FFA28D]  disabled:opacity-60   !rounded-5 text-white text-[18.67px]  ${loading
-                        ? "cursor-wait opacity-60 pointer-events-none"
-                        : "cursor-pointer"
-                        } 
+                      className={` flex !py-[12.5px] font-medium !px-[51.5px] justify-center  bg-[#FFA28D]  disabled:opacity-60   !rounded-5 text-white text-[18.67px]  ${
+                        loading
+                          ? "cursor-wait opacity-60 pointer-events-none"
+                          : "cursor-pointer"
+                      } 
                       
                       `}
                       loading={emailExistLoad}
                       disabled={
-                        values.email === "" || !isChecked || !emailValidation.test(values.email) ? true : false
+                        values.email === "" ||
+                        !isChecked ||
+                        !emailValidation.test(values.email)
+                          ? true
+                          : false
                       }
                       onClick={handleClick}
                       children={`Next`}

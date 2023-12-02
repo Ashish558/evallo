@@ -144,7 +144,7 @@ const Map = ({ markings, countryMarking, countryFlag }) => {
               locate[code].no_of_orgs > 1 ? " Users" : " User"
             }  
                       </p>
-                      <div class='${styles.point}'></div>
+                      <div className='${styles.point}'></div>
                       </div>
                      
                       `);

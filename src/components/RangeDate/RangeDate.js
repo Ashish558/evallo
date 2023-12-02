@@ -8,7 +8,7 @@ import downR from "../../assets/YIcons/downR.svg"
 import { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { getFormattedDate } from "../../utils/utils";
+import { getFormattedDate, getMonthName } from "../../utils/utils";
 import DateIcon from "../../assets/icons/solar_calendar-date-outline.svg"
 
 const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, className, manualHide, inputContainerClassName }) => {
@@ -132,29 +132,23 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
 
   const [startMonth, startDay] = startFull.split("-");
 
-  function formatDate(inputDate) {
-    // Split the input date into day, month, and year
-    const [day, month, year] = inputDate.split('-');
-  
-    // Create a new Date object with the provided components
-    const dateObj = new Date(`${month} ${day}, ${year}`);
-    try {
-      
+  const formatDate= (value)=>{
+    const [ month, day, year] = value.split("-");
+    const monthName = getMonthName(day-1);
+    console.log(
+     { 
+       value : value,
+       day : day,
+       month : month,
+       year : year,
+       monthName :monthName
+      }
+   );
     
-    // Format the month to three-letter abbreviation with all letters in uppercase
-    const formattedMonth = new Intl.DateTimeFormat('en-US', { month: 'short' })
-      .formatToParts(dateObj)
-      .find(part => part.type === 'month').value.toUpperCase();
-  
-    // Construct the final formatted date
-    const formattedDate = `${day}-${formattedMonth}-${year}`;
-  
-    return formattedDate;
-  } catch (error) {
-      console.log(error);
-  }
-  }
-  
+    const formattedDate = `${monthName}` + " " + `${year}` + `,` + `${month}`;
+    return formattedDate
+   }
+
   const formattedStartDate =formatDate(`${startMonth}-${startDay}-${endYear}`);
   endFull=formatDate(endFull)
   const formattedDateRange = `${formattedStartDate}  -  ${endFull}`;
@@ -203,7 +197,8 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
               <input
                 type="date"
                 name="sdate"
-                className="rounded-md  p-1 text-[#FFA28D] py-1 px-[26px]"
+                className="rounded-md  p-1 text-[#FFA28D] py-1 px-[26px] uppercase"
+                 placeholder="MM/DD/YYYY"
                 value={selectDate.sDate}
                 max={selectDate.eDate}
                 onChange={(e) => handleLocalDate(e.target.value, "sDate")}
@@ -215,9 +210,10 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
                 type="date"
                 min={selectDate.sDate}
                 name="edate"
-                className="rounded-md  text-[#FFA28D] py-1 px-[26px]"
+                className="rounded-md  text-[#FFA28D] py-1 px-[26px] uppercase"
                 value={selectDate.eDate}
-                placeholder="Start Date"
+                
+                 placeholder="MM/DD/YYYY"
                 onChange={(e) => handleLocalDate(e.target.value, "eDate")}
               />
             </div>

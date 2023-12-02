@@ -339,13 +339,13 @@ const SPFrame1 = ({
                 <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
                   Session Notes
                 </p>
-                <div className="bg-white flex-1 h-[660px] !w-[calc(755*0.0522vw)] rounded-md custom-scroller shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
+                <div className="flex-1 h-[660px] !w-[calc(755*0.0522vw)] rounded-md custom-scroller shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
                   <div className="p-5">
                     <button
                       onClick={() => {
                         setInternal(false);
                       }}
-                      className={`rounded-[50px] px-2 mr-5 py-1 text-base-15 ${
+                      className={`rounded-[50px] w-[132.61px] h-[37.723px] mr-5  text-base-15 ${
                         !internal
                           ? "bg-[#FFA28D] text-white"
                           : "bg-white text-[#FFA28D] border border-[#FFA28D]"
@@ -357,7 +357,7 @@ const SPFrame1 = ({
                       onClick={() => {
                         setInternal(true);
                       }}
-                      className={`rounded-[50px] px-2 py-1 text-base-15 ${
+                      className={`rounded-[50px] w-[132.61px] h-[37.723px] text-base-15 ${
                         internal
                           ? "bg-[#FFA28D] text-white"
                           : "bg-white text-[#FFA28D] border border-[#FFA28D]"

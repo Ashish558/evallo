@@ -3,6 +3,8 @@ import { useGetSpecificActionLogQuery } from "../../app/services/adminDashboard"
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getFormattedDate } from "../../utils/utils";
+import { getMonthName } from "../../utils/utils";
+
 export default function ActionLog({ actionLog, className }) {
   const [dateFormat, setDateFormat] = useState("dd/mm/yy");
   const { organization: organization2 } = useSelector(
@@ -74,34 +76,31 @@ export default function ActionLog({ actionLog, className }) {
     let temp = headerDate[1] + " " + headerDate[2] + ", " + headerDate[3];
     headerDate = temp;
   }
-  function formatDate(inputDate) {
-    // Split the input date into day, month, and year
-    const [day, month, year] = inputDate.split('-');
-  
-    // Create a new Date object with the provided components
-    const dateObj = new Date(`${month} ${day}, ${year}`);
-    try {
-      
+
+  //  format monthName date, year
+  const formatDate= (value)=>{
+    const [ month, day, year] = value.split("-");
+    const monthName = getMonthName(month-1);
+    console.log(
+     { 
+       value : value,
+       day : day,
+       month : month,
+       year : year,
+       monthName :monthName
+      }
+   );
     
-    // Format the month to three-letter abbreviation with all letters in uppercase
-    const formattedMonth = new Intl.DateTimeFormat('en-US', { month: 'short' })
-      .formatToParts(dateObj)
-      .find(part => part.type === 'month').value.toUpperCase();
+    const formattedDate = `${monthName}` + " " + `${year}` + `,` + `${month}`;
+    return formattedDate
+   }
   
-    // Construct the final formatted date
-    const formattedDate = `${day}-${formattedMonth}-${year}`;
-  
-    return formattedDate;
-  } catch (error) {
-      console.log(error);
-  }
-  }
   return (
     <div
       className={`flex flex-col h-[330px] max-h-[500px]  shadow-[0px_0px_2px_rgba(0,0,0,0.25)]  rounded-5 bg-[#FFFFFF] w-[65.1042vw] ${className}`}
     >
       <div className=" border-b-[1.6px]  border-b-[#CBD6E2] ">
-        <p className="uppercase  pl-[29px] pt-[16px] pb-2 text-[#26435F] text-base-20">
+        <p className="uppercase  pl-[29px] pt-[16px] pb-2 text-[#26435F] text-base-20 text-[20px] font-normal">
           {formatDate(getFormattedDate(headerDate, dateFormat))}
         </p>
       </div>
@@ -117,13 +116,18 @@ export default function ActionLog({ actionLog, className }) {
             date = new Date(date.getTime() + offset);
           }
           const hours = date.getHours();
-          const minutes = date.getMinutes()
+          var minutes = date.getMinutes();
+
+          if(0 <= minutes && minutes < 10){
+            minutes = `0` + minutes;
+          }
+
           let ampm = "AM";
           if (hours >= 12) {
             ampm = "PM";
           }
           return (
-            <>
+            
               <div key={index} className="flex h-[57px] pl-5 relative ">
                 <p className="text-[#517CA8] pt-6 !font-light text-[15px] mr-2 w-[calc(143*0.050vw)] text-center !text-[calc(17.5*0.050vw)] whitespace-nowrap">
                {
@@ -149,7 +153,7 @@ export default function ActionLog({ actionLog, className }) {
                   </p>
                 </div>
               </div>
-            </>
+          
           );
         })}
       </ul>

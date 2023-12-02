@@ -588,18 +588,42 @@ export default function AssignedTests() {
   }
 
   const sortByScore = () => {
+    /* console.log("sortByScore");
+    console.log(filteredTests); */
+    const hasProperScoresProperty = (item) => {
+      if(item.scores === "-" || item.scores === undefined || item.scores === null || Object.keys(item).length === 0) {
+        return false;
+      }
+
+      if(item.scores.cumulative === undefined || item.scores.cumulative === null) {
+        return false;
+      }
+
+      return true;
+    }
+
     if(scoreSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
-          if(a.score !== "-") {
-            console.log(a.score);
-          }
-          if (a.scores < b.scores) {
+          
+          if(!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return -1;
           }
-          if (a.scores > b.scores) {
+
+          if(!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
+            return -1;
+          }
+
+          if(hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+            return 1;
+          }
+
+          if (a.scores.cumulative < b.scores.cumulative) {
+            return -1;
+          }
+          if (a.scores.cumulative > b.scores.cumulative) {
             return 1;
           }
           return 0;
@@ -610,10 +634,23 @@ export default function AssignedTests() {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
-          if (a.scores < b.scores) {
+          
+          if(!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return -1;
           }
-          if (a.scores > b.scores) {
+
+          if(!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
+            return -1;
+          }
+
+          if(hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+            return 1;
+          }
+          
+          if (a.scores.cumulative < b.scores.cumulative) {
+            return -1;
+          }
+          if (a.scores.cumulative > b.scores.cumulative) {
             return 1;
           }
           return 0;
@@ -628,10 +665,23 @@ export default function AssignedTests() {
       setAllAssignedTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
-          if (a.scores < b.scores) {
+
+          if(!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+            return -1;
+          }
+
+          if(!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
             return 1;
           }
-          if (a.scores > b.scores) {
+
+          if(hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+            return -1;
+          }
+
+          if (a.scores.cumulative < b.scores.cumulative) {
+            return 1;
+          }
+          if (a.scores.cumulative > b.scores.cumulative) {
             return -1;
           }
           return 0;
@@ -642,10 +692,23 @@ export default function AssignedTests() {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
-          if (a.scores < b.scores) {
+
+          if(!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+            return -1;
+          }
+
+          if(!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
             return 1;
           }
-          if (a.scores > b.scores) {
+
+          if(hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+            return -1;
+          }
+
+          if (a.scores.cumulative < b.scores.cumulative) {
+            return 1;
+          }
+          if (a.scores.cumulative > b.scores.cumulative) {
             return -1;
           }
           return 0;
@@ -711,9 +774,9 @@ export default function AssignedTests() {
     },
     {
       id: 8,
-      // className: "no-arrow",
       text: "Score", // scores
-      noArrow: true
+      onCick: sortByScore,
+      willDisplayDownArrow: scoreSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 9,
@@ -1586,10 +1649,10 @@ export default function AssignedTests() {
                       organization?.settings?.permissions[0]
                         ?.choosedValue)) && (
                     <div
-                      onClick={() =>
-                        selectedId?.length > 0 && setDeleteBulkModalActive(true)
-                      }
-                      className="gap-x-[5px] cursor-pointer px-1 w-[5.9375vw] py-[9px] bg-[#FFF] rounded-5 ml-6 flex items-center justify-center text-base-17-5"
+                      // onClick={() =>
+                      //   false && selectedId?.length > 0 && setDeleteBulkModalActive(true)
+                      // }
+                      className="opacity-70 !cursor-not-allowed pointer-events-none gap-x-[5px] px-1 w-[5.9375vw] py-[9px] bg-[#FFF] rounded-5 ml-6 flex items-center justify-center text-base-17-5"
                     >
                       <p>Delete</p>
                       <p>
@@ -1639,6 +1702,8 @@ export default function AssignedTests() {
               tableHeaders={tempTableHeaders}
               maxPageSize={maxPageSize}
               setMaxPageSize={setMaxPageSize}
+              setAllAssignedTests={setAllAssignedTests}
+              setFilteredTests={setFilteredTests}
             />
           </div>
         </div>

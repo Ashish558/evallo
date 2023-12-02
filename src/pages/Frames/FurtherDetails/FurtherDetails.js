@@ -6,6 +6,7 @@ import styles from "../EventModal/style.module.css";
 import style from "./styles.module.css";
 import SCheckbox from "../../../components/CCheckbox/SCheckbox";
 import InputSelectNew from "../../../components/InputSelectNew/InputSelectNew";
+import { useNavigate } from "react-router-dom";
 
 export default function FurtherDetails({
   setFrames,
@@ -36,27 +37,22 @@ export default function FurtherDetails({
     });
     setValue(temp);
   };
-
+const navigate= useNavigate()
   const handleSubmit = () => {
     setFrames((prev) => {
       return { ...prev, furtherDetails: false, requirements: true };
     });
+    navigate("/signup?step=4")
   };
 
   const handleBack = () => {
     setFrames((prev) => {
       return { ...prev, furtherDetails: false, orgDetails: true };
     });
+    navigate("/signup?step=2")
   };
 
-  // useEffect(() => {
-  //   let checkCount = 0;
-  //   services.map((item) => {
-  //     if (item.checked === true) {
-  //       checkCount += 1;
-  //     }
-  //   });
-  // }, [services]);
+ 
   const handlePaymentTypeChange = (e) => {
     setValues({
       ...values,

@@ -172,9 +172,9 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
   return (
     <div className="flex flex-col gap-5 -mt-5 design:gap-10">
       {" "}
-      <h1 className="text-[#26435F] translate-y-4  text-sm font-semibold cursor-pointer text-base-20">
+      <h1 className="text-[#26435F] translate-y-8 text-sm font-semibold cursor-pointer  text-base-20 flex items-center justify-start">
         Score progression
-        <span className="inline-block my-auto ml-2 translate-y-1">
+        <div className="inline-block my-auto ml-2 ">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -187,7 +187,7 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
               fill="#26435F"
             />
           </svg>
-        </span>
+        </div>
       </h1>
       <div
         id={styles.chartContainer}
@@ -240,9 +240,9 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
       </div>
       <div className=" flex-1 w-full">
         <div className="flex items-center justify-between">
-          <h1 className="text-[#26435F]  text-sm font-semibold mb-1 text-base-20">
+          <h1 className="text-[#26435F]  text-sm font-semibold mb-1 text-base-20   flex items-center justify-start">
             Time Management
-            <span className="inline-block my-auto ml-2 translate-y-1 cursor-pointer">
+            <div className="inline-block my-auto ml-2 cursor-pointer">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -255,7 +255,7 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
                   fill="#26435F"
                 />
               </svg>
-            </span>
+            </div>
           </h1>
         </div>
         <div
@@ -321,9 +321,9 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
       </div>
       <div className=" flex-1 w-full">
         <div className="flex items-center justify-between">
-          <h1 className="text-[#26435F]  text-sm font-semibold mb-1 text-base-20">
-            Conceptual Accuracy
-            <span className="inline-block my-auto ml-2 translate-y-1 cursor-pointer">
+          <h1 className="text-[#26435F] text-sm font-semibold mb-1 text-base-20  flex items-center justify-start">
+            Conceptual Accuracy 
+            <div className="inline-block my-auto ml-2 cursor-pointer">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -336,7 +336,7 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
                   fill="#26435F"
                 />
               </svg>
-            </span>
+            </div>
           </h1>
         </div>
         <div

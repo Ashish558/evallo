@@ -560,7 +560,7 @@ export default function TutorDashboard() {
                                   <button
                                     onClick={() =>
                                       navigate(
-                                        `/assigned-tests/${item.testId}/${item.assignedTestId}/report/`
+                                        `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`
                                       )
                                     }
                                     className="bg-[#D4D9DF] rounded-5 w-[6.25vw] h-[31px] "
@@ -573,7 +573,7 @@ export default function TutorDashboard() {
                                       <button
                                         onClick={() =>
                                           navigate(
-                                            `/assigned-tests/${item.testId}/${item.assignedTestId}/report/`
+                                            `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`
                                           )
                                         }
                                         className="bg-[#38C980] rounded-5 w-[6.25vw] h-[31px]"
@@ -584,7 +584,7 @@ export default function TutorDashboard() {
                                       <button
                                         onClick={() =>
                                           navigate(
-                                            `/assigned-tests/${item.testId}/${item.assignedTestId}/report/`
+                                            `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`
                                           )
                                         }
                                         className="bg-[#FFCE84] rounded-5 w-[6.25vw] h-[31px]"

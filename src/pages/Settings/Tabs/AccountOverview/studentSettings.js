@@ -66,6 +66,7 @@ const StudentSettings = () => {
   const [studentFeedback, setStatus] = useStudentFeedbackMutation()
   const [fetchedData, setFetchedData] = useState({});
   const [saving, setSaving] = useState(false)
+  const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
   useEffect(() => {
     setSaving(true)
     userDetails()
@@ -79,6 +80,7 @@ const StudentSettings = () => {
         setSaving(false)
       })
       .catch((err) => {
+        
         setSaving(false)
         console.log(err);
       });
@@ -193,6 +195,9 @@ const StudentSettings = () => {
     });
   };
   const handleFirstName = (e) => {
+    const regex = /^[a-zA-Z ]*$/;
+    const isValid = regex.test(e.target.value);
+    if(isValid)
     setValues({
       ...values,
       firstName: e.target.value,
@@ -257,13 +262,16 @@ const StudentSettings = () => {
             label="Last name"
             value={values.lastName}
             onChange={(e) =>
-             {const regex = /^[a-zA-Z0-9 ]*$/;
-             const isValid = regex.test(e.target.value);
-             if(isValid)
-              setValues({
-                ...values,
-                lastName: e.target.value,
-              })}
+              {
+                const regex = /^[a-zA-Z ]*$/;
+                const isValid = regex.test(e.target.value);
+                if(isValid)
+                setValues({
+                  ...values,
+                  lastName: e.target.value,
+                })
+              }
+           
             }
             error={error.lastName}
           />
@@ -315,15 +323,16 @@ const StudentSettings = () => {
 
               codeValue={values.phoneCode}
               handleCodeChange={(e) =>
+
                 setValues({
                   ...values,
                   phoneCode: e.target.value,
                 })
               }
-              onChange={(e) =>
-               {const regex = /^[0-9 ]*$/;
-               const isValid = regex.test(e.target.value);
-               if(isValid  && e.target.value?.length<12)
+              onChange={(e) =>{
+                const regex = /^[0-9 ]*$/;
+                const isValid = regex.test(e.target.value);
+                if (isValid && e.target.value?.length < 11)
                 setValues({
                   ...values,
                   phone: e.target.value,
@@ -335,7 +344,7 @@ const StudentSettings = () => {
           <div>
             <PrimaryButton
               onClick={handleDataUpdate}
-              disabled={saving}
+              disabled={saving||!emailValidation.test(values?.email)}
               loading={saving}
 
               className={`bg-[#FFA28D]   mt-7 ml-10 rounded-md px-[50px] py-[14.3px] text-sm text-base-20 text-white  `}
