@@ -940,6 +940,7 @@ export default function AssignedTests() {
           if (res.error) {
             return;
           }
+          setalldata(res.data.data.students)
           let tempData = res.data.data.students.map((student) => {
             return {
               _id: student._id,

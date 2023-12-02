@@ -480,10 +480,10 @@ export default function Settings() {
 //   updateAndFetchsettings(updatedSetting);
 // user/setting/updateSpecificImg
 const formData = new FormData();
-
+   console.log({file,idx})
     formData.append("file", file);
-    formData.append("imageIndex", idx);
-  
+    formData.append("imageIndex", idx+1);
+    setSaveLoading(true);
 axios.patch(`${BASE_URL}api/user/setting/updateSpecificImg`, formData, {
   headers: getAuthHeader(),
   maxBodyLength: Infinity,
