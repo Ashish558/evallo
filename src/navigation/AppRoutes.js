@@ -45,15 +45,31 @@ import AnnotatorComponent from "../components/annotate";
 import Testinstruction_2 from "../components/TestItem/testinstruction_2";
 import AdminPortal from "../pages/SuperadminDashboard/components/About/AdminPortal";
 
+//  layout page
+import Layout from "../pages/Layout/Layout";
+
+
 const AppRoutes = () => {
   const { isLoggedIn } = useSelector((state) => state.user);
   const { role: persona } = useSelector((state) => state.user);
+
 
   return (
     <BrowserRouter>
       <Navbar />
       <Routes>
         <Route path="/" element={isLoggedIn ? <Home /> : <Login />} />
+
+{/*  layout routes */}
+        <Route
+          path="/Layout"
+          element={
+            <RequireAuth isLoggedIn={isLoggedIn}>
+              <Layout />
+            </RequireAuth>
+          }
+        />
+
         <Route path="/signup" element={<Signup />} />
         <Route path="/admin-portal" element={<AdminPortal />} />
         <Route path="/signup/user" element={<UserSignup />} />
