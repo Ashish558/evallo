@@ -71,6 +71,7 @@ export default function Signup() {
   const [isAddedByAdmin, setIsAddedByAdmin] = useState(false);
   const [queryParams] = useSearchParams();
   useEffect(() => {
+   
     const currentParams = Object.fromEntries([...queryParams]);
    
     if (currentParams.hasOwnProperty("step") && currentParams.step) {
@@ -81,9 +82,12 @@ export default function Signup() {
         orgDetails: step==2?true:false,
         furtherDetails: step==3?true:false,
         requirements: step==4?true:false,
+       // signupSuccessful: step==5?true:false,
       }
       console.log("popstep",arr)
+      if(step<5)
       setFrames( arr);
+      if(step<5)
       setcurrentStep(step)
     }
   }, [queryParams]);

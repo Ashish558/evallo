@@ -303,9 +303,9 @@ export default function Settings() {
   const fetchSettings = () => {
     getSettings().then((res) => {
        console.log("get settings",res);
-      setSettingsData(res?.data?.data?.setting?res?.data?.data?.setting:organization?.settings);
+      setSettingsData(organization?.settings);
       
-      setThePermission(res?.data?.data?.setting?.permissions?res?.data?.data?.setting?.permissions:organization?.settings?.permissions);
+      setThePermission(organization?.settings?.permissions);
     });
 
   };
