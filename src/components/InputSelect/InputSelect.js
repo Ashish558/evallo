@@ -21,6 +21,7 @@ export default function InputSelect({
   optionData,
   inputContainerClassName,
   onChange,
+  noAsteric,
   radio,
   checkbox,
   optionClassName,
@@ -110,7 +111,7 @@ export default function InputSelect({
               className={`font-medium ${label == 'User Type' && 'text-sm'} text-[#26435F] inline-block  ${labelClassname}`}
             >
               {label}
-              {required && (
+              {required && !noAsteric && (
                 <span className="text-primaryRed inline-block pl-1">*</span>
               )}
             </label>

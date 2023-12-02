@@ -126,7 +126,6 @@ const SPFrame2 = ({
             <p className=" text-[20px] text-[#26435F] font-semibold text-base-20 w-[165px] text-left ">
               Join Date
               <span className=" text-[#FFA28D] text-xl block mt-1">
-                {console.log('user detail',userDetail)}
                 {formatDate2(getFormattedDate(userDetail?.createdAt, dateFormat))}
               </span>
             </p>

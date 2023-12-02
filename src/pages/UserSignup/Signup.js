@@ -154,7 +154,7 @@ export default function UserSignup() {
       if (res.data.organisation.length === 0) return;
       if (res.data.organisation[0]) {
         setOrganisation(res.data.organisation[0]);
-        // setCustomFields(res.data.organisation[0]?.settings?.customFields);
+         setCustomFields(res.data.organisation[0]?.settings?.customFields);
       }
     });
   }, [searchParams.get("orgName")]);

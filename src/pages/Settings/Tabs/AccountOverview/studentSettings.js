@@ -93,57 +93,31 @@ const StudentSettings = () => {
         console.log("Email Link sent", res);
       });
   };
-  function isValidEmail(email) {
-    // Regular expression for a basic email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  }
-
-  
+  const handleEmpty = (val) => {
+    if (!val || val.length === 0 || val?.trim()?.length === 0) {
+      return true;
+    }
+    return false;
+  };
   const handleDataUpdate = () => {
-    if(values.firstName.length==0){
-      setError((prev) => {
-        return {
-          ...prev,
-          firstName:'Fill valid First Name',
-        };
-      });
-      return;
+  
+    let arr=["firstName", "lastName", "email"]
+    let  emptyCheck=false;
+    for (let i=0; i<arr.length; i++) {
+      if(handleEmpty(values[arr[i]])) {
+        alert(`${arr[i]} cannot be empty.`)
+       emptyCheck=true;
+        return false;
+      }
     }
-    if(values.lastName.length==0){
-      setError((prev) => {
-        return {
-          ...prev,
-          lastName:'Fill valid Last Name',
-        };
-      });
-      return;
-    }
-    if(values.phone.length<10){
-      setError((prev) => {
-        return {
-          ...prev,
-          phone:'Fill valid Phone Number',
-        };
-      });
-      return;
-    }
-    if(!isValidEmail(values.email)){
-      setError((prev) => {
-        return {
-          ...prev,
-          email:'Fill valid Email id',
-        };
-      });
-      return;
-    }
-    setSaving(true)
+    if(emptyCheck) return false;
+   
     const updateUserAccount = async () => {
       try {
         let reqBody = { ...values };
         delete reqBody["_id"];
         delete reqBody["email"];
-
+        setSaving(true)
         updateAccount(reqBody)
           .then((res) => {
             alert("Account details updated succesfully")

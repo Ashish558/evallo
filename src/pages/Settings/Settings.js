@@ -303,9 +303,9 @@ export default function Settings() {
   const fetchSettings = () => {
     getSettings().then((res) => {
        console.log("get settings",res);
-      setSettingsData(res?.data?.data?.setting?res?.data?.data?.setting:organization?.settings);
+      setSettingsData(organization?.settings);
       
-      setThePermission(res?.data?.data?.setting?.permissions?res?.data?.data?.setting?.permissions:organization?.settings?.permissions);
+      setThePermission(organization?.settings?.permissions);
     });
 
   };
@@ -480,10 +480,10 @@ export default function Settings() {
 //   updateAndFetchsettings(updatedSetting);
 // user/setting/updateSpecificImg
 const formData = new FormData();
-
+   console.log({file,idx})
     formData.append("file", file);
-    formData.append("imageIndex", idx);
-  
+    formData.append("imageIndex", idx+1);
+    setSaveLoading(true);
 axios.patch(`${BASE_URL}api/user/setting/updateSpecificImg`, formData, {
   headers: getAuthHeader(),
   maxBodyLength: Infinity,
