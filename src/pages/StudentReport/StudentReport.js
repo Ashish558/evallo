@@ -13,7 +13,7 @@ import {
   accuracyOptions,
 } from "./tempData";
 import Table from "../../components/Table/Table";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import BarGraph from "../../components/BarGraph/BarGraph";
 import {
   useLazyGetAnswersQuery,
@@ -102,6 +102,12 @@ export default function StudentReport() {
 
   const navigate = useNavigate();
 
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    
+    window.scrollTo(0, 0);
+  }, [pathname]);
   useEffect(() => {
     if (persona === "parent" || persona === "student") {
       setTableHeaders(tableHeadersParent);

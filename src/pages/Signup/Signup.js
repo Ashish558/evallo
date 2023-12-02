@@ -69,7 +69,30 @@ export default function Signup() {
   const [lastLoginDisabled, setLastLoginDisabled] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isAddedByAdmin, setIsAddedByAdmin] = useState(false);
+  const [queryParams] = useSearchParams();
+  useEffect(() => {
+   
+    const currentParams = Object.fromEntries([...queryParams]);
+   
+    if (currentParams.hasOwnProperty("step") && currentParams.step) {
+      let step=currentParams.step
 
+      let arr = {
+        signupActive:step==1?true:false,
+        orgDetails: step==2?true:false,
+        furtherDetails: step==3?true:false,
+        requirements: step==4?true:false,
+       // signupSuccessful: step==5?true:false,
+      }
+      console.log("popstep",arr)
+      if(step<5)
+      setFrames( arr);
+      if(step<5)
+      setcurrentStep(step)
+    }
+  }, [queryParams]);
+  console.log("frames")
+ 
   const [values, setValues] = useState({
     firstName: "",
     lastName: "",
@@ -456,13 +479,8 @@ export default function Signup() {
   };
   const [emailExistLoad, setEmailExistLoad] = useState(false);
   const handleClick = () => {
-    // let f = /[a-z]/i.test(values?.firstName)
-    // f = f && /[a-z]/i.test(values?.lastName)
-    // f = f && /[a-z]/i.test(values?.company)
-    // if (!f) {
-    //   alert("Enter a valid name!")
-    //   return
-    // }
+    
+    console.log("clicked called");
     const emailAlreadyExists = async () => {
       setEmailExistLoad(true);
       let cc = 0;
@@ -520,6 +538,7 @@ export default function Signup() {
           signupActive: false,
           orgDetails: true,
         });
+        navigate("/signup?step=2");
       }
       if (cc >= 2) {
         setEmailExistLoad(false);

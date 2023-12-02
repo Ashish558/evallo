@@ -39,6 +39,7 @@ import {
   useCRMBulkDeleteUserMutation,
   useCRMBulkInviteUserMutation,
   useDeleteUserMutation,
+  useLazyGetExportDataQuery,
   useUnblockUserMutation,
 } from "../../app/services/admin";
 import ques from "../../assets/icons/tooltip.svg";
@@ -638,7 +639,7 @@ export default function Users() {
   const [unblockUser, unblockUserResp] = useUnblockUserMutation();
   const [fetchSettings, settingsResp] = useLazyGetSettingsQuery();
   const [userToDelete, setUserToDelete] = useState({});
-
+  const [getExportData,getExportDataStatus]=useLazyGetExportDataQuery()
   const [fetchUsers, fetchUsersResp] = useLazyGetAllUsersQuery();
   const [getAllUsers, setAllUsers] = useLazyGetAllOrgUsersQuery();
   const [addUser, addUserResp] = useAddUserMutation();
@@ -1110,7 +1111,34 @@ export default function Users() {
 
   const [csvLoad, setCsvLoad] = useState(false);
   const [successFetched, setsuccessFetched] = useState(false);
+ 
+
+  const generateExcel = (csvData) => {
+    const wb = XLSX.utils.book_new();
+
+    csvData.forEach(sheet => {
+      const ws = XLSX.utils.json_to_sheet(sheet.data);
+      XLSX.utils.book_append_sheet(wb, ws, sheet.sheetName);
+    });
+  const blob = XLSX.write(wb, { bookType: 'xlsx',type:"base64", mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+ const blobObject = new Blob([blob], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  const link = document.createElement('a');
+    link.href = URL.createObjectURL(blobObject);
+    link.download = 'data.xlsx';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   const handleBulkExport = async () => {
+    getExportData().then((res)=>{
+   
+      const csvSheetData = [
+        { data: [{name:true}], sheetName: 'parents' },
+        { data: [{name:true}], sheetName: 'students' },
+        { data: [{name:true}], sheetName: 'tutors' },
+      ];
+      generateExcel(csvSheetData)
+    })
     setCsvLoad(true);
     if (selectedId?.length === 0) {
       getAllUsers()
@@ -1200,10 +1228,10 @@ export default function Users() {
           setCsvLength("XX");
           alert("Bulk Users Saved!");
           setBulkUpload(false);
-          //setBulkUpload(false)
+         
         })
         .catch((err) => {
-          alert("Error Occured");
+          alert("Error Occured",err.message);
           setXlsFile(undefined);
           setBulkUpload(false);
         });
@@ -1227,6 +1255,7 @@ export default function Users() {
           // setXlsFile(undefined);
         })
         .catch((err) => {
+          alert("Error Occured",err.message);
           //console.log("error in bulk upload and invite");
           setXlsFile(undefined);
           setInviteUsers(false);
@@ -1361,7 +1390,9 @@ export default function Users() {
   console.log("selected ", selectedId, adminSelectedForDelete);
 
   const numberKey = Object.keys(bulkEdits)?.length > 0;
-
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
   //console.log("users",{selectedId,bulkEdits})
   return (
     <div className="w-[83.6989583333vw] mx-auto  min-h-screen">
@@ -2167,8 +2198,15 @@ export default function Users() {
             <>
               <p className="text-base -mt-[21px] text-[#667085] mb-6">
                 <span className="font-semibold mr-1">⚠️Note:</span>
-                Once the users are deleted from your Organization, you will not be able to recover their data. Read detailed documentation in Evallo’s{" "}
-                <span className="text-[#24A3D9] underline cursor-pointer font-medium" onClick={()=>navigate('/support')}>knowledge base.</span>
+                Once the users are deleted from your Organization, you will not
+                be able to recover their data. Read detailed documentation in
+                Evallo’s{" "}
+                <span
+                  className="text-[#24A3D9] underline cursor-pointer font-medium"
+                  onClick={() => navigate("/support")}
+                >
+                  knowledge base.
+                </span>
               </p>
             </>
           }

@@ -5,6 +5,7 @@ import { getFormattedDate } from "../../../utils/utils";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { getMonthName } from "../../../utils/utils";
 
 export default function TableItem({ item, onClick, AdminLatestSignUp,className }) {
   const [ dateFormat,setDateFormat ] = useState("dd/mm/yy")
@@ -20,6 +21,15 @@ export default function TableItem({ item, onClick, AdminLatestSignUp,className }
    // onClick.redirect(item);
 navigate(`orgadmin-profile/${item?._id}`)
   };
+
+  //  format monthName date, year
+  const formatDate= (value)=>{
+    const [ month, day, year] = value.split("-");
+    const monthName = getMonthName(month-1);
+    const formattedDate = `${monthName}` + " " + `${day}` + `,` + `${year}`;
+    return formattedDate
+   }
+
   return AdminLatestSignUp ? (
     <LatestSignUpTableItem item={item} onClick={onClick} />
   ) : (
@@ -45,7 +55,7 @@ navigate(`orgadmin-profile/${item?._id}`)
       <td className={`${className} text-sm   min-w-14 py-[15px] pr-3 pl-1 text-left`}>
         <div>
           {/* {new Date(item.date).toDateString().split(' ')[1] }. {new Date(item.date).getDate() }, {new Date(item.date).getFullYear()} */}
-          {getFormattedDate(item.date, dateFormat)}
+          {formatDate(getFormattedDate(item.date, dateFormat))}
         </div>
       </td>
     </tr>

@@ -10,6 +10,7 @@ import style from "./styles.module.css";
 import InputFieldDropdown from "../../../components/InputField/inputFieldDropdown";
 import InputSelectNew from "../../../components/InputSelectNew/InputSelectNew";
 import lockIcon from "../../../assets/icons/lock2.svg"
+import { useNavigate } from "react-router-dom";
 const grades = [6, 7, 8, 9, 10, 11, 12, "College"];
 const companyType = [
   "Sole proprietorship",
@@ -47,8 +48,18 @@ export default function OrgDetails({
     value: city.name,
     displayValue: city.name,
   }));
-
+  const handleBack = () => {
+    console.log("pophandleBackcalled")
+    setFrames((prev) => {
+      return { ...prev, orgDetails: false, signupActive: true };
+    });
+    navigate("/signup?step=1")
+    setcurrentStep(1);
+  };
+  const navigate=useNavigate()
+  
   const handleSubmit = () => {
+ 
     if (!handleEmpty(values?.company) || !handleEmpty(values?.companyType) || !handleEmpty(values?.website) || !handleEmpty(values?.address)
       || !handleEmpty(values?.country) || !handleEmpty(values?.city) || (states?.length>0 && !handleEmpty(values?.state)) || !handleEmpty(values?.zip)) {
       alert("Please Fill All The Fields!")
@@ -61,7 +72,7 @@ export default function OrgDetails({
       alert("Zip code should conatain digits only!")
    return 
     }
-    if (!alphadigit.test(values?.company) || !alphadigit.test(values?.address)
+    if (!alphadigit.test(values?.company) 
     || !alphadigit.test(values?.country) || !alphadigit.test(values?.city) || (states?.length>0 && !alphadigit.test(values?.state))) {
     alert("Please fill valid details!")
     return
@@ -86,6 +97,7 @@ if (values?.city?.length<3) {
         furtherDetails: true,
       };
     });
+    navigate("/signup?step=3")
   };
 
   const [country, setCountry] = useState([]);
@@ -111,12 +123,7 @@ if (values?.city?.length<3) {
       .then((data) => setCountry(data));
   }, []);
 
-  const handleBack = () => {
-    setFrames((prev) => {
-      return { ...prev, orgDetails: false, signupActive: true };
-    });
-    setcurrentStep(1);
-  };
+
   const handleCompanyTypeChange = (e) => {
     setValues({
       ...values,

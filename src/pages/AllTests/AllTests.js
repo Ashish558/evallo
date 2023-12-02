@@ -461,7 +461,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
               // setCSVFile(null);
               // setPDFFile(null);
               if (err?.response?.data) {
-                  alert(err?.response?.data);
+                  alert(err?.response?.data?.message);
                 }
               });
               setLoading(false);

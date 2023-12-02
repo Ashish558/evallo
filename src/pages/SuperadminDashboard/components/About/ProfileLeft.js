@@ -33,16 +33,16 @@ console.log("profile left", {userData})
           <img src={Profile} alt="profile" />
           <span className="flex flex-col text-[0.971875vw] text-[#517CA8] w-[45%]">
             <span className="flex  ">
-              <p className="mr-1 w-[70%] font-light">First name : </p>
-              <p className="font-medium"> {userData?.firstName}</p>
+              <p className="max-w-[65%] font-light flex mr-[28px]">First name : </p>
+              <p className="font-medium flex-grow-1"> {userData?.firstName}</p>
             </span>
             <span className="flex ">
-              <p className="mr-1 w-[70%] font-light">Last name : </p>{" "}
-              <p className="font-medium"> {userData?.lastName} </p>
+              <p className="max-w-[65%] font-light flex mr-[28px]">Last name : </p>{" "}
+              <p className="font-medium flex-grow-1"> {userData?.lastName} </p>
             </span>
-            <span className="flex ">
-              <p className="mr-12 w-[70%] font-light">Role : </p>
-              <p className="font-medium"> {userData?.role}</p>
+            <span className="flex">
+              <p className="w-[60%] font-light flex">Role : </p>
+              <p className="font-medium flex-grow-1 text-left flex justify-start items-center ps-[6px]"> {userData?.role}</p>
             </span>
           </span>
           <span className="flex gap-3 items-start absolute top-5 right-7">

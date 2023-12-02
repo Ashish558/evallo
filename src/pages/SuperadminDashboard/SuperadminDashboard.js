@@ -188,9 +188,9 @@ function SuperadminDashboard() {
 
         <div className="flex  justify-between mt-7 ">
           <section className="w-[30.47vw]">
-            <div className="w-full whitespace-nowrap">
+            <div className="w-[587.5px] whitespace-nowrap ">
               <p className={`${styles.subheading} `}> Organizations </p>
-              <div className={`flex mr-0 ${styles.orgCard} mt-1.5`}>
+              <div className={`flex mr-0 ${styles.orgCard} mt-1.5 justify-evenly items-center`}>
                 <div className={`  ${orgStyles.container} w-[10.16vw]`}>
                   <p className={`${orgStyles.heading} !text-[0.97vw]`}>
                     {" "}
@@ -233,8 +233,8 @@ function SuperadminDashboard() {
                 </div>
               </div>
             </div>
-            <div className="">
-              <p className="mt-[40px]  font-semibold text-[#26435F]">
+            <div className="mt-[40px] w-[585px]">
+              <p className="w-full font-semibold text-[#26435F] mb-[4px]">
                 {" "}
                 User Stats{" "}
               </p>
@@ -326,7 +326,7 @@ function SuperadminDashboard() {
                   </div>
 
                   <div
-                    className={`flex items-center  justify-start gap-12 pl-7 pt-1 pb-2 h-[80px] text-[#26435F] bg-[#FFFFFF] mt-6 ${styles.customBorder}`}
+                    className={`flex items-center  justify-start gap-12 pl-7 pt-1 pb-2 h-[80px] text-[#26435F] bg-[#FFFFFF] mt-[24px] ${styles.customBorder}`}
                   >
                     <div>
                       <p className="font-semibold text-[1.39vw]">

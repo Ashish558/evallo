@@ -460,6 +460,7 @@ const [toEdit, setToEdit] = useState({
   };
 
   */
+ const [session_no, setsession_no] = useState(0)
   useEffect(() => {
     if (persona === "admin" || persona === "parent" || isOwn) {
       setEditable(true);
@@ -862,7 +863,7 @@ const [toEdit, setToEdit] = useState({
                         <p>
                           <span>
                             <img
-                              className="inline-block  w-[22.521px] h-[18px] mr-2 cursor-pointer"
+                              className="inline-block  w-[22.521px] h-[18px] mr-2 cursor-pointer "
                               src={emailIcon}
                               alt="email"
                             />
@@ -1043,8 +1044,8 @@ const [toEdit, setToEdit] = useState({
             className="text-sm my-0 flex justify-end translate-y-7  float-right"
           />}
           <SPFrame0 isOwn={isOwn} userDetail={userDetail} settings={settings} toEdit={toEdit} setToEdit={setToEdit} />
-
           <SPFrame1
+            session_no={session_no}
             isOwn={isOwn}
             userDetail={userDetail}
             settings={settings}
@@ -1056,6 +1057,7 @@ const [toEdit, setToEdit] = useState({
           />
           <div className="h-[2px] mt-[84px] mb-14   bg-[#CBD6E2] w-[95%] mx-auto"></div>
           <SPFrame2
+            session_no={session_no}
             isOwn={isOwn}
             userDetail={userDetail}
             fetchDetails={fetchDetails}
@@ -1086,7 +1088,7 @@ const [toEdit, setToEdit] = useState({
             {
               persona === "admin" &&
               <SPFrame4 isOwn={isOwn} userDetail={userDetail}
-
+                setsession_no={setsession_no}
                 fetchDetails={fetchDetails}
                 user={user}
                 setSelectedScoreIndex={setSelectedScoreIndex}

@@ -78,22 +78,22 @@ export default function ActionLog({ actionLog, className }) {
   }
 
   //  format monthName date, year
-    const formatDate= (value)=>{
-       const [ month, day, year] = value.split("-");
-       const monthName = getMonthName(month-1);
-       console.log(
-        { 
-          value : value,
-          day : day,
-          month : month,
-          year : year,
-          monthName :monthName
-         }
-      );
-       
-       const formattedDate = `${monthName}` + " " + `${day}` + `,` + `${year}`;
-       return formattedDate
+  const formatDate= (value)=>{
+    const [ month, day, year] = value.split("-");
+    const monthName = getMonthName(month-1);
+    console.log(
+     { 
+       value : value,
+       day : day,
+       month : month,
+       year : year,
+       monthName :monthName
       }
+   );
+    
+    const formattedDate = `${monthName}` + " " + `${year}` + `,` + `${month}`;
+    return formattedDate
+   }
   
   return (
     <div

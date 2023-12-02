@@ -8,6 +8,7 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import SCheckbox from "../../../components/CCheckbox/SCheckbox";
 import InputSelectNew from "../../../components/InputSelectNew/InputSelectNew";
 import InputSelect from "../../../components/InputSelect/InputSelect";
+import { useNavigate } from "react-router-dom";
 
 export default function SignupLast({
   setFrames,
@@ -32,18 +33,16 @@ export default function SignupLast({
     });
     setValue(temp);
   };
-
+  const navigate= useNavigate()
   const handleSubmit = () => {
     handleSignup();
-    // setFrames((prev) => {
-    //   return { ...prev, signupLast: false, signupSuccessful: true };
-    // });
+    navigate("/signup?step=5")
+ 
   };
 
   const handleBack = () => {
-    // setFrames((prev) => {
-    //   return { ...prev, signupLast: false, furtherDetails: true };
-    // });
+    
+    navigate("/signup?step=3")
     setFrames((prev) => {
       return { ...prev, furtherDetails: true, requirements: false };
     });

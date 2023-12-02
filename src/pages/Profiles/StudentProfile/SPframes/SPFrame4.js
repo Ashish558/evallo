@@ -55,6 +55,7 @@ const SPFrame1 = ({
   userId,
   settings,
   user,
+  setsession_no,
   userDetail,
   editable,
   setToEdit,
@@ -134,6 +135,7 @@ const SPFrame1 = ({
       console.log(userDetail)
       getSessions(userDetail?.userId).then((response) => {
         console.log("session notes", response)
+        setsession_no(response.data?.sessionNotes?.length)
         response?.data?.sessionNotes?.map((it) => {
           if (it?.clientNotes?.note)
             setClientNotes((prev) => {

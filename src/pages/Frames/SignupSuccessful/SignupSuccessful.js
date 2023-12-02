@@ -95,7 +95,10 @@ export default function SignupSuccessful({
         <PrimaryButton
           className="w-full"
           children="Back to Login Page"
-          onClick={() => navigate("/")}
+          onClick={() => {
+            sessionStorage.clear();
+            navigate("/")
+          }}
         />
       </div>
     </div>

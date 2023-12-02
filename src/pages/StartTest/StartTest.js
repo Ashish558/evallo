@@ -28,6 +28,7 @@ import {
   getCheckedString,
   getDuration,
   getFormattedDate,
+  getMonthName,
 } from "../../utils/utils";
 import Modal from "../../components/Modal/Modal";
 import Warning from "../../assets/images/warning.png";
@@ -89,7 +90,13 @@ export default function StartTest() {
   const [continueTest, continueTestResp] = useLazyContinueTestQuery();
   const [completedSectionIds, setCompletedSectionIds] = useState([]);
   const [popUp, setPopUp] = useState(false);
-
+  const formatDate2= (value)=>{
+    const [ day, month, year] = value.split("-");
+    const monthName = getMonthName(month-1);
+    
+    const formattedDate = `${day}` + "/" + `${month}` + `/` + `${year}`;
+    return formattedDate
+   }
   useEffect(() => {
     let params = {};
     let url = `/api/test/myassigntest/${assignedTestId}`;
@@ -539,17 +546,18 @@ export default function StartTest() {
                       </p>
                     </div>
                     <div className="w-full flex mb-3 justify-between">
-                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] ">
+                      <p className="inline-block w-1/2 font-medium  text-[20px] text-[#517CA8]">
                         {" "}
                         Date Assigned{" "}
                       </p>
                       {console.log(testHeaderDetails)}
-                      <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]">
-                        {testHeaderDetails.dateAssigned}
+
+                      <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]  ">
+
                       </p>
                     </div>
                     <div className="w-full flex mb-3 justify-between">
-                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] ">
+                      <p className="inline-block w-1/2 font-medium  text-[20px] text-[#517CA8] ">
                         {" "}
                         Duration{" "}
                       </p>
@@ -568,7 +576,7 @@ export default function StartTest() {
 
                       <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8] ">
                         {testHeaderDetails.dueDate
-                          ? testHeaderDetails.dueDate
+                          ? formatDate2(testHeaderDetails.dueDate)
                           : "-"}
                       </p>
                     </div>
@@ -580,7 +588,7 @@ export default function StartTest() {
 
                       <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]">
                         {testHeaderDetails.startedOn
-                          ? testHeaderDetails.startedOn
+                          ? formatDate2(testHeaderDetails.startedOn)
                           : "-"}
                       </p>
                     </div>
@@ -757,6 +765,8 @@ export default function StartTest() {
             classname="max-w-[700px] mx-auto"
             title="Note that the time will begin as soon as you start this section. make sure that you have everything set up."
             titleClassName="mr-4  mb-4"
+            underline={true}
+            cancelIconState={false}
             primaryBtn={{
               text: "Okay",
               className: "bg-[#FF7979] w-[146.67px] h-[46.67px] flex-shrink-0 ml-0",

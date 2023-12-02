@@ -67,7 +67,20 @@ const AccountOverview = () => {
   // tooltip handler state
   const [hideTooltip, setTooltip] = useState(false);
 
-
+  useEffect(() => {
+    userDetails()
+      .then((res) => {
+        setValues({
+          ...res?.data.data.user,
+        });
+        setFetchedData({
+          ...res?.data.data.user,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   const isEmail = (val) => {
     let regEmail =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -137,7 +150,7 @@ const AccountOverview = () => {
           .then((res) => {
             setLoading(false);
             if (res?.error) {
-              alert("Error occured while updating!");
+              alert("Error occured while updating!",res?.error?.message);
             }
             if (res?.data) {
               alert("changes saved!");
@@ -192,13 +205,13 @@ console.log({fetchedData})
     <div>
       <div className="flex flex-col gap-10 py-[25px]">
         <div className="gap-8  flex justify-between items-center">
-          <div className="w-4/5 flex justify-start items-center ">
+          <div className="w-4/5 flex justify-start items-center gap-7">
             <InputField
               placeholder=""
               labelClassname="font-medium text-base"
               parentClassName="text-[#26435F]"
               inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040]  bg-white  border border-white text-[#667085] mr-[38px]"
-              inputClassName=" text-400 py-0 bg-transparent "
+              inputClassName="font-normal py-0 bg-transparent "
               label="First name"
               value={values.firstName}
               onChange={(e) =>
@@ -215,7 +228,7 @@ console.log({fetchedData})
               labelClassname="font-medium text-base"
               parentClassName="text-[#26435F]"
               inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040]  bg-white border border-white text-[#667085] mr-[38px]"
-              inputClassName=" text-400 py-0 bg-transparent"
+              inputClassName="font-normal py-0 bg-transparent"
               label="Last name"
               value={values.lastName}
               onChange={(e) =>
@@ -228,10 +241,11 @@ console.log({fetchedData})
             />
 
             <InputField
-              IconLeft={fetchedData?.isVerified?null:                caution}
+              IconLeft={fetchedData?.isVerified?null:caution}
+              label="Email"
               placeholder=""
               inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] border-0 !rounded-[5px] bg-white !shadow-[0px_0px_2.500000476837158px_0px_#00000040] "
-              inputClassName="bg-white w-[376px] h-[22px] pt-[13.752px] pe-[14.688px] pb-[14.248px] ps-[15px] text-xs"
+              inputClassName="bg-white w-[376px] h-[22px] pt-[13.752px] pe-[14.688px] pb-[14.248px] ps-[15px] text-xs font-normal  w-[calc(250*0.0522vw)]"
               parentClassName=""
               type="text"
               value={values.email}
@@ -264,7 +278,7 @@ console.log({fetchedData})
                 labelClassname="font-medium text-base"
                 parentClassName="text-[#26435F] "
                 inputContainerClassName="!shadow-[0px_0px_2.500000476837158px_0px_#00000040]  bg-white  text-[#667085]"
-                inputClassName="text-400 py-[7.5px] bg-transparent w-[calc(377*0.0522vw)]"
+                inputClassName="font-normal py-[7.5px] bg-transparent w-[calc(200*0.0522vw)]"
                 label="Phone"
                 value={values.phone}
                 codeValue={values.phoneCode}

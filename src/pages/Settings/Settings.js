@@ -301,19 +301,21 @@ export default function Settings() {
   };
 
   const fetchSettings = () => {
-    if (organization.settings) {
-      setSettingsData(organization.settings);
-      if (organization?.settings?.permissions)
-        setThePermission(organization.settings.permissions);
-    }
+    getSettings().then((res) => {
+       console.log("get settings",res);
+      setSettingsData(organization?.settings);
+      
+      setThePermission(organization?.settings?.permissions);
+    });
+
   };
-  //console.log(organization);
+
   const onRemoveTextImageTag = (item, key, idx) => {
     let updatedField = settingsData[key].filter((item, i) => i !== idx);
     let updatedSetting = {
       [key]: updatedField,
     };
-    // //console.log(updatedSetting)
+    
     updateAndFetchsettings(updatedSetting);
   };
 
@@ -345,7 +347,7 @@ export default function Settings() {
     updateAndFetchsettings(updatedSetting);
   };
 
-  const updateAndFetchsettings = (updatedSetting,setloadingCustom) => {
+  const updateAndFetchsettings = (updatedSetting, setloadingCustom) => {
     if (!organization || !settingsData || !updatedSetting) return;
     const settings = {
       ...settingsData,
@@ -355,18 +357,18 @@ export default function Settings() {
       settings,
     };
     //console.log("body", body);
-    setloadingCustom && setloadingCustom(true)
+    setloadingCustom && setloadingCustom(true);
     setSaveLoading(true);
     updateSetting(body)
       .then((res) => {
         //console.log("updated", res.data.data);
-         setloadingCustom && setloadingCustom(false)
+        setloadingCustom && setloadingCustom(false);
         setSaveLoading(false);
         setSettingsData(res.data.data.updatedOrg.settings);
         dispatch(updateOrganizationSettings(res.data.data.updatedOrg.settings));
       })
       .catch((err) => {
-          setloadingCustom && setloadingCustom(false)
+        setloadingCustom && setloadingCustom(false);
         setSaveLoading(false);
         //console.log("err", err);
       });
@@ -461,19 +463,81 @@ export default function Settings() {
     //console.log(updatedSetting);
     updateAndFetchsettings(updatedSetting);
   };
-  const handleImageRemoval = (offer) => {
-    //console.log(offer);
-    const arr = offerImages.filter((item) => {
-      return item._id !== offer._id;
+  const handleaddimage=(idx,file)=>{
+//     const arr = [...offerImages]; // Create a shallow copy of the array
+// // Create a new object with the same properties as the first object in arr
+// console.log(file);
+// const modifiedObject = { ...arr[idx], image: file };
+
+// // Update the array with the modified object
+// arr[idx] = modifiedObject;
+// console.log('asdasd',arr);
+//    let updatedSetting = {
+//      offerImages: arr,
+//    };
+//    console.log(arr);
+
+//   updateAndFetchsettings(updatedSetting);
+// user/setting/updateSpecificImg
+const formData = new FormData();
+   console.log({file,idx})
+    formData.append("file", file);
+    formData.append("imageIndex", idx+1);
+    setSaveLoading(true);
+axios.patch(`${BASE_URL}api/user/setting/updateSpecificImg`, formData, {
+  headers: getAuthHeader(),
+  maxBodyLength: Infinity,
+  maxContentLength: Infinity,
+}).then((res) => {
+  console.log(res.data.data.setting.settings);
+  dispatch(
+    updateOrganizationSettings(res.data.data.setting.settings)
+  );
+  setTagImage(null);
+  setTagText("");
+  setSelectedImageTag("");
+  setImageName("");
+  setTagModalActive(false);
+  fetchSettings();
+  setSaveLoading(false);
+})
+.catch((err) => {
+  console.log("err", err);
+  alert("Could not upload image");
+  setSaveLoading(false);
+});
+ }
+ const handleImageRemoval = (idx) => {
+   console.log(idx);
+  if(offerImages[idx]?.link==''&& offerImages[idx]?.buttonText==''){
+   const arr = offerImages.filter((item,i) => {
+     return i!==idx;
     });
     let updatedSetting = {
       offerImages: arr,
     };
+    console.log('arasrra r',arr);
+
     updateAndFetchsettings(updatedSetting);
+  }
+  else{
+     const arr = [...offerImages]; // Create a shallow copy of the array
+// Create a new object with the same properties as the first object in arr
+const modifiedObject = { ...arr[idx], image: '' };
+
+// Update the array with the modified object
+arr[idx] = modifiedObject;
+   console.log(idx,arr);
+   let updatedSetting = {
+     offerImages: arr,
+   };
+  updateAndFetchsettings(updatedSetting);
+ }
   };
-  const handleOfferChange = (offer, key, value) => {
-    let updatedField = settingsData.offerImages.map((item) => {
-      if (item._id === offer._id) {
+  const handleOfferChange = (i, key, value) => {
+    console.log('asASAsaS',key,value,i);
+    let updatedField = settingsData.offerImages.map((item,idx) => {
+      if (idx==i) {
         return { ...item, [key]: value };
       } else {
         return item;
@@ -556,13 +620,12 @@ export default function Settings() {
         return { ...serv };
       }
     });
-    ////console.log("upper",updated)
+    
     let updatedSetting = {
       servicesAndSpecialization: updated,
     };
-    updateAndFetchsettings(updatedSetting);
-    // //console.log('updatedSetting', updatedSetting)
-  };
+     updateAndFetchsettings(updatedSetting);
+     };
 
   const handleAddSessionTag = (text, key) => {
     let tempSettings = { ...settingsData };
@@ -805,7 +868,7 @@ export default function Settings() {
       }
       //  window.location.reload();
       // //console.log("reshi", res);
-    
+
       fetchSettings();
       setFetchS(res);
     });
@@ -872,6 +935,54 @@ export default function Settings() {
 
   const [addOne, setOne] = useState(false);
   const [loading2, setLoading2] = useState(false);
+  const onRemoveSpecialization2 = (text, service) => {
+   
+
+    let arr = [...selectedServiceData?.specialization];
+
+    arr = arr.filter((it) => it !== text);
+
+    setSelectedServiceData({
+      ...selectedServiceData,
+      specialization: arr,
+    });
+  };
+  const onRemoveSessionTagItem2 = (text, heading) => {
+   
+    let arr = [...selectedSessionData?.items];
+
+    arr = arr.filter((it) => it !== text);
+
+    setSelectedSessionData({
+      ...selectedSessionData,
+      items: arr,
+    });
+  
+  };
+  const handleAddSpecialization2 = (text, key) => {
+    let tempSettings = { ...settingsData };
+
+    let arr = [...selectedServiceData?.specialization];
+    arr.push(text);
+    setSelectedServiceData({
+      ...selectedServiceData,
+      specialization: arr,
+    });
+     };
+  const handleAddSessionTag2 = (text, key) => {
+    let arr = [...selectedSessionData?.items];
+
+    arr.push(text);
+
+    setSelectedSessionData({
+      ...selectedSessionData,
+      items: arr,
+    });
+
+   
+  
+  };
+  console.log({ selectedServiceData });
   useEffect(() => {
     if (settingsData && settingsData?.offerImages) {
       let arr = [];
@@ -973,28 +1084,25 @@ export default function Settings() {
     updateAndFetchsettings(updatedSetting);
   };
 
-  const handleAddServiceName = (text, key) => {
+  const handleAddServiceName2 = (text, key) => {
     let tempSettings = { ...settingsData };
 
     let updated = servicesAndSpecialization.map((serv) => {
       if (serv._id === key) {
-        return {
-          ...serv,
-          service: text,
-        };
+        return selectedServiceData;
       } else {
         return { ...serv };
       }
     });
-    ////console.log("upper",updated)
+   
     let updatedSetting = {
       servicesAndSpecialization: updated,
     };
     updateAndFetchsettings(updatedSetting);
     setAddServiceModalActive(false);
     setSubModalServiceData(subModalInitialServiceState);
-    // //console.log('updatedSetting', updatedSetting)
-  };
+     };
+
   const handleAddSessionName = (text, key) => {
     let tempSettings = { ...settingsData };
 
@@ -1017,7 +1125,24 @@ export default function Settings() {
     setSubModalSessionData(subModalInitialSessionState);
     // //console.log('updatedSetting', updatedSetting)
   };
+  const handleAddSessionName2 = (text, key) => {
+    let tempSettings = { ...settingsData };
 
+    let updated = sessionTags.map((serv) => {
+      if (serv._id === key) {
+        return selectedSessionData
+      } else {
+        return { ...serv };
+      }
+    });
+   
+    let updatedSetting = {
+      sessionTags: updated,
+    };
+    updateAndFetchsettings(updatedSetting);
+    setAddSessionModalActive(false);
+    setSubModalSessionData(subModalInitialSessionState);
+      };
   console.log({ offersNew, offerImages });
 
   const submitImageModalNew = (file2, val, e) => {
@@ -1713,7 +1838,13 @@ export default function Settings() {
                     see as soon as they log into their Evallo dashboard. You can
                     add a maximum of 4 Announcements at a time. Read detailed
                     documentation in Evallo’s
-                    <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
+                    <span
+                      className="text-[#24A3D9] cursor-pointer"
+                      onClick={() => navigate("/support")}
+                    >
+                      {" "}
+                      knowledge base.
+                    </span>
                   </p>
                   <div className="flex items-center gap-5 pr-3  flex-1 !w-[100%] overflow-x-auto custom-scroller-2    [&>*]:mb-[10px] bg-white  gap-x-5 p-4 rounded-br-5 rounded-bl-5 mb-3 !px-6 py-5 ">
                     {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
@@ -1739,27 +1870,77 @@ export default function Settings() {
                     className="pt-1 pb-1 mr-15 text-base-17-5"
                   /> */}
 
-                    {offerImages?.map((offer) => {
+                    {offerImages?.map((offer,i) => {
                       return (
                         <div className="flex-1" key={offer._id}>
                           <div className="relative">
                             {toggleImage.offer && (
                               <div className=" overflow-hidden mb-5">
                                 <div className="flex">
-                                  <div className="w-[300px] h-[150px]">
+                                {offer.image!==''?
+                                <div className="w-[300px] h-[150px]">
                                     <img
                                       src={`${awsLink}${offer.image}`}
                                       alt="offer-image3"
                                       className="w-full h-full object-cover rounded-7"
                                     />
                                   </div>
+                                     : <div className="w-[300px] h-[150px] flex-1">
+                                     <div className="flex w-[100%] bg-[#F5F8FA] rounded-md mb-8 flex-col justify-center items-center">
+                                       <div className="mt-[20px] mb-[10px] items-center flex justify-center">
+                                         <img
+                                           src={fileupload}
+                                           alt="fileuploadIcon"
+                                         ></img>
+                                       </div>
+       
+                                       <div className="flex items-center text-center justify-center text-base-15">
+                                         {/* {xlsFile == undefined ? (
+                           <p className=""></p>
+                         ) : (
+                           <p className="block ">{xlsFile.name}</p>
+                         )} */}
+                                       </div>
+       
+                                       <div className="flex justify-center">
+                                         <label
+                                           htmlFor="file3"
+                                           className={`block cursor-pointer text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ${
+                                             loading2 ? "cursor-wait" : ""
+                                           }`}
+                                         >
+                                           {loading2 && offer?.image
+                                             ? "Submitting..."
+                                             : " Choose File"}
+                                         </label>
+                                         <input
+                                           accept="image/*"
+                                           onChange={(e) => {
+                                             console.log('szszs',e.target.files[0]);
+                                             handleaddimage(i, e.target.files[0])
+                                             // setImageName(e.target.files[0].name);
+                                           }}
+                                           id="file3"
+                                           type="file"
+                                         />
+                                       </div>
+       
+                                       <label
+                                         htmlFor="file"
+                                         className="block text-xs items-center justify-center  rounded-[5px]  px-4 py-2 font-normal text-center text-[#517CA8] text-base-15"
+                                       >
+                                         Less than 1 MB
+                                       </label>
+                                     </div>
+                                   </div>
+                           }
                                   <div className="w-[1.25px] h-[150px] bg-[#CBD6E2] ml-5" />
                                 </div>
                               </div>
                             )}
                             <div>
-                              <div
-                                onClick={() => handleImageRemoval(offer)}
+                            {offer.image!==''&&<div
+                                onClick={() => handleImageRemoval(i)}
                                 className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center  rounded-full cursor-pointer"
                               >
                                 <img
@@ -1767,7 +1948,7 @@ export default function Settings() {
                                   className="w-5"
                                   alt="delete"
                                 />
-                              </div>
+                              </div>}
                               <InputField
                                 defaultValue={offer?.link?.trim()}
                                 inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
@@ -1775,7 +1956,7 @@ export default function Settings() {
                                 placeholder={"Hyperlink"}
                                 onBlur={(e) =>
                                   handleOfferChange(
-                                    offer,
+                                    i,
                                     "link",
                                     e.target.value
                                   )
@@ -1790,7 +1971,7 @@ export default function Settings() {
                                 }
                                 onBlur={(e) =>
                                   handleOfferChange(
-                                    offer,
+                                    i,
                                     "buttonText",
                                     e.target.value
                                   )
@@ -1963,31 +2144,39 @@ export default function Settings() {
                           id === 3 ? "!opacity-[0.7]" : ""
                         } pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between text-base-17-5`}
                       >
-                        <div className="flex items-center flex-row justify-start"><p>{renderColoredText(item.name)}</p>
-                        {id==5||id==7?<div className="pl-4 group relative">
-                <p>
-                  <img
-                    src={questionMark}
-                    alt=""
-                    onClick={() => {
-                      console.log("set perm tool tip");
-                    }}
-                  />
-                </p>
+                        <div className="flex items-center flex-row justify-start">
+                          <p>{renderColoredText(item.name)}</p>
+                          {id == 5 || id == 7 ? (
+                            <div className="pl-4 group relative">
+                              <p>
+                                <img
+                                  src={questionMark}
+                                  alt=""
+                                  onClick={() => {
+                                    console.log("set perm tool tip");
+                                  }}
+                                />
+                              </p>
 
-                <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
-                  <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
-                 {id==5? 'Set Permissions':
-                  id==7?
-                 ' New Assignment Email Notifications ' :null}                 </h3>
-                  <span className="font-light leading-[0.5px] text-[0.69vw]">
-                  {id==5?'Enable or disable tutor access to add, update or delete sessions scheduled on a calendar. When disabled, tutors in your Organization will only be able to reconcile sessions and add session notes & tags, but will not be able to make any changes to the remaining details of a session. Enable this if you want to provide more autonomy to your tutors. Disable if you want to discourage them from managing their own schedule.':
-                  id==7?
-                  'Select whether you want to send email notifications when a new test is assigned to a student by a tutor or an admin.'
-                  :null}</span>
-                </span>
-              </div>:null}
-              </div>
+                              <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                                <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
+                                  {id == 5
+                                    ? "Set Permissions"
+                                    : id == 7
+                                    ? " New Assignment Email Notifications "
+                                    : null}{" "}
+                                </h3>
+                                <span className="font-light leading-[0.5px] text-[0.69vw]">
+                                  {id == 5
+                                    ? "Enable or disable tutor access to add, update or delete sessions scheduled on a calendar. When disabled, tutors in your Organization will only be able to reconcile sessions and add session notes & tags, but will not be able to make any changes to the remaining details of a session. Enable this if you want to provide more autonomy to your tutors. Disable if you want to discourage them from managing their own schedule."
+                                    : id == 7
+                                    ? "Select whether you want to send email notifications when a new test is assigned to a student by a tutor or an admin."
+                                    : null}
+                                </span>
+                              </span>
+                            </div>
+                          ) : null}
+                        </div>
 
                         <ToggleBar
                           toggle={{ value: item.choosedValue, key: item._id }}
@@ -1997,31 +2186,41 @@ export default function Settings() {
                     ) : (
                       <div
                         className={`pt-[34px] pb-[30px]   text-[#24A3D9] font-medium text-[17.5px] flex justify-between border-b-2 border-[#CBD6E2] ${styles.permission} text-base-17-5`}
-                      > <div className="flex items-center flex-row justify-start">
-                        <p>{renderColoredText(item.name)}</p>
-                        {id==5||id==7?<div className="pl-4 group relative">
-                <p>
-                  <img
-                    src={questionMark}
-                    alt=""
-                    onClick={() => {
-                      console.log("set perm tool tip");
-                    }}
-                  />
-                </p>
-                  
-                <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
-                  <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
-                 {id==5? 'Set Permissions':
-                  id==7?
-                 ' New Assignment Email Notifications ' :null}                 </h3>
-                  <span className="font-light leading-[0.5px] text-[0.69vw]">
-                  {id==5?'Enable or disable tutor access to add, update or delete sessions scheduled on a calendar. When disabled, tutors in your Organization will only be able to reconcile sessions and add session notes & tags, but will not be able to make any changes to the remaining details of a session. Enable this if you want to provide more autonomy to your tutors. Disable if you want to discourage them from managing their own schedule.':
-                  id==7?
-                  'Select whether you want to send email notifications when a new test is assigned to a student by a tutor or an admin.'
-                  :null}</span>
-                </span>
-              </div>:null} </div>
+                      >
+                        {" "}
+                        <div className="flex items-center flex-row justify-start">
+                          <p>{renderColoredText(item.name)}</p>
+                          {id == 5 || id == 7 ? (
+                            <div className="pl-4 group relative">
+                              <p>
+                                <img
+                                  src={questionMark}
+                                  alt=""
+                                  onClick={() => {
+                                    console.log("set perm tool tip");
+                                  }}
+                                />
+                              </p>
+
+                              <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                                <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
+                                  {id == 5
+                                    ? "Set Permissions"
+                                    : id == 7
+                                    ? " New Assignment Email Notifications "
+                                    : null}{" "}
+                                </h3>
+                                <span className="font-light leading-[0.5px] text-[0.69vw]">
+                                  {id == 5
+                                    ? "Enable or disable tutor access to add, update or delete sessions scheduled on a calendar. When disabled, tutors in your Organization will only be able to reconcile sessions and add session notes & tags, but will not be able to make any changes to the remaining details of a session. Enable this if you want to provide more autonomy to your tutors. Disable if you want to discourage them from managing their own schedule."
+                                    : id == 7
+                                    ? "Select whether you want to send email notifications when a new test is assigned to a student by a tutor or an admin."
+                                    : null}
+                                </span>
+                              </span>
+                            </div>
+                          ) : null}{" "}
+                        </div>
                         <p>
                           <select
                             onChange={(e) =>
@@ -2209,7 +2408,13 @@ export default function Settings() {
                 provide them this access and what assignments should show up
                 automatically after they sign up with your organization. Read
                 detailed documentation in Evallo’s{" "}
-                <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
+                <span
+                  className="text-[#24A3D9] cursor-pointer"
+                  onClick={() => navigate("/support")}
+                >
+                  {" "}
+                  knowledge base.
+                </span>
               </p>
 
               <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
@@ -2347,7 +2552,7 @@ export default function Settings() {
                 if (addOne) {
                   handleAddNewService();
                 } else {
-                  handleAddServiceName(
+                  handleAddServiceName2(
                     selectedServiceData?.service,
                     subModalServiceData?._id
                   );
@@ -2361,7 +2566,13 @@ export default function Settings() {
                 specialize in while providing these services. For example, Test
                 Prep can be a “Service” with “SAT” and “ACT” as two topics under
                 it. Read detailed documentation in Evallo's
-                <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
+                <span
+                  className="text-[#24A3D9] cursor-pointer"
+                  onClick={() => navigate("/support")}
+                >
+                  {" "}
+                  knowledge base.
+                </span>
               </p>
 
               <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
@@ -2403,7 +2614,7 @@ export default function Settings() {
                     onAddTag={
                       addOne
                         ? handleAddNewSpecialisation
-                        : handleAddSpecialization
+                        : handleAddSpecialization2
                     }
                     keyName={
                       addOne
@@ -2418,15 +2629,15 @@ export default function Settings() {
                     keyName={
                       addOne
                         ? addServices2?.service
-                        : subModalServiceData.service
+                        : selectedServiceData.service
                     }
                     items={
                       addOne
                         ? addServices2?.specialization
-                        : subModalServiceData.specialization
+                        : selectedServiceData.specialization
                     }
                     onRemoveFilter={
-                      addOne ? handleNewServiceRemove : onRemoveSpecialization
+                      addOne ? handleNewServiceRemove : onRemoveSpecialization2
                     }
                     className="pt-1 pb-1 mr-15 text-base-17-5"
                   />
@@ -2488,7 +2699,7 @@ export default function Settings() {
                 if (addOne) {
                   handleAddNewSession();
                 } else {
-                  handleAddSessionName(
+                  handleAddSessionName2(
                     selectedSessionData?.heading,
                     subModalSessionData?._id
                   );
@@ -2503,7 +2714,13 @@ export default function Settings() {
                 used to add further details about the session, such as the
                 topics covered, homework assigned, student mood, etc. Read
                 detailed documentation in Evallo’s
-                <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
+                <span
+                  className="text-[#24A3D9] cursor-pointer"
+                  onClick={() => navigate("/support")}
+                >
+                  {" "}
+                  knowledge base.
+                </span>
               </p>
 
               <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
@@ -2542,7 +2759,7 @@ export default function Settings() {
                 </div>
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] mt-5">
                   <AddTag
-                    onAddTag={addOne ? handleAddNewTags : handleAddSessionTag}
+                    onAddTag={addOne ? handleAddNewTags : handleAddSessionTag2}
                     keyName={
                       addOne
                         ? addSession2?.heading
@@ -2556,13 +2773,13 @@ export default function Settings() {
                     keyName={
                       addOne
                         ? addSession2?.heading
-                        : subModalSessionData.heading
+                        : selectedSessionData.heading
                     }
                     items={
-                      addOne ? addSession2?.items : subModalSessionData.items
+                      addOne ? addSession2?.items : selectedSessionData.items
                     }
                     onRemoveFilter={
-                      addOne ? handleNewSessionRemove : onRemoveSessionTagItem
+                      addOne ? handleNewSessionRemove : onRemoveSessionTagItem2
                     }
                     className="pt-1 pb-1 mr-15 text-base-17-5"
                   />

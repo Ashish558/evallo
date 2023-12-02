@@ -40,3 +40,16 @@
     background-color: black;
     color: white;
 }
+.mathjax-box .mjx-mi {
+    font-size: large !important;
+}
+.CtxtMenu_Menu{
+    display: none !important;
+}
+mjx-mstyle{
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: baseline !important;
+    justify-content: start !important;
+    gap: 1px !important;
+}
