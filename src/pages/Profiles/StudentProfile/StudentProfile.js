@@ -1044,7 +1044,6 @@ const [toEdit, setToEdit] = useState({
             className="text-sm my-0 flex justify-end translate-y-7  float-right"
           />}
           <SPFrame0 isOwn={isOwn} userDetail={userDetail} settings={settings} toEdit={toEdit} setToEdit={setToEdit} />
-
           <SPFrame1
             session_no={session_no}
             isOwn={isOwn}

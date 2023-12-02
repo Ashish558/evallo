@@ -10,7 +10,6 @@ import {
 } from "../../../../app/services/users";
 
 import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew";
-import { object } from "yup";
 import { useLazyGetSessionNotesQuery } from "../../../../app/services/session";
 import { useEffect } from "react";
 import { getFormattedDate } from "../../../../utils/utils";
