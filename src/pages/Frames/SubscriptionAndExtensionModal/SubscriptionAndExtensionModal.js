@@ -70,6 +70,56 @@ function SubscriptionAndExtensionModal({
     const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
     const [addSubscriptions, addSubscriptionsResp] = useAddSubscriptionsMutation();
 
+    
+    function OnExtensionsChanged() {
+        let output = sessionStorage.getItem("chosenExtentionObjectsFromAPI");
+        if(output === '' || output === undefined ) {
+          output = null;
+        }
+        let chosenExtentionObjectsFromAPI = JSON.parse(output);
+        if(chosenExtentionObjectsFromAPI === undefined || chosenExtentionObjectsFromAPI === null) {
+          chosenExtentionObjectsFromAPI = [];
+        }
+    
+        for(let i = 0; i < extensions.length; i++) {
+        //   if(!extensions[i].checked) continue;
+          const ext = extensions[i];
+    
+          const chosenExtension = subscriptionsInfoFromAPI.find(item => {
+            return item.product.metadata.type === "extension" && 
+                   item.product.name === ext.text && 
+                   item.lookup_key === ext.packageName;
+          });
+    
+          chosenExtentionObjectsFromAPI = chosenExtentionObjectsFromAPI.filter(item => {
+            return item.product.metadata.type === "extension" && item.product.name !== ext.text;
+          })
+
+          if(!extensions[i].checked) {
+            continue;
+          }
+    
+          chosenExtentionObjectsFromAPI.push(chosenExtension);
+    
+        //   sessionStorage.setItem("chosenExtentionObjectsFromAPI", JSON.stringify(chosenExtentionObjectsFromAPI));
+        }
+
+        sessionStorage.setItem("chosenExtentionObjectsFromAPI", JSON.stringify(chosenExtentionObjectsFromAPI));
+    }
+    
+    useEffect(() => {
+        OnExtensionsChanged();
+    }, [extensions]);
+
+    useEffect(() => {
+        for(let i = 0; i < extensions.length; i++) {
+            if(extensions[i].checked) {
+                SetIsCCRequired(true);
+                break;
+            }
+        }
+    }, [extensions]);
+
     function loadSubscriptionAndExtensionInfo(productList) {
         if(!(productList.constructor && productList.constructor.name === "Array")) return;
 
