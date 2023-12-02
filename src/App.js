@@ -1,6 +1,6 @@
 import AppRoutes from "./navigation/AppRoutes";
 import "./App.css";
-import "./pages/responsive.css"
+// import "./pages/responsive.css"
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import {

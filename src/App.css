@@ -8,7 +8,40 @@
   src: url(./assets/fonts/Gilroy-SemiBold.ttf);
 }
 
+body{
+  transform-origin: top left;
+}
 
+@media screen and (min-width: 1920px) {
+  body {
+    transform: scale(1); 
+    transform-origin: top left;
+  }}
+/* }
+@media screen and (max-width: 1920px) and (min-width: 1440px) {
+  body {
+    transform: scale(0.75); 
+    transform-origin: top left;
+  }
+}
+@media screen and (max-width: 1440px) and (min-width:1336px) {
+  body{
+      transform: scale(0.71);
+      transform-origin: top left;
+  }
+}
+@media screen and (max-width: 1336px) and (min-width:768px) {
+  body{
+      transform: scale(0.67);
+      transform-origin: top left;
+  }
+}
+@media screen and (max-width: 768px) and (min-width:414px) {
+  body {
+      transform: scale(0.53);
+      transform-origin: top left;
+  }
+} */
 
 body {
   background-color: #f5f8fa;
@@ -22,7 +55,7 @@ body {
   position: relative;
   display: flex;
   flex-flow: column;
-  min-width:1000px !important;
+  min-width:1920px !important;
 }
 *{
   font-family: 'Lexend', sans-serif !important;

@@ -27,7 +27,7 @@ import {
 } from "../../../../app/services/organization";
 import { object } from "prop-types";
 import axios from "axios";
-import { trim } from "jquery";
+// import { trim } from "jquery";
 
 const CompanyAndBround = () => {
   const { organization } = useSelector((state) => state.organization);
