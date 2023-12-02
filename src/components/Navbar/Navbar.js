@@ -415,7 +415,7 @@ const [loading2,setLoading2]=useState(false)
                </div>
 
                <div
-                  className={` flex ${isLoggedIn&& 'cursor-pointer'} items-center `}
+                  className={` flex ${isLoggedIn&& 'cursor-pointer'} items-center cursor-pointer`}
                   onClick={() => isLoggedIn && setLogoutModalActive(true)}
                >
                   <div>
