@@ -41,9 +41,15 @@ function ReviewProduct({
     const [applyCoupon, applyCouponResp] = useLazyApplyCouponQuery();
 
     useEffect(() => {
-        console.log("chosenSubscriptionFromAPI from sessionStorage");
-        const chosenSub = subscriptionsInfoFromAPI.find(item => item.id === chosenSubscriptionPlan.id);
-        sessionStorage.setItem("chosenSubscriptionFromAPI", chosenSub)
+        // console.log("chosenSubscriptionFromAPI from sessionStorage");
+        let subscriptionSessionStorageOutput = sessionStorage.getItem("chosenSubscriptionFromAPI");
+        if(subscriptionSessionStorageOutput === '' || subscriptionSessionStorageOutput === undefined) {
+            subscriptionSessionStorageOutput = null;
+        }
+        let chosenSub = JSON.parse(subscriptionSessionStorageOutput);
+        if(chosenSub === null) {
+            chosenSub = subscriptionsInfoFromAPI.find(item => item.id === chosenSubscriptionPlan.id);
+        }
         SetChosenSubscriptionObjectFromAPI(chosenSub);
     }, []);
 
@@ -137,8 +143,24 @@ function ReviewProduct({
                         <div className="grow" ></div>
 
                         <div className="flex flex-col items-end text-[#24A3D9]" >
-                            <div>{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + chosenSubscriptionPlan.pricePerMonth}</div>
-                            <div>1 Month</div>
+                            <div>{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + 
+                                  (chosenSubscriptionPlan.freeTrialDays === 0 ? chosenSubscriptionPlan.pricePerMonth : 0)
+                            }</div>
+                            <div>
+                                {
+                                    (() => {
+                                        const freeTrialDays = chosenSubscriptionPlan.freeTrialDays;
+                                        const freeTrialStatement = freeTrialDays === 0 ? "1 Month" :
+                                                           freeTrialDays >= 30 ?  `${freeTrialDays / 30} Months` :
+                                                           `${freeTrialDays} Days`;
+                                        return (
+                                            <div>
+                                                {freeTrialStatement}
+                                            </div>
+                                        )
+                                    })()
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
