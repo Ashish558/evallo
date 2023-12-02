@@ -7,6 +7,7 @@ function BankCardInfoWidget({
     className,
     style,
     cardLogo,
+    cardLogoClassName,
     cardNumber,
     cardNumberLastFourDigits,
     isDefault,
@@ -29,10 +30,11 @@ function BankCardInfoWidget({
     },[]);
 
     return (
-        <div className={`bg-[#fff] rounded-[5px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] aspect-[270/106] w-[270px] ${className}`} style={{...style}} >
-            <div className="flex items-start ml-[20px] mt-[20px]" >
+        <div className={`bg-[#fff] rounded-[5px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] ${className}`} style={{...style}} >
+            <div className="flex items-start ml-[20px] mt-[20px] w-full" >
                 <img
                     src={cardLogoToBeDisplayed}
+                    className={`w-[13%] ${cardLogoClassName}`}
                 />
                 
                 <div className="ml-[10px]" >
@@ -40,9 +42,9 @@ function BankCardInfoWidget({
                     <div className="font-[100] text-[#26435F] text-[12px]" >Expires on</div>
                     {
                         isDefault ? (
-                            <div className="font-[100] text-[#38C980] text-[12px]" >Default Payment Method</div>
+                            <div className="block font-[100] text-[#38C980] text-[12px]" >Default Payment Method</div>
                         ) : (
-                            <button className="font-[500] text-[#24A3D9] text-[12px]" >Set As Default</button>
+                            <button className="block font-[100] text-[#24A3D9] text-[12px]" >Set As Default</button>
                         )
                     }
                 </div>

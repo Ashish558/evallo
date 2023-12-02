@@ -12,6 +12,7 @@ import ExtensionsChoosingModal from "../ExtensionsChoosingModal/ExtensionsChoosi
 import VerticalNumericSteppers from "../../../components/VerticalNumericSteppers/VerticalNumericSteppers";
 import { extensionsData } from "./data";
 import { comingSoonExtensionData } from "./DummyData/ComingSoonExtensionData";
+import { useAddSubscriptionsMutation } from "../../../app/services/subscription";
 
 function SubscriptionAndExtensionModal({
     className,
@@ -64,8 +65,10 @@ function SubscriptionAndExtensionModal({
     const [chosenSubscriptionPlanName, SetChosenSubscriptionPlanName] = useState(
         (openedFromAccountOverview ? activeSubscriptionName : "Professional")
     );
+    const [isCCRequired, SetIsCCRequired] = useState(false);
 
     const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
+    const [addSubscriptions, addSubscriptionsResp] = useAddSubscriptionsMutation();
 
     function loadSubscriptionAndExtensionInfo(productList) {
         if(!(productList.constructor && productList.constructor.name === "Array")) return;
@@ -342,6 +345,45 @@ function SubscriptionAndExtensionModal({
         })
     }
 
+    async function handleSub(){
+        // SetIsSubscriptionProcessOnGoing(true);
+        console.log(subscriptionsInfoFromAPI);
+
+        let subscriptionSessionStorageOutput = sessionStorage.getItem("chosenSubscriptionFromAPI");
+        if(subscriptionSessionStorageOutput === '' || subscriptionSessionStorageOutput === undefined) {
+            subscriptionSessionStorageOutput = null;
+        }
+        let chosenSubscriptionToBeSentThroughAPI = JSON.parse(subscriptionSessionStorageOutput);
+
+        let extentionSessionStorageOutput = sessionStorage.getItem("chosenExtentionObjectsFromAPI");
+        if(extentionSessionStorageOutput === '' || extentionSessionStorageOutput === undefined ) {
+            extentionSessionStorageOutput = null;
+        }
+
+        let chosenExtensionPlansToBeSentThroughAPI = JSON.parse(extentionSessionStorageOutput);
+
+        if(chosenExtensionPlansToBeSentThroughAPI === undefined || chosenExtensionPlansToBeSentThroughAPI === null) {
+            chosenExtensionPlansToBeSentThroughAPI = [];
+            sessionStorage.setItem("chosenExtentionObjectsFromAPI", JSON.stringify(chosenExtensionPlansToBeSentThroughAPI));
+        }
+
+        console.log("chosenExtensionPlansToBeSentThroughAPI");
+        console.log(chosenExtensionPlansToBeSentThroughAPI);
+    
+        const response = await addSubscriptions(
+                {
+                    customer_id: 'cus_OteUYhKgkeuICE',
+                    subscriptions: [
+                        chosenSubscriptionToBeSentThroughAPI,
+                        ...chosenExtensionPlansToBeSentThroughAPI
+                    ]
+                }
+        );
+
+        console.log('Subscribed');
+        console.log(response);
+    };
+
     return (
         <div className={`aspect-[1400/900] bg-[#FFFFFF] flex rounded-[15px]  ${className}`} >
             <div className="h-[500px] w-1/12" >
@@ -419,6 +461,8 @@ function SubscriptionAndExtensionModal({
                                 setFrames={setFrames}
                                 extensions={extensions}
                                 extensionPlansInfo={extensionPlansData}
+                                isCCRequired={isCCRequired}
+                                SetIsCCRequired={SetIsCCRequired}
                             />
                         ) : (<></>)
                     }
@@ -453,8 +497,10 @@ function SubscriptionAndExtensionModal({
                       disabled={
                         values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
                       } */
-                      onClick={onSaveAndNextClicked}
-                      children={(frames.review ? "Checkout" : "Save & Next")}
+                      onClick={
+                        (frames.review ? handleSub : onSaveAndNextClicked)
+                      }
+                      children={(frames.review ? isCCRequired ? "Checkout" : "Let’s Go!" : "Save & Next")}
                     />
                 </div>
 

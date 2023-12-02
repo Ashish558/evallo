@@ -6,6 +6,8 @@ import InputField from "../../../components/InputField/inputField";
 import { CurrencyNameToSymbole } from "../../../utils/utils";
 import ReviewExtensionWidget from "../../../components/ReviewExtensionWidget/ReviewExtensionWidget";
 import { useEffect } from "react";
+import StripeCardDetailWidget from "../../../components/StripeCardDetailWidget/StripeCardDetailWidget";
+import { useApplyCouponQuery, useLazyApplyCouponQuery } from "../../../app/services/subscription";
 
 function ReviewProduct({
     className,
@@ -14,11 +16,16 @@ function ReviewProduct({
     setFrames,
     extensions,
     extensionPlansInfo,
+    isCCRequired,
+    SetIsCCRequired,
+    subscriptionsInfoFromAPI = [],
 }) {
-    const [isCardRequired, SetIsCardRequired] = useState(false);
+    // const [isCCRequired, SetIsCCRequired] = useState(false);
     const [chosenSubscriptionPlan, SetChosenSubscriptionPlan] = useState(
         subscriptionsInfo ? subscriptionsInfo.find(item => item.planName === chosenSubscriptionPlanName) : null
     );
+    const [chosenSubscriptionObjectFromAPI, SetChosenSubscriptionObjectFromAPI] = useState();
+    const [chosenExtentionObjectsFromAPI, SetChosenExtentionObjectsFromAPI] = useState([]);
     const [couponForSubscription, SetCouponForSubscription] = useState("");
 
     const [chosenExtensionPlans, SetChosenExtensionPlans] = useState(
@@ -31,6 +38,14 @@ function ReviewProduct({
         })
     );
     const [totalPrice, SetTotalPrice] = useState(0);
+    const [applyCoupon, applyCouponResp] = useLazyApplyCouponQuery();
+
+    useEffect(() => {
+        console.log("chosenSubscriptionFromAPI from sessionStorage");
+        const chosenSub = subscriptionsInfoFromAPI.find(item => item.id === chosenSubscriptionPlan.id);
+        sessionStorage.setItem("chosenSubscriptionFromAPI", chosenSub)
+        SetChosenSubscriptionObjectFromAPI(chosenSub);
+    }, []);
 
     useState(() => {
         SetTotalPrice(
@@ -39,13 +54,24 @@ function ReviewProduct({
     }, [chosenSubscriptionPlan]);
 
     useEffect(() => {
+        if(!(SetIsCCRequired.constructor && SetIsCCRequired.constructor.name === "Function")) return;
         if(chosenSubscriptionPlan.ccRequired) {
-            SetIsCardRequired(true);
+            SetIsCCRequired(true);
             return;
         }
 
-        SetIsCardRequired(false);
-    }, [chosenSubscriptionPlan])
+        SetIsCCRequired(false);
+    }, [chosenSubscriptionPlan]);
+
+    async function OnApplyCouponForSubscriptionClicked(couponCode, chosenSubscriptionObjectFromAPI_Id){
+        const response = await applyCoupon({
+            couponName: couponCode,
+            subscriptionPrice: chosenSubscriptionObjectFromAPI_Id
+        });
+
+        console.log("applyCoupon Response");
+        console.log(response);
+    }
 
     return (
         <div
@@ -85,14 +111,10 @@ function ReviewProduct({
                             labelClassname="text-[#26435F] font-semibold"
                             inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[40px] text-md"
                             
-                            // value={couponForSubscription}
-                            /* onChange={(e) => {
-                                // setValues({
-                                //   ...values,
-                                //   firstName: e.target.value,
-                                // })
+                            value={couponForSubscription}
+                            onChange={(e) => {
                                 SetCouponForSubscription(e.target.value);
-                            }} */
+                            }}
                             //   totalErrors={error}
                             //   error={error.firstName}
                         />
@@ -103,7 +125,12 @@ function ReviewProduct({
                             style={{
                                 // height: "10%",
                             }}
-                            // onClick={OnPressApplyCoupon}
+                            onClick={() => {
+                                OnApplyCouponForSubscriptionClicked(
+                                    couponForSubscription,
+                                    chosenSubscriptionObjectFromAPI.id
+                                )
+                            }}
                             // loading={isCouponApplyProcessOnGoing}
                         />
 
@@ -227,27 +254,59 @@ function ReviewProduct({
                     </div>
                 </div>
 
-                <img
+                {
+                    isCCRequired ? (
+                        <StripeCardDetailWidget
+                            chosenSubscriptionObjectFromAPI={chosenSubscriptionObjectFromAPI}
+                        />
+                    ) : (
+                        <>
+                            <img
+                                className="ml-[30px] mt-[20px] w-9/12"
+                                src={creditCardSVG}
+                            />
+
+                            <div className="font-[500] mt-[25px] text-center text-[t#26435F] text-[16px] w-full" >
+                                {
+                                    isCCRequired ? "Card Required!" : "Card Not Required!"
+                                }
+                            </div>
+
+                            <div className="font-[100] mt-[15px] text-center text-[t#26435F] text-[12px] whitespace-pre-line w-full" >
+                                {
+                                    isCCRequired ? 
+                                    `Click the button below to make 
+                                    the subscription payment. Please 
+                                    keep your card ready with you.` : 
+                                    `Your free trial is on us! 
+                                    Are you ready?!`
+                                }
+                            </div>
+                        </>
+                    )
+                }
+
+                {/* <img
                     className="ml-[30px] mt-[20px] w-9/12"
                     src={creditCardSVG}
                 />
 
                 <div className="font-[500] mt-[25px] text-center text-[t#26435F] text-[16px] w-full" >
                     {
-                        isCardRequired ? "Card Required!" : "Card Not Required!"
+                        isCCRequired ? "Card Required!" : "Card Not Required!"
                     }
                 </div>
 
                 <div className="font-[100] mt-[15px] text-center text-[t#26435F] text-[12px] whitespace-pre-line w-full" >
                     {
-                        isCardRequired ? 
+                        isCCRequired ? 
                         `Click the button below to make 
                         the subscription payment. Please 
                         keep your card ready with you.` : 
                         `Your free trial is on us! 
                         Are you ready?!`
                     }
-                </div>
+                </div> */}
             </div>
 
             

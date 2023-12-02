@@ -24,6 +24,7 @@ import {
   } from "../../../../app/services/users";
 import Modal from "../../../../components/Modal/Modal";
 import Modal2 from "../../../../components/Modal2/Modal2";
+import ViewTransactionsModal from "../../../../components/ViewTransactionsModal/ViewTransactionsModal";
 
 function BankCardWidgetContainer({
     className,
@@ -41,7 +42,7 @@ function BankCardWidgetContainer({
     return (
         <div className={`flex flex-col items-end ${className}`} style={{...style}} >
             <BankCardInfoWidget
-                className={`aspect-[270/106] w-[270px] ${bankCardClassName}`}
+                className={`${bankCardClassName}`}
                 style={{...bankCardStyle}}
                 isDefault={isDefault}
                 cardLogo={cardLogo}
@@ -106,7 +107,8 @@ function AccountOverviewWithSubscriptionInfo() {
     const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(false);
     const [isResetPasswordModalActive, SetIsResetPasswordModalActive] = useState(false);
     const [isPasswordResetLinkSentModalActive, SetIsPasswordResetLinkSentModalActive] = useState(false);
-    const [isCancelSubscriptionModalActive, SetIsCancelSubscriptionModalActive] = useState(true);
+    const [isCancelSubscriptionModalActive, SetIsCancelSubscriptionModalActive] = useState(false);
+    const [isViewTransactionsModalActive, SetIsViewTransactionsModalActive] = useState(false);
     const [openSubscriptionModal, SetOpenSubscriptionModal] = useState(false);
     const [openExtensionsModal, SetOpenExtensionsModal] = useState(false);
 
@@ -215,6 +217,14 @@ function AccountOverviewWithSubscriptionInfo() {
         SetIsCancelSubscriptionModalActive(false);
         SetOpenSubscriptionModal(true);
         SetIsSubscriptionAndExtensionModalActive(true);
+    }
+
+    function OnViewPastTransactionsClicked() {
+        SetIsViewTransactionsModalActive(true);
+    }
+
+    function OnViewTransactionsModalCrossIconClicked() {
+        SetIsViewTransactionsModalActive(false);
     }
 
     function OnSubscriptionAndExtensionModalCancelClicked() {
@@ -326,7 +336,16 @@ function AccountOverviewWithSubscriptionInfo() {
                 ) : (<></>)
             }
 
-            
+            {
+                isViewTransactionsModalActive ? (
+                    <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
+                        <ViewTransactionsModal
+                            className={`relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 aspect-[1110/382] w-[57.8125%]`}
+                            OnCrossIconClicked={OnViewTransactionsModalCrossIconClicked}
+                        />
+                    </div>
+                ) : (<></>)
+            }
 
 
             <div className="flex justify-between h-[700px] mb-[50px] w-full" >
@@ -591,8 +610,11 @@ function AccountOverviewWithSubscriptionInfo() {
                             className="flex items-center justify-between ml-[30px] mt-[20px]" 
                             style={{width: "92%"}}    
                         >
-                            <div className="font-[500] text-[#26435F] text-[14px]" >Manage Payments</div>
-                            <button className="font-[300] text-[#24A3D9] text-[12px] underline" >View Past Transactions</button>
+                            <div className="font-[600] text-[#26435F] text-[0.972vw]" >Manage Payments</div>
+                            <button 
+                                className="font-[300] text-[#24A3D9] text-[12px] design:text-[15px] underline" 
+                                onClick={OnViewPastTransactionsClicked}
+                            >View Past Transactions</button>
                         </div>
                         
                         <div className="font-[100] ml-[30px] text-[12px]" >
@@ -600,24 +622,27 @@ function AccountOverviewWithSubscriptionInfo() {
                             <button className="inline text-[#24A3D9]" >knowledge base.</button>
                         </div>
 
-                        <div className="font-[500] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Saved Cards</div>
+                        <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Saved Cards</div>
 
-                        <div className={`flex ml-[30px] pl-[1px] pb-[20px] pt-[10px] overflow-x-scroll ${styles.cardsContainer}`} style={{width: "92%"}}  >
+                        <div className={`flex items-start justify-between ml-[30px] pl-[0px] pb-[0px] pt-[0px] w-11/12`} >
 
                             <BankCardWidgetContainer
-                                className="mr-[20px]"
+                                className="w-[33.15%]"
+                                bankCardClassName="aspect-square-[305/106] w-full"
                                 isDefault={true}
+                                
                             />
 
                             <BankCardWidgetContainer
-                                className="mr-[20px]"
+                                className="w-[33.15%]"
+                                bankCardClassName="aspect-square-[305/106] w-full"
                                 isDefault={false}
                                 cardLogo={mastercardIcon}
-                                cardNumber={"245234234125"}
+                                // cardNumber={"245234234125"}
                             />
                             
 
-                            <button className="border-[#FFA28D] border-[3px] border-dashed rounded-[5px] aspect-[270/106] h-[106px] w-[270px]" >
+                            <button className="box-border border-[#FFA28D] border-[3px] border-dashed rounded-[5px] aspect-[270/106] w-[29.34%]" >
                                 <span className="text-[#FFA28D] text-[12px]" >Add New Payment Method</span>
                             </button>
                         </div>

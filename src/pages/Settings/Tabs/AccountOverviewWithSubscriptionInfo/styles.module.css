@@ -1,14 +1,4 @@
-.cardsContainer {
-    overflow-x: hidden;
-}
 
-.cardsContainer:hover {
-    overflow-x: scroll;
-}
-
-.cardsContainer::-webkit-scrollbar {
-    height: 7px;
-}
 
 .bioTextarea::placeholder {
     color: #B3BDC7;
