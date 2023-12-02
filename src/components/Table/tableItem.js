@@ -307,15 +307,6 @@ export default function TableItem({
      const formatDate= (value)=>{
       const [ month, day, year] = value.split("-");
       const monthName = getMonthName(month-1);
-      console.log(
-       { 
-         value : value,
-         day : day,
-         month : month,
-         year : year,
-         monthName :monthName
-        }
-     );
       
       const formattedDate = `${monthName}` + " " + `${day}` + `,` + `${year}`;
       return formattedDate
@@ -328,7 +319,6 @@ export default function TableItem({
 
 
   const handleSelect = (item2, key) => {
-    console.log({ item2, selectedId2 });
     if (selectedId2 && setSelectedId2) {
       let temp = selectedId2;
       let bool = temp?.find((itt) => itt[key] === item2[key]);
