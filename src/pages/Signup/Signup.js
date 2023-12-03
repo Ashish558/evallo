@@ -682,7 +682,7 @@ export default function Signup() {
                       parentClassName="text-md"
                       label="First name"
                       biggerText={true}
-                      labelClassname="!text-[18.67px] text-[#26435F] font-semibold"
+                      labelClassname="mb-[7.45px] !text-[18.67px] text-[#26435F] font-semibold"
                       inputContainerClassName=" border-[0.994px] border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
                       pattern="[a-zA-Z0-9]+"
                       value={values.firstName}
@@ -702,7 +702,7 @@ export default function Signup() {
                       placeholder=""
                       parentClassName="text-md"
                       biggerText={true}
-                      labelClassname="!text-[18.67px] text-[#26435F] font-semibold"
+                      labelClassname="mb-[7.45px] !text-[18.67px] text-[#26435F] font-semibold"
                       inputContainerClassName=" border-[0.994px] border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
                       label="Last name"
                       pattern="[a-zA-Z0-9]+"
@@ -726,7 +726,7 @@ export default function Signup() {
                       placeholder=""
                       parentClassName="text-md w-full "
                       biggerText={true}
-                      labelClassname="!text-[18.67px] text-[#26435F] font-semibold"
+                      labelClassname="mb-[7.45px] !text-[18.67px] text-[#26435F] font-semibold"
                       inputContainerClassName="border-[0.994px] border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
                       value={values.email}
                       onChange={(e) =>
@@ -744,7 +744,7 @@ export default function Signup() {
                       parentClassName="text-md w-4/5 ml-8 "
                       biggerText={true}
                       arrowClassName="w"
-                      labelClassname="!text-[18.67px] text-[#26435F] font-semibold"
+                      labelClassname="mb-[7.45px] !text-[18.67px] text-[#26435F] font-semibold"
                       inputContainerClassName="border-[0.994px]border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
                       label="Phone"
                       value={values.phone}
@@ -776,7 +776,7 @@ export default function Signup() {
                     parentClassName="text-md mt-[30px] mb-[30px] w-full"
                     label="Name of Business"
                     biggerText={true}
-                    labelClassname="!text-[18.67px] text-[#26435F] font-semibold"
+                    labelClassname="mb-[7.45px] !text-[18.67px] text-[#26435F] font-semibold"
                     inputContainerClassName="border-[0.994px] border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
                     value={values.company}
                     onChange={(e) =>
