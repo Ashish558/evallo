@@ -13,7 +13,7 @@ import ContentContainer from "../../components/Layout/ContentContainer";
 const Layout = () => {
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
 
       <navbar className="lg:w-[1920px] md:w-screen w-screen h-[72px] flex justify-between items-center bg-[#26435F] px-[100px]">
         {/* logo */}
@@ -118,7 +118,7 @@ const Layout = () => {
       </div>
 
       
-      {/* <footer className="lg:w-[1920px] md:w-screen w-screen flex justify-between items-center bg-[#26435F] text-white pl-[87.33px] pr-[61px] py-[24px]">
+      <footer className="lg:w-[1920px] md:w-screen w-screen flex justify-between items-center bg-[#26435F] text-white pl-[87.33px] pr-[61px] py-[24px]">
 
         Copyright © Evallo Digital Products Private Limited
 
@@ -127,7 +127,7 @@ const Layout = () => {
           <li>Terms Of Usage</li>
         </ul>
 
-      </footer> */}
+      </footer>
     </>
   );
 };

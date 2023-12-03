@@ -12,11 +12,11 @@ body{
   transform-origin: top left;
 }
 
-@media screen and (min-width: 1920px) {
+/* @media screen and (min-width: 1920px) {
   body {
     transform: scale(1); 
     transform-origin: top left;
-  }}
+  }} */
 /* }
 @media screen and (max-width: 1920px) and (min-width: 1440px) {
   body {
@@ -45,7 +45,7 @@ body{
 
 body {
   background-color: #f5f8fa;
-  min-height: 100vh;
+  /* min-height: 100vh;
   height: 100%;
   padding-right: 0;
   padding-bottom: 50px;
@@ -55,7 +55,7 @@ body {
   position: relative;
   display: flex;
   flex-flow: column;
-  min-width:1920px !important;
+  min-width:1920px !important; */
 }
 *{
   font-family: 'Lexend', sans-serif !important;

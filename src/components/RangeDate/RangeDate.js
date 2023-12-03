@@ -20,7 +20,7 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
       setDateFormat(organization2?.settings?.dateFormat)
     }
   }, [organization2])
-  console.log("latest", { dateFormat, organization2 })
+  // console.log("latest", { dateFormat, organization2 })
   const [startDate, setStartDate] = useState(() => calculateDateRange()[0]);
   const [selectDate, setSelectedDate] = useState({
     sDate: "",
@@ -97,7 +97,7 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
       sDate: startDate.toString(),
       eDate: endDate.toString(),
     };
- console.log({selectDate})
+//  console.log({selectDate})
     const requiredDate = getModifiedDate(selectDate);
 
     setStartDate(requiredDate);
@@ -135,15 +135,15 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
   const formatDate= (value)=>{
     const [ month, day, year] = value.split("-");
     const monthName = getMonthName(day-1);
-    console.log(
-     { 
-       value : value,
-       day : day,
-       month : month,
-       year : year,
-       monthName :monthName
-      }
-   );
+  //   console.log(
+  //    { 
+  //      value : value,
+  //      day : day,
+  //      month : month,
+  //      year : year,
+  //      monthName :monthName
+  //     }
+  //  );
     
     const formattedDate = `${monthName}` + " " + `${year}` + `,` + `${month}`;
     return formattedDate

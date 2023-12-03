@@ -487,11 +487,11 @@ const Dashboard = () => {
   const redirect = (item) => navigate(`/profile/${item.role}/${item._id}`);
  
   return (
-    <div className={styles.container}>
-      <div className=" mt-[28px] bg-#2E2E2E">
+    // <div className={styles.container}>
+      <div className="bg-#2E2E2E">
         <div className="mt-[50px] flex justify-center">
           <div className="w-[1601px]">
-            <p className="text-[#24A3D9]  text-base-20">
+            <p className="text-[#24A3D9] text-[20px] font-normal">
               {organization?.company +
                 "  >  " +
                 firstName +
@@ -704,7 +704,7 @@ const Dashboard = () => {
                 User Stats
               </p>
               <div className={`${styles.sidebox} h-[330px] w-[312.5px] `}>
-                <div className="rounded">
+                <div className="w-[226px]">
                   <p className="text-[#26435F] text-md text-[20px] leading-6 font-normal">
                     Active / Total Students
                   </p>
@@ -724,7 +724,7 @@ const Dashboard = () => {
                     </span>
                   </p>
                 </div>
-                <div className={`   pt-7 rounded `}>
+                <div className={`w-[226px] pt-7 rounded`}>
                   <p className="text-[#26435F] text-md text-base-20">
                     Active / Total Tutor <span className="text-white">###</span>
                   </p>
@@ -744,7 +744,7 @@ const Dashboard = () => {
                     </span>
                   </p>
                 </div>
-                <div className={`   pt-7 rounded`}>
+                <div className={`w-[226px] pt-7 rounded`}>
                   <p className="text-[#26435F] text-md text-base-20">
                     Active / Total Parents<span className="text-white">##</span>
                   </p>
@@ -772,7 +772,7 @@ const Dashboard = () => {
                 Action Log
               </p>
               <ActionLog
-                className={"w-[1250px]"}
+                width={"w-[1250px]"}
                 actionLog={filteredActionLog ? filteredActionLog : [""]}
               />
             </div>
@@ -784,10 +784,11 @@ const Dashboard = () => {
             Latest Sign-Ups <span className="font-light">(Last 7 Days)</span>
           </p>
 
-          <div className="-mt-3">
+          <div className="mt-2">
             <Table
               data={userData}
               AdminLatestSignUp={true}
+              noScrollbar={true}
               headerObject={true}
               belowBox={true}
               onClick={{
@@ -799,6 +800,7 @@ const Dashboard = () => {
               belowBoxIcon={userLogo}
               tableHeaders={latestSignUpHeaders}
               maxPageSize={5}
+              widthFullTable={true}
             />
           </div>
         </section>
@@ -824,13 +826,13 @@ const Dashboard = () => {
         <section className="mt-[10px] mx-auto w-[1601px]">
           <div className="grid grid-cols-[1158px,452px]">
             <div className="relative">
-              <p className="font-semibold text-[#26435F] mt-3 text-[17.5px]">
+              <p className="font-semibold text-[#26435F] text-[17.5px]">
                 Popular Services
               </p>
-              <div className="text-base-17-5 -mt-3 pr-[32px]">
+              <div className="text-base-17-5 mt-2 pr-[32px]">
                 <Table
                   dataFor="popularServices"
-                  noScrollbar={false}
+                  noScrollbar={true}
                   data={popularServices}
                   hidePagination={true}
                   headerObject={true}
@@ -841,14 +843,15 @@ const Dashboard = () => {
                   belowBoxIcon={plusIcon}
                   belowBoxHeight="h-[168px]"
                   maxPageSize={5}
+                  widthFullTable={true}
                 />
               </div>
             </div>
             <div className=" relative">
-              <p className="translate-y-[10px]  pl-[32px] font-semibold text-[#26435F] text-[17.5px]">
+              <p className="pl-[32px] font-semibold text-[#26435F] text-[17.5px]">
                 Star Clients
               </p>
-              <div className="relative pl-[32px]">
+              <div className="relative pl-[32px] mt-2">
                 {/* <div
                   className={`h-[85px] flex justify-center items-center text-sm text-[#667085] bg-[#E5E8EA]`}
                 >
@@ -856,6 +859,7 @@ const Dashboard = () => {
                 </div> */}
                 <Table
                   noArrow={false}
+                  noScrollbar={true}
                   headerWidth="!px-1.5"
                   dummyRowStarClients={popularServices}
                   data={[]}
@@ -868,6 +872,7 @@ const Dashboard = () => {
                   belowBoxLink="settings"
                   belowBoxIcon={plusIcon}
                   belowBoxHeight="h-[168px]"
+                  widthFullTable={true}
                 />
               </div>
               <div className="h-[90%] absolute bottom-0 left-0 bg-[#CBD6E2] top-[55%] transform -translate-y-1/2 w-px"></div>
@@ -883,7 +888,7 @@ const Dashboard = () => {
                   Total # Of Referrals
                 </p>
                 <div
-                  className={`mt-1 h-[72.5px] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
+                  className={`mt-1 h-[72.5px] max-w-[245px] min-w-[245px] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
                 >
                   <p className="text-[#FFA28D] h-full w-full justify-center font-bold text-[37.5px] flex items-center text-center">
                     {improvementStats?.no_of_referrals}
@@ -895,7 +900,7 @@ const Dashboard = () => {
                   Average SAT Improvement
                 </p>
                 <div
-                  className={`mt-1 h-[72.5px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox3}`}
+                  className={`mt-1 h-[72.5px] max-w-[245px] min-w-[245px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox3}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-bold text-[37.5px] flex items-center text-center">
                     {improvementStats?.avg_sat_improvement
@@ -909,7 +914,7 @@ const Dashboard = () => {
                   Average ACT Improvement
                 </p>
                 <div
-                  className={` mt-1 h-[72.5px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox3}`}
+                  className={` mt-1 h-[72.5px] max-w-[245px] min-w-[245px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox3}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-bold text-[37.5px] flex items-center text-center">
                     {improvementStats?.avg_act_improvement
@@ -984,7 +989,7 @@ const Dashboard = () => {
           </div>
         </section>
       </div>
-    </div>
+    
   );
 };
 

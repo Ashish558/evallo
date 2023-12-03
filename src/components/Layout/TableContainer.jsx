@@ -15,4 +15,4 @@ const TableContainer = (props) => {
   );
 };
 
-export default TableContianer;
+export default TableContainer;

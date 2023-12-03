@@ -15,6 +15,7 @@ import {
 import { updateOrganization } from "./app/slices/organization";
 import { useLazyGetLogoutQuery } from "./app/services/superAdmin";
 import Loader from "./components/Loader";
+import Layout2 from "./pages/Layout/Layout2";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -106,7 +107,9 @@ function App() {
 
   return (
     <>
+    {/* <Layout2> */}
       <AppRoutes />
+      {/* </Layout2> */}
     </>
   );
 }

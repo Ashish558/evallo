@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { getFormattedDate } from "../../utils/utils";
 import { getMonthName } from "../../utils/utils";
 
-export default function ActionLog({ actionLog, className }) {
+export default function ActionLog({ actionLog, className,width }) {
   const [dateFormat, setDateFormat] = useState("dd/mm/yy");
   const { organization: organization2 } = useSelector(
     (state) => state.organization
@@ -97,7 +97,7 @@ export default function ActionLog({ actionLog, className }) {
   
   return (
     <div
-      className={`flex flex-col h-[330px] max-h-[500px]  shadow-[0px_0px_2px_rgba(0,0,0,0.25)]  rounded-5 bg-[#FFFFFF] w-[65.1042vw] ${className}`}
+      className={`flex flex-col h-[330px] max-h-[500px]  shadow-[0px_0px_2px_rgba(0,0,0,0.25)]  rounded-5 bg-[#FFFFFF] ${width??"w-[65.1042vw]"} ${className}`}
     >
       <div className=" border-b-[1.6px]  border-b-[#CBD6E2] ">
         <p className="uppercase  pl-[29px] pt-[16px] pb-2 text-[#26435F] text-base-20 text-[20px] font-normal">
@@ -129,7 +129,7 @@ export default function ActionLog({ actionLog, className }) {
           return (
             
               <div key={index} className="flex h-[57px] pl-5 relative ">
-                <p className="text-[#517CA8] pt-6 !font-light text-[15px] mr-2 w-[calc(143*0.050vw)] text-center !text-[calc(17.5*0.050vw)] whitespace-nowrap">
+                <p className="text-[#517CA8] pt-6 !font-light text-[15px] mr-2 w-[calc(143*0.050vw)] text-center whitespace-nowrap">
                {
                 item?.message &&
                 <>

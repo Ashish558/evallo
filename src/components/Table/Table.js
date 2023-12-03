@@ -51,6 +51,7 @@ export default function Table(props) {
     setFilteredTests,
     setAllTestsForStudentTest,
     setfilteredTestsForStudentTest,
+    widthFullTable
   } = props;
   const [dummy, setDummy] = useState([]);
   const [tableData, setTableData] = useState(data);
@@ -107,9 +108,9 @@ export default function Table(props) {
             : "overflow-x-auto scrollbar-content custom-scroller-2 scroll-m-1"
         }  p-[2px]  `}
       >
-        <table className="bg-white customTable mb-3 text-center whitespace-nowrap">
+        <table className={`bg-white customTable mb-3 text-center whitespace-nowrap ${widthFullTable===true?"w-full":""}`}>
           <thead className="pb-2 whitespace-nowrap bg-[#26435f] w-[1601px]">
-            <tr className=" whitespace-nowrap bg-[#26435f]">
+            <tr className={`whitespace-nowrap bg-[#26435f]`}>
               {tableHeaders.map((item, idx) => {
                 return headerObject === true ? (
                   <React.Fragment key={idx}>

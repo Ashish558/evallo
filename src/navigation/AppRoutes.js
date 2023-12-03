@@ -47,6 +47,7 @@ import AdminPortal from "../pages/SuperadminDashboard/components/About/AdminPort
 
 //  layout page
 import Layout from "../pages/Layout/Layout";
+import Layout2 from "../pages/Layout/Layout2";
 
 
 const AppRoutes = () => {
@@ -56,7 +57,8 @@ const AppRoutes = () => {
 
   return (
     <BrowserRouter>
-      <Navbar />
+      {/* <Navbar /> */}
+      <Layout2>
       <Routes>
         <Route path="/" element={isLoggedIn ? <Home /> : <Login />} />
 
@@ -302,7 +304,8 @@ const AppRoutes = () => {
                   }
                /> */}
       </Routes>
-      <Footer />
+      </Layout2>
+      {/* <Footer /> */}
     </BrowserRouter>
   );
 };
