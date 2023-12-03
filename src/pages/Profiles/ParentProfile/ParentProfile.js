@@ -698,7 +698,7 @@ const [toEdit, setToEdit] = useState({
                               <span>
                                 <img
                                   onClick={() => handleCopyClick(user?.email)}
-                                  className="inline-block ml-2 !w-[10.94px] !h-[13.13px] mr-2 cursor-pointer bg-red-900"
+                                  className="inline-block ml-2 !w-[10.94px] !h-[13.13px] mr-2 cursor-pointer  "
                                   src={copy1}
                                   alt="copy"
 

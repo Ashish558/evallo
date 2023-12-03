@@ -626,10 +626,9 @@ export default function Signup() {
   };
   let namesValidChars = "1234567890abcdefghijklmnopqrstuvwxyz ";
   return (
-    <div className="   pb-6 bg-primary relative" id={styles.signUp}>
-      {/* <AdminNavbar></AdminNavbar> */}
-      <div className="flex justify-center flex-col items-center md:grid-cols-2  mb-[100px]">
-        <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-4" />
+    <div className=" bg-primary relative" id={styles.signUp}>
+      <div className="flex justify-center flex-col items-center md:grid-cols-2">
+        <img src={cuate} alt="rocket" className="h-[121.27px] w-[193.336px] mt-3 mb-4" />
         <>
           {!frames.signupSuccessful ? (
             <div className="lg:hidden bg-primary text-white pt-[79px] px-[49px]">
@@ -647,17 +646,17 @@ export default function Signup() {
             <></>
           )}
           <div
-            className={`flex lg:items-center relative bg-white rounded-md py-4   ${
+            className={`flex lg:items-center relative bg-white rounded-md  mb-[120px]  ${
               frames.requirements
                 ? "!w-[980px] !pl-[76px] !pr-[91px]"
                 : "w-[800px] px-[50px]"
             } ${frames?.signupSuccessful ? "!w-[980px] !px-[115px] " : ""} `}
           >
-            <div className="w-full">
+            <div className="w-full ">
               {currentStep > 0 && (
                 <NumericSteppers
                   NumericStepperfontSize="text-[18.6px]"
-                  className={" !w-[700px] !mx-auto "}
+                  className={" !w-[700px] !mx-auto pt-[41px]"}
                   fieldNames={[
                     "Personal Info",
                     "Org Details",
@@ -683,8 +682,8 @@ export default function Signup() {
                       parentClassName="text-md"
                       label="First name"
                       biggerText={true}
-                      labelClassname="!text-[18.67px] text-[#26435F] font-semibold"
-                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
+                      labelClassname="mb-[7.45px] !text-[18.67px] text-[#26435F] font-semibold"
+                      inputContainerClassName=" border-[0.994px] border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
                       pattern="[a-zA-Z0-9]+"
                       value={values.firstName}
                       onChange={(e) => {
@@ -703,8 +702,8 @@ export default function Signup() {
                       placeholder=""
                       parentClassName="text-md"
                       biggerText={true}
-                      labelClassname="!text-[18.67px] text-[#26435F] font-semibold"
-                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
+                      labelClassname="mb-[7.45px] !text-[18.67px] text-[#26435F] font-semibold"
+                      inputContainerClassName=" border-[0.994px] border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
                       label="Last name"
                       pattern="[a-zA-Z0-9]+"
                       value={values.lastName}
@@ -727,8 +726,8 @@ export default function Signup() {
                       placeholder=""
                       parentClassName="text-md w-full "
                       biggerText={true}
-                      labelClassname="!text-[18.67px] text-[#26435F] font-semibold"
-                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
+                      labelClassname="mb-[7.45px] !text-[18.67px] text-[#26435F] font-semibold"
+                      inputContainerClassName="border-[0.994px] border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
                       value={values.email}
                       onChange={(e) =>
                         setValues({
@@ -745,8 +744,8 @@ export default function Signup() {
                       parentClassName="text-md w-4/5 ml-8 "
                       biggerText={true}
                       arrowClassName="w"
-                      labelClassname="!text-[18.67px] text-[#26435F] font-semibold"
-                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
+                      labelClassname="mb-[7.45px] !text-[18.67px] text-[#26435F] font-semibold"
+                      inputContainerClassName="border-[0.994px]border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
                       label="Phone"
                       value={values.phone}
                       codeValue={values.phoneCode}
@@ -777,8 +776,8 @@ export default function Signup() {
                     parentClassName="text-md mt-[30px] mb-[30px] w-full"
                     label="Name of Business"
                     biggerText={true}
-                    labelClassname="!text-[18.67px] text-[#26435F] font-semibold"
-                    inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
+                    labelClassname="mb-[7.45px] !text-[18.67px] text-[#26435F] font-semibold"
+                    inputContainerClassName="border-[0.994px] border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
                     value={values.company}
                     onChange={(e) =>
                       setValues({
@@ -864,8 +863,8 @@ export default function Signup() {
                       </p>
                     </div>
                   </div>
-                  <div className="mt-[40px] flex">
-                    <div className="flex items-center">
+                  <div className="mt-[40px] flex justify-start items-start  ">
+                    <div className="flex items-start justify-start mt-0.5">
                       <SCheckbox
                         checked={isChecked}
                         stopM={true}
@@ -878,7 +877,7 @@ export default function Signup() {
                         {" "}
                       </span>
                     </div>
-                    <p className="text-[18.67px] text-[#26435F] font-medium  leading-5 ml-1 mr-3 pl-2">
+                    <div className="text-[18.67px] text-[#26435F] font-medium  leading-[26.667px] ml-1 mr-3   ">
                       Selecting this would confirm that you have carefully read
                       through and agree to our{" "}
                       <span className="text-[#FFA28D] font-semibold">
@@ -891,7 +890,7 @@ export default function Signup() {
                         </a>
                       </span>
                       .
-                    </p>
+                    </div>
                   </div>
                   <div className="flex items-center mt-[50px] mb-[34px] justify-between">
                     <SecondaryButton

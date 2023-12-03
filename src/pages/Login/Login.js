@@ -141,11 +141,11 @@ export default function Login({ setLoginFormActive }) {
 
   return (
     <div className={styles.bg}>
-      <div className="flex  flex-col items-center md:grid-cols-2  ">
+      <div className="flex flex-col items-center md:grid-cols-2   ">
         <img
           src={cuate}
           alt="rocket"
-          className="h-[113.64px] w-[181px] mt-3 mb-7 scale-[0.86] mt-[-5px] design:mt-[0px] design:scale-100"
+          className="h-[113.64px] w-[181px] scale-[0.86]     design:scale-100 mt-[21px] mb-[13.45px]"
         />
         <div className="bg-primary hidden lg:block ">
           <ImageSlider
@@ -154,18 +154,18 @@ export default function Login({ setLoginFormActive }) {
             pagination={true}
           />
         </div>
-        <div className="lg:flex scale-[0.75] design:scale-100 mt-[-100px] design:mt-[0px]   lg:items-center bg-white rounded-[10px] pt-[40px] pb-6 px-5 md:px-[66px] lg:min-w-[561px] shadow-[5px_5px_87.5px_0px_rgba(166,166,166,0.25)]">
+        <div className="lg:flex lg:items-center mb-[80.33px] bg-white rounded-[10px] pt-[40px] pb-[40px] px-5 md:px-[66px] min-w-[561px] shadow-[5px_5px_87.5px_0px_rgba(166,166,166,0.25)]">
           {loginActive ? (
             <div className="w-full">
               <div className="flex justify-center">
                 <img
                   src={EvalloLogo}
                   alt="logo"
-                  className=" h-[29.796px] scale-[.97] "
+                  className=" h-[29.796px]"
                 />
               </div>
               <p
-                className={`font-semibold text-lg mt-[40px] mb-1 bg-transparent text-[#26435F]  pb-[34px] lg:pt-0 lg:pb-0 `}
+                className={`font-semibold text-lg mt-[40px] bg-transparent text-[#26435F] mb-[8px]`}
               >
                 Login
               </p>
@@ -174,7 +174,7 @@ export default function Login({ setLoginFormActive }) {
               </p>
               <form
                 onSubmit={handleSubmit}
-                className={` mt-[105px] tracking-[0.03em] lg:mt-0 ${
+                className={`tracking-[0.03em] lg:mt-0  ${
                   wait ? "cursor-wait" : "cursor-default"
                 }`}
               >
@@ -195,7 +195,7 @@ export default function Login({ setLoginFormActive }) {
                   parentClassName="mb-[18px]"
                   label="Email "
                   removeResponsive={true}
-                  labelClassname="text-[#26435F] font-medium"
+                  labelClassname="text-[#26435F] font-medium mb-[2px]"
                   inputClassName="bg-transparent  !text-lg"
                   inputContainerClassName="hover:border-[#FFA28D] border-[0.936px] !text-lg border-[#D0D5DD]  h-[49px]  rounded-[6px] w-full"
                   value={email}
@@ -207,7 +207,7 @@ export default function Login({ setLoginFormActive }) {
                 <InputField
                   // Icon={Passwordicon}
                   iconSize="medium"
-                  parentClassName="mb-[10px]"
+                  parentClassName="mb-[11px]"
                   placeholder=""
                   biggerText={true}
                   removeResponsive={true}
@@ -247,7 +247,7 @@ export default function Login({ setLoginFormActive }) {
                 </div>
                 <div className="flex justify-center">
                   <button
-                    className={`w-[337px] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] relative mx-auto  bg-[#FFA28D] disabled:opacity-60 pt-3.5 pb-3.5 lg:py-[11px]  mt-[56px]   rounded-5 text-white text-lg font-medium ${
+                    className={`w-[337px] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] relative mx-auto h-[50px] bg-[#FFA28D] disabled:opacity-60 pt-3.5 pb-3.5  mt-[56px] mb-[19px]  rounded-5 text-white text-lg font-medium ${
                       loginLoading ? "cursor-wait opacity-60" : "cursor-pointer"
                     }`}
                     onClick={handleSubmit}
@@ -256,7 +256,7 @@ export default function Login({ setLoginFormActive }) {
                     {loginLoading && <Loader />}
                   </button>
                 </div>
-                <div className="flex justify-center mt-[19px] pb-4">
+                <div className="flex justify-center mt-[19px]">
                   <p
                     className={`relative text-base  text-[#26435F]  ml-2  inline-block  `}
                   >
