@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLazyGetParentsByNameQuery } from "../../../../app/services/admin";
 import { useLazyGetStudentsByNameQuery } from "../../../../app/services/session";
 import {
@@ -756,6 +756,29 @@ export default function ParentEditables({
     "tutorAddress",
     "videoLink",
   ];
+  const bottomEl = useRef(null);
+useEffect(()=>{
+  if(states?.length>0 && currentToEdit?.state){
+    let currentState=null;
+    states?.map((it)=>{
+      if(it?.name===currentToEdit.state){
+        currentState=it?.state_code
+      }
+    })
+    const cities5 = City.getCitiesOfState(
+      currentCountry[0].iso2,
+      currentState
+    );
+    setCities(cities5);
+  }
+ 
+},[currentToEdit.state,states])
+  const scrollToBottom = () => {
+    bottomEl?.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+  useEffect(()=>{
+    scrollToBottom()
+  },[currentToEdit?.tutorReviews?.length])
   const forCss2 = ["interest", "serviceSpecializations", "videoLink"];
   return Object.keys(toEdit).map((key) => {
     return (
@@ -1781,6 +1804,7 @@ export default function ParentEditables({
                           );
                         })
                       }
+                       <div className="" ref={bottomEl}></div>
                     </div>
                     <div
                       onClick={() => {

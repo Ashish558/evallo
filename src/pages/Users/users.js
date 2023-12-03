@@ -572,24 +572,29 @@ export default function Users() {
       id: 1,
       text: "Full Name",
       className: "text-left pl-6",
+      wrapperClassName: 'justify-start',
       onCick: sortByName, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
       willDisplayDownArrow: usernameSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 2,
       text: "User Type",
+      className: "text-left pl-0",
+      wrapperClassName: 'justify-start',
       onCick: sortByUserType, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
       willDisplayDownArrow: userTypeSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 3,
       text: "Email",
+      className: "text-left pl-1",
       onCick: sortByEmail, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
       willDisplayDownArrow: emailSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 4,
       text: "Phone",
+      className: "text-left pl-6",
       onCick: sortByPhone, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
       willDisplayDownArrow: phoneSortState !== SORT_STATES.DESCENDING_ORDER,
     },
@@ -625,7 +630,6 @@ export default function Users() {
     },
   ];
 
-  console.log(usersData);
 
   const [assignStudentModalActive, setAssignStudentModalActive] =
     useState(false);
@@ -1391,7 +1395,9 @@ export default function Users() {
   console.log("selected ", selectedId, adminSelectedForDelete);
 
   const numberKey = Object.keys(bulkEdits)?.length > 0;
-
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
   //console.log("users",{selectedId,bulkEdits})
   return (
     <div className="w-[83.6989583333vw] mx-auto  min-h-screen">
@@ -1600,7 +1606,7 @@ export default function Users() {
             placeholder="Search"
             inputClassName="text-base-17-5 pl-4 text-[#667085] placeholder:text-[#667085]"
             parentClassName="w-[22.03125vw]  py-1"
-            inputContainerClassName="text-base-17-5  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1  !py-[15px]"
+            inputContainerClassName="text-base-17-5  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1  !py-[14.5px]"
             type="text"
             value={filterData.typeName}
             onChange={(e) =>
@@ -1613,7 +1619,7 @@ export default function Users() {
             customArrowClassName={`w-[12px] h-[12px]`}
             optionData={userTypesList}
             optionListClassName="text-base-17-5 text-[#667085]"
-            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
+            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[15px]"
             placeholder="User type"
             parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085]"
             type="select"
@@ -1843,7 +1849,7 @@ export default function Users() {
               onClick={() =>
                 selectedId?.length > 0 && setSaveBulkModalActive(true)
               }
-              className={`bg-[rgba(38,67,95,1)] font-medium text-[15px] px-[10px] py-[10px] rounded-[7.5px] text-white ml-auto  h-[43px] w-[5.1563vw] ${
+              className={`bg-[rgba(38,67,95,1)] font-medium text-[15px] px-[10px] py-[10px] rounded-[7.5px] text-white ml-auto  h-[43.75px] w-[100px] ${
                 selectedId?.length === 0 || !numberKey ? "opacity-75" : ""
               } `}
             >
@@ -1856,12 +1862,12 @@ export default function Users() {
               onClick={() =>
                 selectedId?.length > 0 && setInviteBulkModalActive(true)
               }
-              className={`bg-[#517CA8] opacity-100 text-base-17-5  font-semibold tracking-wider relative px-[20px] py-[10px] rounded-[7.5px] text-white  text-base-17-5 h-[43px] ${
+              className={`bg-[#517CA8] opacity-100 text-base-17-5  font-semibold tracking-wider relative px-[19px] py-[11px] rounded-[7.5px] text-white  text-base-17-5 h-[44px] ${
                 selectedId?.length === 0 ? "opacity-75" : ""
               } `}
             >
               + Invite Users
-              <span className="absolute right-[-10px] z-[500] top-[-10px]">
+              <span className="absolute right-[-9px] z-[500] top-[-12px]">
                 <div className="group relative z-[500]">
                   <img
                     src={ques}
@@ -1913,7 +1919,7 @@ export default function Users() {
                 selectedId?.length > 0 &&
                 setDeleteBulkModalActive(true)
               }
-              className={`bg-[#FF7979] opacity-100 flex items-center gap-2 px-[20px] tracking-wider font-semibold py-[10px] rounded-[5px] text-white  text-base-17-5 ${
+              className={`bg-[#FF7979] opacity-100 flex gap-x-[10px] justify-center items-center gap-2 px-[17px] tracking-wider font-semibold py-[9.5px] w-[175px] rounded-[5px] text-white  text-base-17-5 ${
                 selectedId?.length === 0 || true || adminSelectedForDelete
                   ? "opacity-75 cursor-not-allowed"
                   : ""
@@ -1932,7 +1938,6 @@ export default function Users() {
         </div>
 
         <div className="mt-6">
-          {console.log(tableHeaders)}
           <Table
             dataFor="allUsers"
             selectedId2={selectedId}

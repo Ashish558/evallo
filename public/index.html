@@ -52,6 +52,19 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script>
+      const adjustScale = () => {
+  console.log('running');
+  const screenWidth = window.innerWidth; // Use innerWidth for the width of the window
+  const scale = screenWidth > 0 ? screenWidth / 1920 : 0;
+  const body = document.getElementById("body");
+  body.style.transform = `scale(${scale > 1 ? 1 : scale})`;
+};
+
+// Use "resize" instead of "resize"
+document.addEventListener("resize", adjustScale);
+
+    </script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
     crossorigin="anonymous"></script>

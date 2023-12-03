@@ -72,7 +72,7 @@ export default function OrgDetails({
       alert("Zip code should conatain digits only!")
    return 
     }
-    if (!alphadigit.test(values?.company) || !alphadigit.test(values?.address)
+    if (!alphadigit.test(values?.company) 
     || !alphadigit.test(values?.country) || !alphadigit.test(values?.city) || (states?.length>0 && !alphadigit.test(values?.state))) {
     alert("Please fill valid details!")
     return
@@ -146,7 +146,7 @@ if (values?.city?.length<3) {
           placeholder=""
           right={<img src={lockIcon} alt="lock" />}
           parentClassName=" min-w-[118px] w-full "
-          inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[44px] text-md "
+          inputContainerClassName=" border-[0.994px] border-[#D0D5DD] rounded-md py-[9px] h-[44px] text-md "
           inputClassName="!text-[rgba(179,189,199,1)] bg-transparent text-base-18"
           type="text"
           value={values.company}
@@ -156,6 +156,7 @@ if (values?.city?.length<3) {
           {/* <label>Company Type</label> */}
           <InputSelectNew
             value={values.companyType}
+            biggerText={"true"}
             parentClassName="w-[300px] "
             optionContainerClassName="text-[13px]"
             optionsEachClassName="py-[7px]"
@@ -164,10 +165,10 @@ if (values?.city?.length<3) {
             customFontSize="text-[15px]"
             placeholder={"Select"}
             label={`Company Type`}
-            placeholderClass="!mr-0"
-            labelClassname="text-[#26435F] font-medium  mb-1 !text-[18.6px] "
-            inputContainerClassName="py-1 text-sm h-[53px] border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[5px] "
-            inputClassName="ml-80"
+            placeholderClass="!mr-0 text-[#B3BDC7]"
+            labelClassname="text-[#26435F] font-bold mb-1 text-[18.6px] "
+            inputContainerClassName="py-1 text-sm h-[53px] border-[0.994px]  border-[#D0D5DD] my-0 mt-[-2px] rounded-[5px] text-[#B3BDC7] placeholder-[#B3BDC7]"
+            inputClassName="ml-80 text-[#B3BDC7] placeholder-[#B3BDC7]"
             required={persona === "student" ? true : false}
             onChange={(e) => handleCompanyTypeChange(e)}
           />
@@ -179,7 +180,7 @@ if (values?.city?.length<3) {
             biggerText={true}
             placeholder=""
             parentClassName="w-[350px] ml-[50px] "
-            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
+            inputContainerClassName=" border-[0.994px] border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
             inputClassName="bg-transparent text-xs"
             type="text"
             value={values.website}
@@ -199,7 +200,7 @@ if (values?.city?.length<3) {
             biggerText={true}
             placeholder=""
             parentClassName="w-full max-w-[350px] "
-            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
+            inputContainerClassName=" border-[0.994px] border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
             inputClassName="bg-transparent text-xs"
             type="text"
             value={values.address}
@@ -217,10 +218,12 @@ if (values?.city?.length<3) {
             optionData={country}
             optionType="object"
             placeholder={"Select"}
+            biggerText={"true"}
+            placeHolderClass={"placeholder-[#B3BDC7] text-[#B3BDC7]"}
             label={`Country`}
-            labelClassname="text-[#26435F] font-bold   !text-[18.6px] "
-            inputContainerClassName="py-1 text-sm h-[53px] border border-[#D0D5DD] my-0 mt-[-3px] rounded-[4.3px]"
-            inputClassName="ml-80"
+            labelClassname="text-[#26435F] font-bold !text-[18.6px] "
+            inputContainerClassName="py-1 text-sm h-[53px] border-[0.994px] border-[#D0D5DD] my-0 mt-[-3px] rounded-[4.3px] placeholder-[#B3BDC7] text-[#B3BDC7]"
+            inputClassName="ml-80 placeholder-[#B3BDC7] text-[#B3BDC7]"
             required={persona === "student" ? true : false}
             value={values.country}
             onChange={(e) =>
@@ -260,7 +263,8 @@ if (values?.city?.length<3) {
             optionData={states}
             placeholder={"Select"}
             optionType="object"
-            placeholderClass="!mr-2"
+            biggerText={"true"}
+            placeholderClass="!mr-2 placeholder-[#B3BDC7] text-[#B3BDC7]"
             label={`State`}
             labelClassname="text-[#26435F] font-bold   !text-[18.6px]"
             inputContainerClassName="py-1 text-sm   h-[53px] border border-[#D0D5DD] my-0 mt-[-3px] rounded-[4.3px] "

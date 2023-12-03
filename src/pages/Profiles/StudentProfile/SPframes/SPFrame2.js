@@ -50,8 +50,8 @@ const SPFrame2 = ({
         }
       });
     }
-    getTotalSessions().then((res)=>{
-      console.log("total sessions",res)
+    getTotalSessions().then((res) => {
+      console.log("total sessions", res)
     })
   }, [userId]);
   const dateFormat = settings?.dateFormat || "dd/mm/yyyy";
@@ -74,30 +74,30 @@ const SPFrame2 = ({
 
     userDetailSave(reqBody);
   };
-  const formatDate= (value)=>{
-    const [ month, day, year] = value.split("-");
-    const monthName = getMonthName(day-1);
+  const formatDate = (value) => {
+    const [month, day, year] = value.split("-");
+    const monthName = getMonthName(day - 1);
     console.log(
-     { 
-       value : value,
-       day : day,
-       month : month,
-       year : year,
-       monthName :monthName
+      {
+        value: value,
+        day: day,
+        month: month,
+        year: year,
+        monthName: monthName
       }
-   );
-    
+    );
+
     const formattedDate = `${monthName}` + " " + `${month}` + `,` + `${year}`;
     return formattedDate
-   }
+  }
 
-   const formatDate2= (value)=>{
-    const [ day, month, year] = value.split("-");
-    const monthName = getMonthName(month-1);
-    
+  const formatDate2 = (value) => {
+    const [day, month, year] = value.split("-");
+    const monthName = getMonthName(month - 1);
+
     const formattedDate = `${day}` + "/" + `${month}` + `/` + `${year}`;
     return formattedDate
-   }
+  }
 
   return (
     <div>
@@ -105,42 +105,44 @@ const SPFrame2 = ({
       <div className="flex mt-0 justify-between gap-5 design:gap-10">
         <div className="flex-1 h-[200px] design:h-[230px] gap-7  flex flex-col">
           <div className="flex-1  flex justify-between">
-            <p className=" text-[20px] text-[#26435F] font-semibold text-base-20">
+            <p className=" text-[20px] text-[#26435F] font-semibold text-base-20 !font-lexend-deca">
               Hours Tutored
-              <span className=" text-[#FFA28D] text-2xl block mt-1">
+              <span className=" text-[#FFA28D] text-[37.5px] block mt-1 font-semibold !font-lexend-deca">
                 {totalHours}
               </span>
             </p>
-            <p className=" text-[20px] text-[#26435F] font-semibold text-base-20">
+            <p className=" text-[20px] text-[#26435F] font-semibold text-base-20 !font-lexend-deca">
               No. Of Sessions
-              <span className=" text-[#FFA28D] text-2xl block mt-1">{session_no}</span>
+              <span className=" text-[#FFA28D] text-[37.5px] block mt-1 font-semibold !font-lexend-deca">
+                {session_no}
+              </span>
             </p>
           </div>
-          <div className="flex-1  flex justify-between items-center ">
-            <p className=" text-[20px] text-[#26435F] font-semibold text-base-20">
+          <div className="flex-1  flex justify-between items-start ">
+            <p className=" text-[20px] text-[#26435F] font-semibold text-base-20 !font-lexend-deca">
               No. of Assignments
-              <span className=" text-[#FFA28D] text-2xl block mt-1">
+              <span className=" text-[#FFA28D] text-[37.5px] block mt-1 !font-lexend-deca">
                 {totalTest}
               </span>
             </p>
-            <p className=" text-[20px] text-[#26435F] font-semibold text-base-20 w-[165px] text-left ">
+            <p className=" text-[20px] text-[#26435F] font-semibold text-base-20 w-[165px] text-left !font-lexend-deca">
               Join Date
-              <span className=" text-[#FFA28D] text-xl block mt-1">
-                {console.log('user detail',userDetail)}
+              <span className=" text-[#FFA28D] text-[25px] block mt-1 !font-lexend-deca">
                 {formatDate2(getFormattedDate(userDetail?.createdAt, dateFormat))}
               </span>
             </p>
           </div>
         </div>
         <div className="flex-1 h-[200px] design:h-[230px]">
-          <p className=" text-sm text-[#26435F] font-semibold">
-            <span>
+          <p className="mb-2.5 text-[20px] text-[#26435F] leading-[12.5px] font-semibold flex justify-between items-end">
+            Official SAT&reg; Scores
+            {/* <span>
               <img
                 className="inline-block mb-1  -mt-1 !w-[150px] !h-5 design:!w-[180px] design:h-[30px] mr-2"
                 src={sat}
                 alt="copy"
               />
-            </span>
+            </span> */}
             {persona === "admin" && (
               <EditableText
                 editable={editable}
@@ -217,14 +219,15 @@ const SPFrame2 = ({
         </div>
 
         <div className="flex-1 h-[200px] design:h-[230px]">
-          <p className=" text-sm text-[#26435F] font-semibold">
-            <span>
+          <p className="mb-2.5 text-[20px] text-[#26435F] leading-[12.5px] font-semibold flex justify-between items-end">
+            Official ACT&reg; Scores
+            {/* <span>
               <img
                 className="inline-block -mt-1  !w-[150px] !h-5 mr-2 design:!w-[180px] design:h-[30px] mb-1"
                 src={act}
                 alt="copy"
               />
-            </span>
+            </span> */}
 
             {persona === "admin" && (
               <EditableText

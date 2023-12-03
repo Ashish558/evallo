@@ -93,14 +93,31 @@ const StudentSettings = () => {
         console.log("Email Link sent", res);
       });
   };
+  const handleEmpty = (val) => {
+    if (!val || val.length === 0 || val?.trim()?.length === 0) {
+      return true;
+    }
+    return false;
+  };
   const handleDataUpdate = () => {
-    setSaving(true)
+  
+    let arr=["firstName", "lastName", "email"]
+    let  emptyCheck=false;
+    for (let i=0; i<arr.length; i++) {
+      if(handleEmpty(values[arr[i]])) {
+        alert(`${arr[i]} cannot be empty.`)
+       emptyCheck=true;
+        return false;
+      }
+    }
+    if(emptyCheck) return false;
+   
     const updateUserAccount = async () => {
       try {
         let reqBody = { ...values };
         delete reqBody["_id"];
         delete reqBody["email"];
-
+        setSaving(true)
         updateAccount(reqBody)
           .then((res) => {
             alert("Account details updated succesfully")
@@ -190,6 +207,7 @@ const StudentSettings = () => {
 
           <span className="font-semibold text-base-22-5">{"  > Settings"}</span>
         </div>
+        {console.log(error)}
         <div className="flex gap-6 design:gap-8 items-center">
           <InputField
             placeholder=""
@@ -200,7 +218,11 @@ const StudentSettings = () => {
             label="First name"
             value={values.firstName}
             onChange={(e) =>
-              handleFirstName(e)
+              
+             {const regex = /^[a-zA-Z0-9 ]*$/;
+             const isValid = regex.test(e.target.value);
+             if(isValid)
+             handleFirstName(e)}
             }
             error={error.firstName}
           />
@@ -288,9 +310,7 @@ const StudentSettings = () => {
                 setValues({
                   ...values,
                   phone: e.target.value,
-                })
-              }
-               
+                })}
               }
               error={error.phone}
             />

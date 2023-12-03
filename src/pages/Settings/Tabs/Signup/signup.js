@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import styles from "./style.module.css";
 import InputField from "../../../../components/InputField/inputField";
@@ -9,6 +9,7 @@ import CheckboxIcon from "../../../../assets/icons/square.svg";
 import DeletIcon from "../../../../assets/Settings/delete.svg";
 import que from "../../../../assets/icons/que.png";
 import que2 from "../../../../assets/icons/que2.svg";
+import DeleteIcon from "../../../../assets/YIcons/Vector (1).svg";
 import plus1 from "../../../../assets/icons/plus1.svg";
 import dropdown from "../../../../assets/icons/dropdown (2).svg";
 import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
@@ -17,6 +18,9 @@ import AddTag from "../../../../components/Buttons/AddTag";
 import Loader from "../../../../components/Loader";
 import LoaderNew from "../../../../components/Loader/LoaderNew";
 import { useAddNewQuestionMutation } from "../../../../app/services/admin";
+import { useNavigate } from "react-router-dom";
+import Modal from "../../../../components/Modal/Modal";
+import EditIcon from "../../../../assets/YIcons/Editing.svg";
 export default function SignupTab({
   setAddNewQuestionModalActive,
   fetchS,
@@ -218,12 +222,11 @@ export default function SignupTab({
       setQuestionSelected(null);
     }
   };
-  
+
   const submitNewQuestion = (e) => {
     e.preventDefault();
     if (organization?.settings?.customFields?.length === 5)
       return alert("Only 5 fields are allowed");
-   
 
     let updatedCustomFields = customFields;
     updatedCustomFields = updatedCustomFields.map((item) => ({
@@ -241,7 +244,94 @@ export default function SignupTab({
     };
     updateAndFetchsettings(body2, setLoadingCustom);
   };
- 
+  const [questionModalActive, setQuestionModalActive] = useState(false);
+  const [selectedQuestionData, setSelectedQuestionData] = useState({
+    name: "",
+    Values: [],
+    dataType: "",
+  });
+  const [saveLoading, setsaveLoading] = useState(false);
+  const navigate = useNavigate();
+  const handleQuestionModalUpload = () => {
+    let editQuestionData = { ...selectedQuestionData };
+    if (
+      selectedQuestionData?.dataType !== "Dropdown Options" &&
+      selectedQuestionData?.dataType !== "Multi-select Checkboxes"
+    ) {
+      editQuestionData.Values = [];
+    }
+    let updatedCustomFields = [...customFields] ?? [];
+    if (editQuestionData?._id) {
+      updatedCustomFields = customFields?.map((it) => {
+        if (it._id === editQuestionData?._id) {
+          return { ...editQuestionData };
+        }
+        return it;
+      });
+    } else updatedCustomFields.push(editQuestionData);
+
+    updatedCustomFields = updatedCustomFields.map((item) => ({
+      name: item.name,
+      Values: item.Values,
+      dataType: item.dataType,
+      required: item.required
+    }));
+
+    const body = {
+      customFields: updatedCustomFields,
+    };
+    console.log("handleUpload", { body });
+
+    updateAndFetchsettings(body, setLoadingCustom);
+    setQuestionModalActive(false);
+    setSelectedQuestionData({ name: "", Values: [], dataType: "" });
+  };
+  const handleEmpty = (val) => {
+    if (!val || val.length === 0 || val?.trim()?.length === 0) {
+      return true;
+    }
+    return false;
+  };
+  const handleEditQuestion = (item) => {
+    setSelectedQuestionData(item);
+    setQuestionModalActive(true);
+  };
+  const handleQuestionValue = (type, val) => {
+    if (type !== "Dropdown Options" && type !== "Multi-select Checkboxes") {
+      return val;
+    }
+
+    let arr = [...val];
+    while (Array.isArray(arr) && arr?.length < 2) {
+      arr.push("");
+    }
+    return arr;
+  };
+  const handleQuestionDisabled = () => {
+    if (!selectedQuestionData || handleEmpty(selectedQuestionData?.name))
+      return true;
+    if (handleEmpty(selectedQuestionData?.dataType)) return true;
+    if (
+      selectedQuestionData?.dataType === "Dropdown Options" ||
+      selectedQuestionData?.dataType === "Multi-select Checkboxes"
+    ) {
+      if (
+        selectedQuestionData?.Values?.length < 2 ||
+        handleEmpty(selectedQuestionData?.Values[0]) ||
+        handleEmpty(selectedQuestionData?.Values[1])
+      )
+        return true;
+    }
+    return false;
+  };
+  const bottomEl = useRef(null);
+
+  const scrollToBottom = () => {
+    bottomEl?.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+  useEffect(()=>{
+    scrollToBottom()
+  },[selectedQuestionData?.Values?.length])
   return (
     <div className="">
       <div className="mb-[40px]">
@@ -511,7 +601,7 @@ export default function SignupTab({
             return (
               <div
                 key={item._id}
-                className={`${styles.customField} grid grid-cols-12 gap-x-12 `}
+                className={`${styles.customField} w-full grid grid-cols-12 gap-x-12 mb-8 py-4 pb-8 border-b-[1.25px] border-b-[#CBD6E2]`}
               >
                 <div className="col-span-8">
                   <div className="py-3 px-4 border-b border-[#26435f] bg-[#F5F8FA] text-base-17-5 ">
@@ -521,23 +611,11 @@ export default function SignupTab({
                         value={item.name}
                         placeholder="Type your question here."
                         className="bg-transparent w-[90%] py-1 outline-none border-none text-base-17-5 "
-                        onChange={(e) => {
-                          let updatedCustomFields = customFields?.map((it) => {
-                            if (it._id === item._id) {
-                              return {
-                                ...it,
-                                name: e.target.value,
-                              };
-                            }
-                            return it;
-                          });
-                          setCustomFields(updatedCustomFields);
-                        }}
-                        onKeyDown={handleNameAddKeyDown}
+                        disabled={true}
                       />
                     </p>
                   </div>
-                  {item.dataType === "String" && (
+                  {item.dataType === "Single-line Text Box" && (
                     <div className="flex flex-col gap-y-3 mt-7 bg-[#F5F8FA]">
                       <input
                         className="bg-[#F5F8FA] p-2 outline-none text-[#507CA8]"
@@ -549,7 +627,7 @@ export default function SignupTab({
                       />
                     </div>
                   )}
-                  {item.dataType === "Paragraph" && (
+                  {item.dataType === "Paragraph Text Box" && (
                     <div className="flex flex-col gap-y-3 mt-7 bg-[#F5F8FA]">
                       <textarea
                         className="bg-[#F5F8FA] p-2 outline-none text-[#507CA8]"
@@ -561,14 +639,13 @@ export default function SignupTab({
                       ></textarea>
                     </div>
                   )}
-                  {(item.dataType === "Checkboxes" ||
-                    item.dataType === "Dropdown") && (
+                  {(item.dataType === "Multi-select Checkboxes") && (
                     <div className="flex flex-col gap-y-3 mt-7 ">
                       {item.Values?.map((value) => {
                         return (
                           <div key={value} className="flex items-center">
                             <img src={CheckboxIcon} alt="checkbox" />
-                            <p className="ml-2 text-[#507CA8] !font-normal text-base-17-5 ">
+                            <p className="ml-2 !text-[#507CA8] !font-normal text-base-17-5 ">
                               {" "}
                               {value ? value : "-"}{" "}
                             </p>
@@ -577,57 +654,51 @@ export default function SignupTab({
                       })}
                     </div>
                   )}
-                  {(item.dataType === "Checkboxes" ||
-                    item.dataType === "Dropdown") && (
-                    <div className="flex flex-col gap-y-3 mt-3  mb-7">
-                      <div className="flex items-center">
-                        <img
-                          className="inline-block"
-                          src={CheckboxIcon}
-                          alt="checkbox"
-                        />
+                    {(item.dataType === "Dropdown Options") && (
+                    <div className="flex flex-col gap-y-3 mt-7 ">
+                      {item.Values?.map((value) => {
+                        return (
+                          <div key={value} className="flex items-center">
+                          
+                        
+                                  <InputField
+                                    label=""
+                                    labelClassname="text-base-20 text-[#26435F] !mb-0 none hidden"
+                                    placeholder={`Dropdown Option ${idx + 1} ${
+                                      idx < 2 ? "(required)" : ""
+                                    }`}
+                                    inputContainerClassName="!text-[#507CA8] text-base-17-5 !px-3 bg-primary-50 border-0 shadow-small rounded-[6px]"
+                                    inputClassName="bg-transparent"
+                                    placeholderClass="text-base-17-5"
+                                    parentClassName="flex-1 text-base-17-5 py-0 w-full  mr-4 !mb-0"
+                                    type="text"
+                                    value={value}
+                                    disabled={true}
+                                    
+                                  />
 
-                        {addOption === true && questionSelected === item._id ? (
-                          <input
-                            autoFocus
-                            className="ml-3 text-[14px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] bg-[#F5F8FA]  w-32 text-base-17-5 "
-                            value={inputValue}
-                            type="text"
-                            onChange={handleAddOption}
-                            onKeyPress={(e) => handleKeyPress(e, item)}
-                          />
-                        ) : (
-                          <p
-                            className="!text-[#FFA28D] !font-normal ml-2 underline cursor-pointer text-base-17-5 "
-                            onClick={() => {
-                              SetAddOption(true);
-                              setQuestionSelected(item._id);
-                            }}
-                          >
-                            Add option
-                          </p>
-                        )}
-                      </div>
+                                 
+                               
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
 
                 <div className="col-span-4">
-                  <div className="max-w-[200px]">
-                    <InputSelect
-                      value={item.dataType}
-                      labelClassname="hidden"
-                      parentClassName="w-[200px] mr-5 my-4 text-base-17-5 "
-                      optionData={[
-                        "Paragraph",
-                        "String",
-                        "Dropdown",
-                        "Checkboxes",
-                      ]}
-                      onChange={(e) => handleCustomFieldType(item._id, e)}
-                      inputContainerClassName={`bg-[#F5F8FA] border-0 text-[#26435F] font-medium ${styles["dropdown-container"]} `}
-                    />
-                    <div className="flex items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F]  text-sm px-4 py-[13px] my-4">
+                  <div className="max-w-[230px]">
+                    <div className="flex rounded-[6px] mb-4 items-center justify-between cursor-pointer bg-[#EBEEF2] text-[#26435F] font-medium text-sm px-4 py-[8px] text-base-17-5 ">
+                      {item.dataType}
+                    </div>
+                    <div
+                      className="flex rounded-[6px]  items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F] font-medium text-sm px-4 py-[12px] text-base-17-5 "
+                      onClick={() => handleEditQuestion(item)}
+                    >
+                      Edit
+                      <img src={EditIcon} alt="edit" />
+                    </div>
+                    <div className="flex rounded-[6px] items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F]  text-sm px-4 py-[12px] my-4">
                       <p className="!font-medium text-base-17-5 ">Required?</p>
                       <ToggleBar
                         toggle={{ value: item.required, key: item._id }}
@@ -638,7 +709,7 @@ export default function SignupTab({
                     </div>
 
                     <div
-                      className="flex items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F] font-medium text-sm px-4 py-[13px] text-base-17-5 "
+                      className="flex rounded-[6px] items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F] font-medium text-sm px-4 py-[12px] text-base-17-5 "
                       onClick={() => handleDelete(item._id)}
                     >
                       Delete
@@ -656,13 +727,237 @@ export default function SignupTab({
           children={"Add New Question "}
           Icon={plus1}
           className="text-base-17-5 text-white"
-          onClick={(e) => submitNewQuestion(e)}
+          onClick={(e) => setQuestionModalActive(true)}
         />
         {loadingCustom && (
           <div className="bg-transparent w-full h-full z-[999999] pointer-events-none cursor-not-allowed absolute top-0 grid items-center place-items-center">
             {" "}
             <LoaderNew className="" />{" "}
           </div>
+        )}
+        {questionModalActive && (
+          <Modal
+            classname={"max-w-[900px] design:max-w-[1000px] mx-auto"}
+            titleClassName="text-base-20 mb-[18px]"
+            title="Add / Edit Form Question"
+            cancelBtn={false}
+            cancelBtnClassName="w-140 "
+            handleClose={() => {
+              setQuestionModalActive(false);
+              setSelectedQuestionData({
+                name: "",
+                Values: [],
+                dataType: "",
+              });
+            }}
+            body={
+              <form
+                id="settings-form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+
+                  handleQuestionModalUpload();
+                }}
+              >
+                <p className="text-base-16 mt-[-10px] text-[#667085]">
+                  <span className="font-semibold mr-1">⚠️ Note:</span>
+                  These questions will show up in the third step of the sign-up
+                  form that you can use for letting your clients sign up on
+                  Evallo. If no custom questions are added, then the third step
+                  will be hidden and only the mandatory steps will be shown
+                  during sign-up. Read detailed documentation in Evallo’s
+                  <span
+                    className="text-[#24A3D9] cursor-pointer"
+                    onClick={() => navigate("/support")}
+                  >
+                    {" "}
+                    knowledge base.
+                  </span>
+                </p>
+
+                <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
+                  <div className="flex-1 flex gap-5 ">
+                    <div className="flex-1 pr-1">
+                      <div className="flex flex-col gap-y-1 mt-3">
+                        <p className="text-base-18 text-[#26435F] !text-[#26435F] mb- font-semibold">
+                          Question Text
+                        </p>
+                        <textarea
+                          className="bg-primary-50 rounded-[6px] p-2 outline-none  text-base-17-5 !h-[80px] shadow-small"
+                          name=""
+                          id=""
+                          cols="30"
+                          placeholder="Add a custom question that you would like to ask the parents / students signing up on your platform."
+                          value={selectedQuestionData?.name}
+                          isRequired={true}
+                          onChange={(e) => {
+                            setSelectedQuestionData({
+                              ...selectedQuestionData,
+                              name: e.target.value,
+                            });
+                          }}
+                        ></textarea>
+                      </div>
+                      <div className="flex mt-6 items-end justify-between gap-10">
+                        {" "}
+                        <InputSelect
+                          labelClassname="text-base-18 mb-1"
+                          inputContainerClassName="flex-1 text-base-17-5 shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-primary-50 shadow-small"
+                          optionListClassName="text-base-17-5"
+                          optionClassName="text-base-17-5"
+                          optionData={[
+                            "Paragraph Text Box",
+                            "Single-line Text Box",
+                            "Dropdown Options",
+                            "Multi-select Checkboxes",
+                          ]}
+                          placeholderClass="text-base-17-5"
+                          parentClassName="flex-1 text-base-17-5 py-0 w-[calc(387*0.0522vw)] "
+                          label="Select Question Type"
+                          value={selectedQuestionData.dataType}
+                          required={true}
+                          noAsteric={true}
+                          onChange={(val) =>
+                            setSelectedQuestionData({
+                              ...selectedQuestionData,
+                              dataType: val,
+                              Values: handleQuestionValue(
+                                val,
+                                selectedQuestionData?.Values
+                              ),
+                            })
+                          }
+                        />
+                        <div className="flex rounded-[6px] translate-y-[-14px]  items-center justify-between gap-6 cursor-pointer bg-[#F5F8FA] text-[#26435F]  text-sm px-4 py-[10px] ">
+                        <p className="!font-medium text-base-17-5 mr-7">
+                            Required?
+                          </p>
+                          <ToggleBar
+                            toggle={{
+                              value: selectedQuestionData.required,
+                              key: selectedQuestionData._id,
+                            }}
+                            onToggle={() => {
+                              setSelectedQuestionData({
+                                ...selectedQuestionData,
+                                required: !selectedQuestionData.required,
+                              });
+                            }}
+                          ></ToggleBar>
+                        </div>
+                      </div>
+                      {(selectedQuestionData?.dataType === "Dropdown Options" ||
+                        selectedQuestionData?.dataType ===
+                          "Multi-select Checkboxes") && (
+                        <>
+                          <p className="text-base-18 text-[#26435F] mb-0.5 !font-medium mt-5">
+                            Enter Dropdown Options
+                          </p>
+                          <div className="flex p-1 flex-col mt-1 items-start justify-start h-[120px] overflow-y-auto custom-scroller">
+                            {" "}
+                            {selectedQuestionData?.Values?.map((opt, idx) => {
+                              return (
+                                
+                                <div  className="flex justify-between gap-12 w-full flex-1">
+                                  <InputField
+                                    label="Service Name"
+                                    labelClassname="text-base-20 text-[#26435F] mb-0.5 none hidden"
+                                    placeholder={`Dropdown Option ${idx + 1} ${
+                                      idx < 2 ? "(required)" : ""
+                                    }`}
+                                    inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0 shadow-small rounded-[6px]"
+                                    inputClassName="bg-transparent"
+                                    placeholderClass="text-base-17-5"
+                                    parentClassName="flex-1 text-base-17-5 py-0 w-[95%]  mr-4 mb-2"
+                                    type="text"
+                                    value={selectedQuestionData.Values[idx]}
+                                    isRequired={idx < 2}
+                                    onChange={(e) => {
+                                      let arr = selectedQuestionData.Values;
+                                      arr[idx] = e.target.value;
+                                      setSelectedQuestionData((prev) => ({
+                                        ...prev,
+                                        Values: arr,
+                                      }));
+                                    }}
+                                  />
+
+                                  <img
+                                    onClick={() => {
+                                      let arr = selectedQuestionData.Values;
+                                      arr = arr?.filter((it, idx2) => {
+                                        return idx2 !== idx;
+                                      });
+
+                                      setSelectedQuestionData((prev) => ({
+                                        ...prev,
+                                        Values: arr,
+                                      }));
+                                    }}
+                                    className={`${
+                                      idx <= 1
+                                        ? " opacity-0 pointer-events-none cursor-default"
+                                        : "cursor-pointer"
+                                    } mr-3`}
+                                    src={DeleteIcon}
+                                    alt="del"
+                                  />
+                                </div>
+                              );
+                            })}
+                            <div className="" ref={bottomEl}></div>
+                          </div>
+                          <p
+                            onClick={() => {
+                              setSelectedQuestionData((prev) => ({
+                                ...prev,
+                                Values: [...prev.Values, ""],
+                              }));
+                             
+                            }}
+                            className="cursor-pointer text-base-18 text-[#FFA28D] underline underline-offset-2 mb-0.5 !font-medium mt-5"
+                          >
+                            {selectedQuestionData?.dataType ===
+                              "Dropdown Options" && "+ Add Dropdown Option"}
+
+                            {selectedQuestionData?.dataType ===
+                              "Multi-select Checkboxes" &&
+                              " + Add Multi-select Options"}
+                          </p>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center flex-wrap [&>*]:mb-[10px] mt-5"></div>
+                  <div className="w-full border-[1.33px_solid_#00000033] bg-[#00000033] my-5 h-[1.3px]"></div>
+                  <div className="flex gap-4 items-center justify-center mt-3">
+                    <button
+                      disabled={loadingCustom || handleQuestionDisabled()}
+                      className={`${
+
+                        loadingCustom ? "cursor-wait" : ""
+                      } rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}
+                    >
+                      Save{" "}
+                    </button>
+                    <button
+                      className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-[6px] text-[#FFA28D]  w-[146px]"
+                      onClick={() => {
+                        setQuestionModalActive(false);
+                        setSelectedQuestionData({
+                          name: "",
+                          Values: [],
+                          dataType: "",
+                        });
+                      }}
+                    >
+                      Cancel{" "}
+                    </button>
+                  </div>
+                </div>
+              </form>
+            }
+          />
         )}
       </div>
     </div>

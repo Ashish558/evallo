@@ -25,8 +25,9 @@ export function TableHeaderNew({
       } ${flag ? styles["no-arrow"] : ""}`}
     >
       <div
-        className={`flex   ${
-          header.text === "Email" || header.text === "Phone" || header.text === "Assignment Name" || header.text === "Assignment"
+        className={`flex  ${header.wrapperClassName ? header.wrapperClassName : '' } ${
+          header.text === "Email" || header.text === "Phone" || header.text === "Assignment Name" || header.text === "Assignment" ||
+          header.text === "Full Name"
             ? `justify-start ${header.text === "Assignment" ? "ps-6 overflow-hidden" : ""}`
             : "justify-center"
         } items-center ${
@@ -55,7 +56,7 @@ export function TableHeaderNew({
             <span className="text-center text-[17.5px]">{header.text}</span>
           </div>
         ) : (
-          <div className=" text-[17.5px] text-left">
+          <div className=" text-[17.5px] text-left text-white">
             {header.text}
           </div>
         )}

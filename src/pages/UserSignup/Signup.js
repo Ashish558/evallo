@@ -26,6 +26,8 @@ import CustomFields from "../Frames/CustomFields/CustomFields";
 import { useGetUserByOrgNameMutation } from "../../app/services/organization";
 import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
+import SecondaryButton from "../../components/Buttons/SecondaryButton";
+
 
 export default function UserSignup() {
   const [frames, setFrames] = useState({
@@ -152,7 +154,7 @@ export default function UserSignup() {
       if (res.data.organisation.length === 0) return;
       if (res.data.organisation[0]) {
         setOrganisation(res.data.organisation[0]);
-        // setCustomFields(res.data.organisation[0]?.settings?.customFields);
+         setCustomFields(res.data.organisation[0]?.settings?.customFields);
       }
     });
   }, [searchParams.get("orgName")]);
@@ -552,9 +554,14 @@ export default function UserSignup() {
   };
 
   return (
-    <div className=" pb-6 bg-primary" id={styles.signUp}>
-      <div className="flex justify-center flex-col items-center md:grid-cols-2  ">
-        <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-4" />
+    <div className="" id={styles.signUp}>
+      <div className=" flex md:grid-cols-2 justify-center flex-col items-center ">
+        <img
+          src={cuate}
+          alt="rocket"
+          className="
+               w-[193.34px] h-[121.22px] mt-[21px] mb-[13.78px]"
+        />
         <>
           {!frames.signupSuccessful ? (
             <div className="hidden bg-primary text-white pt-[79px] px-[49px]">
@@ -562,8 +569,8 @@ export default function UserSignup() {
                 {frames.signupActive
                   ? "Sign Up"
                   : frames.setPasswordFields && !isAddedByAdmin
-                    ? "Set Password"
-                    : "Profile Details"}
+                  ? "Set Password"
+                  : "Profile Details"}
               </h1>
 
               <h6 className="mb-[10px]">Sign up with email address</h6>
@@ -571,34 +578,44 @@ export default function UserSignup() {
           ) : (
             <></>
           )}
-          <div className={`flex lg:items-center relative bg-white rounded-md py-6 px-5 md:px-[48px] w-[43vw] min-w-[620px] max-w-[800px] mb-[139px] ${  customFields?.length > 0 && isAddedByAdmin ? "!w-[45vw] min-w-[650px]":""}` } >
-            <div className="w-full py-3">
+          <div
+            className={`relative bg-white rounded-md w-[800px] h-auto mb-[140px] px-[50px] pt-[40px] pb-[66px] ${
+              customFields?.length > 0 && isAddedByAdmin
+                ? "!w-[45vw] min-w-[650px]"
+                : ""
+            }`}
+          >
+            <div className="w-full h-full">
               <h1
                 className={`hidden lg:block mb-1.5 text-[30px] ${styles.title} `}
               >
                 {frames.signupActive
                   ? ""
                   : frames.setPasswordFields && !isAddedByAdmin
-                    ? "Set Password"
-                    : ""}
+                  ? "Set Password"
+                  : ""}
               </h1>
-            
+
               {currentStep > 0 && !frames.signupSuccessful && (
                 <NumericSteppers
-                  className={`mt-3 !w-[520px] !mx-auto design:!w-[550px] ${  customFields?.length > 0 && isAddedByAdmin ? "!w-[650px] design:!w-[650px]":""}`}
+                  className={`mt-3 !w-[520px] !mx-auto design:!w-[550px] ${
+                    customFields?.length > 0 && isAddedByAdmin
+                      ? "!w-[650px] design:!w-[650px]"
+                      : ""
+                  }`}
                   fieldNames={
                     customFields?.length > 0 && isAddedByAdmin
                       ? [
-                        "Personal info",
-                        "Student / Parent",
-                        "Further details",
-                        "Set password",
-                      ]
+                          "Personal info",
+                          "Student / Parent",
+                          "Further details",
+                          "Set password",
+                        ]
                       : [
-                        "Personal info",
-                        "Student / Parent",
-                        isAddedByAdmin ? "Set password" : "Further details",
-                      ]
+                          "Personal Info",
+                          "Student / Parent",
+                          isAddedByAdmin ? "Set password" : "Further details",
+                        ]
                   }
                   totalSteps={
                     customFields?.length === 0
@@ -612,13 +629,19 @@ export default function UserSignup() {
 
               {frames.signupActive ? (
                 <div>
-                  <div className={`flex mt-[59px] justify-between gap-10 lg:mt-0 ${stepOneDisabled ? 'pointer-events-none cursor-not-allowed opacity-70' :''}`}>
+                  <div
+                    className={`flex mt-[59px] justify-between gap-10 lg:mt-0  ${
+                      stepOneDisabled
+                        ? "pointer-events-none cursor-not-allowed opacity-70"
+                        : ""
+                    }`}
+                  >
                     <InputField
                       placeholder=""
                       inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
                       parentClassName="text-base-17-5 w-full "
                       labelClassname="mb-1 text-[#26435F] !font-medium"
-                      label="First Name"
+                      label="First name"
                       value={values.firstName}
                       onChange={(e) => {
                         // const alphabeticOnly = e.target.value.replace(
@@ -641,10 +664,9 @@ export default function UserSignup() {
                       inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
                       parentClassName="text-base-17-5 w-full "
                       labelClassname="mb-1 text-[#26435F] !font-medium"
-                      label="Last Name"
+                      label="Last name"
                       value={values.lastName}
                       onChange={(e) => {
-
                         // const alphabeticOnly = e.target.value.replace(
                         //   /[^a-zA-Z]/g,
                         //   ""
@@ -660,7 +682,13 @@ export default function UserSignup() {
                       error={error.lastName}
                     />
                   </div>
-                  <div className={`flex  items-end mt-[30px] mb-[29px] justify-between gap-10 ${stepOneDisabled ? 'pointer-events-none cursor-not-allowed opacity-70' :''}`}>
+                  <div
+                    className={`flex  items-end mt-[30px] mb-[29px] justify-between gap-10 ${
+                      stepOneDisabled
+                        ? "pointer-events-none cursor-not-allowed opacity-70"
+                        : ""
+                    }`}
+                  >
                     <InputField
                       labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="Email"
@@ -694,28 +722,34 @@ export default function UserSignup() {
                           phoneCode: e.target.value,
                         })
                       }
-                      onChange={(e) =>{
+                      onChange={(e) => {
                         const regex = /^[0-9 ]*$/;
                         const isValid = regex.test(e.target.value);
                         if (isValid && e.target.value?.length < 11)
-                        setValues({
-                          ...values,
-                          phone: e.target.value,
-                        })}
-                      }
+                          setValues({
+                            ...values,
+                            phone: e.target.value,
+                          });
+                      }}
                       totalErrors={error}
                       error={error.phone}
                       codeError={error.phoneCode}
                     />
                   </div>
 
-                  <div className="mt-5">
+                  <div className="mt-[30px]">
                     <p
                       className={`mb-[19px] text-[#26435F] text-base-17-5  font-semibold`}
                     >
                       Are you signing up as a Parent or a Student?
                     </p>
-                    <div className={`flex items-center  text-[13.5px] gap-x-6 ${stepOneDisabled || paramUserRole? 'pointer-events-none cursor-not-allowed opacity-70' :''}`}>
+                    <div
+                      className={`flex items-center  text-[13.5px] gap-x-6 ${
+                        stepOneDisabled || paramUserRole
+                          ? "pointer-events-none cursor-not-allowed opacity-70"
+                          : ""
+                      }`}
+                    >
                       <div
                         onClick={() => {
                           setValues((prev) => ({
@@ -723,26 +757,27 @@ export default function UserSignup() {
                             role: "parent",
                           }));
                         }}
-                        className={styles.textLight}
+                        className={styles.textLight + "mt-[31.75px]"}
                       >
-                        <div className={` flex items-center  `}>
+                        <div className={` flex items-center`}>
                           <input
                             type="radio"
-                            className="form-radio hidden "
+                            className="form-radio hidden"
                             id="radioOption"
                           />
                           <div
-                            className={`relative inline-block ml-[2px] w-4 h-4   rounded-full border border-[1.25px] ${values.role === "parent"
-                              ? "border-[#FFA28D]"
-                              : "border-gray-600"
-                              } cursor-pointer`}
+                            className={`relative  ml-[2px] w-[25px] h-[25px] rounded-full border-[1.25px] flex justify-center items-center ${
+                              values.role === "parent"
+                                ? "border-[#FFA28D]"
+                                : "border-gray-600"
+                            } cursor-pointer`}
                           >
                             {values.role === "parent" && (
-                              <div className="absolute inset-0 my-auto mx-auto w-[8px] h-[8px] rounded-full bg-[#FFA28D]" />
+                              <div className="absolute inset-0 my-auto mx-auto w-[12.5px] h-[12.5px] rounded-full bg-[#FFA28D]" />
                             )}{" "}
                           </div>
 
-                          <span className="ml-[10px] text-[#507CA8] text-base-17-5">
+                          <span className="ml-[9px] text-[#507CA8] text-base-17-5">
                             Parent / Guardian
                           </span>
                         </div>
@@ -763,41 +798,46 @@ export default function UserSignup() {
                             id="radioOption"
                           />
                           <div
-                            className={`relative inline-block w-4 h-4 p-1   rounded-full border ${values.role === "student"
-                              ? "border-[#FFA28D]"
-                              : "border-gray-600"
-                              } cursor-pointer`}
+                            className={`relative w-[25px] h-[25px] p-1 rounded-full border flex justify-center items-center ${
+                              values.role === "student"
+                                ? "border-[#FFA28D]"
+                                : "border-gray-600"
+                            } cursor-pointer`}
                           >
                             {values.role === "student" && (
-                              <div className="absolute inset-0 my-auto mx-auto w-[8px] h-[8px] rounded-full bg-[#FFA28D]" />
+                              <div className="absolute inset-0 my-auto mx-auto w-[12.5px] h-[12.5px] rounded-full bg-[#FFA28D]" />
                             )}{" "}
                           </div>
 
-                          <span className="ml-2 text-[#507CA8] text-base-17-5">Student</span>
+                          <span className="ml-2 text-[#507CA8] text-base-17-5">
+                            Student
+                          </span>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className=" gap-x-2 my-5">
-                    <div className={`flex ${styles.textLight}`}>
+                  <div className=" gap-x-2 my-5 ps-[5px]">
+                    <div className={`flex justify-start items-center ${styles.textLight} `}>
                       <CCheckbox
+                        className={`border-[#507CA8]`}
                         checked={values.ageChecked}
                         onChange={handleCheckboxChangeAge}
                       />
 
-                      <span className="ml-2 text-base-17-5 text-[#507CA8]">
+                      <div className="ml-2 text-base-17-5 text-[#507CA8]">
                         I confirm that I am 13 years or older
-                      </span>
+                      </div>
                     </div>
                   </div>
 
-                  <div className=" gap-x-2 mt-5 mb-[50px]">
-                    <div className={`flex ${styles.textLight}`}>
+                  <div className="gap-x-2 mt-5 mb-[50px] w-[546px] ps-[5px]">
+                    <div className={`flex justify-start items-start ${styles.textLight}`}>
                       <CCheckbox
+                        className={`border-[#507CA8]`}
                         checked={values.terms}
                         onChange={handleCheckboxChangeTerms}
                       />
-                      <p className={` ml-2 text-base-17-5 text-[#507CA8]`}>
+                      <div className={`ml-2 text-base-17-5 text-[#507CA8] pe-5`}>
                         I have carefully read and agree to the{" "}
                         <a
                           href="http://evallo.org/tou"
@@ -812,25 +852,27 @@ export default function UserSignup() {
                         >
                           Privacy Policy
                         </a>
-                      </p>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center mt-[30px] justify-end">
-                    {/* <SecondaryButton
+                  <div className="flex items-center justify-between">
+                    <SecondaryButton
                       children="Go Back"
-                      className="!text-[0.9688vw] mr-6 bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] font-medium h-[53px] rounded-5 w-[7.6042vw]"
+                      disabled={true}
+                      className="!text-[18.667px] mr-6 bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] font-medium h-[53px] rounded-5 w-[146.67px] "
                       onClick={() => navigate("/")}
-                    /> */}
+                    />
 
                     <PrimaryButton
-                      className={`bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[8vw]   text-[#FFF] !text-[0.9688vw] font-medium relative h-[50px] design:h-[53px] rounded-5 ${loading
-                        ? "cursor-wait opacity-60 pointer-events-none"
-                        : "cursor-pointer"
-                        }`}
+                      className={`bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[146.67px]   text-[#FFF] !text-[18.667px] font-medium relative h-[50px] design:h-[53px] rounded-5 ${
+                        loading
+                          ? "cursor-wait opacity-60 pointer-events-none"
+                          : "cursor-pointer"
+                      }`}
                       disabled={
                         values.email.trim().length === 0 ||
-                          !values.terms ||
-                          !values.ageChecked
+                        !values.terms ||
+                        !values.ageChecked
                           ? true
                           : false
                       }
@@ -853,7 +895,6 @@ export default function UserSignup() {
                 <CustomFields
                   {...props}
                   {...valueProps}
-
                   customFields={customFields}
                   setCustomFields={setCustomFields}
                   handleSignup={handleSignup}

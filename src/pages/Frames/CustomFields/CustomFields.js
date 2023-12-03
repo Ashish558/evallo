@@ -139,7 +139,7 @@ export default function CustomFields({
         {customFields.map((item,idx) => {
           return (
             <div className="relative" key={item._id}>
-              {item.dataType === "String" ? (
+              {item.dataType === "Single-line Text Box" ? (
                 <InputField
                   label={item.name}
                   required={item.required}
@@ -158,7 +158,7 @@ export default function CustomFields({
                     handleParagraphChange(item._id, e.target.value)
                   }
                 />
-              ) : item.dataType === "Paragraph" ? (
+              ) : item.dataType === "Paragraph Text Box" ? (
                 <div className="flex flex-col gap-y-1 ">
                   <p className={"!text-base-17-5 text-[#26435F] !font-medium"}>
                     {item.name}
@@ -176,7 +176,7 @@ export default function CustomFields({
                   ></textarea>
                  
                 </div>
-              ) : item.dataType === "Dropdown" ? (
+              ) : item.dataType === "Dropdown Options" ? (
                 <InputSelect
                   label={item.name}
                   required={item.required}
@@ -195,7 +195,7 @@ export default function CustomFields({
                 
                   onChange={(e) => handleParagraphChange(item._id, e)}
                 />
-              ) : item.dataType === "Checkboxes" ? (
+              ) : item.dataType === "Multi-select Checkboxes" ? (
                 <div>
                   <p className="!text-base-17-5 text-[#26435F] !font-medium mb-1">
                     {" "}
