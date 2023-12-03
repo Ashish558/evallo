@@ -133,6 +133,7 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
   const [startMonth, startDay] = startFull.split("-");
 
   const formatDate= (value)=>{
+    
     const [ month, day, year] = value.split("-");
     const monthName = getMonthName(day-1);
     console.log(
