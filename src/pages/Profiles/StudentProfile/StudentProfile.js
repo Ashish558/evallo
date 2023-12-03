@@ -1070,7 +1070,7 @@ const [toEdit, setToEdit] = useState({
             toEdit={toEdit}
           />
           <div className="flex-1 mt-16 min-h-[400px]">
-            <p className="mb-[-40px] text-sm text-[#26435F] font-semibold text-base-20 ">
+            <p className="mb-[-40px] text-sm text-[#26435F] font-semibold text-base-20 pl-[2px]">
               Latest Assignments
             </p>
 

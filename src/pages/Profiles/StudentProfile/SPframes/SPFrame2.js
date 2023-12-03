@@ -309,7 +309,7 @@ const SPFrame2 = ({
           </div>
         </div>
         <div className="flex-1 h-[200px] design:h-[230px]">
-          <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
+          <p className="mb-2.5 text-[20px] text-[#26435F] leading-[12.5px] font-semibold flex justify-between items-end">
             Baseline Scores
             {persona == "admin" && (
               <EditableText
@@ -354,7 +354,7 @@ const SPFrame2 = ({
                           " "}
                       </span>
                       <span className="text-[#517CA8]">
-                        |<span className="font-bold">M</span>
+                       {'| '} <span className="font-bold">M</span>
                         {
                           userDetail?.baseLineScore?.satBaseLineScore?.maths
                         }{" "}
@@ -392,7 +392,7 @@ const SPFrame2 = ({
                           " "}
                       </span>
                       <span className="text-[#517CA8]">
-                        |<span className="font-bold">E</span>
+                       {'| '} <span className="font-bold">E</span>
                         {
                           userDetail.baseLineScore?.actBaseLineScore?.english
                         }{" "}
