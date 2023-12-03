@@ -24,6 +24,7 @@ import LinkedinIcon from "../../assets/icons/linkedin-round.svg";
 import AppleIcon from "../../assets/icons/apple.svg";
 import AdminNavbar from "../AdminDashboard/AdminNavbar";
 import SCheckbox from "../../components/CCheckbox/SCheckbox";
+import { BASE_URL } from "../../app/constants/constants";
 
 
 export default function Login({ setLoginFormActive }) {
@@ -138,6 +139,10 @@ email: "Email not verified! Please Verify your email and set your password"
     });
   };
 
+  const google = () => {
+    window.open(`${BASE_URL}api/v1/auth/google`, "_self");
+  };
+
   const props = { setActiveFrame, setResetPasswordActive };
 
   return (
@@ -231,6 +236,7 @@ email: "Email not verified! Please Verify your email and set your password"
                     <div
                       className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]
                                  hover:cursor-pointer"
+                      onClick={google}
                     >
                       <img 
                         className="block"

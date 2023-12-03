@@ -41,6 +41,7 @@ import StudentSettings from "../pages/Settings/Tabs/AccountOverview/studentSetti
 
 import TutorSetting from "../pages/Settings/TutorSetting";
 import ContributorSettings from "../pages/Settings/ContributorSettings";
+import OrgAdminSignup from "../pages/OrgAdminSignup/OrgAdminSignup";
 
 
 
@@ -53,7 +54,7 @@ const AppRoutes = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={isLoggedIn ? <Home /> : <Login />} />
-        <Route path="/signup" element={<OrgSignup />} />
+        <Route path="/signup" element={<OrgAdminSignup />} />
         <Route path="/signup/user" element={<UserSignup />} />
         <Route path="/dashboard" element={<SuperadminDashboard />} />
         <Route path="/all-orgs" element={<AllOrgs />} />

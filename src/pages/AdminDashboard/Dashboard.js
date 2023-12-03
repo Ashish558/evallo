@@ -28,12 +28,18 @@ import RangeDate from "../../components/RangeDate/RangeDate";
 import ArrowDown from "../../assets/Dashboard/sort-down.svg";
 import { useEffect } from "react";
 import SubscriptionAndExtensionModal from "../Frames/SubscriptionAndExtensionModal/SubscriptionAndExtensionModal";
+import { useLazyGetAuthQuery, useLazyGetOrganizationQuery, useLazyGetPersonalDetailQuery } from "../../app/services/users";
+import { BASE_URL } from "../../app/constants/constants";
 
 const Dashboard = () => {
   const [latestSignUp, latsestStatus] = useGetLatestSignUpRangeMutation();
   const { organization } = useSelector((state) => state.organization);
   const { firstName, lastName } = useSelector((state) => state.user);
   const { data: userStats } = useGetUserStatsQuery();
+  // const [] = useLazyGetPersonalDetailQuery();
+  const [getPersonalDetail, getPersonalDetailResp] = useLazyGetPersonalDetailQuery();
+  const [getOrgDetails, getOrgDetailsResp] = useLazyGetOrganizationQuery();
+  const [getAuth, getAuthResp] = useLazyGetAuthQuery();
 
   const [completedRevenue, completedRevenueStatus] = useGetAllRevenueMutation();
   const [leakedRevenue, leakedRevenueStatus] = useGetLeakedRevenueMutation();
@@ -72,6 +78,78 @@ const Dashboard = () => {
       }
     })
 
+  }, []);
+
+  useEffect(() => {
+    getPersonalDetail()
+    .then(data => {
+      console.log("getPersonalDetail");
+      console.log(data);
+      const user = data.data.data.user;
+
+      getOrgDetails(user.associatedOrg)
+      .then(data => {
+        console.log("getOrgDetails - attempt with associatedOrg");
+        console.log(data);
+      })
+      .catch(error => {
+        console.log("Error in getOrgDetails");
+        console.log(error);
+      })
+
+    })
+    .catch(error => {
+      console.log("Error in getPersonalDetail");
+      console.log(error);
+    })
+  }, []);
+
+  useEffect(() => {
+    // return;
+    getAuth()
+    .then(data => {
+      console.log("getAut");
+      console.log(data);
+    })
+    .catch(error => {
+      console.log("error in getAuth");
+      console.log(error);
+    });
+  }, []);
+
+  useEffect(() => {
+    fetch("https://testapi.evallo.org/api/v1/auth/login/success", {
+      method: "GET",
+      credentials: "include",
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("auth/login/success api");
+      console.log(data);
+    })
+    .catch(error => {
+      console.log(error);
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }, []);
+
+  useEffect(() => {
+    fetch("https://testapi.evallo.org/api/user?role=tutor", {
+      method: "GET"
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("tutor api");
+      console.log(data);
+    })
+    .catch(error => {
+      console.log(error);
+    })
+    .catch(error => {
+      console.log(error);
+    })
   }, []);
 
   const sortByName = () => {
