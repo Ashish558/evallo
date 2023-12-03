@@ -1055,7 +1055,7 @@ const [toEdit, setToEdit] = useState({
             setToEdit={setToEdit}
             toEdit={toEdit}
           />
-          <div className="h-[2px] mt-[84px] mb-14   bg-[#CBD6E2] w-[95%] mx-auto"></div>
+          <div className="h-[2px] mt-[173px] mb-14   bg-[#CBD6E2] w-[95%] mx-auto"></div>
           <SPFrame2
             session_no={session_no}
             isOwn={isOwn}
