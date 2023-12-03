@@ -320,21 +320,14 @@ export default function TableItem({
   const options = { year: "numeric", month: "long", day: "numeric" };
   const formattedDate = date.toLocaleDateString("en-US", options);
 
-  //  format monthName date, year
-  const formatDate = (value) => {
-    const [month, day, year] = value.split("-");
-    const monthName = getMonthName(month - 1);
-    console.log({
-      value: value,
-      day: day,
-      month: month,
-      year: year,
-      monthName: monthName,
-    });
-
-    const formattedDate = `${monthName}` + " " + `${day}` + `,` + `${year}`;
-    return formattedDate;
-  };
+     //  format monthName date, year
+     const formatDate= (value)=>{
+      const [ month, day, year] = value.split("-");
+      const monthName = getMonthName(month-1);
+      
+      const formattedDate = `${monthName}` + " " + `${day}` + `,` + `${year}`;
+      return formattedDate
+     }
 
   const getPhone = (val) => {
     //console.log(item)
@@ -342,7 +335,6 @@ export default function TableItem({
   };
 
   const handleSelect = (item2, key) => {
-    console.log({ item2, selectedId2 });
     if (selectedId2 && setSelectedId2) {
       let temp = selectedId2;
       let bool = temp?.find((itt) => itt[key] === item2[key]);

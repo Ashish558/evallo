@@ -104,7 +104,6 @@ const Dashboard = () => {
     });
   };
   const sortByString = (key) => {
-    console.log('asda',key);
     setUserData((prev) => {
       let arr = [...prev];
       arr = arr.sort(function (a, b) {
@@ -160,31 +159,24 @@ const Dashboard = () => {
     }
     setlatestsignup_flag(changeflag)
   };
-  const sortByString2 = (key) => {
-    setPopularServices((prev) => {
-      let arr = [...prev];
-      arr = arr.sort(function (a, b) {
-        if (plus && plus[key]) {
-          if (a[key] < b[key]) {
-            return -1;
-          }
-          if (a[key] > b[key]) {
-            return 1;
-          }
-          return 0;
-        } else {
-          if (a[key] < b[key]) {
-            return 1;
-          }
-          if (a[key] > b[key]) {
-            return -1;
-          }
-          return 0;
-        }
-      });
-      return arr;
-    });
-  };
+  
+  function sortByString2(key, ascending) {
+    const sortOrder = ascending ? 1 : -1;
+    const array = [...popularServices];
+    array.sort((a, b) => {
+      const aValue = a[key];
+      const bValue = b[key];
+      console.log(aValue,bValue);
+      if (aValue < bValue) {
+        return -1 * sortOrder;
+      } else if (aValue > bValue) {
+        return 1 * sortOrder;
+      } else {
+        return 0;
+      }
+    })
+    setPopularServices(array)
+  }
   const sortByString3 = (key) => {
     // setPopularServices((prev) => {
     //   let arr = [...prev];
@@ -257,6 +249,9 @@ const Dashboard = () => {
 
       return arr;
     });
+    let finalflag=latestSignUp_flag
+      finalflag[8]=!finalflag[8]
+      setlatestsignup_flag(finalflag)
     setPlus({
       ...plus,
       lastSignUp: !plus?.lastSignUp,
@@ -297,7 +292,7 @@ const Dashboard = () => {
       id: 1,
       text: "Service",
       willDisplayDownArrow : popular_Service_flag[0],
-      onCick: () => {sortByString2("service")
+      onCick: () => {sortByString2("service",popular_Service_flag[0])
       let finalflag=popular_Service_flag
         finalflag[0]=!finalflag[0]
         setpopular_Service_flag(finalflag)},
@@ -307,7 +302,7 @@ const Dashboard = () => {
       willDisplayDownArrow : 0,
       text: "Actively Using",
       willDisplayDownArrow : popular_Service_flag[1],
-      onCick: () => {sortByString2("actively_using")
+      onCick: () => {sortByString2("actively_using",popular_Service_flag[1])
       let finalflag=popular_Service_flag
         finalflag[1]=!finalflag[1]
         setpopular_Service_flag(finalflag)},
@@ -316,7 +311,7 @@ const Dashboard = () => {
       id: 3,
       text: "Total Used",
       willDisplayDownArrow : popular_Service_flag[2],
-      onCick: () => {sortByString2("total_used")
+      onCick: () => {sortByString2("total_used",popular_Service_flag[2])
       let finalflag=popular_Service_flag
         finalflag[2]=!finalflag[2]
         setpopular_Service_flag(finalflag)},
@@ -325,7 +320,7 @@ const Dashboard = () => {
       id: 4,
       text: "Scheduled Hours",
       willDisplayDownArrow : popular_Service_flag[3],
-      onCick: () => {sortByString2("scheduled_hours")
+      onCick: () => {sortByString2("scheduled_hours",popular_Service_flag[3])
       let finalflag=popular_Service_flag
         finalflag[3]=!finalflag[3]
         setpopular_Service_flag(finalflag)},
@@ -334,7 +329,7 @@ const Dashboard = () => {
       id: 5,
       text: "Completed Hours",
       willDisplayDownArrow : popular_Service_flag[4],
-      onCick: () => {sortByString2("completed_hours")
+      onCick: () => {sortByString2("completed_hours",popular_Service_flag[4])
       let finalflag=popular_Service_flag
         finalflag[4]=!finalflag[4]
         setpopular_Service_flag(finalflag)},
@@ -343,7 +338,7 @@ const Dashboard = () => {
       id: 6,
       text: "% of Business",
       willDisplayDownArrow : popular_Service_flag[5],
-      onCick: () => {sortByString2("percent_of_business")
+      onCick: () => {sortByString2("percent_of_business",popular_Service_flag[5])
       let finalflag=popular_Service_flag
         finalflag[5]=!finalflag[5]
         setpopular_Service_flag(finalflag)},
@@ -381,13 +376,13 @@ const Dashboard = () => {
       id: 5,
       text: "Assigned Tutor",
       willDisplayDownArrow : latestSignUp_flag[4],
-      onCick: () => sortByString("userStatus"),
+      onCick: () => sortByString("assiginedTutors"),
     },
     {
       id: 6,
       text: "Lead Status",
       willDisplayDownArrow : latestSignUp_flag[5],
-      onCick: () => {sortByString("userStatus")
+      onCick: () => {sortByString("credits")
     let finalflag=latestSignUp_flag
       finalflag[5]=!finalflag[5]
       setlatestsignup_flag(finalflag)},
@@ -396,7 +391,7 @@ const Dashboard = () => {
       id: 7,
       text: "Tutor Status",
       willDisplayDownArrow : latestSignUp_flag[6],
-      onCick: () => sortByString("assiginedTutors"),
+      onCick: () => sortByString("userStatus"),
     },
     {
       id: 8,
@@ -782,7 +777,7 @@ const Dashboard = () => {
           <p className="font-semibold text-[#26435F]  text-base-20">
             Latest Sign-Ups <span className="font-light">(Last 7 Days)</span>
           </p>
-
+{console.log(userData)}
           <div className="-mt-3">
             <Table
               data={userData}

@@ -207,6 +207,7 @@ const StudentSettings = () => {
 
           <span className="font-semibold text-base-22-5">{"  > Settings"}</span>
         </div>
+        {console.log(error)}
         <div className="flex gap-6 design:gap-8 items-center">
           <InputField
             placeholder=""
@@ -217,7 +218,11 @@ const StudentSettings = () => {
             label="First name"
             value={values.firstName}
             onChange={(e) =>
-              handleFirstName(e)
+              
+             {const regex = /^[a-zA-Z0-9 ]*$/;
+             const isValid = regex.test(e.target.value);
+             if(isValid)
+             handleFirstName(e)}
             }
             error={error.firstName}
           />
@@ -305,9 +310,7 @@ const StudentSettings = () => {
                 setValues({
                   ...values,
                   phone: e.target.value,
-                })
-              }
-               
+                })}
               }
               error={error.phone}
             />
