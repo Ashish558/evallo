@@ -86,14 +86,14 @@ const SPFrame1 = ({
 
     userDetailSave(reqBody);
   };
-  console.log("frame1", { userDetail, xlsFile });
+
   return (
     <div>
       {" "}
       <div className="flex mt-7 justify-between gap-5 design:mt-10 design:gap-8">
         <div className="flex-1 w-[300px] h-[280px] design:h-[290px] gap-2 flex flex-col design:gap-4">
-          <div className="flex-1 mb-1 ">
-            <p className="mb-1 text-base-20 text-[#26435F] font-semibold text-base-17-5 ">
+          <div className="flex-1 mb-1 mt-1.5">
+            <p className="mb-2.5 text-[20px] text-[#26435F] leading-[12.5px] font-semibold flex justify-between items-end">
               Whiteboard Links
               {persona !== "student" && persona !== "parent" && (
                 <EditableText
@@ -108,14 +108,14 @@ const SPFrame1 = ({
                     })
                   }
                   text="edit"
-                  textClassName="text-sm text-[#517CA8] text-underline  "
+                  textClassName="text-sm text-[#517CA8] text-underline leading-[10px] "
                   className="text-sm my-0 flex justify-end   float-right"
                 />
               )}
             </p>
 
             <div
-              className="w-full relative custom-scroller !border-[1.25px_dashed_#517CA8] bg-white h-[110px]  flex flex-col rounded-md items-center overflow-y-auto "
+              className="w-full relative custom-scroller !border-[1.25px_dashed_#517CA8] bg-white h-[168px]  flex flex-col rounded-md overflow-y-auto pt-[25px] pb-[10px]"
               id={styles.borderDashed}
             >
               {userDetail?.whiteBoardLinks?.length > 0 ? (
@@ -123,11 +123,11 @@ const SPFrame1 = ({
                   return (
                     <p
                       key={id}
-                      className="flex flex-1 text-[#517CA8] w-full text-xs justify-between px-3 py-1"
+                      className="flex text-[#517CA8] w-full text-xs justify-between items-center px-[22.5px] mb-[15px]"
                     >
                       <a
                         href={it}
-                        className="w-[90%] !break-words text-base-15"
+                        className="w-[90%] font-light !break-words text-[17.7px]"
                         target="_blank"
                       >
                         {it}
@@ -171,7 +171,8 @@ const SPFrame1 = ({
             </div>
           </div>
           <div className="flex-1 ">
-            <p className="mb-1 mt-1 text-base-20 text-[#26435F] font-semibold text-base-17-5">
+            <p className="mb-2.5 mt-[30px] text-[20px] text-[#26435F] leading-[12.5px] font-semibold flex justify-between items-end">
+
               Associated Docs
             </p>
             <div
@@ -182,39 +183,39 @@ const SPFrame1 = ({
                 <div className="">
                   {userDetail?.associatedDocs?.length > 0
                     ? userDetail?.associatedDocs?.map((it, id) => {
-                        return (
-                          <p
-                            key={id}
-                            className="flex flex-1 mt-1 text-[#517CA8] w-full text-xs justify-between px-3 py-1"
+                      return (
+                        <p
+                          key={id}
+                          className="flex flex-1 mt-1 text-[#517CA8] w-full text-xs justify-between px-3 py-1"
+                        >
+                          <a
+                            className="w-[70%] break-words text-base-15"
+                            href={it?.public_url}
+                            target="_blank"
                           >
-                            <a
-                              className="w-[70%] break-words text-base-15"
-                              href={it?.public_url}
-                              target="_blank"
-                            >
-                              {it?.key}
-                            </a>
-                            <img
-                              onClick={() =>
-                                (persona === "tutor" || persona === "admin") &&
-                                reduceArr2(id, true)
-                              }
-                              src={BCut}
-                              className="text-xs !h-[20px] !w-[20px] inline-block"
-                              alt="cut"
-                            />
-                          </p>
-                        );
-                      })
+                            {it?.key}
+                          </a>
+                          <img
+                            onClick={() =>
+                              (persona === "tutor" || persona === "admin") &&
+                              reduceArr2(id, true)
+                            }
+                            src={BCut}
+                            className="text-xs !h-[20px] !w-[20px] inline-block"
+                            alt="cut"
+                          />
+                        </p>
+                      );
+                    })
                     : (persona === "student" || persona === "parent") && (
-                        <div className="flex flex-col justify-center items-center h-full">
-                          {(persona === "student" || persona !== "parent") && (
-                            <button className="bg-[#FF7979] text-white rounded-md p-2 py-1">
-                              No Links Added
-                            </button>
-                          )}
-                        </div>
-                      )}
+                      <div className="flex flex-col justify-center items-center h-full">
+                        {(persona === "student" || persona !== "parent") && (
+                          <button className="bg-[#FF7979] text-white rounded-md p-2 py-1">
+                            No Links Added
+                          </button>
+                        )}
+                      </div>
+                    )}
                 </div>
                 {persona === "student" || persona === "parent" ? (
                   <> </>
@@ -242,6 +243,7 @@ const SPFrame1 = ({
                         <input
                           onChange={(e) => setXlsFile(e.target.files[0])}
                           type="file"
+                          className="hidden"
                           disabled={
                             persona === "student" || persona === "parent"
                           }
@@ -271,7 +273,7 @@ const SPFrame1 = ({
           </div>
         </div>
         <div className="flex-1 h-[300px]  design:h-[305px]">
-          <p className="mb-1 text-base-20 text-[#26435F] font-semibold text-base-17-5">
+          <p className="mb-1.5 text-[20px] text-[#26435F]  leading-[12.5px] font-semibold flex items-end justify-between">
             Interests{" "}
             <EditableText
               editable={editable}
@@ -375,7 +377,7 @@ const SPFrame1 = ({
         </div>
 
         <div className="flex-1 h-[300px]  design:h-[305px]">
-          <p className=" mb-1 text-base-20 text-[#26435F] font-semibold text-base-17-5">
+          <p className="mb-2.5 text-[20px] text-[#26435F] leading-[12.5px] font-semibold flex justify-between items-end">
             Subjects{" "}
             <EditableText
               editable={editable}
@@ -427,7 +429,7 @@ const SPFrame1 = ({
         </div>
 
         <div className="flex-1 h-[300px]  design:h-[305px]">
-          <p className="mb-1 text-base-20 text-[#26435F] font-semibold text-base-17-5">
+          <p className="mb-2.5 text-[20px] text-[#26435F] leading-[12.5px] font-semibold flex justify-between items-end">
             Personality
             <EditableText
               editable={editable}

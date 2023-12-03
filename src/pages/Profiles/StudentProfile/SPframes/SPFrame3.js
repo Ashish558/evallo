@@ -174,7 +174,7 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
       {" "}
       <h1 className="text-[#26435F] translate-y-8 text-sm font-semibold cursor-pointer  text-base-20 flex items-center justify-start">
         Score progression
-        <div className="inline-block my-auto ml-2 ">
+        <div className="inline-block my-auto ml-[18.75px] ">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -242,7 +242,7 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
         <div className="flex items-center justify-between">
           <h1 className="text-[#26435F]  text-sm font-semibold mb-1 text-base-20   flex items-center justify-start">
             Time Management
-            <div className="inline-block my-auto ml-2 cursor-pointer">
+            <div className="inline-block my-auto ml-[18.75px] cursor-pointer">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -323,7 +323,7 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
         <div className="flex items-center justify-between">
           <h1 className="text-[#26435F] text-sm font-semibold mb-1 text-base-20  flex items-center justify-start">
             Conceptual Accuracy 
-            <div className="inline-block my-auto ml-2 cursor-pointer">
+            <div className="inline-block my-auto ml-[18.75px] cursor-pointer">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
