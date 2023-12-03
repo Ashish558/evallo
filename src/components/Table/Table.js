@@ -135,7 +135,7 @@ export default function Table(props) {
               })}
             </tr>
           </thead>
-          <tbody className=" whitespace-nowrap">
+          <tbody className={`whitespace-nowrap ${styles.tBody} `} >
             {loading ? (
               <div
                 className={`absolute w-full min-h-[100px] flex justify-center items-center`}

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import styles from "./styles.module.css";
 
 import { TableHeader } from "./TableHeader";
 import TableItem from "./tableItem";
@@ -112,7 +113,7 @@ export default function ApiTable({
               })}
             </tr>
           </thead>
-          <tbody>
+          <tbody className={styles.tBody} >
             {tableData?.length > 0 ? (
               tableData?.map((item, idx) => {
                 return (
