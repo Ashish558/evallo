@@ -571,7 +571,7 @@ export default function Users() {
     {
       id: 1,
       text: "Full Name",
-      className: "text-left pl-6",
+      className: "text-left pl-6 text-white",
       wrapperClassName: 'justify-start',
       onCick: sortByName, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
       willDisplayDownArrow: usernameSortState !== SORT_STATES.DESCENDING_ORDER,
@@ -1862,7 +1862,7 @@ export default function Users() {
               onClick={() =>
                 selectedId?.length > 0 && setInviteBulkModalActive(true)
               }
-              className={`bg-[#517CA8] opacity-100 text-base-17-5  font-semibold tracking-wider relative px-[19px] py-[11px] rounded-[7.5px] text-white  text-base-17-5 h-[44px] ${
+              className={`bg-[#517CA8] opacity-100 text-[17.5px]  font-semibold tracking-wider relative px-[19px] py-[11px] rounded-[7.5px] text-white h-[44px] ${
                 selectedId?.length === 0 ? "opacity-75" : ""
               } `}
             >
@@ -1919,7 +1919,7 @@ export default function Users() {
                 selectedId?.length > 0 &&
                 setDeleteBulkModalActive(true)
               }
-              className={`bg-[#FF7979] opacity-100 flex gap-x-[10px] justify-center items-center gap-2 px-[17px] tracking-wider font-semibold py-[9.5px] w-[175px] rounded-[5px] text-white  text-base-17-5 ${
+              className={`bg-[#FF7979] opacity-100  text-[17.5px] flex gap-x-[10px] justify-center items-center gap-2 px-[21px] tracking-wider font-semibold py-[9.5px] rounded-[5px] text-white ${
                 selectedId?.length === 0 || true || adminSelectedForDelete
                   ? "opacity-75 cursor-not-allowed"
                   : ""
