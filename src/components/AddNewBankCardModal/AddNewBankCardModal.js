@@ -21,6 +21,7 @@ function Payment({
     chosenExtentionObjectsFromAPI = [],
     SetIsPaymentSuccessfull,
     stripeCustomerId,
+    OnAddClicked,
 }) {
     const stripe = useStripe();
     const elements = useElements();
@@ -106,9 +107,11 @@ function Payment({
             SetIsPaymentProcessOnGoing(false);
             console.log("response from finish_setup");
             console.log(post);
+            OnAddClicked();
 
             if(post) {
                 SetIsPaymentSuccessfull(true);
+                
             }
         }
     };
@@ -120,7 +123,7 @@ function Payment({
     
     return (
         <div className="mt-2 mb-3 w-full">
-            <form onSubmit={handleSubmit} className='scale-[0.7] w-full'>
+            <form onSubmit={handleSubmit} className='scale-[0.9] w-full'>
                 <PaymentElement 
                     className='scale-[1]'
                 />
@@ -152,6 +155,7 @@ function StripeCardDetailWidget({
     chosenExtentionObjectsFromAPI = [],
     SetIsPaymentSuccessfull,
     stripeCustomerId,
+    OnAddClicked,
 }) {
     const options = {
         mode: 'setup',
@@ -166,6 +170,7 @@ function StripeCardDetailWidget({
                 chosenExtentionObjectsFromAPI={chosenExtentionObjectsFromAPI}
                 SetIsPaymentSuccessfull={SetIsPaymentSuccessfull}
                 stripeCustomerId={stripeCustomerId}
+                OnAddClicked={OnAddClicked}
             />
         </Elements>
     )
@@ -174,13 +179,21 @@ function StripeCardDetailWidget({
 function AddNewBankCardModal({
     className,
     OnCrossIconClicked,
+    OnAddClicked,
+    stripeCustomerId,
 }) {
     return (
         <Modal2
             className={className}
             OnCrossIconClicked={OnCrossIconClicked}
+            title={"Add New Payment"}
+            titleClassName="font-[600] text-[20px]"
+            headerClassName={`pl-[20px] pr-[20px] pb-[10px] pt-[30px]`}
         >
-
+            <StripeCardDetailWidget 
+                stripeCustomerId={stripeCustomerId}
+                OnAddClicked={OnAddClicked}
+            />
         </Modal2>
     )
 }
