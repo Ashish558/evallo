@@ -12,6 +12,12 @@ import { useState } from "react";
 import arrow from "../../../assets/icons/arrow-chart.svg";
 import "chartjs-adapter-moment";
 import arrow1 from "../../../assets/icons/arrow-up-chart.svg";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+} from 'chart.js'
+ChartJS.register(CategoryScale);
+
 const BubbleChart = ({ dateRange }) => {
   const [userDailyActivity, setDailyActivity] = useState([]);
   const [userDailyActivityData, status] =

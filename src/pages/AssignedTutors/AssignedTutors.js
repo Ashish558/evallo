@@ -256,6 +256,7 @@ name2=modalData?.studentName
 
 
    useEffect(() => {
+      console.log("tableData", tableData);
       let tempdata = [...tableData]
       // console.log(usersData)
 

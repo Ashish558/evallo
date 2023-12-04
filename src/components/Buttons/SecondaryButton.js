@@ -4,6 +4,7 @@ import Loader from "../Loader";
 export default function SecondaryButton({
   children,
   className,
+  style,
   onClick,
   type,
   loading,
@@ -11,7 +12,8 @@ export default function SecondaryButton({
 }) {
   return (
     <button
-      className={`bg-secondaryLight relative rounded-md py-[8px] px-6 ${className} disabled:opacity-70`}
+      style={{...style}}
+      className={`bg-secondaryLight relative rounded-md text-white py-[8px] text-[#636363] px-6 ${className} disabled:opacity-70`}
       onClick={onClick}
       type={type ? type : "button"}
       disabled={loading === true ? true : disabled}

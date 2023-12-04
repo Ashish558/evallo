@@ -36,6 +36,9 @@ import AccOverviewLogo from "../../assets/icons/account overview.svg";
 import AccOverviewLogo2 from "../../assets/icons/account-overview 2.svg";
 import ClientsSignupLogo from "../../assets/icons/Client sign up 1.svg";
 import ClientsSignupLogo2 from "../../assets/icons/Client sign up 2.svg";
+import UserManagementLogo1 from "../../assets/icons/User-Management-1.svg";
+import UserManagementLogo2 from "../../assets/icons/User-Management-2.svg";
+// import EditBlueIcon from "../../assets/icons/edit-blue.svg";
 import EditBlueIcon from "../../assets/YIcons/edit2.svg";
 import fileupload from "../../assets/icons/basil_file-upload-outline (2).svg";
 import InputSearch from "../../components/InputSearch/InputSearch";
@@ -53,6 +56,8 @@ import { updateOrganizationSettings } from "../../app/slices/organization";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import { permissionsStaticData } from "./Tabs/staticData";
 import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
+import AccountOverviewWithSubscriptionInfo from "./Tabs/AccountOverviewWithSubscriptionInfo/AccountOverviewWithSubscriptionInfo";
+import OrgAdminUserManagement from "./Tabs/OrgAdminUserManagement/OrgAdminUserManagement";
 import moment from "moment-timezone";
 
 // import questionMark from '../../assets/images/question-mark.svg'
@@ -72,12 +77,16 @@ const initialTabs = [
   {
     Icon: OrgDefaultLogo2,
     Icon2: OrgDefaultLogo,
+    selectedStateIcon: OrgDefaultLogo2,
+    unselectedStateIcon: OrgDefaultLogo,
     name: "Organization Defaults",
     selected: true,
   },
   {
     Icon: CAndBLogo2,
     Icon2: CAndBLogo,
+    selectedStateIcon: CAndBLogo2,
+    unselectedStateIcon: CAndBLogo,
     name: "Company and Brand",
     selected: false,
   },
@@ -85,13 +94,25 @@ const initialTabs = [
   {
     Icon: AccOverviewLogo2,
     Icon2: AccOverviewLogo,
+    selectedStateIcon: AccOverviewLogo2,
+    unselectedStateIcon: AccOverviewLogo,
     name: `Account  Overview`,
     selected: false,
   },
   {
     Icon: ClientsSignupLogo2,
     Icon2: ClientsSignupLogo,
+    selectedStateIcon: ClientsSignupLogo2,
+    unselectedStateIcon: ClientsSignupLogo,
     name: "Clients Sign Up",
+    selected: false,
+  },
+  {
+    Icon: UserManagementLogo2,
+    Icon2: UserManagementLogo1,
+    selectedStateIcon: UserManagementLogo2,
+    unselectedStateIcon: UserManagementLogo1,
+    name: "User Management",
     selected: false,
   },
 ];
@@ -2268,7 +2289,8 @@ export default function Settings() {
             updateAndFetchsettings={updateAndFetchsettings}
           />
         )}
-        {activeTab === 3 && <AccountOverview />}
+        {activeTab === 3 && <AccountOverviewWithSubscriptionInfo />}
+        {activeTab === 5 && <OrgAdminUserManagement />}
       </div>
       {modalActive && (
         <Modal

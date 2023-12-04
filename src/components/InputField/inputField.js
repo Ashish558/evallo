@@ -10,6 +10,7 @@ import styles from "./styles.module.css";
 
 export default function InputField({
   parentClassName,
+  parentStyle,
   inputContainerClassName,
   Icon,
   hideTooltip,
@@ -68,7 +69,7 @@ export default function InputField({
   }, [value]);
 
   return (
-    <div className={`relative  ${parentClassName && parentClassName}`}>
+    <div className={`relative text-sm ${parentClassName && parentClassName}`} style={{...parentStyle}} >
       {label && (
         <label
           className={`${

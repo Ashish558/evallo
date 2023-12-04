@@ -35,14 +35,14 @@ export default function SubscriptionPlan({
                     <div className="font-[100] text-sm">
                         {description[0]}
                     </div>
-                    <div className="font-[100] text-sm">
+                    {/* <div className="font-[100] text-sm">
+                        {description[1]}
+                    </div> */}
+                    <div className="font-[600] text-sm text-[#24A3D9]">
                         {description[1]}
                     </div>
-                    <div className="font-[600] text-sm text-[#24A3D9]">
-                        {description[2]}
-                    </div>
                     <div className="font-[100] text-sm">
-                        {description[3]}<span className="font-[600]">{currencySymbol}{pricePerMonth}/month</span>
+                        {description[2]}<span className="font-[600]">{currencySymbol}{pricePerMonth}/month</span>
                     </div>
                 </div>
                 <div

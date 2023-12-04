@@ -19,6 +19,13 @@ import Loader from "../../components/Loader";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
 import EvalloLogo from "../../assets/icons/evallo_new.svg";
 import cuate from "../../assets/signup/cuate.svg";
+import GoogleIcon from "../../assets/icons/google.svg";
+import LinkedinIcon from "../../assets/icons/linkedin-round.svg";
+import AppleIcon from "../../assets/icons/apple.svg";
+import AdminNavbar from "../AdminDashboard/AdminNavbar";
+import SCheckbox from "../../components/CCheckbox/SCheckbox";
+import { BASE_URL } from "../../app/constants/constants";
+
 // import AdminNavbar from "../AdminDashboard/AdminNavbar";
 // import SCheckbox from "../../components/CCheckbox/SCheckbox";
 
@@ -137,6 +144,10 @@ export default function Login({ setLoginFormActive }) {
     });
   };
 
+  const google = () => {
+    window.open(`${BASE_URL}api/v1/auth/google`, "_self");
+  };
+
   const props = { setActiveFrame, setResetPasswordActive };
 
   return (
@@ -244,6 +255,53 @@ export default function Login({ setLoginFormActive }) {
                   >
                     Forgot Password?
                   </p>
+                </div>
+
+                <div className="flex h-[50px] justify-between mt-[30px] relative left-2/4 -translate-x-2/4 w-[200px]" >
+                    <div
+                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]
+                                 hover:cursor-pointer"
+                      onClick={google}
+                    >
+                      <img 
+                        className="block"
+                        src={GoogleIcon} />
+                    </div>
+
+                    <div
+                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]
+                                 hover:cursor-pointer"
+                    >
+                      <img 
+                        className="block"
+                        src={LinkedinIcon} />
+                    </div>
+
+                    <div
+                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]
+                                 hover:cursor-pointer"
+                    >
+                      <img 
+                        className="block"
+                        src={AppleIcon} />
+                    </div>
+                  </div>
+
+              <div className="flex justify-center">
+                <button
+                  disabled={
+                    loginLoading === true
+                      ? true
+                      : !(emailValidation.test(email) && password.length > 0)
+                  }
+                  className={`w-[80%] relative mx-auto  bg-[#FFA28D] disabled:opacity-70 pt-3.5 pb-3.5 lg:pt-[9px] lg:pb-[9px] mt-[30px]   rounded-7 text-white text-lg ${
+                    loginLoading ? "cursor-wait" : "cursor-pointer"
+                  }`}
+                  onClick={handleSubmit}
+                >
+                  Sign in
+                  {loginLoading && <Loader />}
+                </button>
                 </div>
                 <div className="flex justify-center">
                   <button
