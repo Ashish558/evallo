@@ -38,8 +38,8 @@ import ClientsSignupLogo from "../../assets/icons/Client sign up 1.svg";
 import ClientsSignupLogo2 from "../../assets/icons/Client sign up 2.svg";
 import UserManagementLogo1 from "../../assets/icons/User-Management-1.svg";
 import UserManagementLogo2 from "../../assets/icons/User-Management-2.svg";
-import EditBlueIcon from "../../assets/icons/edit-blue.svg";
-// import EditBlueIcon from "../../assets/YIcons/edit2.svg";
+// import EditBlueIcon from "../../assets/icons/edit-blue.svg";
+import EditBlueIcon from "../../assets/YIcons/edit2.svg";
 import fileupload from "../../assets/icons/basil_file-upload-outline (2).svg";
 import InputSearch from "../../components/InputSearch/InputSearch";
 import { useSelector, useDispatch } from "react-redux";
@@ -1064,123 +1064,28 @@ export default function Settings() {
     //console.log("searchTests0", searchedTest);
   }
 
-  return (
-    <>
-      <div className="  min-h-screen w-[83.6989583333vw] mx-auto">
-        <p className="text-[#24A3D9]  !my-[calc(50*0.052vw)] text-base-20">
-          {organization?.company + "  >  "}
-          <span className="font-semibold">Settings</span>
-        </p>
+  const onEditService = (code) => {
+    setSubModalServiceData({
+      ...code,
 
-        <div className={`flex items-end overflow-hidden pl-[17px] ${styles.navBar}`} >
-        {
-          tabs.map((item, index) => {
-            const isActive = activeTab === index + 1;
-            return (
-              <button 
-                key={index}
-                style={{height: "88.88%"}}
-                className={`relative flex items-center ${styles.navItem}
-                                  ${isActive ? styles.active : ""}
-              `} 
-                onClick={() => changeTab(index + 1)}
-              >
-                <div className="mr-[10px]" >
-                  <img
-                    src={
-                      isActive ? item.selectedStateIcon : item.unselectedStateIcon
-                    }
-                  />
-                </div>
-                <div className={`${styles.name}`} >
-                  {item.name}
-                </div>
-
-                {
-                  isActive ? (
-                    <>
-                      <div className="absolute bg-[#fff] h-full w-[10px] -translate-x-full z-[3]"
-                           style={{
-                            left: "1px",
-                           }}
-                      ></div>
-                      <div className="absolute bg-[#26435F] h-full w-[12px] left-0 -translate-x-full z-[3]" 
-                           style={{
-                            left: "1px",
-                            borderBottomRightRadius: "100px"
-                           }} 
-                      ></div>
-
-                      <div className="absolute bg-[#fff] h-full w-[10px] translate-x-full z-[3]" 
-                           style={{
-                            right: "1px"
-                           }}
-                      ></div>
-                      <div className="absolute bg-[#26435F] h-full w-[11px] translate-x-full z-[3]" 
-                           style={{
-                            right: "1px",
-                            borderBottomLeftRadius: "100px"
-                           }} 
-                      ></div>
-                    </>
-                  ) : (<></>)
-                }
-              </button>
-            )
-          })
-        }
-        </div>
-
-        {/* <div className="shivam-tabs rounded-md">
-          <ul class="tabs group">
-          {tabs.map((item, idx) => {
-              return (
-                <li
-                className={`${activeTab === idx + 1?'active':''}`}
-                  onClick={() => changeTab(idx + 1)}
-                >
-                  <a className={`"w-full cursor-pointer flex justify-center items-center ${activeTab === idx + 1?'!text-[#26435F]':'!text-white'}`}>
-                    <span className="pb-1">
-                      {activeTab === idx + 1 && (
-                        <img src={item.Icon} className="!w-[15px] !h-[15px] " alt="item-logo" />
-                      )}
-                      {activeTab === idx + 1 || (
-                        <img src={item.Icon2} className="!w-[15px] !h-[15px]" alt="item-logo" />
-                      )}
-                    </span>
-                    <p className="py-2 px-2 pb-3 font-medium  text-base-20  whitespace-nowrap">{item.name} </p>
-                  </a>
-                
-                </li>
-              );
-            })}
-
-          </ul>
-        </div> */}
-
-        <div className=" flex w-full flex-1 items-center mb-[30px]">
-          <div className={`${styles.tabsContainer} gap-7 flex-1 !shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)]`}>
-            {/* {tabs.map((item, idx) => {
-              return (
-                <div
-                  className={`${styles.tab} ${activeTab === idx + 1 ? styles.selectedTab : ""
-                    } cursor-pointer h-full`}
-                  onClick={() => changeTab(idx + 1)}
-                >
-                  <div className={`"h-full  w-full flex justify-center items-center ${activeTab === idx + 1?'':''}`}>
-                    <div>
-                      {activeTab === idx + 1 && (
-                        <img src={item.Icon} className="w-[15px] h-[15px]" alt="item-logo" />
-                      )}
-                      {activeTab === idx + 1 || (
-                        <img src={item.Icon2} className="w-[15px] h-[15px]" alt="item-logo" />
-                      )}
-                    </div>
-                    <p className="flex items-center py-2  w-[calc(191*0.0522vw)] justify-center text-base-17-5  whitespace-nowrap">{item.name} </p>
-                  </div>
-                  {/ {activeTab === idx + 1 && (
-                    <img
-                      src={ActiveTab}
+      editing: true,
+    });
+    setSelectedServiceData(code);
+    setAddServiceModalActive(true);
+  };
+  const onEditSession = (code) => {
+    //console.log("session", code);
+    setSubModalSessionData({
+      ...code,
+      editing: true,
+    });
+    setSelectedSessionData(code);
+    setAddSessionModalActive(true);
+  };
+  const handleServicePause = (item) => {
+    //console.log({ item });
+    let key = item?._id;
+    let tempSettings = { ...settingsData };
 
     let updated = servicesAndSpecialization.map((serv) => {
       if (serv._id === key) {

@@ -44,6 +44,23 @@
   border-bottom-left-radius: 5px;
   height: calc(105*0.050vw) !important;
 }
+.boxBorder1px {
+  border-right: 5.5px solid #38c980;
+  border-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.boxBorder2px {
+  border-right: 5.5px solid #FF7979;
+  border-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.boxBorder3px {
+  border-right: 5.5px solid #7152eb;
+  border-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
 
 .smallBoxBorder {
   border-left: 2.5px solid black;

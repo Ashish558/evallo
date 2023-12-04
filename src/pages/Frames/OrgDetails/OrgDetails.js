@@ -56,39 +56,40 @@ export default function OrgDetails({
     navigate("/signup?step=1")
     setcurrentStep(1);
   };
-  const navigate=useNavigate()
-  
+  const navigate = useNavigate()
+
+  const isValidURL = (websiteString) => {
+    const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+    return urlRegex.test(websiteString);
+  }
+
   const handleSubmit = () => {
- 
+
     if (!handleEmpty(values?.company) || !handleEmpty(values?.companyType) || !handleEmpty(values?.website) || !handleEmpty(values?.address)
-      || !handleEmpty(values?.country) || !handleEmpty(values?.city) || (states?.length>0 && !handleEmpty(values?.state)) || !handleEmpty(values?.zip)) {
+      || !handleEmpty(values?.country) || !handleEmpty(values?.city) || (states?.length > 0 && !handleEmpty(values?.state)) || !handleEmpty(values?.zip)) {
       alert("Please Fill All The Fields!")
       return
-    } 
-
-   let alphadigit= new RegExp("^[a-zA-Z0-9 ]*[a-zA-Z][a-zA-Z0-9 ]*$");
-    var regex = /^\d+$/;
-    if(!regex.test(values?.zip)&&values?.zip?.length>10){
-      alert("Zip code should conatain digits only!")
-   return 
     }
-    if (!alphadigit.test(values?.company) 
-    || !alphadigit.test(values?.country) || !alphadigit.test(values?.city) || (states?.length>0 && !alphadigit.test(values?.state))) {
-    alert("Please fill valid details!")
-    return
-  } 
-  if (values?.address?.length<3) {
-  alert("Address must be at least 3 characters long!")
-  return
-} 
-if (values?.website?.length<3) {
-  alert("Website Address must be at least 3 characters long!")
-  return
-} 
-if (values?.city?.length<3) {
-  alert("City name must be at least 3 characters long!")
-  return
-} 
+
+    let alphadigit = new RegExp("^[a-zA-Z0-9 ]*[a-zA-Z][a-zA-Z0-9 ]*$");
+    var regex = /^\d+$/;
+    if (companyType === '') {
+      alert("Choose Your Company Type")
+      return
+    }
+    if (!isValidURL(values?.website)) {
+      alert("Website Address must be at least 3 characters long!")
+      return
+    }
+    if (values?.address?.length < 3) {
+      alert("Address must be at least 3 characters long!")
+      return
+    }
+    if (!regex.test(values?.zip) && values?.zip?.length > 10) {
+      alert("Zip code should conatain digits only!")
+      return
+    }
+
     setFrames((prev) => {
       console.log(prev);
       return {
@@ -257,7 +258,7 @@ if (values?.city?.length<3) {
 
         <div className="flex justify-between items-center mt-[30px] ">
           <InputSelectNew
-       parentClassName="w-full max-w-[250px]"
+            parentClassName="w-full max-w-[250px]"
             optionContainerClassName="text-[13px]   max-h-[180px]"
             optionsEachClassName="py-[5px]"
             optionData={states}
@@ -338,15 +339,15 @@ if (values?.city?.length<3) {
             placeholderClass="!mx-1 custom-scroller-2"
             type="text"
             value={values.zip}
-            onChange={(e) =>
-             { 
+            onChange={(e) => {
               const regex = /^[0-9 ]*$/;
               const isValid = regex.test(e.target.value);
-              if(isValid && e.target.value?.length<10)
-              setValues({
-                ...values,
-                zip: e.target.value,
-              })}
+              if (isValid && e.target.value?.length < 10)
+                setValues({
+                  ...values,
+                  zip: e.target.value,
+                })
+            }
             }
           />
         </div>

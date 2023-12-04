@@ -117,7 +117,7 @@ function SuperadminDashboard() {
         }
 
         setOrgSignUpData(arr);
-      } catch (e) {}
+      } catch (e) { }
     });
   };
   useEffect(() => {
@@ -162,7 +162,7 @@ function SuperadminDashboard() {
       console.log({ res });
       setOrgStats(res?.data);
     });
-    
+
     const minDate2 = body.startDate;
     const minDate3 = moment.min(minDate2);
     const currentDate = moment(body.endDate); // Current date
@@ -171,7 +171,7 @@ function SuperadminDashboard() {
     getLatestOrgs(body);
     setDateRange(body);
   };
-  console.log({ totalUsers });
+
   return (
     <div className={styles.container}>
       <div className=" mt-[34px] bg-#2E2E2E mx-auto pb-7 w-[88.59vw]">
@@ -253,11 +253,10 @@ function SuperadminDashboard() {
                         className={`  bg-white border-b-[1.4px] overflow-hidden relative cursor-pointer border-[rgb(10,30,40,0.27)] ${styles.userStat} h-[54px]`}
                       >
                         <span
-                          className={`!text-[0.97vw] ${
-                            currentUser?.name === item.text.toLowerCase()
+                          className={`!text-[0.97vw] ${currentUser?.name === item.text.toLowerCase()
                               ? "text-[#FFA28D]"
                               : ""
-                          } `}
+                            } `}
                         >
                           {item.text}
                         </span>
@@ -383,7 +382,7 @@ function SuperadminDashboard() {
             />
           </p>
         </div>
-        <Chart2 />
+        {/* <Chart2 /> */}
         <p className="text-[#26435F] font-semibold mt-[50px]">
           User demography
         </p>

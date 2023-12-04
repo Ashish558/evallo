@@ -22,29 +22,45 @@ export const orgServicesApi = createApi({
       }),
       updateUserOrganization: builder.mutation({
          query: (body) => ({
-           url: `/api/user/update/org`,
-           method: "PATCH",
-           body: body,
-           headers: getAuthHeader(),
+            url: `/api/user/update/org`,
+            method: "PATCH",
+            body: body,
+            headers: getAuthHeader(),
          }),
-       }),
-       updateOrgLogo: builder.mutation({
+      }),
+      updateOrganizationDetail: builder.mutation({
+         query: (body) => ({
+            url: `/api/user/orgDetailUpdate`,
+            method: "POST",
+            body: body,
+            headers: getAuthHeader(),
+         }),
+      }),
+      bulkChangeUserStatus: builder.mutation({
+         query: (body) => ({
+            url: `/api/user/bulkChangeUserStatus`,
+            method: "POST",
+            body: body,
+            headers: getAuthHeader(),
+         }),
+      }),
+      updateOrgLogo: builder.mutation({
          query: (body) => ({
             url: `api/user/org/addOrgLogos/${body.id}`,
             method: "PATCH",
             body: body.formData,
             headers: getAuthHeader(),
-          }),
-        }),
-        updateEmail: builder.mutation({
+         }),
+      }),
+      updateEmail: builder.mutation({
          query: (body) => ({
             url: `api/user/update/newEmail`,
             method: "POST",
             body: body,
             headers: getAuthHeader(),
-          }),
-        }),
-        verifyNewEmail: builder.mutation({
+         }),
+      }),
+      verifyNewEmail: builder.mutation({
          query: (body) => ({
             url: `api/user/confirm/newEmail/${body.userid}`,
             method: "POST",
@@ -52,17 +68,18 @@ export const orgServicesApi = createApi({
             headers: {
                "Content-type": "application/json",
             },
-          }),
-          
-        }),
+         }),
+
+      }),
    }),
 });
 
 export const {
    useUpdateEmailMutation,
-   useVerifyNewEmailMutation ,
-
-  useGetUserByOrgNameMutation,
-  useUpdateUserOrganizationMutation,
-  useUpdateOrgLogoMutation,
+   useVerifyNewEmailMutation,
+   useUpdateOrganizationDetailMutation,
+   useGetUserByOrgNameMutation,
+   useUpdateUserOrganizationMutation,
+   useUpdateOrgLogoMutation,
+   useBulkChangeUserStatusMutation
 } = orgServicesApi;

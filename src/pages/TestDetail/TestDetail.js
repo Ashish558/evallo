@@ -22,11 +22,11 @@ import Scoring from "./Scoring/Scoring";
 import Modal from "../../components/Modal/Modal";
 import InputField from "../../components/InputField/inputField";
 import InputSelect from "../../components/InputSelect/InputSelect";
-import ReactQuill from "react-quill";
+// import ReactQuill from "react-quill";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import "react-quill/dist/quill.snow.css";
+// import "react-quill/dist/quill.snow.css";
 import "./form.css";
 import Delete from "../../assets/images/delete.png";
 import { useSelector } from "react-redux";

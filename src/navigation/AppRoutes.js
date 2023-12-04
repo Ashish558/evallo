@@ -4,6 +4,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
 import { RequireAuth } from "./PrivateRoute";
 import Footer from "../components/Footer/Footer"
+import Layout from "../pages/Layout/Layout";
+import Layout2 from "../pages/Layout/Layout2";
+
 
 const AllTests = lazy(() => import("../pages/AllTests/AllTests"));
 const AssignedTests = lazy(() => import("../pages/AssignedTests/AssignedTests"));
@@ -39,40 +42,36 @@ const TestPage = lazy(() => import("../pages/DsatTestPage/TestPage"));
 const AnnotatorComponent = lazy(() => import("../components/annotate"));
 const Testinstruction_2 = lazy(() => import("../components/TestItem/testinstruction_2"));
 const AdminPortal = lazy(() => import("../pages/SuperadminDashboard/components/About/AdminPortal"));
+const OrgAdminSignup = lazy(() => import("../pages/OrgAdminSignup/OrgAdminSignup"));
 // Lazy-load your components
+
+//  layout page
 
 const AppRoutes = () => {
   const { isLoggedIn } = useSelector((state) => state.user);
   const { role: persona } = useSelector((state) => state.user);
 
+
   return (
     <BrowserRouter>
-      <Navbar />
+      {/* <Navbar /> */}
+      <Layout2>
       <Routes>
-        <Route path="/" element={isLoggedIn ?
-          <Suspense fallback={<div>Loading...</div>}>
-            <Home />
-          </Suspense>
-          :
-          <Suspense fallback={<div>Loading...</div>}>
-            <Login />
-          </Suspense>
-        } />
-        <Route path="/signup" element={
-          <Suspense fallback={<div>Loading...</div>}>
-            <Signup />
-          </Suspense>
-        } />
-        <Route path="/admin-portal" element={
-          <Suspense fallback={<div>Loading...</div>}>
-            <AdminPortal />
-          </Suspense>
-        } />
-        <Route path="/signup/user" element={
-          <Suspense fallback={<div>Loading...</div>}>
-            <UserSignup />
-          </Suspense>
-        } />
+        <Route path="/" element={isLoggedIn ? <Home /> : <Login />} />
+
+{/*  layout routes */}
+        <Route
+          path="/Layout"
+          element={
+            <RequireAuth isLoggedIn={isLoggedIn}>
+              <Layout />
+            </RequireAuth>
+          }
+        />
+
+        <Route path="/signup" element={<Suspense fallback={<div>Loading...</div>}><OrgAdminSignup /></Suspense>} />
+        <Route path="/admin-portal" element={<AdminPortal />} />
+        <Route path="/signup/user" element={<UserSignup />} />
         <Route
           path="/"
           element={
@@ -378,7 +377,8 @@ const AppRoutes = () => {
           }
         ></Route>
       </Routes>
-      <Footer />
+      </Layout2>
+      {/* <Footer /> */}
     </BrowserRouter>
   );
 };

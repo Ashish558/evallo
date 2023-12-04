@@ -131,9 +131,11 @@ function AccountOverviewWithSubscriptionInfo() {
     const [paymentMethods, SetPaymentMethods] = useState([]);
     const [cancelProductSubscriptionId, SetCancelProductSubscriptionId] = useState("");
     const [deletePaymenMethodInfo, SetDeletePaymenMethodInfo] = useState(null);
+    const [activeTutorsCount, setActiveTutorsCount] = useState(0)
 
+    // console.log("activeTutorsCount - " + activeTutorsCount);
     useEffect(() => {
-        console.log("activeSubscriptionName - " + activeSubscriptionName);
+        // console.log("activeSubscriptionName - " + activeSubscriptionName);
     },[activeSubscriptionName])
 
     useEffect(() => {
@@ -156,8 +158,8 @@ function AccountOverviewWithSubscriptionInfo() {
     function loadOrgDetails() {
         getPersonalDetail()
             .then(data => {
-                console.log("getPersonalDetail");
-                console.log(data);
+                // console.log("getPersonalDetail");
+                // console.log(data);
                 const user = data.data.data.user;
             
                 getOrgDetails(user.associatedOrg)

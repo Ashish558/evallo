@@ -9,7 +9,6 @@ function VerticalNumericSteppers({
     completedIndices,
 }) {
 
-    console.log(restrictedIndices);
     return (
         <div
             className={`flex flex-col items-center justify-between h-full w-full ${className}`}

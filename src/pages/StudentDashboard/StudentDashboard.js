@@ -156,8 +156,8 @@ const StudentDashboard = () => {
     setSubjects(updated);
   };
   return (
-    <div className={`w-[83.3vw] mx-auto pb-[70px]`} >
-      <p className="text-[#24A3D9] mt-[50px]  text-base-20">
+    <div className={`w-[1600px] mx-auto pb-[70px]`} >
+      <p className="text-[#24A3D9] mt-[50px] text-[20px] font-normal">
         {organization?.company +
           " > " +
           user?.firstName +
@@ -170,10 +170,10 @@ const StudentDashboard = () => {
       <StudentDashboardHeader />
 
       <div className="flex mt-10 pt-[10px] justify-between">
-        <div className=" flex-1 w-[70%] ">
-          <div className="flex items-center justify-between mb-1 w-[54.43vw] bg-pink-500">
-            <h1 className="text-[#26435F]  text-base-20 font-semibold flex justify-center items-center">
-              Concept Chart
+        <div className=" flex-1 w-[1076px] ">
+          <div className="flex items-center justify-between mb-1 w-[1076px] bg-pink-500">
+            <h1 className="text-[#26435F] text-[20px] font-semibold flex justify-center items-center">
+            Score progression
               <div className="inline-block my-auto ml-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -228,7 +228,7 @@ const StudentDashboard = () => {
           </div>
           <div
             id={styles.chartContainer}
-            className="!rounded-md w-[54.43vw] flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller h-[390px] "
+            className="!rounded-md w-[1076px] flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller h-[451px] "
           >
            {accsubjects && accsubjects?.length>0 ?<>
              <Chart
@@ -242,8 +242,8 @@ const StudentDashboard = () => {
             currentSubData={currentSubData}
             setCurrentSubData={setCurrentSubData}
           /> </>:
-          <div id="sconcept2" className=" w-full  z-[5000] min-h-[300px] rounded-md bg-white flex justify-center flex-col text-center items-center">
-          <div className="w-[70%] mx-auto flex flex-col items-start">
+          <div id="sconcept2" className=" w-[480px]  z-[5000] min-h-[451px] rounded-md bg-white flex justify-center flex-col text-center items-center">
+          <div className="w-[1076px] mx-auto flex flex-col items-start">
             
            <button className="bg-[#FF7979] text-white rounded-md p-2 py-1 mb-3">
              No Assignments Yet
@@ -258,7 +258,7 @@ const StudentDashboard = () => {
           </div>
         </div>
 
-        <div className="w-[25vw] min-h-fit">
+        <div className="w-[480px] min-h-fit ml-[44px]">
           <SessionFeedback />
         </div>
       </div>
