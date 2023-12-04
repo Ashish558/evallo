@@ -60,12 +60,12 @@ const SessionFeedback = () => {
 
   return (
     <div className="flex flex-col justify-center items-center h-full w-full">
-      <div className="text-base-20 !font-semibold !text-[#26435F] w-full flex flex-grow-1 flex-1 justify-start items-center">
+      <div className="text-[20px] !font-semibold !text-[#26435F] w-full flex flex-grow-1 flex-1 justify-start items-center">
         Assigned Tests
       </div>
       <div
         id={styles.sessionFeedbackContainer}
-        className="w-full shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller h-[390px] bg-white px-[16px] py-[21px] !rounded-md"
+        className="w-full shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller h-[451px] bg-white px-[16px] py-[21px] !rounded-md"
       >
         <div
           id={styles.sessionFeedback}

@@ -68,9 +68,9 @@ const TutorCarousel = () => {
  };
   return (
 
-    <div className="h-full relative items-center  flex py-2 mr-[5%]">
+    <div className="h-full relative items-center  flex pt-[30px] mr-[5%]">
 
-      <h2 className="pl-5 pt-4">{""}</h2>
+      <h2 className="pl-4 pt-4">{""}</h2>
       {tutors.length >= totalTutors  ? (
         <OwlCarousel
         ref={sliderRef}

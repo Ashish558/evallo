@@ -254,8 +254,8 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
   //  console.log('tutors', tutors,filteredTutors);
 
   return (
-    <div className="flex flex-row justify-between !gap-[calc(68*0.0522vw)] lg:py-[20px] py-[10px] mt-8 design:!mt-12">
-      <div className=" flex-1 w-[70%] h-full">
+    <div className="flex flex-row justify-between mt-8">
+      <div className=" flex-1 w-[1045px] h-full">
         <div className="flex items-center justify-between">
           <h1 className="text-[#26435F]  text-base-20 font-semibold mb-1">
             Conceptual Accuracy
@@ -299,7 +299,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
         </div>
         <div
           id={styles.chartContainer}
-          className="!rounded-md  bg-white w-full flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller !w-[calc(1050*0.0522vw)]"
+          className="!rounded-md  bg-white flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller w-[1045px] h-[541px]"
         >
           <Chart
             selectedStudent={selectedStudent}
@@ -313,17 +313,17 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
         </div>
       </div>
 
-      <div className="w-full lg:w-1/3 flex flex-col gap-3 mt-1 h-full">
+      <div className="w-[491px] flex flex-col gap-3 mt-1 h-full">
         <div className="concept" id={styles.studentCarousel}>
           <div>
             <h1 className="text-[#26435F]  text-base-20 font-semibold ">
               Tutor Profile
             </h1>
-            <div className="mb-3 bg-[#26435F] flex items-center h-[180px] rounded-md !w-[calc(489*0.0522vw)]">
+            <div className="mb-3 bg-[#26435F] flex items-center h-[204px] rounded-md w-[491px]">
               {filteredTutors.length > 0 ? (
                 <OwlCarousel
                   ref={tutorCarouselRef}
-                  className="owl-theme h-full"
+                  className="owl-theme h-[240px]"
                   loop
                   margin={8}
                   items={1}
@@ -332,7 +332,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
                     return (
                       <div
                         key={idx}
-                        className="item flex gap-2 my-auto  h-full"
+                        className="item flex gap-2 my-auto  h-[240px]"
                       >
                         <div className="w-[40%] ml-10 flex justify-center flex-col h-full ">
                           <h3 className="mb-1 mt-2.5 text-[#FFA28D] font-semibold max-w-[130px] overflow-x-auto">

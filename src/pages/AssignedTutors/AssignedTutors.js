@@ -246,7 +246,7 @@ name2=modalData?.studentName
                   score: '-',
                }
             })
-            setTableData(data)
+            setTableData(data ? data : [])
             console.log(res.data);
          })
    }
