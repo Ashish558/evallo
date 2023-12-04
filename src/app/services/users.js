@@ -174,7 +174,7 @@ export const userServicesApi = createApi({
       query: (id) => ({
         url: `api/user/org/details/${id}`,
         method: "GET",
-       
+        headers: getAuthHeader(),
       }),
     }),
     updateUserAccount: builder.mutation({
