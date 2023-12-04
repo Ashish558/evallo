@@ -176,6 +176,8 @@ function SubscriptionAndExtensionModal({
             return;
         }
 
+        orgDetails = JSON.parse(orgDetails);
+
         if(orgDetails.stripeCustomerDetails) {
             SetStripeCustomerId(orgDetails.stripeCustomerDetails.id);
         }

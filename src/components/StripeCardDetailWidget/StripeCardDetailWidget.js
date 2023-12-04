@@ -41,7 +41,7 @@ function Payment({
         // which would refresh the page.
         event.preventDefault();
 
-        if (!stripe || stripeCustomerId === undefined || stripeCustomerId === "" || stripeCustomerId === null) {
+        if (!stripe || stripeCustomerId === "" || stripeCustomerId === null || stripeCustomerId === undefined) {
         // Stripe.js hasn't yet loaded.
         // Make sure to disable form submission until Stripe.js has loaded.
         return;
@@ -118,8 +118,8 @@ function Payment({
 
     
     return (
-        <div className="mt-2 mb-3 w-full">
-            <form onSubmit={handleSubmit} className='scale-[0.7] w-full'>
+        <div className="mt-[-50px] mb-3 w-full">
+            <form onSubmit={handleSubmit} className='scale-[0.6] w-full'>
                 <PaymentElement 
                     className='scale-[1]'
                 />

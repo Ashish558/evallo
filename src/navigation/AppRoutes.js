@@ -42,6 +42,7 @@ const TestPage = lazy(() => import("../pages/DsatTestPage/TestPage"));
 const AnnotatorComponent = lazy(() => import("../components/annotate"));
 const Testinstruction_2 = lazy(() => import("../components/TestItem/testinstruction_2"));
 const AdminPortal = lazy(() => import("../pages/SuperadminDashboard/components/About/AdminPortal"));
+const OrgAdminSignup = lazy(() => import("../pages/OrgAdminSignup/OrgAdminSignup"));
 // Lazy-load your components
 
 //  layout page
@@ -68,7 +69,7 @@ const AppRoutes = () => {
           }
         />
 
-        <Route path="/signup" element={<Suspense fallback={<div>Loading...</div>}><Signup /></Suspense>} />
+        <Route path="/signup" element={<Suspense fallback={<div>Loading...</div>}><OrgAdminSignup /></Suspense>} />
         <Route path="/admin-portal" element={<AdminPortal />} />
         <Route path="/signup/user" element={<UserSignup />} />
         <Route
