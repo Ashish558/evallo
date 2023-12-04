@@ -110,6 +110,35 @@ code {
     width: 10px;
 }
 
+.scrollbar-content1::-webkit-scrollbar {
+    /* height: 10px; */
+    border-radius: 20px;
+    position: absolute;
+    right: 500px;
+    top: 500px;
+    display: none;
+    height: 0;
+    width: 0;
+}
+
+.scrollbar-content1::-webkit-scrollbar-track {
+    background: rgba(109, 168, 255, 0.15);
+    border-radius: 20px;
+}
+
+.scrollbar-content1::-webkit-scrollbar-thumb {
+    background: rgba(109, 168, 255, 0.6);
+    border-radius: 20px;
+    border: 3px solid rgba(109, 168, 255, 0.15);
+}
+.scrollbar-content1::-webkit-scrollbar-thumb:hover {
+    background: rgba(109, 168, 255, 0.6);
+}
+
+.scrollbar-vertical.scrollbar-content1::-webkit-scrollbar {
+    width: 10px;
+}
+
 input[type="time"]::-webkit-calendar-picker-indicator {
     background: none;
     display: none;

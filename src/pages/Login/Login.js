@@ -141,20 +141,20 @@ export default function Login({ setLoginFormActive }) {
 
   return (
     <div className={styles.bg}>
-      <div className="flex flex-col items-center md:grid-cols-2   ">
+      <div className="flex flex-col items-center h-[957px]">
         <img
           src={cuate}
           alt="rocket"
-          className="h-[113.64px] w-[181px] scale-[0.86]     design:scale-100 mt-[21px] mb-[13.45px]"
+          className="h-[113.64px] w-[181px] mt-[44px]"
         />
-        <div className="bg-primary hidden lg:block ">
+        <div className="bg-primary block mt-[13px]">
           <ImageSlider
             className={styles.loginCarousel}
             images={[CarouselImg, CarouselImg]}
             pagination={true}
           />
         </div>
-        <div className="lg:flex lg:items-center mb-[80.33px] bg-white rounded-[10px] pt-[40px] pb-[40px] px-5 md:px-[66px] min-w-[561px] shadow-[5px_5px_87.5px_0px_rgba(166,166,166,0.25)]">
+        <div className="flex items-center mb-[80.33px] bg-white rounded-[10px] pt-[40px] pb-[40px] px-[66px] min-w-[561px] shadow-[5px_5px_87.5px_0px_rgba(166,166,166,0.25)]">
           {loginActive ? (
             <div className="w-full">
               <div className="flex justify-center">
@@ -174,7 +174,7 @@ export default function Login({ setLoginFormActive }) {
               </p>
               <form
                 onSubmit={handleSubmit}
-                className={`tracking-[0.03em] lg:mt-0  ${
+                className={`tracking-[0.03em] mt-0  ${
                   wait ? "cursor-wait" : "cursor-default"
                 }`}
               >
@@ -229,7 +229,7 @@ export default function Login({ setLoginFormActive }) {
                 <div className="flex justify-between items-center">
                   <div className="flex items-center justify-center -ml-[3px]">
                     <CCheckbox
-                      className="scale-[0.8]"
+                      // className="scale-[0.8]"
                       checked={remember}
                       onChange={() => setRemember(!remember)}
                     />{" "}

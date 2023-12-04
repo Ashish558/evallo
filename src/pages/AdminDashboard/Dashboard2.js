@@ -266,7 +266,7 @@ const Dashboard = () => {
     {
       id: 1,
       text: "Client Name",
-      willDisplayDownArrow : popular_Service_flag[0],
+      willDisplayDownArrow : null,
       onCick: () => {sortByString3("Client Name")
       let finalflag=star_client_flag
         finalflag[0]=!finalflag[0]
@@ -274,9 +274,9 @@ const Dashboard = () => {
       },   
     {
       id: 2,
-      willDisplayDownArrow : 0,
+      // willDisplayDownArrow : 0,
       text: "Code",
-      willDisplayDownArrow : popular_Service_flag[1],
+      willDisplayDownArrow : null,
       onCick: () => {sortByString3("Code")
       let finalflag=star_client_flag
         finalflag[1]=!finalflag[1]
@@ -285,7 +285,7 @@ const Dashboard = () => {
     {
       id: 3,
       text: "Referrals",
-      willDisplayDownArrow : popular_Service_flag[2],
+      willDisplayDownArrow : null,
       onCick: () => {sortByString3("Referrals")
       let finalflag=star_client_flag
         finalflag[2]=!finalflag[2]
@@ -304,7 +304,7 @@ const Dashboard = () => {
       },   
     {
       id: 2,
-      willDisplayDownArrow : 0,
+      // willDisplayDownArrow : 0,
       text: "Actively Using",
       willDisplayDownArrow : popular_Service_flag[1],
       onCick: () => {sortByString2("actively_using")
@@ -360,7 +360,7 @@ const Dashboard = () => {
     },
     {
       id: 2,
-      willDisplayDownArrow : 0,
+      // willDisplayDownArrow : 0,
       text: "User Type",
       willDisplayDownArrow : latestSignUp_flag[1],
       onCick: () => sortByString("role"),
@@ -824,7 +824,7 @@ const Dashboard = () => {
         </div>
 
         <section className="mt-[10px] mx-auto w-[1601px]">
-          <div className="grid grid-cols-[1158px,452px]">
+          <div className="grid grid-cols-[1158.75px,441.25px]">
             <div className="relative">
               <p className="font-semibold text-[#26435F] text-[17.5px]">
                 Popular Services
@@ -844,6 +844,7 @@ const Dashboard = () => {
                   belowBoxHeight="h-[168px]"
                   maxPageSize={5}
                   widthFullTable={true}
+                  theadWidth={"w-[1126.25px]"}
                 />
               </div>
             </div>
@@ -851,7 +852,7 @@ const Dashboard = () => {
               <p className="pl-[32px] font-semibold text-[#26435F] text-[17.5px]">
                 Star Clients
               </p>
-              <div className="relative pl-[32px] mt-2">
+              <div className="relative pl-[30px] mt-2">
                 {/* <div
                   className={`h-[85px] flex justify-center items-center text-sm text-[#667085] bg-[#E5E8EA]`}
                 >
@@ -873,6 +874,7 @@ const Dashboard = () => {
                   belowBoxIcon={plusIcon}
                   belowBoxHeight="h-[168px]"
                   widthFullTable={true}
+                  theadWidth={"w-[411.25px]"}
                 />
               </div>
               <div className="h-[90%] absolute bottom-0 left-0 bg-[#CBD6E2] top-[55%] transform -translate-y-1/2 w-px"></div>
@@ -982,6 +984,7 @@ const Dashboard = () => {
             belowBoxLink="users"
             belowBoxIcon={userLogo}
             belowBoxHeight="h-[143px]"
+            // customScrollBarClass={"scrollbar-content1"}
           />
 
           <div className="flex justify-center">

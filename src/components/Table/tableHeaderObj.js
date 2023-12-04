@@ -26,7 +26,7 @@ export function TableHeaderNew({
     >
       <div
         className={`flex  ${header.wrapperClassName ? header.wrapperClassName : '' } ${
-          header.text === "Email" || header.text === "Phone" || header.text === "Assignment Name" || header.text === "Assignment" ||
+          header.text === "Email"  || header.text === "Assignment Name" || header.text === "Assignment" ||
           header.text === "Full Name"
             ? `justify-start ${header.text === "Assignment" ? "ps-6 overflow-hidden" : ""}`
             : "justify-center"
@@ -36,7 +36,7 @@ export function TableHeaderNew({
             : `${
                 header.willDisplayDownArrow ||
                 header.willDisplayDownArrow === undefined
-                  ? styles.marker
+                  ? styles.marker: header.willDisplayDownArrow === null?""
                   : styles.upArrow
               }`
         }`}

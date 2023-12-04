@@ -72,7 +72,8 @@ const LatestSignUpTableItem = ({ item, onClick }) => {
         <div >{item.role}</div>
       </td>
       <td className=" text-[17.5px] pr-[16px] pl-6  min-w-14 py-4 text-left">
-        <div >{item.email}</div>
+        <p className="max-w-[207px] text-ellipsis overflow-hidden whitespace-normal ">{item.email}</p>
+        {/* <p className="max-w-[207px] text-ellipsis">{item.email?.length>19?item.email?.slice(0,19)+"...":item.email}</p> */}
       </td>
       <td className=" text-[17.5px] px-[16px]  min-w-14 py-4">
         <div >{item.phone}</div>

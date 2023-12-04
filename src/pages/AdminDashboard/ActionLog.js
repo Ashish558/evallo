@@ -97,7 +97,7 @@ export default function ActionLog({ actionLog, className,width }) {
   
   return (
     <div
-      className={`flex flex-col h-[330px] max-h-[500px]  shadow-[0px_0px_2px_rgba(0,0,0,0.25)]  rounded-5 bg-[#FFFFFF] ${width??"w-[65.1042vw]"} ${className}`}
+      className={`flex flex-col h-[330px] max-h-[500px]  shadow-[0px_0px_2px_rgba(0,0,0,0.25)]  rounded-5 bg-[#FFFFFF] ${width??"w-[1250px]"} ${className}`}
     >
       <div className=" border-b-[1.6px]  border-b-[#CBD6E2] ">
         <p className="uppercase  pl-[29px] pt-[16px] pb-2 text-[#26435F] text-base-20 text-[20px] font-normal">
@@ -129,7 +129,7 @@ export default function ActionLog({ actionLog, className,width }) {
           return (
             
               <div key={index} className="flex h-[57px] pl-5 relative ">
-                <p className="text-[#517CA8] pt-6 !font-light text-[15px] mr-2 w-[calc(143*0.050vw)] text-center whitespace-nowrap">
+                <p className="text-[#517CA8] pt-6 !font-light text-[15px] mr-2 w-[137px] text-center whitespace-nowrap">
                {
                 item?.message &&
                 <>
@@ -148,7 +148,7 @@ export default function ActionLog({ actionLog, className,width }) {
                   <div className={styles.circle}>
                     <div className={styles.circle2}></div>
                   </div>
-                  <p className="pl-4  font-normal text-[#517CA8] !text-[calc(17.5*0.050vw)]">
+                  <p className="pl-4  font-normal text-[#517CA8] text-[17.5px]">
                     {item?.message}
                   </p>
                 </div>

@@ -51,7 +51,9 @@ export default function Table(props) {
     setFilteredTests,
     setAllTestsForStudentTest,
     setfilteredTestsForStudentTest,
-    widthFullTable
+    widthFullTable,
+    theadWidth,
+    customScrollBarClass,
   } = props;
   const [dummy, setDummy] = useState([]);
   const [tableData, setTableData] = useState(data);
@@ -104,12 +106,12 @@ export default function Table(props) {
       <div
         className={`  ${
           noScrollbar
-            ? ` lg:overflow-x-auto scrollbar-content custom-scroller-2 scroll-m-1 ${styles.noOverflow}`
-            : "overflow-x-auto scrollbar-content custom-scroller-2 scroll-m-1"
+            ? ` lg:overflow-x-auto ${customScrollBarClass??'scrollbar-content custom-scroller-2'} scroll-m-1 ${styles.noOverflow}`
+            : `overflow-x-auto ${customScrollBarClass??'scrollbar-content custom-scroller-2'} scroll-m-1`
         }  p-[2px]  `}
       >
         <table className={`bg-white customTable mb-3 text-center whitespace-nowrap ${widthFullTable===true?"w-full":""}`}>
-          <thead className="pb-2 whitespace-nowrap bg-[#26435f] w-[1601px]">
+          <thead className={`pb-2 whitespace-nowrap bg-[#26435f] ${theadWidth??"w-[1601px]"}`}>
             <tr className={`whitespace-nowrap bg-[#26435f]`}>
               {tableHeaders.map((item, idx) => {
                 return headerObject === true ? (
