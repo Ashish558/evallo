@@ -96,7 +96,7 @@ export default function Que(props) {
       span.style.backgroundColor = color;
       span.style.position = "relative";
       const range = selectedt;
-      console.log("select",selectedt);
+      console.log("select", selectedt);
       try {
         range.surroundContents(span);
 
@@ -137,7 +137,7 @@ export default function Que(props) {
       // Add a backslash and the word to the result
       result += " \\ " + word + " ";
     }
-    console.log("resuly",result);
+    console.log("resuly", result);
     // Trim the trailing space and return the result
     return result.trim();
   }
@@ -154,15 +154,17 @@ export default function Que(props) {
   };
   const containsHashSymbols = (str) => {
     // Check if the string contains ## at both ends
-    if(!str || str?.trim()?.length<3) return false
+    if (!str || str?.trim()?.length < 3) return false;
+
     return str.startsWith("#") && str.endsWith("#");
   };
   const removeHashSymbols = (str) => {
     // Remove ## from the start and end of the string
-    if(!str) return ""
-    return `${str.slice(1, -1)} `;
+    if (!str) return "";
+    return `${str} `;
+    // return `${str.slice(1, -1)} `;
   };
-  console.log({quesT})
+ 
   return (
     <div
       className={` px-20 h-[25rem] relative flex flex-row ${
@@ -232,40 +234,40 @@ export default function Que(props) {
           ) : null}
         </div>
         <hr className=" border border-black" />
-        
+
         <div className="mathjax-box flex py-3 flex-col items-start justify-center">
           {ques != null && ques?.length > 0 ? (
             index % 2 === 0 ? (
               <h1>
-                {
-               
-                 ques?.split(" ")?.map((it)=>{
-                  if(containsHashSymbols(it))
-                  return ( <MathJaxContext config={config}>
-                  <MathJax hideUntilTypeset={"first"} inline dynamic>
-                  
-                    `{addBackslash(removeHashSymbols(it))} `
-                  </MathJax>
-                </MathJaxContext>)
-                return `${it} `
-                 })
+                {ques?.split("#")?.map((it, id) => {
+                  if (id % 2 !== 0){
+                    return (
+                      <MathJaxContext config={config}>
+                        <MathJax hideUntilTypeset={"first"} inline dynamic>
+                          `{addBackslash(removeHashSymbols(it))} `
+                        </MathJax>
+                      </MathJaxContext>
+                    );
                 }
-               
+                  return `${it} `;
+                })}
               </h1>
-            ) : (<h1>
-              {
-                ques?.split(" ")?.map((it)=>{
-                 if(containsHashSymbols(it))
-                 return ( <MathJaxContext config={config}>
-                 <MathJax hideUntilTypeset={"first"} inline dynamic>
-                 
-                   `{addBackslash(removeHashSymbols(it))}  `
-                 </MathJax>
-               </MathJaxContext>)
-               return `${it} `
-                })
-               }
-            </h1>)
+            ) : (
+              <h1>
+                {ques?.split("#")?.map((it, id) => {
+                  if (id % 2 !== 0) {
+                    return (
+                      <MathJaxContext config={config}>
+                        <MathJax hideUntilTypeset={"first"} inline dynamic>
+                          `{addBackslash(removeHashSymbols(it))} `
+                        </MathJax>
+                      </MathJaxContext>
+                    );
+                  }
+                  return `${it} `;
+                })}
+              </h1>
+            )
           ) : null}
           {quesImg != "" && quesImg !== "no" ? (
             <img className="max-w-8 max-h-8" src={quesImg} />
@@ -282,7 +284,7 @@ export default function Que(props) {
                 let ans = e.target.value;
                 const timeTaken = initialSeconds - countDown;
                 setInitialSeconds(countDown);
-              
+
                 const updatedanswer = answers.map((q) =>
                   q.QuestionNumber === index
                     ? {
@@ -330,19 +332,25 @@ export default function Que(props) {
                         props.MarkAnswer(index, i);
                       }}
                     >
-                      
-                      <p> {
-                e?.text?.split(" ")?.map((it)=>{
-                 if(containsHashSymbols(it))
-                 return ( <MathJaxContext config={config}>
-                 <MathJax hideUntilTypeset={"first"} inline dynamic>
-                 
-                   `{addBackslash(removeHashSymbols(it))}  `
-                 </MathJax>
-               </MathJaxContext>)
-               return `${it} `
-                })
-               }</p>
+                      <p>
+                        {" "}
+                        {e?.text && e?.text?.length>0 && e?.text?.split("#")?.map((it, id) => {
+                          if (id % 2 !== 0){
+                            return (
+                              <MathJaxContext config={config}>
+                                <MathJax
+                                  hideUntilTypeset={"first"}
+                                  inline
+                                  dynamic
+                                >
+                                  `{addBackslash(removeHashSymbols(it))} `
+                                </MathJax>
+                              </MathJaxContext>
+                            );
+                          }
+                          return `${it} `;
+                        })}
+                      </p>
                       {answerimagecheck ? (
                         <img
                           className="ml-6 max-w-[100px] max-h-[100px]"

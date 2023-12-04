@@ -22,7 +22,7 @@ export function TableHeaderNew({
     <th
       className={`px-4 py-[20px] font-medium whitespace-nowrap  text-center  cursor-pointer ${
         header.className ? header.className : ""
-      } ${flag ? styles["no-arrow"] : ""}`}
+      } ${flag ? styles["no-arrow"] : ""} bg-[#26435F]`}
     >
       <div
         className={`flex  ${header.wrapperClassName ? header.wrapperClassName : '' } ${

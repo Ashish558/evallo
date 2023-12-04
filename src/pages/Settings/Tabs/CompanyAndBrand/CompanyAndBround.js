@@ -43,6 +43,7 @@ const CompanyAndBround = () => {
   const [country, setCountry] = useState([]);
   const [states, setStates] = useState([]);
   const [values, setValues] = useState({ role: userData.role });
+  const [orgBussinessLogo, setOrgBussinessLogo] = useState(null)
 
   const [error, setError] = useState({
     firstName: "",
@@ -167,6 +168,9 @@ const CompanyAndBround = () => {
     setError({});
     console.log("save called");
     if (!checkEmpty()) return;
+    if(orgBussinessLogo){
+      updateBusinessLogo()
+    }
     if (organization?.company !== values?.company) {
       try {
         let data = {
@@ -221,23 +225,30 @@ const CompanyAndBround = () => {
   }, [organization]);
   const [uploading, setUploading] = useState(false);
   const [logoUrl, setLogoUrl] = useState(null);
+
   useEffect(() => {
     setLogoUrl(organization.orgBussinessLogo);
   }, [organization.orgBussinessLogo]);
+
   const handleLogoChange = async (e) => {
-    const formData = new FormData();
     const file = e.target.files[0];
-    if (!file) {
+    setOrgBussinessLogo(file)
+    setLogoUrl(URL.createObjectURL(file));
+  };
+
+  const updateBusinessLogo = () => {
+    if (!orgBussinessLogo) {
       alert("Enter valid file.");
       return;
     }
-    let size = file.size / 1024;
+    let size = orgBussinessLogo.size / 1024;
     size = size / 1024;
     if (size > 1) {
       alert("File is larger than than 1MB!");
       return;
     }
-    formData.append("photos", file);
+    const formData = new FormData();
+    formData.append("photos", orgBussinessLogo);
     formData.append("updatefieldName", "orgBussinessLogo");
     setUploading(true);
     updateOrgLogo({ formData: formData, id: organization._id }).then((res) => {
@@ -247,11 +258,11 @@ const CompanyAndBround = () => {
         console.log("logo err", res.error);
         return;
       }
-      setLogoUrl(URL.createObjectURL(file));
+      setLogoUrl(URL.createObjectURL(orgBussinessLogo));
       console.log("logo res", res.data);
       // window.location.reload();
     });
-  };
+  }
 
   return (
     <div className="flex justify-between">
@@ -342,18 +353,16 @@ const CompanyAndBround = () => {
               )}
               {!logoUrl ? (
                 <div
-                  className={`${styles["upload-container"]} ${
-                    !logoUrl ? styles["upload-container-centered"] : ""
-                  } `}
+                  className={`${styles["upload-container"]} ${!logoUrl ? styles["upload-container-centered"] : ""
+                    } `}
                 >
                   <div className="flex flex-col ">
                     <p className="block mx-auto mt-[-25px]">
                       <img src={UploadIcon} alt="logo" />
                     </p>
                     <p
-                      className={`text-[#FFFFFF] text-[15px] bg-[#517CA8] rounded-[5px] pt-3 mt-[12.5px] pb-2 px-4 ${
-                        uploading ? "cursor-wait" : "cursor-pointer"
-                      }`}
+                      className={`text-[#FFFFFF] text-[15px] bg-[#517CA8] rounded-[5px] pt-3 mt-[12.5px] pb-2 px-4 ${uploading ? "cursor-wait" : "cursor-pointer"
+                        }`}
                       onClick={() => inpuRef.current.click()}
                     >
                       {uploading ? "Uploading..." : "Choose file"}
@@ -375,9 +384,8 @@ const CompanyAndBround = () => {
                 <div className={`absolute  right-2 bottom-1`}>
                   <div className="flex flex-col ">
                     <p
-                      className={`block mx-auto mt-[-25px]  ${
-                        uploading ? "cursor-wait" : "cursor-pointer"
-                      }`}
+                      className={`block mx-auto mt-[-25px]  ${uploading ? "cursor-wait" : "cursor-pointer"
+                        }`}
                       onClick={() => inpuRef.current.click()}
                     >
                       <img src={UploadIcon} alt="logo" />

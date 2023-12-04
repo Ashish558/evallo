@@ -183,7 +183,7 @@ export default function Login({ setLoginFormActive }) {
                     email?.length > 0 ? (
                       <img
                         onClick={() => setEmail("")}
-                        className="ml-3 cursor-pointer  w-[17.31px] h-[17.31px]"
+                        className="ml-3 cursor-pointer  w-[22.249px] h-[22.249px]"
                         src={cutEmail}
                         alt="right icon"
                       />
@@ -233,13 +233,13 @@ export default function Login({ setLoginFormActive }) {
                       checked={remember}
                       onChange={() => setRemember(!remember)}
                     />{" "}
-                    <span className="text-base text-[#26435F]  font-semibold">
+                    <span className="text-base text-[#26435F]  font-medium">
                       {" "}
                       Remember me{" "}
                     </span>
                   </div>
                   <p
-                    className=" lg:text-base inline-block cursor-pointer text-[#24A3D9]  leading-[18.715px]  font-semibold ml-auto"
+                    className=" lg:text-base inline-block cursor-pointer text-[#24A3D9]  leading-[18.715px]  font-medium ml-auto"
                     onClick={() => setActiveFrame(setIsPasswordForgot)}
                   >
                     Forgot Password?

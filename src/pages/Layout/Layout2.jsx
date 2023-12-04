@@ -35,7 +35,7 @@ const Layout2 = ({ children }) => {
       if((layoutRealHeightAfterScale+72+67)<windowHeight){
         const heightForFullScreenLayout = windowHeight-67;
         layoutRef.current.style.marginTop = `-${72*(scale>1?0:(1-scale))}px`;
-    console.warn({windowHeight,layoutRealHeightAfterScale,heightForFullScreenLayout});
+    // console.warn({windowHeight,layoutRealHeightAfterScale,heightForFullScreenLayout});
         setLayoutParentHeight(heightForFullScreenLayout);
         footerRef.current.style.position = 'absolute';
       }else{

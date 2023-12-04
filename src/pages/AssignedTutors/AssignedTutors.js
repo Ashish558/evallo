@@ -230,7 +230,7 @@ name2=modalData?.studentName
                return
             }
             console.log('assignedtutors-', res.data);
-            let data = res.data.assignedTutors.map(item => {
+            let data = res.data.assignedTutors?.map(item => {
                const { assignedTutor, associatedParent, firstName, lastName, specialization, student_id, timeZone, tutorFirstName, tutorLastName, parentFirstName, parentLast } = item
                return {
                   tutorName: `${tutorFirstName} ${tutorLastName}`,

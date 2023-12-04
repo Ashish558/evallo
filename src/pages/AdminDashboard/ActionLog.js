@@ -79,7 +79,15 @@ export default function ActionLog({ actionLog, className,width }) {
 
   //  format monthName date, year
   const formatDate= (value)=>{
-    const [ month, day, year] = value.split("-");
+    
+    let [ year, month, day] = value.split("-");
+     if(dateFormat==="dd/mm/yy"){
+      [ day, month,  year] = value.split("-");
+     }
+    else  if(dateFormat==="mm/dd/yy"){
+      [ month, day, year] = value.split("-");
+     }
+else [ year, month, day] = value.split("-");
     const monthName = getMonthName(month-1);
     console.log(
      { 
@@ -91,7 +99,8 @@ export default function ActionLog({ actionLog, className,width }) {
       }
    );
     
-    const formattedDate = `${monthName}` + " " + `${year}` + `,` + `${month}`;
+    let formattedDate = `${monthName}` + " " + `${year}` + `,` + `${day}`;
+   
     return formattedDate
    }
   
@@ -115,7 +124,7 @@ export default function ActionLog({ actionLog, className,width }) {
             // startDate = startDate + offset
             date = new Date(date.getTime() + offset);
           }
-          const hours = date.getHours();
+          let hours = date.getHours();
           var minutes = date.getMinutes();
 
           if(0 <= minutes && minutes < 10){
@@ -124,6 +133,7 @@ export default function ActionLog({ actionLog, className,width }) {
 
           let ampm = "AM";
           if (hours >= 12) {
+            hours-=12
             ampm = "PM";
           }
           return (

@@ -571,7 +571,7 @@ export default function Users() {
     {
       id: 1,
       text: "Full Name",
-      className: "text-left pl-6",
+      className: "text-left pl-6 text-white",
       wrapperClassName: 'justify-start',
       onCick: sortByName, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
       willDisplayDownArrow: usernameSortState !== SORT_STATES.DESCENDING_ORDER,
@@ -1417,7 +1417,7 @@ export default function Users() {
         </div>
         <div>
           <div className="flex mb-[46px]">
-            <button className="bg-[#517CA8] text-base-15 w-[158px] text-[15px] justify-center flex  items-center text-white  rounded-lg mr-[25px]">
+            <button className="bg-[#517CA8] w-[158px] text-[15px] justify-center flex  items-center text-white  rounded-lg mr-[25px]">
               {csvLoad ? <LoaderNew /> : ""}
               {!csvLoad && !successFetched ? (
                 <p onClick={handleBulkExport}>Export Data</p>
@@ -1446,7 +1446,7 @@ export default function Users() {
             </button>
             <button
               onClick={upload}
-              className="bg-[#517CA8] text-base-15 w-[160px] text-[15px] justify-center flex  items-center text-white  rounded-lg mr-[25px]"
+              className="bg-[#517CA8] w-[160px] text-[15px] justify-center flex  items-center text-white  rounded-lg mr-[25px]"
             >
               Bulk Upload{" "}
               <img src={UploadIcon} className="ml-3" alt="UploadIcon" />
@@ -1461,14 +1461,14 @@ export default function Users() {
                 </>
               }
               onClick={() => setModalActive(true)}
-              className=" flex items-center  !text-white font-semibold py-[10px]  text-base-17-5 w-[203px] h-[45px] !px-1"
+              className=" flex items-center  !text-white font-semibold py-[10px]  w-[203px] h-[45px] !px-1"
             />
             <button
-              className="bg-[#FFA28D]  text-base-17-5 justify-center flex py-2 pr-[12px] pl-4 design:px-4 items-center text-white font-semibold rounded-lg text-base-15  ml-auto"
+              className="bg-[#FFA28D] justify-center flex py-2 pr-[17.9px] pl-[17px]  items-center text-white text-[17.5px] font-semibold rounded-lg ml-auto"
               onClick={() => setAssignedTutorOpen(true)}
             >
               Tutor Mapping
-              <img src={PlusIcon} className="ml-3" alt="PlusIcon" />
+              <img src={PlusIcon} className="ml-[5px]" alt="PlusIcon" />
             </button>
             {bulkUpload && (
               <Modal
@@ -1862,7 +1862,7 @@ export default function Users() {
               onClick={() =>
                 selectedId?.length > 0 && setInviteBulkModalActive(true)
               }
-              className={`bg-[#517CA8] opacity-100 text-base-17-5  font-semibold tracking-wider relative px-[19px] py-[11px] rounded-[7.5px] text-white  text-base-17-5 h-[44px] ${
+              className={`bg-[#517CA8] opacity-100 text-[17.5px]  font-semibold tracking-wider relative px-[19px] py-[11px] rounded-[7.5px] text-white h-[44px] ${
                 selectedId?.length === 0 ? "opacity-75" : ""
               } `}
             >
@@ -1919,7 +1919,7 @@ export default function Users() {
                 selectedId?.length > 0 &&
                 setDeleteBulkModalActive(true)
               }
-              className={`bg-[#FF7979] opacity-100 flex gap-x-[10px] justify-center items-center gap-2 px-[17px] tracking-wider font-semibold py-[9.5px] w-[175px] rounded-[5px] text-white  text-base-17-5 ${
+              className={`bg-[#FF7979] opacity-100  text-[17.5px] flex gap-x-[10px] justify-center items-center gap-2 px-[21px] tracking-wider font-semibold py-[9.5px] rounded-[5px] text-white ${
                 selectedId?.length === 0 || true || adminSelectedForDelete
                   ? "opacity-75 cursor-not-allowed"
                   : ""

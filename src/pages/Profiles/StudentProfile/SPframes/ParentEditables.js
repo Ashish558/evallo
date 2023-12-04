@@ -709,7 +709,7 @@ export default function ParentEditables({
     "personality",
     "subjects",
   ];
-  console.log('ccc', currentField);
+
   return Object.keys(toEdit).map((key) => {
     return (
       toEdit[key].active === true && (
@@ -721,8 +721,8 @@ export default function ParentEditables({
               ? "max-w-[1038px] md:pb-5 mx-auto overflow-auto pb-5 "
               : currentField.name === 'frame1' ?
                 'max-w-[488px] md:pb-5 mx-auto overflow-auto pb-5 '
-                :
-                "max-w-fit md:pb-5 mx-auto overflow-auto pb-5 " 
+                : currentField.name === 'notes' ? 'max-w-[660px] md:pb-5 mx-auto overflow-auto pb-5 ' :
+                  "max-w-fit md:pb-5 mx-auto overflow-auto pb-5 "
           } /*{ ` max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5`}*/
           title=""
           crossBtn={true}
@@ -1422,7 +1422,7 @@ export default function ParentEditables({
                 )}
                 {currentField.name === "notes" && (
                   <div>
-                    <div className="flex items-center mb-5 pt-0 w-[660px]">
+                    <div className="flex items-center mb-5 pt-0">
                       {/* <p className='font-medium mr-4 min-w-[60px]'>  </p> */}
                       <div className="border w-full h-full rounded-md">
                         {textOpen && (
@@ -1450,7 +1450,10 @@ export default function ParentEditables({
                             className=" text-[#CBD6E2] text-xs flex-1 text-base-17-5 p-3 h-[150px] bg-[#F6F6F6]                              "
                           >
                             Use this space to add notes about the student that
-                            are only visible to you as the Org Admin. Here are
+                            are only visible to you as the Org Admin.
+                            <br></br>
+                            <br></br>
+                            Here are
                             some ideas to get you started: personality,
                             preferences, goals, sports, habits, academic scores,
                             activities, family, likes or dislikes, and schedule
@@ -2611,7 +2614,7 @@ export default function ParentEditables({
                         (it, selectedScoreIndex) => {
                           return (
                             <div className="flex flex-col ">
-                              <p className="font-semibold !text-lg cursor-pointer mb-2  text-[#24A3D9]">
+                              <p className="font-semibold !text-[20px] cursor-pointer mb-2  text-[#24A3D9]">
                                 SAT&reg; {selectedScoreIndex + 1}
                               </p>
                               <div className="flex gap-5">
@@ -2741,12 +2744,13 @@ export default function ParentEditables({
                               <div className="mt-[15px]">
                                 <InputField
                                   label="Test Date"
-                                  labelClassname="text-[#26435F]"
+                                  labelClassname="text-[#26435F] !text-[15px]"
                                   placeholder=""
                                   inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]  !h-[50px] w-[206px] text-[#507CA8]"
                                   inputClassName="bg-transparent text-xs   "
                                   parentClassName=""
                                   type="date"
+                                  biggerText={true}
                                   value={currentToEdit.dob}
                                   onChange={(e) =>
                                     setCurrentToEdit({
@@ -3053,7 +3057,7 @@ export default function ParentEditables({
                           (it, selectedScoreIndex) => {
                             return (
                               <div className="flex flex-col ">
-                                <p className="font-semibold !text-lg cursor-pointer mb-2  text-[#24A3D9]">
+                                <p className="font-semibold text-[20px] cursor-pointer mb-2  text-[#24A3D9]">
                                   ACT&reg; {selectedScoreIndex + 1}
                                 </p>
                                 <div className="flex gap-5 items-center !text-md">

@@ -322,10 +322,28 @@ export default function TableItem({
 
      //  format monthName date, year
      const formatDate= (value)=>{
-      const [ month, day, year] = value.split("-");
+      return value
+      let [ year, month, day] = value.split("-");
+       if(dateFormat==="dd/mm/yy"){
+        [ day, month,  year] = value.split("-");
+       }
+      else  if(dateFormat==="mm/dd/yy"){
+        [ month, day, year] = value.split("-");
+       }
+  else [ year, month, day] = value.split("-");
       const monthName = getMonthName(month-1);
+      console.log(
+       { 
+         value : value,
+         day : day,
+         month : month,
+         year : year,
+         monthName :monthName
+        }
+     );
       
-      const formattedDate = `${monthName}` + " " + `${day}` + `,` + `${year}`;
+      let formattedDate = `${monthName}` + " " + `${year}` + `,` + `${day}`;
+     
       return formattedDate
      }
 
@@ -473,7 +491,7 @@ export default function TableItem({
                     : true
                 }
                 tableDropdown={true}
-                value={leadStatus ? leadStatus : "-"}
+                value={organization2?.settings?.leadStatus?.includes(leadStatus) ? leadStatus : "-"}
                 placeholderClass="text-base-17-5"
                 optionData={organization2?.settings?.leadStatus}
                 inputContainerClassName={`min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center capitalize `}
@@ -488,7 +506,7 @@ export default function TableItem({
             <InputSelect
               disabled={item?.userType === "tutor" ? false : true}
               tableDropdown={true}
-              value={tutorStatus ? tutorStatus : "-"}
+              value={organization2?.settings?.tutorStatus?.includes(tutorStatus) ? tutorStatus : "-"}
               optionData={organization2?.settings?.tutorStatus}
               inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center capitalize text-base-17-5"
               optionClassName="text-[17.5px] text-base-17-5"

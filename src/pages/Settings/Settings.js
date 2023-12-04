@@ -302,9 +302,8 @@ export default function Settings() {
 
   const fetchSettings = () => {
     getSettings().then((res) => {
-       console.log("get settings",res);
+      console.log('organization-----', organization);
       setSettingsData(organization?.settings);
-      
       setThePermission(organization?.settings?.permissions);
     });
 
@@ -315,7 +314,7 @@ export default function Settings() {
     let updatedSetting = {
       [key]: updatedField,
     };
-    
+
     updateAndFetchsettings(updatedSetting);
   };
 
@@ -463,81 +462,81 @@ export default function Settings() {
     //console.log(updatedSetting);
     updateAndFetchsettings(updatedSetting);
   };
-  const handleaddimage=(idx,file)=>{
-//     const arr = [...offerImages]; // Create a shallow copy of the array
-// // Create a new object with the same properties as the first object in arr
-// console.log(file);
-// const modifiedObject = { ...arr[idx], image: file };
+  const handleaddimage = (idx, file) => {
+    //     const arr = [...offerImages]; // Create a shallow copy of the array
+    // // Create a new object with the same properties as the first object in arr
+    // console.log(file);
+    // const modifiedObject = { ...arr[idx], image: file };
 
-// // Update the array with the modified object
-// arr[idx] = modifiedObject;
-// console.log('asdasd',arr);
-//    let updatedSetting = {
-//      offerImages: arr,
-//    };
-//    console.log(arr);
+    // // Update the array with the modified object
+    // arr[idx] = modifiedObject;
+    // console.log('asdasd',arr);
+    //    let updatedSetting = {
+    //      offerImages: arr,
+    //    };
+    //    console.log(arr);
 
-//   updateAndFetchsettings(updatedSetting);
-// user/setting/updateSpecificImg
-const formData = new FormData();
-   console.log({file,idx})
+    //   updateAndFetchsettings(updatedSetting);
+    // user/setting/updateSpecificImg
+    const formData = new FormData();
+    console.log({ file, idx })
     formData.append("file", file);
-    formData.append("imageIndex", idx+1);
+    formData.append("imageIndex", idx + 1);
     setSaveLoading(true);
-axios.patch(`${BASE_URL}api/user/setting/updateSpecificImg`, formData, {
-  headers: getAuthHeader(),
-  maxBodyLength: Infinity,
-  maxContentLength: Infinity,
-}).then((res) => {
-  console.log(res.data.data.setting.settings);
-  dispatch(
-    updateOrganizationSettings(res.data.data.setting.settings)
-  );
-  setTagImage(null);
-  setTagText("");
-  setSelectedImageTag("");
-  setImageName("");
-  setTagModalActive(false);
-  fetchSettings();
-  setSaveLoading(false);
-})
-.catch((err) => {
-  console.log("err", err);
-  alert("Could not upload image");
-  setSaveLoading(false);
-});
- }
- const handleImageRemoval = (idx) => {
-   console.log(idx);
-  if(offerImages[idx]?.link==''&& offerImages[idx]?.buttonText==''){
-   const arr = offerImages.filter((item,i) => {
-     return i!==idx;
-    });
-    let updatedSetting = {
-      offerImages: arr,
-    };
-    console.log('arasrra r',arr);
-
-    updateAndFetchsettings(updatedSetting);
+    axios.patch(`${BASE_URL}api/user/setting/updateSpecificImg`, formData, {
+      headers: getAuthHeader(),
+      maxBodyLength: Infinity,
+      maxContentLength: Infinity,
+    }).then((res) => {
+      console.log(res.data.data.setting.settings);
+      dispatch(
+        updateOrganizationSettings(res.data.data.setting.settings)
+      );
+      setTagImage(null);
+      setTagText("");
+      setSelectedImageTag("");
+      setImageName("");
+      setTagModalActive(false);
+      fetchSettings();
+      setSaveLoading(false);
+    })
+      .catch((err) => {
+        console.log("err", err);
+        alert("Could not upload image");
+        setSaveLoading(false);
+      });
   }
-  else{
-     const arr = [...offerImages]; // Create a shallow copy of the array
-// Create a new object with the same properties as the first object in arr
-const modifiedObject = { ...arr[idx], image: '' };
+  const handleImageRemoval = (idx) => {
+    console.log(idx);
+    if (offerImages[idx]?.link == '' && offerImages[idx]?.buttonText == '') {
+      const arr = offerImages.filter((item, i) => {
+        return i !== idx;
+      });
+      let updatedSetting = {
+        offerImages: arr,
+      };
+      console.log('arasrra r', arr);
 
-// Update the array with the modified object
-arr[idx] = modifiedObject;
-   console.log(idx,arr);
-   let updatedSetting = {
-     offerImages: arr,
-   };
-  updateAndFetchsettings(updatedSetting);
- }
+      updateAndFetchsettings(updatedSetting);
+    }
+    else {
+      const arr = [...offerImages]; // Create a shallow copy of the array
+      // Create a new object with the same properties as the first object in arr
+      const modifiedObject = { ...arr[idx], image: '' };
+
+      // Update the array with the modified object
+      arr[idx] = modifiedObject;
+      console.log(idx, arr);
+      let updatedSetting = {
+        offerImages: arr,
+      };
+      updateAndFetchsettings(updatedSetting);
+    }
   };
   const handleOfferChange = (i, key, value) => {
-    console.log('asASAsaS',key,value,i);
-    let updatedField = settingsData.offerImages.map((item,idx) => {
-      if (idx==i) {
+    console.log('asASAsaS', key, value, i);
+    let updatedField = settingsData.offerImages.map((item, idx) => {
+      if (idx == i) {
         return { ...item, [key]: value };
       } else {
         return item;
@@ -620,12 +619,12 @@ arr[idx] = modifiedObject;
         return { ...serv };
       }
     });
-    
+
     let updatedSetting = {
       servicesAndSpecialization: updated,
     };
-     updateAndFetchsettings(updatedSetting);
-     };
+    updateAndFetchsettings(updatedSetting);
+  };
 
   const handleAddSessionTag = (text, key) => {
     let tempSettings = { ...settingsData };
@@ -936,7 +935,7 @@ arr[idx] = modifiedObject;
   const [addOne, setOne] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const onRemoveSpecialization2 = (text, service) => {
-   
+
 
     let arr = [...selectedServiceData?.specialization];
 
@@ -948,7 +947,7 @@ arr[idx] = modifiedObject;
     });
   };
   const onRemoveSessionTagItem2 = (text, heading) => {
-   
+
     let arr = [...selectedSessionData?.items];
 
     arr = arr.filter((it) => it !== text);
@@ -957,7 +956,7 @@ arr[idx] = modifiedObject;
       ...selectedSessionData,
       items: arr,
     });
-  
+
   };
   const handleAddSpecialization2 = (text, key) => {
     let tempSettings = { ...settingsData };
@@ -968,7 +967,7 @@ arr[idx] = modifiedObject;
       ...selectedServiceData,
       specialization: arr,
     });
-     };
+  };
   const handleAddSessionTag2 = (text, key) => {
     let arr = [...selectedSessionData?.items];
 
@@ -979,10 +978,9 @@ arr[idx] = modifiedObject;
       items: arr,
     });
 
-   
-  
+
+
   };
-  console.log({ selectedServiceData });
   useEffect(() => {
     if (settingsData && settingsData?.offerImages) {
       let arr = [];
@@ -1094,14 +1092,14 @@ arr[idx] = modifiedObject;
         return { ...serv };
       }
     });
-   
+
     let updatedSetting = {
       servicesAndSpecialization: updated,
     };
     updateAndFetchsettings(updatedSetting);
     setAddServiceModalActive(false);
     setSubModalServiceData(subModalInitialServiceState);
-     };
+  };
 
   const handleAddSessionName = (text, key) => {
     let tempSettings = { ...settingsData };
@@ -1135,15 +1133,14 @@ arr[idx] = modifiedObject;
         return { ...serv };
       }
     });
-   
+
     let updatedSetting = {
       sessionTags: updated,
     };
     updateAndFetchsettings(updatedSetting);
     setAddSessionModalActive(false);
     setSubModalSessionData(subModalInitialSessionState);
-      };
-  console.log({ offersNew, offerImages });
+  };
 
   const submitImageModalNew = (file2, val, e) => {
     // //console.log(tagText)
@@ -1171,7 +1168,6 @@ arr[idx] = modifiedObject;
     formData.append("link", val?.link);
     formData.append("offer", file);
     formData.append("buttonText", val?.buttonText);
-    console.log({ file, val, link: val?.link });
 
     setLoading2(true);
     setSaveLoading(true);
@@ -1361,7 +1357,6 @@ arr[idx] = modifiedObject;
       }));
     }
   };
-  console.log({ subModalData, addOne, addServices2, addSession2 });
 
   return (
     <>
@@ -1386,9 +1381,8 @@ arr[idx] = modifiedObject;
                   onClick={() => changeTab(idx + 1)}
                 >
                   <a
-                    className={`"w-full cursor-pointer flex justify-center items-center ${
-                      activeTab === idx + 1 ? "!text-[#26435F]" : "!text-white"
-                    }`}
+                    className={`"w-full cursor-pointer flex justify-center items-center ${activeTab === idx + 1 ? "!text-[#26435F]" : "!text-white"
+                      }`}
                   >
                     <span className="pb-1">
                       {activeTab === idx + 1 && (
@@ -1675,7 +1669,7 @@ arr[idx] = modifiedObject;
                                     key: "code",
                                   }}
                                   manual={true}
-                                  // onToggle={() => handleServicePause(service)}
+                                // onToggle={() => handleServicePause(service)}
                                 ></ToggleBar>
                                 <div
                                   className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
@@ -1771,7 +1765,7 @@ arr[idx] = modifiedObject;
                                     key: "code",
                                   }}
                                   manual={true}
-                                  // onToggle={() => }
+                                // onToggle={() => }
                                 ></ToggleBar>
                                 <div
                                   className=" flex items-center justify-center  rounded-full cursor-pointer"
@@ -1870,76 +1864,76 @@ arr[idx] = modifiedObject;
                     className="pt-1 pb-1 mr-15 text-base-17-5"
                   /> */}
 
-                    {offerImages?.map((offer,i) => {
+                    {offerImages?.map((offer, i) => {
                       return (
                         <div className="flex-1" key={offer._id}>
                           <div className="relative">
                             {toggleImage.offer && (
                               <div className=" overflow-hidden mb-5">
                                 <div className="flex">
-                                {offer.image!==''?
-                                <div className="w-[300px] h-[150px]">
-                                    <img
-                                      src={`${awsLink}${offer.image}`}
-                                      alt="offer-image3"
-                                      className="w-full h-full object-cover rounded-7"
-                                    />
-                                  </div>
-                                     : <div className="w-[300px] h-[150px] flex-1">
-                                     <div className="flex w-[100%] bg-[#F5F8FA] rounded-md mb-8 flex-col justify-center items-center">
-                                       <div className="mt-[20px] mb-[10px] items-center flex justify-center">
-                                         <img
-                                           src={fileupload}
-                                           alt="fileuploadIcon"
-                                         ></img>
-                                       </div>
-       
-                                       <div className="flex items-center text-center justify-center text-base-15">
-                                         {/* {xlsFile == undefined ? (
+                                  {offer.image !== '' ?
+                                    <div className="w-[300px] h-[150px]">
+                                      <img
+                                        src={`${awsLink}${offer.image}`}
+                                        alt="offer-image3"
+                                        className="w-full h-full object-cover rounded-7"
+                                      />
+                                    </div>
+                                    : <div className="w-[300px] h-[150px] flex-1">
+                                      <div className="flex w-[100%] bg-[#F5F8FA] rounded-md mb-8 flex-col justify-center items-center">
+                                        <div className="mt-[20px] mb-[10px] items-center flex justify-center">
+                                          <img
+                                            src={fileupload}
+                                            alt="fileuploadIcon"
+                                          ></img>
+                                        </div>
+
+                                        <div className="flex items-center text-center justify-center text-base-15">
+                                          {/* {xlsFile == undefined ? (
                            <p className=""></p>
                          ) : (
                            <p className="block ">{xlsFile.name}</p>
                          )} */}
-                                       </div>
-       
-                                       <div className="flex justify-center">
-                                         <label
-                                           htmlFor="file3"
-                                           className={`block cursor-pointer text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ${
-                                             loading2 ? "cursor-wait" : ""
-                                           }`}
-                                         >
-                                           {loading2 && offer?.image
-                                             ? "Submitting..."
-                                             : " Choose File"}
-                                         </label>
-                                         <input
-                                           accept="image/*"
-                                           onChange={(e) => {
-                                             console.log('szszs',e.target.files[0]);
-                                             handleaddimage(i, e.target.files[0])
-                                             // setImageName(e.target.files[0].name);
-                                           }}
-                                           id="file3"
-                                           type="file"
-                                         />
-                                       </div>
-       
-                                       <label
-                                         htmlFor="file"
-                                         className="block text-xs items-center justify-center  rounded-[5px]  px-4 py-2 font-normal text-center text-[#517CA8] text-base-15"
-                                       >
-                                         Less than 1 MB
-                                       </label>
-                                     </div>
-                                   </div>
-                           }
+                                        </div>
+
+                                        <div className="flex justify-center">
+                                          <label
+                                            htmlFor="file3"
+                                            className={`block cursor-pointer text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ${loading2 ? "cursor-wait" : ""
+                                              }`}
+                                          >
+                                            {loading2 && offer?.image
+                                              ? "Submitting..."
+                                              : " Choose File"}
+                                          </label>
+                                          <input
+                                            accept="image/*"
+                                            // className="hidden"
+                                            onChange={(e) => {
+                                              console.log('szszs', e.target.files[0]);
+                                              handleaddimage(i, e.target.files[0])
+                                              // setImageName(e.target.files[0].name);
+                                            }}
+                                            id="file3"
+                                            type="file"
+                                          />
+                                        </div>
+
+                                        <label
+                                          htmlFor="file"
+                                          className="block text-xs items-center justify-center  rounded-[5px]  px-4 py-2 font-normal text-center text-[#517CA8] text-base-15"
+                                        >
+                                          Less than 1 MB
+                                        </label>
+                                      </div>
+                                    </div>
+                                  }
                                   <div className="w-[1.25px] h-[150px] bg-[#CBD6E2] ml-5" />
                                 </div>
                               </div>
                             )}
                             <div>
-                            {offer.image!==''&&<div
+                              {offer.image !== '' && <div
                                 onClick={() => handleImageRemoval(i)}
                                 className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center  rounded-full cursor-pointer"
                               >
@@ -2009,9 +2003,8 @@ arr[idx] = modifiedObject;
                                   <label
                                     htmlFor="file2"
                                     disabled={loading2}
-                                    className={`block cursor-pointer text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ${
-                                      loading2 ? "cursor-wait" : ""
-                                    }`}
+                                    className={`block cursor-pointer text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ${loading2 ? "cursor-wait" : ""
+                                      }`}
                                   >
                                     {loading2 && off?.image
                                       ? "Submitting..."
@@ -2020,6 +2013,7 @@ arr[idx] = modifiedObject;
                                   <input
                                     accept="image/*"
                                     disabled={loading2}
+                                    className="hidden"
                                     onChange={(e) => {
                                       let arr = offersNew;
                                       arr[idx].image = e.target.files[0];
@@ -2132,17 +2126,15 @@ arr[idx] = modifiedObject;
             <div
               className={`bg-[#FFFFFF] border-[2.5px] px-[82px] border-dotted border-[#CBD6E2] mb-[30px] ${styles.permission}`}
             >
-              {console.log(fetchedPermissions)}
               {fetchedPermissions?.map((item, id) => {
                 return (
                   <>
                     {item.choosedValue === true ||
-                    item.choosedValue === false ? (
+                      item.choosedValue === false ? (
                       <div
                         key={id}
-                        className={`${
-                          id === 3 ? "!opacity-[0.7]" : ""
-                        } pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between text-base-17-5`}
+                        className={`${id === 3 ? "!opacity-[0.7]" : ""
+                          } pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between text-base-17-5`}
                       >
                         <div className="flex items-center flex-row justify-start">
                           <p>{renderColoredText(item.name)}</p>
@@ -2163,15 +2155,15 @@ arr[idx] = modifiedObject;
                                   {id == 5
                                     ? "Set Permissions"
                                     : id == 7
-                                    ? " New Assignment Email Notifications "
-                                    : null}{" "}
+                                      ? " New Assignment Email Notifications "
+                                      : null}{" "}
                                 </h3>
                                 <span className="font-light leading-[0.5px] text-[0.69vw]">
                                   {id == 5
                                     ? "Enable or disable tutor access to add, update or delete sessions scheduled on a calendar. When disabled, tutors in your Organization will only be able to reconcile sessions and add session notes & tags, but will not be able to make any changes to the remaining details of a session. Enable this if you want to provide more autonomy to your tutors. Disable if you want to discourage them from managing their own schedule."
                                     : id == 7
-                                    ? "Select whether you want to send email notifications when a new test is assigned to a student by a tutor or an admin."
-                                    : null}
+                                      ? "Select whether you want to send email notifications when a new test is assigned to a student by a tutor or an admin."
+                                      : null}
                                 </span>
                               </span>
                             </div>
@@ -2207,15 +2199,15 @@ arr[idx] = modifiedObject;
                                   {id == 5
                                     ? "Set Permissions"
                                     : id == 7
-                                    ? " New Assignment Email Notifications "
-                                    : null}{" "}
+                                      ? " New Assignment Email Notifications "
+                                      : null}{" "}
                                 </h3>
                                 <span className="font-light leading-[0.5px] text-[0.69vw]">
                                   {id == 5
                                     ? "Enable or disable tutor access to add, update or delete sessions scheduled on a calendar. When disabled, tutors in your Organization will only be able to reconcile sessions and add session notes & tags, but will not be able to make any changes to the remaining details of a session. Enable this if you want to provide more autonomy to your tutors. Disable if you want to discourage them from managing their own schedule."
                                     : id == 7
-                                    ? "Select whether you want to send email notifications when a new test is assigned to a student by a tutor or an admin."
-                                    : null}
+                                      ? "Select whether you want to send email notifications when a new test is assigned to a student by a tutor or an admin."
+                                      : null}
                                 </span>
                               </span>
                             </div>
@@ -2230,27 +2222,25 @@ arr[idx] = modifiedObject;
                             className="border border-gray-300 px-2  rounded-md text-[#26435F] bg-[#E9ECEF]"
                           >
                             <option value={item.choosedValue}>
-                              {`   ${
-                                item.permissionActionName ===
+                              {`   ${item.permissionActionName ===
                                 "notifyParentBefSession"
-                                  ? item.choosedValue === 0
-                                    ? "OFF"
-                                    : item.choosedValue + " hours before"
-                                  : item.choosedValue
-                              }`}
+                                ? item.choosedValue === 0
+                                  ? "OFF"
+                                  : item.choosedValue + " hours before"
+                                : item.choosedValue
+                                }`}
                             </option>
                             {item.values.map((values, i) => {
                               return (
                                 item.choosedValue !== values && (
                                   <option key={i} value={values}>
-                                    {` ${
-                                      item.permissionActionName ===
+                                    {` ${item.permissionActionName ===
                                       "notifyParentBefSession"
-                                        ? values === 0
-                                          ? "OFF"
-                                          : values + " hours before"
-                                        : values
-                                    }`}
+                                      ? values === 0
+                                        ? "OFF"
+                                        : values + " hours before"
+                                      : values
+                                      }`}
                                   </option>
                                 )
                               );
@@ -2510,9 +2500,8 @@ arr[idx] = modifiedObject;
                 <div className="flex gap-4 items-center justify-center mt-3">
                   <button
                     disabled={saveLoading}
-                    className={`${
-                      saveLoading ? "cursor-wait" : ""
-                    } rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}
+                    className={`${saveLoading ? "cursor-wait" : ""
+                      } rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}
                   >
                     Save{" "}
                   </button>
@@ -2646,9 +2635,8 @@ arr[idx] = modifiedObject;
                 <div className="flex gap-4 items-center justify-center mt-3">
                   <button
                     disabled={saveLoading}
-                    className={`${
-                      saveLoading ? "cursor-wait" : ""
-                    } rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}
+                    className={`${saveLoading ? "cursor-wait" : ""
+                      } rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}
                   >
                     Save{" "}
                   </button>
@@ -2788,9 +2776,8 @@ arr[idx] = modifiedObject;
                 <div className="flex gap-4 items-center justify-center mt-3">
                   <button
                     disabled={saveLoading}
-                    className={`${
-                      saveLoading ? "cursor-wait" : ""
-                    } rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}
+                    className={`${saveLoading ? "cursor-wait" : ""
+                      } rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}
                   >
                     Save{" "}
                   </button>
@@ -2879,11 +2866,10 @@ arr[idx] = modifiedObject;
           cancelBtnClassName="w-140 hidden"
           primaryBtn={{
             text: "Save",
-            className: `w-140 ml-0 bg-primaryOrange mt-2 ${
-              tagText.trim().length < 1 || tagImage === null
-                ? "pointer-events-none opacity-60"
-                : ""
-            } `,
+            className: `w-140 ml-0 bg-primaryOrange mt-2 ${tagText.trim().length < 1 || tagImage === null
+              ? "pointer-events-none opacity-60"
+              : ""
+              } `,
             form: "settings-form",
             type: "submit",
             loading: saveLoading,

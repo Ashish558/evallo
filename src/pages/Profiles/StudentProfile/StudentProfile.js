@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./style.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -13,14 +13,8 @@ import SubjectSlider from "../../../components/SubjectSlider/SubjectSlider";
 import ProfilePhoto from "./SPframes/ProfilePhoto";
 import ParentEditables from "./SPframes/ParentEditables";
 import clickArrowIcon from "../../../assets/YIcons/clickArrow.svg";
-import ProfileImg from "../../../assets/images/profile.png";
-import EditIcon from "../../../assets/icons/edit.svg";
-import MailIcon from "../../../assets/icons/mail.svg";
 import emailIcon from "../../../assets/icons/emailIcons.svg";
 import phoneIcon from "../../../assets/icons/phoneIcon.svg";
-import WhatsappIcon from "../../../assets/icons/whatsapp.svg";
-import RightIcon from "../../../assets/icons/chevron-right.svg";
-import LeftIcon from "../../../assets/profile/left.svg";
 import ValueOneIcon from "../../../assets/images/val-1.svg";
 import ValueTwoIcon from "../../../assets/images/val-2.svg";
 import ValueThreeIcon from "../../../assets/images/val-3.svg";
@@ -39,8 +33,6 @@ import SPFrame1 from "./SPframes/SPFrame1";
 import SPFrame2 from "./SPframes/SPFrame2";
 import SPFrame0 from "./SPframes/SPFrame0";
 
-import StudentTest from "../../StudentTest/StudentTest";
-import Chart from "../../../components/Chart/Chart";
 import SPFrame3 from "./SPframes/SPFrame3";
 import SPFrame4 from "./SPframes/SPFrame4";
 import AllTests from "../../AllTests/AllTests";
@@ -1070,7 +1062,7 @@ const [toEdit, setToEdit] = useState({
             toEdit={toEdit}
           />
           <div className="flex-1 mt-16 min-h-[400px]">
-            <p className="mb-[-40px] text-sm text-[#26435F] font-semibold text-base-20 ">
+            <p className="mb-[-40px] text-sm text-[#26435F] font-semibold text-base-20 pl-[2px]">
               Latest Assignments
             </p>
 

@@ -43,7 +43,15 @@ const LatestSignUpTableItem = ({ item, onClick }) => {
 
    //  format monthName date, year
    const formatDate= (value)=>{
-    const [ month, day, year] = value.split("-");
+    return value
+    let [ year, month, day] = value.split("-");
+     if(dateFormat==="dd/mm/yy"){
+      [ day, month,  year] = value.split("-");
+     }
+    else  if(dateFormat==="mm/dd/yy"){
+      [ month, day, year] = value.split("-");
+     }
+else [ year, month, day] = value.split("-");
     const monthName = getMonthName(month-1);
     console.log(
      { 
@@ -55,7 +63,8 @@ const LatestSignUpTableItem = ({ item, onClick }) => {
       }
    );
     
-    const formattedDate = `${monthName}` + " " + `${day}` + `,` + `${year}`;
+    let formattedDate = `${monthName}` + " " + `${year}` + `,` + `${day}`;
+   
     return formattedDate
    }
   return (
