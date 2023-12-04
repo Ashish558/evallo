@@ -125,7 +125,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
 
   return (
     <div className="w-full flex-1 mb-5">
-      <p className="text-[#24A3D9] mt-7 mb-3 !my-[calc(50*0.0522vw)] text-base-20">
+      <p className="text-[#24A3D9] mb-[30px] mt-[50px] text-[20px]">
         {organization?.company +
           " > " +
           user?.firstName +
@@ -137,18 +137,17 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
       {ledgerVisible && <Ledger setLedgerVisible={setLedgerVisible} />}
 
       <div
-        className="flex flex-row !gap-[calc(68*0.0522vw)] items-center"
+        className="flex flex-row items-start justify-between"
         id={styles.parentDashboardHeader}
       >
-        <div className=" !w-[calc(1050*0.0522vw)]">
-          <div className="flex flex-row justify-between !w-[calc(1050*0.0522vw)]">
-            <div className="w-[28.6458vw] h-[250px]">
+          <div className="flex flex-row justify-between w-[1045px]">
+            <div className="w-[550px]">
               <p className="text-base-20 text-[#26435F] font-semibold text-base-20 mb-1">
                 Announcements
               </p>
 
               <div
-                className="w-full h-[225px] design:h-[260px] relative flex rounded-md items-center  shadow-[0px_0px_2.500001907348633px_0px_#00000040]"
+                className="w-full h-[250px] relative flex rounded-md items-center  shadow-[0px_0px_2.500001907348633px_0px_#00000040]"
                 id={styles.exploreBgDisable}
               >
                 <div className={styles.images}>
@@ -167,7 +166,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                           >
                             <p className="absolute top-5 left-4 z-10 font-bold text-base-25 text-white"></p>
 
-                            <button onClick={() => openLink(image.link)} className="bg-[#FFA28D] text-white p-2 text-base-17-5 px-4 rounded-lg absolute left-5 bottom-4">
+                            <button onClick={() => openLink(image.link)} className="bg-[#FFA28D] text-white p-2 text-[17.5px] px-4 rounded-lg absolute left-5 bottom-4">
                               {image?.buttonText ? image?.buttonText : "Register"}
                             </button>
                           </div>
@@ -193,27 +192,27 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                 {console.log({images})} */}
               </div>
             </div>
-            <div className="w-[24.0625vw] h-[250px]">
+            <div className="w-[462.5px]">
               <p className="text-base-20 text-[#26435F] font-semibold text-base-20 mb-1">
                 Invoice Details
               </p>
 
               <div
-                className={`w-full  h-[225px] design:h-[260px] flex flex-col items-center justify-center gap-7 bg-white rounded-md`}
+                className={`w-full h-[250px] flex flex-col items-center justify-center gap-7 bg-white rounded-md`}
               >
-                <div className="text-[#667085] bg-[#66708555] p-3 rounded-[15px] !w-[calc(354*0.0522vw)] flex flex-col gap-7 justify-center items-center">
+                <div className="text-[#667085] bg-[#66708555] p-3 rounded-[15px] w-[354px] flex flex-col gap-7 justify-center items-center">
                   <p className="whitespace-nowrap text-3xl leading-none mb-1 translate-y-5">
                     {/* {credits < 0 ? -credits : credits} USD */}-
                   </p>
                   <p
-                    className="text-[13.17px] font-bold cursor-pointer text-base-17-5"
+                    className="font-bold cursor-pointer text-[17.5px]"
                     onClick={() => setLedgerVisible(true)}
                   >
                     View Ledger
                   </p>
                 </div>
                 <button
-                  className={`bg-[#667085] rounded-md py-2 text-white  !w-[calc(354*0.0522vw)] text-base-17-5`}
+                  className={`bg-[#667085] rounded-md py-2 text-white w-[354px] text-[17.5px]`}
                   disabled={amountToPay === 0}
                   onClick={handlePay}
                 >
@@ -226,14 +225,13 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="w-full lg:w-1/3 ">
+        <div className="w-[490px]">
           <div className="flex justify-between items-center ">
             <InputSelectNew
               optionType="object"
               label={"Select Student "}
-              labelClassname="text-[#26435F]  font-semibold text-base-20 mb-[5px]"
+              labelClassname="text-[#26435F]  font-semibold text-[20px] mb-[5px]"
               iconClass=" translate-y-[0px]  mb-1"
               parentClassName=""
               inputContainerClassName="pt-1 pb-1"
@@ -252,13 +250,15 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
             />
 
           </div>
-          <div className=".mybox -mt-[30px] bg-white relative shadow-[0px_0px_2.500001907348633px_0px_#00000040] border-b-4 border-b-[#26435F] h-[225px] rounded-md !w-[25.5208vw]">
+          <div className=".mybox -mt-[30px] bg-white relative shadow-[0px_0px_2.500001907348633px_0px_#00000040] h-[250px] rounded-md w-[490px]">
             <div id="borderLeft" className=""></div>
-
+            <svg className="absolute bottom-0 left-0 z-10" xmlns="http://www.w3.org/2000/svg" width="490" height="99" viewBox="0 0 490 99" fill="none">
+  <path d="M489.25 93.7501V0C486.489 0 484.25 2.23853 484.25 4.99989L484.25 50.6251L484.25 88.1251C484.25 90.8865 482.012 93.1251 479.25 93.1251H11.125C8.36358 93.1251 6.125 90.8865 6.125 88.1251V49.3751L6.125 5.625C6.125 2.5184 3.6066 0 0.5 0V93.7501C0.5 96.5115 2.73858 98.7501 5.5 98.7501H484.25C487.012 98.7501 489.25 96.5115 489.25 93.7501Z" fill="#26435F"/>
+</svg>
             <div
-              className={` relative  w-100 h-full px-[22px] `}
+              className={` relative  w-100 h-[250px] px-[22px] `}
             >
-              <div className="flex flex-1 px-3 justify-between py-auto h-full items-center">
+              <div className="flex flex-1 px-3 justify-between py-auto h-[250px] items-center">
                 {associatedStudents.length > 0 && (
                   <>
                     <div className="w-1/2">
@@ -270,7 +270,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                       </h2>
                       {/* <h6 className="text-[10px]">SAT Tutoring <br />Subject Tutoring</h6> */}
 
-                      <ul className="text-[12px] text-[#517CA8] my-8 text-base-17-5">
+                      <ul className="text-[#517CA8] my-8 text-[17.5px]">
                         {selectedStudent?.serviceSeeking?.length > 0 ? selectedStudent?.serviceSeeking?.map((item, idx) => (
                           <li>
                             {item}

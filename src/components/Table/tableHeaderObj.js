@@ -20,13 +20,13 @@ export function TableHeaderNew({
 
   return (
     <th
-      className={`px-6 py-[20px] font-medium whitespace-nowrap  text-center  cursor-pointer ${
+      className={`px-4 py-[20px] font-medium whitespace-nowrap  text-center  cursor-pointer ${
         header.className ? header.className : ""
       } ${flag ? styles["no-arrow"] : ""} bg-[#26435F]`}
     >
       <div
         className={`flex  ${header.wrapperClassName ? header.wrapperClassName : '' } ${
-          header.text === "Email" || header.text === "Phone" || header.text === "Assignment Name" || header.text === "Assignment" ||
+          header.text === "Email"  || header.text === "Assignment Name" || header.text === "Assignment" ||
           header.text === "Full Name"
             ? `justify-start ${header.text === "Assignment" ? "ps-6 overflow-hidden" : ""}`
             : "justify-center"
@@ -36,7 +36,7 @@ export function TableHeaderNew({
             : `${
                 header.willDisplayDownArrow ||
                 header.willDisplayDownArrow === undefined
-                  ? styles.marker
+                  ? styles.marker: header.willDisplayDownArrow === null?""
                   : styles.upArrow
               }`
         }`}

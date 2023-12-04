@@ -2,6 +2,52 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 1920, 1366, 1024, 768, 414, 320  */
+/* 1920px (Scale 1): 1920px (1x)
+1440px (3:4 Ratio): 1440px (0.75x)
+1366px (5:6 Ratio): 1366px (0.71x)
+1280px (2:3 Ratio): 1280px (0.67x)
+1024px (4:9 Ratio): 1024px (0.53x)
+768px (1:2 Ratio): 768px (0.40x)
+414px (9:32 Ratio): 414px (0.22x)
+320px (1:6 Ratio): 320px (0.17x) */
+
+/* :root {
+    --global-scale-3xl: 1;
+    --global-scale-2xl: 0.75;
+    --global-scale-xl: 0.71;
+    --global-scale-lg: 0.67;
+    --global-scale-md: 0.53;
+    --global-scale-sm: 0.40;
+    --global-scale-xs: 0.22;
+    --global-scale-xxs: 0.17;
+
+  }
+  html{
+    scale: 1;
+  }
+  @media screen and (max-width: 1440px) {
+    html{
+        transform: scale(0.75);
+    }
+  }
+  @media screen and (max-width: 1366px) {
+    html{
+        transform: scale(0.71);
+    }
+  }
+  @media screen and (max-width: 768px) {
+    html{
+        transform: scale(0.67);
+    }
+  }
+  @media screen and (max-width: 414px) {
+    html {
+        transform: scale(0.53);
+
+    }
+  } */
+
 body {
     margin: 0;
     font-family: 'Lexend', sans-serif;
@@ -61,6 +107,35 @@ code {
 }
 
 .scrollbar-vertical.scrollbar-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.scrollbar-content1::-webkit-scrollbar {
+    /* height: 10px; */
+    border-radius: 20px;
+    position: absolute;
+    right: 500px;
+    top: 500px;
+    display: none;
+    height: 0;
+    width: 0;
+}
+
+.scrollbar-content1::-webkit-scrollbar-track {
+    background: rgba(109, 168, 255, 0.15);
+    border-radius: 20px;
+}
+
+.scrollbar-content1::-webkit-scrollbar-thumb {
+    background: rgba(109, 168, 255, 0.6);
+    border-radius: 20px;
+    border: 3px solid rgba(109, 168, 255, 0.15);
+}
+.scrollbar-content1::-webkit-scrollbar-thumb:hover {
+    background: rgba(109, 168, 255, 0.6);
+}
+
+.scrollbar-vertical.scrollbar-content1::-webkit-scrollbar {
     width: 10px;
 }
 
