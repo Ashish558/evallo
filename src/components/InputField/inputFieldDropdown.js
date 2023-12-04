@@ -9,6 +9,7 @@ import styles from "./styles.module.css";
 
 export default function InputFieldDropdown({
   parentClassName,
+  parentStyle,
   inputContainerClassName,
   Icon,
   biggerText,
@@ -99,7 +100,7 @@ export default function InputFieldDropdown({
   }, []);
 
   return (
-    <div className={`relative text-sm ${parentClassName && parentClassName} `}>
+    <div className={`relative text-sm ${parentClassName && parentClassName} `} style={{...parentStyle}} >
       {label && (
         <label
           className={`inline-block font-semibold ${

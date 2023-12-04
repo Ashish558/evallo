@@ -1,0 +1,8 @@
+
+
+.bioTextarea::placeholder {
+    color: #B3BDC7;
+    line-height: 22.5px;
+    margin-top: 10px;
+    margin-left: 10px;
+}

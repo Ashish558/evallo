@@ -28,6 +28,9 @@ import { useState } from "react";
 import RangeDate from "../../components/RangeDate/RangeDate";
 import ArrowDown from "../../assets/Dashboard/sort-down.svg";
 import { useEffect } from "react";
+import SubscriptionAndExtensionModal from "../Frames/SubscriptionAndExtensionModal/SubscriptionAndExtensionModal";
+import { useLazyGetAuthQuery, useLazyGetOrganizationQuery, useLazyGetPersonalDetailQuery } from "../../app/services/users";
+import { BASE_URL } from "../../app/constants/constants";
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
@@ -35,6 +38,10 @@ const Dashboard = () => {
   const { organization } = useSelector((state) => state.organization);
   const { firstName, lastName } = useSelector((state) => state.user);
   const { data: userStats } = useGetUserStatsQuery();
+  // const [] = useLazyGetPersonalDetailQuery();
+  const [getPersonalDetail, getPersonalDetailResp] = useLazyGetPersonalDetailQuery();
+  const [getOrgDetails, getOrgDetailsResp] = useLazyGetOrganizationQuery();
+  const [getAuth, getAuthResp] = useLazyGetAuthQuery();
 
   console.log({ userStats });
   const [completedRevenue, completedRevenueStatus] = useGetAllRevenueMutation();
@@ -58,6 +65,7 @@ const Dashboard = () => {
     useGetFilteredActionLogMutation();
   const [filteredActionLog, setFilteredActionLog] = useState([]);
   const [userData, setUserData] = useState([]);
+  const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(true);
   const [latestSignUp_flag,setlatestsignup_flag]=useState([1,1,1,1,1,1,1,1,1])
   const [popular_Service_flag,setpopular_Service_flag] = useState([1,1,1,1,1,1])
   const [star_client_flag,setstar_client_flag] = useState([1,1,1])
@@ -85,6 +93,87 @@ const Dashboard = () => {
         setUserData(data);
       }
     });
+  }, []);
+
+  useEffect(() => {
+    getPersonalDetail()
+    .then(data => {
+      console.log("getPersonalDetail");
+      console.log(data);
+      const user = data.data.data.user;
+
+      getOrgDetails(user.associatedOrg)
+      .then(data => {
+        console.log("getOrgDetails - attempt with associatedOrg");
+        console.log(data);
+
+        if(data.data === null || data.data === undefined ||
+          data.data.customerSubscriptions === null || data.data.customerSubscriptions === undefined ||
+          data.data.customerSubscriptions.data === null || data.data.customerSubscriptions.data === undefined ||
+          data.data.customerSubscriptions.data.length === 0) {
+          SetIsSubscriptionAndExtensionModalActive(true);
+        } else {
+          SetIsSubscriptionAndExtensionModalActive(false);
+        }
+      })
+      .catch(error => {
+        console.log("Error in getOrgDetails");
+        console.log(error);
+      });
+
+    })
+    .catch(error => {
+      console.log("Error in getPersonalDetail");
+      console.log(error);
+    })
+  }, []);
+
+  useEffect(() => {
+    // return;
+    /* getAuth()
+    .then(data => {
+      console.log("getAut");
+      console.log(data);
+    })
+    .catch(error => {
+      console.log("error in getAuth");
+      console.log(error);
+    }); */
+  }, []);
+
+  useEffect(() => {
+    fetch("https://testapi.evallo.org/api/v1/auth/login/success", {
+      method: "GET",
+      credentials: "include",
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("auth/login/success api");
+      console.log(data);
+    })
+    .catch(error => {
+      console.log(error);
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }, []);
+
+  useEffect(() => {
+    fetch("https://testapi.evallo.org/api/user?role=tutor", {
+      method: "GET"
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("tutor api");
+      console.log(data);
+    })
+    .catch(error => {
+      console.log(error);
+    })
+    .catch(error => {
+      console.log(error);
+    })
   }, []);
 
   const sortByName = () => {
@@ -482,6 +571,26 @@ const Dashboard = () => {
   const redirect = (item) => navigate(`/profile/${item.role}/${item._id}`);
   return (
     <div className={styles.container}>
+
+    {
+      isSubscriptionAndExtensionModalActive ? (
+        <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
+          <SubscriptionAndExtensionModal
+            className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-5/6 w-9/12"
+            OnCheckoutClicked={() => {
+              SetIsSubscriptionAndExtensionModalActive(false);
+            }}
+          />
+        </div>
+      ) : (<></>)
+    }
+
+      {/* <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
+        <SubscriptionAndExtensionModal
+          className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-5/6 w-9/12"
+        />
+      </div> */}
+
       <div className=" mt-[28px] bg-#2E2E2E">
         <div className="mt-[50px] flex justify-center">
           <div className="w-[90vw]">
