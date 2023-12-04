@@ -145,7 +145,7 @@ export default function Login({ setLoginFormActive }) {
         <img
           src={cuate}
           alt="rocket"
-          className="h-[113.64px] w-[181px] scale-[0.86]     design:scale-100 mt-[21px] mb-[13.45px]"
+          className="h-[113.64px] w-[181px] scale-[0.86] design:scale-100 mt-[21px] mb-[13.45px]"
         />
         <div className="bg-primary hidden lg:block ">
           <ImageSlider
@@ -154,7 +154,7 @@ export default function Login({ setLoginFormActive }) {
             pagination={true}
           />
         </div>
-        <div className="lg:flex lg:items-center mb-[80.33px] bg-white rounded-[10px] pt-[40px] pb-[40px] px-5 md:px-[66px] min-w-[561px] shadow-[5px_5px_87.5px_0px_rgba(166,166,166,0.25)]">
+        <div className="lg:flex lg:items-center mb-[80.33px] bg-white rounded-[10px] pt-[40px] pb-[40px] px-[65.5px] min-w-[561px] shadow-[5px_5px_87.5px_0px_rgba(166,166,166,0.25)]">
           {loginActive ? (
             <div className="w-full">
               <div className="flex justify-center">
@@ -183,7 +183,7 @@ export default function Login({ setLoginFormActive }) {
                     email?.length > 0 ? (
                       <img
                         onClick={() => setEmail("")}
-                        className="ml-3 cursor-pointer  w-[17.31px] h-[17.31px]"
+                        className="ml-3 cursor-pointer  w-[22.249px] h-[22.249px]"
                         src={cutEmail}
                         alt="right icon"
                       />
@@ -229,17 +229,17 @@ export default function Login({ setLoginFormActive }) {
                 <div className="flex justify-between items-center">
                   <div className="flex items-center justify-center -ml-[3px]">
                     <CCheckbox
-                      className="scale-[0.8]"
+                      className="scale-[0.711]"
                       checked={remember}
                       onChange={() => setRemember(!remember)}
                     />{" "}
-                    <span className="text-base text-[#26435F]  font-semibold">
+                    <span className="text-base text-[#26435F]  font-medium">
                       {" "}
                       Remember me{" "}
                     </span>
                   </div>
                   <p
-                    className=" lg:text-base inline-block cursor-pointer text-[#24A3D9]  leading-[18.715px]  font-semibold ml-auto"
+                    className=" lg:text-base inline-block cursor-pointer text-[#24A3D9]  leading-[18.715px]  font-medium ml-auto"
                     onClick={() => setActiveFrame(setIsPasswordForgot)}
                   >
                     Forgot Password?

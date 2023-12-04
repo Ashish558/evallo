@@ -371,24 +371,24 @@ const [loading2,setLoading2]=useState(false)
                            <>
                               <p>
                                  <img
-                                    className="w-[16px] h-[16px] design:h-[20px] design:w-[20px]"
+                                    className="w-[21.33px] design:h-[20px] design:w-[20px]"
 
                                     src={item.activeIcon}
                                     alt=""
                                  />
                               </p>
-                              <p className="pl-[10px] text-[#FFA28D] text-text-[0.902vw] "> {item.tooltip} </p>
+                              <p className="pl-[10px] text-[#FFA28D] text-[17.33px] "> {item.tooltip} </p>
                            </>
                         ) : (
                            <>
                               <p>
                                  <img
-                                    className="w-[16px] h-[16px] design:h-[20px] design:w-[20px]"
+                                    className="w-[21.33px] design:h-[20px] design:w-[20px]"
                                     src={item.icon}
                                     alt=""
                                  />
                               </p>
-                              <p className="pl-[10px] text-[0.902vw] "> {item.tooltip} </p>
+                              <p className="pl-[10px] text-[17.33px] "> {item.tooltip} </p>
                            </>
                         )}
                      </div>
@@ -397,13 +397,13 @@ const [loading2,setLoading2]=useState(false)
             </div>
             <div className={`flex ${persona === "superAdmin" ? "translate-x-[-1vw]" : ""} font-bold ${isLoggedIn ? "" : "opacity-[0.3]"}`}>
              {persona =="parent"||  <div className="cursor-pointer flex mr-[24px] text-[#24A3D9] text-base-16  items-center">
-                  <p className=" text-[0.83vw]">Pricing 	</p>
+                  <p className=" text-[16px]">Pricing 	</p>
                   <p className="pl-2 text-[17px]">
                    $
                   </p>
                </div>}
                <div className="cursor-pointer flex mr-[24px] text-[#24A3D9] items-center text-base-16 ">
-                  <p className="text-[0.83vw] ">Help</p>
+                  <p className="text-[16px] ">Help</p>
                   <p>
                      <img
                         className=" ml-2"
@@ -419,7 +419,7 @@ const [loading2,setLoading2]=useState(false)
                   onClick={() => isLoggedIn && setLogoutModalActive(true)}
                >
                   <div>
-                     <p className="text-[#24A3D9] text-[0.83vw] !font-semibold">Logout</p>
+                     <p className="text-[#24A3D9] text-[16px] !font-semibold">Logout</p>
                   </div>
                   <div>
                      <img
