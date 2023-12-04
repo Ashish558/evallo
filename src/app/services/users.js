@@ -6,6 +6,7 @@ export const userServicesApi = createApi({
   reducerPath: "usersApi",
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
+    // credentials: "include"
   }),
 
   endpoints: (builder) => ({
@@ -22,6 +23,13 @@ export const userServicesApi = createApi({
         method: "GET",
         headers: getAuthHeader(),
       }),
+    }),
+    getAuth: builder.query({
+      query: () => ({
+        url: `api/v1/auth/login/success`,
+        method: "GET",
+        headers: getAuthHeader(),
+      })
     }),
     getAllOrgUsers: builder.query({
       query: () => ({
@@ -95,6 +103,14 @@ export const userServicesApi = createApi({
         body: body,
         headers: getAuthHeader(),
       }),
+    }),
+    bulkChangeUserStatus: builder.mutation({
+      query: (body) => ({
+        url: `api/bulkChangeUserStatus`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      })
     }),
     addManager: builder.mutation({
       query: (body) => ({
@@ -289,5 +305,8 @@ export const {
   useRemoveLinkStudentMutation,
   useAddLinkStudentMutation,
   useGetLinkStudentMutation,
-  useLazyGetFeedbackQuery
+  useLazyGetFeedbackQuery,
+  useGetAuthQuery,
+  useLazyGetAuthQuery,
+  useBulkChangeUserStatusMutation,
 } = userServicesApi;

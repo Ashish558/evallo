@@ -5,6 +5,7 @@
   /* So the psueudo elements can be
      abs. positioned inside */
   position: relative; 
+  width: 14%;
 }
 .shivam-tabs .tabs a { 
   /* Make them block level
