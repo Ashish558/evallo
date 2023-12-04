@@ -17,6 +17,11 @@ import questionMark from "../../../../assets/images/Vector (6).svg";
 import SCheckbox from "../../../../components/CCheckbox/SCheckbox";
 import downChevronEnabledState from "../../../../assets/icons/down-chevron-dark-blue.svg";
 
+import {
+  useLazyGetPersonalDetailQuery,
+  useLazyGetOrganizationQuery,
+} from "../../../../app/services/users";
+
 function OrgAdminUserManagement() {
     const dispatch = useDispatch();
     const { organization } = useSelector((state) => state.organization);
@@ -27,6 +32,8 @@ function OrgAdminUserManagement() {
     const [tutorLimit, setTutorLimit] = useState(10);
     const [activeTutorNamesList, setActiveTutorNamesList] = useState([]);
     const [updateSetting, updateSettingResp] = useUpdateOrgSettingMutation();
+    const [getOrgDetails, getOrgDetailsResp] = useLazyGetOrganizationQuery();
+    const [getPersonalDetail, getPersonalDetailResp] = useLazyGetPersonalDetailQuery();
 
     useEffect(() => {
         const arr = [];
@@ -154,6 +161,48 @@ function OrgAdminUserManagement() {
         );
     };
 
+    const [activeTutorsCount, setActiveTutorsCount] = useState(0)
+
+    console.log("activeTutorsCount - " + activeTutorsCount);
+  
+    useEffect(() => {
+         getPersonalDetail()
+          .then(data => {
+              // console.log("getPersonalDetail");
+              // console.log(data);
+              const user = data.data.data.user;
+          
+              getOrgDetails(user.associatedOrg)
+              .then(data => {
+                  console.log('getOrgDetails', data.data);
+                  try {      
+                      if(data.data.customerSubscriptions?.data){
+                          if(data.data.customerSubscriptions?.data[0]){
+                              const metadata = data.data.customerSubscriptions?.data[0].metadata
+                              if(metadata.type === 'default'){
+                                  setActiveTutorsCount(parseInt(metadata.active_tutors))
+                              }
+                          }
+                      }
+                  } 
+                  catch (error) {
+                      
+                  }
+              })
+              .catch(error => {
+                  console.log(error);
+              });
+      
+          })
+          .catch(error => {
+        
+          });
+
+          return;
+    
+
+  }, []);
+
     return (
         <div>
             <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl text-base-20">
@@ -242,12 +291,11 @@ function OrgAdminUserManagement() {
                     >
                         {
                             activeTutorNamesList.map((item, index) => {
-                              const isDisabled = index >= 2;
+                              const isDisabled = index > activeTutorsCount - 1;
                                 return (
                                     <React.Fragment>
                                         <div className="flex mb-[15px] items-center h-[40px]" >
                                             <div className="text-[#26435F] text-[14px] w-[20px]" >{index + 1}.</div>
-
                                             <InputSelect
                                                 labelClassname="h-[0px]"
                                                 inputContainerClassName=" text-base-17-5 h-full shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
