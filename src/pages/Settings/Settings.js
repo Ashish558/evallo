@@ -56,12 +56,9 @@ import { updateOrganizationSettings } from "../../app/slices/organization";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import { permissionsStaticData } from "./Tabs/staticData";
 import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
-<<<<<<< HEAD
 import AccountOverviewWithSubscriptionInfo from "./Tabs/AccountOverviewWithSubscriptionInfo/AccountOverviewWithSubscriptionInfo";
 import OrgAdminUserManagement from "./Tabs/OrgAdminUserManagement/OrgAdminUserManagement";
-=======
 import moment from "moment-timezone";
->>>>>>> 1158a19054c362cdfba3a917437b466fcd79b1e5
 
 // import questionMark from '../../assets/images/question-mark.svg'
 const initialState = {
