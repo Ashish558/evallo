@@ -68,7 +68,7 @@ const AppRoutes = () => {
           }
         />
 
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/signup" element={<Suspense fallback={<div>Loading...</div>}><Signup /></Suspense>} />
         <Route path="/admin-portal" element={<AdminPortal />} />
         <Route path="/signup/user" element={<UserSignup />} />
         <Route

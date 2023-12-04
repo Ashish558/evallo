@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import { useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import loginStyles from '../Login/Login.module.css'
 
 const Layout2 = ({ children }) => {
   const navRef = useRef(null);
@@ -12,6 +14,7 @@ const Layout2 = ({ children }) => {
   const layoutRef = useRef(null);
   const location = useLocation();
   const [layoutParentHeight, setLayoutParentHeight] = useState(null);
+  const { isLoggedIn } = useSelector((state) => state.user);
 
   const adjustScale = () => {
     const screenWidth = document.body.clientWidth;
@@ -65,7 +68,7 @@ const Layout2 = ({ children }) => {
   // }, [location]);
   return (
     <>
-      <div className="relative h-full min-h-screen">
+      <div style={{backgroundRepeat:"repeat"}} className={`relative h-full min-h-screen ${isLoggedIn===false?loginStyles.bg:""}`}>
         <Navbar myRef={navRef} />
         <div style={{height:layoutParentHeight!==null?`${layoutParentHeight}px`:''}} className='min-h-[calc(100vh-67px)]'>
         {/* <div className="flex-grow"> */}

@@ -151,7 +151,7 @@ export default function Login({ setLoginFormActive }) {
   const props = { setActiveFrame, setResetPasswordActive };
 
   return (
-    <div className={styles.bg}>
+    <div className={""}>
       <div className="flex flex-col items-center h-[957px]">
         <img
           src={cuate}
@@ -257,37 +257,7 @@ export default function Login({ setLoginFormActive }) {
                   </p>
                 </div>
 
-                <div className="flex h-[50px] justify-between mt-[30px] relative left-2/4 -translate-x-2/4 w-[200px]" >
-                    <div
-                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]
-                                 hover:cursor-pointer"
-                      onClick={google}
-                    >
-                      <img 
-                        className="block"
-                        src={GoogleIcon} />
-                    </div>
-
-                    <div
-                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]
-                                 hover:cursor-pointer"
-                    >
-                      <img 
-                        className="block"
-                        src={LinkedinIcon} />
-                    </div>
-
-                    <div
-                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]
-                                 hover:cursor-pointer"
-                    >
-                      <img 
-                        className="block"
-                        src={AppleIcon} />
-                    </div>
-                  </div>
-
-              <div className="flex justify-center">
+              {/* <div className="flex justify-center">
                 <button
                   disabled={
                     loginLoading === true
@@ -302,7 +272,7 @@ export default function Login({ setLoginFormActive }) {
                   Sign in
                   {loginLoading && <Loader />}
                 </button>
-                </div>
+                </div> */}
                 <div className="flex justify-center">
                   <button
                     className={`w-[337px] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] relative mx-auto h-[50px] bg-[#FFA28D] disabled:opacity-60 pt-3.5 pb-3.5  mt-[56px] mb-[19px]  rounded-5 text-white text-lg font-medium ${
@@ -314,6 +284,36 @@ export default function Login({ setLoginFormActive }) {
                     {loginLoading && <Loader />}
                   </button>
                 </div>
+
+                <div className="w-full flex justify-center items-center gap-[30px] mt-[11px]" >
+                    <div
+                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]
+                                 hover:cursor-pointer"
+                      onClick={google}
+                    >
+                      <img 
+                        className="block"
+                        src={GoogleIcon} />
+                    </div>
+
+                    {/* <div
+                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]
+                                 hover:cursor-pointer"
+                    >
+                      <img 
+                        className="block"
+                        src={LinkedinIcon} />
+                    </div> */}
+
+                    <div
+                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]
+                                 hover:cursor-pointer"
+                    >
+                      <img 
+                        className="block"
+                        src={AppleIcon} />
+                    </div>
+                  </div>
                 <div className="flex justify-center mt-[19px]">
                   <p
                     className={`relative text-base  text-[#26435F]  ml-2  inline-block  `}
