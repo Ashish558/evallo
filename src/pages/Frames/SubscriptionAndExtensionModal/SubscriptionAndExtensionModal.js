@@ -14,6 +14,8 @@ import { extensionsData } from "./data";
 import { comingSoonExtensionData } from "./DummyData/ComingSoonExtensionData";
 import { useAddSubscriptionsMutation } from "../../../app/services/subscription";
 import { useLazyGetAuthQuery, useLazyGetOrganizationQuery, useLazyGetPersonalDetailQuery } from "../../../app/services/users";
+import { useUpdateOrganizationDetailMutation } from "../../../app/services/organization";
+import { useSelector } from "react-redux";
 
 function SubscriptionAndExtensionModal({
     className,
@@ -86,8 +88,9 @@ function SubscriptionAndExtensionModal({
     const [addSubscriptions, addSubscriptionsResp] = useAddSubscriptionsMutation();
     const [getPersonalDetail, getPersonalDetailResp] = useLazyGetPersonalDetailQuery();
     const [getOrgDetails, getOrgDetailsResp] = useLazyGetOrganizationQuery();
-
-    
+    const [updateOrgDetails, ] = useUpdateOrganizationDetailMutation();
+    const { organization } = useSelector((state) => state.organization);
+;
     function OnExtensionsChanged() {
         let output = sessionStorage.getItem("chosenExtentionObjectsFromAPI");
         if(output === '' || output === undefined ) {
@@ -456,6 +459,25 @@ function SubscriptionAndExtensionModal({
     }
 
     const onSaveAndNextClicked = () => {
+        console.log('frames--', frames);
+        if(frames.orgDetails){
+            console.log('click', values);
+            updateOrgDetails({...values, orgId:organization._id})
+            .then((res) => {
+                if(res.error){
+                    console.log('err', res.error);
+                    return
+                }
+                setFrames(frames => {
+                    if (frames.orgDetails) return {
+                        ...frames,
+                        orgDetails: false,
+                        subscription: true
+                    }
+                })
+            })
+        }else{
+
         setFrames(frames => {
             if (frames.review) return frames;
             if (frames.subscription) return {
@@ -475,6 +497,7 @@ function SubscriptionAndExtensionModal({
             }
         })
     }
+}
 
     async function handleSub(){
         // SetIsSubscriptionProcessOnGoing(true);
@@ -518,7 +541,7 @@ function SubscriptionAndExtensionModal({
     };
 
     return (
-        <div className={`aspect-[1400/900] bg-[#FFFFFF] flex rounded-[15px]  ${className}`} >
+        <div className={`aspect-[1400/900] bg-[#FFFFFF] flex rounded-[15px]  ${className} overflow-auto`} >
             <div className="h-[500px] w-1/12" >
                 <VerticalNumericSteppers
                     className="ml-[40px] mt-[50px] h-full"

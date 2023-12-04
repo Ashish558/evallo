@@ -116,9 +116,11 @@ function AccountOverviewWithSubscriptionInfo() {
     const [openSubscriptionModal, SetOpenSubscriptionModal] = useState(false);
     const [openExtensionsModal, SetOpenExtensionsModal] = useState(false);
     const [stripeCustomerId, SetStripeCustomerId] = useState("");
+    const [activeTutorsCount, setActiveTutorsCount] = useState(0)
 
+    // console.log("activeTutorsCount - " + activeTutorsCount);
     useEffect(() => {
-        console.log("activeSubscriptionName - " + activeSubscriptionName);
+        // console.log("activeSubscriptionName - " + activeSubscriptionName);
     },[activeSubscriptionName])
 
     useEffect(() => {
@@ -140,18 +142,30 @@ function AccountOverviewWithSubscriptionInfo() {
 
     useEffect(() => {
         let orgDetails = sessionStorage.getItem("orgDetails");
-        console.log(orgDetails);
-        if(orgDetails === '' || orgDetails === undefined || orgDetails === null) {
+        // console.log(orgDetails);
+        // if(orgDetails === '' || orgDetails === undefined || orgDetails === null) {
             getPersonalDetail()
             .then(data => {
-                console.log("getPersonalDetail");
-                console.log(data);
+                // console.log("getPersonalDetail");
+                // console.log(data);
                 const user = data.data.data.user;
             
                 getOrgDetails(user.associatedOrg)
                 .then(data => {
-                    console.log("getOrgDetails");
-                    console.log(data);
+                    console.log('getOrgDetails', data.data);
+                    try {      
+                        if(data.data.customerSubscriptions?.data){
+                            if(data.data.customerSubscriptions?.data[0]){
+                                const metadata = data.data.customerSubscriptions?.data[0].metadata
+                                if(metadata.type === 'default'){
+                                    setActiveTutorsCount(parseInt(metadata.active_tutors))
+                                }
+                            }
+                        }
+                    } 
+                    catch (error) {
+                        
+                    }
                     sessionStorage.setItem("orgDetails", JSON.stringify(data.data));
                     // SetStripeCustomerId(data.data.stripeCustomerDetails.id);
                     /* SetCompanyInfo({
@@ -172,7 +186,7 @@ function AccountOverviewWithSubscriptionInfo() {
             });
 
             return;
-        }
+        
 
         /* if(orgDetails.stripeCustomerDetails) {
             SetStripeCustomerId(orgDetails.stripeCustomerDetails.id);

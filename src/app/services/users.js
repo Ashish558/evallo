@@ -106,7 +106,7 @@ export const userServicesApi = createApi({
     }),
     bulkChangeUserStatus: builder.mutation({
       query: (body) => ({
-        url: `api/bulkChangeUserStatus`,
+        url: `api/user/bulkChangeUserStatus`,
         method: "POST",
         body: body,
         headers: getAuthHeader(),
