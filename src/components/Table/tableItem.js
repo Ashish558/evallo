@@ -1043,13 +1043,6 @@ export default function TableItem({
               ? item.testType
               : item.testType + "®"}
           </td>
-          <td>
-            {item.testType.endsWith("®")
-              ? item.testType
-              : item.testType.includes("Other")
-              ? item.testType
-              : item.testType + "®"}
-          </td>
           <td> {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
           <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
           <td> {item.no_of_assign !== null ? item.no_of_assign : "-"} </td>

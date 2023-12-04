@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useLazyGetSettingsQuery } from "../../app/services/session";
-import InputSelect from "../InputSelect/InputSelect";
-import sort from "./../../assets/icons/sort.webp";
 import styles from "./styles.module.css";
 import SCheckbox from "../CCheckbox/SCheckbox";
 export function TableHeaderNew({
@@ -25,9 +22,14 @@ export function TableHeaderNew({
       } ${flag ? styles["no-arrow"] : ""}`}
     >
       <div
-        className={`flex   ${
-          header.text === "Email" || header.text === "Phone" || header.text === "Assignment Name" || header.text === "Assignment"
-            ? `justify-start ${header.text === "Assignment" ? "ps-6 overflow-hidden" : ""}`
+        className={`flex ${header.text === "Student Name" ? "ml-[34px]" : "" } ${header.text === "Assignment Name" ? "ml-[12px]" : "" }  ${
+          header.text === "Email" ||
+          header.text === "Phone" ||
+          header.text === "Assignment Name" ||
+          header.text === "Assignment"
+            ? `justify-start ${
+                header.text === "Assignment" ? "ps-6 overflow-hidden" : ""
+              }`
             : "justify-center"
         } items-center ${
           noArrow || header.noArrow
@@ -55,9 +57,7 @@ export function TableHeaderNew({
             <span className="text-center text-[17.5px]">{header.text}</span>
           </div>
         ) : (
-          <div className=" text-[17.5px] text-left">
-            {header.text}
-          </div>
+          <div className=" text-[17.5px] text-left">{header.text}</div>
         )}
       </div>
     </th>

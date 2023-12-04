@@ -556,8 +556,9 @@ export default function TestDetail() {
   const [richTextContent, setRichTextContent] = useState("");
   return (
     <>
-      <div className="!mx-[6vw]  min-h-screen">
-        <p className="text-[#24A3D9]  !mt-[calc(50*0.052vw)] !mb-[calc(25*0.052vw)] text-base-20">
+    <div className="w-[1920px] flex justify-center items-center relative">
+      <div className="w-[1600px] flex-col justify-center items-start mt-[50px] mb-[382.33px]">
+        <p className="text-[#24A3D9] mb-[31.25px] text-base-20">
           <span onClick={() => navigate("/")} className="cursor-pointer">
             {firstName + "  " + lastName + "  >  "}
           </span>
@@ -572,22 +573,22 @@ export default function TestDetail() {
             {testData.testName ? testData.testName : "Report"}
           </span>
         </p>
-        <div className="pb-14 pt-4  flex flex-col items-center">
-          <div className="px-0 flex flex-row justify-start items-start pr-2 w-full">
-            <div className="flex mx-2 w-1/4 flex-col justify-start">
-              <p className="mb-2 text-textPrimaryDark text-[35px] min-h-[50px] font-extrabold">
+        <div className="flex flex-col items-center">
+          <div className="h-auto flex flex-row justify-start items-end w-full mb-[62.75px]">
+            <div className="flex flex-col mr-[37.25px]">
+              <p className=" text-textPrimaryDark text-[35px] font-extrabold ">
                 {testData.testName ? testData.testName.length<12?testData.testName:testData.testName.substring(0,11)+'...' : ""}
               </p>
-              <div className="border w-full py-4 flex rounded shadow-lg justify-center items-center">
+              <div className="border w-[364px] h-[224px] flex rounded shadow-lg justify-center items-center py-[20px] px-[27.5px]">
                 <AllTestDetail testData={testData} />
               </div>
             </div>
-            <div className=" w-2/4 mx-2 p-2 flex flex-col justify-start items-start text-left">
-              <p className="text-[35px] text-textPrimaryDark ml-4 font-extrabold">
+            <div className=" flex flex-col justify-start items-start text-left  ">
+              <p className="text-[35px] text-textPrimaryDark font-extrabold w-full">
                 Sections
               </p>
 
-              <div className="gap-y-1 w-full mx-4 border rounded p-4 shadow-lg mb-10">
+              <div className="gap-y-1 border rounded p-4 shadow-lg w-[830px] h-[224px] ">
                 <div className="mb-2 flex justify-between ">
                   <p className="inline-block w-[170px] font-semibold opacity-60 text-[#26435F] opacity-100">
                     {" "}
@@ -606,7 +607,7 @@ export default function TestDetail() {
                 <div className=" h-[158px] overflow-y-auto ">
                   {Object.keys(sectionsData).length > 1 &&
                     sectionsData.answer.subjects?.map((section) => (
-                      <div className="mb-1 flex justify-between">
+                      <div className="mb-[6px] flex justify-between">
                         <p className="inline-block text-[#24A3D9] w-[170px] font-medium">
                           {" "}
                           {section.name}
@@ -627,8 +628,9 @@ export default function TestDetail() {
               </div>
             </div>
             {!testData?.testType?.includes("DSAT") ? (
-              <div className="px-6 py-[2.5rem] ml-[50px] flex  mx-2 mt-[3.8rem] w-1/4 justify-center border-[#26435F] border-dashed border-[2px] items-center flex-col rounded shadow-lg">
-                {Object.keys(sectionsData).length > 1 && (
+              <div className=" flex w-[300px] h-[224.497px] ml-[30px] border-[#26435F] border-dashed border-[2px] flex-col items-center justify-center rounded shadow-lg ">
+                 <div className="flex flex-col justify-center items-center">
+                 {Object.keys(sectionsData).length > 1 && (
                   <>
                     <img src={pdf} className="mb-4" alt="pdf" />
                     <a
@@ -653,21 +655,22 @@ export default function TestDetail() {
                   className={`!bg-[#517CA8] px-4 py-2 text-sm mt-5 w-[120px] whitespace-nowrap font-medium !text-white`}
                   onClick={() => setPdfModalActive(true)}
                 />
+                 </div>
               </div>
             ) : null}
           </div>
 
-          <div className="flex pl-2 flex-col w-full">
-            <div className="mt-6 w-fit relative flex justify-between items-end">
+          <div className="flex flex-col w-full ">
+            <div className="w-fit relative flex justify-between items-end">
               <div className="flex flex-row justify-between z-20 items-center">
                 {subjects.map((item, idx) => {
                   return (
                     <PrimaryButton
                       children={item.name}
-                      className={`py-2.5 px-0 text-[17.5px] mr-4 bg-transparent font-normal w-fit ${
+                      className={`py-[10.25px] text-[17.5px] mr-[30px] bg-transparent font-normal w-fit ${
                         item.selected
                           ? "text-[#FFA28D] border-b-[#FFA28D] border-b-[2px]"
-                          : " text-[#26435F]"
+                          : " text-[#26435F] border-b-[2px] border-b-[#26435F]"
                       }`}
                       roundedClass="rounded-none"
                       onClick={() => handleSubjectChange(item._id)}
@@ -1341,6 +1344,8 @@ export default function TestDetail() {
           }
         />
       )}
+   
+    </div> 
     </>
   );
 }

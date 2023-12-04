@@ -18,10 +18,10 @@ import StudentTest from "../StudentTest/StudentTest";
 import FilterItems from "../../components/FilterItems/filterItems";
 import { useSelector } from "react-redux";
 import { json, useNavigate } from "react-router-dom";
-import {getFormattedDateTime } from "../../utils/utils";
+import { getFormattedDateTime } from "../../utils/utils";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
-const testTypeOptions = ["DSAT®", "SAT®", "ACT®","Other"]
+const testTypeOptions = ["DSAT®", "SAT®", "ACT®", "Other"];
 
 const initialState = {
   testName: "",
@@ -42,9 +42,14 @@ const SORT_STATES = {
   ASCENDING_ORDER: "ASCENDING_ORDER",
   DESCENDING_ORDER: "DESCENDING_ORDER",
   UNSORTED: "UNSORTED",
-}
+};
 
-export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
+export default function AllTests({
+  isOwn,
+  setTotaltest,
+  studentId,
+  fromProfile,
+}) {
   const { organization } = useSelector((state) => state.organization);
   const { firstName, lastName } = useSelector((state) => state.user);
   const [tableData, setTableData] = useState([]);
@@ -69,23 +74,28 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
     createdAt: false,
     updatedAt: false,
     testType: false,
-  })
-  const [assignmentNameSortState, setAssignmentNameSortState] = useState(SORT_STATES.UNSORTED);
+  });
+  const [assignmentNameSortState, setAssignmentNameSortState] = useState(
+    SORT_STATES.UNSORTED
+  );
   const [typeSortState, setTypeSortState] = useState(SORT_STATES.UNSORTED);
-  const [createdOnSortState, setCreatedOnSortState] = useState(SORT_STATES.UNSORTED);
-  const [lastModifiedSortState, setLastModifiedSortState] = useState(SORT_STATES.UNSORTED);
-  const [totalAssignmentsSortState, setTotalAssignmentsSortState] = useState(SORT_STATES.UNSORTED);
-
+  const [createdOnSortState, setCreatedOnSortState] = useState(
+    SORT_STATES.UNSORTED
+  );
+  const [lastModifiedSortState, setLastModifiedSortState] = useState(
+    SORT_STATES.UNSORTED
+  );
+  const [totalAssignmentsSortState, setTotalAssignmentsSortState] = useState(
+    SORT_STATES.UNSORTED
+  );
 
   const sortByString = (st) => {
     setFilteredTests((prev) => {
       let arr = [...prev];
       arr = arr.sort(function (a, b) {
-        let fl = a[st].localeCompare(b[st])
-        if (sortOrder[st])
-          return fl <= 0;
-        else
-          return fl > 0;
+        let fl = a[st].localeCompare(b[st]);
+        if (sortOrder[st]) return fl <= 0;
+        else return fl > 0;
       });
 
       return arr;
@@ -93,13 +103,13 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
 
     setSortOrder({
       ...sortOrder,
-      [st]: !sortOrder[st]
-    })
+      [st]: !sortOrder[st],
+    });
   };
 
   const sortByAssignmentName = () => {
     console.log("sortByAssignmentName");
-    if(assignmentNameSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (assignmentNameSortState === SORT_STATES.DESCENDING_ORDER) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -115,8 +125,10 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
       });
 
       setAssignmentNameSortState(SORT_STATES.ASCENDING_ORDER);
-    }
-    else if(assignmentNameSortState === SORT_STATES.UNSORTED || assignmentNameSortState === SORT_STATES.ASCENDING_ORDER) {
+    } else if (
+      assignmentNameSortState === SORT_STATES.UNSORTED ||
+      assignmentNameSortState === SORT_STATES.ASCENDING_ORDER
+    ) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -133,11 +145,11 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
 
       setAssignmentNameSortState(SORT_STATES.DESCENDING_ORDER);
     }
-  }
+  };
 
   const sortByType = () => {
     console.log("sortByType");
-    if(typeSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (typeSortState === SORT_STATES.DESCENDING_ORDER) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -153,8 +165,10 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
       });
 
       setTypeSortState(SORT_STATES.ASCENDING_ORDER);
-    }
-    else if(typeSortState === SORT_STATES.UNSORTED || typeSortState === SORT_STATES.ASCENDING_ORDER) {
+    } else if (
+      typeSortState === SORT_STATES.UNSORTED ||
+      typeSortState === SORT_STATES.ASCENDING_ORDER
+    ) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -171,14 +185,14 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
 
       setTypeSortState(SORT_STATES.DESCENDING_ORDER);
     }
-  }
+  };
 
   const sortByTotalAssignments = () => {
     console.log("data");
     console.log(filteredTests);
 
     console.log("sortByTotalAssignments");
-    if(totalAssignmentsSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (totalAssignmentsSortState === SORT_STATES.DESCENDING_ORDER) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -194,8 +208,10 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
       });
 
       setTotalAssignmentsSortState(SORT_STATES.ASCENDING_ORDER);
-    }
-    else if(totalAssignmentsSortState === SORT_STATES.UNSORTED || totalAssignmentsSortState === SORT_STATES.ASCENDING_ORDER) {
+    } else if (
+      totalAssignmentsSortState === SORT_STATES.UNSORTED ||
+      totalAssignmentsSortState === SORT_STATES.ASCENDING_ORDER
+    ) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -212,11 +228,10 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
 
       setTotalAssignmentsSortState(SORT_STATES.DESCENDING_ORDER);
     }
-  }
+  };
 
   const sortBycreateDate = () => {
-
-    if(createdOnSortState === SORT_STATES.DESCENDING_ORDER) { 
+    if (createdOnSortState === SORT_STATES.DESCENDING_ORDER) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
@@ -233,8 +248,10 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
       });
 
       setCreatedOnSortState(SORT_STATES.ASCENDING_ORDER);
-    }
-    else if(createdOnSortState === SORT_STATES.UNSORTED || createdOnSortState === SORT_STATES.ASCENDING_ORDER) {  
+    } else if (
+      createdOnSortState === SORT_STATES.UNSORTED ||
+      createdOnSortState === SORT_STATES.ASCENDING_ORDER
+    ) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
@@ -270,8 +287,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
   };
 
   const sortByAssignedDate = () => {
-
-    if(lastModifiedSortState === SORT_STATES.DESCENDING_ORDER) { 
+    if (lastModifiedSortState === SORT_STATES.DESCENDING_ORDER) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
@@ -288,8 +304,10 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
       });
 
       setLastModifiedSortState(SORT_STATES.ASCENDING_ORDER);
-    }
-    else if(lastModifiedSortState === SORT_STATES.UNSORTED || lastModifiedSortState === SORT_STATES.ASCENDING_ORDER) {  
+    } else if (
+      lastModifiedSortState === SORT_STATES.UNSORTED ||
+      lastModifiedSortState === SORT_STATES.ASCENDING_ORDER
+    ) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
@@ -310,15 +328,14 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
   };
 
   const tableObjHeaders = [
-
-
     {
       id: 1,
       text: "Assignment Name",
       // className: "text-left pl-6",
       // onCick: () => sortByString("testName"),
       onCick: sortByAssignmentName,
-      willDisplayDownArrow: assignmentNameSortState !== SORT_STATES.DESCENDING_ORDER,
+      willDisplayDownArrow:
+        assignmentNameSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 2,
@@ -338,19 +355,20 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
       id: 4,
       text: "Last Modified",
       onCick: sortByAssignedDate,
-      willDisplayDownArrow: lastModifiedSortState !== SORT_STATES.DESCENDING_ORDER,
+      willDisplayDownArrow:
+        lastModifiedSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 5,
       text: "Total Assignments",
       onCick: sortByTotalAssignments, // no_of_assign
-      willDisplayDownArrow: totalAssignmentsSortState !== SORT_STATES.DESCENDING_ORDER,
+      willDisplayDownArrow:
+        totalAssignmentsSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 6,
       text: "",
       noArrow: true,
-
     },
     {
       id: 7,
@@ -358,7 +376,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
       noArrow: true,
     },
   ];
-  
+
   useEffect(() => {
     if (
       modalData.testName.trim() === "" ||
@@ -366,14 +384,18 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
       csvFile === null
     ) {
       setSubmitBtnDisabled(true);
-    } 
-    else if((pdfFile===null || csvFile===null) &&!getTestType(modalData.testType).includes('DSAT')){
+    } else if (
+      (pdfFile === null || csvFile === null) &&
+      !getTestType(modalData.testType).includes("DSAT")
+    ) {
       setSubmitBtnDisabled(true);
-    }
-    else if( csvFile!=null && getTestType(modalData.testType).includes('DSAT') && modalData.testName.length>0){
+    } else if (
+      csvFile != null &&
+      getTestType(modalData.testType).includes("DSAT") &&
+      modalData.testName.length > 0
+    ) {
       setSubmitBtnDisabled(false);
-    }
-    else {
+    } else {
       setSubmitBtnDisabled(false);
     }
   }, [modalData, csvFile]);
@@ -392,14 +414,18 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
     setRemoveQuestionModal(true);
     setTestForDelete(item);
   };
- // console.log({ testForDelete })
+  // console.log({ testForDelete })
   const removeTest = (item) => {
     setRemoveQuestionModal(false);
     // console.log(testForDelete._id);
-    axios.delete(`${BASE_URL}api/test/${testForDelete._id}`, { headers: getAuthHeader() }).then((res) => {
-      console.log(res);
-      fetchTests();
-    });
+    axios
+      .delete(`${BASE_URL}api/test/${testForDelete._id}`, {
+        headers: getAuthHeader(),
+      })
+      .then((res) => {
+        console.log(res);
+        fetchTests();
+      });
   };
 
   useEffect(() => {
@@ -423,52 +449,62 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
   };
 
   const getTestType = (type) => {
-    return type === 'SAT®' ? "SAT®" : type === 'ACT®' ? "ACT®" : type === 'DSAT®' ? "DSAT®" : type
-  }
-  const handleSubmit = async(e) => {
+    return type === "SAT®"
+      ? "SAT®"
+      : type === "ACT®"
+      ? "ACT®"
+      : type === "DSAT®"
+      ? "DSAT®"
+      : type;
+  };
+  const handleSubmit = async (e) => {
     setLoading(true);
     e.preventDefault();
     setSubmitBtnDisabled(true);
     // console.log(modalData)
     let body = {
       testName: modalData.testName,
-      testType: getTestType(modalData.testType).includes('®')?getTestType(modalData.testType).slice(0, -1):getTestType(modalData.testType),
-      ...(!getTestType(modalData.testType).includes('DSAT')?{pdf:pdfFile}:{}),
-      file:csvFile
+      testType: getTestType(modalData.testType).includes("®")
+        ? getTestType(modalData.testType).slice(0, -1)
+        : getTestType(modalData.testType),
+      ...(!getTestType(modalData.testType).includes("DSAT")
+        ? { pdf: pdfFile }
+        : {}),
+      file: csvFile,
     };
     const formData = new FormData();
 
-    Object.entries(body).forEach(([key, value]) =>{
-  formData.append(key, value);
-})
+    Object.entries(body).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
     console.log(formData);
-    
-        await axios
-        .post(`${BASE_URL}api/test/add/addNewTest`, formData, {
-              headers: getAuthHeader(),
-          })
-          .then((res) => {
-            alert("CSV UPLOADED");
-            console.log("csv post resp", res);
-            setModalData(initialState);
-            setModalActive(false);
-            setCSVFile(null);
-            setPDFFile(null);
-          })
-          .catch((err) => {
-             // setModalData(initialState);
-              // // setModalActive(false);
-              // setCSVFile(null);
-              // setPDFFile(null);
-              if (err?.response?.data) {
-                  alert(err?.response?.data?.message);
-                }
-              });
-              setLoading(false);
-                fetchTests();
-                setSubmitBtnDisabled(false);
-                console.log("submitted");
-      };
+
+    await axios
+      .post(`${BASE_URL}api/test/add/addNewTest`, formData, {
+        headers: getAuthHeader(),
+      })
+      .then((res) => {
+        alert("CSV UPLOADED");
+        console.log("csv post resp", res);
+        setModalData(initialState);
+        setModalActive(false);
+        setCSVFile(null);
+        setPDFFile(null);
+      })
+      .catch((err) => {
+        // setModalData(initialState);
+        // // setModalActive(false);
+        // setCSVFile(null);
+        // setPDFFile(null);
+        if (err?.response?.data) {
+          alert(err?.response?.data?.message);
+        }
+      });
+    setLoading(false);
+    fetchTests();
+    setSubmitBtnDisabled(false);
+    console.log("submitted");
+  };
 
   useEffect(() => {
     if (tableData.length === 0) return;
@@ -479,270 +515,285 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
 
   // console.log(testName);
   //console.log(tableData);
-  console.log('filteredTests', filteredTests);
+  console.log("filteredTests", filteredTests);
 
   const fetchTests = () => {
     const headers = getAuthHeader();
-    axios
-      .get(`${BASE_URL}api/test`, { headers })
-      .then((res) => {
-        console.log('all test content', res.data.data.test);
-        let dataofque = res.data.data.test
-        let tempSuper=[]
-        let testAdmin=[]
-        res.data.data.test?.map((it)=>{
-          
-          if(it?.hasOwnProperty("superAdminTestQnId" )&&it?.superAdminTestQnId!==null){
-            tempSuper.push(it)
-          }
-          else {
-         testAdmin.push(it)
-          }
-          
-        })
-        let finalTests= [...testAdmin]
-        tempSuper?.map((itt)=>{
-          let f=true;
-         testAdmin?.map((mit)=>{
-         
-             if(itt?.testName?.trim()===mit?.testName?.trim()){
-                f=false
-             }
-          })
-          if(f){
-           finalTests.push(itt)
-          }
-          else {
-            console.log("all hidden test",itt,tempSuper)
-          }
-         })
-        
-      
-        console.log('all test super  content',finalTests)
-        finalTests?.sort((a,b) =>new Date(b?.createdAt)-new Date(a?.createdAt))
-        let cutdata = finalTests.map((item) => ({
-          testId: item._id,
-          testtype: item.testType
-        }));
-        console.log(cutdata);
-        settesttype2(cutdata)
-        setTableData(finalTests)
+    axios.get(`${BASE_URL}api/test`, { headers }).then((res) => {
+      console.log("all test content", res.data.data.test);
+      let dataofque = res.data.data.test;
+      let tempSuper = [];
+      let testAdmin = [];
+      res.data.data.test?.map((it) => {
+        if (
+          it?.hasOwnProperty("superAdminTestQnId") &&
+          it?.superAdminTestQnId !== null
+        ) {
+          tempSuper.push(it);
+        } else {
+          testAdmin.push(it);
+        }
       });
+      let finalTests = [...testAdmin];
+      tempSuper?.map((itt) => {
+        let f = true;
+        testAdmin?.map((mit) => {
+          if (itt?.testName?.trim() === mit?.testName?.trim()) {
+            f = false;
+          }
+        });
+        if (f) {
+          finalTests.push(itt);
+        } else {
+          console.log("all hidden test", itt, tempSuper);
+        }
+      });
+
+      console.log("all test super  content", finalTests);
+      finalTests?.sort(
+        (a, b) => new Date(b?.createdAt) - new Date(a?.createdAt)
+      );
+      let cutdata = finalTests.map((item) => ({
+        testId: item._id,
+        testtype: item.testType,
+      }));
+      console.log(cutdata);
+      settesttype2(cutdata);
+      setTableData(finalTests);
+    });
   };
-  const navigate = useNavigate('/')
+  const navigate = useNavigate("/");
   useEffect(() => {
     fetchTests();
   }, []);
 
   useEffect(() => {
     console.log(testtype2);
-  }, [testtype2])
-  console.log("profile",fromProfile)
-  if (fromProfile) return <StudentTest testtype={testtype2} isOwn={isOwn} setTotaltest={setTotaltest} studentId={studentId} fromProfile={true} />;
+  }, [testtype2]);
+  console.log("profile", fromProfile);
+  if (fromProfile)
+    return (
+      <StudentTest
+        testtype={testtype2}
+        isOwn={isOwn}
+        setTotaltest={setTotaltest}
+        studentId={studentId}
+        fromProfile={true}
+      />
+    );
+  else if (persona === "parent" || persona === "student")
+    return <StudentTest testtype={testtype2} />;
 
-  else if (persona === "parent" || persona === "student") return <StudentTest testtype={testtype2}  />;
-
- 
   return (
-    <div className="w-[83.6989583333vw] mx-auto min-h-screen">
+    <div className="w-[1920px] flex justify-center items-center">
+      <div className="w-[1600px] h-auto mt-[50px] mb-[112.17px]">
+        <p className="text-[#24A3D9] text-[20px] mb-[25px]">
+          <span onClick={() => navigate("/")} className="cursor-pointer">
+            {organization?.company +
+              "  >  " +
+              firstName +
+              "  " +
+              lastName +
+              "  >  "}
+          </span>
+          <span className="font-semibold">Content</span>
+        </p>
 
-      <p className="text-[#24A3D9]  !mt-[calc(50*0.052vw)] !mb-[calc(25*0.052vw)] text-base-20">
-        <span onClick={() => navigate('/')} className="cursor-pointer">
-          {organization?.company +
-            "  >  " +
-            firstName +
-            "  " +
-            lastName +
-            "  >  "}
-        </span>
-        <span className="font-semibold">Content</span>
-      </p>
+        <div className=" w-full">
+          <div className="flex justify-between items-center">
+          
+            <InputField
+              value={testName}
+              IconRight={SearchIcon}
+              onChange={(e) => setTestName(e.target.value)}
+              optionData={optionData}
+              placeholder="Search"
+              parentClassName="w-[375px]"
+              inputClassName="placeholder:text-[#667085] pl-2 text-[17.5px]"
+              inputContainerClassName="bg-white border pt-3.5 pb-3.5 !rounded-lg"
+              type="select"
+            />
+            <button
+              className="bg-[#FFA28D] py-[10px] px-6 flex items-center text-white  rounded-lg  text-[15px] text-base-15"
+              onClick={() => setModalActive(true)}
+            >
+              <span className="pt-0 text-[20px]"> Add New Material</span>
+              <img
+                src={AddIcon}
+                className="ml-1 h-[25px] w-[25px]"
+                alt="add-icon"
+              />
+            </button>
+          </div>
 
-      <div className=" w-full">
-        <div className="flex justify-between items-center">
-          {/* <p
-                  className="font-bold text-4xl"
-                  style={{ color: "#25335A" }}
-               >
-                  All Tests
-               </p>  */}
-          <InputField
-            value={testName}
-            IconRight={SearchIcon}
-            onChange={(e) => setTestName(e.target.value)}
-            optionData={optionData}
-
-            placeholder="Search"
-            parentClassName="w-[375px] mr-4"
-            inputClassName="placeholder:text-[#667085] pl-2 text-base-17-5"
-            inputContainerClassName="bg-white border pt-3.5 pb-3.5 !rounded-lg"
-            type="select"
-          />
-          <button
-            className="bg-[#FFA28D] py-[10px] px-6 flex items-center text-white  rounded-lg  text-[15px] text-base-15"
-            onClick={() => setModalActive(true)}
-          >
-            <span className="pt-0 text-base-20"> Add New Material</span>
-            <img src={AddIcon} className="ml-1 h-[14.6px] w-[14.6px]" alt="add-icon" />
-          </button>
+          <div className="mt-[37.5px] w-full">
+            <Table
+              testtype={testtype2}
+              dataFor="allTests"
+              data={filteredTests}
+              tableHeaders={tableObjHeaders}
+              headerObject={true}
+              maxPageSize={30}
+              onClick={{ openRemoveTestModal }}
+            />
+          </div>
         </div>
 
+        {modalActive && (
+          <Modal
+            crossBtn={true}
+            title="Upload New Material"
+            titleClassName="text-start text-sm mb-3"
+            classname={"max-w-[600px] mx-auto"}
+            primaryBtn={{
+              text: "Create  ",
+              form: "add-test-form",
+              onClick: handleSubmit,
+              type: "submit",
+              className:
+                "!ml-5 text-sm  py-1 mr-auto mt-7 min-w-[120px]  flex gap-2 px-4  h-[49px] disabled:opacity-80 flex items-center  text-sm !font-medium  inline-block bg-[#FFA28D]",
+              disabled: submitBtnDisabled,
+              loading: loading,
+              icon: (
+                <img
+                  src={check}
+                  alt="check"
+                  className="ml-2 inline-block mt-[-8px]"
+                />
+              ),
+            }}
+            otherBt={
+              <div id={styles.handleFileUpload}>
+                <div
+                  id={styles.uploadButtons}
+                  className="mt-7   px-0  gap-5 flex justify-between  "
+                >
+                  {modalData.testType != "DSAT®" ? (
+                    <div id={styles.pdfUpload}>
+                      <label
+                        htmlFor="pdf"
+                        className={`${
+                          pdfFile !== null ? "bg-[#26435F] " : "bg-[#26435F] "
+                        } w-[8.9vw] min-w-[160px] text-sm !font-medium text-center pl-5 flex justify-center items-center`}
+                      >
+                        Upload PDF
+                        <img src={upload} alt="Upload" />
+                      </label>
+                      <div className={styles.error}>{PDFError}</div>
+                      <input
+                        id="pdf"
+                        type="file"
+                        accept="application/pdf"
+                        onChange={(e) => handlePDFFile(e.target.files[0])}
+                      />
+                      <div id={styles.filename}>
+                        {pdfFile?.name || pdfFile?.name}
+                      </div>
+                    </div>
+                  ) : null}
 
-        <div className="mt-6 w-full">
-          <Table
-            testtype={testtype2}
-            dataFor="allTests"
-            data={filteredTests}
-            tableHeaders={tableObjHeaders}
-            headerObject={true}
-            maxPageSize={30}
-            onClick={{ openRemoveTestModal }}
-          />
-        </div>
-      </div>
-
-      {modalActive && (
-        <Modal
-          crossBtn={true}
-          title="Upload New Material"
-          titleClassName="text-start text-sm mb-3"
-          classname={"max-w-[600px] mx-auto"}
-          primaryBtn={{
-            text: "Create  ",
-            form: "add-test-form",
-            onClick: handleSubmit,
-            type: "submit",
-            className:
-              "!ml-5 text-sm  py-1 mr-auto mt-7 min-w-[120px]  flex gap-2 px-4  h-[49px] disabled:opacity-80 flex items-center  text-sm !font-medium  inline-block bg-[#FFA28D]",
-            disabled: submitBtnDisabled,
-            loading: loading,
-            icon: <img src={check} alt="check" className="ml-2 inline-block mt-[-8px]" />,
-          }}
-          otherBt={
-            <div id={styles.handleFileUpload}>
-              <div
-                id={styles.uploadButtons}
-                className="mt-7   px-0  gap-5 flex justify-between  "
-              >
-                {modalData.testType != 'DSAT®' ? <div id={styles.pdfUpload}>
-                  <label
-                    htmlFor="pdf"
-                    className={`${pdfFile !== null ? "bg-[#26435F] " : "bg-[#26435F] "
-                      } w-[8.9vw] min-w-[160px] text-sm !font-medium text-center pl-5 flex justify-center items-center`}
-                  >
-                    Upload PDF
-                    <img src={upload} alt="Upload" />
-                  </label>
-                  <div className={styles.error}>{PDFError}</div>
-                  <input
-                    id="pdf"
-                    type="file"
-                    accept="application/pdf"
-                    onChange={(e) => handlePDFFile(e.target.files[0])}
-                  />
-                  <div id={styles.filename}>
-                    {pdfFile?.name || pdfFile?.name}
-                  </div>
-                </div> : null}
-
-                <div id={styles.csvUpload}>
-                  <label
-                    htmlFor="csv"
-                    className={`${csvFile !== null && styles.fileUploaded
-                      ? "bg-[#26435F] "
-                      : "bg-[#26435F] "
+                  <div id={styles.csvUpload}>
+                    <label
+                      htmlFor="csv"
+                      className={`${
+                        csvFile !== null && styles.fileUploaded
+                          ? "bg-[#26435F] "
+                          : "bg-[#26435F] "
                       } w-[11vw] min-w-[185px] text-sm !font-medium text-center flex justify-center items-center`}
-                  >
-                    Upload Metadata
-                    <img src={upload} alt="Upload" />
-                  </label>
-                  <div className={styles.error}>{csvError}</div>
-                  <input
-                    id="csv"
-                    type="file"
-                    accept=".xls,.xlsx"
-                    // onChange={e => {
-                    onChange={(e) => setCSVFile(e.target.files[0])}
-                  />
-                  <div id={styles.filename}>{csvFile ? csvFile?.name : ""}</div>
+                    >
+                      Upload Metadata
+                      <img src={upload} alt="Upload" />
+                    </label>
+                    <div className={styles.error}>{csvError}</div>
+                    <input
+                      id="csv"
+                      type="file"
+                      accept=".xls,.xlsx"
+                      // onChange={e => {
+                      onChange={(e) => setCSVFile(e.target.files[0])}
+                    />
+                    <div id={styles.filename}>
+                      {csvFile ? csvFile?.name : ""}
+                    </div>
+                  </div>
                 </div>
+                {/* 
+                     <div id={styles.filename}>
+                        {pdfFile?.name || csvFile?.name}
+                     </div> */}
               </div>
-              {/* 
-                           <div id={styles.filename}>
-                              {pdfFile?.name || csvFile?.name}
-                           </div> */}
-            </div>
-          }
-          handleClose={handleClose}
-          body={
-            <form onSubmit={handleSubmit} id="add-test-form">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-6 !items-center  gap-y-4">
-                <InputField
-                  label="Assignment Name"
-                  labelClassname="ml-2 mb-1.2 text-[#26435F] !text-[16px] "
-                  biggerText={true}
-                  optionData={optionData}
-                  placeholder="Text"
-                  parentClassName="w-full mr-4 mt-1"
-                  inputContainerClassName="pt-3 pb-3 bg-primary-50"
-                  inputClassName="bg-transparent"
-                  type="select"
-                  isRequired={true}
-                  value={modalData.testName}
-                  onChange={(e) =>
-                    setModalData({
-                      ...modalData,
-                      testName: e.target.value,
-                    })
-                  }
-                />
+            }
+            handleClose={handleClose}
+            body={
+              <form onSubmit={handleSubmit} id="add-test-form">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-6 !items-center  gap-y-4">
+                  <InputField
+                    label="Assignment Name"
+                    labelClassname="ml-2 mb-1.2 text-[#26435F] !text-[16px] "
+                    biggerText={true}
+                    optionData={optionData}
+                    placeholder="Text"
+                    parentClassName="w-full mr-4 mt-1"
+                    inputContainerClassName="pt-3 pb-3 bg-primary-50"
+                    inputClassName="bg-transparent"
+                    type="select"
+                    isRequired={true}
+                    value={modalData.testName}
+                    onChange={(e) =>
+                      setModalData({
+                        ...modalData,
+                        testName: e.target.value,
+                      })
+                    }
+                  />
 
-                <InputSelect
-                  label="Type"
-                  labelClassname="ml-2   !font-semibold mb-[9px] mt-1 !text-[#26435F]  !text-[16px]"
-                  biggerText={true}
-                  optionData={testTypeOptions}
-                  placeholder="Select"
-                  inputContainerClassName="pt-3 pb-3 bg-primary-50 h-[45px]"
-                  parentClassName="w-full mr-4"
-                  inputClassName="bg-transparent"
-                  isRequired={true}
-                  type="select"
-                  valueSuffix={<span>&#174;</span>}
-                  value={modalData.testType}
-                  onChange={(val) =>
-                    setModalData({
-                      ...modalData,
-                      testType: val,
-                    })
-                  }
-                />
-              </div>
-            </form>
-          }
-        />
-      )}
-      {removeQuestionModal && (
-        <Modal
-          title={
-            <>
-              Are you sure you want to Delete {testForDelete?.testName ? testForDelete?.testName : "Test"}?
-            </>
-          }
-          titleClassName="leading-9 mb-2"
-
-          cancelBtn={true}
-          cancelBtnClassName="py-4 !bg-[#26435F1A]  !text-[#26435F] rounded-[5px]"
-          primaryBtn={{
-            text: "Delete",
-            className: "bg-danger  w-[123px]  pl-4 pr-4",
-            onClick: removeTest,
-          }}
-          handleClose={closeRemoveModal}
-          body={<div className="mb-10"></div>}
-          classname={"max-w-[600px] !mx-auto"}
-        />
-      )}
+                  <InputSelect
+                    label="Type"
+                    labelClassname="ml-2   !font-semibold mb-[9px] mt-1 !text-[#26435F]  !text-[16px]"
+                    biggerText={true}
+                    optionData={testTypeOptions}
+                    placeholder="Select"
+                    inputContainerClassName="pt-3 pb-3 bg-primary-50 h-[45px]"
+                    parentClassName="w-full mr-4"
+                    inputClassName="bg-transparent"
+                    isRequired={true}
+                    type="select"
+                    valueSuffix={<span>&#174;</span>}
+                    value={modalData.testType}
+                    onChange={(val) =>
+                      setModalData({
+                        ...modalData,
+                        testType: val,
+                      })
+                    }
+                  />
+                </div>
+              </form>
+            }
+          />
+        )}
+        {removeQuestionModal && (
+          <Modal
+            title={
+              <>
+                Are you sure you want to Delete{" "}
+                {testForDelete?.testName ? testForDelete?.testName : "Test"}?
+              </>
+            }
+            titleClassName="leading-9 mb-2"
+            cancelBtn={true}
+            cancelBtnClassName="py-4 !bg-[#26435F1A]  !text-[#26435F] rounded-[5px]"
+            primaryBtn={{
+              text: "Delete",
+              className: "bg-danger  w-[123px]  pl-4 pr-4",
+              onClick: removeTest,
+            }}
+            handleClose={closeRemoveModal}
+            body={<div className="mb-10"></div>}
+            classname={"max-w-[600px] !mx-auto"}
+          />
+        )}
+      </div>
     </div>
   );
 }
