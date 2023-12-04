@@ -1,0 +1,54 @@
+.form-scroll-container {
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 15px; 
+  box-sizing: content-box; 
+  transition: max-height 0.3s ease;
+}
+
+.rich-text-scroll {
+  /* Adjust the width if needed */
+  width: 100%;
+}
+
+.input-heading{
+ font-weight: 600 !important;
+ font-size: 15px !important;
+}
+
+.ant-switch {
+ background-color: rgb(255, 255, 255) !important;
+border: 2px solid black !important; 
+}
+
+.ant-switch-handle::before{
+ background-color: #38C980 !important;
+}
+
+.react-switch-handle{
+top: 2.5px !important;
+left: -4.5px !important;
+height: 15px !important;
+width: 15px !important;
+}
+.react-switch-bg{
+background-color: white !important;
+border: 2px solid #26435F !important;
+}
+.tox-statusbar{
+display: none !important;
+}
+.tox-pop {
+z-index: 1100 !important; /* Assuming 1050 was the modal's z-index, we use a higher value */
+}
+.tox-menu{
+z-index: 1000 !important;
+}
+.ck-editor ul{
+list-style-type: disc !important;
+list-style-position: inside !important;
+}
+.ck-content ol {
+list-style-position: inside !important;
+z-index: 1000 !important;
+}

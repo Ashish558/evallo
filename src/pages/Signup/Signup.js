@@ -8,7 +8,6 @@ import SignupLast from "../Frames/SignupLast/SignupLast";
 import FurtherDetails from "../Frames/FurtherDetails/FurtherDetails";
 import SignupSuccessful from "../Frames/SignupSuccessful/SignupSuccessful";
 
-
 import cuate from "../../assets/signup/cuate.svg";
 import NumericSteppers from "../../components/NumericSteppers/NumericSteppers";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
@@ -70,7 +69,30 @@ export default function Signup() {
   const [lastLoginDisabled, setLastLoginDisabled] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isAddedByAdmin, setIsAddedByAdmin] = useState(false);
+  const [queryParams] = useSearchParams();
+  useEffect(() => {
+   
+    const currentParams = Object.fromEntries([...queryParams]);
+   
+    if (currentParams.hasOwnProperty("step") && currentParams.step) {
+      let step=currentParams.step
 
+      let arr = {
+        signupActive:step==1?true:false,
+        orgDetails: step==2?true:false,
+        furtherDetails: step==3?true:false,
+        requirements: step==4?true:false,
+       // signupSuccessful: step==5?true:false,
+      }
+      console.log("popstep",arr)
+      if(step<5)
+      setFrames( arr);
+      if(step<5)
+      setcurrentStep(step)
+    }
+  }, [queryParams]);
+  console.log("frames")
+ 
   const [values, setValues] = useState({
     firstName: "",
     lastName: "",
@@ -80,7 +102,7 @@ export default function Signup() {
     role: "",
     userId: "",
     registrationAs: "Company",
-    phoneCode:"",
+    phoneCode: "",
     orgName: "",
     companyType: "",
     website: "",
@@ -99,11 +121,10 @@ export default function Signup() {
     firstName: "",
     lastName: "",
     email: "",
-    phoneCode:"",
+    phoneCode: "",
     phone: "",
     subscriptionCode: "",
     company: "",
-  
   });
 
   const [otherDetails, setOtherDetails] = useState({
@@ -114,7 +135,7 @@ export default function Signup() {
     LastName: "",
     Email: "",
     Phone: "",
-    company:"",
+    company: "",
     aboutScore: "",
   });
 
@@ -128,7 +149,7 @@ export default function Signup() {
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, [frames]);
-  
+
   const [signupUser, signupUserResp] = useSignupUserMutation();
   const [addUserDetails, addUserDetailsResp] = useAddUserDetailsMutation();
   const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery();
@@ -159,7 +180,7 @@ export default function Signup() {
   const fetchSettings = () => {
     getSettings().then((res) => {
       // console.log(res);
-      setSettings(res.data.data.setting);
+      setSettings(res?.data?.data?.setting);
     });
   };
   useEffect(() => {
@@ -305,11 +326,11 @@ export default function Signup() {
         firstName: "",
         lastName: "",
         email: "",
-        phoneCode:"",
+        phoneCode: "",
         phone: "",
         subscriptionCode: "",
         company: "",
-        phoneCode:"",
+        phoneCode: "",
       };
     });
   };
@@ -335,7 +356,7 @@ export default function Signup() {
       let reqBody = {
         firstname: values.firstName,
         lastname: values.lastName,
-        workemail: values.email,
+        workemail: values.email?.toLocaleLowerCase(),
         password: values.firstName,
         phone: values.phone,
         company: values.company,
@@ -357,9 +378,9 @@ export default function Signup() {
         formatofinstruction: getCheckedString(instructions),
         studentserved: getCheckedString(studentserved),
         hearAbout: getCheckedString(hearAboutUs),
-        paymentMethod:values.paymentType,
-        rating:rateUs,
-        term:true,
+        paymentMethod: values.paymentType,
+        rating: rateUs,
+        term: true,
         solutionyouarelookingfor: getCheckedString(solutions),
       };
       console.log({ reqBody });
@@ -379,7 +400,7 @@ export default function Signup() {
         }
       }
       const result = validateSignup(values);
-      console.log("validation",{ result });
+      console.log("validation", { result });
       if (result.data !== true) {
         setError((prev) => {
           return {
@@ -398,15 +419,18 @@ export default function Signup() {
         setLoading(true);
         signupUser(reqBody)
           .then((res) => {
-            console.log(res);
-            setFrames({
-              ...frames,
-              signupSuccessful: true,
-              requirements: false,
-            });
             setLoading(false);
-
-            // alert("Signup successful");
+            console.log(res);
+            if (res?.data) {
+              //  alert("Signup successful");
+              setFrames({
+                ...frames,
+                signupSuccessful: true,
+                requirements: false,
+              });
+            } else {
+              alert("Something went worng, please try again!");
+            }
 
             // navigate("/");
           })
@@ -417,55 +441,53 @@ export default function Signup() {
       }
     });
   };
-  const [isValidated,setValidated]=useState({ 
+  const [isValidated, setValidated] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    phoneCode:"",
+    phoneCode: "",
     phone: "",
     subscriptionCode: "",
     company: "",
- 
-})
-  const handleNextErrors=(alsoSet)=>{
-    resetErrors()
+  });
+  const handleNextErrors = (alsoSet) => {
+    resetErrors();
     const result = validateSignup(values);
-   
+
     if (result.data !== true) {
       setValidated((prev) => {
         return {
           [result.data]: result.message,
         };
-      })
+      });
+    } else {
+      setValidated({});
     }
-    else{
-      setValidated({
-      })
+    if (alsoSet) {
+      let flag = true;
+      Object.keys(isValidated).map((it) => {
+        if (isValidated[it] && isValidated[it].length > 0) {
+          flag = false;
+        }
+      });
+      resetErrors();
+      let arr = { ...isValidated };
+      setError(arr);
+
+      return flag;
     }
-    if(alsoSet){
-    let flag=true;
-    Object.keys(isValidated).map((it)=>{
-     if (isValidated[it] && isValidated[it].length>0){
-       flag=false;
-     }
-    })
-    resetErrors()
-    let arr={...isValidated}
-    setError(arr)
-    
-    return flag;
-   }
-  }
-const [emailExistLoad,setEmailExistLoad]=useState(false)
+  };
+  const [emailExistLoad, setEmailExistLoad] = useState(false);
   const handleClick = () => {
+    
+    console.log("clicked called");
     const emailAlreadyExists = async () => {
-        setEmailExistLoad(true)
-        let cc=0;
+      setEmailExistLoad(true);
+      let cc = 0;
       let checked = false;
       try {
-        
         let data = {
-          workemail: values.email,
+          workemail: values.email?.toLocaleLowerCase(),
         };
         //   alert(data.workemail)
         let result = await axios.post(
@@ -510,33 +532,27 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
           company: e.response.data.message,
         });
       }
-      if (checked === true ) {
-        
+      if (checked === true) {
         setFrames({
           ...frames,
           signupActive: false,
           orgDetails: true,
         });
+        navigate("/signup?step=2");
       }
-      if(cc>=2){
-        setEmailExistLoad(false)
+      if (cc >= 2) {
+        setEmailExistLoad(false);
       }
     };
-   
-    if(!handleNextErrors(true)){
-      return 
-    }
- 
-  else
-    emailAlreadyExists();
+
+    if (!handleNextErrors(true)) {
+      return;
+    } else emailAlreadyExists();
   };
- 
 
-
-  useEffect(()=>{
-   
-    handleNextErrors()
-  },[values])
+  useEffect(() => {
+    handleNextErrors();
+  }, [values]);
 
   // console.log(isLinkedEmail);
   useEffect(() => {
@@ -608,11 +624,11 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
     //setcurrentStep(1);
     navigate("/");
   };
+  let namesValidChars = "1234567890abcdefghijklmnopqrstuvwxyz ";
   return (
-    <div className="   pb-6 bg-primary relative" id={styles.signUp}>
-      {/* <AdminNavbar></AdminNavbar> */}
-      <div className="flex justify-center flex-col items-center md:grid-cols-2  mb-[100px]">
-        <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-4" />
+    <div className=" bg-primary relative" id={styles.signUp}>
+      <div className="flex justify-center flex-col items-center md:grid-cols-2">
+        <img src={cuate} alt="rocket" className="h-[121.27px] w-[193.336px] mt-3 mb-4" />
         <>
           {!frames.signupSuccessful ? (
             <div className="lg:hidden bg-primary text-white pt-[79px] px-[49px]">
@@ -629,11 +645,26 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
           ) : (
             <></>
           )}
-          <div className="flex lg:items-center relative bg-white rounded-md py-4 px-5 md:px-[48px] lg:w-[650px]">
-            <div className="w-full py-4 ">
+          <div
+            className={`flex lg:items-center relative bg-white rounded-md  mb-[120px]  ${
+              frames.requirements
+                ? "!w-[980px] !pl-[76px] !pr-[91px]"
+                : "w-[800px] px-[50px]"
+            } ${frames?.signupSuccessful ? "!w-[980px] !px-[115px] " : ""} `}
+          >
+            <div className="w-full ">
               {currentStep > 0 && (
-                <NumericSteppers className={"px-2 flex-1"} fieldNames={["Personal info" ,"Org details","Further details","Requirements"]} totalSteps={4} currentStep={currentStep}
-                
+                <NumericSteppers
+                  NumericStepperfontSize="text-[18.6px]"
+                  className={" !w-[700px] !mx-auto pt-[41px]"}
+                  fieldNames={[
+                    "Personal Info",
+                    "Org Details",
+                    "Further Details",
+                    "Requirements",
+                  ]}
+                  totalSteps={4}
+                  currentStep={currentStep}
                 />
               )}
               {frames.signupActive ? (
@@ -644,50 +675,59 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                     Please fill your detail to create your account.
                   </p> */}
                   <div
-                    className={`flex mt-[59px] justify-between lg:mt-1 ${styles.inputs}`}
+                    className={`flex mt-[37px] justify-between  ${styles.inputs}`}
                   >
                     <InputField
                       placeholder=""
-                      parentClassName="text-xs"
-                      label="First Name"
-                      labelClassname="text-[#26435F] font-semibold"
-                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
-                    
+                      parentClassName="text-md"
+                      label="First name"
+                      biggerText={true}
+                      labelClassname="mb-[7.45px] !text-[18.67px] text-[#26435F] font-semibold"
+                      inputContainerClassName=" border-[0.994px] border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
+                      pattern="[a-zA-Z0-9]+"
                       value={values.firstName}
-                      onChange={(e) =>
-                        setValues({
-                          ...values,
-                          firstName: e.target.value,
-                        })
-                      }
+                      onChange={(e) => {
+                        const regex = /^[a-zA-Z0-9 ]*$/;
+                        const isValid = regex.test(e.target.value);
+                        if (isValid)
+                          setValues({
+                            ...values,
+                            firstName: e.target.value,
+                          });
+                      }}
                       totalErrors={error}
                       error={error.firstName}
                     />
                     <InputField
                       placeholder=""
-                      parentClassName="text-xs"
-                      labelClassname="text-[#26435F] font-semibold"
-                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
-                      label="Last Name"
+                      parentClassName="text-md"
+                      biggerText={true}
+                      labelClassname="mb-[7.45px] !text-[18.67px] text-[#26435F] font-semibold"
+                      inputContainerClassName=" border-[0.994px] border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
+                      label="Last name"
+                      pattern="[a-zA-Z0-9]+"
                       value={values.lastName}
-                      onChange={(e) =>
-                        setValues({
-                          ...values,
-                          lastName: e.target.value,
-                        })
-                      }
-                      
+                      onChange={(e) => {
+                        const regex = /^[a-zA-Z0-9 ]*$/;
+                        const isValid = regex.test(e.target.value);
+                        if (isValid)
+                          setValues({
+                            ...values,
+                            lastName: e.target.value,
+                          });
+                      }}
                       totalErrors={error}
                       error={error.lastName}
                     />
                   </div>
-                  <div className={`flex mt-[20px] justify-between  `}>
+                  <div className={`flex mt-[30px] justify-between  items-end`}>
                     <InputField
                       label="Work Email"
                       placeholder=""
-                      parentClassName="text-xs w-full "
-                      labelClassname="text-[#26435F] font-semibold"
-                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
+                      parentClassName="text-md w-full "
+                      biggerText={true}
+                      labelClassname="mb-[7.45px] !text-[18.67px] text-[#26435F] font-semibold"
+                      inputContainerClassName="border-[0.994px] border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
                       value={values.email}
                       onChange={(e) =>
                         setValues({
@@ -701,25 +741,30 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
 
                     <InputFieldDropdown
                       placeholder=""
-                      parentClassName="text-xs w-4/5 ml-8 "
-                      labelClassname="text-[#26435F] font-semibold"
-                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
+                      parentClassName="text-md w-4/5 ml-8 "
+                      biggerText={true}
+                      arrowClassName="w"
+                      labelClassname="mb-[7.45px] !text-[18.67px] text-[#26435F] font-semibold"
+                      inputContainerClassName="border-[0.994px]border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
                       label="Phone"
                       value={values.phone}
                       codeValue={values.phoneCode}
-                      
+                      codeClassName="!min-w-[36px] "
                       handleCodeChange={(e) =>
                         setValues({
                           ...values,
                           phoneCode: e.target.value,
                         })
                       }
-                      onChange={(e) =>
-                        setValues({
-                          ...values,
-                          phone: e.target.value,
-                        })
-                      }
+                      onChange={(e) => {
+                        const regex = /^[0-9 ]*$/;
+                        const isValid = regex.test(e.target.value);
+                        if (isValid && e.target.value?.length < 11)
+                          setValues({
+                            ...values,
+                            phone: e.target.value,
+                          });
+                      }}
                       totalErrors={error}
                       codeError={error.phoneCode}
                       error={error.phone}
@@ -728,10 +773,11 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
 
                   <InputField
                     placeholder=""
-                    parentClassName="text-xs mt-5 mb-6 w-full"
-                    label="Name Of Business"
-                    labelClassname="text-[#26435F] font-semibold"
-                    inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
+                    parentClassName="text-md mt-[30px] mb-[30px] w-full"
+                    label="Name of Business"
+                    biggerText={true}
+                    labelClassname="mb-[7.45px] !text-[18.67px] text-[#26435F] font-semibold"
+                    inputContainerClassName="border-[0.994px] border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
                     value={values.company}
                     onChange={(e) =>
                       setValues({
@@ -742,12 +788,12 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                     totalErrors={error}
                     error={error.company}
                   />
-                  <p className="text-[15px]  font-semibold mb-4 text-[#26435F]">
+                  <p className="text-[18.67px]  font-medium mb-[18px] text-[#26435F]">
                     {" "}
                     Registering as{" "}
                   </p>
-                  <div className="flex items-center text-xs">
-                  <div
+                  <div className="flex items-center justify-start ml-[-3px]  text-[18.67px]">
+                    <div
                       className="flex mr-6  items-center cursor-pointer"
                       onClick={() =>
                         setValues((prev) => ({
@@ -774,9 +820,9 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                       <p
                         className={`${
                           values.registrationAs === "Individual"
-                            ? "text-[#FFA28D] font-semibold "
-                            : "text-[#26435F] font-semibold"
-                        } text-[14px] `}
+                            ? "text-[#FFA28D] font-medium "
+                            : "text-[#26435F] font-medium"
+                        }  translaye-y-[-8px] translate-x-[-6px] tracking-wide text-[18.67px]`}
                       >
                         {" "}
                         Individual{" "}
@@ -808,31 +854,30 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                       <p
                         className={`${
                           values.registrationAs === "Company"
-                            ? "text-[#FFA28D] font-semibold "
-                            : "text-[#26435F] font-semibold"
-                        } text-[14px] `}
+                            ? "text-[#FFA28D] font-medium "
+                            : "text-[#26435F] font-medium"
+                        }  translaye-y-[-8px] translate-x-[-6px] tracking-wide text-[18.67px]`}
                       >
                         {" "}
                         Company{" "}
                       </p>
                     </div>
-                    
                   </div>
-                  <div className="mt-[25px] flex">
-                    
-                    <div className="flex items-center">
-                   
-                    <SCheckbox checked={isChecked}
-                      uncheckColor={"bg-[#9CA3AF]"}
-                      onChange={handleCheckboxChange1}
-                    />
-                   
-                    <span className="text-[13px] text-[#26435F]  font-semibold">
-                      {" "}
-                     
-                    </span>
-                  </div>
-                    <p className="text-[15px] text-[#26435F] font-medium  leading-5 ml-1 pl-2">
+                  <div className="mt-[40px] flex justify-start items-start  ">
+                    <div className="flex items-start justify-start mt-0.5">
+                      <SCheckbox
+                        checked={isChecked}
+                        stopM={true}
+                        className="scale-[1.27]"
+                        uncheckColor={"bg-[#9CA3AF]"}
+                        onChange={handleCheckboxChange1}
+                      />
+
+                      <span className="text-[13px] text-[#26435F]  font-semibold">
+                        {" "}
+                      </span>
+                    </div>
+                    <div className="text-[18.67px] text-[#26435F] font-medium  leading-[26.667px] ml-1 mr-3   ">
                       Selecting this would confirm that you have carefully read
                       through and agree to our{" "}
                       <span className="text-[#FFA28D] font-semibold">
@@ -845,16 +890,16 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                         </a>
                       </span>
                       .
-                    </p>
+                    </div>
                   </div>
-                  <div className="flex items-center mt-[60px] justify-between">
+                  <div className="flex items-center mt-[50px] mb-[34px] justify-between">
                     <SecondaryButton
                       children="Go back"
-                      className="text-sm mr-6 bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 "
+                      className="text-[18.67px] mr-6 !py-[12.5px] font-medium !px-[35px] bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD]  !rounded-5"
                       onClick={handleBack}
                     />
                     <PrimaryButton
-                      className={`w-full flex justify-center  bg-[#FFA28D]  disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative py-[9px] ${
+                      className={` flex !py-[12.5px] font-medium !px-[51.5px] justify-center  bg-[#FFA28D]  disabled:opacity-60   !rounded-5 text-white text-[18.67px]  ${
                         loading
                           ? "cursor-wait opacity-60 pointer-events-none"
                           : "cursor-pointer"
@@ -863,7 +908,11 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                       `}
                       loading={emailExistLoad}
                       disabled={
-                        values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
+                        values.email === "" ||
+                        !isChecked ||
+                        !emailValidation.test(values.email)
+                          ? true
+                          : false
                       }
                       onClick={handleClick}
                       children={`Next`}
@@ -925,7 +974,6 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
           </div>
         </>
       </div>
-
     </div>
   );
 }

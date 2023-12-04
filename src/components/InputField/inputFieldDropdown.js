@@ -3,16 +3,20 @@ import EyeIcon from "../../assets/form/eye-open.svg";
 import Message from "./Message/Message";
 import { useEffect } from "react";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
-import downArrow from "../../assets/icons/down-chevron.svg";
+import downArrow from "../../assets/icons/signup-dropdown.svg";
 import upArrow from "../../assets/icons/upArrow.svg";
+import styles from "./styles.module.css";
+
 export default function InputFieldDropdown({
   parentClassName,
   parentStyle,
   inputContainerClassName,
   Icon,
+  biggerText,
   iconSize,
   value,
   placeholder,
+  codeClassName,
   codeColor,
   label,
   labelClassname,
@@ -34,10 +38,12 @@ export default function InputFieldDropdown({
   maxLength,
   minLength,
   prefix,
+  CodeClass,
   totalErrors,
   onFocus,
   onBlur,
-  studentCode
+  studentCode,
+  arrowClassName,
 }) {
   const [inputType, setInputType] = useState(type);
 
@@ -48,8 +54,7 @@ export default function InputFieldDropdown({
   useOutsideAlerter(selectRef, () => setToggleOptions(false));
 
   useEffect(() => {
-
-    setToggleOptions(false)
+    setToggleOptions(false);
   }, [value]);
   const [showDiv, setShowDiv] = useState(true);
   const divRef = useRef();
@@ -80,27 +85,28 @@ export default function InputFieldDropdown({
     fetch("/countryCode.json")
       .then((res) => res.json())
       .then((data) => {
-        console.log({ data });
-        // data.sort((a, b) => {
-        //   return (
-        //     parseInt(a.dial_code.split("+")[1]) -
-        //     parseInt(b.dial_code.split("+")[1])
-        //   );
-        // });
+     
         data.sort((a, b) => {
-          if (a.code < b.code) { return -1; }
-          if (a.code > b.code) { return 1; }
+          if (a.code < b.code) {
+            return -1;
+          }
+          if (a.code > b.code) {
+            return 1;
+          }
           return 0;
-
         });
         setDialCode(data);
       });
   }, []);
-  console.log({ toggleOptions, codeValue });
+
   return (
     <div className={`relative text-sm ${parentClassName && parentClassName} `} style={{...parentStyle}} >
       {label && (
-        <label className={`inline-block font-semibold text-base-17-5  ${labelClassname} ml-0 `}>
+        <label
+          className={`inline-block font-semibold ${
+            biggerText ? "text-lg" : "text-base-17-5"
+          }  ${labelClassname} ml-0 `}
+        >
           {label}
           {required && (
             <span className="text-primaryRed inline-block pl-1">*</span>
@@ -108,54 +114,68 @@ export default function InputFieldDropdown({
         </label>
       )}
       <div
-        className={`py-[13px] px-[14px] lg:py-[9px] lg:px-[16px] flex items-center rounded border border-[#D0D5DD] ${inputContainerClassName ? inputContainerClassName : ""
-          } ${disabled === true ? "cursor-not-allowed" : ""} `}
+        className={`py-[13px] px-[14px] lg:py-[9px] lg:px-[16px] flex items-center rounded border border-[#D0D5DD] ${
+          inputContainerClassName ? inputContainerClassName : ""
+        } ${disabled === true ? "cursor-not-allowed" : ""} `}
       >
-
-        {studentCode && <input type="text"  onChange={(e)=> handleCodeChange({target:{value:e.target.value}})} value={codeValue} className="!w-[50px] outline-0 text-400 !py-1 text-base-17-5 bg-transparent  pl-2 text-sm"/>}
-       {!studentCode&& <div
-        ref={selectRef} 
-
-          className="relative flex justify-between gap-3 max-w-[130px]"
-          onClick={() => setToggleOptions(!toggleOptions)}
-        >
+        {studentCode && (
+          <input
+            type="text"
+            onChange={(e) =>
+              handleCodeChange({ target: { value: e.target.value } })
+            }
+            value={codeValue}
+            className="!w-[50px] outline-0 text-400 !py-1 text-base-17-5 bg-transparent  pl-2 text-sm"
+          />
+        )}
+        {!studentCode && (
           <div
-
-            className={` flex justify-between cursor-pointer gap-4   items-center rounded-[3px]  bg-[#EAF5FA]  text-[black] focus:outline-none  px-2 text-sm ${codeValue?"  pr-5":"w-[35px] justify-center py-2 pl-3"} text-base-17-5 !text-[#667085]`}
-           
+            ref={selectRef}
+            className={`relative flex justify-between gap-3  max-w-[130px] ${CodeClass} `}
+            onClick={() => setToggleOptions(!toggleOptions)}
           >
-            {codeValue&&<span className=" ">
-            {codeValue}
-           
+            <div
+              className={` flex justify-between cursor-pointer gap-2   items-center rounded-[3px]  bg-[#EAF5FA]  text-[black] focus:outline-none  px-2 text-sm ${
+                codeValue
+                  ? "  pr-4 h-[28px]"
+                  : "w-[50px] pl-[18px] justify-between h-[28px] pr-4"
+              } text-base-17-5 !text-[#667085] ${codeClassName}`}
+            >
+              {codeValue && <span className=" ">{codeValue}</span>}
 
-            </span>}
+              <img
+                src={toggleOptions ? downArrow : downArrow}
+                className={`inline-block ${
+                  toggleOptions ? "transform -scale-y-100" : ""
+                }  ${arrowClassName ? arrowClassName : "h-3 w-3"}`}
+                alt="down"
+              />
+            </div>
 
-
-            <img src={toggleOptions ? upArrow : downArrow} className="inline-block w-3 h-3 " alt="down" />
-          </div>
- 
-          <div
-
-            className={`${toggleOptions ? "" : "hidden"
+            <div
+              className={`${
+                toggleOptions ? "" : "hidden"
               } whitespace-nowrap absolute text-xs mt-[40px]  shadow-lg border border-gray-300  z-[1] h-[300px] rounded-[4px] overflow-y-auto flex flex-col bg-[#EAF5FA] w-[85px] text-[black] focus:outline-none rounded-sm `}
-            name="country_code"
-          >
-
-            {toggleOptions &&
-              dialCode?.map((code, id) => {
-                return (
-                  <span
-                    className="hover:bg-blue-400 px-1 cursor-default hover:text-white"
-                    key={id}
-                    value={code?.dial_code}
-                    onClick={(e) => handleCodeChange({ target: { value: code?.dial_code } })}
-                  >
-                    {code?.code} {code?.dial_code}
-                  </span>
-                );
-              })}
+              name="country_code"
+            >
+              {toggleOptions &&
+                dialCode?.map((code, id) => {
+                  return (
+                    <span
+                      className="hover:bg-blue-400 px-1 cursor-default hover:text-white"
+                      key={id}
+                      value={code?.dial_code}
+                      onClick={(e) =>
+                        handleCodeChange({ target: { value: code?.dial_code } })
+                      }
+                    >
+                      {code?.code} {code?.dial_code}
+                    </span>
+                  );
+                })}
+            </div>
           </div>
-        </div>}
+        )}
         <div ref={divRef2} className="relative whitespace-nowrap">
           {codeError !== undefined && codeError !== "" && showDiv2 && (
             <Message error={codeError} type="danger" />
@@ -164,22 +184,26 @@ export default function InputFieldDropdown({
         {Icon && (
           <img
             src={Icon}
-            className={`mr-5 ${iconSize === "medium" ? "w-[24px]" : "w-[28px]"
-              }`}
+            className={`mr-5 ${
+              iconSize === "medium" ? "w-[24px]" : "w-[28px]"
+            }`}
           />
         )}
         {inputLeftField && inputLeftField}
         {prefix && <span className="mr-3">{prefix}</span>}
         <input
-          className={`outline-0 w-full pl-2 text-sm ${inputClassName ? inputClassName : ""
-            } ${disabled === true ? "cursor-not-allowed" : ""} text-base-17-5`}
+          className={`outline-0 w-full pl-2 text-sm ${
+            inputClassName ? inputClassName : ""
+          } ${disabled === true ? "cursor-not-allowed" : ""} text-base-17-5 ${
+            styles["input"]
+          } `}
           placeholder={placeholder}
           type={inputType ? inputType : "text"}
           onChange={(e) => (onChange !== undefined ? onChange(e) : "")}
           value={value}
           required={isRequired ? true : false}
           disabled={disabled !== undefined ? disabled : false}
-          onKeyDown={onKeyDown ? onKeyDown : () => { }}
+          onKeyDown={onKeyDown ? onKeyDown : () => {}}
           minLength={minLength && minLength}
           maxLength={maxLength && maxLength}
           onFocus={onFocus}
@@ -199,8 +223,9 @@ export default function InputFieldDropdown({
         {IconRight && (
           <img
             src={IconRight}
-            className={`ml-4 cursor-pointer ${iconSize === "medium" && "w-[24px]"
-              }`}
+            className={`ml-4 cursor-pointer ${
+              iconSize === "medium" && "w-[24px]"
+            }`}
           />
         )}
         {right && right}

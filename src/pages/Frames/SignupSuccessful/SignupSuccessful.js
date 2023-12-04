@@ -4,6 +4,7 @@ import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 import image from "./../../../assets/signup/image.svg";
 import { useResentEmailMutation } from '../../../app/services/users';
+import styles from './SignupSuccessful.module.css'
 
 export default function SignupSuccessful({
   frames,
@@ -17,21 +18,26 @@ export default function SignupSuccessful({
   email
 }) {
   const [resentEmailApi, setResentEmailApi] = useResentEmailMutation();
- const [loading,setLoading]=useState(false)
+  const [loading, setLoading] = useState(false)
   const handleSubmit = () => {
-if(loading)
-return
+    if (loading)
+      return
 
     setLoading(true)
     resentEmailApi({ email }).then((res) => {
-      if(res?.data?.status==='success')
-      alert("New email verification link sent.")
-      console.log("Successfully resent email", res);
+      if (res?.data?.status === 'success') {
+        alert("New email verification link sent.")
+      }
+      else {
+        alert("Error occured while sending new verification email!")
+      }
+      console.log(" resent email status", res);
+
       setLoading(false)
-    }).catch((err)=>{
-    
-      if(err?.data?.message)
-      alert(err?.data?.message)
+    }).catch((err) => {
+      alert("Error occured while sending new verification email!")
+      if (err?.data?.message)
+        alert(err?.data?.message)
       setLoading(false)
     });
 
@@ -52,25 +58,25 @@ return
   }, []);
 
   return (
-    <>
-      <div className="mb-7 hidden lg:block ">
-      <div className='h-[1px] bg-[#EBEBEB] mt-[-20px] mx-[6px] w-full mb-[25px]'>
+    <div className="">
+      <div className="mb-[47px] hidden lg:block ">
+        <div className='h-[1px] bg-[#EBEBEB] mt-[-20px] mx-[6px] w-full mb-[60px]'>
 
-</div>
+        </div>
         <div>
-        
-          <div className="text-center text-[#26435F] flex flex-col gap-3 text-md w-fit">
-            <h3 className="font-medium">{successfulSignUpMessage.head}</h3>
-            <h4 className="font-medium">{successfulSignUpMessage.mid}</h4>
-            <h4>{successfulSignUpMessage.last} <span onClick={() => handleSubmit()} className={`text-[#24A3D9] cursor-pointer ${loading?'opacity-70':''}`}>{successfulSignUpMessage.verify}</span></h4>
-            <h2 className="font-semibold">{successfulSignUpMessage.bottom}</h2>
+
+          <div className="text-justify text-[#26435F] flex flex-col gap-3  text-base w-fit design:text-base">
+            <p className="!font-light !text-center">{successfulSignUpMessage.head}</p>
+            <p  className={styles.textAlignLast}>{successfulSignUpMessage.mid}</p>
+            <h4  className={styles.textAlignLast}>{successfulSignUpMessage.last} <span onClick={() => handleSubmit()} className={`text-[#24A3D9] underline cursor-pointer ${loading ? 'opacity-70 !font-medium' : '!font-medium'}`}>{successfulSignUpMessage.verify}</span></h4>
+            <h2 className="!font-medium tracking-wider !text-center text-[#26435F]">{successfulSignUpMessage.bottom}</h2>
           </div>
         </div>
 
-        <div className="flex items-center mt-16">
+        <div className="flex items-center mt-[50px] ">
           <SecondaryButton
             children="Back to Sign in"
-            className="text-19 py-3  px-6 bg-[#FFA28D] text-gray-50 mx-auto w-[270px]"
+            className="text-[18.6px] py-1  px-2 !bg-[#FFA28D] !text-white mx-auto w-[337.5px] h-[50px] font-medium"
             onClick={handleSuccessfullBack}
             lastLoginDisabled={lastLoginDisabled}
           />
@@ -89,9 +95,12 @@ return
         <PrimaryButton
           className="w-full"
           children="Back to Login Page"
-          onClick={() => navigate("/")}
+          onClick={() => {
+            sessionStorage.clear();
+            navigate("/")
+          }}
         />
       </div>
-    </>
+    </div>
   );
 }

@@ -66,13 +66,12 @@ export default function AssignedStudents() {
       setTableHeaders(tempTableHeaders)
    }, [])
 
-   // console.log(students)
-
    const handleSubmit = () => {
 
    }
 
    useEffect(() => {
+      console.log("rescaniting")
       getUserDetail({ id })
          .then(resp => {
             console.log('res', resp.data.data.user)
@@ -81,24 +80,30 @@ export default function AssignedStudents() {
                resp.data.data.user.assiginedStudents.map((studentId, idx) => {
                   getUserDetail({ id: studentId })
                      .then(res => {
-                        console.log('detail res', resp.data.data)
-                        const { _id, firstName, lastName, email, phone, services, topics, status, assignedDate } = res.data.data.user
-                        const { specialization, FirstName, LastName, timeZone } = res.data.data.userdetails
-                        studentsData.push({
-                           _id,
-                           name: `${firstName} ${lastName}`,
-                           email: `${email}`,
-                           phone: `${phone}`,
-                           services: `${services == undefined ? '_' : services}`,
-                           topics: `${topics == undefined ? '_' : topics}`,
-                           status: `${status == undefined ? '_' : status}`,
-                           assignedDate: `${assignedDate == undefined ? '_' : assignedDate}`
-                           // specialization: ['we', 'ew'].join(','),
-                           // parentName: `${FirstName} ${LastName}`,
-                           // score: '-',
-                           // assignedDate: '_'
-                        })
-                        if (idx === resp.data.data.user.assiginedStudents.length - 1) cb()
+                        console.log('detail res', res?.data?.data)
+                        if (res?.data?.data) {
+                           const { _id, firstName, lastName, email, phone, services, topics, userStatus, assignedDate } = res.data.data.user
+                           const { specialization, FirstName, LastName, timeZone } = res.data.data.userdetails
+                           studentsData.push({
+                              _id,
+                              name: `${firstName} ${lastName}`,
+                              email: `${email}`,
+                              phone: `${phone}`,
+                              services: `${services == undefined ? '_' : services}`,
+                              topics: `${topics == undefined ? '_' : topics}`,
+                              status: `${userStatus == undefined ? '_' : userStatus}`,
+                              assignedDate: `${assignedDate == undefined ? '_' : assignedDate}`
+                              // specialization: ['we', 'ew'].join(','),
+                              // parentName: `${FirstName} ${LastName}`,
+                              // score: '-',
+                              // assignedDate: '_'
+                           })
+                        }
+                        //   console.log("rescb",idx,resp.data.data.user.assiginedStudents.length - 1)
+                        if (idx === resp.data.data.user.assiginedStudents.length - 1) {
+                           console.log("rescb: student")
+                           cb()
+                        }
                      })
                })
             }
@@ -107,7 +112,7 @@ export default function AssignedStudents() {
                setFilteredStudents(studentsData)
             })
          })
-   }, [])
+   }, [id])
 
    useEffect(() => {
       let tempdata = [...students]
@@ -152,7 +157,6 @@ export default function AssignedStudents() {
       setFilterData(tempFilterData)
    }
 
-   //change filter items to display if input data changes
    useEffect(() => {
       let arr = Object.keys(filterData).map(key => {
          if (filterData[key] !== '') {
@@ -170,20 +174,52 @@ export default function AssignedStudents() {
       navigate(`/profile/${role}/${id}`)
    }
 
-
-   // console.log('filterData', filterData)
-   // console.log('filterItems', filterItems)
-   // console.log('filteredStudents', filteredStudents)
-
    const handleClose = () => setModalActive(false);
    const [validData, setValidData] = useState(true);
    useEffect(() => {
       setValidData(modalData.email && modalData.firstName && modalData.lastName && modalData.userType);
    }, [modalData, modalData.email.length, modalData.firstName.length, modalData.lastName.length, modalData.phone.length, modalData.userType.length,])
-   // console.log(timeZones)
+
    return (
       <>
          <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
+
+
+{/*  route path  */}
+
+         {/* <p className="text-[#24A3D9] text-base-20 mb-8 my-[calc(50*0.0522vw)] ">
+          {persona === "admin" ? (
+            <span>
+              <span className="!cursor-pointer" onClick={() => navigate("/")}>
+                {organization?.company + "  >  " + firstName + "  " + lastName}{" "}
+              </span>
+              <span
+                className="!cursor-pointer"
+                onClick={() => navigate("/users")}
+              >
+                {"  >  CRM > "}
+              </span>
+              <span className="font-semibold">
+                {user?.firstName + " " + user?.lastName}
+              </span>
+            </span>
+          ) : (
+            <span>
+              <span onClick={() => navigate("/")} className="cursor-pointer">
+                {organization?.company +
+                  " > " +
+                  user?.firstName +
+                  " " +
+                  user?.lastName +
+                  " > "}
+              </span>
+              <span className="font-semibold">Profile</span>
+            </span>
+          )}
+        </p> */}
+
+{/*  route path ends here */}
+
             <div className="py-14 px-5 pl-8 text-sm">
                <div className="flex justify-between items-center">
 
@@ -291,7 +327,7 @@ export default function AssignedStudents() {
                   <FilterItems items={filterItems} setData={setFilterItems}
                      onRemoveFilter={onRemoveFilter} />
                </div>
-
+               {console.log(filteredStudents, "students")}
                <div className="mt-6">
                   <Table
                      onClick={{ handleNavigate }}

@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLazyGetParentsByNameQuery } from "../../../../app/services/admin";
 import { useLazyGetStudentsByNameQuery } from "../../../../app/services/session";
 import ProfilePhoto from "./ProfilePhoto";
+import down from "../../../../assets/YIcons/Group33.svg";
+import caution from "../../../../assets/icons/octicon_stop-16.svg";
 import {
   useUpdateTutorDetailsMutation,
   useUpdateUserDetailsMutation,
@@ -14,10 +16,9 @@ import InputField from "../../../../components/InputField/inputField";
 import InputSearch from "../../../../components/InputSearch/InputSearch";
 import InputSelect from "../../../../components/InputSelect/InputSelect";
 import Modal from "../../../../components/Modal/Modal";
-import SimpleCalendar from "../../../../components/SimpleCalendar/SimpleCalendar";
-import demoUser from "../../../../assets/icons/demo-user.png";
+
 import Slider from "../../../../components/Slider/Slider";
-import { grades, subjects, timeZones } from "../../../../constants/constants";
+import { grades, subjects } from "../../../../constants/constants";
 import styles from "./style.module.css";
 import CountryCode from "../../../../components/CountryCode/CountryCode";
 import { useSelector } from "react-redux";
@@ -29,6 +30,8 @@ import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew
 import useOutsideAlerter from "../../../../hooks/useOutsideAlerter";
 import { Country } from "country-state-city";
 import { useUpdateUserOrganizationMutation } from "../../../../app/services/organization";
+import SCheckbox from "../../../../components/CCheckbox/SCheckbox";
+import moment from "moment-timezone";
 // 637b9df1e9beff25e9c2aa83
 export default function ParentEditables({
   userId,
@@ -38,7 +41,7 @@ export default function ParentEditables({
   toEdit,
   fetchDetails,
   settings,
-  persona,
+
   awsLink,
   selectedScoreIndex,
 }) {
@@ -49,11 +52,11 @@ export default function ParentEditables({
   const [student, setStudent] = useState("");
   const [fetchStudents, studentResponse] = useLazyGetStudentsByNameQuery();
   const [students, setStudents] = useState([]);
-
+  const { role: persona } = useSelector((state) => state.user);
   const [parent, setParent] = useState("");
   const [fetchParents, fetchParentsResp] = useLazyGetParentsByNameQuery();
   const [parents, setParents] = useState([]);
-   const [addNotes,notesStatus]=useAddNotesMutation()
+  const [addNotes, notesStatus] = useAddNotesMutation();
   const [updateFields, updateFieldsResp] = useUpdateUserFieldsMutation();
   const [updateDetails, updateDetailsResp] = useUpdateUserDetailsMutation();
   const [updateTutorDetails, updateTutorDetailsResp] =
@@ -62,9 +65,10 @@ export default function ParentEditables({
     usePostTutorDetailsMutation();
   const [updatedService, setUpdatedService] = useState({});
   const [loading, setLoading] = useState(false);
+  const timeZones = moment.tz.names(); // String[]
 
   const { organization } = useSelector((state) => state.organization);
-const [textOpen,setTextOpen]=useState(false)
+  const [textOpen, setTextOpen] = useState(false);
   const data = [
     {
       name: "profileData",
@@ -73,12 +77,12 @@ const [textOpen,setTextOpen]=useState(false)
     },
     {
       name: "frame0",
-      title: "Basic Info",
+      title: "Account Details",
       api: "user",
     },
     {
       name: "frame1",
-      title: "Basic Info",
+      title: "Additional Details",
       api: "userDetail",
     },
     {
@@ -116,13 +120,13 @@ const [textOpen,setTextOpen]=useState(false)
       title: "Accomodations",
       api: "userDetail",
     },
-   
+
     {
       name: "industry",
       title: "Industry",
       api: "userDetail",
     },
-    
+
     {
       name: "address",
       title: "Residential Address",
@@ -135,8 +139,8 @@ const [textOpen,setTextOpen]=useState(false)
     },
     {
       name: "notes",
-      title: "Internal Notes",
-      api: "userDetail",
+      title: "Admin Notes",
+      api: "user",
     },
     {
       name: "service",
@@ -154,7 +158,6 @@ const [textOpen,setTextOpen]=useState(false)
       api: "userDetail",
     },
 
-    
     {
       name: "serviceSpecializations",
       title: "Service Specialisation",
@@ -261,36 +264,36 @@ const [textOpen,setTextOpen]=useState(false)
   const handleState = (c) => {
     if (!c) return;
     //console.log("country", c);
-    if (typeof c === "object")
-      c = c.name
+    if (typeof c === "object") c = c.name;
     const state = country.filter((x) => x.name === c);
     const currentState = state.map((s) => s.states);
 
     setStates([...currentState[0]]);
-
-   
   };
   const countryData = Country.getAllCountries().map((city) => ({
     value: city.name,
     displayValue: city.name,
   }));
   useEffect(() => {
-    if(!currentToEdit.country)return 
-    if (country.length === 0) {
-      fetch("countryData.json")
-        .then((res) => res.json())
-        .then((data) => setCountry(data));
-    }
+    if (!currentToEdit.hasOwnProperty("country")) return;
+    console.log("countries usseffect ", currentToEdit);
+
+    fetch("/countryData.json")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("countries ", data);
+        setCountry(data);
+      });
+
     const c = currentToEdit.country;
     if (c) {
       const state = country.filter((x) => x.name === c);
       const currentState = state.map((s) => s.states);
       if (currentState.length > 0) setStates([...currentState[0]]);
     }
-  
   }, [currentToEdit]);
-const [addLink,addLinkStatus]=useAddLinkStudentMutation()
-//console.log("parentEditables",currentToEdit)
+  const [addLink, addLinkStatus] = useAddLinkStudentMutation();
+  console.log("parentEditables", currentToEdit, country);
   const handleProfilePhotoChange = (file) => {
     // //console.log(file)
     let url = "";
@@ -302,7 +305,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
       url = `${BASE_URL}api/user/addphoto`;
     }
     axios.patch(url, formData, { headers: getAuthHeader() }).then((res) => {
-    //  //console.log(res);
+      //  //console.log(res);
       fetchDetails();
     });
   };
@@ -325,18 +328,17 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
         setCurrentToEdit(toEdit[key]);
       }
     });
-  // //console.log("currentUser");
+    // //console.log("currentUser");
   }, [toEdit]);
 
   const handleClose = () => {
-    
     let tempToEdit = {};
     Object.keys(toEdit).map((key) => {
       return (tempToEdit[key] = { ...toEdit[key], active: false });
     });
-     setTextOpen(false)
+    setTextOpen(false);
     setToEdit(tempToEdit);
-   
+
     // setToEdit()
   };
 
@@ -385,7 +387,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
       tempStudents.push(item._id);
       tempStudentsData.push(item);
     }
-   // //console.log(tempStudentsData);
+    // //console.log(tempStudentsData);
     setCurrentToEdit({
       ...currentToEdit,
       assiginedStudents: tempStudents,
@@ -431,33 +433,75 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
         .catch((err) => {
           //console.log(err);
         });
-    
     } catch (e) {
       console.error(e);
     }
   };
+  function isPhoneNumber(val) {
+    let regEmail =
+      /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
+    if (!regEmail.test(val)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+  const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
     let reqBody = { ...currentToEdit };
     delete reqBody["active"];
-     //console.log({reqBody,userId});
-     if(reqBody.hasOwnProperty("country")){
-      updateUserAccount(reqBody)
-     }
-     if (currentToEdit.hasOwnProperty("notes")) {
-      let reqBody = {
-      
-        "note":currentToEdit?.notes,
-        "type":"internalNotes", // or it can be 'internalNotes'
-        "date":new Date()
+    console.log({ reqBody, userId });
+    if (reqBody.hasOwnProperty("firstName")) {
+      console.log("fiestName", reqBody.firstName?.length, { reqBody, userId });
+      if (
+        reqBody.firstName?.length === 0 ||
+        reqBody.firstName?.trim()?.length === 0
+      ) {
+        alert("First name can't be empty.");
+        return;
+      }
+    }
+    if (reqBody.hasOwnProperty("lastName")) {
+      if (
+        reqBody.lastName?.length === 0 ||
+        reqBody.lastName?.trim()?.length === 0
+      ) {
+        alert("Last name can't be empty.");
+        return;
+      }
+    }
+    if (reqBody.hasOwnProperty("country")) {
+      updateUserAccount(reqBody);
+    }
+    if (reqBody.hasOwnProperty("phone")) {
+      if (!isPhoneNumber(reqBody.phone)) {
+        alert("Please enter a valid phone number.");
+        return;
+      }
+    }
+    if (currentToEdit.hasOwnProperty("email")&&!emailValidation.test(currentToEdit.email)) {
+      alert("Enter valid email.");
+      return;
+    }
+  
+   
+    if (currentToEdit.hasOwnProperty("notes")) {
+      reqBody = {
+        internalNotes: [
+          ...currentToEdit.internalNotes,
+          {
+            note: currentToEdit?.notes,
+
+            date: new Date(),
+          },
+        ],
       };
-     
-     
-    //  addNotes(reqBody).then((res)=>{
-    //   //console.log("internal",{res})
-    //  })
-    
+
+      //  addNotes(reqBody).then((res)=>{
+      //   //console.log("internal",{res})
+      //  })
     }
     const userDetailSave = (reqBody) => {
       // if (reqBody.satScores) {
@@ -470,7 +514,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
       //   if (isNaN(reqBody.actScores.reading)) reqBody.actScores.reading = 0;
       //   if (isNaN(reqBody.actScores.science)) reqBody.actScores.science = 0;
       // }
-       //console.log({reqBody,currentToEdit});
+      //console.log({reqBody,currentToEdit});
       // return
       updateDetails({ id: userId, fields: reqBody }).then((res) => {
         //console.log(res);
@@ -479,6 +523,16 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
         // handleClose()
       });
     };
+    
+    if( currentToEdit.hasOwnProperty("alternateEmail") && currentToEdit?.alternateEmail?.length>0 ){
+      console.log({currentField,currentToEdit})
+      if (!emailValidation.test(currentToEdit.alternateEmail)) {
+      //  alert("Enter valid alternate email.");
+      //  return;
+      }
+     // else 
+      userDetailSave({Email:currentToEdit?.alternateEmail});
+    }
     if (currentField.api === "user") {
       updateFields({ id: userId, fields: reqBody }).then((res) => {
         //console.log(res);
@@ -553,48 +607,52 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
       }
     }
     let { schoolName, grade } = currentToEdit;
-   let {dropBoxLink,dropLink}= currentToEdit
+    let { dropBoxLink, dropLink } = currentToEdit;
     if (currentToEdit.hasOwnProperty("schoolName")) {
       let reqBody = {
         schoolName: currentToEdit.schoolName,
         grade: currentToEdit?.grade,
       };
-     
-     
+
       userDetailSave(reqBody);
     }
-    if (currentToEdit.hasOwnProperty("driveLink") && currentToEdit.driveLink.length>2) {
+    if (
+      currentToEdit.hasOwnProperty("driveLink") &&
+      currentToEdit.driveLink.length > 2
+    ) {
       let reqBody = {
-        type: 'driveLink',
-        link:currentToEdit.driveLink,
-        studentId:userId,
+        type: "driveLink",
+        link: currentToEdit.driveLink,
+        studentId: userId,
       };
       addLink(reqBody).then((res) => {
         //console.log("drive",res);
-        if(res?.data){
-         //console.log("drive link added")
+        if (res?.data) {
+          //console.log("drive link added")
         }
       });
     }
     if (currentToEdit.hasOwnProperty("about")) {
       let reqBody = {
         about: currentToEdit.about,
-        accomodations:"None",
+        accomodations: "None",
       };
-     
-     
+
       userDetailSave(reqBody);
     }
-    if (currentToEdit.hasOwnProperty("dropBoxLink") && currentToEdit.dropBoxLink.length>2) {
+    if (
+      currentToEdit.hasOwnProperty("dropBoxLink") &&
+      currentToEdit.dropBoxLink.length > 2
+    ) {
       let reqBody = {
-        type: 'dropBoxLink',
-        link:currentToEdit.dropBoxLink,
-        studentId:userId,
+        type: "dropBoxLink",
+        link: currentToEdit.dropBoxLink,
+        studentId: userId,
       };
       addLink(reqBody).then((res) => {
         //console.log("drop",res);
-        if(res?.data){
-         //console.log("drop link added")
+        if (res?.data) {
+          //console.log("drop link added")
         }
       });
     }
@@ -668,7 +726,6 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
     // })
   };
   // //console.log(settings);
-  
 
   const [startDate, setStartDate] = useState(new Date());
   ////console.log({ currentField, currentToEdit });
@@ -678,20 +735,22 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
     "serviceSpecializations",
     "personality",
     "subjects",
+    "frame0",
   ];
   //console.log({country,states,currentToEdit})
-  return  Object.keys(toEdit).map((key) => {
+  return Object.keys(toEdit).map((key) => {
     return (
       toEdit[key].active === true && (
-        
         <Modal
-        fetchDetails={fetchDetails}
+          fetchDetails={fetchDetails}
           key={key}
-          classname={
+          classname={`${
             forCss.includes(currentField.name)
-              ? "max-w-[800px] md:pb-5 mx-auto overflow-visible pb-5"
-              : "max-w-fit md:pb-5 mx-auto overflow-visible pb-5"
-          } /*{ ` max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5`}*/
+              ? "max-w-[850px] md:pb-5 mx-auto overflow-visible pb-5 !px-[20px]":
+              currentField.name==="frame1"
+              ? "max-w-[980px] md:pb-5 mx-auto overflow-visible pb-5 !px-10"
+              : "max-w-fit md:pb-5 mx-auto overflow-visible pb-5 !px-[20px]"
+          } `} /*{ ` max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5`}*/
           title=""
           // primaryBtn={{
           //    text: "Save",
@@ -708,8 +767,8 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
           handleClose={handleClose}
           body={
             <>
-              <div className="flex  ">
-                <div className="mr-5 text-[#26435F] font-bold text-[17px]">
+              <div className="flex  items-center mt-[23px]">
+                <div className="mr-5 text-[#26435F] font-semibold text-[21px]">
                   {currentField.title
                     ? currentField.title
                     : toEdit.tutorServices
@@ -717,7 +776,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                     : ""}
                 </div>
                 <button
-                  className="w-[100px] bg-[#FFA28D] p-1 rounded text-white  text-base pl-3 pr-3 ml-auto"
+                  className="w-[133px] bg-[#FFA28D] py-1  text-white  text-base px-3 ml-auto h-[40px] rounded-lg"
                   onClick={handleSubmit}
                 >
                   Save
@@ -731,29 +790,30 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
               >
                 {/* {currentField.fields && currentField.fields} */}
                 {currentField.name === "frame0" && (
-                  <div className="flex flex-col px-2 it">
-                    <div className="flex gap-3 items-center">
-                      <div className="!w-[140px]">
-                        <ProfilePhoto
-                          src={
-                            user.photo
-                              ? `${awsLink}${user.photo}`
-                              : "/images/Rectangle 2347.svg"
-                          }
-                          imageClassName=" border-[4px] border-white"
-                          className=""
-                          imgSizeClass="!w-[120px] !h-[120px] "
-                          handleChange={handleProfilePhotoChange}
-                          editable={editable}
-                        />
-                      </div>
-                      <div className="flex flex-col gap-5">
+                  <div className="flex flex-col px-2 max-h-[60vh] w-full ">
+                    <div className="flex gap-3 items-center w-full">
+                      <div className="flex flex-col gap-5 w-full">
                         <div className="flex !text-sm gap-4 ">
+                          <div className="!w-[100px] mr-5">
+                            <ProfilePhoto
+                              src={
+                                user.photo
+                                  ? `${awsLink}${user.photo}`
+                                  : "/images/Rectangle 2347.svg"
+                              }
+                              cameraClass=" translate-y-3"
+                              imageClassName=" border-[4px] border-white"
+                              className=""
+                              imgSizeClass="!w-[80px] !h-[80px] "
+                              handleChange={handleProfilePhotoChange}
+                              editable={editable}
+                            />
+                          </div>
                           <InputField
-                            label="First Name"
-                            labelClassname="text-[#26435F]"
+                            label="First name"
+                            labelClassname="text-[#26435F] !font-semibold "
                             placeholder="First Name"
-                            inputContainerClassName="text-xs  bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
+                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
                             inputClassName="bg-transparent text-xs   "
                             parentClassName="flex-1 "
                             type="text"
@@ -766,12 +826,11 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                             }
                           />
 
-                        
                           <InputField
-                            label="Last Name"
-                            labelClassname="text-[#26435F]"
+                            label="Last name"
+                            labelClassname="text-[#26435F] !font-semibold"
                             placeholder="Last Name"
-                            inputContainerClassName="text-xs  bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
+                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
                             inputClassName="bg-transparent text-xs   "
                             parentClassName="flex-1 "
                             type="text"
@@ -784,30 +843,15 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                             }
                           />
                         </div>
-                        <div className="flex !text-sm gap-4 ">
-                          <InputField
-                            label="Email"
-                            labelClassname="text-[#26435F]"
-                            placeholder="Email Id"
-                            inputContainerClassName="text-xs  bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
-                            inputClassName="bg-transparent !w-[200px] text-xs   "
-                            parentClassName="flex-1 "
-                            type="text"
-                            value={currentToEdit.email}
-                            onChange={(e) =>
-                              setCurrentToEdit({
-                                ...currentToEdit,
-                                email: e.target.value,
-                              })
-                            }
-                          />
-
+                        <div className="flex !text-sm gap-4 items-center ">
                           <InputFieldDropdown
-                            placeholder=""
-                            labelClassname="text-[#26435F]"
-                            inputContainerClassName="!text-xs   bg-[#F6F6F6] border-0"
-                            inputClassName="bg-transparent !w-[80px] !text-xs rounded-[4px] "
+                            placeholder="Phone"
+                            labelClassname="text-[#26435F] !font-semibold"
+                            inputContainerClassName="flex gap-1 pt-0 pb-0 px-0 !py-0 !px-0  border-white"
+                            inputClassName=" text-[#667085] text-sm pt-3 pb-3 px-5 !py-[13px] bg-primary-50  text-400 rounded-[5px] "
+                            codeClassName="!px-4 w-[70px] !gap-4 text-[#667085] text-sm !py-[22.5px]  bg-primary-50  text-400 rounded-[5px] "
                             parentClassName="flex-1 "
+                            type="number"
                             label="Phone"
                             value={currentToEdit.phone}
                             codeValue={currentToEdit.phoneCode}
@@ -824,20 +868,71 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                               })
                             }
                           />
-
-                         
+                          <InputField
+                            IconLeft={caution}
+                            label="Email"
+                            labelClassname="text-[#26435F] font-semibold"
+                            placeholder="Email"
+                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
+                            inputClassName="bg-transparent !w-[200px] text-xs   "
+                            parentClassName="flex-1 "
+                            type="text"
+                            value={currentToEdit.email}
+                            onChange={(e) =>
+                              setCurrentToEdit({
+                                ...currentToEdit,
+                                email: e.target.value,
+                              })
+                            }
+                            Tooltip={
+                              !user?.isVerfied && (
+                                <span className="absolute top-10 w-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                                  <h3 className="text-[#24A3D9] font-semibold mb-1 ">
+                                    Email Confirmation Sent
+                                  </h3>
+                                  You need to verify your email if
+                                  <ul className="list-disc pl-3 mb-2">
+                                    <li>you created a new account.</li>
+                                    <li>you recently changed your email.</li>
+                                  </ul>
+                                  We have sent you an email verification link to
+                                  your current email address to make sure that
+                                  it really is you who requested a change.
+                                </span>
+                              )
+                            }
+                          />
+                          <InputField
+                            label="Alternative Email"
+                            labelClassname="text-[#26435F] font-semibold"
+                            placeholder="Alternative Email"
+                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
+                            inputClassName="bg-transparent !w-[200px] text-xs   "
+                            parentClassName="flex-1 "
+                            type="text"
+                            value={currentToEdit.alternateEmail}
+                            onChange={(e) =>
+                              setCurrentToEdit({
+                                ...currentToEdit,
+                                alternateEmail: e.target.value,
+                              })
+                            }
+                          />
                         </div>
                       </div>
                     </div>
+
                     <div>
                       <div className="flex-1 mt-5">
-                        <p className=" text-sm text-[#26435F] font-semibold">
+                        <p className=" text-base-17-5 text-[#26435F] font-semibold">
                           About
                         </p>
                         <textarea
                           rows="3"
-                          className="mt-1 block w-full h-[100px] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs border border-[0.917px_solid_#D0D5DD] rounded-[6px]
+                          className="mt-1 block w-full h-[100px] bg-[#F6F6F6] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm   border border-[0.917px_solid_#D0D5DD] rounded-[6px]
                 "
+                          placeholder="The parent can add their bio in this space. Here are a few ideas to get started:
+Likes, dislikes, personality, professional details, hobbies, favorite sports, activities, family details, habits, favorite movies and TV shows, music taste, strengths and weaknesses."
                           value={currentToEdit.about}
                           onChange={(e) => {
                             setCurrentToEdit({
@@ -845,188 +940,270 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                               about: e.target.value,
                             });
                           }}
-                          placeholder=""
                         ></textarea>
                       </div>
                     </div>
+                    {persona === "admin" ? (
+                      <div className=" ">
+                        <div
+                          id="borderDashed2"
+                          className="h-[2px] w-[100%] mt-6 mx-auto my-4"
+                        ></div>
+                        {/* <p className='font-medium mr-4'> Associated Students </p> */}
+                        {/* <div className="max-w-[250px] mx-auto">
+                        <Slider
+                          images={currentToEdit.studentsData}
+                          awsLink={awsLink}
+                        />
+                      </div> */}
+
+                        <InputSearch
+                          right={
+                            <img
+                              className="w-5 h-4 cursor-pointer"
+                              alt="drop"
+                              src={down}
+                            />
+                          }
+                          labelClassname="text-[#26435F] mb-1 text-sm"
+                          label="Associated Students"
+                          placeholder="Select Associated Students"
+                          parentClassName="w-[300px] mb-10"
+                          inputContainerClassName="bg-[#F6F6F6] border-0 pt-3.5 pb-3.5 text-sm hover:cursor-pointer"
+                          inputClassName="bg-[#F6F6F6] text-sm "
+                          type="text"
+                          optionPrefix="s"
+                          value={student}
+                          optionClassName="h-[60px] 2xl:h-[100px]  design:h-[200px]"
+                          checkbox={{
+                            visible: true,
+                            name: "name",
+                            match: currentToEdit.assiginedStudents,
+                          }}
+                          onChange={(e) => setStudent(e.target.value)}
+                          optionData={students}
+                          onOptionClick={(item) => {
+                            // setStudent(item.value);
+                            handleStudentsChange(item);
+                            // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    <div></div>
                   </div>
                 )}
-            
+
                 {currentField.name === "frame1" && (
                   <>
-                  <div className="flex flex-col gap-5 !w-[calc(1000*0.0522vw)] min-w-[550px]">
-                    <div className="flex !text-sm gap-4 ">
-                      <InputField
-                        label="D.O.B"
-                        labelClassname="text-[#26435F] "
-                        placeholder=""
-                        inputContainerClassName="text-xs  bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px] text-base-17-5"
-                        inputClassName="bg-transparent text-xs text-base-17-5 "
-                        parentClassName="flex-1 "
-                        type="date"
-                        value={currentToEdit.dob}
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            dob: e.target.value,
-                            birthyear: e.target.value?.split("-")[0],
-                          })
-                        }
-                      />
-
-                      <InputSelectNew
-                        labelClassname="text-[#26435F] !font-bold text-base-17-5"
-                        label="Time zone"
-                        placeholder="Time Zone"
-                        inputContainerClassName="text-xs min-h-[42px] bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
-                        inputClassName="bg-transparent min-h-[42px] text-xs  "
-                        parentClassName="flex-1 "
-                        type="text"
-                        value={currentToEdit.timeZone}
-                        onChange={(val) =>
-                          setCurrentToEdit({ ...currentToEdit, timeZone: val })
-                        }
-                        optionData={timeZones}
-                        radio={true}
-                      />
-                       <InputField
-                         labelClassname="text-[#26435F] !font-bold text-base-17-5"
-                         label="Industry"
-                         placeholder="Industry"
-                         inputContainerClassName="text-xs  bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
-                         inputClassName="bg-transparent text-xs  "
-                         parentClassName="flex-1 "
-                         type="text"
-                       
-                        
-                         optionData={timeZones}
-                        value={currentToEdit.industry}
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            industry: e.target.value,
-                          })
-                        }
-                      
-                      />
-                    </div>
-                
-                    <div className="flex !text-sm gap-4 ">
-                   
-                       <InputSelectNew
-                        labelClassname="text-[#26435F] !font-bold text-base-17-5"
-                        label="Country"
-                        placeholder="Country"
-                        inputContainerClassName="text-xs min-h-[20px] min-h-[42px] bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
-                        inputClassName="bg-transparent min-h-[42px] text-xs  "
-                        parentClassName="flex-1 "
-                        type="text"
-                      
-                        optionData={country}
-                        optionType={"object"}
-                        value={currentToEdit?.country}
-                        
-                         onChange={(e) =>{
-                          handleState(e);
-                        
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            country: e.name,
-                          })
-                         }
-                          
-                         }
-                       />
-                         
-                       <InputField
-                          label="Street adress"
-                          labelClassname="text-[#26435F] text-base-17-5"
+                    <div className="flex flex-col gap-5 !w-[calc(1000*0.0522vw)] min-w-[550px]">
+                      <div className="flex  justify-between items-center">
+                        <InputField
+                          label="D.O.B"
+                          biggerText={true}
+                          labelClassname="text-[#26435F]  !font-medium"
                           placeholder=""
-                          inputContainerClassName="text-xs  bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
-                          inputClassName="bg-transparent text-xs   "
-                          parentClassName="flex-1 "
-                         type="text"
-                         value={currentToEdit.address}
-                         onChange={(e) =>
-                           setCurrentToEdit({
-                             ...currentToEdit,
-                             address: e.target.value,
-                           })
-                         }
-                       />
-                    </div>
-                    <div className="flex !text-sm gap-4 ">
-                    
-                       <InputSelectNew
-                          labelClassname="text-[#26435F] !font-bold text-base-17-5"
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[11vw] h-[54px]"
+                          inputClassName="bg-transparent text-base  "
+                          parentClassName=""
+                          type="date"
+                          value={currentToEdit.dob}
+                          onChange={(e) =>
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              dob: e.target.value,
+                              birthyear: e.target.value?.split("-")[0],
+                            })
+                          }
+                        />
+
+                        <InputSelectNew
+                          labelClassname="text-[#26435F] text-lg !font-medium"
+                          label="Time zone"
+                          placeholder="Select"
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                          inputClassName="bg-transparent  "
+                          parentClassName=""
+                          type="text"
+                          value={currentToEdit.timeZone}
+                          onChange={(val) =>
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              timeZone: val,
+                            })
+                          }
+                          optionData={timeZones}
+                          radio={true}
+                        />
+                        {console.log(currentToEdit)}
+
+                        <InputSelectNew
+                          biggerText={true}
+                          labelClassname="text-[#26435F]  !font-medium"
+                          label="Industry"
+                          placeholder="Select"
+                          inputContainerClassName="text-base placeholder:text-[#667085]  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                          inputClassName="bg-transparent placeholder:text-[#667085]"
+                          parentClassName=""
+                          optionData={[
+                            "IT",
+                            "Finance",
+                            "Sales",
+                            "Marketing",
+                            "Business",
+                            "Agriculture",
+                          ]}
+                          type="text"
+                          value={currentToEdit.industry}
+                          onChange={(e) =>
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              industry: e,
+                            })
+                          }
+                        />
+                      </div>
+
+                      <div className="flex  justify-between items-center">
+                        <InputSelectNew
+                          labelClassname="text-[#26435F] text-lg !font-medium"
+                          label="Country"
+                          placeholder="Select"
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                          inputClassName="bg-transparent  "
+                          parentClassName=""
+                          type="text"
+                          optionData={country}
+                          optionType={"object"}
+                          value={currentToEdit?.country}
+                          onChange={(e) => {
+                            handleState(e);
+
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              country: e.name,
+                            });
+                          }}
+                        />
+
+                        <InputField
+                          biggerText={true}
+                          label="Street Address"
+                          labelClassname="text-[#26435F]  !font-medium"
+                          placeholder="Text"
+                          inputContainerClassName="text-base placeholder:text-[#667085] bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[31.40625vw] h-[54px]"
+                          inputClassName="bg-transparent placeholder:text-[#667085] "
+                          parentClassName=""
+                          type="text"
+                          value={currentToEdit.address}
+                          onChange={(e) =>
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              address: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                      <div className="flex justify-between items-center ">
+                        <InputSelectNew
+                          labelClassname="text-[#26435F] text-lg !font-medium"
                           label="State"
-                          placeholder="State"
-                          inputContainerClassName="text-xs min-h-[42px]  bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
-                          inputClassName="bg-transparent min-h-[42px] text-xs  "
-                          parentClassName="flex-1 "
+                          placeholder="Select"
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                          inputClassName="bg-transparent  "
+                          parentClassName=""
                           type="text"
                           optionData={states}
                           optionType={"object"}
-                          onChange={(e) =>{
+                          onChange={(e) => {
                             setCurrentToEdit({
                               ...currentToEdit,
                               state: e.name,
+                            });
+                          }}
+                          value={currentToEdit.state}
+                        />
+
+                        <InputField
+                          biggerText={true}
+                          labelClassname="text-[#26435F]  !font-medium"
+                          label="City"
+                          placeholder="Select"
+                          inputContainerClassName="text-base placeholder:text-[#667085]  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                          inputClassName="bg-transparent placeholder:text-[#667085]"
+                          parentClassName=""
+                          type="text"
+                          optionData={timeZones}
+                          value={currentToEdit.city}
+                          onChange={(e) =>
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              city: e.target.value,
                             })
                           }
-                           
-                          }
-                         
-                         
-                         value={currentToEdit.state}
-                        
-                       />
+                        />
 
-                    
-                      
-                       <InputField
-                            labelClassname="text-[#26435F] !font-bold text-base-17-5"
-                            label="City"
-                            placeholder="City"
-                            inputContainerClassName="text-xs  bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
-                            inputClassName="bg-transparent text-xs  "
-                            parentClassName="flex-1 "
+                        <InputField
+                          label="Zip"
+                          biggerText={true}
+                          labelClassname="text-[#26435F]  !font-medium"
+                          placeholder="Text"
+                          inputContainerClassName="text-base placeholder:text-[#667085] bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[10.7292vw] h-[54px]"
+                          inputClassName="bg-transparent placeholder:text-[#667085]"
+                          parentClassName=""
+                          type="text"
+                          value={currentToEdit.pincode}
+                          onChange={(e) =>
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              pincode: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                      {persona === "admin" && (
+                        <div
+                          id="borderDashed"
+                          className="w-[70%] mx-auto !border-[#CBD6E3]"
+                        ></div>
+                      )}
+                      {persona === "admin" && (
+                        <div className="flex justify-between items-center ">
+                          {console.log({ organization })}
+                          <InputSelectNew
+                            labelClassname="text-[#26435F] text-lg !font-medium"
+                            label="Referral Code"
+                            placeholder="Select Referral Code"
+                            inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                            inputClassName="bg-transparent  "
+                            parentClassName=""
                             type="text"
-                          
-                           
-                            optionData={timeZones}
-                         value={currentToEdit.city}
-                         onChange={(e) =>
-                           setCurrentToEdit({
-                             ...currentToEdit,
-                             city: e.target.value,
-                           })
-                         }
-                       />
-                   
-                       <InputField
-                        label="Zip"
-                        labelClassname="text-[#26435F] text-base-17-5"
-                        placeholder=""
-                        inputContainerClassName="text-xs  bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
-                        inputClassName="bg-transparent text-xs   "
-                        parentClassName="flex-1 "
-                       type="text"
-                         value={currentToEdit.pincode}
-                         onChange={(e) =>
-                           setCurrentToEdit({
-                             ...currentToEdit,
-                             pincode: e.target.value,
-                           })
-                         }
-                       />
-                    
+                            optionData={organization?.settings?.subscriptionCode?.map(
+                              (it) => {
+                                return {
+                                  ...it,
+                                  name: it.code,
+                                  value: it.code,
+                                };
+                              }
+                            )}
+                            optionType={"object"}
+                            onChange={(e) => {
+                              setCurrentToEdit({
+                                ...currentToEdit,
+                                subscriptionCode: e.code,
+                              });
+                            }}
+                            value={currentToEdit.subscriptionCode}
+                          />
+                        </div>
+                      )}
                     </div>
-                  </div>
-               
-                 
-                 </>
+                  </>
                 )}
-                 
+
                 {currentField.name === "associatedStudents" && (
                   <div>
                     <div className=" mb-5">
@@ -1063,7 +1240,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                     </div>
                   </div>
                 )}
-           
+
                 {currentField.name === "birthYear" && (
                   <div className="bg-[#F3F5F7] ">
                     {/* <div className='flex items-center mb-5 bg-white rounded-10' style={{ boxShadow: "-3px -4px 24px rgba(0, 0, 0, 0.25)" }}> */}
@@ -1131,8 +1308,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                     </div>
                   </div>
                 )}
-                
-              
+
                 {currentField.name === "timeZone" && (
                   <div>
                     <div className="flex items-center mb-5 pt-3 pb-5">
@@ -1153,83 +1329,131 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                 )}
                 {currentField.name === "notes" && (
                   <div>
-                    <div className="flex items-center mb-5 pt-6 w-[400px]">
+                    <div className="flex items-center mb-5 pt-6 w-[500px]">
                       {/* <p className='font-medium mr-4 min-w-[60px]'>  </p> */}
                       <div className="border w-full h-full rounded-md">
-                    {textOpen && 
-
-                     <textarea
-                rows="3"
-                value={currentToEdit.notes}
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            notes: e.target.value,
-                          })
-                        }
-                        onFocus={()=>setTextOpen(true)}
-                 onBlur={()=>currentToEdit?.notes?.length==0&&setTextOpen(false)}
-                className={`mt-1 block w-full resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs h-[300px] `}
-                placeholder=""
-              ></textarea>}
-              {!textOpen &&
-                currentToEdit?.notes?.length==0&&
-                 <div onClick={()=>setTextOpen(true)} className=" text-[#CBD6E2] text-xs flex-1 text-base-17-5 p-3 h-[300px]">
-                 Add notes about the parent. Here are some ideas to get you
-                 started:
-                 <ul className="list-disc px-4 design:px-5">
-                   <li>How did the initial call go?</li>
-                   <li>What is the parent’s budget?</li>
-                   <li>What timeline do they have in mind for tutoring?</li>
-                   <li>Has the student been tutored before?</li>
-                   <li>Do they prefer online or offline tutoring?</li>
-                   <li>Does the student have siblings?</li>
-                 </ul>
-               </div>
-              }
-                      </div>
-                     
-                     
-                    </div>
-                  </div>
-                )}
-               
-                {currentField.name === "service" && (
-                  <div>
-                    <div className="flex items-center mb-5 pt-1 pb-5">
-                      <InputSelect
-                        value={
-                          currentToEdit.service.length === 0
-                            ? ""
-                            : currentToEdit.service[0]
-                        }
-                        checkbox={{
-                          visible: true,
-                          name: "services",
-                          match: currentToEdit.service,
-                        }}
-                        optionData={organization?.settings?.servicesAndSpecialization.map(
-                          (item) => item.service
+                        {textOpen && (
+                          <textarea
+                            rows="3"
+                            value={currentToEdit.notes}
+                            onChange={(e) =>
+                              setCurrentToEdit({
+                                ...currentToEdit,
+                                notes: e.target.value,
+                              })
+                            }
+                            onFocus={() => setTextOpen(true)}
+                            onBlur={() =>
+                              currentToEdit?.notes?.length == 0 &&
+                              setTextOpen(false)
+                            }
+                            className={`mt-1 block w-full resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm   placeholder:text-sm h-[250px] `}
+                            placeholder=""
+                          ></textarea>
                         )}
-                        inputContainerClassName="pt-3 pb-3 border rounded-md bg-[#F6F6F6]"
-                        placeholder="Service"
-                        parentClassName="w-full mr-4"
-                        type="select"
-                        onChange={
-                          (val) => handleServiceChange(val)
-                          // setCurrentToEdit({ ...currentToEdit, service: val })
-                        }
-                        onOptionClick={(item) => {
-                          // setStudent(item.value);
-                          //console.log(item);
-                          // handleStudentsChange(item)
-                          // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
-                        }}
-                      />
+                        {!textOpen && currentToEdit?.notes?.length == 0 && (
+                          <div
+                            onClick={() => setTextOpen(true)}
+                            className=" text-[#CBD6E2] text-xs flex-1 text-base-17-5 !p-5 !pt-5 !pl-7 h-[250px]"
+                          >
+                            Here, you can add notes about the parent. Here are
+                            some ideas to get you started:
+                            <ul className="list-disc px-4 design:px-5 !pl-7 ">
+                              <li className="my-1">
+                                How did the initial call go?
+                              </li>
+                              <li className="my-1">
+                                What did the parent say about the student?
+                              </li>
+                              <li className="my-1">
+                                What is the parent’s budget?
+                              </li>
+                              <li className="my-1">
+                                What timeline do they have in mind for tutoring?
+                              </li>
+                              <li className="my-1">
+                                Has the student been tutored before?
+                              </li>
+                              <li className="my-1">
+                                Do they prefer online or offline tutoring?
+                              </li>
+                              <li className="my-1">
+                                What other services might they be interested in?
+                              </li>
+                              <li className="my-1">
+                                Does the student have siblings?
+                              </li>
+                              <li className="my-1">
+                                What is the family demographic?
+                              </li>
+                            </ul>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 )}
-             
+
+                {currentField.name === "service" && (
+                  <div className="w-[400px] max-h-[50vh] overflow-y-auto custom-scroller">
+                    <div className="flex flex-col gap-2">
+                      {organization?.settings?.servicesAndSpecialization.map(
+                        (item, id) => {
+                          return (
+                            <div key={id} className="flex gap-5 items-center">
+                              <SCheckbox
+                                stopM={true}
+                                checked={currentToEdit?.service?.includes(
+                                  item?.service
+                                )}
+                                onChange={() =>
+                                  handleServiceChange(item?.service)
+                                }
+                              />
+                              <span className="text-[#26435F]">
+                                {item?.service}
+                              </span>
+                            </div>
+                          );
+                        }
+                      )}
+                    </div>
+                  </div>
+                  // // <div>
+                  // //   <div className="flex items-center mb-5 pt-1 pb-5">
+                  // //     <InputSelect
+                  // //       value={
+                  // //         currentToEdit.service.length === 0
+                  // //           ? ""
+                  // //           : currentToEdit.service[0]
+                  // //       }
+                  // //       checkbox={{
+                  // //         visible: true,
+                  // //         name: "services",
+                  // //         match: currentToEdit.service,
+                  // //       }}
+                  // //       optionData={organization?.settings?.servicesAndSpecialization.map(
+                  // //         (item) => item.service
+                  // //       )}
+                  // //       inputContainerClassName="pt-3 pb-3 border rounded-md bg-[#F6F6F6]"
+                  // //       placeholder="Service"
+                  // //       parentClassName="w-full mr-4"
+                  // //       type="select"
+                  // //       onChange={
+                  // //         (val) => handleServiceChange(val)
+                  // //         // setCurrentToEdit({ ...currentToEdit, service: val })
+                  // //       }
+                  // //       onOptionClick={(item) => {
+                  // //         // setStudent(item.value);
+                  // //         //console.log(item);
+                  // //         // handleStudentsChange(item)
+                  // //         // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
+                  // //       }}
+                  // //     />
+                  // //   </div>
+                  // // </div>
+                )}
+
                 {currentField.name === "leadStatus" && (
                   <div>
                     <div className="flex items-center mb-5 pt-2">
@@ -1277,7 +1501,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                   <InputSearch
                     labelClassname="hidden"
                     placeholder="Type Parent Name"
-                    parentClassName="w-full  mb-10"
+                    parentClassName="w-[300px]  mb-10"
                     inputContainerClassName="bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
                     inputClassName="bg-[#F3F5F7]"
                     type="text"
@@ -1287,7 +1511,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                     optionData={parents}
                     onOptionClick={(val) => {
                       // setStudent(item.value);
-                  
+
                       setCurrentToEdit({
                         ...currentToEdit,
                         associatedParent: val._id,
@@ -1494,7 +1718,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                     </div>
                   </div>
                 )}
-                
+
                 {currentField.name === "tutorServices" && (
                   <div>
                     <div className="flex items-center mb-4">
@@ -1841,7 +2065,6 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                                         ...currentToEdit,
                                         phone: e.target.value,
                                       });
-                                    
                                     }}
                                   />
                                 </div>
@@ -1948,8 +2171,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                     </div>
                   </div>
                 )}
-                
-               
+
                 {/* <InputField label='First Name'
                            labelClassname='ml-4 mb-0.5'
                            placeholder='First Name'

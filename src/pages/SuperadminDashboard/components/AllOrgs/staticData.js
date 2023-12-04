@@ -1,17 +1,19 @@
 export const frameHeaderNames = [
-  "Org name",
-  "Type",
-  "Address",
-  "City",
-  "State",
-  "Country",
-  "A name",
-  "Admin  email",
+  "Org Name",
+ 
+  
+
+  "A Name",
+  "Admin  Email",
   "A Phone",
+  "Country",
+
+  "Type",
   "Status",
-  "# tutors",
-  "# students",
-  "# contributors",
+  "# Tutors",
+  "# Students",
+  "Joined On",
+  " ",
 ];
 export const framesDataRow = {
   orgName: "Ipsum",
@@ -40,22 +42,22 @@ export const framesData = [
 
 export const aboutCardContents = [
   {
-    heading: "#  hours scheduled",
+    heading: "#  Hours Scheduled",
     text: "100",
     key:"scheduledSessions"
   },
   {
-    heading: "#  hours Cancelled",
+    heading: "#  Hours Cancelled",
     text: "20",
     key:"canceledSessions"
   },
   {
-    heading: "#  hours missed",
+    heading: "#  Hours Missed",
     text: "10",
     key:"missedSessions"
   },
   {
-    heading: "#  hours Generated",
+    heading: "#  Hours Generated",
     text: "70",
     key:"completeSessions"
   },

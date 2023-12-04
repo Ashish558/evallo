@@ -7,12 +7,12 @@
 .line::before {
   content: "";
   position: absolute;
-  right: -100px;
-  top: 50%;
+  right: -135px;
+  top: 35%;
   margin-top:-15px;
   transform: translateY(-50%);
-  width:100px;
-  height: 1px;
+  width:130px;
+  height: 1.33px;
   background-color: #B3BDC7;
   z-index: -99;
 }
@@ -38,10 +38,10 @@
   content: "";
   position: absolute;
   right: -170px;
-  top: 50%;
+  top: 40%;
   margin-top:-15px;
   transform: translateY(-50%);
-  width:170px;
+  width:180px;
   height: 1px;
   background-color: #B3BDC7;
   z-index: -99;
@@ -81,13 +81,6 @@
 .line5::before {
   content: none;
   display:none;
-  position: absolute;
-  right: -185px;
-  top: 50%;
-  margin-top:-15px;
-  transform: translateY(-50%);
-  width:185px;
-  height: 1px;
-  background-color: #B3BDC7;
-  z-index: -99;
+
+  
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./style.module.css";
+import DownArrow2 from "../../assets/YIcons/Vectordrop.svg";
 import DownArrow from "../../assets/icons/down-chevron.svg";
 import UpArrow from "../../assets/icons/chevron-up-solid (1).svg";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
@@ -10,7 +11,9 @@ import { useSelector } from "react-redux";
 export default function InputSelect({
   parentClassName,
   Icon,
+  hideRight,
   value,
+  downArrow22,
   placeholder,
   placeholderClass,
   label,
@@ -18,6 +21,7 @@ export default function InputSelect({
   optionData,
   inputContainerClassName,
   onChange,
+  noAsteric,
   radio,
   checkbox,
   optionClassName,
@@ -33,10 +37,52 @@ export default function InputSelect({
   customArrow,
   customArrowClassName,
   downArrowClassName,
+  questionMarkIcon,
+  questionMarkMargin
 }) {
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
   // console.log(selectRef)
+  const [scrollToLetter, setScrollToLetter] = useState(null);
+  const optionsRef = useRef(null);
+
+  useEffect(() => {
+    if (scrollToLetter) {
+      const regex = new RegExp(`^${scrollToLetter}`, 'i');
+      let index = 0
+      const element = optionData?.find((item, idx) => {
+        if (optionType === "object") {
+          if (regex.test(item.name)) {
+            index = idx
+          }
+          return regex.test(item.name)
+        } else {
+          if (regex.test(item)) {
+            index = idx
+          }
+          return regex.test(item)
+        }
+      });
+      if (element && optionsRef.current) {
+        const itemHeight = 35.93;
+        optionsRef.current.scrollTop = itemHeight * index;
+      }
+      setScrollToLetter(null); // Reset scrollToLetter
+    }
+  }, [scrollToLetter, optionData]);
+
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      setScrollToLetter(e.key);
+    };
+    if (selected) {
+      window.addEventListener('keydown', handleKeyPress);
+    } else {
+      window.removeEventListener('keydown', handleKeyPress);
+    }
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [selected]);
+
   useOutsideAlerter(selectRef, () => setSelected(false));
   const handleOption = () => {
     setSelected(!selected);
@@ -66,14 +112,14 @@ export default function InputSelect({
               className={`font-medium ${label == 'User Type' && 'text-sm'} text-[#26435F] inline-block  ${labelClassname}`}
             >
               {label}
-              {required && (
+              {required && !noAsteric && (
                 <span className="text-primaryRed inline-block pl-1">*</span>
               )}
             </label>
           )}
           <div>
             {label == "Default Time Zone" && (
-              <img className="ml-3" src={questionMark} alt=""></img>
+              <img className={`${questionMarkMargin ? questionMarkMargin : `ml-3`}`} questionMarkIcon src={questionMarkIcon ? questionMarkIcon : questionMark} alt=""></img>
             )}
           </div>
         </div>
@@ -87,11 +133,11 @@ export default function InputSelect({
       >
         {Icon && <img src={Icon} className={`mr-5  w-[28px]}`} alt="icon" />}
         {IconLeft && <img src={IconLeft} className={`mr-5  w-[28px]}`} alt="IconLeft" />}
-        {IconSearch && <img src={IconSearch} className={`mr-5  w-[28px]}`} alt="IconLeft" />}
+        {IconSearch && <img src={IconSearch} className={`mr-2 mt-[3px]  w-[28px]}`} alt="IconLeft" />}
         {selected ? (
           IconRight ? (
             IconRight
-          ) : !IconLeft && (
+          ) : !IconLeft && !hideRight && (
             <img
             src={customArrow ? customArrow :DownArrow}
             className={`${customArrow ?`w-[20px] h-[20px] rotate-180 ${customArrowClassName}`:`w-[15px] h-[12px]`}   ${styles.downArrow} ${downArrowClassName}`}
@@ -100,7 +146,7 @@ export default function InputSelect({
           )
         ) : IconRight ? (
           IconRight
-        ) : !IconLeft && (
+        ) : !IconLeft && !hideRight && (
           <img
             src={customArrow ? customArrow :DownArrow}
             className={`${customArrow ?`w-[20px] h-[20px] ${customArrowClassName}`:`w-[15px] h-[12px]`}   ${styles.downArrow} ${downArrowClassName}`}
@@ -114,18 +160,19 @@ export default function InputSelect({
           name={label}
         >
           {value === "" || !value ? (
-            <span className={`text-[#667085] .text-base-17-5 whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>
+            <span className={`text-[#667085] text-base-17-5 whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>
               {" "}
               {placeholder}{" "}
             </span>
           ) : (
-            <span className={`mr-10 .text-base-17-5 whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>{value}</span>
+            <span className={`mr-10 text-base-17-5 whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>{value}</span>
           )}
         </div>
         {selected && (
           <div
             onClick={handleOption}
-            className={`scrollbar-content  scrollbar-vertical  shadow-lg shadow-[0px_0px_3px_0px_#00000040] ${styles.options} $`}
+            ref={optionsRef}
+            className={` custom-scroller  scrollbar-vertical   shadow-[0px_0px_3px_0px_#00000040] ${styles.options} $`}
           >
             {DateSelect && DateSelect}
             {optionData?.map((option, idx) => {

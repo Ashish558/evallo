@@ -1,15 +1,25 @@
 import styles from "./style.module.css";
 import { useGetSpecificActionLogQuery } from "../../app/services/adminDashboard";
 import { useEffect, useState } from "react";
-export default function ActionLog({ actionLog }) {
+import { useSelector } from "react-redux";
+import { getFormattedDate } from "../../utils/utils";
+import { getMonthName } from "../../utils/utils";
+
+export default function ActionLog({ actionLog, className }) {
+  const [dateFormat, setDateFormat] = useState("dd/mm/yy");
+  const { organization: organization2 } = useSelector(
+    (state) => state.organization
+  );
+  useEffect(() => {
+    if (organization2 && organization2?.settings) {
+      setDateFormat(organization2?.settings?.dateFormat);
+    }
+  }, [organization2]);
   const [currentElementIndex, setCurrentElementIndex] = useState(0);
   const [extraElement, setExtraElement] = useState(0);
   const [sortedAction, setSortedAction] = useState([]);
   const handleScroll = (e) => {
-
-
     const elementHeight = e.target.scrollHeight / actionLog?.length;
-
 
     const index = Math.floor(e.target.scrollTop / elementHeight);
     setCurrentElementIndex(index);
@@ -66,40 +76,81 @@ export default function ActionLog({ actionLog }) {
     let temp = headerDate[1] + " " + headerDate[2] + ", " + headerDate[3];
     headerDate = temp;
   }
-  return (
+
+  //  format monthName date, year
+  const formatDate= (value)=>{
     
-      <div
-
-        className="flex flex-col h-[315px] max-h-[500px]  shadow-[0px_0px_2px_rgba(0,0,0,0.25)]  rounded-5 bg-[#FFFFFF] "
+    let [ year, month, day] = value.split("-");
+     if(dateFormat==="dd/mm/yy"){
+      [ day, month,  year] = value.split("-");
+     }
+    else  if(dateFormat==="mm/dd/yy"){
+      [ month, day, year] = value.split("-");
+     }
+else [ year, month, day] = value.split("-");
+    const monthName = getMonthName(month-1);
+    console.log(
+     { 
+       value : value,
+       day : day,
+       month : month,
+       year : year,
+       monthName :monthName
+      }
+   );
+    
+    let formattedDate = `${monthName}` + " " + `${year}` + `,` + `${day}`;
+   
+    return formattedDate
+   }
+  
+  return (
+    <div
+      className={`flex flex-col h-[330px] max-h-[500px]  shadow-[0px_0px_2px_rgba(0,0,0,0.25)]  rounded-5 bg-[#FFFFFF] w-[65.1042vw] ${className}`}
+    >
+      <div className=" border-b-[1.6px]  border-b-[#CBD6E2] ">
+        <p className="uppercase  pl-[29px] pt-[16px] pb-2 text-[#26435F] text-base-20 text-[20px] font-normal">
+          {formatDate(getFormattedDate(headerDate, dateFormat))}
+        </p>
+      </div>
+      <ul
+        onScroll={handleScroll}
+        className="list-disc rounded-b-md overflow-y-scroll  custom-scroller h-full "
       >
-        <div className=" border-b-[1.6px]  border-b-[#CBD6E2] ">
-          <p className="uppercase  pl-[29px] pt-[16px] pb-3 text-[#26435F] text-xl !text-[calc(20*0.050vw)]">
-            {headerDate}
-          </p>
-        </div>
-        <ul
+        {sortedAction?.map((item, index) => {
+          let date = new Date(item.createdAt);
+          const offset = date.getTimezoneOffset() * 60000;
+          if (offset > 0) {
+            // startDate = startDate + offset
+            date = new Date(date.getTime() + offset);
+          }
+          let hours = date.getHours();
+          var minutes = date.getMinutes();
 
-          onScroll={handleScroll}
-          className="list-disc rounded-b-md overflow-y-scroll h-full "
-        >
-          {sortedAction?.map((item, index) => (
-            <>
+          if(0 <= minutes && minutes < 10){
+            minutes = `0` + minutes;
+          }
+
+          let ampm = "AM";
+          if (hours >= 12) {
+            hours-=12
+            ampm = "PM";
+          }
+          return (
+            
               <div key={index} className="flex h-[57px] pl-5 relative ">
-                <p className="text-[#517CA8] pt-6 !font-medium text-[14px] mr-2 w-[calc(143*0.050vw)] text-center !text-[calc(17.5*0.050vw)] whitespace-nowrap">
-                  {item?.message &&
-                    new Date(item.createdAt)
-                      .toLocaleTimeString()
-                      .split(":")
-                      .slice(0, 2)
-                      .join(":") +
-                    " " +
-                    new Date(item.createdAt)
-                      .toLocaleTimeString()
-                      .split(" ")[1]}
+                <p className="text-[#517CA8] pt-6 !font-light text-[15px] mr-2 w-[calc(143*0.050vw)] text-center !text-[calc(17.5*0.050vw)] whitespace-nowrap">
+               {
+                item?.message &&
+                <>
+                {hours}:{minutes} {ampm}
+                </>
+               }
+                    
                   {item?.topDate && item?.message && (
                     <span className="text-xs ml-5 top-0 text-[#FFA28D] absolute  backdrop-blur-sm ">
                       {" "}
-                      {item?.topDate}
+                      {/* {getFormattedDate(item?.topDate, dateFormat)} */}
                     </span>
                   )}
                 </p>
@@ -107,15 +158,15 @@ export default function ActionLog({ actionLog }) {
                   <div className={styles.circle}>
                     <div className={styles.circle2}></div>
                   </div>
-                  <p className="pl-4  font-medium text-[#517CA8] text-[15.5px] !text-[calc(17.5*0.050vw)]">
+                  <p className="pl-4  font-normal text-[#517CA8] !text-[calc(17.5*0.050vw)]">
                     {item?.message}
                   </p>
                 </div>
               </div>
-            </>
-          ))}
-        </ul>
-      </div>
-    
+          
+          );
+        })}
+      </ul>
+    </div>
   );
 }

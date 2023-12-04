@@ -13,17 +13,18 @@
 
 #uploadButtons {
     display: flex;
+  
 }
 
 .fileUploaded {
-    background-color: #7152eb !important;
+   
 }
 
 #handleFileUpload label {
-    background-color: #bfb1f6;
+   
     padding: 14.5px 16px;
     border-radius: 8px;
-    margin-right: 14px;
+    
     color: white;
     display: flex;
     gap: 8px;
@@ -43,9 +44,7 @@
     height: 20px;
 }
 
-#handleFileUpload {
-    padding-left: 51px;
-}
+
 
 #filename {
     margin-top: 7px;

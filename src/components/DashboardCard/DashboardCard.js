@@ -4,7 +4,7 @@ export default function DashboardCard({ className, data, header, subHeader }) {
 
 
    return (
-      <div className={`w-[16.41vw] flex py-[17px] px-[22px]  text-white  ${className} rounded-[5px] items-center`}
+      <div className={`w-[16.41vw] h-[125px] flex py-[17px] px-[22px]  text-white  ${className} rounded-[5px] items-center`}
       >
          <div className='w-[80px] h-[80px] text-center bg-white/20 rounded-[5px] flex flex-col justify-center'>
             <p className={`font-bold leading-none ${data.titleClassName ? data.titleClassName : 'text-[1.41vw]'}`}>

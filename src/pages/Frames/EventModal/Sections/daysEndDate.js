@@ -14,12 +14,19 @@ export default function DaysEndDate({ days, setDays, data, setData, isEditable }
       });
       setDays(tempdays);
    };
-
+const setAll=()=>{
+   if (isEditable === false || !data?.recurring) return
+   let tempdays = days.map(day => {
+      return  { ...day, checked:true }
+         
+   });
+   setDays(tempdays);
+}
    return (
-      <div className="flex mb-10 mt-6">
+      <div className="flex my-[30px]">
          <div className="mr-8">
-            <p className="font-medium text-base-17-5  mb-1 text-[#26435F]">
-               Repeat every week on
+            <p onClick={setAll} className="font-medium text-[18.6px]  mb-1 text-[#26435F]">
+               Repeat Every Week On
             </p>
             <div className="flex">
                {days.map((day, idx) => {
@@ -39,11 +46,12 @@ export default function DaysEndDate({ days, setDays, data, setData, isEditable }
          </div>
          <InputField
             label="End Date"
-            labelClassname="ml-3 text-[#26435F] font-medium text-base-17.5"
-            parentClassName={`w-full self-end ${!data.recurring ? 'opacity-50 pointer-events-none' : ''}} `}
+            biggerText={true}
+            labelClassname="ml-3 text-[#26435F] font-medium text-[18.6px] "
+            parentClassName={`w-full self-end ${!data.recurring ? 'pointer-events-none' : ''}} `}
             type="date"
-            inputContainerClassName="bg-lightWhite border-0 font-medium pr-3 pt-3.5 pb-3.5 h-[53px]"
-            inputClassName="bg-transparent appearance-none font-medium text-[#507CA8]"
+            inputContainerClassName="bg-lightWhite border-0 font-normal pr-3 pt-3.5 pb-3.5 h-[53px]"
+            inputClassName="bg-transparent appearance-none font-normal text-[#507CA8] shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
             value={data.endDate}
             onChange={(e) =>
                setData({

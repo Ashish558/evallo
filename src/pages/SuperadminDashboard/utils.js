@@ -42,29 +42,38 @@ export function convertToChart(dates, userData) {
 
   let labelData = JSON.parse(JSON.stringify(userData))
   if (labelData?.length > 0)
-    labelData = groupDatesIntoWeeks2(labelData)
-  console.log({ labelData })
+    labelData = []
+  console.log("dailyactivity label",{ labelData },dates["admin"])
   dates["admin"]?.map((it) => {
     mxLabel = Math.max(mxLabel, it.week);
-    adminData.push({ x: it.week, y: it.hours, r: it.data.length * 2 <= 20 ? it.data.length * 2 : 20, label: ("Day " + it?.data[0]?.datetime) });
+    adminData.push({ x:it?.data[0]?.date, y: it.hours, r: it.data.length * 2 <= 20 ? it.data.length * 2 : 20, label: ("Date: "+ new Date( it?.data[0]?.date).toDateString() ) });
+    labelData.push({admin:new Date(it?.data[0]?.date)})
+    
   });
   dates["tutor"]?.map((it) => {
     mxLabel = Math.max(mxLabel, it.week);
-    tutorData.push({ x: it.week, y: it.hours, r: it.data.length * 2 <= 20 ? it.data.length * 2 : 20, label: ("Day " + it?.data[0]?.datetime) });
+    tutorData.push({ x:it?.data[0]?.date, y: it.hours, r: it.data.length * 2 <= 20 ? it.data.length * 2 : 20, label: ("Date: "+ new Date( it?.data[0]?.date).toDateString() ) });
+    labelData.push({tutor:new Date(it?.data[0]?.date)})
   });
   dates["parent"]?.map((it) => {
     mxLabel = Math.max(mxLabel, it.week);
-    parentData.push({ x: it.week, y: it.hours, r: it.data.length * 2 <= 20 ? it.data.length * 2 : 20, label: ("Day " + it?.data[0]?.datetime) });
+    parentData.push({ x:it?.data[0]?.date, y: it.hours, r: it.data.length * 2 <= 20 ? it.data.length * 2 : 20, label: ("Date: "+ new Date( it?.data[0]?.date).toDateString() ) });
+    labelData.push({parent:new Date(it?.data[0]?.date)})
   });
   dates["student"]?.map((it) => {
     mxLabel = Math.max(mxLabel, it.week);
-    studentData.push({ x: it.week, y: it.hours, r: it.data.length * 2 <= 20 ? it.data.length * 2 : 20, label: ("Day " + it?.data[0]?.datetime) });
+    studentData.push({ x:it?.data[0]?.date, y: it.hours, r: it.data.length * 2 <= 20 ? it.data.length * 2 : 20, label: ("Date: "+ new Date( it?.data[0]?.date).toDateString() ) });
+    labelData.push({student:new Date(it?.data[0]?.date)})
   });
   mxLabel = userData.length
+  labelData?.sort((a,b) =>{
+    return new Date(a)-new Date(b);})
   for (let i = 0; i < labelData.length; i++)
-    labels.push(new Date(labelData[i]?.data[0]?.datetime).toDateString());
+  labels.push(labelData[i]);
+    //labels.push(new Date(labelData[i]?.data[0]?.datetime).toDateString());
+   
   let result = {
-    labels: labels,
+  
     datasets: [
       {
         label: "Admin",

@@ -1,7 +1,8 @@
 import React from 'react';
 import Loader from '../Loader';
 
-const PrimaryTab = ({ children, className, onClick, disabled, roundedClass, type, loading }) => {
+const PrimaryTab = ({ item,children, className, onClick, disabled, roundedClass, type, loading }) => {
+    // console.log(item)
     return (
         <button className={` relative text-[#26435F] py-[7px] px-6 ${className} disabled:opacity-60`}
             onClick={onClick}

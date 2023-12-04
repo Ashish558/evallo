@@ -77,6 +77,9 @@ export const testServicesApi = createApi({
       getAssignedTest: builder.query({
          query: (id) => ({
             url: `/api/test/assigntest`,
+            params:{
+               studentId:id
+            },
             method: "GET",
             headers: getAuthHeader()
          })
@@ -179,6 +182,14 @@ export const testServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
+      getQuestion: builder.query({
+         query: (body) => ({
+            url: `/api/test/getdsat/${body.testid}?userId=${body.userid}`,
+            method: "GET",
+            params: body.params,
+            headers: getAuthHeader()
+         })
+      }),
 
    }),
 });
@@ -205,5 +216,6 @@ export const {
    useLazyGetAnswersQuery,
    useLazyDeleteTestQuery,
    useEditQuestionMutation,
-   useAddBackupResponseMutation
+   useAddBackupResponseMutation,
+   useLazyGetQuestionQuery
 } = testServicesApi;

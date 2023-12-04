@@ -12,7 +12,7 @@ export default function SearchNames({ setStudent, setData, student, tutor, data,
    const [fetchTutorStudents, tutorStudentsResp] = useLazyGetTutorStudentsByNameQuery();
    const [students, setStudents] = useState([]);
    const { role: persona } = useSelector(state => state.user)
-   // console.log(user);
+
 
    useEffect(() => {
       if (tutor.length > 0) {
@@ -56,46 +56,52 @@ export default function SearchNames({ setStudent, setData, student, tutor, data,
          }
       }
    }, [student]);
-console.log({students,tutors,data})
+
    return (
-      <div className="flex mb-4">
+      <div className="flex mb-[30px]">
          <InputSearch
             label="Student Name"
             required="true"
-            labelClassname="font-medium text-base-17-5"
-            placeholder="Student Name"
-            parentClassName="w-full mr-[18.48px] text-[#26435F] "
-            inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 text-[#507CA8]"
+            labelClassname="font-medium text-lg"
+            placeholder="Select Student"
+            parentClassName="w-full mr-[66px] text-[#26435F] "
+            inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 text-[#507CA8] h-[53px] text-base shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
             inputClassName="bg-transparent text-[#507CA8]"
             type="text"
             optionPrefix='s'
             value={student}
-            onChange={(e) => setStudent(e.target.value)}
+            onChange={(e) => {
+               setData({ ...data, studentId: "" });
+               setStudent(e.target.value)
+            }}
             optionData={students}
             disabled={!isEditable}
             onOptionClick={(item) => {
                setStudent(item.value);
-               setData({ ...data, studentId: item._id,studentName: item.value});
+               setData({ ...data, studentId: item._id, studentName: item.value });
             }}
-            
+
          />
          <InputSearch
             label="Tutor Name"
             required="true"
-            labelClassname="font-medium text-base-17-5"
-            placeholder="Tutor Name"
+            labelClassname="font-medium text-lg"
+            placeholder="Select Tutor"
             parentClassName="w-full text-[#26435F]"
-            inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 text-[#507CA8]"
+            inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 text-[#507CA8] h-[53px] text-base shadow-[0_0_2px_0_rgba(0, 0, 0, 0.25)]"
             inputClassName="bg-transparent text-[#507CA8]"
             type="text"
             optionPrefix='t'
             value={tutor}
             disabled={persona === 'admin' ? false : true}
-            onChange={(e) => setTutor(e.target.value)}
+            onChange={(e) => {
+               setData({ ...data, tutorId: "" });
+               setTutor(e.target.value)
+            }}
             optionData={tutors}
             onOptionClick={(item) => {
                setTutor(item.value);
-               setData({ ...data, tutorId: item._id,tutorName: item.value });
+               setData({ ...data, tutorId: item._id, tutorName: item.value });
             }}
          />
       </div>

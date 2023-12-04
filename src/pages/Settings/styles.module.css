@@ -21,7 +21,7 @@
    margin-right: 8px;
 }
 .selectedTab{
-   color: black;
+   color: #26435F;
 }
 .activeBgIcon{
    position: absolute;
@@ -39,7 +39,7 @@
    border-radius: 0;
 }
 div{
-   font-family: 'Lexend Deca', sans-serif;
+   font-family: 'Lexend', sans-serif;
 }
 /* .styles_tabsContainer__dqk-Y{
    width: 100% !important;

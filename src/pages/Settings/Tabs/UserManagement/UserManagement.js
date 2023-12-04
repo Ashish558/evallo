@@ -34,7 +34,7 @@ import { isPhoneNumber } from "../../../Signup/utils/util";
 import { checkIfExistInNestedArray } from "../../../../utils/utils";
 import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew";
 import { useSelector } from "react-redux";
-import { useAddManager2Mutation } from "../../../../app/services/superAdmin";
+import { useAddManager2Mutation, useDeleteManagerMutation } from "../../../../app/services/superAdmin";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 
@@ -47,6 +47,12 @@ const initialState = {
   phone: "",
   userType: "",
 };
+
+const SORT_STATES = {
+  ASCENDING_ORDER: "ASCENDING_ORDER",
+  DESCENDING_ORDER: "DESCENDING_ORDER",
+  UNSORTED: "UNSORTED",
+}
 
 export default function UserManagement() {
   const [modalActive, setModalActive] = useState(false);
@@ -61,7 +67,12 @@ export default function UserManagement() {
   const [filteredUsersData, setFilteredUsersData] = useState([]);
   const [forgotPassword, forgotPasswordResp] = useForgotPasswordMutation();
   const { role } = useSelector((state) => state.user);
-  const [addManager,setManager]=useAddManagerMutation()
+  const [addManager, setManager] = useAddManagerMutation();
+  const [nameSortState, setNameSortState] = useState(SORT_STATES.UNSORTED);
+  const [emailSortState, setEmailSortState] = useState(SORT_STATES.UNSORTED);
+  const [userTypeSortState, setUserTypeSortState] = useState(SORT_STATES.UNSORTED);
+  const [lastLoginSortState, setLastLoginSortState] = useState(SORT_STATES.UNSORTED);
+
   useEffect(() => {
     setValidData(
       isEmail(modalData.email) &&
@@ -82,67 +93,323 @@ export default function UserManagement() {
   const [settings, setSettings] = useState({
     leadStatus: [],
   });
-  const sortByName = () => {
-    setUsersData((prev) => {
-      let arr = [...prev];
-      arr = arr.sort(function (a, b) {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
-      });
-      return arr;
-    });
 
-    setFilteredUsersData((prev) => {
-      let arr = [...prev];
-      console.log("arr", arr);
-      arr = arr.sort(function (a, b) {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
+  const sortByName = () => {
+
+    if(nameSortState === SORT_STATES.DESCENDING_ORDER) {
+
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.name < b.name) {
+            return -1;
+          }
+          if (a.name > b.name) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
       });
-      return arr;
-    });
+
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.name < b.name) {
+            return -1;
+          }
+          if (a.name > b.name) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setNameSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(nameSortState === SORT_STATES.UNSORTED || nameSortState === SORT_STATES.ASCENDING_ORDER) {
+
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.name < b.name) {
+            return 1;
+          }
+          if (a.name > b.name) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.name < b.name) {
+            return 1;
+          }
+          if (a.name > b.name) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setNameSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  };
+
+  const sortByEmail = () => {
+
+    if(emailSortState === SORT_STATES.DESCENDING_ORDER) {
+
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.email < b.email) {
+            return -1;
+          }
+          if (a.email > b.email) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.email < b.email) {
+            return -1;
+          }
+          if (a.email > b.email) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setEmailSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(emailSortState === SORT_STATES.UNSORTED || emailSortState === SORT_STATES.ASCENDING_ORDER) {
+
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.email < b.email) {
+            return 1;
+          }
+          if (a.email > b.email) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.email < b.email) {
+            return 1;
+          }
+          if (a.email > b.email) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setEmailSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  };
+
+  const sortByUserType = () => {
+
+    if(userTypeSortState === SORT_STATES.DESCENDING_ORDER) {
+
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.userType < b.userType) {
+            return -1;
+          }
+          if (a.userType > b.userType) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.userType < b.userType) {
+            return -1;
+          }
+          if (a.userType > b.userType) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setUserTypeSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(userTypeSortState === SORT_STATES.UNSORTED || userTypeSortState === SORT_STATES.ASCENDING_ORDER) {
+
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.userType < b.userType) {
+            return 1;
+          }
+          if (a.userType > b.userType) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.userType < b.userType) {
+            return 1;
+          }
+          if (a.userType > b.userType) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setUserTypeSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  };
+
+  const sortByLastLogin = () => {
+
+    if(lastLoginSortState === SORT_STATES.DESCENDING_ORDER) { 
+
+      setUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.lastLogin) < new Date(b.lastLogin)) {
+            return -1;
+          }
+          if (new Date(a.lastLogin) > new Date(b.lastLogin)) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.lastLogin) < new Date(b.lastLogin)) {
+            return -1;
+          }
+          if (new Date(a.lastLogin) > new Date(b.lastLogin)) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setLastLoginSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(lastLoginSortState === SORT_STATES.UNSORTED || lastLoginSortState === SORT_STATES.ASCENDING_ORDER) {  
+
+      setUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.lastLogin) < new Date(b.lastLogin)) {
+            return 1;
+          }
+          if (new Date(a.lastLogin) > new Date(b.lastLogin)) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.lastLogin) < new Date(b.lastLogin)) {
+            return 1;
+          }
+          if (new Date(a.lastLogin) > new Date(b.lastLogin)) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setLastLoginSortState(SORT_STATES.DESCENDING_ORDER);
+    }
   };
 
   let tableHeaders = [
     {
       id: 1,
-      text: "Full Name",
+      text: "Full Name", // name
       className: "text-left pl-7",
       onCick: sortByName,
+      willDisplayDownArrow: nameSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 2,
-      text: "Email",
+      text: "Email", // email,
+      onCick: sortByEmail,
+      willDisplayDownArrow: emailSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 3,
-      text: "Usertype",
+      text: "Usertype", // userType
+      onCick: sortByUserType,
+      willDisplayDownArrow: userTypeSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 4,
-      text: "Last login",
+      text: "Last login", // lastLogin
+      onCick: sortByLastLogin,
+      willDisplayDownArrow: lastLoginSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 5,
       text: "Profile",
+      noArrow: true,
     },
     {
       id: 6,
       text: "Password",
+      noArrow: true,
     },
     {
       id: 7,
       text: "",
+      noArrow: true,
     },
   ];
 
@@ -153,18 +420,25 @@ export default function UserManagement() {
         text: "Full Name",
         className: "text-left pl-6",
         onCick: sortByName,
+        willDisplayDownArrow: nameSortState !== SORT_STATES.DESCENDING_ORDER,
       },
       {
         id: 2,
         text: "Usertype",
+        onCick: sortByUserType,
+        willDisplayDownArrow: userTypeSortState !== SORT_STATES.DESCENDING_ORDER,
       },
       {
         id: 3,
         text: "Email",
+        onCick: sortByEmail,
+        willDisplayDownArrow: emailSortState !== SORT_STATES.DESCENDING_ORDER,
       },
       {
         id: 7,
         text: "Last login",
+        onCick: sortByLastLogin,
+        willDisplayDownArrow: lastLoginSortState !== SORT_STATES.DESCENDING_ORDER,
       },
     ];
   }
@@ -194,7 +468,7 @@ export default function UserManagement() {
 
   const [fetchUsers, fetchUsersResp] = useLazyGetAllUsersQuery();
   const [addUser, addUserResp] = useAddUserMutation();
-  const [addManager2,setManager2status]=useAddManager2Mutation()
+  const [addManager2, setManager2status] = useAddManager2Mutation()
   const [signupUser, signupUserResp] = useSignupUserMutation();
   const [deleteUser, deleteUserResp] = useDeleteUserMutation();
 
@@ -350,7 +624,6 @@ export default function UserManagement() {
   useEffect(() => {
     fetchTutors();
   }, []);
-
   const changeUserField = (field, id) => {
     let temp = filteredUsersData.map((item) => {
       // console.log(item[Object.keys(field)[0]]);
@@ -379,7 +652,7 @@ export default function UserManagement() {
 
   useEffect(() => {
     let tempdata = [...usersData];
-     console.log('all users data', usersData)
+    console.log('all users data', usersData)
     // console.log('filterData.specialization', filterData.specialization)
     fetch();
     setCurrentPage(1);
@@ -492,7 +765,7 @@ export default function UserManagement() {
       });
       return;
     }
-    else if(modalData.userType==='manager'){
+    else if (modalData.userType === 'manager') {
       addManager2(body).then((res) => {
         setLoading(false);
         console.log(res);
@@ -565,14 +838,17 @@ export default function UserManagement() {
   };
 
   const handleDelete = (item) => {
-    console.log(item);
+    console.log("delete",item,userToDelete);
+    if(item?.userType==="manager"  ){
     setUserToDelete(item);
     setDeleteModalActive(true);
+    }
   };
-
+const [deleteManager,deleteManagerStatus]=useDeleteManagerMutation()
   const onDelete = () => {
     setDeleteLoading(true);
-    deleteUser(userToDelete._id).then((res) => {
+    deleteManager({id:userToDelete._id}).then((res) => {
+      console.log("deleteManager response: " , res);
       setDeleteLoading(false);
       setDeleteModalActive(false);
       if (res.error) {
@@ -620,7 +896,7 @@ export default function UserManagement() {
     modalData.phone,
     modalData.userType,
   ]);
-console.log({addUserBtnDisabled})
+  console.log({ addUserBtnDisabled })
   useEffect(() => {
     if (!settings.servicesAndSpecialization) return;
     let specs = [];
@@ -665,15 +941,15 @@ console.log({addUserBtnDisabled})
     }
   });
 
-console.log({modalData})
+  // console.log({ modalData })
   return (
     <div className=" bg-lightWhite min-h-screen">
       <div className="py-14 pt-0 ">
 
-        <div className="mt-6">
+        <div className="w-full mt-6">
           <Table
             dataFor={role === 'superAdmin' ? "allUsersSuperAdmin" : 'allUsersManager'}
-            noArrow={true}
+            // noArrow={true}
             data={filteredUserData}
             onClick={{
               redirect,
@@ -693,17 +969,17 @@ console.log({modalData})
             extraData={allTutors}
           />
         </div>
-        <div onClick={()=>{setModalActive(true) ;setModalData({ ...modalData, userType: 'manager' })}} className="text-[#26435F] -mt-2 cursor-pointer"><img src={AddManager} alt="add manager" /></div>
+        <div onClick={() => { setModalActive(true); setModalData({ ...modalData, userType: 'manager' }) }} className="text-[#26435F] -mt-5 cursor-pointer"><img src={AddManager} alt="add manager" /></div>
       </div>
 
       {
         modalActive && (
           <Modal
-          underline="false"
+            underline="false"
             classname={"max-w-[700px] mx-auto rounded-md"}
             title="Add A Manager"
             // cancelBtn={true}
-            titleClassName="text-start mb-3 pb-3 border-b border-b-gray-300"
+            titleClassName="text-start mb-3 pb-[22px] border-b border-b-gray-300"
             // primaryCancel={true}
             // cancelBtnClassName="w-130"
             // primaryBtn={{
@@ -727,7 +1003,7 @@ console.log({modalData})
                   <div>
                     <InputField
                       label="First Name"
-                      labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
+                      labelClassname=" mb-0.5 text-[#26435F] font-semibold"
                       placeholder="First Name"
                       inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
                       inputClassName="bg-transparent"
@@ -743,7 +1019,7 @@ console.log({modalData})
                   <div>
                     <InputField
                       label="Last Name"
-                      labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
+                      labelClassname=" mb-0.5 text-[#26435F] font-semibold"
                       isRequired={true}
                       placeholder="Last Name"
                       inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
@@ -758,10 +1034,10 @@ console.log({modalData})
                   </div>
                   <div>
                     <InputField
-                      label="Email Addresss "
-                      labelClassname="ml-4 mt-2 mb-0.5 text-[#26435F] font-semibold"
+                      label="Email Address"
+                      labelClassname=" mt-2 mb-0.5 text-[#26435F] font-semibold"
                       isRequired={true}
-                      placeholder="Email Addresss"
+                      placeholder="Email Address"
                       inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
                       inputClassName="bg-transparent"
                       parentClassName="w-full"
@@ -775,7 +1051,7 @@ console.log({modalData})
                   <div>
                     <InputField
                       label="Phone "
-                      labelClassname="ml-4 mt-2 mb-0.5 text-[#26435F] font-semibold"
+                      labelClassname=" mt-2 mb-0.5 text-[#26435F] font-semibold"
                       isRequired={true}
                       placeholder="Phone"
                       inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
@@ -788,12 +1064,12 @@ console.log({modalData})
                       }
                     />
                   </div>
-                 
+
                 </div>
                 <div className='flex items-center justify-center gap-4'>
-               
-                <button className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]  w-[146px]" onClick={handleSubmit} disabled={addUserBtnDisabled}>Invite User</button>
-                <button onClick={(e)=>{e.preventDefault();handleClose()}} className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]">Cancel</button>
+
+                  <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]" onClick={handleSubmit} disabled={addUserBtnDisabled||loading}>{loading?"Inviting...":"Invite"}</button>
+                  <button onClick={(e) => { e.preventDefault(); handleClose() }} className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]  w-[146px]">Cancel</button>
                 </div>
               </form>
             }
@@ -802,26 +1078,26 @@ console.log({modalData})
       }
       {deleteModalActive && (
         <Modal
+        crossBtn={true}
+        classname="!w-[666px] mx-auto"
           title={
-            <span className="leading-10">
-              Are you sure <br />
-              you want to delete user{" "}
-              {`${userToDelete.name} ${userToDelete._id}`} and all associated
-              data ?
+            <span className="leading-10 text-[21px] ">
+              Are You Sure You Want To Delete User{" "}
+              {`${userToDelete.name}`} 
             </span>
           }
-          titleClassName="mb-12 leading-10"
+          titleClassName="mb-[22px] leading-10 !text-center"
           cancelBtn={true}
-          cancelBtnClassName="max-w-140"
+          cancelBtnClassName="!w-[146px] text-[#26435F] font-medium text-base !rounded-[8px] !bg-[rgba(38,67,95,0.10)] !ml-auto !h-[46px]"
           primaryBtn={{
             text: "Delete",
-            className: "w-[140px] pl-4 px-4",
+            className: "text-base bg-[#FF7979] !w-[146px] pl-4 pr-4   !rounded-[8px] font-medium !mr-auto !text-center !bg-[#FF7979] !h-[46px]",
             onClick: () => onDelete(),
             bgDanger: true,
             loading: deleteLoading,
           }}
           handleClose={() => setDeleteModalActive(false)}
-          classname={"max-w-567 mx-auto"}
+         
         />
       )}
     </div>

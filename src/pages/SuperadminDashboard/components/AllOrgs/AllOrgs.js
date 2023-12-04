@@ -2,21 +2,23 @@ import React, { useRef } from "react";
 
 import InputField from "../../../../components/InputField/inputField";
 import { useState } from "react";
-import searchIcon from "../../../../assets/icons/search.svg";
+import searchIcon from "../../../../assets/icons/Search_orgs.svg";
 import uploadIcon from "../../../../assets/icons/uil_export.svg";
 import calendar from "../../../../assets/icons/calendar.svg";
 import { frameHeaderNames, framesData } from "./staticData";
 import FramesScreen from "./FramesScreen";
 import arrowDown from "../../../../assets/icons/arrowdown.svg";
 import { useEffect } from "react";
-import DateIcon from "../../../../assets/icons/solar_calendar-date-outline.svg"
+import DateIcon from "../../../../assets/icons/allOrgs_calender_icon.svg"
 import Table from "../../../../components/Table/Table";
 
-import InputSelect from "../../../../components/InputSelect/InputSelect";
+import InputSelect  from "../../../../components/InputSelect/InputSelect";
 import { useLazyGetAllOrgQuery } from "../../../../app/services/superAdmin";
 import LoaderNew from "../../../../components/Loader/LoaderNew";
 import { CSVLink } from "react-csv";
 import { csvHeaderNames, csvHeaders } from "../../../Users/csvUtlis";
+import { useSelector } from "react-redux";
+import RangeDate from "../../../../components/RangeDate/RangeDate";
 const AllOrgs = () => {
   const [adminData, setAdminData] = useState([]);
   const [fetchedData, setFetchedData] = useState([]);
@@ -26,14 +28,16 @@ const AllOrgs = () => {
   const [fetchAllOrgQuery, fetchAllOrgQueryStatus] = useLazyGetAllOrgQuery();
   const [csvData, setCsvData] = useState([]);
   const [csvLoad, setCsvLoad] = useState(false);
+  const {organization}= useSelector((state)=>state.organization)
   const [successFetched, setsuccessFetched] = useState(false);
   const handleBulkExport = async () => {
 
     if (adminData?.length > 0) {
       setCsvLoad(true);
       let result = adminData;
-
+      
       if (result) {
+        console.log({result})
         let arr = [];
         result?.forEach((item) => {
           let obj = {};
@@ -47,11 +51,13 @@ const AllOrgs = () => {
           obj.state = item.associatedOrg?.state
           obj.country = item.associatedOrg?.country
           obj.firstName = item.firstName
+          obj.lastName = item.lastName
           obj.email = item.email
           obj.phone = item.phone
           obj.userStatus = item?.userStatus
           obj.tutors = item.associatedOrg?.numberOfTutors
           obj.student = item.associatedOrg?.numberOfActiveStudent
+            obj.parent = item.associatedOrg?.numberOfActiveStudent
           obj.contributor = "contributors"
           arr.push(obj);
         });
@@ -70,7 +76,12 @@ const AllOrgs = () => {
     subscription: "",
     numberOfStudent: "",
   });
-  const orgType = [
+  const orgType=[
+    "Individual",
+    "Company",
+    "None"
+  ]
+  const orgType2 = [
     "None",
     "Sole proprietorship",
     "Partnership",
@@ -84,6 +95,42 @@ const AllOrgs = () => {
     "Private Limited Company",
     "Public",
   ];
+  const [refetch,setRefetch]=useState(false)
+  const handleRefetch=()=>{
+    setRefetch(!refetch);
+  }
+  const convertDateToRange = (startDate) => {
+    let startD = startDate.split("-")[0];
+
+    startD = new Date(startD);
+    startD = startD.setDate(startD.getDate() + 1);
+    startD = new Date(startD).toISOString().split("T")[0];
+
+    let endD = startDate.split("-")[1];
+    endD = new Date(endD);
+    endD = endD.setDate(endD.getDate() + 1);
+    endD = new Date(endD).toISOString().split("T")[0];
+    const body = { startDate: startD, endDate: endD };
+
+    return body;
+  };
+  const handleDataRange=(startDate)=>{
+    const body = convertDateToRange(startDate);
+    let arr = JSON.parse(JSON.stringify(fetchedData));
+    console.log(values,arr)
+    arr = arr.filter((it) => {
+      
+    
+     if(it?.createdAt && new Date(it?.createdAt) <= new Date(body.endDate) && new Date(it?.createdAt) >= new Date(body.startDate)){
+       return true
+     }
+     else return false
+
+    });
+    console.log({ arr });
+    setAdminData(arr);
+    console.log("range", body)
+  }
   const [error, setError] = useState({
     search: "",
     joinDate: "",
@@ -98,24 +145,30 @@ const AllOrgs = () => {
         .then((res) => res.json())
         .then((data) => setCountry([{ name: 'None' }, ...data]));
     }
+    setFetchedData([])
     fetchAllOrgQuery()
       .then((result) => {
-        setFetchedData(result.data.admins);
+        let data=result?.data?.admins?result?.data?.admins?.map(it=>it):[]
+        console.log({result,data})
+       
+         data=[...data].sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setFetchedData(data);
       })
       .catch((e) => {
         console.error(e.response?.data?.message);
       });
-  }, []);
+  }, [refetch]);
   useEffect(() => {
     let arr = JSON.parse(JSON.stringify(fetchedData));
+    console.log(values,arr)
     arr = arr.filter((it) => {
       let v = [];
       v.push(it?.company?.toLowerCase()?.includes(values.search?.toLowerCase()));
 
-      v.push(it?.createdAt?.toLowerCase()?.includes(values.joinDate?.toLowerCase()));
+      // v.push(it?.createdAt?.toLowerCase()?.includes(values.joinDate?.toLowerCase()));
 
       v.push(
-        it?.associatedOrg?.companyType?.toLowerCase()?.includes(values.orgType?.toLowerCase())
+        it?.registrationAs?.toLowerCase()?.includes(values.orgType?.toLowerCase())
       );
 
       v.push(
@@ -142,17 +195,18 @@ const AllOrgs = () => {
     setForceChange(!forceChange)
 
   }
+  console.log({organization,adminData})
   return (
     <>
-      <div className="pl-[5.46875vw] pt-7 mb-12">
-        <h4 className="text-[#24A3D9]">All Orgs</h4>
-        <div className="flex justify-between py-5 ">
-          <div className="w-full flex  gap-x-[1.4583333333vw]  items-center">
+      <div className=" pt-7 mb-12">
+        <h4 className="pl-[5.46875vw] text-[#24A3D9]">All Orgs</h4>
+        <div className=" px-[5.46875vw] flex items-center justify-between py-5 ">
+          <div className="w-[72vw] flex min-w-[860px]  gap-x-[1.4583333333vw]  items-center">
             <InputField
-            inputClassName="text-[#667085]"
+            inputClassName="!text-[#667085] placeholder:!text-[#667085]"
               placeholder="Search"
-              parentClassName="text-[#667085]"
-              inputContainerClassName="w-[11.1115625vw] bg-white  shadow-[0px_0px_2.6666667461395264px_0px_#00000040] h-[51px]"
+              parentClassName="!text-[#667085]"
+              inputContainerClassName="w-[11.09vw] bg-white  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] !h-[53.3px] !py-1"
               Icon={searchIcon}
               value={values.search}
               onChange={(e) =>
@@ -163,12 +217,17 @@ const AllOrgs = () => {
               }
               error={error.search}
             />
-            <InputSelect
+            <InputSelect 
+            downArrow22={true}
+
               placeholder="Org type"
               parentClassName="  text-[#667085]"
               value={values.orgType}
-              inputContainerClassName="w-[9.6875vw] bg-white  shadow-[0px_0px_2.6666667461395264px_0px_#00000040] text-xs"
-              optionClassName=" py-[3px] w-[9.6875vw] text-[#667085] font-normal"
+              optionData={orgType}
+              placeholderClass="!break-words  !text-wrap !whitespace-pre-line "
+              inputContainerClassName="w-[9.6875vw]  break-words bg-white  !text-wrap  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] text-xs !h-[53.3px]"
+              
+              optionClassName=" py-[3px]  text-[#667085] font-normal"
               onChange={(e) =>
                 setValues({
                   ...values,
@@ -178,15 +237,13 @@ const AllOrgs = () => {
               error={error.orgType}
             />
             <InputField
-              placeholder="Join Date"
-              IconRight2={inputRef?.current?.type === 'text' ? DateIcon : ''}
-              DateIconClick={handleButtonIcon}
+              placeholder="Join date"
+           
               parentClassName=" "
               refS={inputRef}
-              onBlur={(e) => { (inputRef.current.type = "text"); setForceChange(!forceChange) }}
-              onFocus={(e) => { (inputRef.current.type = "date"); setForceChange(!forceChange) }}
-              inputClassName="text-[0.8333333333vw] text-[#667085]"
-              inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040] w-[9.6875vw] h-[51px]"
+             
+              inputClassName="text-[0.8333333333vw] !text-[#667085] placeholder:!text-[#667085] hidden"
+              inputContainerClassName="bg-white  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] w-[13vw] !h-[53.3px]"
               value={values.joinDate}
               onChange={(e) =>
                 setValues({
@@ -195,15 +252,23 @@ const AllOrgs = () => {
                   joinDate: e.target.value,
                 })
               }
+              dateBody={
+              <div className="ml-[-30px]">
+              <RangeDate allorg={true} removeUnderline={true} handleRangeData={handleDataRange}/>
+            </div>
+            }
               error={error.joinDate}
             />
-            <InputSelect
+            
+            <InputSelect 
+            downArrow22={true}
               placeholder="Region"
               parentClassName="text-xs text-[#667085]"
-              inputContainerClassName="w-[9.6875vw] bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040] h-[51px]"
+              inputContainerClassName="w-[9.6875vw] bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] !h-[53.3px] "
               optionData={country}
               optionType={"object"}
-              optionClassName="w-[9.6875vw] py-[3px] w-[110px]"
+              optionClassName="w-[9.6875vw] py-[3px] w-[110px] "
+              placeholderClass="!whitespace-normal"
               value={values.region}
               onChange={(e) =>
                 setValues({
@@ -213,10 +278,13 @@ const AllOrgs = () => {
               }
               error={error.region}
             />
-            <InputSelect
+            <InputSelect 
+            downArrow22={true}
               placeholder="Subscription"
+              optionData={organization?.settings?.subscriptionCode?.map(it=>
+                it?.code)}
               parentClassName="text-xs text-[#667085]"
-              inputContainerClassName="w-[9.6875vw] bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040] h-[51px]"
+              inputContainerClassName="w-[9.6875vw] bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] !h-[53.3px]"
               optionClassName="w-[9.6875vw] py-[3px] "
               value={values.subscription}
               onChange={(e) =>
@@ -228,10 +296,11 @@ const AllOrgs = () => {
               error={error.subscription}
             />
             <InputField
-              placeholder="# of student"
+              placeholder="# of Students"
               parentClassName="w-full w-[9.6875vw] py-1 text-[#667085]"
-              inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040] h-[51px] text-[#667085]"
+              inputContainerClassName="bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] !h-[53.3px] text-[#667085]"
               optionClassName="w-[9.6875vw] py-1"
+              inputClassName={"placeholder:!text-[#667085]"}
               value={values.numberOfStudent}
               onChange={(e) =>
                 setValues({
@@ -242,9 +311,9 @@ const AllOrgs = () => {
               error={error.numberOfStudent}
             />
           </div>
-          <div className="w-[400px] flex justify-center  items-center ">
+          <div className="w-[200px] flex justify-end  items-center ">
 
-            <button className="flex rounded-md justify-center gap-2 bg-[#517CA8] h-[51px] w-[8.984375vw] items-center  text-white">
+            <button className="flex rounded-md justify-center gap-2 bg-[#517CA8] !h-[53.3px] w-[8.984375vw] items-center  text-white text-base-17-5">
               {csvLoad ? <LoaderNew /> : ""}
               {!csvLoad && !successFetched ? (
                 <p onClick={handleBulkExport}>Export</p>
@@ -268,17 +337,19 @@ const AllOrgs = () => {
               )}
 
               {!csvLoad && (
-                <img  src={uploadIcon} alt="upload" />
+                <img  src={uploadIcon} className="w" alt="upload" />
               )}
             </button>
           </div>
         </div>
-        <div className="overflow-x-auto scrollbar-content scroll-mt-3 pr-7 mt-2" >
+        <div className="pl-[5.46875vw] overflow-x-auto scrollbar-content scroll-mt-3 pr-7 mt-2" >
           <Table
             noArrow={false}
+            headerWidth="pl-6 !pr-0"
             data={adminData}
             tableHeaders={frameHeaderNames}
-            maxPageSize={10}
+            maxPageSize={100}
+            handleAllOrgRefetch={handleRefetch}
             dataFor="allOrgs"
             excludes={["_id"]}
           />

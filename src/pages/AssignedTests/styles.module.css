@@ -1,5 +1,5 @@
 .container {
-  font-family: "Lexend Deca", sans-serif;
+  font-family: 'Lexend', sans-serif;
 }
 
 .subheading {
@@ -11,6 +11,8 @@
 }
 
 .userStatsContainer {
+  width: 585px;
+  height: 192px;
   border-radius: 4px;
   overflow: hidden;
 }

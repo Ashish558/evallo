@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import Modal from "../../components/Modal/Modal";
 import Table from "../../components/Table/Table";
 import InputSelect from "../../components/InputSelect/InputSelect";
-
+//import down from "../../assets/icons/down.png";
+import down from "../../assets/YIcons/Group33.svg";
 import AddIcon from "../../assets/icons/add.svg";
 import SearchIcon from "../../assets/icons/search.svg";
 
@@ -17,7 +18,7 @@ import AssignedTestIndicator from "../../components/AssignedTestIndicator/Assign
 import { useSelector } from "react-redux";
 import { getDuration, getFormattedDate } from "../../utils/utils";
 import FilterItems from "../../components/FilterItems/filterItems";
-import { useAddAssignedTutorMutation, useDeleteAssignedTutorMutation, useLazyGetAllAssignedtutorsQuery } from "../../app/services/admin";
+import { useAddAssignedTutorMutation, useCRMBulkChangeAssignedTutorMutation, useDeleteAssignedTutorMutation, useLazyGetAllAssignedtutorsQuery } from "../../app/services/admin";
 import { useNavigate } from "react-router-dom";
 
 const optionData = []
@@ -76,7 +77,7 @@ const initialState = {
    tutorId: '',
 }
 
-export default function AssignedTutors(props) {
+export default function AssignedTutors({ setAssignedTutorOpen, assignedTutorOpen, fetch2 }) {
 
    const [tableData, setTableData] = useState([])
    const [filteredData, setFilteredData] = useState([])
@@ -91,8 +92,11 @@ export default function AssignedTutors(props) {
    const [fetchTutors, tutorResponse] = useLazyGetTutorsByNameQuery();
    const [tutors, setTutors] = useState([]);
    const [tableLoading, setTableLoading] = useState(false)
-   const handleClose = () => setAssignStudentModalActive(false);
-const navigate = useNavigate()
+   const handleClose = () => {
+      setAssignedTutorOpen(false)
+      setAssignStudentModalActive(false);
+   }
+   const navigate = useNavigate()
    const [filterData, setFilterData] = useState({
       tutorName: '',
       studentName: '',
@@ -107,17 +111,21 @@ const navigate = useNavigate()
    const [deleteAssignedTutor, deleteAssignedTutorResp] = useDeleteAssignedTutorMutation();
    const [fetchSettings, settingsResp] = useLazyGetSettingsQuery()
    const [settings, setSettings] = useState({})
-
+   const [studentMultiple, setStudentMultiple] = useState([])
    const [students, setStudents] = useState([]);
    const [maxPageSize, setMaxPageSize] = useState(10);
    const [filterItems, setFilterItems] = useState([])
-
+   const [addAssignedTutor2, slsAt] = useCRMBulkChangeAssignedTutorMutation()
    //fetch names
    useEffect(() => {
-      if (modalData.studentName.length > 0) {
-         fetchStudents(modalData.studentName).then((res) => {
-            // console.log(res.data.data)
-            let tempData = res.data.data.students.map((tutor) => {
+      console.log("calling names for students")
+      let name2=""
+      if (modalData?.studentName?.length > 0) {
+name2=modalData?.studentName
+      }
+         fetchStudents(name2).then((res) => {
+             console.log("students",res)
+            let tempData = res?.data?.data?.students.map((tutor) => {
                return {
                   _id: tutor._id,
                   value: `${tutor.firstName} ${tutor.lastName}`,
@@ -125,11 +133,11 @@ const navigate = useNavigate()
             });
             setStudents(tempData);
          });
-      }
+      
    }, [modalData.studentName]);
 
    useEffect(() => {
-      if (modalData.tutorName.length > 0) {
+      if (modalData.tutorName.length >= 0) {
          fetchTutors(modalData.tutorName).then((res) => {
             // console.log(res.data.data.tutor)
             let tempData = res.data.data.tutor.map((tutor) => {
@@ -179,6 +187,7 @@ const navigate = useNavigate()
             fetch()
             setModalData(initialState)
             setAssignStudentModalActive(false)
+            setAssignedTutorOpen(false)
             console.log(res.data);
 
          })
@@ -220,7 +229,7 @@ const navigate = useNavigate()
                console.log(res.error);
                return
             }
-            console.log('assignedtutors-' ,res.data);
+            console.log('assignedtutors-', res.data);
             let data = res.data.assignedTutors.map(item => {
                const { assignedTutor, associatedParent, firstName, lastName, specialization, student_id, timeZone, tutorFirstName, tutorLastName, parentFirstName, parentLast } = item
                return {
@@ -320,16 +329,66 @@ const navigate = useNavigate()
       navigate(item)
    }
 
+   const handleAssign = (item) => {
+      if (!modalData?.tutorId || studentMultiple?.length === 0) {
+         alert("Select students and tutor both for maping.")
+         return
+      }
+      setLoading(true)
+      let users = studentMultiple?.map(ii => ii?._id)
+      addAssignedTutor2({ tutorId: modalData?.tutorId, users }).then((res) => {
+         console.log("successassignedTutor", res)
+         if (res?.data) {
+            alert("Successfully mapped students to tutor.")
 
+         }
+         fetch2()
+         setLoading(false)
+         fetch()
+         setStudentMultiple([])
 
+         setModalData(initialState)
+         setAssignStudentModalActive(false)
+         setAssignedTutorOpen(false)
+         console.log(res.data);
+      })
+   }
+   useEffect(() => {
+      setAssignStudentModalActive(assignedTutorOpen)
+   }, [assignedTutorOpen])
+   const handleMultipleStudent = (student) => {
+      console.log({ student })
+      console.log({ studentMultiple, modalData })
+      let bool = studentMultiple?.find((student1) => student1?._id === student?._id)
+      if (bool) {
+         let updated = studentMultiple.filter(
+            (test) => test?._id !== student._id
+         );
+         setStudentMultiple(updated);
+      } else {
+         setStudentMultiple((prev) => {
+            return [...prev,
+            { _id: student?._id, value: student?.value }]
+         })
+      }
+   }
+
+   // console.log({studentMultiple,modalData})
    // console.log('allAssignedTests', allAssignedTests);
    return (
       <>
-         <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
+         {/* <button
+                     className="bg-primaryOrange w-full text-lg justify-center flex pt-4 pb-4 px-5 items-center text-white font-semibold rounded-lg"
+                     onClick={() => setAssignStudentModalActive(true)}
+                  >
+                     Assign Tutor
+                     <img src={AddIcon} className="ml-3" />
+                  </button> */}
+         {/* <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
             <div className="py-14 px-5">
-               <div className="flex gap-4 justify-between items-center">
+              <div className="flex gap-4 justify-between items-center">
                   {localStorage.getItem('role') === "parent" || localStorage.getItem('role') === 'student' ? <p className={`font-bold text-4xl text-primary-dark`}
-                  // style={{ color: "#25335A" }}
+                  style={{ color: "#25335A" }}
                   >
                      Assigned Tutors
                   </p> : <></>}
@@ -385,7 +444,7 @@ const navigate = useNavigate()
 
                <div className='mt-4' >
                   <FilterItems items={filterItems} setData={setFilterItems} onRemoveFilter={onRemoveFilter} />
-               </div>
+               </div> 
 
 
                <div className="mt-6">
@@ -402,27 +461,28 @@ const navigate = useNavigate()
                   />
                </div>
             </div>
-         </div>
+         </div> */}
+
          {assignStudentModalActive && (
             <Modal
-               title="Assign Tutor"
-               classname={"max-w-[760px] mx-auto"}
+               title="Map Tutor - Student"
+               classname={"max-w-[666px] mx-auto"}
                cancelBtn={true}
-               cancelBtnClassName="max-w-140"
-
+               cancelBtnClassName="max-w-140 text-[#FFA28D] border-[1.5px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white  font-medium rounded-lg  px-[10px] py-[17.33px] text-center dark:bg-white dark:hover:bg-[#FFA28D] !w-[146px]"
+               buttonParentClassName="justify-center"
                primaryBtn={{
-                  text: "Assign",
-                  className: "max-w-140 pl-8 pr-8",
-                  onClick: () => handleSubmit(),
+                  text: "Confirm",
+                  className: "pl-4 px-4 !bg-[#FFA28D] text-white w-[146px]",
+                  onClick: () => handleAssign(),
                   disabled: submitBtnDisabled,
                   loading: loading
                }}
                handleClose={handleClose}
                body={
                   <>
-                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 md:gap-x-3 gap-y-4 mb-5">
+                     <div className="grid grid-cols-1 mt-[-10px] md:grid-cols-2 gap-x-5 md:gap-x-8 gap-y-1 mb-10">
                         <div>
-                           <InputSearch
+                           {/* <InputSearch
                               label="Student Name"
                               value={modalData.studentName}
                               onChange={e =>
@@ -441,14 +501,52 @@ const navigate = useNavigate()
                               }}
                               optionPrefix='s'
                               parentClassName="w-full mr-4"
-                              labelClassname="ml-2 mb-0.5"
+                              labelClassname="ml-2 mb-0.5 text-[#26435F]"                                 
                               inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
                               inputClassName="bg-transparent"
                               placeholder="Student Name"
                               type="select"
+                           /> */}
+                           <InputSearch
+                              label="Student Name"
+                              labelClassname="text-base-20 text-[#26435F] mb-1 tracking-wide"
+                              placeholder="Search Student"
+                              placeholderClass="text-base-17-5"
+
+                              inputContainerClassName=" text-base-17-5 bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
+                              inputClassName="bg-[#F3F5F7]"
+                              type="text"
+                              value={studentMultiple.length==0?modalData?.studentName:studentMultiple?.map(itt => itt?.value)}
+                              checkbox={{
+                                 visible: true,
+                                 name: "student",
+                                 match: studentMultiple?.map(itt => itt?._id),
+                              }}
+                              onChange={e =>
+                                 setModalData({
+                                    ...modalData,
+                                    studentName: e.target.value,
+                                 })
+                              }
+                              rightIcon={down} 
+                              optionListClassName="text-base-17-5"
+                              optionClassName="text-base-17-5"
+                              optionData={students}
+                              // right={<img className="" src={down} />}
+                              onOptionClick={(item) => {
+
+                                 handleMultipleStudent(item)
+
+
+                                 // handleTestChange(item);
+                                 // setStudent(item.value);
+                                 // handleStudentsChange(item)
+                                 // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
+                              }}
                            />
                         </div>
                         <div>
+
                            <InputSearch
                               label="Tutor Name"
                               value={modalData.tutorName}
@@ -466,12 +564,13 @@ const navigate = useNavigate()
                                     tutorId: item._id
                                  })
                               }}
+                              rightIcon={down} 
                               optionPrefix='t'
                               parentClassName="w-full mr-4"
-                              labelClassname="ml-2 mb-0.5"
+                              labelClassname=" mb-1 text-base-20 tracking-wide text-[#26435F]"
                               inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
                               inputClassName="bg-transparent"
-                              placeholder="Tutor Name"
+                              placeholder="Select Tutor"
                               type="select"
                            />
                         </div>

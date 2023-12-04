@@ -8,6 +8,7 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import SCheckbox from "../../../components/CCheckbox/SCheckbox";
 import InputSelectNew from "../../../components/InputSelectNew/InputSelectNew";
 import InputSelect from "../../../components/InputSelect/InputSelect";
+import { useNavigate } from "react-router-dom";
 
 export default function SignupLast({
   setFrames,
@@ -32,17 +33,18 @@ export default function SignupLast({
     });
     setValue(temp);
   };
-
+  const navigate= useNavigate()
   const handleSubmit = () => {
     handleSignup();
-    // setFrames((prev) => {
-    //   return { ...prev, signupLast: false, signupSuccessful: true };
-    // });
+    navigate("/signup?step=5")
+ 
   };
 
   const handleBack = () => {
+    
+    navigate("/signup?step=3")
     setFrames((prev) => {
-      return { ...prev, signupLast: false, furtherDetails: true };
+      return { ...prev, furtherDetails: true, requirements: false };
     });
   };
 
@@ -60,105 +62,111 @@ export default function SignupLast({
   }, []);
 
   return (
-    <div className="mt-[-23px]">
+    <div className="mt-[-23px] px-[40px]">
       <div className="flex justify-center">
-        <div className='h-[1px] bg-[#EBEBEB] mx-[6px] w-full mb-[25px]'>
+        <div className='h-[1px] bg-[#EBEBEB] mx-[70px] w-full mb-[25px]'>
 
         </div>
       </div>
-      <div className="mb-7">
-        <p className="font-semibold mb-2 text-sm text-[#26435F]">
+      <div className="mb-7 mt-1">
+        <p className="font-medium tracking-wider mb-[10px] text-[18.6px] text-[#26435F]">
           Select the solutions you are looking for:
         </p>
 
-        <div className="grid grid-cols-2 mb-2">
+        <div className="grid grid-cols-2 mb-2 gap-x-8 gap-y-1">
           {solutions?.map((item, idx) => {
             return (
               <div
                 key={idx}
-                className="flex items-center mb-3 mr-6"
+                className="flex items-center mb-3 "
                 onClick={() =>
                   handleCheckboxChange(item.text, solutions, setSolutions)
                 }
               >
-                
+
                 <SCheckbox
-                      checked={item.checked}
-                      className="scale-[0.8]"
-                      
-                    />
-                <p className="text-[13px] font-medium text-[#26435F] opacity-90 leading-5">
-                  {item.text}
-                </p>
+                  checked={item.checked}
+                  className="scale-[1.27]"
+                  onChange={() =>
+                    handleCheckboxChange(item.text, solutions, setSolutions)
+                
+                  }
+                />
+                <div className="">
+                  <p className="!text-base   font-normal text-[#26435F]  leading-5 mb-1">
+                    {item.text}
+                  </p>
+                </div>
               </div>
             );
           })}
         </div>
-        <div className='h-[1px] bg-[#EBEBEB] w-5/6 mb-4'>
+        <div className='h-[1px] bg-[#EBEBEB] w-5/6 mb-[20px] ml-7'>
 
         </div>
-        <p className="font-semibold mb-2 text-sm text-[#26435F]">How did you hear about us?</p>
-        <div className="grid grid-cols-2 mb-0">
+        <p className="font-medium tracking-wider mb-6 text-[18.6px] text-[#26435F]">How did you hear about us?</p>
+        <div className="grid grid-cols-2 mb-0 w-3/6">
           {hearAboutUs?.map((item, idx) => {
             return (
               <div
                 key={idx}
-                className="flex items-center mb-5 mr-6"
+                className="flex items-center mb-5 mr-4"
                 onClick={() =>
                   handleCheckboxChange(item.text, hearAboutUs, setHearAboutUs)
                 }
               >
-                 <SCheckbox
-                      checked={item.checked}
-                      className="scale-[0.8]"
-                      
-                    />
-                <p className="text-[13px] font-medium text-[#26435F] opacity-90 leading-5">
+                <SCheckbox
+                  checked={item.checked}
+                  className="scale-[1.27]"
+                  onChange={() =>
+                    handleCheckboxChange(item.text, hearAboutUs, setHearAboutUs)
+                  }
+                />
+                <p className="!text-base font-normal text-[#26435F]  leading-5 mb-[3px]">
                   {item.text}
                 </p>
               </div>
             );
           })}
         </div>
-        <div className='h-[1px] bg-[#EBEBEB] w-5/6 mb-4'>
+        <div className='h-[1px] bg-[#EBEBEB] w-5/6 mb-5'>
 
         </div>
-        <p className="font-semibold mb-1 text-sm  text-[#26435F]">
-          On a scale of 1-10 (Bad to Great), how would you rate your sign up
-          experience?
+        <p className="font-medium mb-[15px] text-[18.6px]  text-[#26435F]">
+          On a scale of 1-10 (Bad to Great), how would you rate your sign up experience?
         </p>
         <InputSelectNew
-            value={rateUs}
-            parentClassName="w-[150px] my-2 "
-            optionContainerClassName="text-[14px] "
-            optionsEachClassName="py-[7px]"
-            optionData={[1,2,3,4,5,6,7,8,9,10]}
+          value={rateUs}
+          parentClassName="w-[145px] my-2 "
+          optionContainerClassName=""
+          optionsEachClassName="py-[7px]"
+          optionData={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
 
-            placeholder={""}
-            
-            labelClassname="text-[#26435F] font-bold  mb-1 text-sm "
-            inputContainerClassName="py-1 text-sm h-[44.9px] border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[6px]"
-            inputClassName="ml-80"
-         
-            onChange={(e) => setRateUs(e)}
-          />
-      
+          placeholder="Select"
+          placeholderClass="!text-[#B3BDC7] !text-[18.67px]"
+          labelClassname="text-[#26435F] font-bold  mb-1 text-sm "
+          inputContainerClassName="py-1 text-sm h-[53px] border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[6px] !px-[13px] "
+          inputClassName="ml-80"
+
+          onChange={(e) => setRateUs(e)}
+        />
+
         <div>
-          <div className='h-[1px] bg-[#EBEBEB]  mb-5 mt-5'>
+          <div className='h-[1px] bg-[#EBEBEB]  mb-[50px] mt-[33px] w-[91.5%] mx-auto'>
 
           </div>
         </div>
       </div>
 
-      <div className="flex items-center mt-5 justify-between">
+      <div className="flex items-center mt-[32px] mb-[45px] justify-between">
         <SecondaryButton
-          children="Go Back"
-          className="text-sm mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
+          children="Go back"
+          className="text-[18.67px]    bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] !py-[12.5px] font-medium !px-[35px] rounded-5"
           onClick={handleBack}
         />
         <PrimaryButton
           children="Submit"
-          className={` w-full bg-[#FFA28D] disabled:opacity-60 max-w-[110px]    rounded text-white text-sm font-medium relative 
+          className={`text-[18.67px] bg-[#FFA28D] disabled:opacity-60 !py-[12.5px] font-medium !px-[40.5px]   text-white   relative rounded-5
            
           `}
           onClick={() => handleSubmit()}

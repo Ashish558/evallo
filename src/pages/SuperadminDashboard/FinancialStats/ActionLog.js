@@ -7,15 +7,23 @@ import { useSelector } from "react-redux";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useRef } from "react";
+import { getFormattedDate } from "../../../utils/utils";
 function ActionLog({ dateRange }) {
   const [actionLogData, fetchStatus] = useGetActionLogRangeMutation();
-
+  const {role:persona} = useSelector((state)=>state.user)
   const [currentElementIndex, setCurrentElementIndex] = useState(0);
   const [extraElement, setExtraElement] = useState(0);
   const [sortedAction, setSortedAction] = useState([]);
   const [actionLog, setActionLog] = useState([]);
   const ref = useRef();
-
+  const [ dateFormat,setDateFormat ] = useState("dd/mm/yy")
+  const { organization: organization2 } = useSelector((state) => state.organization)
+  useEffect(()=>{
+    if(organization2&&organization2?.settings){
+      setDateFormat(organization2?.settings?.dateFormat)
+    }
+  },[organization2])
+  console.log("latest",{dateFormat, organization2})
   const handleScroll = (e) => {
    
 
@@ -36,6 +44,7 @@ function ActionLog({ dateRange }) {
     ref.current.textContent = headerDate;
   };
   useEffect(() => {
+    if(persona==='manager' || !actionLog || !Array.isArray(actionLog)) return 
     setCurrentElementIndex(0);
     const sorting = (newarr, extra) => {
       let sortedData = [...actionLog];
@@ -80,7 +89,7 @@ function ActionLog({ dateRange }) {
     setSortedAction(newarr);
   }, [actionLog]);
   useEffect(() => {
-    if (dateRange === "" || !dateRange) return;
+    if (dateRange === "" || !dateRange || persona==='manager') return;
     const fetchActivity = () => {
       actionLogData(dateRange).then((res) => {
         console.log("actionlog", { dateRange }, { res: res?.data });
@@ -98,7 +107,7 @@ function ActionLog({ dateRange }) {
     headerDate = temp;
   }
   return (
-    <div className="w-[51.5625vw]">
+    <div className="w-[53.5vw]">
       <h2 className="font-semibold mb-1 text-[#26435F]">Action Log</h2>
 
       <div
@@ -110,17 +119,17 @@ function ActionLog({ dateRange }) {
             ref={ref}
             className="uppercase  pl-[29px] pt-[16px] pb-3 text-[#26435F]"
           >
-            {headerDate}
+          {getFormattedDate(headerDate, dateFormat)}
           </p>
         </div>
         <ul
          
           onScroll={handleScroll}
-          className="list-disc max-h-[390.33px] overflow-y-scroll rounded-b-md "
+          className="list-disc max-h-[397px] overflow-y-scroll !scroll-my-4  custom-scroller rounded-b-md "
         >
-          {sortedAction?.map((item, index) => (
+          {sortedAction?.reverse().map((item, index) => (
             <div key={index} className="flex ml-2 h-[57px] pl-5 relative">
-              <p className="text-[#4A556C] pt-6 font-medium text-xs mr-6 w-[80px]">
+              <p className="text-[#4A556C] pt-6 font-light text-xs mr-6 w-[80px]">
                 {item?.message &&
                   new Date(item.createdAt)
                     .toLocaleTimeString()
@@ -128,11 +137,11 @@ function ActionLog({ dateRange }) {
                     .slice(0, 2)
                     .join(":") +
                     " " +
-                    new Date(item.createdAt).toLocaleTimeString().split(" ")[1]}
+                    new Date(item.createdAt).toLocaleTimeString().split(" ")[1]?.toLocaleLowerCase()}
                 {item.topDate && item?.message && (
                   <span className="text-xs ml-5 top-0 text-[#FFA28D] absolute backdrop-blur-sm ">
                     {" "}
-                    {item?.topDate}
+           {/* {getFormattedDate(item?.topDate, dateFormat)} */}
                   </span>
                 )}
               </p>
@@ -140,12 +149,17 @@ function ActionLog({ dateRange }) {
                 <div className={styles.circle}>
                   <div className={styles.circle2}></div>
                 </div>
-                <p className="pl-4 text-sm font-medium text-[#4A556C]">
+                <p className="pl-4 text-sm font-light text-[#4A556C]">
                   {item.message}
                 </p>
               </div>
             </div>
           ))}
+          {
+            persona==="manager"&&<div className="flex-1 h-full h-[390.33px] text-base-25 flex justify-center items-center font-medium text-[#4A556C]">
+              Only Super Admin Can View This.
+            </div>
+          }
         </ul>
       </div>
     </div>

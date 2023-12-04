@@ -1,11 +1,45 @@
 thead tr th .marker::after {
-  content: url("../../assets/images/arrow-down.svg");
+  content: url("../../assets/icons/table_dropdown.svg");
   display: inline-block;
   width: 25px;
   height: 25px;
+  cursor: pointer;
 }
 
-.no-arrow div::after{
+thead tr th .upArrow::after {
+  content: url("../../assets/icons/table_dropdown.svg");
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  transform: rotate(180deg);
+}
+
+thead tr th:nth-child(-n + 5) .markerCustom::after {
+  content: url("../../assets/icons/table_dropdown.svg");
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+thead tr th:nth-child(-n + 5) .markerCustomUpArrow::after {
+  content: url("../../assets/icons/table_dropdown.svg");
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  transform: rotate(180deg);
+  cursor: pointer;
+}
+
+thead tr th:nth-child(-n + 10) .markerCustomAllOrgs::after {
+  content: url("../../assets/icons/table_dropdown.svg");
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.no-arrow div::after {
   content: " ";
   margin-left: 5px;
   display: none;
@@ -59,7 +93,15 @@ input[type="checkbox"]:checked + .custom-checkbox {
   color: white;
 }
 
-
-.customPadding{
+.customPadding {
   padding: 0px;
+}
+
+.tBody tr {
+  color: #507ca8;
+}
+@media screen and (min-width: 1920px) {
+  .noOverflow {
+    overflow: hidden;
+  }
 }

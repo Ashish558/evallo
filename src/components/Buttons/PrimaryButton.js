@@ -23,7 +23,7 @@ export default function PrimaryButton({
       disabled={loading === true ? true : disabled}
       type={type ? type : "button"}
     >
-      {Icon && <img src={Icon} className={`mr-1 ${iconClassName}`} alt="next icon"  />}
+      {Icon && <img src={Icon} className={`mr-1 ${iconClassName}`} alt="next icon" />}
       {children}
       {loading && <Loader />}
     </button>

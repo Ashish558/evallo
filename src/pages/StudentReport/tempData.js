@@ -224,7 +224,7 @@ export const ttOptions = {
          beforeResetZoom: undefined,
          zoomed: undefined,
          scrolled: undefined,
-         scrolled: undefined,
+       
       },
       toolbar: {
          show: false
@@ -235,7 +235,7 @@ export const ttOptions = {
       bar: {
          // colors: ['#8E76ED', '#8ADCFF'],
          horizontal: false,
-         columnWidth: '40px',
+         columnWidth: '90%',
          endingShape: 'rounded',
          distributed: true,
          borderRadius: 7,
@@ -258,7 +258,8 @@ export const ttOptions = {
          style: {
             fontFamily: 'Inter',
             fontWeight: 500,
-            fontSize: '16px'
+            fontSize: '16px',
+            colors: '#517CA8'
          },
          formatter: function (val) {
             return val.toFixed(0);
@@ -304,15 +305,17 @@ export const ttOptions = {
          style: {
             fontFamily: 'Inter',
             fontWeight: 500,
-            fontSize: '16px'
+            fontSize: '16px',
+            colors: '#517CA8'
          }
       },
    },
    fill: {
-      opacity: 1
+      opacity: 0.9
    },
    tooltip: {
       show: false,
+      
       y: {
          formatter: function (value, { series, seriesIndex, dataPointIndex, w }) {
             return `${value} seconds`
@@ -384,15 +387,24 @@ export const accuracyOptions = {
          style: {
             fontFamily: 'Inter',
             fontWeight: 500,
-            fontSize: '16px'
+            fontSize: '16px',
+            color:"#26435F"
          },
          formatter: function (val) {
             return val.toFixed(0);
          },
       },
+
       title: {
-         text: 'No of Correct'
-      }
+         text: 'Number Of Incorrect Attempts',
+         style: {
+            fontSize: '20px',
+            
+            fontFamily: 'Lexend',
+            fontWeight: 500,
+            color:"#26435F"
+         },
+      },
    },
    xaxis: {
       categories: ['Algebra', 'Adv. Math', 'Geometry', 'Trigonometry', 'Statistics', 'Probability', 'Calculus'],
@@ -404,6 +416,16 @@ export const accuracyOptions = {
             fontSize: '16px'
          }
       },
+      title: {
+         text: 'Concepts',
+         style: {
+            fontSize: '20px',
+            color: '#24A3D9',
+            fontFamily: 'Lexend',
+            fontWeight: 500,
+            marginTop: "500px"
+         },
+      },
    },
    fill: {
       opacity: 1
@@ -413,16 +435,16 @@ export const accuracyOptions = {
    }
 }
 
-   // colors: [function({ value, seriesIndex, w }) {
-   //    if (value === 55) {
-   //        return '#7E36AF'
-   //    } else {
-   //        return '#D9534F'
-   //    }
-   //  }, function({ value, seriesIndex, w }) {
-   //    if (value === 44) {
-   //        return '#7E36AF'
-   //    } else {
-   //        return '#D9534F'
-   //    }
-   //  }],
+// colors: [function({ value, seriesIndex, w }) {
+//    if (value === 55) {
+//        return '#7E36AF'
+//    } else {
+//        return '#D9534F'
+//    }
+//  }, function({ value, seriesIndex, w }) {
+//    if (value === 44) {
+//        return '#7E36AF'
+//    } else {
+//        return '#D9534F'
+//    }
+//  }],

@@ -1,49 +1,33 @@
 import React, { useEffect, useRef, useState } from "react";
 import InputField from "../../components/InputField/inputField";
 import styles from "./signup.module.css";
-
-import OrgDetails from "../Frames/OrgDetails/OrgDetails";
-import SignupLast from "../Frames/SignupLast/SignupLast";
-import FurtherDetails from "../Frames/FurtherDetails/FurtherDetails";
 import axios from "axios";
 import SetPassword from "../Frames/SetPassword/SetPasswordInvited";
 import cuate from "../../assets/signup/cuate.svg";
 import NumericSteppers from "../../components/NumericSteppers/NumericSteppers";
-import CountryCode from "../../components/CountryCode/CountryCode";
 import {
   useAddUserDetailsMutation,
   useSignupMutation,
 } from "../../app/services/auth";
-import {
-  instructionFormat,
-  hearAboutUsData,
-  solutionsData,
-  testPreparationsData,
-  tutoringData,
-  coachingData,
-} from "./data";
-import { getCheckedString } from "../../utils/utils";
-import InputSelect from "../../components/InputSelect/InputSelect";
+
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
-import { validateOtherDetails, validateSignup } from "./utils/util";
+import { validateSignup } from "./utils/util";
 import {
-  useLazyGetTutorDetailsQuery,
+  useLazyGetUserDetailQuery,
   useLazyGetSingleUserQuery,
   useUpdateUserMutation,
   useLazyGetOrganizationQuery,
 } from "../../app/services/users";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Loader from "../../components/Loader";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
-import RadioUnselected from "../../assets/icons/radio-unselected.svg";
-import RadioSelected from "../../assets/icons/radio-selected.svg";
 import OtherDetails from "../Frames/OtherDetails/userDetails";
 import CustomFields from "../Frames/CustomFields/CustomFields";
 import { useGetUserByOrgNameMutation } from "../../app/services/organization";
 import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
-import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
+import SecondaryButton from "../../components/Buttons/SecondaryButton";
+
 
 export default function UserSignup() {
   const [frames, setFrames] = useState({
@@ -57,6 +41,8 @@ export default function UserSignup() {
   const [getSettings, getSettingsResp] = useLazyGetSettingsQuery();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [stepOneDisabled, setStepOneDisabled] = useState(false)
+  const [stepTwoDisabled, setStepTwoDisabled] = useState(false)
 
   const [values, setValues] = useState({
     firstName: "",
@@ -76,7 +62,7 @@ export default function UserSignup() {
     lastName: "",
     email: "",
     phone: "",
-    phoneCode:"",
+    phoneCode: "",
     subscriptionCode: "",
   });
 
@@ -105,10 +91,11 @@ export default function UserSignup() {
 
   const [signupUser, signupUserResp] = useSignupMutation();
   const [addUserDetails, addUserDetailsResp] = useAddUserDetailsMutation();
-  const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery();
+  const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery();
   const [count, setCount] = useState(0);
   const [organisation, setOrganisation] = useState({});
-const [fetchOrganisation,fetchOrganisationstatus]= useLazyGetOrganizationQuery()
+  const [fetchOrganisation, fetchOrganisationstatus] =
+    useLazyGetOrganizationQuery();
   const [currentStep, setcurrentStep] = useState(1);
 
   const [getOrgDetails, getOrgDetailsResp] = useGetUserByOrgNameMutation();
@@ -121,7 +108,7 @@ const [fetchOrganisation,fetchOrganisationstatus]= useLazyGetOrganizationQuery()
   const fetchSettings = () => {
     getSettings().then((res) => {
       // console.log(res);
-      setSettings(res.data.data.setting);
+      setSettings(res?.data?.data?.setting);
     });
   };
   useEffect(() => {
@@ -155,9 +142,8 @@ const [fetchOrganisation,fetchOrganisationstatus]= useLazyGetOrganizationQuery()
   ]);
 
   useEffect(() => {
-   
     const name = searchParams.get("orgName");
- 
+
     getOrgDetails({ company: name }).then((res) => {
       if (res.error) {
         console.log(res.error);
@@ -168,30 +154,34 @@ const [fetchOrganisation,fetchOrganisationstatus]= useLazyGetOrganizationQuery()
       if (res.data.organisation.length === 0) return;
       if (res.data.organisation[0]) {
         setOrganisation(res.data.organisation[0]);
-        setCustomFields(res.data.organisation[0]?.settings?.customFields);
+         setCustomFields(res.data.organisation[0]?.settings?.customFields);
       }
     });
   }, [searchParams.get("orgName")]);
-
+ 
   const paramUserId = searchParams.get("userid");
   const paramUserRole = searchParams.get("role");
+  
+  
+
   useEffect(() => {
     if (!paramUserId) return;
     if (!paramUserRole) return;
     console.log("paramUserId", paramUserId);
 
     setIsAddedByAdmin(true);
-    setFrames((prev) => {
-      return { ...prev, signupActive: false, userDetails: true };
-    });
+    // setFrames((prev) => {
+    //   return { ...prev, signupActive: false, userDetails: true };
+    // });
 
     getDetails(paramUserId).then((res) => {
       if (res.error) {
         return console.log(res.error);
       }
-      console.log("param res", res.data);
+      console.log("user res", res.data);
       if (res.data?.user) {
-        const { firstName, lastName, phone, email, role,associatedOrg } = res.data.user;
+        const { firstName, lastName, phone, email, role, associatedOrg, phoneCode } =
+          res.data.user;
         setValues((prev) => {
           return {
             ...prev,
@@ -201,32 +191,61 @@ const [fetchOrganisation,fetchOrganisationstatus]= useLazyGetOrganizationQuery()
             phone,
             email,
             role,
+            phoneCode
           };
         });
-        fetchOrganisation(associatedOrg).then((org)=>{
+        if(phone){
+          setStepOneDisabled(true)
+        }
+        getUserDetail({ id: paramUserId }).then((res) => {
+          console.log('detail res----', res.data.data);
+          if (res.data.data.userdetails) {
+            let detail = res.data.data.userdetails
+            setOtherDetails({
+              ...otherDetails,
+              FirstName: detail.FirstName,
+              LastName: detail.LastName,
+              Phone: detail.Phone,
+              Email: detail.Email,
+              grade: detail.grade,
+              schoolName: detail.schoolName,
+              PphoneCode: detail.phoneCode
+            })
+            if(phone){
+              setStepTwoDisabled(true)
+            }
+            // setFrames({
+            //   signupActive: false,
+            //   userDetails: false,
+            //   customFields: false,
+            //   setPasswordFields: true,
+            // })
+          }
+        })
+        fetchOrganisation(associatedOrg).then((org) => {
           //console.log("organisation details",{org})
           if (org.error) {
             console.log(org.error);
             return;
           }
-    
-         
+
           if (org?.data?.organisation) {
             setOrganisation(org.data.organisation);
             setCustomFields(org.data.organisation?.settings?.customFields);
           }
-        })
+        });
+       
       }
       const { user, userdetails } = res.data.user;
       let user_detail = { ...userdetails };
       console.log("user", user);
     });
-  }, [paramUserId, paramUserRole]);
+   
+  }, [searchParams]);
 
   useEffect(() => {
     setCount(1);
   }, []);
-
 
   useEffect(() => {
     if (sessionStorage.getItem("frames")) {
@@ -266,7 +285,7 @@ const [fetchOrganisation,fetchOrganisationstatus]= useLazyGetOrganizationQuery()
       };
     });
   };
-  console.log({ customFields });
+
   const resetDetailsErrors = () => {
     setDetailsError((prev) => {
       return {
@@ -277,97 +296,101 @@ const [fetchOrganisation,fetchOrganisationstatus]= useLazyGetOrganizationQuery()
       };
     });
   };
-  const [isValidated,setValidated]=useState({ 
+  const [isValidated, setValidated] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    phoneCode:"",
+    phoneCode: "",
     phone: "",
     subscriptionCode: "",
     company: "",
-    phoneCode:"",
-})
-  const handleNextErrors=(alsoSet)=>{
-    resetErrors()
+    phoneCode: "",
+  });
+  const handleNextErrors = (alsoSet) => {
+    resetErrors();
     const result = validateSignup(values);
-   
+
     if (result.data !== true) {
       setValidated((prev) => {
         return {
           [result.data]: result.message,
         };
-      })
-    }
-    else{
-      setValidated({
-      })
-    }
-    if(alsoSet){
-    let flag=true;
-    Object.keys(isValidated).map((it)=>{
-     if (isValidated[it] && isValidated[it].length>0){
-       flag=false;
-     }
-    })
-    resetErrors()
-    let arr={...isValidated}
-    setError(arr)
-    console.log({isValidated})
-    return flag;
-   }
-  }
-  useEffect(()=>{
-   
-    handleNextErrors()
-  },[values])
-const [emailExistLoad,setEmailExistLoad]=useState(false)
-  const handleClick = async () => {
-    const emailAlreadyExists=async ()=>{
-
-    
-    let checked = false;
-    if (isAddedByAdmin) {
-      setFrames({
-        ...frames,
-        signupActive: false,
-        userDetails: true,
       });
+    } else {
+      setValidated({});
+    }
+    if (alsoSet) {
+      let flag = true;
+      Object.keys(isValidated).map((it) => {
+        if (isValidated[it] && isValidated[it].length > 0) {
+          flag = false;
+        }
+      });
+      resetErrors();
+      let arr = { ...isValidated };
+      setError(arr);
+      console.log({ isValidated });
+      return flag;
+    }
+  };
+  useEffect(() => {
+    handleNextErrors();
+  }, [values]);
+
+  const handleClick = async () => {
+    var regex = new RegExp("^[a-zA-Z0-9 ]*[a-zA-Z][a-zA-Z0-9 ]*$");
+    let f =regex.test(values?.firstName)
+    f = f && regex.test(values?.lastName)
+    
+   
+    if (!f) {
+      alert("Enter a valid name!")
+      return
+    }
+    const emailAlreadyExists = async () => {
+      let checked = false;
+      if (isAddedByAdmin) {
+        setFrames({
+          ...frames,
+          signupActive: false,
+          userDetails: true,
+        });
+        return;
+      }
+      try {
+        let data = {
+          workemail: values.email,
+        };
+        let result = await axios.post(
+          `${process.env.REACT_APP_BASE_URL}api/user/CheckEmail`,
+          data,
+          {
+            headers: {
+              "content-Type": "application/json",
+            },
+          }
+        );
+        console.log(result);
+        if (result) checked = true;
+      } catch (e) {
+        console.error(e.response.data.message);
+        setError({
+          ...error,
+          email: e.response.data.message,
+        });
+      }
+      if (checked === true) {
+        setFrames({
+          ...frames,
+          signupActive: false,
+          userDetails: true,
+        });
+      }
+    };
+    if (!handleNextErrors(true)) {
       return;
     }
-    try {
-      let data = {
-        workemail: values.email,
-      };
-      let result = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}api/user/CheckEmail`,
-        data,
-        {
-          headers: {
-            "content-Type": "application/json",
-          },
-        }
-      );
-      console.log(result);
-      if (result) checked = true;
-    } catch (e) {
-      console.error(e.response.data.message);
-      setError({
-        ...error,
-        email: e.response.data.message,
-      });
-    }
-    if (checked === true) {
-      setFrames({
-        ...frames,
-        signupActive: false,
-        userDetails: true,
-      });
-    }
-  }
-  if(!handleNextErrors(true)){
-    return 
-  }
-  emailAlreadyExists()
+    emailAlreadyExists();
   };
 
   const handleSignup = () => {
@@ -378,7 +401,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
     let updatedCustomfields = customFields?.map((item) => {
       return {
         _id: item._id,
-        dataType: item.dataType,
+        dataType: "String",
         name: item.name,
         Values: item.value,
       };
@@ -390,8 +413,10 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
         lastName: values.lastName,
         email: values.email,
         phone: values.phone,
+        phoneCode: values.phoneCode,
         role: values.role.toLowerCase(),
         ...otherDetails,
+        PhoneCode: otherDetails.PphoneCode,
         customFields: updatedCustomfields,
         associatedOrg: organisation._id,
       };
@@ -428,43 +453,38 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
         setLoading(true);
         if (isAddedByAdmin) {
           reqBody.userId = values.userId;
-          updateUser(reqBody)
+          signupUser(reqBody)
             .then((res) => {
               setLoading(false);
               console.log(res);
-              if (res?.error?.data?.message === "Referral code not match."){
-              alert("Referal code is not valid! Enter valid referal code.");
-          return ;
+              if (res?.error?.data?.message === "Referral code not match.") {
+                alert("Referal code is not valid! Enter valid referal code.");
+                return;
               }
               if (res.error) {
                 alert("Something went wrong");
                 return;
               }
-              
-             
-            
+
               alert("Signup successful");
               //navigate("/");
-               if(frames.userDetails && customFields?.length>0){
-               
+              if (frames.userDetails && customFields?.length > 0) {
                 setFrames({
                   ...frames,
                   setPasswordFields: false,
                   userDetails: false,
                   customFields: true,
                 });
-                return 
-            }
-            else {
-            setFrames({
-              ...frames,
-              setPasswordFields: true,
-              userDetails: false,
-              customFields: false,
-            });
-            sessionStorage.clear();
-          }
-             
+                return;
+              } else {
+                setFrames({
+                  ...frames,
+                  setPasswordFields: true,
+                  userDetails: false,
+                  customFields: false,
+                });
+                sessionStorage.clear();
+              }
             })
             .catch((err) => {
               setLoading(false);
@@ -534,9 +554,14 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
   };
 
   return (
-    <div className=" pb-6 bg-primary" id={styles.signUp}>
-      <div className="flex justify-center flex-col items-center md:grid-cols-2  ">
-        <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-4" />
+    <div className="" id={styles.signUp}>
+      <div className=" flex md:grid-cols-2 justify-center flex-col items-center ">
+        <img
+          src={cuate}
+          alt="rocket"
+          className="
+               w-[193.34px] h-[121.22px] mt-[21px] mb-[13.78px]"
+        />
         <>
           {!frames.signupSuccessful ? (
             <div className="hidden bg-primary text-white pt-[79px] px-[49px]">
@@ -553,22 +578,45 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
           ) : (
             <></>
           )}
-          <div className="flex lg:items-center relative bg-white rounded-md py-6 px-5 md:px-[48px] w-[600px]">
-            <div className="w-full py-3">
+          <div
+            className={`relative bg-white rounded-md w-[800px] h-auto mb-[140px] px-[50px] pt-[40px] pb-[66px] ${
+              customFields?.length > 0 && isAddedByAdmin
+                ? "!w-[45vw] min-w-[650px]"
+                : ""
+            }`}
+          >
+            <div className="w-full h-full">
               <h1
                 className={`hidden lg:block mb-1.5 text-[30px] ${styles.title} `}
               >
                 {frames.signupActive
                   ? ""
-                  : frames.setPasswordFields&& !isAddedByAdmin
+                  : frames.setPasswordFields && !isAddedByAdmin
                   ? "Set Password"
                   : ""}
               </h1>
 
               {currentStep > 0 && !frames.signupSuccessful && (
                 <NumericSteppers
-                  className="mt-3"
-                  fieldNames={customFields?.length>0 && isAddedByAdmin?["Personal info" ,"Student / Parent","Further details","Set password"]:["Personal info" ,"Student / Parent",isAddedByAdmin?"Set password":"Further details",]} 
+                  className={`mt-3 !w-[520px] !mx-auto design:!w-[550px] ${
+                    customFields?.length > 0 && isAddedByAdmin
+                      ? "!w-[650px] design:!w-[650px]"
+                      : ""
+                  }`}
+                  fieldNames={
+                    customFields?.length > 0 && isAddedByAdmin
+                      ? [
+                          "Personal info",
+                          "Student / Parent",
+                          "Further details",
+                          "Set password",
+                        ]
+                      : [
+                          "Personal Info",
+                          "Student / Parent",
+                          isAddedByAdmin ? "Set password" : "Further details",
+                        ]
+                  }
                   totalSteps={
                     customFields?.length === 0
                       ? 2 + isAddedByAdmin
@@ -581,47 +629,73 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
 
               {frames.signupActive ? (
                 <div>
-                  <div className={`flex mt-[59px]  gap-8 lg:mt-0 `}>
+                  <div
+                    className={`flex mt-[59px] justify-between gap-10 lg:mt-0  ${
+                      stepOneDisabled
+                        ? "pointer-events-none cursor-not-allowed opacity-70"
+                        : ""
+                    }`}
+                  >
                     <InputField
                       placeholder=""
-                      inputContainerClassName="  bg-white   border border-[#D0D5DD]"
-                      parentClassName="text-xs w-[250px]"
-                      labelClassname="mb-1 text-[#26435F] font-bold"
-                      label="First Name"
+                      inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
+                      parentClassName="text-base-17-5 w-full "
+                      labelClassname="mb-1 text-[#26435F] !font-medium"
+                      label="First name"
                       value={values.firstName}
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        // const alphabeticOnly = e.target.value.replace(
+                        //   /[^a-zA-Z]/g,
+                        //   ""
+                        // );
+                        // e.target.value = alphabeticOnly;
+                        // e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
+
                         setValues({
                           ...values,
                           firstName: e.target.value,
-                        })
-                      }
+                        });
+                      }}
                       totalErrors={error}
                       error={error.firstName}
                     />
                     <InputField
                       placeholder=""
-                      inputContainerClassName="  bg-white   border border-[#D0D5DD]"
-                      parentClassName="text-xs flex-1"
-                      labelClassname="mb-1 text-[#26435F] font-bold"
-                      label="Last Name"
+                      inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
+                      parentClassName="text-base-17-5 w-full "
+                      labelClassname="mb-1 text-[#26435F] !font-medium"
+                      label="Last name"
                       value={values.lastName}
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        // const alphabeticOnly = e.target.value.replace(
+                        //   /[^a-zA-Z]/g,
+                        //   ""
+                        // );
+                        // e.target.value = alphabeticOnly;
+                        // e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
                         setValues({
                           ...values,
                           lastName: e.target.value,
-                        })
-                      }
+                        });
+                      }}
                       totalErrors={error}
                       error={error.lastName}
                     />
                   </div>
-                  <div className="flex gap-8 items-center mt-6 mb-6">
+                  <div
+                    className={`flex  items-end mt-[30px] mb-[29px] justify-between gap-10 ${
+                      stepOneDisabled
+                        ? "pointer-events-none cursor-not-allowed opacity-70"
+                        : ""
+                    }`}
+                  >
                     <InputField
-                      labelClassname="mb-1 text-[#26435F] font-bold"
+                      labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="Email"
                       placeholder=""
-                      inputContainerClassName="  bg-white   border border-[#D0D5DD]"
-                      parentClassName="w-[340px] text-xs "
+                      inputClassName={"h-[52.5px]"}
+                      inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
+                      parentClassName=" text-base-17-5  w-full"
                       value={values.email}
                       onChange={(e) =>
                         setValues({
@@ -634,12 +708,12 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                     />
                     <InputFieldDropdown
                       placeholder=""
-                      inputContainerClassName="  bg-white h-[40px]  border border-[#D0D5DD]"
-                      parentClassName="text-xs w-[300px]"
-                      
-                      inputClassName="  bg-transparent text-400 "
-                      labelClassname="mb-1 text-[#26435F]  font-bold text-[#26435F]"
+                      inputContainerClassName="text-base-17-5  bg-white h-[53px]  border border-[#D0D5DD]"
+                      parentClassName="text-base-17-5 w-[85%]"
+                      inputClassName="  bg-transparent text-400 text-base-17-5 h-[52.5px]"
+                      labelClassname="mb-1 text-[#26435F]  !font-medium text-[#26435F] design:mb-2"
                       label="Phone"
+                      codeClassName="!min-w-[40px] "
                       value={values.phone}
                       codeValue={values.phoneCode}
                       handleCodeChange={(e) =>
@@ -648,26 +722,34 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                           phoneCode: e.target.value,
                         })
                       }
-                      onChange={(e) =>
-                        setValues({
-                          ...values,
-                          phone: e.target.value,
-                        })
-                      }
-                      
+                      onChange={(e) => {
+                        const regex = /^[0-9 ]*$/;
+                        const isValid = regex.test(e.target.value);
+                        if (isValid && e.target.value?.length < 11)
+                          setValues({
+                            ...values,
+                            phone: e.target.value,
+                          });
+                      }}
                       totalErrors={error}
                       error={error.phone}
                       codeError={error.phoneCode}
                     />
                   </div>
 
-                  <div className="mt-5">
+                  <div className="mt-[30px]">
                     <p
-                      className={`mb-3 text-[#26435F] text-[14px]  font-semibold`}
+                      className={`mb-[19px] text-[#26435F] text-base-17-5  font-semibold`}
                     >
                       Are you signing up as a Parent or a Student?
                     </p>
-                    <div className="flex items-center  text-[13.5px] gap-x-6">
+                    <div
+                      className={`flex items-center  text-[13.5px] gap-x-6 ${
+                        stepOneDisabled || paramUserRole
+                          ? "pointer-events-none cursor-not-allowed opacity-70"
+                          : ""
+                      }`}
+                    >
                       <div
                         onClick={() => {
                           setValues((prev) => ({
@@ -675,27 +757,27 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                             role: "parent",
                           }));
                         }}
-                        className={styles.textLight}
+                        className={styles.textLight + "mt-[31.75px]"}
                       >
-                        <div className={` flex items-center  `}>
+                        <div className={` flex items-center`}>
                           <input
                             type="radio"
                             className="form-radio hidden"
                             id="radioOption"
                           />
                           <div
-                            className={`relative inline-block ml-[2px] w-4 h-4   rounded-full border ${
+                            className={`relative  ml-[2px] w-[25px] h-[25px] rounded-full border-[1.25px] flex justify-center items-center ${
                               values.role === "parent"
                                 ? "border-[#FFA28D]"
                                 : "border-gray-600"
                             } cursor-pointer`}
                           >
                             {values.role === "parent" && (
-                              <div className="absolute inset-0 my-auto mx-auto w-[8px] h-[8px] rounded-full bg-[#FFA28D]" />
+                              <div className="absolute inset-0 my-auto mx-auto w-[12.5px] h-[12.5px] rounded-full bg-[#FFA28D]" />
                             )}{" "}
                           </div>
 
-                          <span className="ml-[10px] text-[#507CA8]">
+                          <span className="ml-[9px] text-[#507CA8] text-base-17-5">
                             Parent / Guardian
                           </span>
                         </div>
@@ -716,70 +798,73 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                             id="radioOption"
                           />
                           <div
-                            className={`relative inline-block w-4 h-4 p-1   rounded-full border ${
+                            className={`relative w-[25px] h-[25px] p-1 rounded-full border flex justify-center items-center ${
                               values.role === "student"
                                 ? "border-[#FFA28D]"
                                 : "border-gray-600"
                             } cursor-pointer`}
                           >
                             {values.role === "student" && (
-                              <div className="absolute inset-0 my-auto mx-auto w-[8px] h-[8px] rounded-full bg-[#FFA28D]" />
+                              <div className="absolute inset-0 my-auto mx-auto w-[12.5px] h-[12.5px] rounded-full bg-[#FFA28D]" />
                             )}{" "}
                           </div>
 
-                          <span className="ml-2 text-[#507CA8]">Student</span>
+                          <span className="ml-2 text-[#507CA8] text-base-17-5">
+                            Student
+                          </span>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className=" gap-x-2 my-5">
-                    
-                    <div className={`flex ${styles.textLight}`}>
-                    <CCheckbox  checked={values.ageChecked}
-                          onChange={handleCheckboxChangeAge}/>
-                     
-                     
+                  <div className=" gap-x-2 my-5 ps-[5px]">
+                    <div className={`flex justify-start items-center ${styles.textLight} `}>
+                      <CCheckbox
+                        className={`border-[#507CA8]`}
+                        checked={values.ageChecked}
+                        onChange={handleCheckboxChangeAge}
+                      />
 
-                        <span className="ml-2 text-sm text-[#507CA8]">
-                          I confirm that I am 13 years or older
-                        </span>
-                     
+                      <div className="ml-2 text-base-17-5 text-[#507CA8]">
+                        I confirm that I am 13 years or older
+                      </div>
                     </div>
                   </div>
 
-                  <div className=" gap-x-2 my-5">
-                    <div className={`flex ${styles.textLight}`}>
-                     
-                       <CCheckbox  checked={values.terms}
-                          onChange={handleCheckboxChangeTerms}/>
-                        <p className={` ml-2 text-sm text-[#507CA8]`}>
-                          I have carefully read and agree to the{" "}
-                          <a
-                            href="http://evallo.org/tou"
-                            className="font-semibold text-[#26435F] mr-1"
-                          >
-                            Terms of Use
-                          </a>
-                          and
-                          <a
-                            href="http://evallo.org/privacy-policy"
-                            className=" ml-1 font-semibold text-[#26435F]"
-                          >
-                            Privacy Policy
-                          </a>
-                        </p>
-                     
+                  <div className="gap-x-2 mt-5 mb-[50px] w-[546px] ps-[5px]">
+                    <div className={`flex justify-start items-start ${styles.textLight}`}>
+                      <CCheckbox
+                        className={`border-[#507CA8]`}
+                        checked={values.terms}
+                        onChange={handleCheckboxChangeTerms}
+                      />
+                      <div className={`ml-2 text-base-17-5 text-[#507CA8] pe-5`}>
+                        I have carefully read and agree to the{" "}
+                        <a
+                          href="http://evallo.org/tou"
+                          className="font-medium text-[#26435F] mr-1"
+                        >
+                          Terms of Use
+                        </a>
+                        and
+                        <a
+                          href="http://evallo.org/privacy-policy"
+                          className=" ml-1 font-medium text-[#26435F]"
+                        >
+                          Privacy Policy
+                        </a>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center mt-[30px] justify-between">
+                  <div className="flex items-center justify-between">
                     <SecondaryButton
                       children="Go Back"
-                      className="text-sm mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
+                      disabled={true}
+                      className="!text-[18.667px] mr-6 bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] font-medium h-[53px] rounded-5 w-[146.67px] "
                       onClick={() => navigate("/")}
                     />
 
                     <PrimaryButton
-                      className={`w-full bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative ${
+                      className={`bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[146.67px]   text-[#FFF] !text-[18.667px] font-medium relative h-[50px] design:h-[53px] rounded-5 ${
                         loading
                           ? "cursor-wait opacity-60 pointer-events-none"
                           : "cursor-pointer"
@@ -802,7 +887,9 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                   {...valueProps}
                   customFields={customFields}
                   {...otherDetailsProps}
+                  newLoader={loading}
                   handleSignup={handleSignup}
+                  stepTwoDisabled={stepTwoDisabled}
                 />
               ) : frames.customFields ? (
                 <CustomFields

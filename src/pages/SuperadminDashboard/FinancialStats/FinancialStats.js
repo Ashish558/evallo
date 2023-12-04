@@ -81,47 +81,47 @@ useEffect(()=>{
         </div>
       </div> */}
 
-      <div className="grid grid-cols-4 gap-x-5 gap-y-[13px]">
-        <div className={`text-[#00ADD3] w-[7.6388888889vw] h-[193.33px] ${styles.card} flex flex-col justify-center items-center`}>
+      <div className="grid grid-cols-4 gap-x-7 gap-y-[18px]">
+        <div className={`text-[#00ADD3] w-[7.65vw] h-[193.33px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image} alt="" /></p>
           <p className="text-sm mt-4">Scheduled</p>
           <p className="font-semibold text-2xl">{financialStats?.scheduledSessions}</p>
         </div>
-        <div className={`text-[#42CD00] w-[7.6388888889vw] h-[193.33px] ${styles.card} flex flex-col justify-center items-center`}>
+        <div className={`text-[#42CD00] w-[7.65vw] h-[193.33px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image1} alt="" /></p>
           <p className="text-sm mt-4">Completed</p>
           <p className="font-semibold text-2xl">{financialStats?.completeSessions}</p>
         </div>
-        <div className={`text-[#FF4D4D] w-[7.6388888889vw] h-[193.33px] ${styles.card} flex flex-col justify-center items-center`}>
+        <div className={`text-[#FF4D4D] w-[7.65vw] h-[193.33px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image2} alt="" /></p>
           <p className="text-sm mt-4">Missed</p>
           <p className="font-semibold text-2xl">{financialStats?.missedSessions}</p>
         </div>
-        <div className={`text-[#969696] w-[7.6388888889vw] h-[193.33px] ${styles.card} flex flex-col justify-center items-center`}>
+        <div className={`text-[#969696] w-[7.65vw] h-[193.33px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image3} alt="" /></p>
           <p className="text-sm mt-4">Cancelled</p>
           <p className="font-semibold text-2xl">{financialStats?.canceledSessions}</p>
         </div>
-        <div className={`text-[#26435F] w-[7.6388888889vw] h-[240px] ${styles.card2} `}>
+        <div className={`text-[#26435F] w-[7.65vw] h-[240px] ${styles.card2} `}>
           <p className="bg-[#26435F] rounded p-2 w-[40px] h-[40px] mx-auto mt-[28px]"><span><img src={image9} alt="" /></span></p>
-          <p className="text-sm text-center mt-5">Invoice</p>
-          <p className="font-semibold text-2xl text-center mt-[27px]">51</p>
+          <p className="text-sm text-center px-2 h-[50px] mb-1 mt-5">Invoice</p>
+          <p className="font-semibold text-2xl text-center ">51</p>
         </div>
-        <div className={`text-[#26435F] w-[7.6388888889vw] h-[240px] ${styles.card2} `}>
+        <div className={`text-[#26435F] w-[7.65vw] h-[240px] ${styles.card2} `}>
           <p className="bg-[#26435F] rounded p-2 w-[40px] h-[40px] mx-auto mt-[28px]"><span><img src={image7} alt="" /></span></p>
-          <p className="text-sm text-center mt-5"># of Transaction</p>
-          <p className="font-semibold text-2xl text-center mt-[27px]">51</p>
+          <p className="text-sm text-center px-2 h-[50px] mb-1 mt-5"># of Transaction</p>
+          <p className="font-semibold text-2xl text-center ">51</p>
         </div>
-        <div className={`text-[#26435F] w-[7.6388888889vw] h-[240px] ${styles.card2}`}>
+        <div className={`text-[#26435F] w-[7.65vw] h-[240px] ${styles.card2}`}>
           <p className="bg-[#26435F] rounded p-2 w-[40px] h-[40px] mx-auto mt-[28px]"><img src={image4} alt="" /></p>
-          <p className="text-sm text-center mt-5">Transaction
+          <p className="text-sm text-center px-2 h-[50px] mb-1 mt-5">Transaction
             Amount Total</p>
-          <p className="font-semibold text-2xl text-center mt-[8px]">51</p>
+          <p className="font-semibold text-2xl text-center ">51</p>
         </div>
-        <div className={`text-[#26435F] w-[7.6388888889vw] h-[240px] ${styles.card2} `}>
+        <div className={`text-[#26435F] w-[7.65vw] h-[240px] ${styles.card2} `}>
           <p className="bg-[#26435F] rounded p-2 w-[40px] h-[40px] mx-auto mt-[28px]"><img src={image11} alt="" /></p>
-          <p className="text-sm text-center mt-5 px-1">Avg transaction</p>
-          <p className="font-semibold text-2xl text-center mt-[27px]">51</p>
+          <p className="text-sm text-center px-2 h-[50px] mb-1 mt-5 px-1">Avg transaction</p>
+          <p className="font-semibold text-2xl text-center ">51</p>
         </div>
       </div>
     </div>

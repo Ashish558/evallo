@@ -1,15 +1,15 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowDown,
-  faArrowDown19,
-  faArrowDown91,
-  faArrowRightFromBracket,
-  faCaretDown,
-  faDollar,
-  faPlus,
-  faUpload,
-} from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import {
+//   faArrowDown,
+//   faArrowDown19,
+//   faArrowDown91,
+//   faArrowRightFromBracket,
+//   faCaretDown,
+//   faDollar,
+//   faPlus,
+//   faUpload,
+// } from "@fortawesome/free-solid-svg-icons";
 import faQuestionCircle from "../../assets/images/Vectorqsn.svg";
 import icon from "../../assets/icons/Evallo Logo.svg";
 import logoutIcon from "../../assets/images/Vectorlogout new.svg";
@@ -121,39 +121,6 @@ const parentNav = [
   },
 ];
 
-const studentNav = [
-  {
-    icon: Dashboard,
-    activeIcon: Dashboard1,
-    path: "/",
-    tooltip: "Dashboard",
-  },
-  {
-    icon: Profile,
-    activeIcon: Profile1,
-    path: "/profile",
-    tooltip: "Profile",
-  },
-  {
-    icon: Assignment,
-    activeIcon: Assignment1,
-    path: "/all-tests",
-    tooltip: "Assignments",
-  },
-  {
-    icon: Schedule,
-    activeIcon: Schedule1,
-    path: "/calendar",
-    tooltip: "Schedule",
-  },
-  {
-    icon: Settings,
-    activeIcon: Settings1,
-    path: "/settings",
-    excludes: ["parent", "tutor", "admin", "superAdmin"],
-    tooltip: "Settings",
-  },
-];
 const tutorNav = [
   {
     icon: Dashboard,
@@ -239,6 +206,41 @@ const contributorNavdata = [
   },
 ];
 
+
+const studentNav = [
+  {
+    icon: Dashboard,
+    activeIcon: Dashboard1,
+    path: "/",
+    tooltip: "Dashboard",
+  },
+  {
+    icon: Profile,
+    activeIcon: Profile1,
+    path: "/profile",
+    tooltip: "Profile",
+  },
+  {
+    icon: Assignment,
+    activeIcon: Assignment1,
+    path: "/all-tests",
+    tooltip: "Assignments",
+  },
+  {
+    icon: Schedule,
+    activeIcon: Schedule1,
+    path: "/calendar",
+    tooltip: "Schedule",
+  },
+  {
+    icon: Settings,
+    activeIcon: Settings1,
+    path: "/settings",
+    excludes: ["parent", "tutor", "admin", "superAdmin"],
+    tooltip: "Settings",
+  },
+];
+
 const AdminNavbar = () => {
   const [navData, setNavData] = useState(tempnavdata);
   const location = useLocation();
@@ -275,6 +277,7 @@ const AdminNavbar = () => {
   }, [persona]);
 
   const handleNavigate = (path) => {
+    console.log("path", path,navData);
     if (path === "/exit") {
       setLogoutModalActive(true);
     } else if (path === "/logo") {
@@ -311,7 +314,7 @@ const AdminNavbar = () => {
     setNavData(arr)
   }
  },[activeRoute])
- 
+
   return (
     <>
       <div className="flex justify-around bg-[#26435F] h-[74px] items-center w-full overflow-y-auto w-[100vw]">
@@ -331,7 +334,7 @@ const AdminNavbar = () => {
                 className={`flex items-center mr-8 text-base-17-5 ${isLoggedIn?"cursor-pointer":' cursor-default'} text-base-20`}
                 onClick={() =>isLoggedIn&& handleNavigate(item.path)}
               >
-                { isLoggedIn && item?.path === activeRoute ? (
+                { isLoggedIn && (item?.path === activeRoute) ? (
                   <>
                     <p>
                       <img
