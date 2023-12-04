@@ -36,6 +36,14 @@ export const orgServicesApi = createApi({
             headers: getAuthHeader(),
          }),
       }),
+      bulkChangeUserStatus: builder.mutation({
+         query: (body) => ({
+            url: `/api/user/bulkChangeUserStatus`,
+            method: "POST",
+            body: body,
+            headers: getAuthHeader(),
+         }),
+      }),
       updateOrgLogo: builder.mutation({
          query: (body) => ({
             url: `api/user/org/addOrgLogos/${body.id}`,
@@ -73,4 +81,5 @@ export const {
    useGetUserByOrgNameMutation,
    useUpdateUserOrganizationMutation,
    useUpdateOrgLogoMutation,
+   useBulkChangeUserStatusMutation
 } = orgServicesApi;
