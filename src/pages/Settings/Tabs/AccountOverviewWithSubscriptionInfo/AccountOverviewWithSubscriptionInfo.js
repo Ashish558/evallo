@@ -20,11 +20,12 @@ import { useLazyGetSubscriptionsInfoQuery } from "../../../../app/services/orgSi
 
 import {
     useLazyGetPersonalDetailQuery,
-    useUpdateUserAccountMutation,
+    useLazyGetOrganizationQuery,
   } from "../../../../app/services/users";
 import Modal from "../../../../components/Modal/Modal";
 import Modal2 from "../../../../components/Modal2/Modal2";
 import ViewTransactionsModal from "../../../../components/ViewTransactionsModal/ViewTransactionsModal";
+import AddNewBankCardModal from "../../../../components/AddNewBankCardModal/AddNewBankCardModal";
 
 function BankCardWidgetContainer({
     className,
@@ -92,6 +93,8 @@ function AccountOverviewWithSubscriptionInfo() {
         services: [],
     });
     const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
+    const [getPersonalDetail, getPersonalDetailResp] = useLazyGetPersonalDetailQuery();
+    const [getOrgDetails, getOrgDetailsResp] = useLazyGetOrganizationQuery();
     const [subscriptionsInfoFromAPI, SetSubscriptionsInfoFromAPI] = useState([]);
     const [activeSubscriptionName, SetActiveSubscriptionName] = useState("Professional");
     const [activeSubscriptionInfo, SetActiveSubscriptionInfo] = useState({
@@ -109,8 +112,10 @@ function AccountOverviewWithSubscriptionInfo() {
     const [isPasswordResetLinkSentModalActive, SetIsPasswordResetLinkSentModalActive] = useState(false);
     const [isCancelSubscriptionModalActive, SetIsCancelSubscriptionModalActive] = useState(false);
     const [isViewTransactionsModalActive, SetIsViewTransactionsModalActive] = useState(false);
+    const [isAddNewBankCardModalActive, SetIsAddNewBankCardModalActive] = useState(true);
     const [openSubscriptionModal, SetOpenSubscriptionModal] = useState(false);
     const [openExtensionsModal, SetOpenExtensionsModal] = useState(false);
+    const [stripeCustomerId, SetStripeCustomerId] = useState("");
 
     useEffect(() => {
         console.log("activeSubscriptionName - " + activeSubscriptionName);
@@ -131,6 +136,58 @@ function AccountOverviewWithSubscriptionInfo() {
         .catch((err) => {
             console.log(err);
         });
+    }, []);
+
+    useEffect(() => {
+        let orgDetails = sessionStorage.getItem("orgDetails");
+        console.log(orgDetails);
+        if(orgDetails === '' || orgDetails === undefined || orgDetails === null) {
+            getPersonalDetail()
+            .then(data => {
+                console.log("getPersonalDetail");
+                console.log(data);
+                const user = data.data.data.user;
+            
+                getOrgDetails(user.associatedOrg)
+                .then(data => {
+                    console.log("getOrgDetails");
+                    console.log(data);
+                    sessionStorage.setItem("orgDetails", JSON.stringify(data.data));
+                    // SetStripeCustomerId(data.data.stripeCustomerDetails.id);
+                    /* SetCompanyInfo({
+                        nameOfBusiness: data.data.organisation.company,
+                        accountType: data.data.user.registrationAs,
+                        businessEntity: data.data.organisation.companyType,
+                    }) */
+                })
+                .catch(error => {
+                    console.log("Error in getOrgDetails");
+                    console.log(error);
+                });
+        
+            })
+            .catch(error => {
+            console.log("Error in getPersonalDetail");
+            console.log(error);
+            });
+
+            return;
+        }
+
+        /* if(orgDetails.stripeCustomerDetails) {
+            SetStripeCustomerId(orgDetails.stripeCustomerDetails.id);
+        } */
+
+        /* if(orgDetails.organisation && orgDetails.user) {
+            SetCompanyInfo({
+                nameOfBusiness: orgDetails.organisation.company,
+                accountType: orgDetails.user.registrationAs,
+                businessEntity: orgDetails.organisation.companyType,
+            });
+        } */
+        
+        
+
     }, []);
 
     useEffect(() => {
@@ -225,6 +282,14 @@ function AccountOverviewWithSubscriptionInfo() {
 
     function OnViewTransactionsModalCrossIconClicked() {
         SetIsViewTransactionsModalActive(false);
+    }
+
+    function OnAddNewBankCardModalCrossIconClicked() {
+        SetIsAddNewBankCardModalActive(false);
+    }
+
+    function OnAddNewPaymentMethodClicked() {
+        SetIsAddNewBankCardModalActive(true);
     }
 
     function OnSubscriptionAndExtensionModalCancelClicked() {
@@ -343,6 +408,17 @@ function AccountOverviewWithSubscriptionInfo() {
                             className={`relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 aspect-[1110/382] w-[57.8125%]`}
                             OnCrossIconClicked={OnViewTransactionsModalCrossIconClicked}
                         />
+                    </div>
+                ) : (<></>)
+            }
+
+            {
+                isAddNewBankCardModalActive ? (
+                    <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
+                    <AddNewBankCardModal
+                        className={`relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 aspect-[1110/382] w-[57.8125%]`}
+                        OnCrossIconClicked={OnAddNewBankCardModalCrossIconClicked}
+                    />
                     </div>
                 ) : (<></>)
             }
@@ -642,7 +718,10 @@ function AccountOverviewWithSubscriptionInfo() {
                             />
                             
 
-                            <button className="box-border border-[#FFA28D] border-[3px] border-dashed rounded-[5px] aspect-[270/106] w-[29.34%]" >
+                            <button 
+                                className="box-border border-[#FFA28D] border-[3px] border-dashed rounded-[5px] aspect-[270/106] w-[29.34%]"
+                                onClick={OnAddNewPaymentMethodClicked}
+                            >
                                 <span className="text-[#FFA28D] text-[12px]" >Add New Payment Method</span>
                             </button>
                         </div>

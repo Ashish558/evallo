@@ -13,6 +13,7 @@ import VerticalNumericSteppers from "../../../components/VerticalNumericSteppers
 import { extensionsData } from "./data";
 import { comingSoonExtensionData } from "./DummyData/ComingSoonExtensionData";
 import { useAddSubscriptionsMutation } from "../../../app/services/subscription";
+import { useLazyGetAuthQuery, useLazyGetOrganizationQuery, useLazyGetPersonalDetailQuery } from "../../../app/services/users";
 
 function SubscriptionAndExtensionModal({
     className,
@@ -22,6 +23,7 @@ function SubscriptionAndExtensionModal({
     OnCancelClicked,
     subscriptionsInfoFromAPI_Param,
     activeSubscriptionName = "",
+    OnCheckoutClicked,
 }) {
     const [values, setValues] = useState({
         firstName: "",
@@ -50,6 +52,18 @@ function SubscriptionAndExtensionModal({
         extensionsPricePlan: "",
     });
 
+    const [companyInfo, SetCompanyInfo] = useState({
+        nameOfBusiness: "",
+        accountType: "",
+        businessEntity: "",
+        website: "",
+        streetAddress: "",
+        country: "",
+        state: "",
+        city: "",
+        zipcode: "",
+    });
+
     const [frames, setFrames] = useState({
         orgDetails: true,
         subscription: false,
@@ -66,9 +80,12 @@ function SubscriptionAndExtensionModal({
         (openedFromAccountOverview ? activeSubscriptionName : "Professional")
     );
     const [isCCRequired, SetIsCCRequired] = useState(false);
+    const [stripeCustomerId, SetStripeCustomerId] = useState("");
 
     const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
     const [addSubscriptions, addSubscriptionsResp] = useAddSubscriptionsMutation();
+    const [getPersonalDetail, getPersonalDetailResp] = useLazyGetPersonalDetailQuery();
+    const [getOrgDetails, getOrgDetailsResp] = useLazyGetOrganizationQuery();
 
     
     function OnExtensionsChanged() {
@@ -119,6 +136,58 @@ function SubscriptionAndExtensionModal({
             }
         }
     }, [extensions]);
+
+    useEffect(() => {
+        let orgDetails = sessionStorage.getItem("orgDetails");
+        console.log(orgDetails);
+        if(orgDetails === '' || orgDetails === undefined || orgDetails === null) {
+            getPersonalDetail()
+            .then(data => {
+                console.log("getPersonalDetail");
+                console.log(data);
+                const user = data.data.data.user;
+            
+                getOrgDetails(user.associatedOrg)
+                .then(data => {
+                    console.log("getOrgDetails");
+                    console.log(data);
+                    sessionStorage.setItem("orgDetails", JSON.stringify(data.data));
+                    SetStripeCustomerId(data.data.stripeCustomerDetails.id);
+                    SetCompanyInfo({
+                        nameOfBusiness: data.data.organisation.company,
+                        accountType: data.data.user.registrationAs,
+                        businessEntity: data.data.organisation.companyType,
+                    })
+                })
+                .catch(error => {
+                    console.log("Error in getOrgDetails");
+                    console.log(error);
+                });
+        
+            })
+            .catch(error => {
+            console.log("Error in getPersonalDetail");
+            console.log(error);
+            });
+
+            return;
+        }
+
+        if(orgDetails.stripeCustomerDetails) {
+            SetStripeCustomerId(orgDetails.stripeCustomerDetails.id);
+        }
+
+        if(orgDetails.organisation && orgDetails.user) {
+            SetCompanyInfo({
+                nameOfBusiness: orgDetails.organisation.company,
+                accountType: orgDetails.user.registrationAs,
+                businessEntity: orgDetails.organisation.companyType,
+            });
+        }
+        
+        
+
+    }, []);
 
     function loadSubscriptionAndExtensionInfo(productList) {
         if(!(productList.constructor && productList.constructor.name === "Array")) return;
@@ -196,6 +265,18 @@ function SubscriptionAndExtensionModal({
                 packInfo.description = [...packInfoFromDummyData.description];
                 packInfo.pricePerMonth = product.unit_amount / 100;
                 packInfo.currency = product.currency;
+                if(product.lookup_key === "p1") {
+                    packInfo.numberOfAssignments = 100
+                }
+                if(product.lookup_key === "p2") {
+                    packInfo.numberOfAssignments = 500
+                }
+                if(product.lookup_key === "p3") {
+                    packInfo.numberOfAssignments = 1500
+                }
+                if(product.lookup_key === "p4") {
+                    packInfo.numberOfAssignments = Infinity
+                }
     
                 productInfo.extensionPriceOption = [packInfo]
                 newExtList.push(productInfo);
@@ -419,10 +500,12 @@ function SubscriptionAndExtensionModal({
 
         console.log("chosenExtensionPlansToBeSentThroughAPI");
         console.log(chosenExtensionPlansToBeSentThroughAPI);
+
+        if(stripeCustomerId === "" || stripeCustomerId === undefined || stripeCustomerId === null) return;
     
         const response = await addSubscriptions(
                 {
-                    customer_id: 'cus_OteUYhKgkeuICE',
+                    customer_id: stripeCustomerId,
                     subscriptions: [
                         chosenSubscriptionToBeSentThroughAPI,
                         ...chosenExtensionPlansToBeSentThroughAPI
@@ -488,6 +571,9 @@ function SubscriptionAndExtensionModal({
                                 className={`relative top-1/2 left-1/2 -translate-x-2/4 -translate-y-2/4 w-11/12`}
                                 values={values}
                                 setValues={setValues}
+                                companyInfo={companyInfo}
+                                SetCompanyInfo={SetCompanyInfo}
+
                             />
                         ) : frames.subscription ? (
                             <SubscriptionChoosingModal
@@ -513,6 +599,7 @@ function SubscriptionAndExtensionModal({
                                 extensionPlansInfo={extensionPlansData}
                                 isCCRequired={isCCRequired}
                                 SetIsCCRequired={SetIsCCRequired}
+                                stripeCustomerId={stripeCustomerId}
                             />
                         ) : (<></>)
                     }
@@ -548,7 +635,13 @@ function SubscriptionAndExtensionModal({
                         values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
                       } */
                       onClick={
-                        (frames.review ? handleSub : onSaveAndNextClicked)
+                        // (frames.review ? handleSub : onSaveAndNextClicked)
+                        () => {
+                            (frames.review ? handleSub() : onSaveAndNextClicked());
+                            if(OnCheckoutClicked.constructor && OnCheckoutClicked.constructor.name === "Function" && frames.review) {
+                                OnCheckoutClicked();
+                            }
+                        }
                       }
                       children={(frames.review ? isCCRequired ? "Checkout" : "Let’s Go!" : "Save & Next")}
                     />

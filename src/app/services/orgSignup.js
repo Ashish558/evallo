@@ -6,7 +6,7 @@ export const orgSignupApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: BASE_URL,
         mode: "cors",
-        credentials: "include",
+        // credentials: "include",
     }),
 
     endpoints: (builder) => ({

@@ -12,6 +12,7 @@ import PrimaryButton from "../Buttons/PrimaryButton";
 import SecondaryButton from "../Buttons/SecondaryButton";
 import { useCreateIntentMutation, useFinishSetupMutation } from '../../app/services/subscription';
 import { BASE_URL } from '../../app/constants/constants';
+import Modal2 from "../Modal2/Modal2";
 
 const stripePromise = loadStripe('pk_test_51NoBsUSF4WnDe9WBCtTkvFmGCbP7V13FRSIeozP8zfnhFFlSrYRlcQ2j6is9viJUjCrENLlq7uauG5ztDOsLBpdA00QIKLXblk');
 
@@ -146,7 +147,7 @@ function Payment({
     )
 }
 
-export default function StripeCardDetailWidget({
+function StripeCardDetailWidget({
     chosenSubscriptionObjectFromAPI,
     chosenExtentionObjectsFromAPI = [],
     SetIsPaymentSuccessfull,
@@ -169,3 +170,19 @@ export default function StripeCardDetailWidget({
         </Elements>
     )
 }
+
+function AddNewBankCardModal({
+    className,
+    OnCrossIconClicked,
+}) {
+    return (
+        <Modal2
+            className={className}
+            OnCrossIconClicked={OnCrossIconClicked}
+        >
+
+        </Modal2>
+    )
+}
+
+export default AddNewBankCardModal;

@@ -19,6 +19,7 @@ function ReviewProduct({
     isCCRequired,
     SetIsCCRequired,
     subscriptionsInfoFromAPI = [],
+    stripeCustomerId,
 }) {
     // const [isCCRequired, SetIsCCRequired] = useState(false);
     const [chosenSubscriptionPlan, SetChosenSubscriptionPlan] = useState(
@@ -27,6 +28,7 @@ function ReviewProduct({
     const [chosenSubscriptionObjectFromAPI, SetChosenSubscriptionObjectFromAPI] = useState();
     const [chosenExtentionObjectsFromAPI, SetChosenExtentionObjectsFromAPI] = useState([]);
     const [couponForSubscription, SetCouponForSubscription] = useState("");
+    const [chosenExtensionPrice, SetChosenExtensionPrice] = useState(0);
 
     const [chosenExtensionPlans, SetChosenExtensionPlans] = useState(
         extensionPlansInfo.filter(item => {
@@ -55,9 +57,9 @@ function ReviewProduct({
 
     useState(() => {
         SetTotalPrice(
-            chosenSubscriptionPlan.pricePerMonth
+            chosenSubscriptionPlan.pricePerMonth + chosenExtensionPrice
         )
-    }, [chosenSubscriptionPlan]);
+    }, [chosenSubscriptionPlan, chosenExtensionPrice]);
 
     useEffect(() => {
         if(!(SetIsCCRequired.constructor && SetIsCCRequired.constructor.name === "Function")) return;
@@ -181,6 +183,9 @@ function ReviewProduct({
                                         }) */
 
                                         // const extDiscount = extensionDiscounts.find(i => i.planName === item.planName);
+                                        // const numberOfAssignments = chosenPackage.numberOfAssignments === Infinity ? "Unlimited" : chosenPackage.numberOfAssignments;
+                                        const numberOfAssignments = chosenPackageName === "p1" ? 100 : chosenPackageName === "p2" ? 500 : chosenPackageName === "p3" ? "1,500" :  "Unli";
+                                        
                                         return (
                                             <React.Fragment key={index} >
                                                 <ReviewExtensionWidget
@@ -189,7 +194,8 @@ function ReviewProduct({
                                                     planName={item.planName}
                                                     planDisplayName={item.planDisplayName}
                                                     extensionPriceOption={chosenPackage}
-                                                    productInfoStatement="Maximum Number of Assignments per month - 500"
+                                                    subscriptionPricePerMonth={chosenPackage.pricePerMonth}
+                                                    productInfoStatement={`Maximum Number of Assignments per month - ${numberOfAssignments}`}
                                                 />
 
                                                 <div className="flex items-center mt-[7px] w-full" >
@@ -222,7 +228,7 @@ function ReviewProduct({
                                                     <div className="grow" ></div>
 
                                                     <div className="flex flex-col items-end text-[#24A3D9]" >
-                                                        <div>{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + chosenSubscriptionPlan.pricePerMonth}</div>
+                                                        <div>{CurrencyNameToSymbole(chosenPackage.currency) + chosenPackage.pricePerMonth}</div>
                                                         <div>1 Month</div>
                                                     </div>
                                                 </div>
@@ -265,7 +271,7 @@ function ReviewProduct({
                     <div className="flex mt-[10px]" >
                         <div className="font-[500] text-[#26435F] text-[14px]" >Extensions</div>
                         <div className="border-dotted border-b-[1px] border-[#26435F] grow" ></div>
-                        <div className="font-[500] text-[#26435F] text-[14px]" >$0.00</div>
+                        <div className="font-[500] text-[#26435F] text-[14px]" >{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + chosenExtensionPrice}</div>
                     </div>
                     <div className="text-[#7C98B6] text-[12px]" >Assignments</div>
 
@@ -280,6 +286,7 @@ function ReviewProduct({
                     isCCRequired ? (
                         <StripeCardDetailWidget
                             chosenSubscriptionObjectFromAPI={chosenSubscriptionObjectFromAPI}
+                            stripeCustomerId={stripeCustomerId}
                         />
                     ) : (
                         <>

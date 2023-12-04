@@ -92,10 +92,13 @@ function ExtensionSelectionWidget({
                                                 <div className="flex items-center justify-between w-full z-[2]" >
 
                                                 {
-                                                    extensionPriceOption.map(item => {
+                                                    extensionPriceOption.map((item, index) => {
                                                         const isSelected = item.planName === chosenPackage;
+                                                        const numberOfAssignments = index === 0 ? 100 : index === 1 ? 500 : index === 2 ? "1,500" :  "Unlimited" 
                                                         return (
-                                                            <button className={`flex flex-col items-center px-[15px] py-[5px] rounded-[10px]
+                                                            <button 
+                                                                key={index}
+                                                                className={`flex flex-col items-center px-[15px] py-[5px] rounded-[10px]
                                                                             ${isSelected ? "shadow-[0px_0px_10px_rgba(255,162,141,0.5)]" : ""}
                                                                             ${isSelected ? "bg-[#FFFFFFB2]" : ""}
                                                             `} 
@@ -103,7 +106,7 @@ function ExtensionSelectionWidget({
                                                             >
                                                                 <div className={`
                                                                                 ${isSelected ? "text-[#24A3D9]" : "text-[#24A3D980]"}
-                                                                `} >500</div>
+                                                                `} >{numberOfAssignments}</div>
                                                                 <div className={`aspect-square border-[2px] mt-[5px] rounded-full w-[10px]
                                                                                 ${isSelected ? "bg-[#FFA28D]" : "bg-[#fff]"}
                                                                                 ${isSelected ? "border-[#FFA28D]" : "border-[#B3BDC7]"}
