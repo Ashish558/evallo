@@ -491,7 +491,7 @@ export default function TableItem({
                     : true
                 }
                 tableDropdown={true}
-                value={leadStatus ? leadStatus : "-"}
+                value={organization2?.settings?.leadStatus?.includes(leadStatus) ? leadStatus : "-"}
                 placeholderClass="text-base-17-5"
                 optionData={organization2?.settings?.leadStatus}
                 inputContainerClassName={`min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center capitalize `}
@@ -506,7 +506,7 @@ export default function TableItem({
             <InputSelect
               disabled={item?.userType === "tutor" ? false : true}
               tableDropdown={true}
-              value={tutorStatus ? tutorStatus : "-"}
+              value={organization2?.settings?.tutorStatus?.includes(tutorStatus) ? tutorStatus : "-"}
               optionData={organization2?.settings?.tutorStatus}
               inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center capitalize text-base-17-5"
               optionClassName="text-[17.5px] text-base-17-5"

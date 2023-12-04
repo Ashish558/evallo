@@ -1464,11 +1464,11 @@ export default function Users() {
               className=" flex items-center  !text-white font-semibold py-[10px]  w-[203px] h-[45px] !px-1"
             />
             <button
-              className="bg-[#FFA28D] justify-center flex py-2 pr-[12px] pl-4 design:px-4 items-center text-white font-semibold rounded-lg text-base-15  ml-auto"
+              className="bg-[#FFA28D] justify-center flex py-2 pr-[17.9px] pl-[17px]  items-center text-white text-[17.5px] font-semibold rounded-lg ml-auto"
               onClick={() => setAssignedTutorOpen(true)}
             >
               Tutor Mapping
-              <img src={PlusIcon} className="ml-3" alt="PlusIcon" />
+              <img src={PlusIcon} className="ml-[5px]" alt="PlusIcon" />
             </button>
             {bulkUpload && (
               <Modal
