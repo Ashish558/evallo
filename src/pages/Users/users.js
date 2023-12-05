@@ -113,10 +113,10 @@ export default function Users() {
   useEffect(() => {
     setValidData(
       isEmail(modalData.email) &&
-        modalData.firstName &&
-        modalData.lastName &&
-        modalData.userType &&
-        modalData.phone
+      modalData.firstName &&
+      modalData.lastName &&
+      modalData.userType &&
+      modalData.phone
     );
   }, [
     modalData,
@@ -644,7 +644,7 @@ export default function Users() {
   const [unblockUser, unblockUserResp] = useUnblockUserMutation();
   const [fetchSettings, settingsResp] = useLazyGetSettingsQuery();
   const [userToDelete, setUserToDelete] = useState({});
-  const [getExportData,getExportDataStatus]=useLazyGetExportDataQuery()
+  const [getExportData, getExportDataStatus] = useLazyGetExportDataQuery()
   const [fetchUsers, fetchUsersResp] = useLazyGetAllUsersQuery();
   const [getAllUsers, setAllUsers] = useLazyGetAllOrgUsersQuery();
   const [addUser, addUserResp] = useAddUserMutation();
@@ -1116,7 +1116,7 @@ export default function Users() {
 
   const [csvLoad, setCsvLoad] = useState(false);
   const [successFetched, setsuccessFetched] = useState(false);
- 
+
 
   const generateExcel = (csvData) => {
     const wb = XLSX.utils.book_new();
@@ -1125,9 +1125,9 @@ export default function Users() {
       const ws = XLSX.utils.json_to_sheet(sheet.data);
       XLSX.utils.book_append_sheet(wb, ws, sheet.sheetName);
     });
-  const blob = XLSX.write(wb, { bookType: 'xlsx',type:"base64", mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
- const blobObject = new Blob([blob], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  const link = document.createElement('a');
+    const blob = XLSX.write(wb, { bookType: 'xlsx', type: "base64", mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const blobObject = new Blob([blob], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const link = document.createElement('a');
     link.href = URL.createObjectURL(blobObject);
     link.download = 'data.xlsx';
     document.body.appendChild(link);
@@ -1135,12 +1135,12 @@ export default function Users() {
     document.body.removeChild(link);
   };
   const handleBulkExport = async () => {
-    getExportData().then((res)=>{
-   
+    getExportData().then((res) => {
+
       const csvSheetData = [
-        { data: [{name:true}], sheetName: 'parents' },
-        { data: [{name:true}], sheetName: 'students' },
-        { data: [{name:true}], sheetName: 'tutors' },
+        { data: [{ name: true }], sheetName: 'parents' },
+        { data: [{ name: true }], sheetName: 'students' },
+        { data: [{ name: true }], sheetName: 'tutors' },
       ];
       generateExcel(csvSheetData)
     })
@@ -1233,10 +1233,14 @@ export default function Users() {
           setCsvLength("XX");
           alert("Bulk Users Saved!");
           setBulkUpload(false);
-         
+
         })
         .catch((err) => {
-          alert("Error Occured",err.message);
+          if (err.response?.data?.message) {
+            alert(err.response?.data?.message);
+          } else {
+            alert('An error occured while uploading the file!')
+          }
           setXlsFile(undefined);
           setBulkUpload(false);
         });
@@ -1260,7 +1264,12 @@ export default function Users() {
           // setXlsFile(undefined);
         })
         .catch((err) => {
-          alert("Error Occured",err.message);
+          if (err.response?.data?.message) {
+            alert(err.response?.data?.message);
+          } else {
+            alert('An error occured while uploading the file!')
+          }
+
           //console.log("error in bulk upload and invite");
           setXlsFile(undefined);
           setInviteUsers(false);
@@ -1392,7 +1401,6 @@ export default function Users() {
       setAdminSelectedForDelete(check ? true : false);
     }
   }, [selectedId]);
-  console.log("selected ", selectedId, adminSelectedForDelete);
 
   const numberKey = Object.keys(bulkEdits)?.length > 0;
   useEffect(() => {
@@ -1400,8 +1408,8 @@ export default function Users() {
   }, []);
   //console.log("users",{selectedId,bulkEdits})
   return (
-    <div className="w-[83.6989583333vw] mx-auto  min-h-screen">
-      <div className="pb-10  mt-[50px] !mt-[calc(50*0.0522vw)]">
+    <div className="px-[200px] mx-auto  min-h-screen">
+      <div className="pb-10  mt-[50px] ">
         <div className="flex justify-between items-center mb-3">
           <p className="text-[#24A3D9] mb-6 text-xl text-base-20 cursor-pointer">
             <span onClick={() => navigate("/")}>
@@ -1597,9 +1605,8 @@ export default function Users() {
           </div>
         </div>
         <div
-          className={`flex justify-between items-center gap-7 mb-6 relative ${
-            showTooltip ? "z-[1]" : "z-[50]"
-          }`}
+          className={`flex justify-between items-center gap-7 mb-6 relative ${showTooltip ? "z-[1]" : "z-[50]"
+            }`}
         >
           <InputField
             IconRight={SearchIcon}
@@ -1849,9 +1856,8 @@ export default function Users() {
               onClick={() =>
                 selectedId?.length > 0 && setSaveBulkModalActive(true)
               }
-              className={`bg-[rgba(38,67,95,1)] font-medium text-[15px] px-[10px] py-[10px] rounded-[7.5px] text-white ml-auto  h-[43.75px] w-[100px] ${
-                selectedId?.length === 0 || !numberKey ? "opacity-75" : ""
-              } `}
+              className={`bg-[rgba(38,67,95,1)] font-medium text-[15px] px-[10px] py-[10px] rounded-[7.5px] text-white ml-auto  h-[43.75px] w-[100px] ${selectedId?.length === 0 || !numberKey ? "opacity-75" : ""
+                } `}
             >
               Save
             </button>
@@ -1862,9 +1868,8 @@ export default function Users() {
               onClick={() =>
                 selectedId?.length > 0 && setInviteBulkModalActive(true)
               }
-              className={`bg-[#517CA8] opacity-100 text-[17.5px]  font-semibold tracking-wider relative px-[19px] py-[11px] rounded-[7.5px] text-white h-[44px] ${
-                selectedId?.length === 0 ? "opacity-75" : ""
-              } `}
+              className={`bg-[#517CA8] opacity-100 text-[17.5px]  font-semibold tracking-wider relative px-[19px] py-[11px] rounded-[7.5px] text-white h-[44px] ${selectedId?.length === 0 ? "opacity-75" : ""
+                } `}
             >
               + Invite Users
               <span className="absolute right-[-9px] z-[500] top-[-12px]">
@@ -1919,11 +1924,10 @@ export default function Users() {
                 selectedId?.length > 0 &&
                 setDeleteBulkModalActive(true)
               }
-              className={`bg-[#FF7979] opacity-100  text-[17.5px] flex gap-x-[10px] justify-center items-center gap-2 px-[21px] tracking-wider font-semibold py-[9.5px] rounded-[5px] text-white ${
-                selectedId?.length === 0 || true || adminSelectedForDelete
+              className={`bg-[#FF7979] opacity-100  text-[17.5px] flex gap-x-[10px] justify-center items-center gap-2 px-[21px] tracking-wider font-semibold py-[9.5px] rounded-[5px] text-white ${selectedId?.length === 0 || true || adminSelectedForDelete
                   ? "opacity-75 cursor-not-allowed"
                   : ""
-              } `}
+                } `}
             >
               <span>
                 <img
@@ -2056,9 +2060,8 @@ export default function Users() {
                 </div>
               </div>
               <div
-                className={`flex items-center justify-center gap-4 ${
-                  addUserBtnDisabled ? "opacity-80" : ""
-                }`}
+                className={`flex items-center justify-center gap-4 ${addUserBtnDisabled ? "opacity-80" : ""
+                  }`}
               >
                 <button
                   disabled={addUserBtnDisabled || loading || loadingInvite}

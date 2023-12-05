@@ -29,7 +29,7 @@ function App() {
     if (id === undefined) return;
     fetchOrganization(id).then((res) => {
       if (res.error) {
-        console.log(res.error);
+        console.log('error fetching organization',res.error);
         return;
       }
       dispatch(updateOrganization(res.data.organisation));

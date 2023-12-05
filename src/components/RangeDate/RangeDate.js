@@ -20,7 +20,6 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
       setDateFormat(organization2?.settings?.dateFormat)
     }
   }, [organization2])
-  console.log("latest", { dateFormat, organization2 })
   const [startDate, setStartDate] = useState(() => calculateDateRange()[0]);
   const [selectDate, setSelectedDate] = useState({
     sDate: "",
