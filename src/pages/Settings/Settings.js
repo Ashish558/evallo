@@ -117,6 +117,7 @@ const initialTabs = [
   },
 ];
 export default function Settings() {
+
   const [modalActive, setModalActive] = useState(false);
   const { firstName, lastName } = useSelector((state) => state.user);
   const [tagModalActive, setTagModalActive] = useState(false);
@@ -734,7 +735,7 @@ export default function Settings() {
         subscriptionCode: updated,
       };
       // //console.log('updatedSetting', updatedSetting);
-      updateAndFetchsettingsNew2(updatedSetting);
+      // updateAndFetchsettingsNew2(updatedSetting);
     } else {
       let updated = [
         ...subscriptionCode,
@@ -748,7 +749,7 @@ export default function Settings() {
         subscriptionCode: updated,
       };
       // //console.log('updatedSetting', updatedSetting);
-      updateAndFetchsettingsNew2(updatedSetting);
+      // updateAndFetchsettingsNew2(updatedSetting);
     }
   };
 
@@ -1694,7 +1695,7 @@ export default function Settings() {
                                 ></ToggleBar>
                                 <div
                                   className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
-                                  onClick={() => onEditService(service)}
+                                  // onClick={() => onEditService(service)}
                                 >
                                   <img
                                     src={EditBlueIcon}
@@ -1790,7 +1791,7 @@ export default function Settings() {
                                 ></ToggleBar>
                                 <div
                                   className=" flex items-center justify-center  rounded-full cursor-pointer"
-                                  onClick={() => onEditSession(service)}
+                                  // onClick={() => onEditSession(service)}
                                 >
                                   <img
                                     src={EditBlueIcon}
@@ -2039,7 +2040,7 @@ export default function Settings() {
                                       let arr = offersNew;
                                       arr[idx].image = e.target.files[0];
                                       setOffersNew((prev) => [...arr]);
-                                      submitImageModalNew(off?.image, off, e);
+                                      // submitImageModalNew(off?.image, off, e);
                                       // setImageName(e.target.files[0].name);
                                     }}
                                     id="file2"
@@ -2504,7 +2505,7 @@ export default function Settings() {
                     optionData={filteredTests}
                     rightIcon={down}
                     onOptionClick={(item) => {
-                      handleTestChange2(item);
+                      // handleTestChange2(item);
                       // setStudent(item.value);
                       // handleStudentsChange(item)
                       // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
@@ -2561,12 +2562,12 @@ export default function Settings() {
               onSubmit={(e) => {
                 e.preventDefault();
                 if (addOne) {
-                  handleAddNewService();
+                  // handleAddNewService();
                 } else {
-                  handleAddServiceName2(
+                  /* handleAddServiceName2(
                     selectedServiceData?.service,
                     subModalServiceData?._id
-                  );
+                  ); */
                 }
               }}
             >
@@ -2624,7 +2625,7 @@ export default function Settings() {
                   <AddTag
                     onAddTag={
                       addOne
-                        ? handleAddNewSpecialisation
+                        ? null//handleAddNewSpecialisation
                         : handleAddSpecialization2
                     }
                     keyName={
@@ -2648,7 +2649,8 @@ export default function Settings() {
                         : selectedServiceData.specialization
                     }
                     onRemoveFilter={
-                      addOne ? handleNewServiceRemove : onRemoveSpecialization2
+                      addOne ? null//handleNewServiceRemove 
+                      : onRemoveSpecialization2
                     }
                     className="pt-1 pb-1 mr-15 text-base-17-5"
                   />
@@ -2707,12 +2709,12 @@ export default function Settings() {
               onSubmit={(e) => {
                 e.preventDefault();
                 if (addOne) {
-                  handleAddNewSession();
+                  // handleAddNewSession();
                 } else {
-                  handleAddSessionName2(
+                  /* handleAddSessionName2(
                     selectedSessionData?.heading,
                     subModalSessionData?._id
-                  );
+                  ); */
                 }
               }}
             >
@@ -2769,7 +2771,7 @@ export default function Settings() {
                 </div>
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] mt-5">
                   <AddTag
-                    onAddTag={addOne ? handleAddNewTags : handleAddSessionTag2}
+                    // onAddTag={addOne ? handleAddNewTags : handleAddSessionTag2}
                     keyName={
                       addOne
                         ? addSession2?.heading
@@ -2788,9 +2790,9 @@ export default function Settings() {
                     items={
                       addOne ? addSession2?.items : selectedSessionData.items
                     }
-                    onRemoveFilter={
+                    /* onRemoveFilter={
                       addOne ? handleNewSessionRemove : onRemoveSessionTagItem2
-                    }
+                    } */
                     className="pt-1 pb-1 mr-15 text-base-17-5"
                   />
                 </div>

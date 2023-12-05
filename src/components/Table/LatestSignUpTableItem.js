@@ -81,7 +81,11 @@ else [ year, month, day] = value.split("-");
         <div >{item.role}</div>
       </td>
       <td className=" text-[17.5px] pr-[16px] pl-6  min-w-14 py-4 text-left">
-        <div >{item.email}</div>
+        {/* <p className="max-w-[207px] text-ellipsis overflow-hidden whitespace-normal ">{item.email}</p> */}
+        <div className="flex flex-col max-w-[207px]">
+        {item.email?.length>19?<><p>{item.email?.slice(0,19)}</p><p>{item.email?.slice(19,item?.email?.length)}</p></>:<p>{item.email}</p>}
+        </div>
+        {/* <p className="max-w-[207px] text-ellipsis">{item.email?.length>19?item.email?.slice(0,19)+"...":item.email}</p> */}
       </td>
       <td className=" text-[17.5px] px-[16px]  min-w-14 py-4">
         <div >{item.phone}</div>

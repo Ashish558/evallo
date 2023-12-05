@@ -84,14 +84,14 @@ const StudentDashboardHeader = () => {
             </div>
          </div> */}
 
-      <div className="flex justify-between relative  gap-8 mb-[92px] mt-[31px] ">
-        <div className="">
-          <p className="text-base-20 text-[#26435F] font-semibold">
+      <div className="flex justify-between relative  gap-8 mb-[57px] mt-[31px] ">
+        <div className="flex flex-col justify-start items-start gap-2.5">
+          <p className="text-[20px] text-[#26435F] font-semibold">
             Announcements
           </p>
 
           <div
-            className=" relative  flex rounded-md items-center  shadow-[0px_0px_2.500001907348633px_0px_#00000040] w-[28.6458vw]  h-[250px] "
+            className=" relative  flex rounded-md items-center  shadow-[0px_0px_2.500001907348633px_0px_#00000040] w-[550px]  h-[250px] "
             id={styles.exploreBgDisable}
           >
             <div className={styles.images}>
@@ -142,11 +142,14 @@ const StudentDashboardHeader = () => {
           </div>
         </div>
 
-        <div className=" mx-auto ">
+        <div className=" mx-auto flex flex-col justify-start items-start gap-2.5 relative">
+        <svg className="absolute bottom-0 left-0 z-10" xmlns="http://www.w3.org/2000/svg" width="490" height="99" viewBox="0 0 490 99" fill="none">
+  <path d="M489.25 93.7501V0C486.489 0 484.25 2.23853 484.25 4.99989L484.25 50.6251L484.25 88.1251C484.25 90.8865 482.012 93.1251 479.25 93.1251H11.125C8.36358 93.1251 6.125 90.8865 6.125 88.1251V49.3751L6.125 5.625C6.125 2.5184 3.6066 0 0.5 0V93.7501C0.5 96.5115 2.73858 98.7501 5.5 98.7501H484.25C487.012 98.7501 489.25 96.5115 489.25 93.7501Z" fill="#26435F"/>
+</svg>
           <p className=" text-base-20 text-[#26435F] font-semibold">
             Assigned Tutors
           </p>
-          <div className=".mybox bg-white relative shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)] border-b-4 border-b-[#26435F]  rounded-md max-w-[440px]  design:max-w-[460px] w-[25.4167vw] h-[250px]">
+          <div className=".mybox bg-white relative shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)] rounded-md w-[489px] h-[250px]">
             <div id="borderLeft" className="rounded-t-r-md"></div>
             <TutorCarousel />
 
@@ -155,11 +158,11 @@ const StudentDashboardHeader = () => {
           </div>
         </div>
 
-        <div className=" ">
-          <p className=" text-base-20 text-[#26435F] font-semibold ">
+        <div className=" flex flex-col justify-start items-start gap-2.5 relative ">
+          <p className=" text-[20px] text-[#26435F] font-semibold ">
             Session Feedback
           </p>
-          <div className=" bg-white  rounded-md  shadow-[0px_0px_2.500001907348633px_0px_#00000040] w-[25vw] h-[250px]">
+          <div className=" bg-white  rounded-md  shadow-[0px_0px_2.500001907348633px_0px_#00000040] w-[480px] h-[250px]">
             <div
               className="overflow-y-auto flex-1  p-4  h-[100%] custom-scroller"
               id={styles.tutorList}

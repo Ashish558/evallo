@@ -254,7 +254,7 @@ const managerNavData = [
    },
 ];
 
-const Navbar = () => {
+const Navbar = ({myRef}) => {
    const [navData, setNavData] = useState(tempnavdata);
    const location = useLocation();
    const [activeRoute, setActiveRoute] = useState(location.pathname);
@@ -343,13 +343,35 @@ const [loading2,setLoading2]=useState(false)
             arr[0].path = "/"
          setNavData(arr)
       }
-   }, [activeRoute])
+   }, [activeRoute]);
+   const [navTop,setNavTop] = useState(0);
+
+   // const handleScroll = () =>{
+   //    setNavTop(0);
+   //    const screenWidth = window.innerWidth;
+   //    const scale = screenWidth > 0 ? screenWidth / 1920 : 0;
+   //    const scrollY = window.scrollY;
+   //    const requiredTop = (1/(scale>1?1:scale)) * scrollY;
+   //    setNavTop(requiredTop);
+   // };
+   // useEffect(() => {
+   //    window.addEventListener('scroll', handleScroll);
+   //    window.addEventListener('resize', handleScroll);
+   //    window.addEventListener('wheel',handleScroll);
+   //    return () => {
+   //       window.removeEventListener('scroll', handleScroll);
+   //       window.removeEventListener('resize', handleScroll);
+   //    window.removeEventListener('wheel',handleScroll);
+   //    };
+   //  }, []);
 
    return (
       <>
-         <div className={`flex   bg-[#26435F] h-[72px] items-center w-full shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] ${persona=="superAdmin"?"justify-between px-[5%]":"justify-around"}`}>
+      {/* this div will take navbar's height */}
+         {/* <div className="h-[72px]"></div> */}
+         <div ref={myRef} style={{top:`${navTop}px`,transformOrigin:"top left"}} className={`flex bg-[#26435F] h-[72px] items-center w-[1920px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] sticky left-0 ${persona=="superAdmin"?"justify-between px-[5%]":"justify-around"} design:left-[calc(50vw-960px)] z-[100000]`}>
             <div
-               className={`${persona === "superAdmin" ? "translate-x-[-2.3vw]" : ""}`}
+               className={`${persona === "superAdmin" ? "translate-x-[-44.16px]" : ""}`}
             >
                <Link to="/">
                   <div className="flex gap-x-[6px] items-center">
@@ -359,7 +381,7 @@ const [loading2,setLoading2]=useState(false)
                </Link>
 
             </div>
-            <div className={`flex  text-[#FFFFFF] font-semibold text-[0.9021vw] ${!isLoggedIn && "opacity-[0.3]"} ${persona === "superAdmin" ? "translate-x-[3.5vw]" : ""}`}>
+            <div className={`flex  text-[#FFFFFF] font-semibold text-[17.333px] ${!isLoggedIn && "opacity-[0.3]"} ${persona === "superAdmin" ? "translate-x-[67.2px]" : ""}`}>
                {navData.map((item, idx) => {
                   return (
                      <div
@@ -395,7 +417,7 @@ const [loading2,setLoading2]=useState(false)
                   );
                })}
             </div>
-            <div className={`flex ${persona === "superAdmin" ? "translate-x-[-1vw]" : ""} font-bold ${isLoggedIn ? "" : "opacity-[0.3]"}`}>
+            <div className={`flex ${persona === "superAdmin" ? "translate-x-[-19.2px]" : ""} font-bold ${isLoggedIn ? "" : "opacity-[0.3]"}`}>
              {persona =="parent"||  <div className="cursor-pointer flex mr-[24px] text-[#24A3D9] text-base-16  items-center">
                   <p className=" text-[16px]">Pricing 	</p>
                   <p className="pl-2 text-[17px]">
@@ -457,7 +479,7 @@ const [loading2,setLoading2]=useState(false)
                classname={"!w-[666px] mx-auto !pt-7 !pb-[33px] !rounded-[8px] px-[33.33px] !text-center"}
             />
          )}
-      </>
+</>
    );
 };
 

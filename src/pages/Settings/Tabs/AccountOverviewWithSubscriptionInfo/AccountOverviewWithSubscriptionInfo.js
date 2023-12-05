@@ -21,11 +21,15 @@ import { useLazyGetSubscriptionsInfoQuery } from "../../../../app/services/orgSi
 import {
     useLazyGetPersonalDetailQuery,
     useLazyGetOrganizationQuery,
+    useDeletePaymentMethodMutation,
   } from "../../../../app/services/users";
 import Modal from "../../../../components/Modal/Modal";
 import Modal2 from "../../../../components/Modal2/Modal2";
 import ViewTransactionsModal from "../../../../components/ViewTransactionsModal/ViewTransactionsModal";
 import AddNewBankCardModal from "../../../../components/AddNewBankCardModal/AddNewBankCardModal";
+import visaIcon from "../../../../assets/BankCard/visa.svg";
+import { useCancelSubscriptionMutation } from "../../../../app/services/subscription";
+import DeletePaymentMethodModal from "../../../../components/DeletePaymentMethodModal/DeletePaymentMethodModal";
 
 function BankCardWidgetContainer({
     className,
@@ -95,8 +99,15 @@ function AccountOverviewWithSubscriptionInfo() {
     const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
     const [getPersonalDetail, getPersonalDetailResp] = useLazyGetPersonalDetailQuery();
     const [getOrgDetails, getOrgDetailsResp] = useLazyGetOrganizationQuery();
+    const [deletePaymentMethod] = useDeletePaymentMethodMutation();
+    const [cancelSubscription] = useCancelSubscriptionMutation();
     const [subscriptionsInfoFromAPI, SetSubscriptionsInfoFromAPI] = useState([]);
     const [activeSubscriptionName, SetActiveSubscriptionName] = useState("Professional");
+    const [activeSubscriptionId, SetActiveSubscriptionId] = useState("");
+    const [activeExtensionName, SetActiveExtensionName] = useState("Assignment");
+    const [activeExtensionPrice, SetActiveExtensionPrice] = useState(100);
+    const [activeExtensionProductQuantity, SetActiveExtensionProductQuantity] = useState(500);
+
     const [activeSubscriptionInfo, SetActiveSubscriptionInfo] = useState({
         planDisplayName: "",
         activeTutorsAllowed: 0,
@@ -112,10 +123,14 @@ function AccountOverviewWithSubscriptionInfo() {
     const [isPasswordResetLinkSentModalActive, SetIsPasswordResetLinkSentModalActive] = useState(false);
     const [isCancelSubscriptionModalActive, SetIsCancelSubscriptionModalActive] = useState(false);
     const [isViewTransactionsModalActive, SetIsViewTransactionsModalActive] = useState(false);
-    const [isAddNewBankCardModalActive, SetIsAddNewBankCardModalActive] = useState(true);
+    const [isAddNewBankCardModalActive, SetIsAddNewBankCardModalActive] = useState(false);
+    const [isDeletePaymentMethodModalActive, SetIsDeletePaymentMethodModalActive] = useState(false);
     const [openSubscriptionModal, SetOpenSubscriptionModal] = useState(false);
     const [openExtensionsModal, SetOpenExtensionsModal] = useState(false);
     const [stripeCustomerId, SetStripeCustomerId] = useState("");
+    const [paymentMethods, SetPaymentMethods] = useState([]);
+    const [cancelProductSubscriptionId, SetCancelProductSubscriptionId] = useState("");
+    const [deletePaymenMethodInfo, SetDeletePaymenMethodInfo] = useState(null);
     const [activeTutorsCount, setActiveTutorsCount] = useState(0)
 
     // console.log("activeTutorsCount - " + activeTutorsCount);
@@ -140,11 +155,8 @@ function AccountOverviewWithSubscriptionInfo() {
         });
     }, []);
 
-    useEffect(() => {
-        let orgDetails = sessionStorage.getItem("orgDetails");
-        // console.log(orgDetails);
-        // if(orgDetails === '' || orgDetails === undefined || orgDetails === null) {
-            getPersonalDetail()
+    function loadOrgDetails() {
+        getPersonalDetail()
             .then(data => {
                 // console.log("getPersonalDetail");
                 // console.log(data);
@@ -152,21 +164,59 @@ function AccountOverviewWithSubscriptionInfo() {
             
                 getOrgDetails(user.associatedOrg)
                 .then(data => {
-                    console.log('getOrgDetails', data.data);
-                    try {      
-                        if(data.data.customerSubscriptions?.data){
-                            if(data.data.customerSubscriptions?.data[0]){
-                                const metadata = data.data.customerSubscriptions?.data[0].metadata
-                                if(metadata.type === 'default'){
-                                    setActiveTutorsCount(parseInt(metadata.active_tutors))
-                                }
-                            }
-                        }
-                    } 
-                    catch (error) {
-                        
+                    console.log("getOrgDetails");
+                    console.log(data);
+                    console.log("subscriptionsInfoFromAPI");
+                    console.log(subscriptionsInfoFromAPI);
+                    if(data.data && data.data.stripeCustomerDetails && data.data.stripeCustomerDetails.id) {
+                        SetStripeCustomerId(data.data.stripeCustomerDetails.id);
                     }
-                    sessionStorage.setItem("orgDetails", JSON.stringify(data.data));
+                    SetPaymentMethods(data.data.stripCustomerPaymentDetails.data);
+                    if(data.data && 
+                       data.data.customerSubscriptions && 
+                       data.data.customerSubscriptions.data && 
+                       data.data.customerSubscriptions.data.length > 0 &&
+                       subscriptionsInfoFromAPI.length > 0) {
+                        const products = data.data.customerSubscriptions.data;
+                        let activeSub;
+                        for(let i = 0; i < products.length; i++) {
+                            let planId = products[i].plan.id;
+                            activeSub = subscriptionsInfoFromAPI.find(item => item.id === planId);
+                            if(products[i].metadata.type === "extension") {
+                                SetActiveExtensionName("Assignement");
+                                SetActiveExtensionPrice(products[i].plan.amount / 100);
+                                if(activeSub.lookup_key === "p1") {
+                                    SetActiveExtensionProductQuantity(100);
+                                }
+                                if(activeSub.lookup_key === "p2") {
+                                    SetActiveExtensionProductQuantity(500);
+                                }
+                                if(activeSub.lookup_key === "p3") {
+                                    SetActiveExtensionProductQuantity(1500);
+                                }
+                                if(activeSub.lookup_key === "p4") {
+                                    SetActiveExtensionProductQuantity(Infinity);
+                                }
+
+                                break;
+                            }
+                            /* let planId = products[i].plan.id;
+                            activeSub = subscriptionsInfoFromAPI.find(item => item.id === planId); */
+                            console.log("activeSub")
+                            console.log(activeSub);
+                            SetActiveSubscriptionName(activeSub.product.name);
+                            SetActiveSubscriptionInfo({
+                                planDisplayName: activeSub.product.name,
+                                activeTutorsAllowed: parseInt(activeSub.product.metadata.active_tutors),
+                                currency: activeSub.currency,
+                                subscriptionPricePerMonth: activeSub.unit_amount / 100,
+                                monthlyCostAfterDiscount: activeSub.unit_amount / 100,
+                                subscriptionStartDate: new Date(),
+                            });
+                            SetActiveSubscriptionId(products[i].id);
+                        }
+                    }
+                    // sessionStorage.setItem("orgDetails", JSON.stringify(data.data));
                     // SetStripeCustomerId(data.data.stripeCustomerDetails.id);
                     /* SetCompanyInfo({
                         nameOfBusiness: data.data.organisation.company,
@@ -184,25 +234,15 @@ function AccountOverviewWithSubscriptionInfo() {
             console.log("Error in getPersonalDetail");
             console.log(error);
             });
+    }
 
-            return;
-        
+    useEffect(() => {
 
-        /* if(orgDetails.stripeCustomerDetails) {
-            SetStripeCustomerId(orgDetails.stripeCustomerDetails.id);
-        } */
+        loadOrgDetails();
+        return;
 
-        /* if(orgDetails.organisation && orgDetails.user) {
-            SetCompanyInfo({
-                nameOfBusiness: orgDetails.organisation.company,
-                accountType: orgDetails.user.registrationAs,
-                businessEntity: orgDetails.organisation.companyType,
-            });
-        } */
-        
-        
-
-    }, []);
+    
+    }, [subscriptionsInfoFromAPI]);
 
     useEffect(() => {
         if(!(subscriptionsInfoFromAPI && subscriptionsInfoFromAPI.length > 0)) return;
@@ -272,12 +312,24 @@ function AccountOverviewWithSubscriptionInfo() {
         makePasswordResetLinkSentModalDisappearAfterFewSeconds();
     }
 
-    function OnCancelSubscriptionClicked() {
+    function OnCancelSubscriptionClicked(cancelSubId) {
         SetIsCancelSubscriptionModalActive(true);
+        SetCancelProductSubscriptionId(cancelSubId);
     }
 
     function OnCancelSubscriptionModalCancelSubscriptionButtonClicked() {
         SetIsCancelSubscriptionModalActive(false);
+        cancelSubscription(cancelProductSubscriptionId)
+        .then(data => {
+            console.log("cancelSubscription");
+            console.log(data);
+            SetActiveSubscriptionName("");
+            SetActiveSubscriptionInfo(null);
+        })
+        .error(error => {
+            console.log("error in cancelSubscription");
+            console.log(error);
+        })
     }
 
     function OnCancelSubscriptionModalCrossIconClicked() {
@@ -310,6 +362,40 @@ function AccountOverviewWithSubscriptionInfo() {
         SetIsSubscriptionAndExtensionModalActive(false);
         SetOpenSubscriptionModal(false);
         SetOpenExtensionsModal(false);
+    }
+
+    function OnDeletePaymentMethodModalCrossIconClicked() {
+        SetIsDeletePaymentMethodModalActive(false);
+    }
+
+    function OnDeletePaymentMethodModalCancelClicked() {
+        SetIsDeletePaymentMethodModalActive(false);
+    }
+
+    function OnDeletePaymentMethodModalDeleteConfirmClicked() {
+        if(deletePaymenMethodInfo === null || deletePaymenMethodInfo === undefined) {
+            return;
+        }
+
+        deletePaymentMethod({
+            customerId: deletePaymenMethodInfo.customerId,
+            paymentMethodId: deletePaymenMethodInfo.paymentMethodId
+        }).then(data => {
+            console.log("delete payment method api response");
+            console.log(data);
+            loadOrgDetails();
+        }).catch(error => {
+            console.log("Error in delete payment method api");
+            console.log(error);
+        })
+        .finally(() => {
+            SetIsDeletePaymentMethodModalActive(false);
+        })
+    }
+
+    function OnAddNewPaymentModalAddButtonClicked() {
+        SetIsAddNewBankCardModalActive(false);
+        loadOrgDetails();
     }
 
     return (
@@ -416,6 +502,19 @@ function AccountOverviewWithSubscriptionInfo() {
             }
 
             {
+                isDeletePaymentMethodModalActive ? (
+                    <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
+                        <DeletePaymentMethodModal
+                            className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 aspect-[497/266] w-[25.88vw]"
+                            OnCrossIconClicked={OnDeletePaymentMethodModalCrossIconClicked}
+                            OnCancelClicked={OnDeletePaymentMethodModalCancelClicked}
+                            OnDeletePaymentMethodClicked={OnDeletePaymentMethodModalDeleteConfirmClicked}
+                        />
+                    </div>
+                ) : (<></>)
+            }
+
+            {
                 isViewTransactionsModalActive ? (
                     <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
                         <ViewTransactionsModal
@@ -432,6 +531,8 @@ function AccountOverviewWithSubscriptionInfo() {
                     <AddNewBankCardModal
                         className={`relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 aspect-[1110/382] w-[57.8125%]`}
                         OnCrossIconClicked={OnAddNewBankCardModalCrossIconClicked}
+                        OnAddClicked={OnAddNewPaymentModalAddButtonClicked}
+                        stripeCustomerId={stripeCustomerId}
                     />
                     </div>
                 ) : (<></>)
@@ -617,9 +718,59 @@ function AccountOverviewWithSubscriptionInfo() {
                             <button className="font-[200] inline text-[#24A3D9] text-[12px]" >pricing page.</button>
                         </div>
 
-                        <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Active Subscription</div>
+                        {/* <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Active Subscription</div> */}
 
-                        <div 
+                        {
+                            !(activeSubscriptionInfo === undefined || activeSubscriptionInfo === null) ?
+                            (
+                                <>
+                                <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Active Subscription</div>
+                                <div 
+                                    className="flex justify-between ml-[30px] mt-[5px]" 
+                                    style={{width: "92%"}}
+                                >
+                                    <ActiveSubscriptionWidget
+                                        style={{width: "65%"}}
+                                        canChangePlan={true}
+                                        planDisplayName={activeSubscriptionInfo.planDisplayName}
+                                        subscriptionPricePerMonth={activeSubscriptionInfo.subscriptionPricePerMonth}
+                                        activeTutorsAllowed={activeSubscriptionInfo.activeTutorsAllowed}
+                                        handleChangePlan={OnActiveSubscriptionChangePlanClicked}
+                                    />
+
+                                    <div className="flex flex-col items-end" >
+                                        <div className="flex" >
+                                            <span className="font-[100] text-[#517CA8] text-[12px]" >Subscription Start Date{" - "}</span>
+                                            <span className="font-[400] text-[#517CA8] text-[12px]" >{"{Date}"}</span>
+                                        </div>
+
+                                        <div className="flex mt-[3px]" >
+                                            <span className="font-[100] text-[#517CA8] text-[12px]" >Auto-Renewal Date{" - "}</span>
+                                            <span className="font-[400] text-[#517CA8] text-[12px]" >{"{Date}"}</span>
+                                        </div>
+
+                                        <div className="flex mt-[3px]" >
+                                            <span className="font-[100] text-[#517CA8] text-[12px]" >Monthly Cost (after discount){" - "}</span>
+                                            <span className="font-[400] text-[#517CA8] text-[12px]" >{"{Cost}"}</span>
+                                        </div>
+
+                                        <div className="grow" ></div>
+
+                                        <button 
+                                            className="font-[400] underline text-[#24A3D9] text-[12px]" 
+                                            onClick={
+                                                () => {
+                                                    OnCancelSubscriptionClicked(activeSubscriptionId);
+                                                }
+                                            } 
+                                        >Cancel Subscription</button>
+                                    </div>
+                                </div>
+                                </>
+                            ) : (<></>)
+                        }
+
+                        {/* <div 
                             className="flex justify-between ml-[30px] mt-[5px]" 
                             style={{width: "92%"}}
                         >
@@ -652,7 +803,7 @@ function AccountOverviewWithSubscriptionInfo() {
 
                                 <button className="font-[400] underline text-[#24A3D9] text-[12px]" onClick={OnCancelSubscriptionClicked} >Cancel Subscription</button>
                             </div>
-                        </div>
+                        </div> */}
 
                         <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Active Extensions</div>
 
@@ -663,9 +814,9 @@ function AccountOverviewWithSubscriptionInfo() {
                             <ActiveExtensionWidget
                                 style={{width: "65%"}}
                                 canChangePlan={true}
-                                planDisplayName={"Assignments"}
-                                subscriptionPricePerMonth={109}
-                                productQuantity={1500}
+                                planDisplayName={activeExtensionName}
+                                subscriptionPricePerMonth={activeExtensionPrice}
+                                productQuantity={activeExtensionProductQuantity}
                                 handleChangePlan={OnActiveExtensionChangePlanClicked}
                             />
 
@@ -693,8 +844,8 @@ function AccountOverviewWithSubscriptionInfo() {
                     </div>
 
                     <div
-                        className="bg-[#fff] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)]"
-                        style={{width: "100%", height: "42.75%"}}
+                        className="bg-[#fff] pb-[30px] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)]"
+                        style={{width: "100%"}}
                     >
                         <div 
                             className="flex items-center justify-between ml-[30px] mt-[20px]" 
@@ -714,9 +865,54 @@ function AccountOverviewWithSubscriptionInfo() {
 
                         <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Saved Cards</div>
 
-                        <div className={`flex items-start justify-between ml-[30px] pl-[0px] pb-[0px] pt-[0px] w-11/12`} >
+                        <div className={`flex items-start gap-x-[45px] gap-y-[30px] flex-wrap ml-[30px] pl-[0px] pb-[0px] pt-[0px] w-11/12`} >
 
-                            <BankCardWidgetContainer
+                            {
+                                paymentMethods.map((item, index) => {
+                                    let cardNumber = "XXXX";
+                                    console.log("payment Method");
+                                    console.log(item);
+                                    console.log(item.customer);
+                                    console.log(item.id);
+                                    if(item.card) {
+                                        cardNumber = item.card.last4;
+                                    }
+                                    let cardLogo = visaIcon;
+                                    if(item.card && item.card.brand === "visa") {
+                                        cardLogo = visaIcon
+                                    }
+                                    return (
+                                        <BankCardWidgetContainer
+                                            className="w-[33.15%]"
+                                            bankCardClassName="aspect-square-[305/106] ml-[20px] w-full"
+                                            cardNumber={cardNumber}
+                                            cardLogo={cardLogo}
+
+                                            onDeleteClicked={() => {
+                                                SetIsDeletePaymentMethodModalActive(true);
+                                                SetDeletePaymenMethodInfo({
+                                                    customerId: item.customer,
+                                                    paymentMethodId: item.id
+                                                })
+                                                return;
+                                                deletePaymentMethod({
+                                                    customerId: item.customer,
+                                                    paymentMethodId: item.id
+                                                }).then(data => {
+                                                    console.log("delete payment method api response");
+                                                    console.log(data);
+                                                    loadOrgDetails();
+                                                }).catch(error => {
+                                                    console.log("Error in delete payment method api");
+                                                    console.log(error);
+                                                })
+                                            }}
+                                        />
+                                    )
+                                })
+                            }
+
+                            {/* <BankCardWidgetContainer
                                 className="w-[33.15%]"
                                 bankCardClassName="aspect-square-[305/106] w-full"
                                 isDefault={true}
@@ -729,7 +925,7 @@ function AccountOverviewWithSubscriptionInfo() {
                                 isDefault={false}
                                 cardLogo={mastercardIcon}
                                 // cardNumber={"245234234125"}
-                            />
+                            /> */}
                             
 
                             <button 

@@ -268,6 +268,17 @@ export const userServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    deletePaymentMethod: builder.mutation({
+      query: (body) => {
+        console.log("inside deletePaymentMethod RTK");
+        console.log("paymentMethodId");
+        console.log(body.paymentMethodId);
+        return {
+        url: `api/stripe/del/${body.customerId}/${body.paymentMethodId}`,
+        method: "DELETE",
+        headers: getAuthHeader(),
+      }},
+    })
   }),
 });
 
@@ -309,4 +320,5 @@ export const {
   useGetAuthQuery,
   useLazyGetAuthQuery,
   useBulkChangeUserStatusMutation,
+  useDeletePaymentMethodMutation,
 } = userServicesApi;

@@ -1408,7 +1408,7 @@ export default function Users() {
   }, []);
   //console.log("users",{selectedId,bulkEdits})
   return (
-    <div className="px-[200px] mx-auto  min-h-screen">
+    <div className="px-[120px] mx-auto mt-[5vw] min-h-screen">
       <div className="pb-10  mt-[50px] ">
         <div className="flex justify-between items-center mb-3">
           <p className="text-[#24A3D9] mb-6 text-xl text-base-20 cursor-pointer">
@@ -1612,7 +1612,7 @@ export default function Users() {
             IconRight={SearchIcon}
             placeholder="Search"
             inputClassName="text-base-17-5 pl-4 text-[#667085] placeholder:text-[#667085]"
-            parentClassName="w-[22.03125vw]  py-1"
+            parentClassName="flex-1  py-1"
             inputContainerClassName="text-base-17-5  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1  !py-[14.5px]"
             type="text"
             value={filterData.typeName}
@@ -1628,7 +1628,7 @@ export default function Users() {
             optionListClassName="text-base-17-5 text-[#667085]"
             inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[15px]"
             placeholder="User type"
-            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085]"
+            parentClassName="flex-1 relative  relative z-[50]  text-[#667085]"
             type="select"
             value={filterData.userType.length > 0 ? filterData.userType[0] : ""}
             checkbox={{
@@ -1652,7 +1652,7 @@ export default function Users() {
             placeholderClass="text-base-17-5"
             optionData={settings.leadStatus}
             placeholder="Lead Status"
-            parentClassName="w-[12.8541666667vw] relative  relative  border-none text-[#667085]"
+            parentClassName="flex-1 relative  relative  border-none text-[#667085]"
             inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             type="select"
             checkbox={{
@@ -1677,7 +1677,7 @@ export default function Users() {
             placeholderClass="text-base-17-5"
             optionData={specializations}
             placeholder="Services"
-            parentClassName="w-[12.8541666667vw] relative  relative   text-[#667085] -z-5000"
+            parentClassName="flex-1 relative  relative   text-[#667085] -z-5000"
             type="select"
             inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px] "
             value={
@@ -1712,7 +1712,7 @@ export default function Users() {
               };
             })}
             placeholder="Tutor"
-            parentClassName="w-[12.8541666667vw] relative  relative   text-[#667085] -z-5000"
+            parentClassName="flex-1 relative  relative   text-[#667085] -z-5000"
             type="select"
             inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             optionType="object"
@@ -1758,8 +1758,8 @@ export default function Users() {
             </label> */}
           </div>
           <InputSelect
-            optionListClassName="text-base-17-5 text-[#667085]"
-            placeholderClass="text-base-17-5 !custom-scroller-2 overflow-x-auto !text-[#26435F] !mr-0"
+            optionListClassName="text-medium text-[#667085]"
+            placeholderClass="text-medium !custom-scroller-2 overflow-x-auto !text-[#26435F] !mr-0"
             optionData={organization?.settings?.leadStatus?.map((iyt) => {
               return {
                 value: iyt,
@@ -1768,7 +1768,7 @@ export default function Users() {
             })}
             hideRight={true}
             placeholder="Lead Status"
-            parentClassName="w-[9.1146vw] text-[#26435F]"
+            parentClassName=" text-[#26435F]"
             type="select"
             IconSearch={Dropdown}
             inputClassName="bg-white border border-white  w-[125px]"
@@ -1788,8 +1788,8 @@ export default function Users() {
           />
 
           <InputSelect
-            optionListClassName="text-base-17-5 text-[#667085]"
-            placeholderClass="text-base-17-5 !custom-scroller-2 overflow-x-auto !text-[#26435F] !mr-0"
+            optionListClassName="text-[#667085] text-medium"
+            placeholderClass="!custom-scroller-2 text-medium overflow-x-auto !text-[#26435F] !mr-0"
             optionData={organization?.settings?.tutorStatus?.map((iyt) => {
               return {
                 value: iyt,
@@ -1797,7 +1797,7 @@ export default function Users() {
               };
             })}
             placeholder="Tutor Status"
-            parentClassName="w-[10vw]  text-[#26435F]"
+            parentClassName="text-[#26435F]"
             type="select"
             IconSearch={Dropdown}
             inputClassName="bg-white border border-[rgb(255,255,255)]  w-[125px]"
@@ -1820,8 +1820,8 @@ export default function Users() {
 
           <InputSelect
             hideRight={true}
-            optionListClassName="text-base-17-5 text-[#667085] !font-normal"
-            placeholderClass="text-base-17-5 !custom-scroller-2  overflow-x-auto !text-[#26435F] !mr-0 !whitespace-normal !font-normal"
+            optionListClassName="text-medium text-[#667085] !font-normal"
+            placeholderClass="text-medium !custom-scroller-2  overflow-x-auto !text-[#26435F] !mr-0 !font-normal"
             optionData={allTutors?.map((iyt) => {
               return {
                 ...iyt,
@@ -1829,11 +1829,11 @@ export default function Users() {
               };
             })}
             placeholder="Assigned Tutor"
-            parentClassName="  text-[#26435F] "
+            parentClassName="text-[#26435F] flex-shrink-0"
             type="select"
             IconSearch={Dropdown}
             inputClassName="bg-white border   "
-            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] w-[175px] px-[20px] lg:pl-2 2xl:pl-3 rounded-[5px] !font-normal !w-[10.2vw]"
+            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] w-[175px] px-[20px] lg:pl-2 2xl:pl-3 rounded-[5px] !font-normal"
             optionType="object"
             value={bulkEdits?.assignedTutor?.value}
             onChange={(val) => {
@@ -1891,10 +1891,10 @@ export default function Users() {
                   />
                   {showTooltip && (
                     <span className="absolute top-[-237px]  design:top-[-248px]  left-[-140px] z-5000 w-[336px] design:w-[380px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-[20px] px-[13px] text-left">
-                      <h3 className="text-[#517CA8] text-left text-[0.8333vw] py-0 font-semibold mb-1">
+                      <h3 className="text-[#517CA8] text-left  py-0 font-semibold mb-1">
                         Invite Users
                       </h3>
-                      <span className="text-[0.6948vw] font-light relative z-40 text-left">
+                      <span className="font-light relative z-40 text-left">
                         This will allow you to invite the selected users to
                         create an account within your Organization’s database.
                         They will receive a verification email to set a new

@@ -701,7 +701,7 @@ const handleClick = () => {
                           ${frames.extensions ? "lg:w-[1200px]" : "lg:w-[800px]"}`}>
             <div className="w-full py-4 ">
               {frames.signupActive ? (
-                <div>
+                <div className="relative" >
                   {/* <p
                     className={`hidden lg:block mb-[26px] ${styles.textGrayed} `}
                   >
@@ -718,12 +718,12 @@ const handleClick = () => {
                       />
                   </div> */}
                   <label
-                    className="inline-block text-sm font-semibold ml-0 text-base-17-5"
+                    className="relative left-2/4 -translate-x-2/4 inline-block text-sm font-semibold ml-0 text-base-17-5"
                   >
                     One-Click Sign Up
                   </label>
 
-                  <div className="flex h-[50px] justify-between w-[180px]" >
+                  <div className="relative left-2/4 -translate-x-2/4 flex h-[50px] justify-around w-[120px]" >
                     <button
                       className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]"
                       onClick={google}
@@ -748,6 +748,14 @@ const handleClick = () => {
                         className="block"
                         src={AppleIcon} />
                     </button>
+                  </div>
+                  
+                  <div
+                    className="flex flex-col items-center w-full"
+                  >
+                    <div className="font-[100] mt-[10px] text-[#667085] text-[16px]" >OR</div>
+                    <div className="font-[600] mt-[10px] text-[#26435F] text-[14px]" >Sign Up using Email</div>
+                    <div className="font-[100] text-[#667085] text-[12px]" >Please fill in your detail to create a new account with Evallo.</div>
                   </div>
 
                   <div className="border-t-[1px] border-[#26435F4D] mb-[35px] mt-[30px] w-full" ></div>
@@ -958,11 +966,12 @@ const handleClick = () => {
                   <div className="flex items-center mt-[60px] justify-end">
                     <SecondaryButton
                       children="Back to login"
-                      className="text-sm mr-6 bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 "
+                      className="w-[160px] text-sm mr-6 bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 "
+                      style={{backgroundColor: "#fff"}}
                       onClick={handleBack}
                     />
                     <PrimaryButton
-                      className={`w-full flex justify-center  bg-[#FFA28D]  disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative py-[9px] ${
+                      className={`w-[160px] flex justify-center  bg-[#FFA28D]  disabled:opacity-60  rounded text-white text-sm font-medium relative py-[9px] ${
                         loading
                           ? "cursor-wait opacity-60 pointer-events-none"
                           : "cursor-pointer"

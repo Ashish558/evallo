@@ -12,24 +12,24 @@ export default function SingleTutor({turorsLength, idx, tutor, handlePrev,handle
   return (
 
     <div key={idx} className="item px-2 h-full  ">
-      <div className="flex flex-1 h-full items-center gap-8 my-auto justify-between">
+      <div className="flex h-full items-center my-auto justify-between">
 
         <div className="w-2/3 mb-3">
           {/* <h5 className={`${styles.tag}`}>
             {tutor.tutorLevel && `${tutor.tutorLevel} Belt`}
           </h5>
           <p>{tutor?.education}</p> */}
-          <h3 className=" text-[#26435F] text-base-22-5 font-semibold h-14 flex justify-start items-start">
+          <h3 className=" text-[#26435F] text-[22.5px] leading-4 font-semibold">
             {" "}
             {`${tutor.firstName} ${tutor.lastName}`}{" "}
           </h3>
-          <div className="w-full h-32 flex flex-col flex-1 flex-grow-1 justify-between items-start pb-4">
+          <div className="w-full h-32 flex flex-col flex-1 flex-grow-1 justify-between items-start gap-[21.5px] mt-[25.5px]">
           
-          <div className="flex flex-col justify-start items-start">
-          <p className="text-[#517CA8] text-base-17-5">
+          <div className="flex flex-col justify-start items-start gap-[5px]">
+          <p className="text-[#517CA8] text-[17.5px]">
             {tutor?.tagLine ? tutor?.tagLine : "Test Prep Math Tutoring"}
           </p>
-          <p className="text-[#517CA8]  text-base-17-5">
+          <p className="text-[#517CA8]  text-[17.5px]">
             {tutor?.topic ? tutor?.topic : "No topic"}
           </p>
           </div>
@@ -43,12 +43,12 @@ export default function SingleTutor({turorsLength, idx, tutor, handlePrev,handle
           </div>
         </div>
         <div className="  float-right translate-x-[7%] design:translate-x-[0%] h-fit pt-3" >
-          <div className="relative ">
+          <div className="relative mt-[-10px]">
             <img
               src={
                 tutor.photo ? `${awsLink}${tutor.photo}` : "/images/tutorDefault.svg"
               }
-              className="absolute z-[500] left-[-15px] top-[8.2px] design:top-[6px] rounded-full w-[126px] h-[126px] design:!w-[127px] design:!h-[126px] object-cover shrink-0"
+              className="absolute z-[500] left-[-15px] top-[8.2px] rounded-full w-[126px] h-[126px] object-cover shrink-0"
               alt=""
             />
 
