@@ -102,7 +102,7 @@ export default function Table(props) {
   if (isCallingApi) return <ApiTable noArrow={noArrow} {...props} />;
 
   return (
-    <div className="w-full">
+    <div className="min-w-full">
       <div
         className={`  ${
           noScrollbar

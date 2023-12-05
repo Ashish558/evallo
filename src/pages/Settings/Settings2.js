@@ -864,7 +864,7 @@ export default function Settings() {
 
   return (
     <>
-      <div className="  min-h-screen w-[83.6989583333vw] mx-auto">
+      <div className="px-[150px]  min-h-screen mx-auto">
         <p className="text-[#24A3D9]  !my-[calc(50*0.052vw)] text-base-20">
           {organization?.company + "  >  "}
           <span className="font-semibold">Settings</span>

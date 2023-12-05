@@ -257,7 +257,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
     <div className="flex flex-row justify-between mt-8">
       <div className=" flex-1 w-[1045px] h-full">
         <div className="flex items-center justify-between">
-          <h1 className="text-[#26435F]  text-base-20 font-semibold mb-1">
+          <h1 className="text-[#26435F]  text-[20px] font-semibold mb-1">
             Conceptual Accuracy
             <span className="inline-block my-auto ml-2 translate-y-1">
               <svg
@@ -316,7 +316,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
       <div className="w-[491px] flex flex-col gap-3 mt-1 h-full">
         <div className="concept" id={styles.studentCarousel}>
           <div>
-            <h1 className="text-[#26435F]  text-base-20 font-semibold ">
+            <h1 className="text-[#26435F]  text-[20px] font-semibold ">
               Tutor Profile
             </h1>
             <div className="mb-3 bg-[#26435F] flex items-center h-[204px] rounded-md w-[491px]">
@@ -402,20 +402,20 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
           </div>
         </div>
 
-        <div id={styles.practiceTestContainer}>
-          <h1 className="text-[#26435F]  text-base-20 font-semibold mb-1">
+        <div id={styles.practiceTestContainer} className="">
+          <h1 className="text-[#26435F]  text-[20px] font-semibold mb-[6px]">
             Assignments
           </h1>
           <div
             id={styles.listedData}
-            className=" overflow-y-auto custom-scroller !w-[calc(489*0.0522vw)]"
+            className=" overflow-y-auto custom-scroller h-[277.5px] w-[488.25px]"
           >
             {filteredAssignedTests?.length > 0 ? (
               filteredAssignedTests?.map((test) => {
                 return <ParentTest styles={styles} {...test} />;
               })
             ) : (
-              <div id="stest2" className=" w-full  z-[5000] h-full rounded-md bg-white flex justify-center items-center flex-col text-center items-center">
+              <div id="stest2" className=" w-full  z-[5000] h-full rounded-md bg-white flex justify-center flex-col text-center items-center">
                 <div className="w-[70%] mx-auto   flex flex-col items-center">
                   <button className="bg-[#FF7979] text-white rounded-md p-2 py-1 mb-3">
                     No Assignments Yet

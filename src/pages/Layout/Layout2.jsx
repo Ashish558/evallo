@@ -12,8 +12,10 @@ const Layout2 = ({ children }) => {
   const navRef = useRef(null);
   const footerRef = useRef(null);
   const layoutRef = useRef(null);
+  const layoutParentRef = useRef(null);
   const location = useLocation();
   const [layoutParentHeight, setLayoutParentHeight] = useState(null);
+  const [scaleState,setScaleState] = useState(1);
   const { isLoggedIn } = useSelector((state) => state.user);
 
   const adjustScale = () => {
@@ -33,29 +35,35 @@ const Layout2 = ({ children }) => {
     const screenWidth = document.body.clientWidth;
     const windowHeight = window.innerHeight;
     const scale = screenWidth > 0 ? screenWidth / 1920 : 0;
+    setScaleState(scale);
     const layoutRealHeightAfterScale =
       layoutRef.current.clientHeight * (scale > 1 ? 1 : scale);
       if((layoutRealHeightAfterScale+72+67)<windowHeight){
         const heightForFullScreenLayout = windowHeight-67;
         layoutRef.current.style.marginTop = `-${72*(scale>1?0:(1-scale))}px`;
-    // console.warn({windowHeight,layoutRealHeightAfterScale,heightForFullScreenLayout});
+    console.warn({windowHeight,layoutRealHeightAfterScale,heightForFullScreenLayout});
         setLayoutParentHeight(heightForFullScreenLayout);
-        footerRef.current.style.position = 'absolute';
+        // footerRef.current.style.position = 'absolute';
       }else{
-        footerRef.current.style.position = 'static';
+        // footerRef.current.style.position = 'static';
         layoutRef.current.style.marginTop = `-${130*(scale>1?0:(1-scale))}px`;
+        console.warn({layoutRefMarginTop:130*(scale>1?0:(1-scale)),layoutRealHeightAfterScale})
     setLayoutParentHeight(layoutRealHeightAfterScale);
   };
+  // if (navRef.current && layoutParentRef.current) {
+  //   const rect1 = navRef.current.getBoundingClientRect();
+  //   const rect2 = layoutParentRef.current.getBoundingClientRect();
+  //   const distance = rect2.top - rect1.height;
+  //   console.warn({rect1,rect2,distance});
+  //   if(distance>1){
+  //     layoutParentRef.current.style.marginTop = `-${distance}px`
+  //   }
+  // }
   }
   useEffect(() => {
-    // Initial adjustment on component mount
     adjustScale();
-
-    // Add event listener for window resize
     const intervalId = setInterval(checkHeight, 100);
     window.addEventListener("resize", adjustScale);
-
-    // Cleanup event listener on component unmount
     return () => {
       clearInterval(intervalId);
       window.removeEventListener("resize", adjustScale);
@@ -70,7 +78,7 @@ const Layout2 = ({ children }) => {
     <>
       <div style={{backgroundRepeat:"repeat"}} className={`relative h-full min-h-screen ${isLoggedIn===false?loginStyles.bg:""}`}>
         <Navbar myRef={navRef} />
-        <div style={{height:layoutParentHeight!==null?`${layoutParentHeight}px`:''}} className='min-h-[calc(100vh-67px)]'>
+        <div ref={layoutParentRef} style={{height:layoutParentHeight!==null?`${layoutParentHeight}px`:''}} className='min-h-[calc(100vh-67px)]'>
         {/* <div className="flex-grow"> */}
           <div
             style={{ transformOrigin: "top left" }}
@@ -81,7 +89,7 @@ const Layout2 = ({ children }) => {
           {/* </div> */}
         </div>
         </div>
-        <Footer myRef={footerRef} />
+        <Footer scaleState={scaleState} myRef={footerRef} />
       </div>
     </>
   );

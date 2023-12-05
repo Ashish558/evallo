@@ -138,9 +138,9 @@ export default function TestDetail() {
     };
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     window.scrollTo(0, 0);
-  },[])
+  }, []);
   function ckEditorUploadPlugin(editor) {
     editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
       // console.log(loader.file)
@@ -242,8 +242,8 @@ export default function TestDetail() {
           CorrectAnswer,
           Concepts: Concepts === undefined ? "Unavailable" : Concepts,
           Strategies: "Unavailable",
-  
-          AnswerChoices:AnswerChoices==undefined?'':AnswerChoices,
+
+          AnswerChoices: AnswerChoices == undefined ? "" : AnswerChoices,
           // Scoring:20
         };
       } else {
@@ -254,7 +254,7 @@ export default function TestDetail() {
           Concepts: Concepts === undefined ? "Unavailable" : Concepts,
           Strategies,
 
-          AnswerChoices:AnswerChoices==undefined?'':AnswerChoices,
+          AnswerChoices: AnswerChoices == undefined ? "" : AnswerChoices,
           // Scoring:20
         };
       }
@@ -333,7 +333,9 @@ export default function TestDetail() {
         CorrectAnswer: modalData.correctAnswer,
         Concepts: modalData.concept,
         Strategies: modalData.strategy,
-        AnswerChoices: !testData?.testType?.includes("DSAT") ? modalData.AnswerChoices : "A,B,C,D",
+        AnswerChoices: !testData?.testType?.includes("DSAT")
+          ? modalData.AnswerChoices
+          : "A,B,C,D",
         QuestionText: modalData.question,
         QuestionImageUrl: questionImageBase64,
         ...(testData?.testType?.includes("DSAT")
@@ -353,7 +355,7 @@ export default function TestDetail() {
           {
             label: "A",
             text: options[0],
-            ...(testData?.testType?.includes("DSAT")&&
+            ...(testData?.testType?.includes("DSAT") &&
             optionAImageBase64 !== undefined &&
             optionAImageBase64 !== null
               ? { image: optionAImageBase64 }
@@ -362,7 +364,7 @@ export default function TestDetail() {
           {
             label: "B",
             text: options[1],
-            ...(testData?.testType?.includes("DSAT")&&
+            ...(testData?.testType?.includes("DSAT") &&
             optionBImageBase64 !== undefined &&
             optionBImageBase64 !== null
               ? { image: optionBImageBase64 }
@@ -546,7 +548,7 @@ export default function TestDetail() {
     "Answer",
     "Concept",
     "Strategy",
-    ...(!testData?.testType?.includes("DSAT")? ["Choices"] : []),
+    ...(!testData?.testType?.includes("DSAT") ? ["Choices"] : []),
     ...(!testData?.testType?.includes("DSAT") ? [] : ["Q. Image"]),
     ...(!testData?.testType?.includes("DSAT") ? [] : ["A. Image"]),
     ...(!testData?.testType?.includes("DSAT") ? [] : ["Passage?"]),
@@ -556,319 +558,335 @@ export default function TestDetail() {
   const [richTextContent, setRichTextContent] = useState("");
   return (
     <>
-      <div className="!mx-[6vw]  min-h-screen">
-        <p className="text-[#24A3D9]  !mt-[calc(50*0.052vw)] !mb-[calc(25*0.052vw)] text-base-20">
-          <span onClick={() => navigate("/")} className="cursor-pointer">
-            {firstName + "  " + lastName + "  >  "}
-          </span>
-          <span
-            onClick={() => navigate("/all-tests")}
-            className=" cursor-pointer"
-          >
-            {"Content > "}{" "}
-          </span>
-          <span className="font-semibold">
-            {" "}
-            {testData.testName ? testData.testName : "Report"}
-          </span>
-        </p>
-        <div className="pb-14 pt-4  flex flex-col items-center">
-          <div className="px-0 flex flex-row justify-start items-start pr-2 w-full">
-            <div className="flex mx-2 w-1/4 flex-col justify-start">
-              <p className="mb-2 text-textPrimaryDark text-[35px] min-h-[50px] font-extrabold">
-                {testData.testName ? testData.testName.length<12?testData.testName:testData.testName.substring(0,11)+'...' : ""}
-              </p>
-              <div className="border w-full py-4 flex rounded shadow-lg justify-center items-center">
-                <AllTestDetail testData={testData} />
+      <div className="w-[1920px] flex justify-center items-center relative">
+        <div className="w-[1600px] flex-col justify-center items-start mt-[50px] mb-[382.33px]">
+          <p className="text-[#24A3D9] mb-[31.25px] text-base-20">
+            <span onClick={() => navigate("/")} className="cursor-pointer">
+              {firstName + "  " + lastName + "  >  "}
+            </span>
+            <span
+              onClick={() => navigate("/all-tests")}
+              className=" cursor-pointer"
+            >
+              {"Content > "}{" "}
+            </span>
+            <span className="font-semibold">
+              {" "}
+              {testData.testName ? testData.testName : "Report"}
+            </span>
+          </p>
+          <div className="flex flex-col items-center">
+            <div className="h-auto flex flex-row justify-start items-end w-full mb-[62.75px]">
+              <div className="flex flex-col mr-[37.25px]">
+                <p className=" text-textPrimaryDark text-[35px] font-extrabold ">
+                  {testData.testName
+                    ? testData.testName.length < 12
+                      ? testData.testName
+                      : testData.testName.substring(0, 11) + "..."
+                    : ""}
+                </p>
+                <div className="border w-[364px] h-[224px] flex rounded shadow-lg justify-center items-center py-[20px] px-[27.5px]">
+                  <AllTestDetail testData={testData} />
+                </div>
               </div>
-            </div>
-            <div className=" w-2/4 mx-2 p-2 flex flex-col justify-start items-start text-left">
-              <p className="text-[35px] text-textPrimaryDark ml-4 font-extrabold">
-                Sections
-              </p>
+              <div className=" flex flex-col justify-start items-start text-left  ">
+                <p className="text-[35px] text-textPrimaryDark font-extrabold w-full">
+                  Sections
+                </p>
 
-              <div className="gap-y-1 w-full mx-4 border rounded p-4 shadow-lg mb-10">
-                <div className="mb-2 flex justify-between ">
-                  <p className="inline-block w-[170px] font-semibold opacity-60 text-[#26435F] opacity-100">
-                    {" "}
-                    Section
-                  </p>
-                  <div className="flex">
-                    <div className="inline-block w-[120px] font-semibold opacity-60 text-[#26435F] opacity-100">
-                      Time
-                    </div>
-                    <p className="inline-block w-[138px] font-semibold opacity-60 text-[#26435F] opacity-100 text-center">
+                <div className="gap-y-1 border rounded p-4 shadow-lg w-[830px] h-[224px] ">
+                  <div className="mb-2 flex justify-between ">
+                    <p className="inline-block w-[170px] font-semibold opacity-60 text-[#26435F] opacity-100">
                       {" "}
-                      Questions
+                      Section
                     </p>
+                    <div className="flex">
+                      <div className="inline-block w-[120px] font-semibold opacity-60 text-[#26435F] opacity-100">
+                        Time
+                      </div>
+                      <p className="inline-block w-[138px] font-semibold opacity-60 text-[#26435F] opacity-100 text-center">
+                        {" "}
+                        Questions
+                      </p>
+                    </div>
+                  </div>
+                  <div className=" h-[158px] overflow-y-auto ">
+                    {Object.keys(sectionsData).length > 1 &&
+                      sectionsData.answer.subjects?.map((section) => (
+                        <div className="mb-[6px] flex justify-between">
+                          <p className="inline-block text-[#24A3D9] w-[170px] font-medium">
+                            {" "}
+                            {section.name}
+                          </p>
+                          <div className="flex">
+                            <div className="inline-block text-[#24A3D9] w-[120px] font-medium">
+                              {section.timer} mins
+                            </div>
+                            <p className="inline-block text-[#24A3D9] w-[138px] font-medium text-center">
+                              {section.totalQuestion
+                                ? section.totalQuestion
+                                : "-"}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
                   </div>
                 </div>
-                <div className=" h-[158px] overflow-y-auto ">
-                  {Object.keys(sectionsData).length > 1 &&
-                    sectionsData.answer.subjects?.map((section) => (
-                      <div className="mb-1 flex justify-between">
-                        <p className="inline-block text-[#24A3D9] w-[170px] font-medium">
-                          {" "}
-                          {section.name}
-                        </p>
-                        <div className="flex">
-                          <div className="inline-block text-[#24A3D9] w-[120px] font-medium">
-                            {section.timer} mins
-                          </div>
-                          <p className="inline-block text-[#24A3D9] w-[138px] font-medium text-center">
-                            {section.totalQuestion
-                              ? section.totalQuestion
-                              : "-"}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                </div>
               </div>
-            </div>
-            {!testData?.testType?.includes("DSAT") ? (
-              <div className="px-6 py-[2.5rem] ml-[50px] flex  mx-2 mt-[3.8rem] w-1/4 justify-center border-[#26435F] border-dashed border-[2px] items-center flex-col rounded shadow-lg">
-                {Object.keys(sectionsData).length > 1 && (
-                  <>
-                    <img src={pdf} className="mb-4" alt="pdf" />
-                    <a
-                      className="text-[#24A3D9] text-sm  inline-block underline cursor-pointer"
-                      href={
-                        sectionsData.test.pdf !== null &&
-                        `${awsLink}${sectionsData.test.pdf}`
-                      }
-                      target="_blank"
-                      rel="noreferrer"
-                      // onClick={() => sectionsData.test.pdf !== null && window.open(sectionsData.test.pdf)}
-                    >
-                      {sectionsData.test.pdf !== null
-                        ? `${sectionsData.test.testName}.pdf`
-                        : ""}
-                    </a>
-                  </>
-                )}
-                <PrimaryButton
-                  children="Reupload pdf"
-                  disabled={pdfBtnDisabled}
-                  className={`!bg-[#517CA8] px-4 py-2 text-sm mt-5 w-[120px] whitespace-nowrap font-medium !text-white`}
-                  onClick={() => setPdfModalActive(true)}
-                />
-              </div>
-            ) : null}
-          </div>
-
-          <div className="flex pl-2 flex-col w-full">
-            <div className="mt-6 w-fit relative flex justify-between items-end">
-              <div className="flex flex-row justify-between z-20 items-center">
-                {subjects.map((item, idx) => {
-                  return (
+              {!testData?.testType?.includes("DSAT") ? (
+                <div className=" flex w-[300px] h-[224.497px] ml-[30px] border-[#26435F] border-dashed border-[2px] flex-col items-center justify-center rounded shadow-lg ">
+                  <div className="flex flex-col justify-center items-center">
+                    {Object.keys(sectionsData).length > 1 && (
+                      <>
+                        <img src={pdf} className="mb-4" alt="pdf" />
+                        <a
+                          className="text-[#24A3D9] text-sm  inline-block underline cursor-pointer"
+                          href={
+                            sectionsData.test.pdf !== null &&
+                            `${awsLink}${sectionsData.test.pdf}`
+                          }
+                          target="_blank"
+                          rel="noreferrer"
+                          // onClick={() => sectionsData.test.pdf !== null && window.open(sectionsData.test.pdf)}
+                        >
+                          {sectionsData.test.pdf !== null
+                            ? `${sectionsData.test.testName}.pdf`
+                            : ""}
+                        </a>
+                      </>
+                    )}
                     <PrimaryButton
-                      children={item.name}
-                      className={`py-2.5 px-0 text-[17.5px] mr-4 bg-transparent font-normal w-fit ${
-                        item.selected
-                          ? "text-[#FFA28D] border-b-[#FFA28D] border-b-[2px]"
-                          : " text-[#26435F]"
-                      }`}
-                      roundedClass="rounded-none"
-                      onClick={() => handleSubjectChange(item._id)}
+                      children="Reupload pdf"
+                      disabled={pdfBtnDisabled}
+                      className={`!bg-[#517CA8] px-4 py-2 text-sm mt-5 w-[120px] whitespace-nowrap font-medium !text-white`}
+                      onClick={() => setPdfModalActive(true)}
                     />
-                  );
-                })}
+                  </div>
+                </div>
+              ) : null}
+            </div>
+
+            <div className="flex flex-col w-full ">
+              <div className="w-fit relative flex justify-between items-end">
+                <div className="flex flex-row justify-between z-20 items-center">
+                  {subjects.map((item, idx) => {
+                    return (
+                      <PrimaryButton
+                        key={idx}
+                        children={item.name}
+                        className={`py-[10.25px] text-[17.5px] mr-[30px] bg-transparent font-normal w-fit ${
+                          item.selected
+                            ? "text-[#FFA28D] border-b-[#FFA28D] border-b-[2px]"
+                            : " text-[#26435F] border-b-[2px] border-b-[#26435F]"
+                        }`}
+                        roundedClass="rounded-none"
+                        onClick={() => handleSubjectChange(item._id)}
+                      />
+                    );
+                  })}
+                </div>
+                <div className="bg-gray-300 absolute bottom-[-1px] z-10 h-[1px] w-full"></div>
               </div>
-              <div className="bg-gray-300 absolute bottom-[-1px] z-10 h-[1px] w-full"></div>
-            </div>
-            <div className="flex justify-between mt-7">
-              {/* <PrimaryButton
-                     children={<div className="flex items-center justify-center">
-                        Add new question
-                        <img src={AddIcon} className='w-6 ml-2' /> </div>}
-                     className={`py-3.5 pl-6 pr-6 mr-4 font-medium text-textGray" }`}
-                  /> */}
-            </div>
-            <div className="mt-4">
-              {questionsTable.length > 0 && (
-                <Table
-                  dataFor="testsDetailQuestions"
-                  noArrow={true}
-                  data={questionsTable}
-                  extratableitem={extratableitem}
-                  tableHeaders={tableHeaders}
-                  excludes={["_id", "editable"]}
-                  testtype={testData.testType}
-                  // maxPageSize={10}
-                  onClick={{ handleEditTestClick }}
-                  hidePagination
-                />
-              )}
+              <div className="flex justify-between mt-7">
+              
+              </div>
+              <div className="mt-4 ">
+                {questionsTable.length > 0 && (
+                  <Table
+                    widthFullTable={true}
+                    dataFor="testsDetailQuestions"
+                    noArrow={true}
+                    data={questionsTable}
+                    extratableitem={extratableitem}
+                    tableHeaders={tableHeaders}
+                    excludes={["_id", "editable"]}
+                    testtype={testData.testType}
+                    // maxPageSize={10}
+                    onClick={{ handleEditTestClick }}
+                    hidePagination
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      {modalActive && (
-        <Modal
-          classname={"max-w-[780px] mx-auto"}
-          cancelBtnClassName="bg-white text-[#FFA28D] border border-[#FFA28D] w-140"
-          title="Edit Question"
-          cancelBtn={true}
-          primaryBtn={{
-            text: "Save",
-            className: "w-140 bg-[#FFA28D]",
-            form: "add-user-form",
-            // onClick: handleSubmit,
-            type: "submit",
-            disabled: btnDisabled,
-            loading: editLoading,
-          }}
-          handleClose={() => {
-            setModalActive(false);
-            setModalData(initialState);
-          }}
-          body={
-            <form
-              id="add-user-form"
-              onSubmit={handleSubmit}
-              className="px-[3px] mb-0.5 form-scroll-container"
-            >
-              <div className="flex flex-col w-full">
-                <div className="flex flex-row justify-between items-center">
-                  <div className="min-w-[170px] px-1">
-                    <InputField
-                      label="Question No."
-                      labelClassname="ml-4 mb-0.5 input-heading font-medium text-[15px]"
-                      isRequired={false}
-                      placeholder="Question No."
-                      inputContainerClassName="bg-[#F6F6F6] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
-                      inputClassName="bg-transparent"
-                      parentClassName="w-full"
-                      type="text"
-                      value={modalData.QuestionNumber}
-                      disabled={true}
-                      onChange={(e) => e.target.value}
-                    />
-                  </div>
-                  <div className="min-w-[170px] px-1">
-                    <InputSelect
-                      label="Question Type"
-                      labelClassname="ml-4 mb-0.5 input-heading font-semibold text-[15px]"
-                      placeholder="Select Question Type"
-                      inputContainerClassName="bg-[#F6F6F6] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
-                      inputClassName="bg-transparent"
-                      parentClassName="w-full"
-                      type="text"
-                      value={modalData.questionType}
-                      optionData={["MCQ", "Grid-in"]}
-                      isRequired={true}
-                      onChange={(val) =>
-                        setModalData({ ...modalData, questionType: val })
-                      }
-                    />
-                  </div>
-                  <div className="min-w-[170px] px-1">
-                    <div className="relative flex flex-col items-start">
-                      <p className=" ml-4 input-heading mb-0.5 font-medium text-[15px]">
-                        Correct Answer
-                      </p>
-                      {modalData.questionType.includes('Grid-in')?
-                      <input type="text" value={modalData.correctAnswer} className="bg-primary-50 min-w-[160px] outline-none py-[13px] px-2 text-sm font-medium border-0 text-[#38C980]"
-                      onChange={(e) =>
-                        setModalData({ ...modalData, correctAnswer: e.target.value, })
-                      }
-                      />
-                      :
-                      <select
-                        value={modalData.correctAnswer}
-                        className="min-w-[160px] outline-none py-[13px] px-2 text-sm font-medium border-0 text-[#38C980]"
-                        onChange={(e) => {
-                          setModalData({
-                            ...modalData,
-                            correctAnswer: e.target.value,
-                          });
-                        }}
-                      >
-                        <option className="bg-white text-black" value="A">
-                          {" "}
-                          A
-                        </option>
-                        <option className="bg-white text-black" value="B">
-                          {" "}
-                          B
-                        </option>
-                        <option className="bg-white text-black" value="C">
-                          {" "}
-                          C
-                        </option>
-                        <option className="bg-white text-black" value="D">
-                          {" "}
-                          D
-                        </option>
-                      </select>
-          }
-                    </div>
-                  </div>
-                  {!testData?.testType?.includes("DSAT") ? (
+        {modalActive && (
+          <Modal
+            classname={"max-w-[780px] mx-auto"}
+            cancelBtnClassName="bg-white text-[#FFA28D] border border-[#FFA28D] w-140"
+            title="Edit Question"
+            cancelBtn={true}
+            primaryBtn={{
+              text: "Save",
+              className: "w-140 bg-[#FFA28D]",
+              form: "add-user-form",
+              // onClick: handleSubmit,
+              type: "submit",
+              disabled: btnDisabled,
+              loading: editLoading,
+            }}
+            handleClose={() => {
+              setModalActive(false);
+              setModalData(initialState);
+            }}
+            body={
+              <form
+                id="add-user-form"
+                onSubmit={handleSubmit}
+                className="px-[3px] mb-0.5 form-scroll-container"
+              >
+                <div className="flex flex-col w-full">
+                  <div className="flex flex-row justify-between items-center">
                     <div className="min-w-[170px] px-1">
                       <InputField
-                        label="Answer Choices"
+                        label="Question No."
                         labelClassname="ml-4 mb-0.5 input-heading font-medium text-[15px]"
-                        // isRequired={true}
-                        placeholder="Answer Choices"
+                        isRequired={false}
+                        placeholder="Question No."
                         inputContainerClassName="bg-[#F6F6F6] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
                         inputClassName="bg-transparent"
                         parentClassName="w-full"
                         type="text"
-                        value={modalData.AnswerChoices}
+                        value={modalData.QuestionNumber}
+                        disabled={true}
+                        onChange={(e) => e.target.value}
+                      />
+                    </div>
+                    <div className="min-w-[170px] px-1">
+                      <InputSelect
+                        label="Question Type"
+                        labelClassname="ml-4 mb-0.5 input-heading font-semibold text-[15px]"
+                        placeholder="Select Question Type"
+                        inputContainerClassName="bg-[#F6F6F6] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                        inputClassName="bg-transparent"
+                        parentClassName="w-full"
+                        type="text"
+                        value={modalData.questionType}
+                        optionData={["MCQ", "Grid-in"]}
+                        isRequired={true}
+                        onChange={(val) =>
+                          setModalData({ ...modalData, questionType: val })
+                        }
+                      />
+                    </div>
+                    <div className="min-w-[170px] px-1">
+                      <div className="relative flex flex-col items-start">
+                        <p className=" ml-4 input-heading mb-0.5 font-medium text-[15px]">
+                          Correct Answer
+                        </p>
+                        {modalData.questionType.includes("Grid-in") ? (
+                          <input
+                            type="text"
+                            value={modalData.correctAnswer}
+                            className="bg-primary-50 min-w-[160px] outline-none py-[13px] px-2 text-sm font-medium border-0 text-[#38C980]"
+                            onChange={(e) =>
+                              setModalData({
+                                ...modalData,
+                                correctAnswer: e.target.value,
+                              })
+                            }
+                          />
+                        ) : (
+                          <select
+                            value={modalData.correctAnswer}
+                            className="min-w-[160px] outline-none py-[13px] px-2 text-sm font-medium border-0 text-[#38C980]"
+                            onChange={(e) => {
+                              setModalData({
+                                ...modalData,
+                                correctAnswer: e.target.value,
+                              });
+                            }}
+                          >
+                            <option className="bg-white text-black" value="A">
+                              {" "}
+                              A
+                            </option>
+                            <option className="bg-white text-black" value="B">
+                              {" "}
+                              B
+                            </option>
+                            <option className="bg-white text-black" value="C">
+                              {" "}
+                              C
+                            </option>
+                            <option className="bg-white text-black" value="D">
+                              {" "}
+                              D
+                            </option>
+                          </select>
+                        )}
+                      </div>
+                    </div>
+                    {!testData?.testType?.includes("DSAT") ? (
+                      <div className="min-w-[170px] px-1">
+                        <InputField
+                          label="Answer Choices"
+                          labelClassname="ml-4 mb-0.5 input-heading font-medium text-[15px]"
+                          // isRequired={true}
+                          placeholder="Answer Choices"
+                          inputContainerClassName="bg-[#F6F6F6] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                          inputClassName="bg-transparent"
+                          parentClassName="w-full"
+                          type="text"
+                          value={modalData.AnswerChoices}
+                          onChange={(e) =>
+                            setModalData({
+                              ...modalData,
+                              AnswerChoices: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="flex mt-4 flex-row">
+                    <div className="w-1/2 p-1">
+                      <InputField
+                        label="Concept"
+                        labelClassname="ml-4 mb-0.5 input-heading font-medium text-[15px]"
+                        isRequired={true}
+                        placeholder="Concept"
+                        inputContainerClassName="bg-[#F6F6F6] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                        inputClassName="bg-transparent"
+                        parentClassName="w-full"
+                        type="text"
+                        value={modalData.concept}
                         onChange={(e) =>
                           setModalData({
                             ...modalData,
-                            AnswerChoices: e.target.value,
+                            concept: e.target.value,
                           })
                         }
                       />
                     </div>
-                  ) : null}
-                </div>
-                <div className="flex mt-4 flex-row">
-                  <div className="w-1/2 p-1">
-                    <InputField
-                      label="Concept"
-                      labelClassname="ml-4 mb-0.5 input-heading font-medium text-[15px]"
-                      isRequired={true}
-                      placeholder="Concept"
-                      inputContainerClassName="bg-[#F6F6F6] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
-                      inputClassName="bg-transparent"
-                      parentClassName="w-full"
-                      type="text"
-                      value={modalData.concept}
-                      onChange={(e) =>
-                        setModalData({ ...modalData, concept: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div className="w-1/2 p-1">
-                    <InputField
-                      label="Strategy"
-                      labelClassname="ml-4 mb-0.5 input-heading font-medium text-[15px]"
-                      // isRequired={true}
-                      placeholder="Strategy"
-                      inputContainerClassName="bg-[#F6F6F6] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
-                      inputClassName="bg-transparent"
-                      parentClassName="w-full"
-                      type="text"
-                      value={modalData.strategy}
-                      onChange={(e) =>
-                        setModalData({ ...modalData, strategy: e.target.value })
-                      }
-                    />
+                    <div className="w-1/2 p-1">
+                      <InputField
+                        label="Strategy"
+                        labelClassname="ml-4 mb-0.5 input-heading font-medium text-[15px]"
+                        // isRequired={true}
+                        placeholder="Strategy"
+                        inputContainerClassName="bg-[#F6F6F6] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                        inputClassName="bg-transparent"
+                        parentClassName="w-full"
+                        type="text"
+                        value={modalData.strategy}
+                        onChange={(e) =>
+                          setModalData({
+                            ...modalData,
+                            strategy: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="w-full h-1 my-4 bg-[#00000033]"></div>
+                <div className="w-full h-1 my-4 bg-[#00000033]"></div>
 
-              {/* My Code */}
-              {/* Left Column for Text Inputs */}
-              <div className="flex mb-2">
+                {/* My Code */}
                 {/* Left Column for Text Inputs */}
-                {/* <div className="w-1/2 pr-4">
+                <div className="flex mb-2">
+                  {/* Left Column for Text Inputs */}
+                  {/* <div className="w-1/2 pr-4">
       <div className="mb-4">
          <p className="text-lg font-semibold">Question:</p>
          <input
@@ -929,418 +947,431 @@ export default function TestDetail() {
 
    </div> */}
 
-                {/* Right Column for Image Upload */}
-                {testData.testType?.includes("DSAT")? (
-                  <div className="w-full mt-4">
-                    <div className="mb-4">
-                      <p className="text-[15px] mb-1 font-semibold">
-                        Add Question Content:
-                      </p>
-                      <div className="flex flex-row  items-center bg-[#F6F6F6] ">
-                        <input
-                          type="text"
-                          value={modalData.question}
-                          onChange={(e) =>
-                            setModalData({
-                              ...modalData,
-                              question: e.target.value,
-                            })
-                          }
-                          className="border w-3/4 mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
-                        />
-                        {questionImageBase64 !== undefined &&
-                        questionImageBase64 !== "" &&
-                        questionImageBase64 != "no" ? (
-                          <div className="flex flex-row w-1/4 justify-start items-center overflow-hidden">
-                            <img
-                              src={questionImageBase64}
-                              className="rounded max-w-14 max-h-14 my-2"
-                              alt="base64"
-                            />
-                            <div
-                              onClick={() => {
-                                handleimage_emppty("questionImage");
-                              }}
-                            >
+                  {/* Right Column for Image Upload */}
+                  {testData.testType?.includes("DSAT") ? (
+                    <div className="w-full mt-4">
+                      <div className="mb-4">
+                        <p className="text-[15px] mb-1 font-semibold">
+                          Add Question Content:
+                        </p>
+                        <div className="flex flex-row  items-center bg-[#F6F6F6] ">
+                          <input
+                            type="text"
+                            value={modalData.question}
+                            onChange={(e) =>
+                              setModalData({
+                                ...modalData,
+                                question: e.target.value,
+                              })
+                            }
+                            className="border w-3/4 mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
+                          />
+                          {questionImageBase64 !== undefined &&
+                          questionImageBase64 !== "" &&
+                          questionImageBase64 != "no" ? (
+                            <div className="flex flex-row w-1/4 justify-start items-center overflow-hidden">
                               <img
-                                src={Delete}
-                                alt="delete"
-                                className="w-4 cursor-pointer h-4 mx-2 cursor-pointer"
+                                src={questionImageBase64}
+                                className="rounded max-w-14 max-h-14 my-2"
+                                alt="base64"
                               />
+                              <div
+                                onClick={() => {
+                                  handleimage_emppty("questionImage");
+                                }}
+                              >
+                                <img
+                                  src={Delete}
+                                  alt="delete"
+                                  className="w-4 cursor-pointer h-4 mx-2 cursor-pointer"
+                                />
+                              </div>
+                            </div>
+                          ) : (
+                            <>
+                              <label htmlFor="questionImage" className="w-1/4">
+                                <p className="px-2 py-1 w-fit bg-[#FFA28D] rounded cursor-pointer font-normal text-[15px]">
+                                  Attach Image
+                                </p>
+                              </label>
+                              <input
+                                type="file"
+                                id="questionImage"
+                                accept="image/*"
+                                onChange={(e) =>
+                                  handleImageUpload(
+                                    e.target.files[0],
+                                    "questionImage"
+                                  )
+                                }
+                              />
+                            </>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Rich Text Editor */}
+                      <div className="mb-2 mt-6">
+                        <div className="flex flex-row">
+                          <Switch
+                            onChange={setChecked}
+                            checked={checked}
+                            handleDiameter={5}
+                            offHandleColor="#FF7979"
+                            onHandleColor="#38C980"
+                            height={20}
+                            width={40}
+                            uncheckedIcon={false}
+                            checkedIcon={false}
+                            id={checked ? "true" : null}
+                          />
+                          <p className="text-[15px] ml-4 font-normal mb-6">
+                            Enable Split Screen / Add Passage
+                          </p>
+                        </div>
+                        {checked ? (
+                          <CKEditor
+                            editor={ClassicEditor}
+                            data={modalData.richTextContent}
+                            config={{
+                              // plugins: [UploadAdapter]
+                              extraPlugins: [ckEditorUploadPlugin],
+                            }}
+                            onReady={(editor) => {
+                              // You can store the "editor" and use when it is needed.
+                              // console.log( 'Editor is ready to use!', editor );
+                            }}
+                            onChange={(event, editor) => {
+                              const data = editor.getData();
+                              // console.log( { event, editor, data } );
+                              console.log("data");
+                              console.log(data);
+                              setModalData({
+                                ...modalData,
+                                richTextContent: data,
+                              });
+                            }}
+                            onBlur={(event, editor) => {
+                              // console.log( 'Blur.', editor );
+                            }}
+                            onFocus={(event, editor) => {
+                              // console.log( 'Focus.', editor );
+                            }}
+                          />
+                        ) : null}
+                      </div>
+                      <div className="w-full h-1 my-4 bg-[#00000033]"></div>
+                      {modalData.questionType == "Grid-in" ? null : (
+                        <>
+                          <div className="flex items-center mb-2">
+                            <p
+                              className={`ml-2 rounded-full border py-1 px-3  mr-2 text-lg ${
+                                modalData.correctAnswer === "A"
+                                  ? "bg-[#38C980] text-white"
+                                  : "bg-[#F6F6F6]"
+                              }`}
+                            >
+                              A
+                            </p>
+                            <div className="flex flex-row w-full items-center bg-[#F6F6F6] ">
+                              <input
+                                type="text"
+                                value={options[0]}
+                                onChange={(e) => {
+                                  let newArray = [...options];
+                                  newArray[0] = e.target.value;
+                                  setoptions(newArray);
+                                }}
+                                className="border w-3/4 cursor-pointer mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
+                              />
+                              {optionAImageBase64 != undefined &&
+                              optionAImageBase64 != "" ? (
+                                <div className="flex flex-row w-1/4 cursor-pointer justify-start items-center overflow-hidden">
+                                  <img
+                                    src={optionAImageBase64}
+                                    className="rounded max-w-14 max-h-14 my-2"
+                                    alt="base64"
+                                  />
+                                  <div
+                                    onClick={() => {
+                                      handleimage_emppty("optionAImage");
+                                    }}
+                                  >
+                                    <img
+                                      src={Delete}
+                                      alt="delete"
+                                      className="w-4 h-4 mx-2 cursor-pointer"
+                                    />
+                                  </div>
+                                </div>
+                              ) : (
+                                <>
+                                  <label
+                                    htmlFor="optionAImage"
+                                    className="w-1/4"
+                                  >
+                                    <p className="px-2 py-1 w-fit bg-[#FFA28D] rounded font-normal cursor-pointer text-[15px]">
+                                      Attach Image
+                                    </p>
+                                  </label>
+                                  <input
+                                    type="file"
+                                    id="optionAImage"
+                                    accept="image/*"
+                                    onChange={(e) =>
+                                      handleImageUpload(
+                                        e.target.files[0],
+                                        "optionAImage"
+                                      )
+                                    }
+                                  />
+                                </>
+                              )}
                             </div>
                           </div>
-                        ) : (
-                          <>
-                            <label htmlFor="questionImage" className="w-1/4">
-                              <p className="px-2 py-1 w-fit bg-[#FFA28D] rounded cursor-pointer font-normal text-[15px]">
-                                Attach Image
-                              </p>
-                            </label>
-                            <input
-                              type="file"
-                              id="questionImage"
-                              accept="image/*"
-                              onChange={(e) =>
-                                handleImageUpload(
-                                  e.target.files[0],
-                                  "questionImage"
-                                )
-                              }
-                            />
-                          </>
-                        )}
-                      </div>
+
+                          <div className="flex items-center mb-2">
+                            <p
+                              className={`ml-2 rounded-full border py-1 px-3  mr-2 text-lg ${
+                                modalData.correctAnswer === "B"
+                                  ? "bg-[#38C980] text-white"
+                                  : "bg-[#F6F6F6]"
+                              }`}
+                            >
+                              B
+                            </p>
+                            <div className="flex flex-row w-full items-center bg-[#F6F6F6] ">
+                              <input
+                                type="text"
+                                value={options[1]}
+                                onChange={(e) => {
+                                  let newArray = [...options];
+                                  newArray[1] = e.target.value;
+                                  setoptions(newArray);
+                                }}
+                                className="border w-3/4 cursor-pointer mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
+                              />
+                              {optionBImageBase64 != undefined &&
+                              optionBImageBase64 != "" ? (
+                                <div className="flex flex-row w-1/4 cursor-pointer justify-start items-center overflow-hidden">
+                                  <img
+                                    src={optionBImageBase64}
+                                    className="rounded max-w-14 max-h-14 my-2"
+                                    alt="base64"
+                                  />
+                                  <div
+                                    onClick={() => {
+                                      handleimage_emppty("optionBImage");
+                                    }}
+                                  >
+                                    <img
+                                      src={Delete}
+                                      alt="delete"
+                                      className="w-4 h-4 mx-2 cursor-pointer"
+                                    />
+                                  </div>
+                                </div>
+                              ) : (
+                                <>
+                                  <label
+                                    htmlFor="optionBImage"
+                                    className="w-1/4"
+                                  >
+                                    <p className="px-2 py-1 w-fit bg-[#FFA28D] rounded font-normal cursor-pointer text-[15px]">
+                                      Attach Image
+                                    </p>
+                                  </label>
+                                  <input
+                                    type="file"
+                                    id="optionBImage"
+                                    accept="image/*"
+                                    onChange={(e) =>
+                                      handleImageUpload(
+                                        e.target.files[0],
+                                        "optionBImage"
+                                      )
+                                    }
+                                  />
+                                </>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="flex items-center mb-2">
+                            <p
+                              className={`ml-2 rounded-full border py-1 px-3  mr-2 text-lg ${
+                                modalData.correctAnswer === "C"
+                                  ? "bg-[#38C980] text-white"
+                                  : "bg-[#F6F6F6]"
+                              }`}
+                            >
+                              C
+                            </p>
+                            <div className="flex flex-row w-full items-center bg-[#F6F6F6] ">
+                              <input
+                                type="text"
+                                value={options[2]}
+                                onChange={(e) => {
+                                  let newArray = [...options];
+                                  newArray[2] = e.target.value;
+                                  setoptions(newArray);
+                                }}
+                                className="border w-3/4 cursor-pointer mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
+                              />
+                              {optionCImageBase64 != undefined &&
+                              optionCImageBase64 != "" ? (
+                                <div className="flex flex-row w-1/4 cursor-pointer justify-start items-center overflow-hidden">
+                                  <img
+                                    src={optionCImageBase64}
+                                    className="rounded max-w-14 max-h-14 my-2"
+                                    alt="base64"
+                                  />
+                                  <div
+                                    onClick={() => {
+                                      handleimage_emppty("optionCImage");
+                                    }}
+                                  >
+                                    <img
+                                      src={Delete}
+                                      alt="delete"
+                                      className="w-4 h-4 mx-2 cursor-pointer"
+                                    />
+                                  </div>
+                                </div>
+                              ) : (
+                                <>
+                                  <label
+                                    htmlFor="optionCImage"
+                                    className="w-1/4"
+                                  >
+                                    <p className="px-2 py-1 w-fit bg-[#FFA28D] rounded font-normal cursor-pointer text-[15px]">
+                                      Attach Image
+                                    </p>
+                                  </label>
+                                  <input
+                                    type="file"
+                                    id="optionCImage"
+                                    accept="image/*"
+                                    onChange={(e) =>
+                                      handleImageUpload(
+                                        e.target.files[0],
+                                        "optionCImage"
+                                      )
+                                    }
+                                  />
+                                </>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex items-center mb-2">
+                            <p
+                              className={`ml-2 rounded-full border py-1 px-3  mr-2 text-lg ${
+                                modalData.correctAnswer === "D"
+                                  ? "bg-[#38C980] text-white"
+                                  : "bg-[#F6F6F6]"
+                              }`}
+                            >
+                              D
+                            </p>
+                            <div className="flex flex-row w-full items-center bg-[#F6F6F6] ">
+                              <input
+                                type="text"
+                                value={options[3]}
+                                onChange={(e) => {
+                                  let newArray = [...options];
+                                  newArray[3] = e.target.value;
+                                  setoptions(newArray);
+                                }}
+                                className="border w-3/4 cursor-pointer mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
+                              />
+                              {optionDImageBase64 != undefined &&
+                              optionDImageBase64 != "" ? (
+                                <div className="flex flex-row w-1/4 cursor-pointer justify-start items-center overflow-hidden">
+                                  <img
+                                    src={optionDImageBase64}
+                                    className="rounded max-w-14 max-h-14 my-2"
+                                    alt="base64"
+                                  />
+                                  <div
+                                    onClick={() => {
+                                      handleimage_emppty("optionDImage");
+                                    }}
+                                  >
+                                    <img
+                                      src={Delete}
+                                      alt="delete"
+                                      className="w-4 h-4 mx-2 cursor-pointer"
+                                    />
+                                  </div>
+                                </div>
+                              ) : (
+                                <>
+                                  <label
+                                    htmlFor="optionDImage"
+                                    className="w-1/4"
+                                  >
+                                    <p className="px-2 py-1 w-fit bg-[#FFA28D] rounded font-normal cursor-pointer text-[15px]">
+                                      Attach Image
+                                    </p>
+                                  </label>
+                                  <input
+                                    type="file"
+                                    id="optionDImage"
+                                    accept="image/*"
+                                    onChange={(e) =>
+                                      handleImageUpload(
+                                        e.target.files[0],
+                                        "optionDImage"
+                                      )
+                                    }
+                                  />
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        </>
+                      )}
+                      <div className="w-full h-1 my-4 bg-[#00000033]"></div>
+                      {/* Add similar code for option A, B, C, and D images */}
                     </div>
+                  ) : null}
+                </div>
+              </form>
+            }
+          />
+        )}
 
-                    {/* Rich Text Editor */}
-                    <div className="mb-2 mt-6">
-                      <div className="flex flex-row">
-                        <Switch
-                          onChange={setChecked}
-                          checked={checked}
-                          handleDiameter={5}
-                          offHandleColor="#FF7979"
-                          onHandleColor="#38C980"
-                          height={20}
-                          width={40}
-                          uncheckedIcon={false}
-                          checkedIcon={false}
-                          id={checked ? "true" : null}
-                        />
-                        <p className="text-[15px] ml-4 font-normal mb-6">
-                          Enable Split Screen / Add Passage
-                        </p>
-                      </div>
-                      {checked ? (
-                        <CKEditor
-                          editor={ClassicEditor}
-                          data={modalData.richTextContent}
-                          config={{
-                            // plugins: [UploadAdapter]
-                            extraPlugins: [ckEditorUploadPlugin],
-                          }}
-                          onReady={(editor) => {
-                            // You can store the "editor" and use when it is needed.
-                            // console.log( 'Editor is ready to use!', editor );
-                          }}
-                          onChange={(event, editor) => {
-                            const data = editor.getData();
-                            // console.log( { event, editor, data } );
-                            console.log("data");
-                            console.log(data);
-                            setModalData({
-                              ...modalData,
-                              richTextContent: data,
-                            });
-                          }}
-                          onBlur={(event, editor) => {
-                            // console.log( 'Blur.', editor );
-                          }}
-                          onFocus={(event, editor) => {
-                            // console.log( 'Focus.', editor );
-                          }}
-                        />
-                      ) : null}
-                    </div>
-                    <div className="w-full h-1 my-4 bg-[#00000033]"></div>
-                    {modalData.questionType == "Grid-in" ? null : (
-                      <>
-                        <div className="flex items-center mb-2">
-                          <p
-                            className={`ml-2 rounded-full border py-1 px-3  mr-2 text-lg ${
-                              modalData.correctAnswer === "A"
-                                ? "bg-[#38C980] text-white"
-                                : "bg-[#F6F6F6]"
-                            }`}
-                          >
-                            A
-                          </p>
-                          <div className="flex flex-row w-full items-center bg-[#F6F6F6] ">
-                            <input
-                              type="text"
-                              value={options[0]}
-                              onChange={(e) => {
-                                let newArray = [...options];
-                                newArray[0] = e.target.value;
-                                setoptions(newArray);
-                              }}
-                              className="border w-3/4 cursor-pointer mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
-                            />
-                            {optionAImageBase64 != undefined &&
-                            optionAImageBase64 != "" ? (
-                              <div className="flex flex-row w-1/4 cursor-pointer justify-start items-center overflow-hidden">
-                                <img
-                                  src={optionAImageBase64}
-                                  className="rounded max-w-14 max-h-14 my-2"
-                                  alt="base64"
-                                />
-                                <div
-                                  onClick={() => {
-                                    handleimage_emppty("optionAImage");
-                                  }}
-                                >
-                                  <img
-                                    src={Delete}
-                                    alt="delete"
-                                    className="w-4 h-4 mx-2 cursor-pointer"
-                                  />
-                                </div>
-                              </div>
-                            ) : (
-                              <>
-                                <label htmlFor="optionAImage" className="w-1/4">
-                                  <p className="px-2 py-1 w-fit bg-[#FFA28D] rounded font-normal cursor-pointer text-[15px]">
-                                    Attach Image
-                                  </p>
-                                </label>
-                                <input
-                                  type="file"
-                                  id="optionAImage"
-                                  accept="image/*"
-                                  onChange={(e) =>
-                                    handleImageUpload(
-                                      e.target.files[0],
-                                      "optionAImage"
-                                    )
-                                  }
-                                />
-                              </>
-                            )}
-                          </div>
-                        </div>
-
-                        <div className="flex items-center mb-2">
-                          <p
-                            className={`ml-2 rounded-full border py-1 px-3  mr-2 text-lg ${
-                              modalData.correctAnswer === "B"
-                                ? "bg-[#38C980] text-white"
-                                : "bg-[#F6F6F6]"
-                            }`}
-                          >
-                            B
-                          </p>
-                          <div className="flex flex-row w-full items-center bg-[#F6F6F6] ">
-                            <input
-                              type="text"
-                              value={options[1]}
-                              onChange={(e) => {
-                                let newArray = [...options];
-                                newArray[1] = e.target.value;
-                                setoptions(newArray);
-                              }}
-                              className="border w-3/4 cursor-pointer mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
-                            />
-                            {optionBImageBase64 != undefined &&
-                            optionBImageBase64 != "" ? (
-                              <div className="flex flex-row w-1/4 cursor-pointer justify-start items-center overflow-hidden">
-                                <img
-                                  src={optionBImageBase64}
-                                  className="rounded max-w-14 max-h-14 my-2"
-                                  alt="base64"
-                                />
-                                <div
-                                  onClick={() => {
-                                    handleimage_emppty("optionBImage");
-                                  }}
-                                >
-                                  <img
-                                    src={Delete}
-                                    alt="delete"
-                                    className="w-4 h-4 mx-2 cursor-pointer"
-                                  />
-                                </div>
-                              </div>
-                            ) : (
-                              <>
-                                <label htmlFor="optionBImage" className="w-1/4">
-                                  <p className="px-2 py-1 w-fit bg-[#FFA28D] rounded font-normal cursor-pointer text-[15px]">
-                                    Attach Image
-                                  </p>
-                                </label>
-                                <input
-                                  type="file"
-                                  id="optionBImage"
-                                  accept="image/*"
-                                  onChange={(e) =>
-                                    handleImageUpload(
-                                      e.target.files[0],
-                                      "optionBImage"
-                                    )
-                                  }
-                                />
-                              </>
-                            )}
-                          </div>
-                        </div>
-
-                        <div className="flex items-center mb-2">
-                          <p
-                            className={`ml-2 rounded-full border py-1 px-3  mr-2 text-lg ${
-                              modalData.correctAnswer === "C"
-                                ? "bg-[#38C980] text-white"
-                                : "bg-[#F6F6F6]"
-                            }`}
-                          >
-                            C
-                          </p>
-                          <div className="flex flex-row w-full items-center bg-[#F6F6F6] ">
-                            <input
-                              type="text"
-                              value={options[2]}
-                              onChange={(e) => {
-                                let newArray = [...options];
-                                newArray[2] = e.target.value;
-                                setoptions(newArray);
-                              }}
-                              className="border w-3/4 cursor-pointer mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
-                            />
-                            {optionCImageBase64 != undefined &&
-                            optionCImageBase64 != "" ? (
-                              <div className="flex flex-row w-1/4 cursor-pointer justify-start items-center overflow-hidden">
-                                <img
-                                  src={optionCImageBase64}
-                                  className="rounded max-w-14 max-h-14 my-2"
-                                  alt="base64"
-                                />
-                                <div
-                                  onClick={() => {
-                                    handleimage_emppty("optionCImage");
-                                  }}
-                                >
-                                  <img
-                                    src={Delete}
-                                    alt="delete"
-                                    className="w-4 h-4 mx-2 cursor-pointer"
-                                  />
-                                </div>
-                              </div>
-                            ) : (
-                              <>
-                                <label htmlFor="optionCImage" className="w-1/4">
-                                  <p className="px-2 py-1 w-fit bg-[#FFA28D] rounded font-normal cursor-pointer text-[15px]">
-                                    Attach Image
-                                  </p>
-                                </label>
-                                <input
-                                  type="file"
-                                  id="optionCImage"
-                                  accept="image/*"
-                                  onChange={(e) =>
-                                    handleImageUpload(
-                                      e.target.files[0],
-                                      "optionCImage"
-                                    )
-                                  }
-                                />
-                              </>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex items-center mb-2">
-                          <p
-                            className={`ml-2 rounded-full border py-1 px-3  mr-2 text-lg ${
-                              modalData.correctAnswer === "D"
-                                ? "bg-[#38C980] text-white"
-                                : "bg-[#F6F6F6]"
-                            }`}
-                          >
-                            D
-                          </p>
-                          <div className="flex flex-row w-full items-center bg-[#F6F6F6] ">
-                            <input
-                              type="text"
-                              value={options[3]}
-                              onChange={(e) => {
-                                let newArray = [...options];
-                                newArray[3] = e.target.value;
-                                setoptions(newArray);
-                              }}
-                              className="border w-3/4 cursor-pointer mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
-                            />
-                            {optionDImageBase64 != undefined &&
-                            optionDImageBase64 != "" ? (
-                              <div className="flex flex-row w-1/4 cursor-pointer justify-start items-center overflow-hidden">
-                                <img
-                                  src={optionDImageBase64}
-                                  className="rounded max-w-14 max-h-14 my-2"
-                                  alt="base64"
-                                />
-                                <div
-                                  onClick={() => {
-                                    handleimage_emppty("optionDImage");
-                                  }}
-                                >
-                                  <img
-                                    src={Delete}
-                                    alt="delete"
-                                    className="w-4 h-4 mx-2 cursor-pointer"
-                                  />
-                                </div>
-                              </div>
-                            ) : (
-                              <>
-                                <label htmlFor="optionDImage" className="w-1/4">
-                                  <p className="px-2 py-1 w-fit bg-[#FFA28D] rounded font-normal cursor-pointer text-[15px]">
-                                    Attach Image
-                                  </p>
-                                </label>
-                                <input
-                                  type="file"
-                                  id="optionDImage"
-                                  accept="image/*"
-                                  onChange={(e) =>
-                                    handleImageUpload(
-                                      e.target.files[0],
-                                      "optionDImage"
-                                    )
-                                  }
-                                />
-                              </>
-                            )}
-                          </div>
-                        </div>
-                      </>
-                    )}
-                    <div className="w-full h-1 my-4 bg-[#00000033]"></div>
-                    {/* Add similar code for option A, B, C, and D images */}
-                  </div>
-                ) : null}
+        {pdfModalActive && (
+          <Modal
+            classname={"max-w-[580px] mx-auto"}
+            title="Uploading PDF will replace the current PDF"
+            titleClassName="pr-4"
+            cancelBtn={true}
+            cancelBtnClassName="!bg-transparent !text-[#FFA28D] border border-[#FFA28D] w-140"
+            primaryBtn={{
+              text: "Upload",
+              className: "w-140  bg-[#FFA28D] pl-4 pr-4",
+              form: "add-user-form",
+              onClick: () => PdfRef.current.click(),
+              type: "submit",
+              disabled: pdfBtnDisabled,
+            }}
+            handleClose={() => setPdfModalActive(false)}
+            body={
+              <div className="py-4">
+                <input
+                  ref={PdfRef}
+                  id="pdf"
+                  type="file"
+                  className="hidden"
+                  accept="application/pdf"
+                  onChange={(e) => handlePDFFile(e.target.files[0])}
+                />
               </div>
-            </form>
-          }
-        />
-      )}
-
-      {pdfModalActive && (
-        <Modal
-          classname={"max-w-[580px] mx-auto"}
-          title="Uploading PDF will replace the current PDF"
-          titleClassName="pr-4"
-          cancelBtn={true}
-          cancelBtnClassName="!bg-transparent !text-[#FFA28D] border border-[#FFA28D] w-140"
-          primaryBtn={{
-            text: "Upload",
-            className: "w-140  bg-[#FFA28D] pl-4 pr-4",
-            form: "add-user-form",
-            onClick: () => PdfRef.current.click(),
-            type: "submit",
-            disabled: pdfBtnDisabled,
-          }}
-          handleClose={() => setPdfModalActive(false)}
-          body={
-            <div className="py-4">
-              <input
-                ref={PdfRef}
-                id="pdf"
-                type="file"
-                className="hidden"
-                accept="application/pdf"
-                onChange={(e) => handlePDFFile(e.target.files[0])}
-              />
-            </div>
-          }
-        />
-      )}
+            }
+          />
+        )}
+      </div>
     </>
   );
 }

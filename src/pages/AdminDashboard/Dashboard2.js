@@ -109,7 +109,7 @@ const Dashboard = () => {
           data.data.customerSubscriptions.data.length === 0) {
           SetIsSubscriptionAndExtensionModalActive(true);
         } else {
-          SetIsSubscriptionAndExtensionModalActive(true);
+          SetIsSubscriptionAndExtensionModalActive(false);
         }
       })
       .catch(error => {
@@ -528,9 +528,9 @@ const Dashboard = () => {
     <>
       {
         isSubscriptionAndExtensionModalActive ? (
-          <div className="fixed bg-[#00000080] top-[-50px] left-0 right-0 bottom-[-50px] h-[130vh] z-[1000000]" style={{position: "fixed"}} >
+          <div className="fixed bg-[#00000080] top-[-50px] left-0 right-0 bottom-[-50px] z-[1000000]" style={{position: "fixed"}} >
             <SubscriptionAndExtensionModal
-              className="relative top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-[90px] h-[900px] w-[1400px]"
+              className="relative top-[500px] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1400px] h-[900px]"
               OnCheckoutClicked={() => {
                 SetIsSubscriptionAndExtensionModalActive(false);
               }}
