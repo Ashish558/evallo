@@ -1,0 +1,7 @@
+.extensionsListContainer {
+    overflow: hidden;
+}
+
+.extensionsListContainer:hover {
+    overflow-y: scroll;
+}

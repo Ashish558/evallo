@@ -18,7 +18,7 @@ export default function SettingsCard({
 }) {
   return (
     <div
-    className={`${className ? className : ""} py-4  mb-5 pb-4 rounded-2xl
+      className={`${className ? className : ""} py-4  mb-5 pb-4 rounded-2xl
     `}
     >
       <div
@@ -27,9 +27,9 @@ export default function SettingsCard({
       >
         <div className="flex items-center">
           <p className="text-[#26435F]">{title}</p>
-          <div>
+          <div className="relative">
             {
-              title === "Edit Announcements" || <img className={`${questionMarkMargin?questionMarkMargin:`ml-3`}`} src={questionMarkIcon?questionMarkIcon:QuestionMark} alt="" />
+              title === "Edit Announcements" || <img className={`${questionMarkMargin?questionMarkMargin:`ml-3`}`} src={questionMarkIcon?questionMarkIcon:QuestionMark} alt="question" />
             }
           </div>
         </div>
@@ -73,35 +73,35 @@ export default function SettingsCard({
           title == "Edit Announcements" &&
 
           <div>
-            { false&&
-            <div className="flex items-center bg-white rounded-tl-5 rounded-tr-5 pt-4">
-              <div className="text-[#24A3D9] mr-3 pl-4 text-base-17-5">
-                Show Announcement Images
-              </div>
-              <div>
-                
-                {toggle !== undefined && (
-                
-                  <div >
-                  <div
-                      className={`flex items-center h-[17px] w-[26px]  border-[2px] px-[2px] border-[#26435F] rounded-[20px] ${toggle.value === false?"justify-start":"justify-end"} `}
-                      onClick={() => onToggle(toggle.key, !toggle.value)}
-                  >
-                     
-                     
+            {false &&
+              <div className="flex items-center bg-white rounded-tl-5 rounded-tr-5 pt-4">
+                <div className="text-[#24A3D9] mr-3 pl-4 text-base-17-5">
+                  Show Announcement Images
+                </div>
+                <div>
+
+                  {toggle !== undefined && (
+
+                    <div >
                       <div
+                        className={`flex items-center h-[17px] w-[26px]  border-[2px] px-[2px] border-[#26435F] rounded-[20px] ${toggle.value === false ? "justify-start" : "justify-end"} `}
+                        onClick={() => onToggle(toggle.key, !toggle.value)}
+                      >
+
+
+                        <div
                           // src={toggleCircleIcon}
                           className={`${toggle.value === false
-                              ? (` ${false ? false:'bg-[#FF7979]'} `)
-                              : (` ${false ? false:'bg-[#4bd657]'} `)
-                              }  w-[9px] h-[9px]  rounded-[8px] inline-block`}
-                          
-                      />
-                  </div>
-              </div>
-                )}
-              </div>
-            </div>}
+                            ? (` ${false ? false : 'bg-[#FF7979]'} `)
+                            : (` ${false ? false : 'bg-[#4bd657]'} `)
+                            }  w-[9px] h-[9px]  rounded-[8px] inline-block`}
+
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>}
             {body && body}
           </div>
         }

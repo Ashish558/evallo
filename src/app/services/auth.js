@@ -12,7 +12,7 @@ export const authServicesApi = createApi({
 
       signupUser: builder.mutation({
          query: (body) => ({
-            url: `/api/user/orgSignup`,
+            url: `/api/user/orgSignupNew`,
             method: "POST",
             body: body,
             headers: {

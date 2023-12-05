@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { getFormattedDate } from "../../utils/utils";
 import { getMonthName } from "../../utils/utils";
 
-export default function ActionLog({ actionLog, className }) {
+export default function ActionLog({ actionLog, className,width }) {
   const [dateFormat, setDateFormat] = useState("dd/mm/yy");
   const { organization: organization2 } = useSelector(
     (state) => state.organization
@@ -79,25 +79,25 @@ export default function ActionLog({ actionLog, className }) {
 
   //  format monthName date, year
   const formatDate= (value)=>{
-    const [ month, day, year] = value.split("-");
-    const monthName = getMonthName(month-1);
-    console.log(
-     { 
-       value : value,
-       day : day,
-       month : month,
-       year : year,
-       monthName :monthName
-      }
-   );
     
-    const formattedDate = `${monthName}` + " " + `${year}` + `,` + `${month}`;
+    let [ year, month, day] = value.split("-");
+     if(dateFormat==="dd/mm/yy"){
+      [ day, month,  year] = value.split("-");
+     }
+    else  if(dateFormat==="mm/dd/yy"){
+      [ month, day, year] = value.split("-");
+     }
+else [ year, month, day] = value.split("-");
+    const monthName = getMonthName(month-1);
+    
+    let formattedDate = `${monthName}` + " " + `${year}` + `,` + `${day}`;
+   
     return formattedDate
    }
   
   return (
     <div
-      className={`flex flex-col h-[330px] max-h-[500px]  shadow-[0px_0px_2px_rgba(0,0,0,0.25)]  rounded-5 bg-[#FFFFFF] w-[65.1042vw] ${className}`}
+      className={`flex flex-col h-[330px] max-h-[500px]  shadow-[0px_0px_2px_rgba(0,0,0,0.25)]  rounded-5 bg-[#FFFFFF] ${width??"w-[1250px]"} ${className}`}
     >
       <div className=" border-b-[1.6px]  border-b-[#CBD6E2] ">
         <p className="uppercase  pl-[29px] pt-[16px] pb-2 text-[#26435F] text-base-20 text-[20px] font-normal">
@@ -115,7 +115,7 @@ export default function ActionLog({ actionLog, className }) {
             // startDate = startDate + offset
             date = new Date(date.getTime() + offset);
           }
-          const hours = date.getHours();
+          let hours = date.getHours();
           var minutes = date.getMinutes();
 
           if(0 <= minutes && minutes < 10){
@@ -124,12 +124,13 @@ export default function ActionLog({ actionLog, className }) {
 
           let ampm = "AM";
           if (hours >= 12) {
+            hours-=12
             ampm = "PM";
           }
           return (
             
               <div key={index} className="flex h-[57px] pl-5 relative ">
-                <p className="text-[#517CA8] pt-6 !font-light text-[15px] mr-2 w-[calc(143*0.050vw)] text-center !text-[calc(17.5*0.050vw)] whitespace-nowrap">
+                <p className="text-[#517CA8] pt-6 !font-light text-[15px] mr-2 w-[137px] text-center whitespace-nowrap">
                {
                 item?.message &&
                 <>
@@ -148,7 +149,7 @@ export default function ActionLog({ actionLog, className }) {
                   <div className={styles.circle}>
                     <div className={styles.circle2}></div>
                   </div>
-                  <p className="pl-4  font-normal text-[#517CA8] !text-[calc(17.5*0.050vw)]">
+                  <p className="pl-4  font-normal text-[#517CA8] text-[17.5px]">
                     {item?.message}
                   </p>
                 </div>

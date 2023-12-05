@@ -10,7 +10,7 @@ import styles from "./style.module.css";
 import check from "../../assets/icons/checked 1.svg";
 import data from "./tempData";
 import upload from "./../../assets/icons/upload_icon.svg";
-import Papa from "papaparse";
+// import Papa from "papaparse";
 import axios from "axios";
 import { useAddPdfMutation, useAddTestMutation } from "../../app/services/test";
 import { BASE_URL, getAuthHeader } from "../../app/constants/constants";

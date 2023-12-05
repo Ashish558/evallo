@@ -14,7 +14,7 @@ thead tr th .upArrow::after {
   transform: rotate(180deg);
 }
 
-thead tr th:nth-child(-n+5) .markerCustom::after {
+thead tr th:nth-child(-n + 5) .markerCustom::after {
   content: url("../../assets/icons/table_dropdown.svg");
   display: inline-block;
   width: 25px;
@@ -22,7 +22,7 @@ thead tr th:nth-child(-n+5) .markerCustom::after {
   cursor: pointer;
 }
 
-thead tr th:nth-child(-n+5) .markerCustomUpArrow::after {
+thead tr th:nth-child(-n + 5) .markerCustomUpArrow::after {
   content: url("../../assets/icons/table_dropdown.svg");
   display: inline-block;
   width: 25px;
@@ -31,7 +31,7 @@ thead tr th:nth-child(-n+5) .markerCustomUpArrow::after {
   cursor: pointer;
 }
 
-thead tr th:nth-child(-n+10) .markerCustomAllOrgs::after {
+thead tr th:nth-child(-n + 10) .markerCustomAllOrgs::after {
   content: url("../../assets/icons/table_dropdown.svg");
   display: inline-block;
   width: 25px;
@@ -39,7 +39,7 @@ thead tr th:nth-child(-n+10) .markerCustomAllOrgs::after {
   cursor: pointer;
 }
 
-.no-arrow div::after{
+.no-arrow div::after {
   content: " ";
   margin-left: 5px;
   display: none;
@@ -93,15 +93,15 @@ input[type="checkbox"]:checked + .custom-checkbox {
   color: white;
 }
 
-
-.customPadding{
+.customPadding {
   padding: 0px;
 }
 
-@media screen and (min-width: 1920px) {
-
-.noOverflow{
-  overflow: hidden;
+.tBody tr {
+  color: #507ca8;
 }
-
+@media screen and (min-width: 1920px) {
+  .noOverflow {
+    overflow: hidden;
+  }
 }

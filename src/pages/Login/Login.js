@@ -19,6 +19,13 @@ import Loader from "../../components/Loader";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
 import EvalloLogo from "../../assets/icons/evallo_new.svg";
 import cuate from "../../assets/signup/cuate.svg";
+import GoogleIcon from "../../assets/icons/google.svg";
+import LinkedinIcon from "../../assets/icons/linkedin-round.svg";
+import AppleIcon from "../../assets/icons/apple.svg";
+import AdminNavbar from "../AdminDashboard/AdminNavbar";
+import SCheckbox from "../../components/CCheckbox/SCheckbox";
+import { BASE_URL } from "../../app/constants/constants";
+
 // import AdminNavbar from "../AdminDashboard/AdminNavbar";
 // import SCheckbox from "../../components/CCheckbox/SCheckbox";
 
@@ -137,24 +144,28 @@ export default function Login({ setLoginFormActive }) {
     });
   };
 
+  const google = () => {
+    window.open(`${BASE_URL}api/v1/auth/google`, "_self");
+  };
+
   const props = { setActiveFrame, setResetPasswordActive };
 
   return (
-    <div className={styles.bg}>
-      <div className="flex flex-col items-center md:grid-cols-2   ">
+    <div className={""}>
+      <div className="flex flex-col items-center h-[957px]">
         <img
           src={cuate}
           alt="rocket"
-          className="h-[113.64px] w-[181px] scale-[0.86]     design:scale-100 mt-[21px] mb-[13.45px]"
+          className="h-[113.64px] w-[181px] mt-[44px]"
         />
-        <div className="bg-primary hidden lg:block ">
+        <div className="bg-primary block mt-[13px]">
           <ImageSlider
             className={styles.loginCarousel}
             images={[CarouselImg, CarouselImg]}
             pagination={true}
           />
         </div>
-        <div className="lg:flex lg:items-center mb-[80.33px] bg-white rounded-[10px] pt-[40px] pb-[40px] px-5 md:px-[66px] min-w-[561px] shadow-[5px_5px_87.5px_0px_rgba(166,166,166,0.25)]">
+        <div className="flex items-center mb-[80.33px] bg-white rounded-[10px] pt-[40px] pb-[40px] px-[66px] min-w-[561px] shadow-[5px_5px_87.5px_0px_rgba(166,166,166,0.25)]">
           {loginActive ? (
             <div className="w-full">
               <div className="flex justify-center">
@@ -174,7 +185,7 @@ export default function Login({ setLoginFormActive }) {
               </p>
               <form
                 onSubmit={handleSubmit}
-                className={`tracking-[0.03em] lg:mt-0  ${
+                className={`tracking-[0.03em] mt-0  ${
                   wait ? "cursor-wait" : "cursor-default"
                 }`}
               >
@@ -183,7 +194,7 @@ export default function Login({ setLoginFormActive }) {
                     email?.length > 0 ? (
                       <img
                         onClick={() => setEmail("")}
-                        className="ml-3 cursor-pointer  w-[17.31px] h-[17.31px]"
+                        className="ml-3 cursor-pointer  w-[22.249px] h-[22.249px]"
                         src={cutEmail}
                         alt="right icon"
                       />
@@ -229,22 +240,39 @@ export default function Login({ setLoginFormActive }) {
                 <div className="flex justify-between items-center">
                   <div className="flex items-center justify-center -ml-[3px]">
                     <CCheckbox
-                      className="scale-[0.8]"
+                      // className="scale-[0.8]"
                       checked={remember}
                       onChange={() => setRemember(!remember)}
                     />{" "}
-                    <span className="text-base text-[#26435F]  font-semibold">
+                    <span className="text-base text-[#26435F]  font-medium">
                       {" "}
                       Remember me{" "}
                     </span>
                   </div>
                   <p
-                    className=" lg:text-base inline-block cursor-pointer text-[#24A3D9]  leading-[18.715px]  font-semibold ml-auto"
+                    className=" lg:text-base inline-block cursor-pointer text-[#24A3D9]  leading-[18.715px]  font-medium ml-auto"
                     onClick={() => setActiveFrame(setIsPasswordForgot)}
                   >
                     Forgot Password?
                   </p>
                 </div>
+
+              {/* <div className="flex justify-center">
+                <button
+                  disabled={
+                    loginLoading === true
+                      ? true
+                      : !(emailValidation.test(email) && password.length > 0)
+                  }
+                  className={`w-[80%] relative mx-auto  bg-[#FFA28D] disabled:opacity-70 pt-3.5 pb-3.5 lg:pt-[9px] lg:pb-[9px] mt-[30px]   rounded-7 text-white text-lg ${
+                    loginLoading ? "cursor-wait" : "cursor-pointer"
+                  }`}
+                  onClick={handleSubmit}
+                >
+                  Sign in
+                  {loginLoading && <Loader />}
+                </button>
+                </div> */}
                 <div className="flex justify-center">
                   <button
                     className={`w-[337px] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] relative mx-auto h-[50px] bg-[#FFA28D] disabled:opacity-60 pt-3.5 pb-3.5  mt-[56px] mb-[19px]  rounded-5 text-white text-lg font-medium ${
@@ -256,6 +284,36 @@ export default function Login({ setLoginFormActive }) {
                     {loginLoading && <Loader />}
                   </button>
                 </div>
+
+                <div className="w-full flex justify-center items-center gap-[30px] mt-[11px]" >
+                    <div
+                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]
+                                 hover:cursor-pointer"
+                      onClick={google}
+                    >
+                      <img 
+                        className="block"
+                        src={GoogleIcon} />
+                    </div>
+
+                    {/* <div
+                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]
+                                 hover:cursor-pointer"
+                    >
+                      <img 
+                        className="block"
+                        src={LinkedinIcon} />
+                    </div> */}
+
+                    <div
+                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]
+                                 hover:cursor-pointer"
+                    >
+                      <img 
+                        className="block"
+                        src={AppleIcon} />
+                    </div>
+                  </div>
                 <div className="flex justify-center mt-[19px]">
                   <p
                     className={`relative text-base  text-[#26435F]  ml-2  inline-block  `}

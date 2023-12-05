@@ -322,10 +322,28 @@ export default function TableItem({
 
      //  format monthName date, year
      const formatDate= (value)=>{
-      const [ month, day, year] = value.split("-");
+      return value
+      let [ year, month, day] = value.split("-");
+       if(dateFormat==="dd/mm/yy"){
+        [ day, month,  year] = value.split("-");
+       }
+      else  if(dateFormat==="mm/dd/yy"){
+        [ month, day, year] = value.split("-");
+       }
+  else [ year, month, day] = value.split("-");
       const monthName = getMonthName(month-1);
+      console.log(
+       { 
+         value : value,
+         day : day,
+         month : month,
+         year : year,
+         monthName :monthName
+        }
+     );
       
-      const formattedDate = `${monthName}` + " " + `${day}` + `,` + `${year}`;
+      let formattedDate = `${monthName}` + " " + `${year}` + `,` + `${day}`;
+     
       return formattedDate
      }
 
@@ -433,7 +451,9 @@ export default function TableItem({
             <div className="my-[6px]">{item.userType}</div>
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 text-left">
-            <div className="my-[6px]">{item?.email?.toLowerCase()}</div>
+            <div className="my-[6px]">
+              {item?.email?.toLowerCase().length > 15 ? item?.email?.toLowerCase().slice(0, 15) + '...' : item?.email?.toLowerCase()}
+              </div>
           </td>
 
           <td className=" text-[17.5px] !pl-6 pr-1  min-w-14  text-left capitalize">
@@ -473,7 +493,7 @@ export default function TableItem({
                     : true
                 }
                 tableDropdown={true}
-                value={leadStatus ? leadStatus : "-"}
+                value={organization2?.settings?.leadStatus?.includes(leadStatus) ? leadStatus : "-"}
                 placeholderClass="text-base-17-5"
                 optionData={organization2?.settings?.leadStatus}
                 inputContainerClassName={`min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center capitalize `}
@@ -488,7 +508,7 @@ export default function TableItem({
             <InputSelect
               disabled={item?.userType === "tutor" ? false : true}
               tableDropdown={true}
-              value={tutorStatus ? tutorStatus : "-"}
+              value={organization2?.settings?.tutorStatus?.includes(tutorStatus) ? tutorStatus : "-"}
               optionData={organization2?.settings?.tutorStatus}
               inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center capitalize text-base-17-5"
               optionClassName="text-[17.5px] text-base-17-5"

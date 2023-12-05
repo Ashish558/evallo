@@ -10,6 +10,7 @@ import styles from "./styles.module.css";
 
 export default function InputField({
   parentClassName,
+  parentStyle,
   inputContainerClassName,
   Icon,
   hideTooltip,
@@ -68,7 +69,7 @@ export default function InputField({
   }, [value]);
 
   return (
-    <div className={`relative  ${parentClassName && parentClassName}`}>
+    <div className={`relative text-sm ${parentClassName && parentClassName}`} style={{...parentStyle}} >
       {label && (
         <label
           className={`${
@@ -182,7 +183,7 @@ export default function InputField({
         {type === "password" && (
           <img
             src={inputType === "password" ? EyeIcon : EyeIcon2}
-            className={`ml-4 w-[20px] cursor-pointer ${
+            className={`ml-4 w-[22.45px] h-[22.45px] cursor-pointer ${
               inputType === "password" ? "" : "opacity-[0.7]"
             }`}
             alt="eye-active"

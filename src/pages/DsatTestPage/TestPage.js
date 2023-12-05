@@ -307,11 +307,11 @@ export default function TestPage() {
         console.log(res.error);
         return;
       }
-      console.log("CONTINUE ", res.data.data);
-      setanswer_check(res.data.data);
-      setInfo(res.data.data.answer);
-      setbackupresponse(res.data.data.backupResponse);
-      if (res.data.data.backupResponse.length > 0) {
+      console.log("CONTINUE ", res?.data?.data);
+      setanswer_check(res?.data?.data);
+      setInfo(res?.data?.data?.answer);
+      setbackupresponse(res?.data?.data?.backupResponse);
+      if (res?.data?.data?.backupResponse?.length > 0) {
         setisntructionpage(false);
       }
       const {
@@ -341,24 +341,24 @@ export default function TestPage() {
         setTestStarted(false);
       }
       if (completed) {
-        const compIds = completed.map((test) => test._id);
+        const compIds = completed?.map((test) => test._id);
         setCompletedSectionIds(compIds);
         console.log(sectionDetails);
         if (sectionDetails.length > 0) {
           const findnewind = sectionDetails?.map((item, i) => ({
             id: i,
-            completed: compIds.includes(item._id),
+            completed: compIds?.includes(item._id),
           }));
-          const firstIncompleteTest = findnewind.find(
+          const firstIncompleteTest = findnewind?.find(
             (test) => !test.completed
           );
-          setstarttestindex(firstIncompleteTest.id);
+          setstarttestindex(firstIncompleteTest?.id);
           console.log("asdasdadsasdasd", sectionDetails);
         }
       }
       if (subjectsRec) {
         if (completed) {
-          const compIds = completed.map((test) => test._id);
+          const compIds = completed?.map((test) => test._id);
           setCompletedSectionIds(compIds);
           console.log(sectionDetails);
 
@@ -366,10 +366,10 @@ export default function TestPage() {
             id: i,
             completed: compIds.includes(item._id),
           }));
-          const firstIncompleteTest = findnewind.find(
+          const firstIncompleteTest = findnewind?.find(
             (test) => !test.completed
           );
-          setstarttestindex(firstIncompleteTest.id);
+          setstarttestindex(firstIncompleteTest?.id);
         }
       }
       setloader(false);

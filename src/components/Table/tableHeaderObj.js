@@ -19,7 +19,7 @@ export function TableHeaderNew({
     <th
       className={`px-6 font-medium whitespace-nowrap  text-center  cursor-pointer ${
         header.className ? header.className : ""
-      } ${flag ? styles["no-arrow"] : ""}`}
+      } ${flag ? styles["no-arrow"] : ""} bg-[#26435F]`}
     >
       <div
         className={`flex 
@@ -40,7 +40,7 @@ export function TableHeaderNew({
             : `${
                 header.willDisplayDownArrow ||
                 header.willDisplayDownArrow === undefined
-                  ? styles.marker
+                  ? styles.marker: header.willDisplayDownArrow === null?""
                   : styles.upArrow
               }`
         }`}

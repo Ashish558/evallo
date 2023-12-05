@@ -110,7 +110,7 @@ export default function AssignedTests() {
   };
 
   const sortByStudentName = () => {
-    if(studentNameSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (studentNameSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -142,7 +142,7 @@ export default function AssignedTests() {
 
       setStudentNameSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(studentNameSortState === SORT_STATES.UNSORTED || studentNameSortState === SORT_STATES.ASCENDING_ORDER) {
+    else if (studentNameSortState === SORT_STATES.UNSORTED || studentNameSortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -157,7 +157,7 @@ export default function AssignedTests() {
         });
         return arr;
       });
-      
+
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -177,7 +177,7 @@ export default function AssignedTests() {
   }
 
   const sortByTestName = () => {
-    if(testNameSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (testNameSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -209,7 +209,7 @@ export default function AssignedTests() {
 
       setTestNameSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(testNameSortState === SORT_STATES.UNSORTED || testNameSortState === SORT_STATES.ASCENDING_ORDER) {
+    else if (testNameSortState === SORT_STATES.UNSORTED || testNameSortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -224,7 +224,7 @@ export default function AssignedTests() {
         });
         return arr;
       });
-      
+
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -244,7 +244,7 @@ export default function AssignedTests() {
   }
 
   const sortByAssignedDate = () => {
-    if(assignedOnSortState === SORT_STATES.DESCENDING_ORDER) { 
+    if (assignedOnSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -278,7 +278,7 @@ export default function AssignedTests() {
 
       setAssignedOnSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(assignedOnSortState === SORT_STATES.UNSORTED || assignedOnSortState === SORT_STATES.ASCENDING_ORDER) {  
+    else if (assignedOnSortState === SORT_STATES.UNSORTED || assignedOnSortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -316,7 +316,7 @@ export default function AssignedTests() {
 
   const sortByDueDate = () => {
 
-    if(dueOnSortState === SORT_STATES.DESCENDING_ORDER) { 
+    if (dueOnSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -350,7 +350,7 @@ export default function AssignedTests() {
 
       setDueOnSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(dueOnSortState === SORT_STATES.UNSORTED || dueOnSortState === SORT_STATES.ASCENDING_ORDER) {  
+    else if (dueOnSortState === SORT_STATES.UNSORTED || dueOnSortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -387,7 +387,7 @@ export default function AssignedTests() {
   };
 
   const sortByAssignedBy = () => {
-    if(assignedBySortState === SORT_STATES.DESCENDING_ORDER) {
+    if (assignedBySortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -419,7 +419,7 @@ export default function AssignedTests() {
 
       setAssignedBySortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(assignedBySortState === SORT_STATES.UNSORTED || assignedBySortState === SORT_STATES.ASCENDING_ORDER) {
+    else if (assignedBySortState === SORT_STATES.UNSORTED || assignedBySortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -434,7 +434,7 @@ export default function AssignedTests() {
         });
         return arr;
       });
-      
+
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -454,7 +454,7 @@ export default function AssignedTests() {
   }
 
   const sortByStatus = () => {
-    if(statusSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (statusSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -486,7 +486,7 @@ export default function AssignedTests() {
 
       setStatusSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(statusSortState === SORT_STATES.UNSORTED || statusSortState === SORT_STATES.ASCENDING_ORDER) {
+    else if (statusSortState === SORT_STATES.UNSORTED || statusSortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -501,7 +501,7 @@ export default function AssignedTests() {
         });
         return arr;
       });
-      
+
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -521,7 +521,7 @@ export default function AssignedTests() {
   }
 
   const sortByDuration = () => {
-    if(durationSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (durationSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -553,7 +553,7 @@ export default function AssignedTests() {
 
       setDurationSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(durationSortState === SORT_STATES.UNSORTED || durationSortState === SORT_STATES.ASCENDING_ORDER) {
+    else if (durationSortState === SORT_STATES.UNSORTED || durationSortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -568,7 +568,7 @@ export default function AssignedTests() {
         });
         return arr;
       });
-      
+
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -591,32 +591,32 @@ export default function AssignedTests() {
     /* console.log("sortByScore");
     console.log(filteredTests); */
     const hasProperScoresProperty = (item) => {
-      if(item.scores === "-" || item.scores === undefined || item.scores === null || Object.keys(item).length === 0) {
+      if (item.scores === "-" || item.scores === undefined || item.scores === null || Object.keys(item).length === 0) {
         return false;
       }
 
-      if(item.scores.cumulative === undefined || item.scores.cumulative === null) {
+      if (item.scores.cumulative === undefined || item.scores.cumulative === null) {
         return false;
       }
 
       return true;
     }
 
-    if(scoreSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (scoreSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
-          
-          if(!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+
+          if (!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return -1;
           }
 
-          if(!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
+          if (!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
             return -1;
           }
 
-          if(hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+          if (hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return 1;
           }
 
@@ -634,19 +634,19 @@ export default function AssignedTests() {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
-          
-          if(!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+
+          if (!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return -1;
           }
 
-          if(!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
+          if (!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
             return -1;
           }
 
-          if(hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+          if (hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return 1;
           }
-          
+
           if (a.scores.cumulative < b.scores.cumulative) {
             return -1;
           }
@@ -660,21 +660,21 @@ export default function AssignedTests() {
 
       setScoreSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(scoreSortState === SORT_STATES.UNSORTED || scoreSortState === SORT_STATES.ASCENDING_ORDER) {
+    else if (scoreSortState === SORT_STATES.UNSORTED || scoreSortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
 
-          if(!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+          if (!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return -1;
           }
 
-          if(!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
+          if (!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
             return 1;
           }
 
-          if(hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+          if (hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return -1;
           }
 
@@ -688,20 +688,20 @@ export default function AssignedTests() {
         });
         return arr;
       });
-      
+
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
 
-          if(!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+          if (!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return -1;
           }
 
-          if(!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
+          if (!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
             return 1;
           }
 
-          if(hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+          if (hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return -1;
           }
 
@@ -834,33 +834,33 @@ export default function AssignedTests() {
   useEffect(() => {
     setValidData(
       modalData.name &&
-        modalData.limit &&
-        modalData.date &&
-        modalData.test === "" &&
-        modalData.instruction === ""
+      modalData.limit &&
+      modalData.date &&
+      modalData.test === "" &&
+      modalData.instruction === ""
     );
   }, [modalData.name, modalData.limit, modalData.date, modalData.test]);
 
   const handleMultipleStudent = (student) => {
-   
+
     let bool = studentMultiple?.find(
       (student1) => student1?._id === student?._id
     );
     if (bool) {
       let updated = studentMultiple.filter((test) => test?._id !== student._id);
       setStudentMultiple(updated);
-      let updated2= selectedstudent.filter((test)=>test?._id !== student._id)
+      let updated2 = selectedstudent.filter((test) => test?._id !== student._id)
       setslecetedstudent(updated2)
     } else {
       setStudentMultiple((prev) => {
         return [...prev, { _id: student?._id, value: student?.value }];
       });
       const foundObject = alldata.find(obj => obj._id === student?._id);
-      const updated2=selectedstudent;
+      const updated2 = selectedstudent;
       updated2.push(foundObject);
       setslecetedstudent(updated2)
-     }
-     checkTextWidth()
+    }
+    checkTextWidth()
   };
   const getCurrentDate = () => {
     const today = new Date();
@@ -917,7 +917,7 @@ export default function AssignedTests() {
     navigate(`/profile/${role}/${id}`);
   };
 
-  
+
   useEffect(() => {
     if (modalData.name.length >= 0) {
       if (persona === "admin") {
@@ -987,9 +987,8 @@ export default function AssignedTests() {
           isStarted,
           assignedBy,
         } = item;
-        const assignedByName = `${
-          assignedBy?.firstName ? assignedBy?.firstName : "-"
-        } ${assignedBy?.lastName ? assignedBy?.lastName : ""}`;
+        const assignedByName = `${assignedBy?.firstName ? assignedBy?.firstName : "-"
+          } ${assignedBy?.lastName ? assignedBy?.lastName : ""}`;
         if (assignedBy) {
           if (!allAssignedBys.includes(assignedByName)) {
             allAssignedBys.push(assignedByName);
@@ -1014,8 +1013,8 @@ export default function AssignedTests() {
             isCompleted === true
               ? "completed"
               : isStarted
-              ? "started"
-              : "notStarted",
+                ? "started"
+                : "notStarted",
           createdAt,
           assignedTestId: item._id,
         };
@@ -1054,9 +1053,8 @@ export default function AssignedTests() {
           isStarted,
           assignedBy,
         } = item;
-        const assignedByName = `${
-          assignedBy?.firstName ? assignedBy?.firstName : "-"
-        } ${assignedBy?.lastName ? assignedBy?.lastName : ""}`;
+        const assignedByName = `${assignedBy?.firstName ? assignedBy?.firstName : "-"
+          } ${assignedBy?.lastName ? assignedBy?.lastName : ""}`;
         if (assignedBy) {
           if (!allAssignedBys.includes(assignedByName)) {
             allAssignedBys.push(assignedByName);
@@ -1069,9 +1067,8 @@ export default function AssignedTests() {
           studentId: studentId ? studentId._id : "-",
           assignedOn: getFormattedDate(createdAt),
           assignedBy: assignedBy
-            ? `${assignedBy?.firstName ? assignedBy?.firstName : "-"} ${
-                assignedBy?.lastName ? assignedBy?.lastName : ""
-              }`
+            ? `${assignedBy?.firstName ? assignedBy?.firstName : "-"} ${assignedBy?.lastName ? assignedBy?.lastName : ""
+            }`
             : "-",
           testName: testId ? testId.testName : "-",
           testId: testId ? testId._id : null,
@@ -1082,8 +1079,8 @@ export default function AssignedTests() {
             isCompleted === true
               ? "completed"
               : isStarted
-              ? "started"
-              : "notStarted",
+                ? "started"
+                : "notStarted",
           createdAt,
           dueDate: getFormattedDate(dueDate),
           assignedTestId: item._id,
@@ -1406,44 +1403,44 @@ export default function AssignedTests() {
   const [markSelectLoading, setMarkSelectLoading] = useState(false);
   const [resendBulkModalActive, setResendBulkModalActive] = useState(false);
   const [resendSelectLoading, setResendSelectLoading] = useState(false);
-  const [selectedtext,selselectedtext]= useState('');
+  const [selectedtext, selselectedtext] = useState('');
   const checkTextWidth = () => {
     const container = document.querySelector('.student-name-container');
     const text = document.querySelector('.text-container');
     console.log(text.innerHTML.length, container);
-  
+
     if (text && container) {
-     
-        const limit22 = 3.4;
-        const maxStringLength = Math.floor((container.offsetWidth - 100) / limit22) - 20;
-        let stri = '';
-  
-        let f = false;
-        let tot = 0;
-        console.log(selectedstudent);
-        for (const student of selectedstudent) {
-          console.log(stri.length+ student.firstName.length,maxStringLength);
-          if (stri.length+ student.firstName.length < maxStringLength) {
-            if (f) {
-              stri += ', ' + student.firstName;
-            } else {
-              f = true;
-              stri += student.firstName;
-            }
+
+      const limit22 = 3.4;
+      const maxStringLength = Math.floor((container.offsetWidth - 100) / limit22) - 20;
+      let stri = '';
+
+      let f = false;
+      let tot = 0;
+      console.log(selectedstudent);
+      for (const student of selectedstudent) {
+        console.log(stri.length + student.firstName.length, maxStringLength);
+        if (stri.length + student.firstName.length < maxStringLength) {
+          if (f) {
+            stri += ', ' + student.firstName;
           } else {
-            stri += ` ... total ${studentMultiple.length} selected`;
-            break;
+            f = true;
+            stri += student.firstName;
           }
-  
-          tot += student.firstName.length;
+        } else {
+          stri += ` ... total ${studentMultiple.length} selected`;
+          break;
         }
-  
-        console.log('Text has covered the whole width. Needs to be cropped.');
-        console.log('Cropped Text:', stri);
-        selselectedtext(stri)
+
+        tot += student.firstName.length;
+      }
+
+      console.log('Text has covered the whole width. Needs to be cropped.');
+      console.log('Cropped Text:', stri);
+      selselectedtext(stri)
     }
   };
-  
+
 
 
   return (
@@ -1775,8 +1772,8 @@ export default function AssignedTests() {
                   /> */}
                   <div className="flex flex-row items-center">
                     <p className="font-medium whitespace-nowrap text-container text-base-15 mt-1 text-[#667085]">
-                  {selectedtext}
-                  </p>
+                      {selectedtext}
+                    </p>
 
                   </div>
                 </div>
@@ -1984,7 +1981,7 @@ export default function AssignedTests() {
                 not be able to attempt any remaining sections and will be able
                 to access the score report. Read detailed documentation in
                 Evallo’s{" "}
-                <span className="text-[#24A3D9]  border-b border-b-[#24A3D9] cursor-pointer" onClick={()=>window.location.href = process.env.REACT_APP_SUPPORT_LINK}>
+                <span className="text-[#24A3D9]  border-b border-b-[#24A3D9] cursor-pointer" onClick={() => window.location.href = process.env.REACT_APP_SUPPORT_LINK}>
                   {" "}
                   knowledge base.
                 </span>
@@ -2021,7 +2018,7 @@ export default function AssignedTests() {
                 Instead, it will resend the email with the PDF file (containing
                 the assignment content) attached to it. Read detailed
                 documentation in Evallo’s{" "}
-                <span className="text-[#24A3D9] cursor-pointer border-b border-b-[#24A3D9]" onClick={()=>window.location.href = process.env.REACT_APP_SUPPORT_LINK}>
+                <span className="text-[#24A3D9] cursor-pointer border-b border-b-[#24A3D9]" onClick={() => window.location.href = process.env.REACT_APP_SUPPORT_LINK}>
                   {" "}
                   knowledge base.
                 </span>

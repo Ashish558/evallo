@@ -20,7 +20,6 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
       setDateFormat(organization2?.settings?.dateFormat)
     }
   }, [organization2])
-  console.log("latest", { dateFormat, organization2 })
   const [startDate, setStartDate] = useState(() => calculateDateRange()[0]);
   const [selectDate, setSelectedDate] = useState({
     sDate: "",
@@ -97,7 +96,7 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
       sDate: startDate.toString(),
       eDate: endDate.toString(),
     };
- console.log({selectDate})
+//  console.log({selectDate})
     const requiredDate = getModifiedDate(selectDate);
 
     setStartDate(requiredDate);
@@ -133,17 +132,18 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
   const [startMonth, startDay] = startFull.split("-");
 
   const formatDate= (value)=>{
+    
     const [ month, day, year] = value.split("-");
     const monthName = getMonthName(day-1);
-    console.log(
-     { 
-       value : value,
-       day : day,
-       month : month,
-       year : year,
-       monthName :monthName
-      }
-   );
+  //   console.log(
+  //    { 
+  //      value : value,
+  //      day : day,
+  //      month : month,
+  //      year : year,
+  //      monthName :monthName
+  //     }
+  //  );
     
     const formattedDate = `${monthName}` + " " + `${year}` + `,` + `${month}`;
     return formattedDate
@@ -156,19 +156,19 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
 
 
   return (
-    <div className={`flex text-xs  !text-[calc(15*0.050vw)] ${className}`}>
+    <div className={`flex text-[15px] ${className}`}>
       <p className="font-semibold text-[#FFA28D]"> </p>
 
       <InputSelect
         placeholder="Select"
         valueClassName={`${removeUnderline ? "" : "font-normal  border-b border-b-[#FFA28D]"} ${allorg?"!text-gray-500 ":"text-[#FFA28D]"} cursor-pointer items-center`}
-        parentClassName="border-none text-xs text-[#26435F] w-fit relative z-[500] !text-[calc(17*0.050vw)] items-center"
-        labelClassname="text-sm !text-[calc(17*0.050vw)]"
-        inputContainerClassName={`border-none  !text-[calc(17*0.050vw)] whitespace-nowrap font-normal ${allorg?"":"text-[#FFA28D]"} text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]} `}
-        inputClassName={`placeholder:uppercase border-none w-fit bg-transparent font-semibold ${allorg?"":"text-[#FFA28D]"} !text-[calc(17*0.050vw)]`}
+        parentClassName="border-none text-xs text-[#26435F] w-fit relative z-[500] text-[17.5px] items-center"
+        labelClassname="text-sm text-[17.5px]"
+        inputContainerClassName={`border-none text-[17.5px] whitespace-nowrap font-normal ${allorg?"":"text-[#FFA28D]"} text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]} `}
+        inputClassName={`placeholder:uppercase border-none w-fit bg-transparent font-semibold ${allorg?"":"text-[#FFA28D]"} text-[17.5px]`}
         value={formattedDateRange}
         optionListClassName="text-[#517CA8] underline underline-offset-2"
-        optionClassName={`${optionClassName} relative !text-[calc(17*0.050vw)] `}
+        optionClassName={`${optionClassName} relative text-[17.5px]`}
         optionContainerClassName={`${allorg?"translate-x-[30px]":""} !rounded-5  border-[#FFA28D] border-[1px] py-2`}
         optionPadding="!py-1"
         optionData={[
@@ -188,8 +188,8 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
         IconRightClass={`${allorg?"w-[50px] h-[20px] ml-[-10px]":""}`}
         DateSelect={
           !manualHide &&
-          <div className={`flex relative flex-col hover:bg-white items-center pt-2 z-5000 border-b   `}>
-            <div className="text-[9px] text-[#517CA8]  w-full px-[26px]">
+          <div className={`flex relative flex-col hover:bg-white items-center pt-2 z-5000 border-b`}>
+            <div className="text-[9px] text-[#517CA8] w-full px-[26px]">
               <label htmlFor="sdate">Start Date</label>
 
             </div>
@@ -203,7 +203,7 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
                 max={selectDate.eDate}
                 onChange={(e) => handleLocalDate(e.target.value, "sDate")}
               />
-              <div className="text-[9px] text-[#517CA8]  w-full px-[26px] pt-[15px]">
+              <div className="text-[9px] text-[#517CA8] w-full px-[26px] pt-[15px]">
                 <label htmlFor="edate">End Date</label>
               </div>
               <input

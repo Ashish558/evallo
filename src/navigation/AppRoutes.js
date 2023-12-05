@@ -1,60 +1,75 @@
-import React, { useState } from "react";
+import React, { Suspense, lazy, useState } from "react";
 import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
-import AllTests from "../pages/AllTests/AllTests";
-import AssignedTests from "../pages/AssignedTests/AssignedTests";
-import Calendar from "../pages/Calendar/Calendar";
-// import CompletedTest from "../pages/CompletedTest/CompletedTest";
-import Home from "../pages/Home/Home";
-import Login from "../pages/Login/Login";
-import Signup from "../pages/Signup/Signup";
-import OrgSignup from "../pages/OrgSignup/OrgSignup";
-import StudentProfile from "../pages/Profiles/StudentProfile/StudentProfile";
-import TestDetail from "../pages/TestDetail/TestDetail";
-import Users from "../pages/Users/users";
-
 import { RequireAuth } from "./PrivateRoute";
-// import ParentDashboard from "./../pages/ParentDashboard/ParentDashboard";
-import SetPassword from "../pages/Frames/SetPassword/SetPassword";
-// import StudentDashboard from "../pages/StudentDashboard/StudentDashboard";
-import Ledger from "../pages/Ledger/Ledger";
-import StartTest from "../pages/StartTest/StartTest";
-import AssignedStudents from "../pages/AssignedStudents/assignedStudents";
-import ParentProfile from "../pages/Profiles/ParentProfile/ParentProfile";
-import TutorProfile from "../pages/Profiles/Tutor/TutorProfile";
-import Invoice from "../pages/Invoice/Invoice";
-import StudentReport from "../pages/StudentReport/StudentReport";
-import AssignedTutors from "../pages/AssignedTutors/AssignedTutors";
-import SuperadminDashboard from "../pages/SuperadminDashboard/SuperadminDashboard";
-import UserSignup from "../pages/UserSignup/Signup";
-import Dashboard from "../pages/AdminDashboard/Dashboard";
-import AdminContent from "../pages/AdminContent/AdminContent";
-import AllOrgs from "../pages/SuperadminDashboard/components/AllOrgs/AllOrgs";
-import Footer from "../components/Footer/Footer";
-import Settings from "../pages/Settings/Settings";
-import SuperAdminSettings from "../pages/Settings/SuperAdminSettings";
-import SuperAdminProfile from "../pages/SuperadminDashboard/components/About/About";
-import EmailVerify from "../pages/Settings/Tabs/AccountOverview/EmailVerify";
-import StudentSettings from "../pages/Settings/Tabs/AccountOverview/studentSettings";
+import Footer from "../components/Footer/Footer"
+import Layout from "../pages/Layout/Layout";
+import Layout2 from "../pages/Layout/Layout2";
 
-// import TutorSetting from "../pages/Settings/TutorSetting";
-import ContributorSettings from "../pages/Settings/ContributorSettings";
-import TestPage from "../pages/DsatTestPage/TestPage";
-import AnnotatorComponent from "../components/annotate";
-import Testinstruction_2 from "../components/TestItem/testinstruction_2";
-import AdminPortal from "../pages/SuperadminDashboard/components/About/AdminPortal";
+
+const AllTests = lazy(() => import("../pages/AllTests/AllTests"));
+const AssignedTests = lazy(() => import("../pages/AssignedTests/AssignedTests"));
+const Calendar = lazy(() => import("../pages/Calendar/Calendar"));
+const Home = lazy(() => import("../pages/Home/Home"));
+const Login = lazy(() => import("../pages/Login/Login"));
+const Signup = lazy(() => import("../pages/Signup/Signup"));
+const StudentProfile = lazy(() => import("../pages/Profiles/StudentProfile/StudentProfile"));
+const TestDetail = lazy(() => import("../pages/TestDetail/TestDetail"));
+const Users = lazy(() => import("../pages/Users/users"));
+const SetPassword = lazy(() => import("../pages/Frames/SetPassword/SetPassword"));
+const Ledger = lazy(() => import("../pages/Ledger/Ledger"));
+const StartTest = lazy(() => import("../pages/StartTest/StartTest"));
+const AssignedStudents = lazy(() => import("../pages/AssignedStudents/assignedStudents"));
+const ParentProfile = lazy(() => import("../pages/Profiles/ParentProfile/ParentProfile"));
+const TutorProfile = lazy(() => import("../pages/Profiles/Tutor/TutorProfile"));
+const Invoice = lazy(() => import("../pages/Invoice/Invoice"));
+const StudentReport = lazy(() => import("../pages/StudentReport/StudentReport"));
+const AssignedTutors = lazy(() => import("../pages/AssignedTutors/AssignedTutors"));
+const SuperadminDashboard = lazy(() => import("../pages/SuperadminDashboard/SuperadminDashboard"));
+const UserSignup = lazy(() => import("../pages/UserSignup/Signup"));
+const Dashboard = lazy(() => import("../pages/AdminDashboard/Dashboard"));
+const AdminContent = lazy(() => import("../pages/AdminContent/AdminContent"));
+const AllOrgs = lazy(() => import("../pages/SuperadminDashboard/components/AllOrgs/AllOrgs"));
+
+const Settings = lazy(() => import("../pages/Settings/Settings"));
+const SuperAdminSettings = lazy(() => import("../pages/Settings/SuperAdminSettings"));
+const SuperAdminProfile = lazy(() => import("../pages/SuperadminDashboard/components/About/About"));
+const EmailVerify = lazy(() => import("../pages/Settings/Tabs/AccountOverview/EmailVerify"));
+const StudentSettings = lazy(() => import("../pages/Settings/Tabs/AccountOverview/studentSettings"));
+const ContributorSettings = lazy(() => import("../pages/Settings/ContributorSettings"));
+const TestPage = lazy(() => import("../pages/DsatTestPage/TestPage"));
+const AnnotatorComponent = lazy(() => import("../components/annotate"));
+const Testinstruction_2 = lazy(() => import("../components/TestItem/testinstruction_2"));
+const AdminPortal = lazy(() => import("../pages/SuperadminDashboard/components/About/AdminPortal"));
+const OrgAdminSignup = lazy(() => import("../pages/OrgAdminSignup/OrgAdminSignup"));
+// Lazy-load your components
+
+//  layout page
 
 const AppRoutes = () => {
   const { isLoggedIn } = useSelector((state) => state.user);
   const { role: persona } = useSelector((state) => state.user);
 
+
   return (
     <BrowserRouter>
-      <Navbar />
+      {/* <Navbar /> */}
+      <Layout2>
       <Routes>
         <Route path="/" element={isLoggedIn ? <Home /> : <Login />} />
-        <Route path="/signup" element={<Signup />} />
+
+{/*  layout routes */}
+        <Route
+          path="/Layout"
+          element={
+            <RequireAuth isLoggedIn={isLoggedIn}>
+              <Layout />
+            </RequireAuth>
+          }
+        />
+
+        <Route path="/signup" element={<Suspense fallback={<div>Loading...</div>}><OrgAdminSignup /></Suspense>} />
         <Route path="/admin-portal" element={<AdminPortal />} />
         <Route path="/signup/user" element={<UserSignup />} />
         <Route
@@ -62,21 +77,39 @@ const AppRoutes = () => {
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
               {persona === "superAdmin" || persona === "manager" ? (
-                <SuperadminDashboard />
+                <Suspense fallback={<div>Loading...</div>}>
+                  <SuperadminDashboard />
+                </Suspense>
               ) : (
-                <Home />
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Home />
+                </Suspense>
               )}
             </RequireAuth>
           }
         />
-        <Route path="/all-orgs" element={<AllOrgs />} />
-        <Route path="/verify-email" element={<EmailVerify />} />
-        <Route path="/orgadmin-profile/:id" element={<SuperAdminProfile />} />
+        <Route path="/all-orgs" element={
+          <Suspense fallback={<div>Loading...</div>}>
+            <AllOrgs />
+          </Suspense>
+        } />
+        <Route path="/verify-email" element={
+          <Suspense fallback={<div>Loading...</div>}>
+            <EmailVerify />
+          </Suspense>
+        } />
+        <Route path="/orgadmin-profile/:id" element={
+          <Suspense fallback={<div>Loading...</div>}>
+            <SuperAdminProfile />
+          </Suspense>
+        } />
         <Route
           path="/users"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-              <Users />
+              <Suspense fallback={<div>Loading...</div>}>
+                <Users />
+              </Suspense>
             </RequireAuth>
           }
         />
@@ -84,7 +117,9 @@ const AppRoutes = () => {
           path="/invoice"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-              <Invoice />
+              <Suspense fallback={<div>Loading...</div>}>
+                <Invoice />
+              </Suspense>
             </RequireAuth>
           }
         />
@@ -101,7 +136,9 @@ const AppRoutes = () => {
           path="/calendar"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-              <Calendar />
+              <Suspense fallback={<div>Loading...</div>}>
+                <Calendar />
+              </Suspense>
             </RequireAuth>
           }
         />
@@ -109,7 +146,9 @@ const AppRoutes = () => {
           path="/calendar/edit/:id"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-              <Calendar />
+              <Suspense fallback={<div>Loading...</div>}>
+                <Calendar />
+              </Suspense>
             </RequireAuth>
           }
         />
@@ -117,7 +156,9 @@ const AppRoutes = () => {
           path="/calendar/:persona"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-              <Calendar />
+              <Suspense fallback={<div>Loading...</div>}>
+                <Calendar />
+              </Suspense>
             </RequireAuth>
           }
         />
@@ -126,14 +167,24 @@ const AppRoutes = () => {
           path="/assigned-tests"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-              <AssignedTests />
+              <Suspense fallback={<div>Loading...</div>}>
+                <AssignedTests />
+              </Suspense>
             </RequireAuth>
           }
         />
-        <Route path="/set-password" element={<SetPassword />} />
+        <Route path="/set-password" element={
+          <Suspense fallback={<div>Loading...</div>}>
+            <SetPassword />
+          </Suspense>
+        } />
         <Route
           path="/reset-password"
-          element={<SetPassword resetPassword={true} />}
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <SetPassword resetPassword={true} />
+            </Suspense>
+          }
         />
         {/* <Route
                path="/assigned-tests/:id/:assignedTestId/report"
@@ -147,7 +198,9 @@ const AppRoutes = () => {
           path="/assigned-tests/:id/:assignedTestId/report"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-              <StudentReport />
+              <Suspense fallback={<div>Loading...</div>}>
+                <StudentReport />
+              </Suspense>
             </RequireAuth>
           }
         />
@@ -155,7 +208,9 @@ const AppRoutes = () => {
           path="/assigned-tests/:id/:assignedTestId/report/:studentId"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-              <StudentReport />
+              <Suspense fallback={<div>Loading...</div>}>
+                <StudentReport />
+              </Suspense>
             </RequireAuth>
           }
         />
@@ -163,7 +218,9 @@ const AppRoutes = () => {
           path="/all-tests"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-              <AllTests />
+              <Suspense fallback={<div>Loading...</div>}>
+                <AllTests />
+              </Suspense>
             </RequireAuth>
           }
         />
@@ -171,7 +228,9 @@ const AppRoutes = () => {
           path="/all-tests/:id"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-              <TestDetail />
+              <Suspense fallback={<div>Loading...</div>}>
+                <TestDetail />
+              </Suspense>
             </RequireAuth>
           }
         />
@@ -180,11 +239,17 @@ const AppRoutes = () => {
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
               {persona === "parent" ? (
-                <ParentProfile isOwn={true} />
+                <Suspense fallback={<div>Loading...</div>}>
+                  <ParentProfile isOwn={true} />
+                </Suspense>
               ) : persona === "student" ? (
-                <StudentProfile isOwn={true} />
+                <Suspense fallback={<div>Loading...</div>}>
+                  <StudentProfile isOwn={true} />
+                </Suspense>
               ) : persona === "tutor" ? (
-                <TutorProfile isOwn={true} />
+                <Suspense fallback={<div>Loading...</div>}>
+                  <TutorProfile isOwn={true} />
+                </Suspense>
               ) : (
                 <></>
               )}
@@ -199,7 +264,9 @@ const AppRoutes = () => {
           path="/profile/student/:id"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-              <StudentProfile />
+              <Suspense fallback={<div>Loading...</div>}>
+                <StudentProfile />
+              </Suspense>
             </RequireAuth>
           }
         />
@@ -207,7 +274,9 @@ const AppRoutes = () => {
           path="/profile/parent/:id"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-              <ParentProfile />
+              <Suspense fallback={<div>Loading...</div>}>
+                <ParentProfile />
+              </Suspense>
             </RequireAuth>
           }
         />
@@ -215,7 +284,9 @@ const AppRoutes = () => {
           path="/profile/tutor/:id"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-              <TutorProfile />
+              <Suspense fallback={<div>Loading...</div>}>
+                <TutorProfile />
+              </Suspense>
             </RequireAuth>
           }
         />
@@ -224,7 +295,9 @@ const AppRoutes = () => {
           path="/ledger"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-              <Ledger />
+              <Suspense fallback={<div>Loading...</div>}>
+                <Ledger />
+              </Suspense>
             </RequireAuth>
           }
         />
@@ -232,7 +305,9 @@ const AppRoutes = () => {
           path="/testpage/:id/:assignedTestId"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-              <TestPage />
+              <Suspense fallback={<div>Loading...</div>}>
+                <TestPage />
+              </Suspense>
             </RequireAuth>
           }
         />
@@ -242,15 +317,23 @@ const AppRoutes = () => {
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
               {persona === "superAdmin" || persona === "manager" ? (
-                <SuperAdminSettings />
+                <Suspense fallback={<div>Loading...</div>}>
+                  <SuperAdminSettings />
+                </Suspense>
               ) : persona === "student" ||
                 persona === "parent" ||
                 persona === "tutor" ? (
-                <StudentSettings />
+                <Suspense fallback={<div>Loading...</div>}>
+                  <StudentSettings />
+                </Suspense>
               ) : persona === "contributor" ? (
-                <ContributorSettings />
+                <Suspense fallback={<div>Loading...</div>}>
+                  <ContributorSettings />
+                </Suspense>
               ) : (
-                <Settings />
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Settings />
+                </Suspense>
               )}
             </RequireAuth>
           }
@@ -259,7 +342,9 @@ const AppRoutes = () => {
           path="/assigned-students"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-              <AssignedStudents />
+              <Suspense fallback={<div>Loading...</div>}>
+                <AssignedStudents />
+              </Suspense>
             </RequireAuth>
           }
         />
@@ -267,26 +352,33 @@ const AppRoutes = () => {
           path="/all-tests/start-section/:id/:assignedTestId"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-              <StartTest />
+              <Suspense fallback={<div>Loading...</div>}>
+                <StartTest />
+              </Suspense>
             </RequireAuth>
           }
         />
-        <Route path="/ll" element={<AnnotatorComponent />} />
-        <Route path="/adminDashboard" element={<Dashboard></Dashboard>}></Route>
+        <Route path="/ll" element={
+          <Suspense fallback={<div>Loading...</div>}>
+            <AnnotatorComponent />
+          </Suspense>
+        } />
+        <Route path="/adminDashboard" element={
+          <Suspense fallback={<div>Loading...</div>}>
+            <Dashboard />
+          </Suspense>
+        }></Route>
         <Route
           path="/adminContent"
-          element={<AdminContent></AdminContent>}
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <AdminContent />
+            </Suspense>
+          }
         ></Route>
-        {/* <Route
-                  path="/profile"
-                  element={
-                     <RequireAuth isLoggedIn={isLoggedIn}>
-                        <Profile  />
-                     </RequireAuth>
-                  }
-               /> */}
       </Routes>
-      <Footer />
+      </Layout2>
+      {/* <Footer /> */}
     </BrowserRouter>
   );
 };

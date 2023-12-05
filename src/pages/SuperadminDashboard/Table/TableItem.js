@@ -24,9 +24,28 @@ navigate(`orgadmin-profile/${item?._id}`)
 
   //  format monthName date, year
   const formatDate= (value)=>{
-    const [ month, day, year] = value.split("-");
+    return value
+    let [ year, month, day] = value.split("-");
+     if(dateFormat==="dd/mm/yy"){
+      [ day, month,  year] = value.split("-");
+     }
+    else  if(dateFormat==="mm/dd/yy"){
+      [ month, day, year] = value.split("-");
+     }
+else [ year, month, day] = value.split("-");
     const monthName = getMonthName(month-1);
-    const formattedDate = `${monthName}` + " " + `${day}` + `,` + `${year}`;
+    console.log(
+     { 
+       value : value,
+       day : day,
+       month : month,
+       year : year,
+       monthName :monthName
+      }
+   );
+    
+    let formattedDate = `${monthName}` + " " + `${year}` + `,` + `${day}`;
+   
     return formattedDate
    }
 
