@@ -396,7 +396,7 @@ export default function SignupTab({
             />
             <InputField
               label="Email"
-              inputContainerClassName="bg-gray-200 border border-gray-200 w-[32.6vw]"
+              inputContainerClassName="bg-gray-200 border border-gray-200"
               inputClassName="bg-gray-200"
               placeholder=""
               parentClassName="text-xs  text-[#26435F] mb-2"
@@ -548,7 +548,7 @@ export default function SignupTab({
             <InputField
               label="Student / Parent Email"
               placeholder=" "
-              inputContainerClassName="bg-gray-200 border border-gray-200 w-[34.2vw]"
+              inputContainerClassName="bg-gray-200 border border-gray-200"
               inputClassName="bg-gray-200"
               parentClassName="text-xs  text-[#26435F] mb-2"
             />
@@ -568,7 +568,7 @@ export default function SignupTab({
             <InputField
               placeholder=""
               parentClassName="text-xs  text-[#26435F] mb-2"
-              inputContainerClassName="bg-gray-200 border border-gray-200 w-[34.2vw]"
+              inputContainerClassName="bg-gray-200 border border-gray-200"
               inputClassName="bg-gray-200"
               label="School Name"
             />
