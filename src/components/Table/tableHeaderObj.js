@@ -17,12 +17,15 @@ export function TableHeaderNew({
 
   return (
     <th
-      className={`px-6 py-[20px] font-medium whitespace-nowrap  text-center  cursor-pointer ${
+      className={`px-6 font-medium whitespace-nowrap  text-center  cursor-pointer ${
         header.className ? header.className : ""
       } ${flag ? styles["no-arrow"] : ""}`}
     >
       <div
-        className={`flex ${header.text === "Student Name" ? "ml-[34px]" : "" } ${header.text === "Assignment Name" ? "ml-[12px]" : "" }  ${
+        className={`flex 
+        ${header.text === "Student Name" ? "ml-[40px] text-left " : ""} 
+        ${header.text === "Assignment Name" ? "ml-[12px]" : ""} 
+        ${
           header.text === "Email" ||
           header.text === "Phone" ||
           header.text === "Assignment Name" ||
@@ -54,10 +57,10 @@ export function TableHeaderNew({
         )}
         {header.text === "Full Name" && dataFor === "allUsers" ? (
           <div onClick={() => header.onCick && header.onCick()}>
-            <span className="text-center text-[17.5px]">{header.text}</span>
+            <span className="text-center text-[17.5px] ">{header.text}</span>
           </div>
         ) : (
-          <div className=" text-[17.5px] text-left">{header.text}</div>
+          <div className={`text-[17.5px] ${header.text === "Score" ? "text-center" : "text-left w-full" }`}>{header.text}</div>
         )}
       </div>
     </th>

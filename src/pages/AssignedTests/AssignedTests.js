@@ -1448,10 +1448,13 @@ export default function AssignedTests() {
 
   return (
     <>
-      <div className="w-[83.3333333333vw] mx-auto min-h-screen mb-[40px]">
-        <div className="">
+     <div className="w-[1920px] flex justify-center items-center ">
+      <div className="w-[1600px] h-auto mb-[40px] flex flex-col justify-center items-center">
+        <div className=" w-full">
+
+          {/* pathName */}
           <div className="flex justify-between items-center ">
-            <p className="text-[#24A3D9] text-base-20 mb-8 mt-[50px]">
+            <p className="text-[#24A3D9] text-[20px] mt-[50px] mb-[41.23px]">
               <span onClick={() => navigate("/")} className="cursor-pointer">
                 {organization?.company +
                   "  >  " +
@@ -1475,9 +1478,9 @@ export default function AssignedTests() {
                     })
                   }
                   placeholder="Search Student"
-                  inputClassName="text-base-17-5 pl-4 text-[#667085] placeholder:text-base-15"
+                  inputClassName="text-[17.5px] pl-4 text-[#667085] placeholder:text-base-15"
                   parentClassName="w-[22.03125vw]  py-1"
-                  inputContainerClassName="text-base-17-5  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1"
+                  inputContainerClassName="text-[17.5px]  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1"
                   type="text"
                 />
                 <div className="flex items-center justify-end gap-[20px] mt-[10px]">
@@ -1495,7 +1498,7 @@ export default function AssignedTests() {
 
           {(persona === "admin" || persona === "tutor") && (
             <>
-              <div className="flex gap-4 justify-between items-start">
+              <div className="flex justify-start items-start">
                 {persona === "student" ? (
                   <p className={`font-bold text-4xl text-primary-dark`}>
                     Assigned Tests
@@ -1503,7 +1506,8 @@ export default function AssignedTests() {
                 ) : (
                   <></>
                 )}
-
+                  
+                {/* search Input */}
                 <InputField
                   IconRight={SearchIcon}
                   value={filterData.studentName}
@@ -1514,21 +1518,22 @@ export default function AssignedTests() {
                     })
                   }
                   placeholder="Search Student"
-                  inputClassName="pl-4 py-[12px] text-base-17-5 text-md text-[#667085]   placeholder:text-base-17-5 placeholder:text-[#667085] pl-2"
-                  parentClassName="w-[20.83vw]  text-md"
-                  inputContainerClassName=" shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  !py-0 h-[50px]"
+                  inputClassName="h-full w-full text-[17.5px] text-[#667085] placeholder:text-[17.5px] placeholder:text-[#667085] pl-[18px] "
+                  parentClassName="w-[400px] h-[50px] text-md me-[30px]"
+                  inputContainerClassName="shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white !py-0 h-full"
                   type="text"
                 />
-                <div>
-                  <InputSearch
+                {/* search Assignment */}
+                <InputSearch
                     IconRight={SearchIcon}
-                    placeholderClass="text-base-17-5 text-[#667085]"
-                    optionListClassName="text-base-17-5 text-[#667085]"
-                    inputClassName="placeholder:text-[#667085] text-base-17-5 !py-3 text-[#667085]"
+                    placeholderClass="text-[17.5px] text-[#667085]"
+                    optionListClassName="text-[17.5px] text-[#667085]"
+                    inputClassName="placeholder:text-[#667085] text-[17.5px] text-[#667085]"
+                    labelClassname={"hidden"}
                     dropDownIconStatus={true}
-                    inputContainerClassName=" !py-3 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  h-[50px] text-[#667085]"
+                    inputContainerClassName="shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white h-full text-[#667085]"
                     placeholder="Search Assignment"
-                    parentClassName="w-[20.83vw] -mt-[20px] design:-mt-[26px] text-base-17-5 text-[#667085] h-[50px]"
+                    parentClassName="w-[400px] text-[17.5px] text-[#667085] h-[50px] me-[30px]"
                     type="select"
                     value={filterData.testName}
                     onChange={(e) => {
@@ -1542,36 +1547,23 @@ export default function AssignedTests() {
                     onOptionClick={(item) => {
                       setFilterData({ ...filterData, testName: item?.value });
                     }}
-                  />
-                </div>
-                {/* <InputSelect
-                  IconSearch={SearchIcon}
-                  value={filterData.testName}
-                  onChange={(val) =>
-                    setFilterData({ ...filterData, testName: val })
-                  }
-                  placeholderClass="text-base-17-5"
-                  optionData={testNameOptions}
-                  optionListClassName="text-base-17-5 text-[#667085]"
-                  inputClassName="text-base-17-5 !py-3"
-                  inputContainerClassName=" !py-3 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  h-[50px]"
-                  placeholder="Search Assignment"
-                  parentClassName="w-[23.75vw] text-base-17-5 text-[#667085] h-[50px]"
-                  type="select"
-                /> */}
+                />
+                {/*  */}
                 <InputSelect
                   value={filterData.status}
                   onChange={(val) => handleStatus(val)}
-                  optionListClassName="text-base-17-5 text-[#667085]"
-                  placeholderClass="text-base-17-5"
+                  optionListClassName="text-[17.5px] text-[#667085]"
+                  placeholderClass="text-[17.5px]"
                   optionData={["Started", "Not Started", "Completed"]}
-                  inputClassName="text-base-17-5 !py-3"
+                  inputClassName="text-[17.5px] !py-3"
                   inputContainerClassName=" shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px]  bg-white !py-3 h-[50px]"
                   optionClassName=""
                   placeholder="Completion"
-                  parentClassName="w-[11.98vw] text-base-17-5 text-[#667085]"
+                  parentClassName="w-[250px] text-[17.5px] text-[#667085] me-[30px]"
                   type="select"
                 />
+
+
                 {persona === "tutor" ? (
                   <div className="w-2/6 flex justify-end">
                     <div>
@@ -1590,11 +1582,11 @@ export default function AssignedTests() {
                     onChange={(val) =>
                       setFilterData({ ...filterData, assignedBy: val })
                     }
-                    optionListClassName="text-base-17-5 text-[#667085]"
-                    parentClassName="w-[11.98vw] text-base-17-5 "
-                    inputClassName="text-base-17-5 py-3"
+                    optionListClassName="text-[17.5px] text-[#667085]"
+                    parentClassName="w-[230px] text-[17.5px] "
+                    inputClassName="text-[17.5px] py-3"
                     inputContainerClassName="shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] bg-white h-[50px]"
-                    placeholderClass="text-base-17-5"
+                    placeholderClass="text-[17.5px]"
                     optionData={assignedBys}
                     placeholder="Tutor"
                     type="text"
@@ -1604,7 +1596,7 @@ export default function AssignedTests() {
                   persona !== "student" &&
                   persona !== "tutor" && (
                     <button
-                      className="bg-[#FFA28D] text-[15px] justify-center flex py-[7px]  pl-1 items-center text-white font-bold rounded-[7.5px] text-base-15 w-[10.05vw] h-[50px]"
+                      className="bg-[#FFA28D] ms-[57px] justify-center flex py-[7px]  pl-1 items-center text-white font-bold rounded-[7.5px] text-[15px] w-[193px] h-[50px]"
                       onClick={() => setAssignTestModalActive(true)}
                     >
                       New Assignment
@@ -1620,32 +1612,22 @@ export default function AssignedTests() {
                   onRemoveFilter={onRemoveFilter}
                 />
               </div>
-
-              <div className="flex items-center  justify-between gap-[20px] mt-[10px]">
-                <div className="flex text-[#26435F] items-center text-[17.5px] text-base-17-5">
-                  <div className="ml-6 flex gap-3 items-center">
+            
+              {/* filter options */}
+              <div className="flex items-center  justify-between gap-[20px] mt-[10px] ">
+                <div className="flex text-[#26435F] items-center text-[17.5px]">
+                  <div className="ml-6 flex items-center">
                     <SCheckbox
                       stopM={true}
                       checked={isChecked}
                       onChange={handleCheckboxChange}
                     />
-                    <span className="inline-block text-[17.5px] mt-[-1px] text-base-17-5"
+                    <span className="inline-block text-[17.5px] ml-[23.75px]"
                      style={{opacity: "0.8"}}
                     >
                       {selectedId?.length} Selected
                     </span>
-                    {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
-              <input
-                type="checkbox"
-                checked={isChecked}
-                onChange={handleCheckboxChange}
-              />
-              <span
-                className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
-                  }`}
-              ></span>
-             
-            </label> */}
+                   
                   </div>
                   {(persona === "admin" ||
                     (persona === "tutor" &&
@@ -1653,12 +1635,9 @@ export default function AssignedTests() {
                       organization?.settings?.permissions[0]
                         ?.choosedValue)) && (
                     <div
-                      // onClick={() =>
-                      //   false && selectedId?.length > 0 && setDeleteBulkModalActive(true)
-                      // }
-                      className="opacity-70 !cursor-not-allowed pointer-events-none gap-x-[5px] px-1 w-[5.9375vw] py-[9px] bg-[#FFF] rounded-5 ml-6 flex items-center justify-center text-base-17-5"
+                      className="opacity-70 !cursor-not-allowed pointer-events-none w-[114px] h-[44px] bg-[#FFF] rounded-5 ml-[50px] flex items-center justify-center text-[17.5px]"
                     >
-                      <p>Delete</p>
+                      <p className="mr-[5px]">Delete</p>
                       <p>
                         <img className="w-5 h-5" src={DeleteIcon} alt="" />
                       </p>
@@ -1668,21 +1647,21 @@ export default function AssignedTests() {
                     onClick={() =>
                       selectedId?.length > 0 && setResendBulkModalActive(true)
                     }
-                    className="cursor-pointer gap-x-[5px] px-1 py-[11px] bg-[#FFF] rounded-5 ml-6 flex w-[5.9375vw] items-center justify-center text-base-17-5"
+                    className="cursor-pointer bg-[#FFF] rounded-5 ml-[25px] flex w-[114px] h-[44px] items-center justify-center text-[17.5px]"
                   >
-                    <p>Resend</p>
+                    <p className="mr-[5px]">Resend</p>
                     <img src={ResendIcon} alt="" />
                   </div>
                   <div
                     onClick={() =>
                       selectedId?.length > 0 && setMarkBulkModalActive(true)
                     }
-                    className="px-1 py-[11px] cursor-pointer bg-[#FFF] rounded-5 ml-6 w-[8.9583vw] text-center"
+                    className="px-1 py-[11px] cursor-pointer bg-[#FFF] rounded-5 ml-[25px] w-[172px] h-[44px] text-center"
                   >
                     <p>Mark Completed</p>
                   </div>
                 </div>
-                <div className="flex items-center justify-between gap-x-[20px] text-base-17-5">
+                <div className="flex items-center justify-between gap-x-[20px] text-[17.5px]">
                   {status.map(({ text, color }, idx) => (
                     <AssignedTestIndicator
                       key={idx}
@@ -1694,7 +1673,7 @@ export default function AssignedTests() {
               </div>
             </>
           )}
-          <div className="mt-3">
+          <div className="mt-[21.25px]">
             <Table
               selectedId2={selectedId}
               setSelectedId2={setSelectedId}
@@ -1737,9 +1716,9 @@ export default function AssignedTests() {
                     label="Student Name"
                     labelClassname="text-base-20 text-[#26435F] mb-1"
                     placeholder="Search Student"
-                    placeholderClass="text-base-17-5"
-                    parentClassName=" text-base-17-5 py-0 w-full"
-                    inputContainerClassName=" text-base-17-5 bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
+                    placeholderClass="text-[17.5px]"
+                    parentClassName=" text-[17.5px] py-0 w-full"
+                    inputContainerClassName=" text-[17.5px] bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
                     inputClassName="bg-[#F3F5F7]"
                     type="text"
                     value={modalData.name}
@@ -1755,8 +1734,8 @@ export default function AssignedTests() {
                       })
                     }
                     onOptionClose={handleOptionCLose}
-                    optionListClassName="text-base-17-5"
-                    optionClassName="text-base-17-5"
+                    optionListClassName="text-[17.5px]"
+                    optionClassName="text-[17.5px]"
                     optionData={students}
                     // right={<img className="" src={down} />}
                     onOptionClick={(item) => {
@@ -1776,7 +1755,7 @@ export default function AssignedTests() {
                         name: val.target.value,
                       })
                     }
-                    placeholderClass="text-base-17-5"
+                    placeholderClass="text-[17.5px]"
                     optionData={students}
                     onOptionClick={(item) => {
                       setModalData({
@@ -1789,8 +1768,8 @@ export default function AssignedTests() {
                     parentClassName="w-full mr-4"
                     labelClassname=" !font-medium text-[#26435F] ml-2 mb-0.5 !font-semibold text-[#26435F]"
 
-                    inputContainerClassName="px-5 py-3.5 text-base-17-5 bg-primary-50 border-0"
-                    inputClassName="text-base-17-5 bg-transparent "
+                    inputContainerClassName="px-5 py-3.5 text-[17.5px] bg-primary-50 border-0"
+                    inputClassName="text-[17.5px] bg-transparent "
                     placeholder="Student Name"
                     type="select"
                   /> */}
@@ -1803,7 +1782,7 @@ export default function AssignedTests() {
                 </div>
                 <div>
                   <InputSearch
-                    placeholderClass="text-base-17-5"
+                    placeholderClass="text-[17.5px]"
                     optionData={testsData}
                     value={modalData.test}
                     onChange={(e) =>
@@ -1823,8 +1802,8 @@ export default function AssignedTests() {
                     placeholder="Select Assignment Name"
                     parentClassName="w-full mr-4"
                     labelClassname=" !font-medium text-[#26435F] text-base-20 ml-2 mb-0.5 !font-semibold text-[#26435F]"
-                    inputContainerClassName="px-5 py-3.5 text-base-17-5 bg-primary-50 border-0"
-                    inputClassName="text-base-17-5 bg-transparent"
+                    inputContainerClassName="px-5 py-3.5 text-[17.5px] bg-primary-50 border-0"
+                    inputClassName="text-[17.5px] bg-transparent"
                     type="select"
                   />
                 </div>
@@ -1835,12 +1814,12 @@ export default function AssignedTests() {
                     onChange={(val) =>
                       setModalData({ ...modalData, limit: val })
                     }
-                    placeholderClass="text-base-17-5"
+                    placeholderClass="text-[17.5px]"
                     optionData={timeLimits}
                     parentClassName="w-full mr-4 "
                     labelClassname=" !font-medium text-[#26435F] text-base-20 ml-2 mb-1 !font-semibold text-[#26435F]"
-                    inputContainerClassName="px-5 text-base-17-5 py-3.5 bg-primary-50 border-0"
-                    inputClassName="text-base-17-5 bg-transparent"
+                    inputContainerClassName="px-5 text-[17.5px] py-3.5 bg-primary-50 border-0"
+                    inputClassName="text-[17.5px] bg-transparent"
                     placeholder="Select Duration"
                     type="select"
                   />
@@ -1860,8 +1839,8 @@ export default function AssignedTests() {
                     }
                     parentClassName="w-full mr-4"
                     inputContainerClassName="px-5 py-3.5 bg-primary-50 border-0"
-                    inputClassName="text-base-17-5 bg-transparent text-base-17-5"
-                    placeholderClass="text-base-17-5"
+                    inputClassName="text-[17.5px] bg-transparent text-[17.5px]"
+                    placeholderClass="text-[17.5px]"
                     optionData={optionData}
                     placeholder="Date"
                     type="date"
@@ -1902,8 +1881,8 @@ export default function AssignedTests() {
                 labelClassname=" !font-medium text-[#26435F] ml-2 mb-0.5"
                 
                 inputContainerClassName="px-5 py-3.5 bg-primary-50 border-0 mb-5"
-                inputClassName="text-base-17-5 bg-transparent text-base-17-5"
-                placeholderClass="text-base-17-5"
+                inputClassName="text-[17.5px] bg-transparent text-[17.5px]"
+                placeholderClass="text-[17.5px]"
                 optionData={optionData}
                 placeholder="Instruction"
               /> */}
@@ -1994,7 +1973,7 @@ export default function AssignedTests() {
           }}
           body={
             <>
-              <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-6">
+              <p className="text-[17.5px] mt-[-5px] text-[#667085] mb-6">
                 <span className="font-semibold mr-1">
                   <div className="!scale-[0.8] mr-[-4px] mt-[-4px] inline-block">
                     ⚠️
@@ -2036,7 +2015,7 @@ export default function AssignedTests() {
           }}
           body={
             <>
-              <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-6">
+              <p className="text-[17.5px] mt-[-5px] text-[#667085] mb-6">
                 <span className="font-semibold mr-1">⚠️ Note:</span>
                 This will NOT create another assignment for the students.
                 Instead, it will resend the email with the PDF file (containing
@@ -2053,6 +2032,7 @@ export default function AssignedTests() {
           classname={"max-w-[630px]  mx-auto"}
         />
       )}
+      </div>
     </>
   );
 }

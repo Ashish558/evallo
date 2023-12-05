@@ -46,7 +46,7 @@ export default function InputSearch({
 
   return (
     <div className={`${parentClassName && parentClassName}`}>
-      <label className={`inline-block font-semibold ${labelClassname} w-2/3`}>
+      <label className={`inline-block font-semibold bg-pink-400 ${labelClassname} w-2/3`}>
         {label}
         {required && (
           <span className="text-primaryRed inline-block pl-1">*</span>

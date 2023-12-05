@@ -608,19 +608,19 @@ export default function AllTests({
               onChange={(e) => setTestName(e.target.value)}
               optionData={optionData}
               placeholder="Search"
-              parentClassName="w-[375px]"
+              parentClassName="w-[375px] h-[50px]"
               inputClassName="placeholder:text-[#667085] pl-2 text-[17.5px]"
               inputContainerClassName="bg-white border pt-3.5 pb-3.5 !rounded-lg"
               type="select"
             />
             <button
-              className="bg-[#FFA28D] py-[10px] px-6 flex items-center text-white  rounded-lg  text-[15px] text-base-15"
+              className="bg-[#FFA28D] w-[200px] h-[50px] flex justify-center items-center text-white  rounded-lg text-[15px]"
               onClick={() => setModalActive(true)}
             >
-              <span className="pt-0 text-[20px]"> Add New Material</span>
+              <span className="text-[15px]"> Add New Material</span>
               <img
                 src={AddIcon}
-                className="ml-1 h-[25px] w-[25px]"
+                className="ml-[5px] h-[25px] w-[25px]"
                 alt="add-icon"
               />
             </button>

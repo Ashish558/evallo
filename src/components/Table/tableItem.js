@@ -632,13 +632,13 @@ export default function TableItem({
               {item.studentName}
             </span>
           </td>
-          <td className="font-medium px-1  min-w-14 py-3">{item.testName}</td>
-          <td className=" text-[17.5px] px-1  min-w-14 py-3  text-center">
+          <td className={`font-medium px-1 py-3 text-left ${persona === "admin" ? "pl-[28px]" : ""}`}>{item.testName}</td>
+          <td className={`text-[17.5px] px-1  min-w-14 py-3  ${persona === "admin" ? "pl-[28px] text-left" : "text-center"}`}>
             <span onClick={() => onClick.redirect(item)} className="">
               {getFormattedDate(item.assignedOn, dateFormat).replace(/-/g, "/")}
             </span>
           </td>
-          <td className=" text-[17.5px] px-1  min-w-14 py-3  text-center">
+          <td className={`text-[17.5px] px-1 min-w-14 py-3 text-center ${persona === "admin" ? "text-left" : "text-center"} `}>
             <span
               onClick={() => onClick.redirect(item)}
               className={`${
@@ -649,16 +649,16 @@ export default function TableItem({
             </span>
           </td>
 
-          <td className="font-medium px-1  min-w-14 py-3">{item.assignedBy}</td>
-          <td className="font-medium px-1  min-w-14 py-3">
+          <td className={`font-medium px-1  min-w-14 py-3 ${persona === "admin" ? "text-left pl-[28px]" : "text-center"}`}>{item.assignedBy}</td>
+          <td className="font-medium px-1 min-w-14 py-3">
             <div className={`flex items-center no-wrap justify-center`}>
               {returnStatus(item.status)}
             </div>
           </td>
-          <td className="font-medium px-1  min-w-14 py-3">
+          <td className={`font-medium px-1  min-w-14 py-3 ${persona === "admin" ? "text-left pl-[28px]" : "text-center"} `}>
             {item.duration === "-" ? "Unlimited" : item.duration}
           </td>
-          <td className="font-medium px-1  min-w-14 py-3">
+          <td className="font-medium px-1 min-w-14 py-3">
             <div className="text-center">
               {item.status === "completed" ? (
                 <>
@@ -746,7 +746,7 @@ export default function TableItem({
       )}
       {dataFor === "studentTestsReport" && (
         <tr
-          className={`text-[17.5px]   leading-7 ${
+          className={`text-[17.5px] bg-red-900 leading-7 ${
             !item.isCorrect ? "!bg-[#FF79791A]/[0.05]" : "odd:bg-white  "
           } `}
         >
@@ -1060,7 +1060,7 @@ export default function TableItem({
             {checkTest(persona, item) && (
               <div className="  flex justify-center items-center">
                 <button
-                  className="flex leading-none bg-[#26435f4d] text-white py-1.5 px-6  w-[100px] !text-center cursor-pointer rounded !text-base-15 !text-center justify-center"
+                  className="flex leading-none bg-[#26435f4d] text-white py-1.5 px-6  w-[100px] !text-center cursor-pointer rounded !text-base-15 justify-center"
                   onClick={() => onClick.openRemoveTestModal(item)}
                 >
                   Remove
