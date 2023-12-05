@@ -234,7 +234,7 @@ function SuperadminDashboard() {
               </div>
             </div>
             <div className="mt-[40px] w-[585px]">
-              <p className="w-full font-semibold text-[#26435F] mb-[4px]">
+              <p className="w-full font-semibold text-[#26435F] mb-[4px] text-[21.33px]">
                 {" "}
                 User Stats{" "}
               </p>
@@ -349,7 +349,7 @@ function SuperadminDashboard() {
             </div>
           </section>
           <section className="  overflow-auto">
-            <p className="text-[#26435F] -mt-1 mb-[-7px] font-semibold text-md">
+            <p className="text-[#26435F] -mt-1 mb-[-7px] font-semibold text-[21.33px]">
               {" "}
               Latest Org Signup{" "}
             </p>
@@ -362,7 +362,7 @@ function SuperadminDashboard() {
             />
           </section>
         </div>
-        <p className="text-[#26435F] font-semibold mt-9 mb-[-1px]">
+        <p className="text-[#26435F] font-semibold mt-9 mb-[-1px] text-[21.33px]">
           Daily Active Users
         </p>
         <Chart
@@ -371,7 +371,7 @@ function SuperadminDashboard() {
         />
         <Index dateRange={dateRange} />
         <div className="flex items-center mt-[50px] ">
-          <p className="text-[#26435F] font-semibold ">
+          <p className="text-[#26435F] font-semibold text-[21.33px]">
             Financial Stats Chart{" "}
           </p>
           <p className="text-[#26435F] pl-[15px] pt-1">
@@ -383,7 +383,7 @@ function SuperadminDashboard() {
           </p>
         </div>
         <Chart2 />
-        <p className="text-[#26435F] font-semibold mt-[50px]">
+        <p className="text-[#26435F] font-semibold mt-[50px] text-[21.33px]">
           User demography
         </p>
         <Demography dateRange={dateRange}></Demography>

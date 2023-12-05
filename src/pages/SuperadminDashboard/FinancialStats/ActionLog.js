@@ -108,7 +108,7 @@ function ActionLog({ dateRange }) {
   }
   return (
     <div className="flex-1">
-      <h2 className="font-semibold mb-1 text-[#26435F]">Action Log</h2>
+      <h2 className="font-semibold mb-1 text-[#26435F] text-[21.33px]">Action Log</h2>
 
       <div
         
@@ -129,7 +129,7 @@ function ActionLog({ dateRange }) {
         >
           {sortedAction?.reverse().map((item, index) => (
             <div key={index} className="flex ml-2 h-[57px] pl-5 relative">
-              <p className="text-[#4A556C] pt-6 font-light text-xs mr-6 w-[80px]">
+              <p className="text-[#4A556C] pt-6 font-light text-base mr-6 w-[80px]">
                 {item?.message &&
                   new Date(item.createdAt)
                     .toLocaleTimeString()
@@ -149,7 +149,7 @@ function ActionLog({ dateRange }) {
                 <div className={styles.circle}>
                   <div className={styles.circle2}></div>
                 </div>
-                <p className="pl-4 text-sm font-light text-[#4A556C]">
+                <p className="pl-4 text-18.66 font-light text-[#4A556C]">
                   {item.message}
                 </p>
               </div>
