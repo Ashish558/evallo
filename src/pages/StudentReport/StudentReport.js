@@ -989,10 +989,12 @@ export default function StudentReport() {
       ? getFormattedDateTime(selectedSubject?.startSectionTime)?.split(" ")
       : "- - -";
   return (
-    <div className="px-[80px]  min-h-screen">
-      <div className="py-14 px-5">
+    <div className="w-[1920px] h-auto  flex justify-center items-center">
+       <div className="w-[1600px] mt-[50px] mb-[100px] h-auto">
         <div className="px-0">
-          <p className="text-[#24A3D9] my-3 text-base-20">
+         
+         {/*  pathName */}
+          <p className="text-[#24A3D9] text-[20px] mb-[31.25px]">
             <span onClick={() => navigate("/")} className="cursor-pointer">
               {organization?.company + "  >  " + firstName + "  " + lastName}
             </span>
@@ -1004,37 +1006,28 @@ export default function StudentReport() {
             </span>
             <span className="font-bold">Report</span>
           </p>
+      
 
-          <div className="flex justify-between relative">
-            <p className="mt-[31px] text-textPrimaryDark text-[25px] font-bold">
+          <div className="flex justify-between items-start relative ">
+            <div className="flex flex-col justify-center items-start">
+            
+            {/*  assigned-tests name */}
+            <p className=" text-textPrimaryDark text-[25px] font-bold mb-[25px]">
               {testDetails?.testName
                 ? testDetails.testName
                 : scaleData?.test?.testName}
             </p>
-            {
-              <button
-                className={`py-[11px] px-[16px] bg-[#FFA28D] text-white rounded-lg flex items-center shadow-sm h-[75px] absolute top-6 right-0 gap-2`}
-              >
-                <span className="inline-block font-semibold text-[25px]">
-                  {displayScore.cumulative}
-                </span>
-                <div className="mx-1 font-bold text-[25px] mt-[-3px]">|</div>
-                <span className="inline-block  text-[25px]">
-                  {displayScore.right}
-                </span>
-              </button>
-            }
-          </div>
-          {/* {console.log(testDetails)} */}
-          <div className="flex gap-x-20">
-            <div className="grid grid-cols-2 grid-rows-3  gap-y-[17px] gap-x-[50px] mt-6 text-[#517CA8] text-base-20">
+
+             {/*  details */}
+            <div className="flex gap-x-20">
+            <div className="grid grid-cols-2 grid-rows-3  gap-y-[17.5px] gap-x-[50px] text-[#517CA8] text-base-20">
               <div>
-                <p className="inline-block w-[160px]  font-bold text-[#26435F]">
+                <p className="inline-block w-[160px] font-bold text-[#26435F]">
                   {" "}
                   Student Name
                 </p>
                 <span className="inline-block mr-10">:</span>
-                <p className="inline-block text-[#26435F]">
+                <p className="inline-block font-normal text-[#26435F]" style={{opacity: 0.8}}>
                   {" "}
                   {testDetails.name}{" "}
                 </p>
@@ -1045,7 +1038,7 @@ export default function StudentReport() {
                   Due on{" "}
                 </p>
                 <span className="inline-block mr-10">:</span>
-                <p className="inline-block text-base-20 text-[#26435F]">
+                <p className="inline-block text-base-20 font-normal text-[#26435F]" style={{opacity: 0.8}}>
                   {" "}
                   {testDetails.startedOn.split(" ")[0]}{" "}
                 </p>
@@ -1057,10 +1050,10 @@ export default function StudentReport() {
                   Date Assigned{" "}
                 </p>
                 <span className="inline-block mr-10">:</span>
-                <p className="inline-block text-base-20 text-[#26435F]">
+                <p className="inline-block text-base-20 font-normal text-[#26435F]" style={{opacity: 0.8}}>
                   {" "}
                   {assignDate}{" "}
-                  <span className="text-[#24A3D9] font-light text-base-20">
+                  <span className="text-[#24A3D9] font-light opacity-100 text-base-20">
                     {assignTime} {assignFormat}{" "}
                     {organization?.settings?.timeZone}
                   </span>
@@ -1072,11 +1065,11 @@ export default function StudentReport() {
                   Completed on{" "}
                 </p>
                 <span className="inline-block mr-10">:</span>
-                <p className="inline-block text-base-20 text-[#26435F]">
+                <p className="inline-block text-base-20 font-normal text-[#26435F]" style={{opacity: 0.8}}>
                   {" "}
                   {completeDate ? completeDate : "-"}{" "}
                   {completeDate && (
-                    <span className="text-[#24A3D9] font-light text-base-20">
+                    <span className="text-[#24A3D9] font-light text-base-20 opacity-100">
                       {completeTime} {completeFormat}{" "}
                       {organization?.settings?.timeZone}
                     </span>
@@ -1089,7 +1082,7 @@ export default function StudentReport() {
                   Duration{" "}
                 </p>
                 <span className="inline-block mr-10">:</span>
-                <p className="inline-block text-base-20 text-[#26435F]">
+                <p className="inline-block text-base-20 font-normal text-[#26435F]" style={{opacity: 0.8}}>
                   {" "}
                   {testDetails.duration}{" "}
                 </p>
@@ -1100,7 +1093,7 @@ export default function StudentReport() {
                   Started on{" "}
                 </p>
                 <span className="inline-block mr-10">:</span>
-                <p className="inline-block text-base-20 text-[#26435F]">
+                <p className="inline-block text-base-20 font-normal text-[#26435F]" style={{opacity: 0.8}}>
                   {" "}
                   {startDate}{" "}
                   <span className="text-[#24A3D9] font-light text-base-20">
@@ -1119,7 +1112,25 @@ export default function StudentReport() {
                 <p className="  !font-light">{testDetails.instruction} </p>
               </div>
             )}
+            </div>
+
+            </div>
+            {
+              <button
+                className={`bg-[#FFA28D] text-white rounded-lg flex items-center justify-center shadow-sm h-[75px] w-[353px] gap-2`}
+              >
+                <span className="inline-block font-semibold text-[25px]">
+                  {displayScore.cumulative}
+                </span>
+                <div className="mx-1 font-bold text-[25px] mt-[-3px]">|</div>
+                <span className="inline-block  text-[25px]">
+                  {displayScore.right}
+                </span>
+              </button>
+            }
           </div>
+          {/* {console.log(testDetails)} */}
+         
           <div className="mt-[53px] flex justify-between items-end">
             <div>
               {subjects.map((item, idx) => {
@@ -1140,36 +1151,26 @@ export default function StudentReport() {
               })}
             </div>
           </div>
-          <hr className="border-t-[1.25px] border-[#D3D3D3] w-2/5" />
-          <div className="mt-7 flex">
-            {/* <p className='text-lg font-medium mb-2'>
-                     Score: {`${sectionScore.correct} / ${sectionScore.outOf}`}
-                  </p> */}
-            <div className="flex  py-4 px-4 rounded-10 bg-[#FFFFFF] w-[90%]">
-              <div className="flex  flex-col w-full">
+          <hr className="border-t-[1.25px] border-[#D3D3D3] w-[461px]" />
+          <div className="mt-[32.5px] flex ">
+
+            {/* concepts */}
+            <div className="flex py-[23px] px-[25px] rounded-10 bg-[#fff] w-[725px]">
+              <div className="w-[335px] flex flex-col mr-[50px] ">
                 <p
-                  className="font-semibold text-[#26435F] mb-2.2 text-base-20"
+                  className="font-semibold text-[#26435F] mb-[10px] text-base-20"
                   onClick={getSortedConcepts}
                 >
                   Concepts
                 </p>
                 {
-                  // selectedSubject.no_of_correct === 0 ?
-                  //    <>
-                  //       {getSubjectSections()}
-                  //    </> :
+                 
                   selectedSubject.concepts ? (
-                    // Object.keys(selectedSubject.concepts).map((key, idx) => {
-                    //    return idx < 5 ? <p key={idx} className='font-semibold mb-2'>
-                    //       {/* {selectedSubject.concepts[key]} */}
-                    //       {key}
-                    //    </p> : <></>
-                    // })
                     sortedConcepts.map((item, idx) => {
                       return (
                         <p
                           key={idx}
-                          className="text-base-17-5 text-[#517CA8] mb-2"
+                          className="text-base-17-5 text-[#517CA8] mb-[10px]"
                         >
                           {item.name}
                         </p>
@@ -1209,31 +1210,33 @@ export default function StudentReport() {
               </div>
             </div>
 
-            <div className="w-full">
-              <div className="flex bg-[#FFFFFF] p-4 rounded-10 ml-[50px]  h-[140px]">
-                <div className="flex   mr-[50px]">
+
+             {/* section score */}
+            <div className="">
+              <div className="flex bg-[#FFFFFF] px-[31px] py-[25px] rounded-10 w-[875px] ml-[50px] h-[140px]">
+                <div className="flex mr-[31px]">
                   <div className="mr-[50px]">
                     {" "}
-                    <p className="font-semibold text-[#26435F] mb-2.2 text-base-20">
+                    <p className="font-semibold text-[#26435F] mb-[8px] text-base-20">
                       {" "}
                       Section Started
                     </p>
-                    <p className=" mb-2 text-[#517CA8] text-base-17-5">
+                    <p className=" mb-[8px] text-[#517CA8] text-base-17-5">
                       {" "}
                       {startSectionDate}
                     </p>
-                    <p className=" mb-2 text-[#24A3D9] text-base-17-5 font-normal">
+                    <p className=" mb-[8px] text-[#24A3D9] text-base-17-5 font-normal">
                       {startSectionTime} {startSectionFormat}{" "}
                       {organization?.settings?.timeZone}
                     </p>
-                    {/* <p className='font-semibold mb-2 opacity-0'>04:25 PM EST</p> */}
+                   
                   </div>
                   <div>
-                    <p className="font-semibold text-[#26435F] mb-2.2 text-base-20">
+                    <p className="font-semibold text-[#26435F] mb-[8px] text-base-20">
                       {" "}
                       Section Accuracy
                     </p>
-                    <p className=" mb-2 text-[#517CA8] text-base-17-5">
+                    <p className=" mb-[8px] text-[#517CA8] text-base-17-5">
                       {Object.keys(responseData).length >= 1 &&
                         Object.keys(selectedSubject).length >= 1 && (
                           <>
@@ -1246,11 +1249,11 @@ export default function StudentReport() {
                 </div>
                 <div className="flex  ">
                   <div className="mr-[38px]">
-                    <p className="font-semibold text-[#26435F] mb-2.2 text-base-20">
+                    <p className="font-semibold text-[#26435F] mb-[8px] text-base-20">
                       {" "}
                       Section Duration
                     </p>
-                    <p className=" mb-2  text-[#517CA8] text-base-17-5">
+                    <p className=" mb-[8px]  text-[#517CA8] text-base-17-5">
                       {/* {selectedSubject.timeTaken/1000} */}
                       {selectedSubject.timeTaken ? (
                         // moment.duration(selectedSubject.timeTaken).format('HH:mm')
@@ -1266,11 +1269,11 @@ export default function StudentReport() {
                     </p>
                   </div>
                   <div>
-                    <p className="font-semibold text-[#26435F] mb-2.2 text-base-20">
+                    <p className="font-semibold text-[#26435F] mb-[8px] text-base-20">
                       {" "}
                       Time Taken{" "}
                     </p>
-                    <p className=" mb-2 text-[#517CA8] text-base-17-5">
+                    <p className=" mb-[8px] text-[#517CA8] text-base-17-5">
                       {/* {selectedSubject.timeTaken/1000} */}
                       {selectedSubject.timeTaken ? (
                         // moment.duration(selectedSubject.timeTaken).format('HH:mm')
@@ -1301,8 +1304,9 @@ export default function StudentReport() {
             </div>
           </div>
 
-          <div className="mt-12">
+          <div className="mt-[62px] w-[1600px] ">
             <Table
+              widthFullTable={true}
               noArrow={true}
               dataFor={
                 persona === "parent" || persona === "student"
@@ -1315,38 +1319,39 @@ export default function StudentReport() {
               maxPageSize={10}
             />
           </div>
-          <div className="mt-10">
-            {/* <Table dataFor='studentTestsAnswers'
-                     hidePagination={true}
-                     data={answersData}
-                     tableHeaders={adminTableHeaders}
-                     maxPageSize={10} /> */}
-          </div>
-          <p className="text-primary-dark font-bold text-base-20   mt-10">
+
+
+          {/* time taken charts */}
+          <p className="text-primary-dark font-bold text-[20px] mt-[83.75px]">
             Time Taken
           </p>
-          <div className="bg-white mt-1 rounded-5 py-5 px-10 relative">
+          <div className="bg-white mt-[7.25px] rounded-5 h-[589px]  relative flex justify-center items-center">
             {/* <p className='text-primary-dark font-bold text-3xl text-center mb-6 mt-2'>Time Taken</p> */}
             <BarGraph
               series={[timeSeries]}
               options={timeSeriesOptions}
-              height="600px"
+              height="450px"
+              width="1452px"
             />
-            <p className="text-[#24A3D9] text-xl font-medium absolute bottom-4 left-1/2 transform -translate-x-1/2">
+            <p className="text-[#24A3D9] text-xl font-medium absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-[44px]">
               Question Number
             </p>
-            <p className="text-[#24A3D9] text-xl font-medium absolute top-1/2  transform -translate-x-1/2 -translate-y-1/2 -rotate-90 left-9">
+            <p className="text-[#24A3D9] text-xl font-medium absolute top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2 -rotate-90 ml-[51.76px]">
               Time Taken (Seconds)
             </p>
           </div>
-          <p className="text-primary-dark font-bold text-base-20   mt-10">
+
+
+          {/* conceptual accuracy */}
+          <p className="text-primary-dark font-bold text-[20px] mt-[62.25px]">
             Conceptual Accuracy
           </p>
-          <div className="bg-white mt-1 rounded-5 py-5 px-5 ">
+          <div className="bg-white mt-[7.25px] rounded-5 h-[589px] py-[81.25px] ps-[28px]">
             <BarGraph
               series={[accuracySeries]}
               options={accuracyGraphOptions}
-              height="600px"
+              height="475px"
+              width={"1452px"}
             />
           </div>
         </div>

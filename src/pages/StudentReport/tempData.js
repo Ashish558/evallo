@@ -399,10 +399,9 @@ export const accuracyOptions = {
          text: 'Number Of Incorrect Attempts',
          style: {
             fontSize: '20px',
-            
             fontFamily: 'Lexend',
             fontWeight: 500,
-            color:"#26435F"
+            color:"#24A3D9"
          },
       },
    },
