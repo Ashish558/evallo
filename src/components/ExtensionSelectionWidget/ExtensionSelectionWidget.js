@@ -23,6 +23,7 @@ function ExtensionSelectionWidget({
     className,
     selected, 
     onChange,
+    onBodyClicked,
     planName,
     planDisplayName,
     chosenPackage,
@@ -56,6 +57,7 @@ function ExtensionSelectionWidget({
             className={`${className}`}
             onChange={onChange}
             selected={selected}
+            onBodyClicked={onBodyClicked}
         >
             <div className="w-[650px] h-[270px]" >
                 <div className="flex items-center mt-[20px]" style={{width: "91%"}} >

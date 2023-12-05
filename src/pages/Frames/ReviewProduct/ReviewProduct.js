@@ -56,10 +56,15 @@ function ReviewProduct({
     }, []);
 
     useState(() => {
-        SetTotalPrice(
-            chosenSubscriptionPlan.pricePerMonth + chosenExtensionPrice
-        )
-    }, [chosenSubscriptionPlan, chosenExtensionPrice]);
+        if(isCCRequired) {
+            console.log("chosenSubscriptionPlan.pricePerMonth");
+            console.log(chosenSubscriptionPlan.pricePerMonth);
+            SetTotalPrice(chosenSubscriptionPlan.pricePerMonth);
+            // only adding subscription price cause extensions have free trial
+            return;
+        }
+        SetTotalPrice(0);
+    }, [chosenSubscriptionPlan]);
 
     useEffect(() => {
         if(!(SetIsCCRequired.constructor && SetIsCCRequired.constructor.name === "Function")) return;
@@ -148,7 +153,7 @@ function ReviewProduct({
 
                         <div className="flex flex-col items-end text-[#24A3D9] text-[18.67px]" >
                             <div>{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + 
-                                  (chosenSubscriptionPlan.freeTrialDays === 0 ? chosenSubscriptionPlan.pricePerMonth : 0)
+                                  (chosenSubscriptionPlan.ccRequired ? chosenSubscriptionPlan.pricePerMonth : 0)
                             }</div>
                             <div>
                                 {
@@ -234,7 +239,7 @@ function ReviewProduct({
                                                     <div className="grow" ></div>
 
                                                     <div className="flex flex-col items-end text-[#24A3D9]" >
-                                                        <div>{CurrencyNameToSymbole(chosenPackage.currency) + chosenPackage.pricePerMonth}</div>
+                                                        <div>{CurrencyNameToSymbole(chosenPackage.currency) + 0}</div>
                                                         <div>1 Month</div>
                                                     </div>
                                                 </div>
@@ -270,21 +275,21 @@ function ReviewProduct({
                     <div className="flex" >
                         <div className="font-[500] text-[#26435F] text-[18px]" >Subscription</div>
                         <div className="border-dotted border-b-[1px] border-[#26435F] grow" ></div>
-                        <div className="font-[500] text-[#26435F] text-[15px]" >{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + chosenSubscriptionPlan.pricePerMonth}</div>
+                        <div className="font-[500] text-[#26435F] text-[15px]" >{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + (isCCRequired ? chosenSubscriptionPlan.pricePerMonth : 0)}</div>
                     </div>
                     <div className="text-[#7C98B6] text-[15px]" >{chosenSubscriptionPlan.planDisplayName} Plan</div>
 
                     <div className="flex mt-[10px]" >
                         <div className="font-[500] text-[#26435F] text-[18px]" >Extensions</div>
                         <div className="border-dotted border-b-[1px] border-[#26435F] grow" ></div>
-                        <div className="font-[500] text-[#26435F] text-[15px]" >{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + chosenExtensionPrice}</div>
+                        <div className="font-[500] text-[#26435F] text-[15px]" >{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + 0}</div>
                     </div>
                     <div className="text-[#7C98B6] text-[15px]" >Assignments</div>
 
                     <div className="flex mt-[10px]" >
                         <div className="font-[500] text-[#24A3D9] text-[20px]" >Total</div>
                         <div className="border-dotted border-b-[1px] border-[#24A3D9] grow" ></div>
-                        <div className="font-[500] text-[#24A3D9] text-[20px]" >{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + totalPrice}</div>
+                        <div className="font-[500] text-[#24A3D9] text-[20px]" >{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + (isCCRequired ? chosenSubscriptionPlan.pricePerMonth : 0)}</div>
                     </div>
                 </div>
 

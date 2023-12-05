@@ -30,6 +30,15 @@ import AddNewBankCardModal from "../../../../components/AddNewBankCardModal/AddN
 import visaIcon from "../../../../assets/BankCard/visa.svg";
 import { useCancelSubscriptionMutation } from "../../../../app/services/subscription";
 import DeletePaymentMethodModal from "../../../../components/DeletePaymentMethodModal/DeletePaymentMethodModal";
+import { CurrencyNameToSymbole } from "../../../../utils/utils";
+
+function getDateAsString(date) {
+    if(!(date && date.constructor && date.constructor.name === "Date")) return "05/12/23";
+    const d = date.getDate();
+    const m = date.getMonth() + 1;
+    const y = date.getFullYear() % 2000;
+    return "" + d + "/" + m + "/" + y;
+}
 
 function BankCardWidgetContainer({
     className,
@@ -104,9 +113,21 @@ function AccountOverviewWithSubscriptionInfo() {
     const [subscriptionsInfoFromAPI, SetSubscriptionsInfoFromAPI] = useState([]);
     const [activeSubscriptionName, SetActiveSubscriptionName] = useState("Professional");
     const [activeSubscriptionId, SetActiveSubscriptionId] = useState("");
-    const [activeExtensionName, SetActiveExtensionName] = useState("Assignment");
+    const [activeExtensionName, SetActiveExtensionName] = useState("");
     const [activeExtensionPrice, SetActiveExtensionPrice] = useState(100);
     const [activeExtensionProductQuantity, SetActiveExtensionProductQuantity] = useState(500);
+    const [activeExtensionInfo, SetActiveExtensionInfo] = useState({
+        planDisplayName: "",
+        activeTutorsAllowed: 0,
+        productQuantity: 0,
+        currency: "",
+        subscriptionPricePerMonth: 0,
+        freeTrialExpiryDate: null,
+        subscriptionStartDate: null,
+        monthlyCostAfterDiscount: 0,
+        autoRenewalDate: null,
+        startDate: null,
+    });
 
     const [activeSubscriptionInfo, SetActiveSubscriptionInfo] = useState({
         planDisplayName: "",
@@ -117,6 +138,7 @@ function AccountOverviewWithSubscriptionInfo() {
         subscriptionStartDate: null,
         monthlyCostAfterDiscount: 0,
         autoRenewalDate: null,
+        startDate: null,
     });
     const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(false);
     const [isResetPasswordModalActive, SetIsResetPasswordModalActive] = useState(false);
@@ -185,20 +207,35 @@ function AccountOverviewWithSubscriptionInfo() {
                             if(products[i].metadata.type === "extension") {
                                 SetActiveExtensionName("Assignement");
                                 SetActiveExtensionPrice(products[i].plan.amount / 100);
+                                let productQuantity = 0;
                                 if(activeSub.lookup_key === "p1") {
                                     SetActiveExtensionProductQuantity(100);
+                                    productQuantity = 100;
                                 }
                                 if(activeSub.lookup_key === "p2") {
-                                    SetActiveExtensionProductQuantity(500);
+                                    SetActiveExtensionProductQuantity(400);
+                                    productQuantity = 400;
                                 }
                                 if(activeSub.lookup_key === "p3") {
                                     SetActiveExtensionProductQuantity(1500);
+                                    productQuantity = 1500;
                                 }
                                 if(activeSub.lookup_key === "p4") {
                                     SetActiveExtensionProductQuantity(Infinity);
+                                    productQuantity = Infinity;
                                 }
 
-                                break;
+                                SetActiveExtensionInfo({
+                                    planDisplayName: "Assignement",
+                                    productQuantity: productQuantity,
+                                    currency: products[i].currency,
+                                    startDate: new Date(products[i].start_date * 1000),
+                                    autoRenewalDate: new Date(products[i].trial_end * 1000),
+                                    subscriptionPricePerMonth: products[i].plan.amount / 100,
+                                    monthlyCostAfterDiscount: products[i].plan.amount / 100,
+                                })
+
+                                continue;
                             }
                             /* let planId = products[i].plan.id;
                             activeSub = subscriptionsInfoFromAPI.find(item => item.id === planId); */
@@ -211,9 +248,11 @@ function AccountOverviewWithSubscriptionInfo() {
                                 currency: activeSub.currency,
                                 subscriptionPricePerMonth: activeSub.unit_amount / 100,
                                 monthlyCostAfterDiscount: activeSub.unit_amount / 100,
-                                subscriptionStartDate: new Date(),
+                                subscriptionStartDate: new Date(products[i].start_date * 1000),
+                                autoRenewalDate: new Date(products[i].trial_end * 1000),
                             });
                             SetActiveSubscriptionId(products[i].id);
+                            
                         }
                     }
                     // sessionStorage.setItem("orgDetails", JSON.stringify(data.data));
@@ -245,6 +284,7 @@ function AccountOverviewWithSubscriptionInfo() {
     }, [subscriptionsInfoFromAPI]);
 
     useEffect(() => {
+        return;
         if(!(subscriptionsInfoFromAPI && subscriptionsInfoFromAPI.length > 0)) return;
 
         for(let i = 0; i < subscriptionsInfoFromAPI.length; i++) {
@@ -258,7 +298,7 @@ function AccountOverviewWithSubscriptionInfo() {
                 currency: product.currency,
                 subscriptionPricePerMonth: product.unit_amount / 100,
                 monthlyCostAfterDiscount: product.unit_amount / 100,
-                subscriptionStartDate: new Date(),
+                // subscriptionStartDate: new Date(),
             });
 
             return;
@@ -736,22 +776,27 @@ function AccountOverviewWithSubscriptionInfo() {
                                         subscriptionPricePerMonth={activeSubscriptionInfo.subscriptionPricePerMonth}
                                         activeTutorsAllowed={activeSubscriptionInfo.activeTutorsAllowed}
                                         handleChangePlan={OnActiveSubscriptionChangePlanClicked}
+                                        freeTrialExpiryDate={activeSubscriptionInfo.autoRenewalDate}
                                     />
 
                                     <div className="flex flex-col items-end" >
                                         <div className="flex" >
                                             <span className="font-[100] text-[#517CA8] text-[12px]" >Subscription Start Date{" - "}</span>
-                                            <span className="font-[400] text-[#517CA8] text-[12px]" >{"{Date}"}</span>
+                                            <span className="font-[400] text-[#517CA8] text-[12px]" >{
+                                                getDateAsString(activeSubscriptionInfo.subscriptionStartDate)
+                                            }</span>
                                         </div>
 
                                         <div className="flex mt-[3px]" >
                                             <span className="font-[100] text-[#517CA8] text-[12px]" >Auto-Renewal Date{" - "}</span>
-                                            <span className="font-[400] text-[#517CA8] text-[12px]" >{"{Date}"}</span>
+                                            <span className="font-[400] text-[#517CA8] text-[12px]" >{
+                                                getDateAsString(activeSubscriptionInfo.autoRenewalDate)
+                                            }</span>
                                         </div>
 
                                         <div className="flex mt-[3px]" >
                                             <span className="font-[100] text-[#517CA8] text-[12px]" >Monthly Cost (after discount){" - "}</span>
-                                            <span className="font-[400] text-[#517CA8] text-[12px]" >{"{Cost}"}</span>
+                                            <span className="font-[400] text-[#517CA8] text-[12px]" >{CurrencyNameToSymbole(activeSubscriptionInfo.currency) + activeSubscriptionInfo.subscriptionPricePerMonth}</span>
                                         </div>
 
                                         <div className="grow" ></div>
@@ -770,77 +815,55 @@ function AccountOverviewWithSubscriptionInfo() {
                             ) : (<></>)
                         }
 
-                        {/* <div 
-                            className="flex justify-between ml-[30px] mt-[5px]" 
-                            style={{width: "92%"}}
-                        >
-                            <ActiveSubscriptionWidget
-                                style={{width: "65%"}}
-                                canChangePlan={true}
-                                planDisplayName={activeSubscriptionInfo.planDisplayName}
-                                subscriptionPricePerMonth={activeSubscriptionInfo.subscriptionPricePerMonth}
-                                activeTutorsAllowed={activeSubscriptionInfo.activeTutorsAllowed}
-                                handleChangePlan={OnActiveSubscriptionChangePlanClicked}
-                            />
+                        {
+                            !(activeExtensionName === "") ? (
+                                <>
+                                    <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Active Extensions</div>
 
-                            <div className="flex flex-col items-end" >
-                                <div className="flex" >
-                                    <span className="font-[100] text-[#517CA8] text-[12px]" >Subscription Start Date{" - "}</span>
-                                    <span className="font-[400] text-[#517CA8] text-[12px]" >{"{Date}"}</span>
-                                </div>
+                                    <div 
+                                        className="flex justify-between ml-[30px] mt-[5px]" 
+                                        style={{width: "92%"}}
+                                    >
+                                        <ActiveExtensionWidget
+                                            style={{width: "65%"}}
+                                            canChangePlan={true}
+                                            planDisplayName={activeExtensionName}
+                                            subscriptionPricePerMonth={activeExtensionPrice}
+                                            productQuantity={activeExtensionProductQuantity}
+                                            handleChangePlan={OnActiveExtensionChangePlanClicked}
+                                            freeTrialExpiryDate={activeExtensionInfo.autoRenewalDate}
+                                        />
 
-                                <div className="flex mt-[3px]" >
-                                    <span className="font-[100] text-[#517CA8] text-[12px]" >Auto-Renewal Date{" - "}</span>
-                                    <span className="font-[400] text-[#517CA8] text-[12px]" >{"{Date}"}</span>
-                                </div>
+                                        <div className="flex flex-col items-end" >
+                                            <div className="flex" >
+                                                <span className="font-[100] text-[#517CA8] text-[12px]" >Subscription Start Date{" - "}</span>
+                                                <span className="font-[400] text-[#517CA8] text-[12px]" >{
+                                                    getDateAsString(activeExtensionInfo.startDate)
+                                                }</span>
+                                            </div>
 
-                                <div className="flex mt-[3px]" >
-                                    <span className="font-[100] text-[#517CA8] text-[12px]" >Monthly Cost (after discount){" - "}</span>
-                                    <span className="font-[400] text-[#517CA8] text-[12px]" >{"{Cost}"}</span>
-                                </div>
+                                            <div className="flex mt-[3px]" >
+                                                <span className="font-[100] text-[#517CA8] text-[12px]" >Auto-Renewal Date{" - "}</span>
+                                                <span className="font-[400] text-[#517CA8] text-[12px]" >{
+                                                    getDateAsString(activeExtensionInfo.autoRenewalDate)
+                                                }</span>
+                                            </div>
 
-                                <div className="grow" ></div>
+                                            <div className="flex mt-[3px]" >
+                                                <span className="font-[100] text-[#517CA8] text-[12px]" >Monthly Cost (after discount){" - "}</span>
+                                                <span className="font-[400] text-[#517CA8] text-[12px]" >{
+                                                    CurrencyNameToSymbole(activeExtensionInfo.currency) + activeExtensionInfo.subscriptionPricePerMonth
+                                                }</span>
+                                            </div>
 
-                                <button className="font-[400] underline text-[#24A3D9] text-[12px]" onClick={OnCancelSubscriptionClicked} >Cancel Subscription</button>
-                            </div>
-                        </div> */}
+                                            <div className="grow" ></div>
 
-                        <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Active Extensions</div>
-
-                        <div 
-                            className="flex justify-between ml-[30px] mt-[5px]" 
-                            style={{width: "92%"}}
-                        >
-                            <ActiveExtensionWidget
-                                style={{width: "65%"}}
-                                canChangePlan={true}
-                                planDisplayName={activeExtensionName}
-                                subscriptionPricePerMonth={activeExtensionPrice}
-                                productQuantity={activeExtensionProductQuantity}
-                                handleChangePlan={OnActiveExtensionChangePlanClicked}
-                            />
-
-                            <div className="flex flex-col items-end" >
-                                <div className="flex" >
-                                    <span className="font-[100] text-[#517CA8] text-[12px]" >Subscription Start Date{" - "}</span>
-                                    <span className="font-[400] text-[#517CA8] text-[12px]" >{"{Date}"}</span>
-                                </div>
-
-                                <div className="flex mt-[3px]" >
-                                    <span className="font-[100] text-[#517CA8] text-[12px]" >Auto-Renewal Date{" - "}</span>
-                                    <span className="font-[400] text-[#517CA8] text-[12px]" >{"{Date}"}</span>
-                                </div>
-
-                                <div className="flex mt-[3px]" >
-                                    <span className="font-[100] text-[#517CA8] text-[12px]" >Monthly Cost (after discount){" - "}</span>
-                                    <span className="font-[400] text-[#517CA8] text-[12px]" >{"{Cost}"}</span>
-                                </div>
-
-                                <div className="grow" ></div>
-
-                                <button className="font-[400] underline text-[#24A3D9] text-[12px]" >Enable Auto-Renew</button>
-                            </div>
-                        </div>
+                                            <button className="font-[400] underline text-[#24A3D9] text-[12px]" >Enable Auto-Renew</button>
+                                        </div>
+                                    </div>
+                                </>
+                            ) : (<></>)
+                        }
                     </div>
 
                     <div
@@ -854,7 +877,7 @@ function AccountOverviewWithSubscriptionInfo() {
                             <div className="font-[600] text-[#26435F] text-[0.972vw]" >Manage Payments</div>
                             <button 
                                 className="font-[300] text-[#24A3D9] text-[12px] design:text-[15px] underline" 
-                                onClick={OnViewPastTransactionsClicked}
+                                // onClick={OnViewPastTransactionsClicked}
                             >View Past Transactions</button>
                         </div>
                         

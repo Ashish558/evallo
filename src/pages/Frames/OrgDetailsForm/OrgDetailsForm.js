@@ -2,6 +2,16 @@ import InputField from "../../../components/InputField/inputField";
 import InputSelectNew from "../../../components/InputSelectNew/InputSelectNew";
 import RadioUnselected from "../../../assets/icons/radioUnChecked2.svg";
 import RadioSelected from "../../../assets/icons/radioChecked2.svg";
+import { Country, State } from "country-state-city";
+
+const stateNames = State.getAllStates().map((state) => state.name);
+
+const countryData = Country.getAllCountries().map((city) => ({
+  value: city.name,
+  displayValue: city.name,
+}));
+
+const countryNames = countryData.map(item => item.displayValue);
 
 const companyType = [
     "Sole proprietorship",
@@ -216,14 +226,21 @@ function OrgDetailsForm({
                     parentClassName="w-[300px]"
                     optionContainerClassName="text-[13px] "
                     optionsEachClassName="py-[7px]"
-                    optionData={companyType}
+                    optionData={countryNames}
                     placeholder={"Select"}
                     label={`Country`}
                     labelClassname="text-[#26435F]  font-bold text-[18.67px] "
                     inputContainerClassName="text-sm h-[54px] w-[300px] mt-[8px] border  border-[#D0D5DD] rounded-[2px]"
                     inputClassName="ml-80"
                     // required={persona === "student" ? true : false}
-                    // onChange={(e) => handleCompanyTypeChange(e)}
+                    onChange={(e) => {
+                      SetCompanyInfo((prev) => {
+                        return {
+                          ...prev,
+                          country: e
+                        }
+                      })
+                    }}
                 />
 
                 <InputSelectNew
@@ -231,14 +248,21 @@ function OrgDetailsForm({
                     parentClassName="w-[250px]"
                     optionContainerClassName="text-[13px] w-1/4"
                     optionsEachClassName="py-[7px]"
-                    optionData={companyType}
+                    optionData={stateNames}
                     placeholder={"Select"}
                     label={`State`}
                     labelClassname="text-[#26435F] font-bold text-[18.67px] "
                     inputContainerClassName="text-sm h-[54px] w-[250px] mt-[8.33px] border  border-[#D0D5DD] rounded-[2px]"
                     inputClassName="ml-80"
                     // required={persona === "student" ? true : false}
-                    // onChange={(e) => handleCompanyTypeChange(e)}
+                    onChange={(e) => {
+                      SetCompanyInfo((prev) => {
+                        return {
+                          ...prev,
+                          state: e
+                        }
+                      })
+                    }}
                 />
 
                 <InputField
@@ -270,7 +294,7 @@ function OrgDetailsForm({
                     label="Zip Code"
                     labelClassname="text-[#26435F] text-[18.67px] font-semibold"
                     inputContainerClassName=" border border-[#D0D5DD] mt-[8px] rounded-md py-[9px] h-[54px] w-[150px] text-md"
-                
+                    type="number"
                     value={companyInfo.zipcode}
                     onChange={(e) =>
                         /* setValues({

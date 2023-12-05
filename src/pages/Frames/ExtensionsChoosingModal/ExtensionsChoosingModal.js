@@ -4,6 +4,7 @@ import React, {
 } from "react";
 import ExtensionSelectionWidget from "../../../components/ExtensionSelectionWidget/ExtensionSelectionWidget";
 import styles from "./style.module.css";
+import { extensionProductDescriptions } from "./DummyData/ExtensionsProductDescriptions";
 
 function ExtensionsChoosingModal({
     className,
@@ -14,6 +15,7 @@ function ExtensionsChoosingModal({
 
     const [productDescriptions, SetProductDescriptions] = useState([]);
     const [productDescriptionsTitle, SetProductDescriptionsTitle] = useState("");
+    const [extensionNameInFocus, SetExtensionNameInFocus] = useState("");
 
     useEffect(() => {
         console.log("extensions");
@@ -22,6 +24,17 @@ function ExtensionsChoosingModal({
         console.log("extensionPlansInfo");
         console.log(extensionPlansInfo);
     }, []);
+
+    useEffect(() => {
+        console.log("extensionNameInFocus - " + extensionNameInFocus);
+        const extInFocus = extensionProductDescriptions.find(item => item.planName === extensionNameInFocus);
+        if(extInFocus === undefined || extInFocus === null) return;
+
+        SetProductDescriptionsTitle(extInFocus.planDisplayName);
+        if(extInFocus.info) {
+            SetProductDescriptions(extInFocus.info);
+        }
+    }, [extensionNameInFocus]);
 
     useEffect(() => {
         SetProductDescriptionsTitle("Extensions");
@@ -93,6 +106,9 @@ function ExtensionsChoosingModal({
                                         planDisplayName={extension.planDisplayName}
                                         descriptionInDisabledState={extension.description}
                                         isDisabled={true}
+                                        onBodyClicked={() => {
+                                            SetExtensionNameInFocus(extension.planName);
+                                        }}
                                     />
                                 )
                             }
@@ -108,7 +124,13 @@ function ExtensionsChoosingModal({
                                     selected={item.checked}
                                     chosenPackage={item.packageName}
                                     extensionPriceOption={extension.extensionPriceOption}
-                                    onChange={() => {handleCheckboxChange(item.text, extensions, setExtensions)}}
+                                    onChange={() => {
+                                        handleCheckboxChange(item.text, extensions, setExtensions);
+                                        SetExtensionNameInFocus(extension.planName);
+                                    }}
+                                    onBodyClicked={() => {
+                                        SetExtensionNameInFocus(extension.planName);
+                                    }}
                                 />
                             )
                         })
@@ -129,7 +151,7 @@ function ExtensionsChoosingModal({
                                     <div className="flex mb-[5px]" key={index}>
                                         <div className="bg-[#B3BDC7] mt-[7px] rounded-full h-[3px] w-[3px]" ></div>
                                         <div className="leading-[0.8rem] ml-[10px] w-11/12" >
-                                            <span className="text-[#7C98B6] text-[10px] " >{item.title}</span><span className="font-thin text-[#B3BDC7] text-[10px]" >{" - " + item.description}</span>
+                                            <span className="text-[#7C98B6] text-[10px] " >{item.title}</span><span className="font-thin text-[#B3BDC7] text-[10px]" >{item.description}</span>
                                         </div>
                                     </div>
                                 )
