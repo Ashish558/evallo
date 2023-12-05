@@ -62,7 +62,7 @@
 
 .orgCard div:first-child {
    border-left: 3px solid #26435F;
-   padding: 23px 22px;
+   padding: 17.33px 22px;
    height: 106px;
  
 }
@@ -70,7 +70,7 @@
 .orgCard div:nth-child(2),
 .orgCard div:nth-child(3),
 .orgCard div:nth-child(4) {
-   padding: 23px 23px 23px 20px;
+   padding: 17.33px 23px 23px 20px;
    height: 106px;
 }
 
