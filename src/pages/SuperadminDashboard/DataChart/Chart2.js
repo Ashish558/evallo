@@ -4,6 +4,9 @@ import { bubbleChartData } from "./ChartData";
 import arrow from '../../../assets/icons/arrow-chart.svg'
 import arrow1 from '../../../assets/icons/arrow-up-chart.svg'
 
+import {Chart, LinearScale, PointElement, Tooltip, Legend, TimeScale, CategoryScale} from "chart.js"; 
+
+Chart.register(LinearScale, PointElement, Tooltip, Legend, TimeScale, CategoryScale); 
 const BubbleChart2 = () => {
   const customLegendStyle = {
     position: 'absolute',
