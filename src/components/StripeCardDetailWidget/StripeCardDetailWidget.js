@@ -78,7 +78,7 @@ function Payment({
         clientSecret,
         redirect: 'if_required',
         confirmParams: {
-            return_url: 'https://stackblitz-starters-vzyaus.stackblitz.io/payment',
+            return_url: 'http://localhost:3000',
         },
         });
 

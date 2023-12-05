@@ -26,14 +26,14 @@ function SubscriptionChoosingModal({
             className={`flex h-full w-full ${className}`}
         >
             <div
-                className="h-full w-1/2"
+                className="h-full w-[550px]"
             >
-                <div className="ml-[30px] mt-[30px]" >
+                <div className="ml-[50px] mt-[68px] mb-[30px]" >
                     <div
-                        className={`block text-base font-[500] text-[#26435F] ml-0 text-[14px]`}
+                        className={`block text-base font-[500] text-[#26435F] ml-0 text-[18.67px]`}
                     >Choose Your Subscription Plan</div>
                     <div
-                        className={`text-[12px] text-[#26435F] font-[100]`}
+                        className={`text-[15px] text-[#26435F] font-[100]`}
                     >For detailed breakdown of features, please visit our <a href="#" className="text-[#24A3D9]">pricing page</a>.
                     </div>
                 </div>
@@ -75,7 +75,7 @@ function SubscriptionChoosingModal({
 
                         return (
                             <SubscriptionSelectionWidget
-                                className="mb-[15px] ml-[30px] mt-[15px] w-9/12"
+                                className="mb-[15px] ml-[50px] mt-[20px] h-[107px] w-[400px]"
                                 key={plan.id}
                                 planName={plan.planName}
                                 planDisplayName={plan.planDisplayName}
@@ -111,7 +111,7 @@ function SubscriptionChoosingModal({
             </div>
             
             <div
-                className="border-l-[1px] border-[#E3E3E3] flex flex-col h-full w-1/2"
+                className="border-l-[1px] border-[#E3E3E3] flex flex-col h-full w-[549px]"
             >
                 <div className="font-[200] ml-[30px] mt-[30px] text-[#FFA28D] text-[12px]" >What’s Included?</div>
                 <div className="ml-[35px] overflow-y-scroll w-11/12" >

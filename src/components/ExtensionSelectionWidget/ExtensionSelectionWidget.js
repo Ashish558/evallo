@@ -46,16 +46,21 @@ function ExtensionSelectionWidget({
         setValue(temp);
     };
 
+    useEffect(() => {
+        console.log("ExtensionSelectionWidget - planDisplayName")
+        console.log(planDisplayName);
+    }, [])
+
     return (
         <CheckBoxOptionContainer
             className={`${className}`}
             onChange={onChange}
             selected={selected}
         >
-            <div className="w-full" >
+            <div className="w-[650px] h-[270px]" >
                 <div className="flex items-center mt-[20px]" style={{width: "91%"}} >
                     <div 
-                        className={`font-[600] text-[#26435F] text-[14px] 
+                        className={`font-[600] text-[#26435F] text-[18.67px] 
                                     ${styles.planDisplayName}
                                     ${isDisabled ? styles.isDisabled : ""}
                                     `} 
@@ -65,7 +70,7 @@ function ExtensionSelectionWidget({
                         isDisabled ? (
                             <></>
                         ) : (
-                            <div className="font-[100] text-[#38C980] text-[12px]" >1 Month Free Trial</div>
+                            <div className="font-[100] text-[#38C980] text-[18px]" >1 Month Free Trial</div>
                         )
                     }
                     
@@ -73,28 +78,28 @@ function ExtensionSelectionWidget({
 
                 {
                     isDisabled ? (
-                        <div className="font-[600] mb-[20px] text-[#E0E0E0] text-[12px]" >
+                        <div className="font-[600] mb-[20px] text-[#E0E0E0] text-[15px]" >
                             {descriptionInDisabledState}
                         </div>
                     ) : (
-                        <div className="flex items-center mt-[20px] pb-[30px] w-11/12" >
+                        <div className="flex items-center mt-[34px] pb-[30px] w-11/12" >
                             {
                                 !(extensionPriceOption === undefined || extensionPriceOption === null || extensionPriceOption.length === 0) ? (
                                     <>
-                                        <div className="font-[300] text-[#26435F] text-[14px]" >Select plan:</div>
+                                        <div className="font-[300] text-[#26435F] text-[15px]" >Select plan:</div>
 
                                         <div className="flex flex-col items-center ml-[10px] w-9/12" >
-                                            <div className="font-[300] text-[#24A3D9] text-[14px]" >{productGraphStatement}</div>
+                                            <div className="font-[300] text-[#24A3D9] text-[15px]" >{productGraphStatement}</div>
 
                                             <div className="flex flex-col justify-center mt-[10px] relative w-full" >
-                                                <div className={`absolute border-[#B3BDC7] border-[1px] left-[23px] w-10/12 z-[1]`} ></div>
+                                                <div className={`absolute border-[#B3BDC7] border-[1px] left-[23px] w-[350px] z-[1]`} ></div>
 
-                                                <div className="flex items-center justify-between w-full z-[2]" >
+                                                <div className="flex items-center justify-between w-[409px] z-[2]" >
 
                                                 {
                                                     extensionPriceOption.map((item, index) => {
                                                         const isSelected = item.planName === chosenPackage;
-                                                        const numberOfAssignments = index === 0 ? 100 : index === 1 ? 500 : index === 2 ? "1,500" :  "Unlimited" 
+                                                        const numberOfAssignments = index === 0 ? 100 : index === 1 ? 400 : index === 2 ? "1,500" :  "Unlimited" 
                                                         return (
                                                             <button 
                                                                 key={index}
@@ -122,7 +127,7 @@ function ExtensionSelectionWidget({
                                                 </div>   
                                             </div>
 
-                                            <div className="mt-[10px] text-[#FFA28D]" ><span className="text-[14px]" >Cost per month</span> <span className="text-[12px]" >(after free trial has ended)</span></div>
+                                            <div className="mt-[10px] text-[#FFA28D]" ><span className="text-[15px]" >Cost per month</span> <span className="text-[12px]" >(after free trial has ended)</span></div>
                                         </div>
                                     </>
                                 ) : (<></>)

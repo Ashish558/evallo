@@ -66,18 +66,18 @@ function ExtensionsChoosingModal({
         <div
             className={`flex h-full w-full ${className}`}
         >
-            <div className="h-full w-8/12" >
-                <div className="ml-[30px] mt-[30px]" >
+            <div className="h-full w-[750]" >
+                <div className="ml-[30px] mt-[55px]" >
                     <div
-                        className={`block text-base font-[500] text-[#26435F] ml-0 text-[14px]`}
+                        className={`block text-base font-[500] text-[#26435F] ml-0 text-[18.67px]`}
                     >Select Extensions / Add-Ons</div>
                     <div
-                        className={`text-[12px] text-[#26435F] font-[100]`}
+                        className={`text-[15px] text-[#26435F] font-[100]`}
                     >For detailed breakdown of features, please visit our <a href="#" className="text-[#24A3D9]">pricing page</a>.
                     </div>
                 </div>
 
-                <div className={`ml-[30px] mt-[20px] px-[4px] py-[7px] ${styles.extensionsListContainer}`} style={{width: "91%", height: "80%"}} >
+                <div className={`ml-[30px] mt-[35px] px-[4px] py-[7px] ${styles.extensionsListContainer}`} style={{width: "91%", height: "80%"}} >
 
                     {
                         extensions?.map((item,index) => {
@@ -89,7 +89,7 @@ function ExtensionsChoosingModal({
                                 return (
                                     <ExtensionSelectionWidget
                                         key={index}
-                                        className="mb-[20px] w-full"
+                                        className="mb-[20px] w-[650px] h-[86px]"
                                         planDisplayName={extension.planDisplayName}
                                         descriptionInDisabledState={extension.description}
                                         isDisabled={true}

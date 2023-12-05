@@ -85,20 +85,20 @@ function ReviewProduct({
         <div
             className={`flex h-full w-full ${className}`}
         >
-            <div className="h-full w-8/12" >
-                <div className="ml-[30px] mt-[30px]" >
+            <div className="h-full w-[700px] pl-[20px]" >
+                <div className="ml-[30px] mt-[55px]" >
                     <div
-                        className={`block text-base font-[500] text-[#26435F] ml-0 text-[14px]`}
+                        className={`block text-base font-[500] text-[#26435F] ml-0 text-[18.67px]`}
                     >Review Your Selections</div>
                     <div
-                        className={`text-[12px] text-[#26435F] font-[100]`}
+                        className={`text-[15px] text-[#26435F] font-[100]`}
                     >For detailed breakdown of features, please visit our <a href="#" className="text-[#24A3D9]">pricing page</a>.
                     </div>
                 </div>
 
-                <div className="font-[500] ml-[30px] mt-[25px] text-[#FFA28D] text-[14px]" >Subscription</div>
+                <div className="font-[500] ml-[30px] mt-[30px] text-[#FFA28D] text-[17.5px]" >Subscription</div>
 
-                <div className="ml-[30px]" style={{width: "85%"}} >
+                <div className="ml-[30px] mt-[5px]" style={{width: "85%"}} >
 
                     <ReviewSubscriptionWidget
                         className="w-full"
@@ -111,13 +111,15 @@ function ReviewProduct({
                         freeTrialDays={chosenSubscriptionPlan ? chosenSubscriptionPlan.freeTrialDays : null}
                     />
 
-                    <div className="flex items-center mt-[7px] w-full" >
+                    <div className="flex items-center mt-[10px] w-full" >
                         <InputField
                             placeholder="Add Promo Code"
+                            plac
                             parentClassName="text-xs"
                             label=""
                             labelClassname="text-[#26435F] font-semibold"
-                            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[40px] text-md"
+                            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[40px] w-[300px] text-md"
+                            inputClassName="text-[15px]"
                             
                             value={couponForSubscription}
                             onChange={(e) => {
@@ -128,8 +130,8 @@ function ReviewProduct({
                         />
 
                         <PrimaryButton
-                            children={"Apply"}
-                            className={"h-[30px] ml-[10px] px-[10px]"}
+                            children={<span className="text-[#fff] text-[15px]" >Apply</span>}
+                            className={"h-[30px] w-[60px] ml-[10px] px-[10px]"}
                             style={{
                                 // height: "10%",
                             }}
@@ -144,7 +146,7 @@ function ReviewProduct({
 
                         <div className="grow" ></div>
 
-                        <div className="flex flex-col items-end text-[#24A3D9]" >
+                        <div className="flex flex-col items-end text-[#24A3D9] text-[18.67px]" >
                             <div>{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + 
                                   (chosenSubscriptionPlan.freeTrialDays === 0 ? chosenSubscriptionPlan.pricePerMonth : 0)
                             }</div>
@@ -156,7 +158,7 @@ function ReviewProduct({
                                                            freeTrialDays >= 30 ?  `${freeTrialDays / 30} Months` :
                                                            `${freeTrialDays} Days`;
                                         return (
-                                            <div>
+                                            <div className="text-[15px]" >
                                                 {freeTrialStatement}
                                             </div>
                                         )
@@ -167,11 +169,13 @@ function ReviewProduct({
                     </div>
                 </div>
 
+                <div className="mt-[54px]" ></div>
+
                 {
                     (chosenExtensionPlans === undefined || chosenExtensionPlans === null || chosenExtensionPlans.length === 0) ? (<></>) :
                     (
                         <>
-                            <div className="font-[500] ml-[30px] mt-[25px] text-[#FFA28D] text-[14px]" >Extensions</div>
+                            <div className="font-[500] ml-[30px] text-[#FFA28D] text-[17.5px]" >Extensions</div>
 
                             <div className="ml-[30px] " style={{width: "85%"}} >
                                 <>
@@ -184,11 +188,12 @@ function ReviewProduct({
 
                                         // const extDiscount = extensionDiscounts.find(i => i.planName === item.planName);
                                         // const numberOfAssignments = chosenPackage.numberOfAssignments === Infinity ? "Unlimited" : chosenPackage.numberOfAssignments;
-                                        const numberOfAssignments = chosenPackageName === "p1" ? 100 : chosenPackageName === "p2" ? 500 : chosenPackageName === "p3" ? "1,500" :  "Unli";
+                                        const numberOfAssignments = chosenPackageName === "p1" ? 100 : chosenPackageName === "p2" ? 400 : chosenPackageName === "p3" ? "1,500" :  "Unli";
                                         
                                         return (
                                             <React.Fragment key={index} >
                                                 <ReviewExtensionWidget
+                                                    className="mt-[5px]"
                                                     canChangePlan={true}
                                                     setFrames={setFrames}
                                                     planName={item.planName}
@@ -198,13 +203,14 @@ function ReviewProduct({
                                                     productInfoStatement={`Maximum Number of Assignments per month - ${numberOfAssignments}`}
                                                 />
 
-                                                <div className="flex items-center mt-[7px] w-full" >
+                                                <div className="flex items-center mt-[10px] w-full" >
                                                     <InputField
                                                         placeholder="Add Promo Code"
                                                         parentClassName="text-xs"
                                                         label=""
                                                         labelClassname="text-[#26435F] font-semibold"
-                                                        inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[40px] text-md"
+                                                        inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[40px] w-[300px] text-md"
+                                                        inputClassName="text-[15px]"
                                                         
                                                         // value={couponForSubscription}
                                                         /* onChange={(e) => {
@@ -219,8 +225,8 @@ function ReviewProduct({
                                                     />
 
                                                     <PrimaryButton
-                                                        children={"Apply"}
-                                                        className={"h-[30px] ml-[10px] px-[10px]"}
+                                                        children={<span className="text-[#fff] text-[15px]" >Apply</span>}
+                                                        className={"h-[30px] w-[60px] ml-[10px] px-[10px]"}
                                                         // onClick={OnPressApplyCoupon}
                                                         // loading={isCouponApplyProcessOnGoing}
                                                     />
@@ -259,26 +265,26 @@ function ReviewProduct({
 
             </div>
 
-            <div className="border-l-[1px] border-[#E3E3E3] h-full w-4/12" >
+            <div className="border-l-[1px] border-[#E3E3E3] h-full w-[399px]" >
                 <div className="ml-[30px] mt-[30px] w-9/12" >
                     <div className="flex" >
-                        <div className="font-[500] text-[#26435F] text-[14px]" >Subscription</div>
+                        <div className="font-[500] text-[#26435F] text-[18px]" >Subscription</div>
                         <div className="border-dotted border-b-[1px] border-[#26435F] grow" ></div>
-                        <div className="font-[500] text-[#26435F] text-[14px]" >{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + chosenSubscriptionPlan.pricePerMonth}</div>
+                        <div className="font-[500] text-[#26435F] text-[15px]" >{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + chosenSubscriptionPlan.pricePerMonth}</div>
                     </div>
-                    <div className="text-[#7C98B6] text-[12px]" >{chosenSubscriptionPlan.planDisplayName} Plan</div>
+                    <div className="text-[#7C98B6] text-[15px]" >{chosenSubscriptionPlan.planDisplayName} Plan</div>
 
                     <div className="flex mt-[10px]" >
-                        <div className="font-[500] text-[#26435F] text-[14px]" >Extensions</div>
+                        <div className="font-[500] text-[#26435F] text-[18px]" >Extensions</div>
                         <div className="border-dotted border-b-[1px] border-[#26435F] grow" ></div>
-                        <div className="font-[500] text-[#26435F] text-[14px]" >{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + chosenExtensionPrice}</div>
+                        <div className="font-[500] text-[#26435F] text-[15px]" >{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + chosenExtensionPrice}</div>
                     </div>
-                    <div className="text-[#7C98B6] text-[12px]" >Assignments</div>
+                    <div className="text-[#7C98B6] text-[15px]" >Assignments</div>
 
                     <div className="flex mt-[10px]" >
-                        <div className="font-[500] text-[#24A3D9] text-[16px]" >Total</div>
+                        <div className="font-[500] text-[#24A3D9] text-[20px]" >Total</div>
                         <div className="border-dotted border-b-[1px] border-[#24A3D9] grow" ></div>
-                        <div className="font-[500] text-[#24A3D9] text-[16px]" >{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + totalPrice}</div>
+                        <div className="font-[500] text-[#24A3D9] text-[20px]" >{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + totalPrice}</div>
                     </div>
                 </div>
 

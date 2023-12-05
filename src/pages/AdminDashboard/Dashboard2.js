@@ -530,7 +530,7 @@ const Dashboard = () => {
         isSubscriptionAndExtensionModalActive ? (
           <div className="fixed bg-[#00000080] top-[-50px] left-0 right-0 bottom-[-50px] h-[130vh] z-[1000000]" style={{position: "fixed"}} >
             <SubscriptionAndExtensionModal
-              className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-4/6 w-9/12"
+              className="relative top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-[90px] h-[900px] w-[1400px]"
               OnCheckoutClicked={() => {
                 SetIsSubscriptionAndExtensionModalActive(false);
               }}
