@@ -131,14 +131,14 @@ function SubscriptionAndExtensionModal({
         OnExtensionsChanged();
     }, [extensions]);
 
-    useEffect(() => {
+    /* useEffect(() => {
         for(let i = 0; i < extensions.length; i++) {
             if(extensions[i].checked) {
                 SetIsCCRequired(true);
                 break;
             }
         }
-    }, [extensions]);
+    }, [extensions]); */
 
     useEffect(() => {
         let orgDetails = sessionStorage.getItem("orgDetails");
@@ -251,29 +251,30 @@ function SubscriptionAndExtensionModal({
             SetExtensionPlansData(extList => {
               let newExtList = [...extList];
               let productInfo = newExtList.find(item => item.planName === product.product.name);
-              const extInfoFromDummyData = extensionPlansInfo.find(item => item.planName === product.product.name);
-              console.log("extInfoFromDummyData");
-              console.log(extInfoFromDummyData);
-              if(extInfoFromDummyData === null || extInfoFromDummyData === undefined) return extList;
+            //   const extInfoFromDummyData = extensionPlansInfo.find(item => item.planName === product.product.name);
+            //   console.log("extInfoFromDummyData");
+            //   console.log(extInfoFromDummyData);
+            //   if(extInfoFromDummyData === null || extInfoFromDummyData === undefined) return extList;
     
               if(productInfo === undefined || productInfo === null) {
                 let productInfo = {};
                 productInfo.id = product.product.id;
                 productInfo.planName = product.product.name;
                 productInfo.planDisplayName = product.product.name;
-                productInfo.description = [...extInfoFromDummyData.description]
+                productInfo.description = "";//[...extInfoFromDummyData.description]
                 productInfo.extensionPriceOptionHeadingLabel = ""
                 productInfo.extensionPriceOptionHeadingStatement = ""
                 
     
-                const packInfoFromDummyData = extInfoFromDummyData.extensionPriceOption.find(item => item.planName === product.lookup_key);
+                //const packInfoFromDummyData = extInfoFromDummyData.extensionPriceOption.find(item => item.planName === product.lookup_key);
                 let packInfo = {}
                 packInfo.id = product.id;
                 packInfo.planName = product.lookup_key;
                 packInfo.planDisplayName = product.nickname;
-                packInfo.description = [...packInfoFromDummyData.description];
+                packInfo.description = "";//[...packInfoFromDummyData.description];
                 packInfo.pricePerMonth = product.unit_amount / 100;
                 packInfo.currency = product.currency;
+                packInfo.apiObject = product;
                 if(product.lookup_key === "p1") {
                     packInfo.numberOfAssignments = 100
                 }
@@ -292,7 +293,7 @@ function SubscriptionAndExtensionModal({
                 return newExtList;
               }
     
-              const packInfoFromDummyData = extInfoFromDummyData.extensionPriceOption.find(item => item.planName === product.lookup_key);
+              //const packInfoFromDummyData = extInfoFromDummyData.extensionPriceOption.find(item => item.planName === product.lookup_key);
               let packInfo = {}
               packInfo.planName = product.lookup_key;
               
@@ -302,9 +303,10 @@ function SubscriptionAndExtensionModal({
     
               packInfo.id = product.id;
               packInfo.planDisplayName = product.nickname;
-              packInfo.description = [...packInfoFromDummyData.description];
+              packInfo.description = ""; //[...packInfoFromDummyData.description];
               packInfo.pricePerMonth = product.unit_amount / 100;
               packInfo.currency = product.currency;
+              packInfo.apiObject = product;
     
               const newPacksList = [];
     
@@ -550,7 +552,7 @@ function SubscriptionAndExtensionModal({
         <div className={`aspect-[1400/900] bg-[#FFFFFF] flex rounded-[15px]  ${className} overflow-auto`} >
             <div className="h-[500px] w-1/12" >
                 <VerticalNumericSteppers
-                    className="ml-[40px] mt-[50px] h-full"
+                    className="ml-[34px] mt-[135px] h-[630px]"
                     labels={["Account", "Subscription", "Extensions", "Review"]}
                     currentIndex={currentModalIndex}
                     restrictedIndices={restrictedIndices}
@@ -558,12 +560,12 @@ function SubscriptionAndExtensionModal({
             </div>
 
             <div className={`ml-[90px] w-9/12`} >
-                <div className="flex mt-[20px] w-full" >
+                <div className="flex mt-[30px] w-full" >
                     {
                         frames.orgDetails || openedFromAccountOverview && frames.subscription ? (
                             <></>
                         ) : (
-                            <button className="text-[#B3BDC7]" onClick={onBackToPreviousStepClicked} >
+                            <button className="text-[#B3BDC7] text-[18.67px]" onClick={onBackToPreviousStepClicked} >
                                 <span className="font-[500]" >{"< back to "}</span>
                                 <span className="font-[700]" >
                                     {
@@ -585,7 +587,7 @@ function SubscriptionAndExtensionModal({
                         frames.review ? (
                             <></>
                         ) : (
-                            <button className="text-[#B3BDC7]" onClick={onSkipStepClicked} >
+                            <button className="text-[#B3BDC7] text-[18.67px]" onClick={onSkipStepClicked} >
                                 <span className="font-[700]" >Skip</span>
                                 <span className="font-[500]" >{" this step >"}</span>
                             </button>
@@ -593,7 +595,7 @@ function SubscriptionAndExtensionModal({
                     }
                 </div>
 
-                <div className="mt-[20px] shadow-[0px_0px_30px_rgba(0,0,0,0.05)] rounded-[30px] h-3/4 w-full" >
+                <div className="mt-[43px] shadow-[0px_0px_30px_rgba(0,0,0,0.05)] rounded-[30px] h-[700px] w-[1100px]" >
                     {
                         frames.orgDetails ? (
                             <OrgDetailsForm
@@ -657,7 +659,7 @@ function SubscriptionAndExtensionModal({
                             backgroundColor: "#FFA28D"
                         }
                       )}
-                      className={`w-full flex justify-center disabled:opacity-60 max-w-[150px]  rounded text-white text-sm font-medium relative py-[9px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)]   
+                      className={`w-[150px] h-[50px] flex justify-center disabled:opacity-60   rounded text-white text-sm font-medium relative py-[11.5px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)]   
                       `}
                       /* loading={emailExistLoad}
                       disabled={
@@ -672,7 +674,13 @@ function SubscriptionAndExtensionModal({
                             }
                         }
                       }
-                      children={(frames.review ? isCCRequired ? "Checkout" : "Let’s Go!" : "Save & Next")}
+                    //   children={(frames.review ? isCCRequired ? "Checkout" : "Let’s Go!" : "Save & Next")}
+                      children={(
+                      <span 
+                        className="text-[16.67px] text-[#fff] font-[100]"
+                      >
+                        {(frames.review ? isCCRequired ? "Checkout" : "Let’s Go!" : "Save & Next")}
+                      </span>)}
                     />
                 </div>
 

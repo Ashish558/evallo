@@ -29,30 +29,30 @@ export default function SubscriptionSelectionWidget({
             className={className}
             selected={selected}
             onChange={onChange}
-            radioButtonClassName="aspect-square ml-[15px] mt-[12px] h-[12px] w-[12px]"
+            radioButtonClassName="aspect-square ml-[20px] mt-[23px] h-[15px] w-[15px]"
         >
-            <div className={`flex h-full items-center justify-between mb-[12px] ml-[10px] mt-[12px] pr-[30px] w-full ${styles.container}`}>
+            <div className={`flex h-full items-center justify-between mb-[12px] ml-[10px] mt-[10px] pr-[30px] w-full ${styles.container}`}>
                 <div
                     className="h-5/6 text-[#26435F] w-11/12"
                 >
                     <div 
-                        className={`text-[12px]
+                        className={`text-[18.67px]
                             // ${selected ? tailwindStyles.selectedPlanName : tailwindStyles.unSelectedPlanName}
                         `}
                     >
                         <span className="text-[#26435F]" >{planDisplayName + " - "}</span>
                         <span className="text-[#24A3D9]" >{currencySymbol}{pricePerMonth}/month</span>
                     </div>
-                    <div className="font-[100] text-[12px]">
+                    <div className="font-[100] text-[15px]">
                     Active Tutors Allowed - {activeTutorsAllowed === Infinity ? "unlimited" : activeTutorsAllowed}
                     </div>
                     {
                         freeTrialDays === 0 ? (
-                            <div className="font-[100] text-[#26435F] text-[10px]" >
+                            <div className="font-[100] text-[#26435F] text-[15px]" >
                                 {freeTrialStatement}
                             </div>
                         ) : (
-                            <div className="font-[300] text-[#38C980] text-[10px]" >
+                            <div className="font-[300] text-[#38C980] text-[15px]" >
                                 {freeTrialStatement}
                             </div>
                         )

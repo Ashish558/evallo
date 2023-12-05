@@ -61,7 +61,7 @@ const Dashboard = () => {
     useGetFilteredActionLogMutation();
   const [filteredActionLog, setFilteredActionLog] = useState([]);
   const [userData, setUserData] = useState([]);
-  const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(true);
+  const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(false);
   const [latestSignUp_flag,setlatestsignup_flag]=useState([1,1,1,1,1,1,1,1,1])
   const [popular_Service_flag,setpopular_Service_flag] = useState([1,1,1,1,1,1])
   const [star_client_flag,setstar_client_flag] = useState([1,1,1])

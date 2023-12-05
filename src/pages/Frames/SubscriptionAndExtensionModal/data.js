@@ -1,6 +1,6 @@
 export const extensionsData = [
     {
-      text: "Assignments / Content",
+      text: "Assignments",
       checked: false,
       packageName: "p1"
     },
