@@ -45,8 +45,8 @@
   }
   
   .container .checkmark:after {
-    left: 8px;
-    top: 2.5px;
+    left: 5px;
+    top: 0px;
     width: 7px;
     height: 14px;
     border: solid white;

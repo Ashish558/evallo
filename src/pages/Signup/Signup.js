@@ -626,12 +626,12 @@ export default function Signup() {
   };
   let namesValidChars = "1234567890abcdefghijklmnopqrstuvwxyz ";
   return (
-    <div className=" bg-primary relative" id={styles.signUp}>
+    <div className="relative" id={styles.signUp}>
       <div className="flex justify-center flex-col items-center md:grid-cols-2">
         <img src={cuate} alt="rocket" className="h-[121.27px] w-[193.336px] mt-3 mb-4" />
         <>
           {!frames.signupSuccessful ? (
-            <div className="lg:hidden bg-primary text-white pt-[79px] px-[49px]">
+            <div className="hidden bg-primary text-white pt-[79px] px-[49px]">
               <h1 className="text-[28px] mb-[13px]">
                 {frames.signupActive
                   ? "Sign Up"
