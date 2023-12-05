@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import ReactApexChart from 'react-apexcharts'
 
-export default function BarGraph({ series, options, height }) {
+export default function BarGraph({ series, options, height, width }) {
 
    
 console.log("value", series)
@@ -12,7 +12,7 @@ console.log("value", series)
             height={height ? height : '700px'}
             series={series}
             type='bar'
-            width='100%'
+            width={width ? width :'100%'}
            />
       </div>
    )
