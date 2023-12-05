@@ -16,6 +16,14 @@ function ExtensionsChoosingModal({
     const [productDescriptionsTitle, SetProductDescriptionsTitle] = useState("");
 
     useEffect(() => {
+        console.log("extensions");
+        console.log(extensions);
+
+        console.log("extensionPlansInfo");
+        console.log(extensionPlansInfo);
+    }, []);
+
+    useEffect(() => {
         SetProductDescriptionsTitle("Extensions");
         SetProductDescriptions([
             {
@@ -80,6 +88,7 @@ function ExtensionsChoosingModal({
                             if(extension.isComingSoon) {
                                 return (
                                     <ExtensionSelectionWidget
+                                        key={index}
                                         className="mb-[20px] w-full"
                                         planDisplayName={extension.planDisplayName}
                                         descriptionInDisabledState={extension.description}
@@ -89,6 +98,7 @@ function ExtensionsChoosingModal({
                             }
                             return (
                                 <ExtensionSelectionWidget
+                                    key={index}
                                     className="mb-[20px] w-full"
                                     extensions={extensions}
                                     setExtensions={setExtensions}
@@ -114,9 +124,9 @@ function ExtensionsChoosingModal({
                     {
                         !(productDescriptions === undefined || productDescriptions === null || productDescriptions.length === 0) ?
                         (
-                            productDescriptions.map(item => {
+                            productDescriptions.map((item, index) => {
                                 return (
-                                    <div className="flex mb-[5px]" >
+                                    <div className="flex mb-[5px]" key={index}>
                                         <div className="bg-[#B3BDC7] mt-[7px] rounded-full h-[3px] w-[3px]" ></div>
                                         <div className="leading-[0.8rem] ml-[10px] w-11/12" >
                                             <span className="text-[#7C98B6] text-[10px] " >{item.title}</span><span className="font-thin text-[#B3BDC7] text-[10px]" >{" - " + item.description}</span>

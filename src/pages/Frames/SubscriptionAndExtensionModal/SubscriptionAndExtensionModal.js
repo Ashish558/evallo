@@ -251,27 +251,27 @@ function SubscriptionAndExtensionModal({
             SetExtensionPlansData(extList => {
               let newExtList = [...extList];
               let productInfo = newExtList.find(item => item.planName === product.product.name);
-              const extInfoFromDummyData = extensionPlansInfo.find(item => item.planName === product.product.name);
-              console.log("extInfoFromDummyData");
-              console.log(extInfoFromDummyData);
-              if(extInfoFromDummyData === null || extInfoFromDummyData === undefined) return extList;
+            //   const extInfoFromDummyData = extensionPlansInfo.find(item => item.planName === product.product.name);
+            //   console.log("extInfoFromDummyData");
+            //   console.log(extInfoFromDummyData);
+            //   if(extInfoFromDummyData === null || extInfoFromDummyData === undefined) return extList;
     
               if(productInfo === undefined || productInfo === null) {
                 let productInfo = {};
                 productInfo.id = product.product.id;
                 productInfo.planName = product.product.name;
                 productInfo.planDisplayName = product.product.name;
-                productInfo.description = [...extInfoFromDummyData.description]
+                productInfo.description = "";//[...extInfoFromDummyData.description]
                 productInfo.extensionPriceOptionHeadingLabel = ""
                 productInfo.extensionPriceOptionHeadingStatement = ""
                 
     
-                const packInfoFromDummyData = extInfoFromDummyData.extensionPriceOption.find(item => item.planName === product.lookup_key);
+                //const packInfoFromDummyData = extInfoFromDummyData.extensionPriceOption.find(item => item.planName === product.lookup_key);
                 let packInfo = {}
                 packInfo.id = product.id;
                 packInfo.planName = product.lookup_key;
                 packInfo.planDisplayName = product.nickname;
-                packInfo.description = [...packInfoFromDummyData.description];
+                packInfo.description = "";//[...packInfoFromDummyData.description];
                 packInfo.pricePerMonth = product.unit_amount / 100;
                 packInfo.currency = product.currency;
                 if(product.lookup_key === "p1") {
@@ -292,7 +292,7 @@ function SubscriptionAndExtensionModal({
                 return newExtList;
               }
     
-              const packInfoFromDummyData = extInfoFromDummyData.extensionPriceOption.find(item => item.planName === product.lookup_key);
+              //const packInfoFromDummyData = extInfoFromDummyData.extensionPriceOption.find(item => item.planName === product.lookup_key);
               let packInfo = {}
               packInfo.planName = product.lookup_key;
               
@@ -302,7 +302,7 @@ function SubscriptionAndExtensionModal({
     
               packInfo.id = product.id;
               packInfo.planDisplayName = product.nickname;
-              packInfo.description = [...packInfoFromDummyData.description];
+              packInfo.description = ""; //[...packInfoFromDummyData.description];
               packInfo.pricePerMonth = product.unit_amount / 100;
               packInfo.currency = product.currency;
     
