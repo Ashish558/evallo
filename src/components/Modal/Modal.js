@@ -47,7 +47,6 @@ export default function Modal({
     };
   }, []);
 
-  console.log(cancelIconState , underline);
 
   return (
     <>

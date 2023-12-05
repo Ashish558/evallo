@@ -89,15 +89,6 @@ export default function ActionLog({ actionLog, className,width }) {
      }
 else [ year, month, day] = value.split("-");
     const monthName = getMonthName(month-1);
-    console.log(
-     { 
-       value : value,
-       day : day,
-       month : month,
-       year : year,
-       monthName :monthName
-      }
-   );
     
     let formattedDate = `${monthName}` + " " + `${year}` + `,` + `${day}`;
    
