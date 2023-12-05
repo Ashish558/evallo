@@ -180,7 +180,7 @@ export default function OrgAdminSignup() {
   const fetchSettings = () => {
     getSettings().then((res) => {
       // console.log(res);
-      setSettings(res.data.data.setting);
+      setSettings(res?.data?.data?.setting);
     });
   };
 

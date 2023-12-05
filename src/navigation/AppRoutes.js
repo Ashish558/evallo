@@ -57,7 +57,7 @@ const AppRoutes = () => {
       {/* <Navbar /> */}
       <Layout2>
       <Routes>
-        <Route path="/" element={isLoggedIn ? <Home /> : <Login />} />
+        <Route path="/" element={<Suspense fallback={<div>Loading...</div>}>{isLoggedIn ? <Home /> : <Login />}</Suspense>}/>
 
 {/*  layout routes */}
         <Route
