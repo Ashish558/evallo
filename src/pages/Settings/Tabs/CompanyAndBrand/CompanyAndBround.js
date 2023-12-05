@@ -168,7 +168,7 @@ const CompanyAndBround = () => {
     setError({});
     console.log("save called");
     if (!checkEmpty()) return;
-    if(orgBussinessLogo){
+    if (orgBussinessLogo) {
       updateBusinessLogo()
     }
     if (organization?.company !== values?.company) {
@@ -266,12 +266,12 @@ const CompanyAndBround = () => {
 
   return (
     <div className="flex justify-between">
-      <div className="flex flex-col gap-10  w-[68.9vw] design:w-[68vw]">
-        <div className="flex justify-between gap-5 flex-1 w-full items-center">
+      <div className="flex flex-col gap-10 ">
+        <div className="flex justify-between gap-x-[37.5px] flex-1 w-full items-center">
           <InputField
             placeholder="Company/Individual"
             IconLeft={lock}
-            parentClassName=" w-[16.25vw] text-[#26435F]"
+            parentClassName="flex-1 text-[#26435F]"
             inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
             inputClassName="text-base-17-5 bg-transparent placeholder:text-[#B3BDC7]"
             labelClassname=" text-base-17-5 !font-medium "
@@ -283,7 +283,7 @@ const CompanyAndBround = () => {
           />
           <InputField
             placeholder="Your business identity"
-            parentClassName=" w-[14.27vw] text-[#26435F] "
+            parentClassName="flex-1  text-[#26435F] "
             inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white  h-[50px]"
             inputClassName="text-base-17-5 bg-transparent placeholder:text-[#B3BDC7]"
             labelClassname="mb-[2.5px] text-base-17-5 !font-medium"
@@ -300,7 +300,7 @@ const CompanyAndBround = () => {
           />
           <InputField
             placeholder="Support email for your clients"
-            parentClassName=" w-[14.27vw] text-[#26435F]"
+            parentClassName="flex-1 text-[#26435F]"
             inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white  h-[50px]"
             inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7]"
             labelClassname="mb-[2.5px] text-base-17-5 !font-medium flex justify-between"
@@ -317,7 +317,7 @@ const CompanyAndBround = () => {
           />
           <InputField
             placeholder="What is your title at work?"
-            parentClassName=" w-[14.27vw] text-[#26435F]"
+            parentClassName="flex-1  text-[#26435F]"
             inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
             inputClassName="bg-transparent placeholder:text-[#B3BDC7] text-base-17-5 capitalize"
             labelClassname={" text-base-17-5 !font-medium capitalize"}
@@ -404,10 +404,10 @@ const CompanyAndBround = () => {
             </div>
           </div>
           <div className="flex flex-col  gap-4 flex-1 py-auto">
-            <div className="flex  items-center justify-between ">
+            <div className="flex gap-x-[37.5px] items-center justify-between ">
               <InputField
                 placeholder="https://yourwebsite.com"
-                parentClassName=" text-[#26435F] w-[30.57vw] "
+                parentClassName=" text-[#26435F] flex-1"
                 inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white  rounded-[5px] h-[50px]"
                 inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7]"
                 labelClassname="text-base-17-5 !font-medium "
@@ -423,7 +423,7 @@ const CompanyAndBround = () => {
               />
               <InputSelect
                 placeholder="Select"
-                parentClassName="text-[#26435F] w-[14.27vw]"
+                parentClassName="text-[#26435F] w-[275px]"
                 inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
                 labelClassname="text-base-17-5 !font-medium "
                 inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7] "
@@ -444,10 +444,10 @@ const CompanyAndBround = () => {
                 error={error.companyType}
               />
             </div>
-            <div className="flex items-center justify-between mt-6">
+            <div className="flex items-center  gap-x-[37.5px] justify-between mt-6">
               <InputField
                 placeholder="Enter your street address"
-                parentClassName=" text-[#26435F] w-[30.57vw] "
+                parentClassName=" text-[#26435F] flex-1"
                 inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white  rounded-[5px] h-[50px]"
                 inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7]"
                 labelClassname="text-base-17-5 !font-medium "
@@ -464,7 +464,7 @@ const CompanyAndBround = () => {
 
               <InputSelect
                 placeholder="Select"
-                parentClassName="text-[#26435F] w-[14.27vw]"
+                parentClassName="text-[#26435F] w-[275px]"
                 inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
                 labelClassname="text-base-17-5 !font-medium "
                 inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7] "
@@ -480,78 +480,77 @@ const CompanyAndBround = () => {
                 error={error.country}
               />
             </div>
-            <div className="flex justify-between mt-6 items-center">
-              <div className="flex gap-7 items-center">
-                <InputSelect
-                  placeholder="Select"
-                  parentClassName="text-[#26435F] w-[14.27vw]"
-                  inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
-                  labelClassname="text-base-17-5 !font-medium "
-                  inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7] "
-                  placeholderClass="!mr-0 !whitespace-normal "
-                  label="State / Region "
-                  value={
-                    values?.state?.length < 20
-                      ? values.state
-                      : values.state?.slice(0, 20) + "..."
-                  }
-                  optionData={states}
-                  optionType={"object"}
-                  totalErrors={error}
-                  onChange={(e) =>
+            <div className="flex justify-between mt-6 gap-x-5 items-center">
+              <InputSelect
+                placeholder="Select"
+                parentClassName="text-[#26435F] flex-1"
+                inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
+                labelClassname="text-base-17-5 !font-medium "
+                inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7] "
+                placeholderClass="!mr-0 !whitespace-normal "
+                label="State / Region "
+                value={
+                  values?.state?.length < 20
+                    ? values.state
+                    : values.state?.slice(0, 20) + "..."
+                }
+                optionData={states}
+                optionType={"object"}
+                totalErrors={error}
+                onChange={(e) =>
+                  setValues({
+                    ...values,
+                    state: e.name,
+                  })
+                }
+                error={error.state}
+              />
+              <InputField
+                placeholder="Text"
+                parentClassName="text-[#26435F] flex-1"
+                inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
+                labelClassname="text-base-17-5 !font-medium "
+                inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7] "
+                label="City"
+                totalErrors={error}
+                value={values.city}
+                onChange={(e) =>
+                  setValues({
+                    ...values,
+                    city: e.target.value,
+                  })
+                }
+                error={error.city}
+              />
+
+
+              <InputField
+                placeholder="Numeric"
+                parentClassName="text-[#26435F] flex-1"
+                inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
+                inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7] "
+                labelClassname="text-base-17-5 !font-medium "
+                label="Zip Code"
+                value={values.zip}
+                totalErrors={error}
+                onChange={(e) => {
+                  const regex = /^[0-9 ]*$/;
+                  const isValid = regex.test(e.target.value);
+                  if (isValid && e.target.value?.length < 11)
                     setValues({
                       ...values,
-                      state: e.name,
-                    })
-                  }
-                  error={error.state}
-                />
-                <InputField
-                  placeholder="Text"
-                  parentClassName="text-[#26435F] w-[14.27vw]"
-                  inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
-                  labelClassname="text-base-17-5 !font-medium "
-                  inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7] "
-                  label="City"
-                  totalErrors={error}
-                  value={values.city}
-                  onChange={(e) =>
-                    setValues({
-                      ...values,
-                      city: e.target.value,
-                    })
-                  }
-                  error={error.city}
-                />
-              </div>
-              <div className="col-span-3">
-                <InputField
-                  placeholder="Numeric"
-                  parentClassName="text-[#26435F] w-[14.27vw]"
-                  inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
-                  inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7] "
-                  labelClassname="text-base-17-5 !font-medium "
-                  label="Zip Code"
-                  value={values.zip}
-                  totalErrors={error}
-                  onChange={(e) => {
-                    const regex = /^[0-9 ]*$/;
-                    const isValid = regex.test(e.target.value);
-                    if (isValid && e.target.value?.length < 11)
-                      setValues({
-                        ...values,
-                        zip: e.target.value,
-                      });
-                    else e.target.value = values?.zip || "";
-                  }}
-                  error={error.zip}
-                />
-              </div>
+                      zip: e.target.value,
+                    });
+                  else e.target.value = values?.zip || "";
+                }}
+                error={error.zip}
+              />
+
             </div>
           </div>
         </div>
-        <div className="flex flex-1  gap-8 my-3 mb-10 ml-[335px] w-[calc(900*0.0522vw)] min-w-[500px] pb-0">
-          <div className="flex flex-col rounded-md shadow-[0px_0px_2.500000476837158px_0px_#00000040]  w-[calc(275*0.0522vw)] min-w-[170px] flex-wrap gap-3 bg-white p-3">
+        <div className="flex flex-1  gap-8 my-3 mb-10 ml-[335px]  min-w-[500px] pb-0">
+          <div className="flex flex-col w-[275px] rounded-md shadow-[0px_0px_2.500000476837158px_0px_#00000040] min-w-[170px] flex-wrap gap-3 bg-white p-3">
             <h1 className="mt-[-35px]  text-[#26435F] font-medium text-base-17-5 ml-[-10px] mb-1 text-base-17-5 ">
               Format Of Instructions
             </h1>
@@ -566,7 +565,7 @@ const CompanyAndBround = () => {
               />
             ))}
           </div>
-          <div className="flex flex-col rounded-md shadow-[0px_0px_2.500000476837158px_0px_#00000040] w-[calc(593*0.0522vw)]  min-w-[370px]  h-[200px] flex-wrap gap-3 p-3 bg-white">
+          <div className="flex flex-1 flex-col rounded-md shadow-[0px_0px_2.500000476837158px_0px_#00000040] min-w-[370px]  h-[200px] flex-wrap gap-3 p-3 bg-white">
             <h1 className="mt-[-35px]  text-[#26435F] font-medium text-base-17-5 ml-[-10px] mb-1 text-base-17-5">
               Students Served
             </h1>

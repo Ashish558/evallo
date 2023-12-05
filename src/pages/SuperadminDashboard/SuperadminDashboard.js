@@ -331,7 +331,7 @@ function SuperadminDashboard() {
                       <p className="font-semibold text-[26.667px]">
                         {currentUser?.no_of_test_assigned}
                       </p>
-                      <p className="text-[0.97vw] font-medium ">
+                      <p className="text-18.66 font-medium ">
                         # of Tests Assigned
                       </p>
                     </div>
@@ -339,7 +339,7 @@ function SuperadminDashboard() {
                       <p className="font-semibold text-[26.667px]">
                         {currentUser?.no_of_test_created}
                       </p>
-                      <p className="text-[0.97vw] font-medium">
+                      <p className="text-18.66 font-medium">
                         # of Tests Created
                       </p>
                     </div>
