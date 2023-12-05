@@ -6,7 +6,7 @@ import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import OrgDetailsForm from "../OrgDetailsForm/OrgDetailsForm";
 import SubscriptionChoosingModal from "../SubscriptionChoosingModal/SubscriptionChoosingModal";
 import { useLazyGetSubscriptionsInfoQuery } from "../../../app/services/orgSignup";
-import { extensionPlansInfo } from "../../OrgSignup/DummyData/ExtensionPlansInfo";
+import { extensionPlansInfo } from "./DummyData/ExtensionPlansInfo";
 import ReviewProduct from "../ReviewProduct/ReviewProduct";
 import ExtensionsChoosingModal from "../ExtensionsChoosingModal/ExtensionsChoosingModal";
 import VerticalNumericSteppers from "../../../components/VerticalNumericSteppers/VerticalNumericSteppers";
@@ -176,6 +176,8 @@ function SubscriptionAndExtensionModal({
             return;
         }
 
+        orgDetails = JSON.parse(orgDetails);
+
         if(orgDetails.stripeCustomerDetails) {
             SetStripeCustomerId(orgDetails.stripeCustomerDetails.id);
         }
@@ -194,6 +196,7 @@ function SubscriptionAndExtensionModal({
 
     function loadSubscriptionAndExtensionInfo(productList) {
         if(!(productList.constructor && productList.constructor.name === "Array")) return;
+        console.log(productList);
 
         for(let i = 0; i < productList.length; i++) {
             let product = productList[i];
@@ -249,6 +252,9 @@ function SubscriptionAndExtensionModal({
               let newExtList = [...extList];
               let productInfo = newExtList.find(item => item.planName === product.product.name);
               const extInfoFromDummyData = extensionPlansInfo.find(item => item.planName === product.product.name);
+              console.log("extInfoFromDummyData");
+              console.log(extInfoFromDummyData);
+              if(extInfoFromDummyData === null || extInfoFromDummyData === undefined) return extList;
     
               if(productInfo === undefined || productInfo === null) {
                 let productInfo = {};

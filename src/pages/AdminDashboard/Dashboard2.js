@@ -29,14 +29,17 @@ import RangeDate from "../../components/RangeDate/RangeDate";
 import ArrowDown from "../../assets/Dashboard/sort-down.svg";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import SubscriptionAndExtensionModal from "../Frames/SubscriptionAndExtensionModal/SubscriptionAndExtensionModal";
+import { useLazyGetAuthQuery, useLazyGetOrganizationQuery, useLazyGetPersonalDetailQuery } from "../../app/services/users";
 
 const Dashboard = () => {
   const [latestSignUp, latsestStatus] = useGetLatestSignUpRangeMutation();
   const { organization } = useSelector((state) => state.organization);
   const { firstName, lastName } = useSelector((state) => state.user);
   const { data: userStats } = useGetUserStatsQuery();
-
-  console.log({ userStats });
+  const [getPersonalDetail, getPersonalDetailResp] = useLazyGetPersonalDetailQuery();
+  const [getOrgDetails, getOrgDetailsResp] = useLazyGetOrganizationQuery();
+  console.log({ userStats }); 
   const [completedRevenue, completedRevenueStatus] = useGetAllRevenueMutation();
   const [leakedRevenue, leakedRevenueStatus] = useGetLeakedRevenueMutation();
   const [impendingRevenue, impendingRevenueStatus] =
@@ -58,6 +61,7 @@ const Dashboard = () => {
     useGetFilteredActionLogMutation();
   const [filteredActionLog, setFilteredActionLog] = useState([]);
   const [userData, setUserData] = useState([]);
+  const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(true);
   const [latestSignUp_flag,setlatestsignup_flag]=useState([1,1,1,1,1,1,1,1,1])
   const [popular_Service_flag,setpopular_Service_flag] = useState([1,1,1,1,1,1])
   const [star_client_flag,setstar_client_flag] = useState([1,1,1])
@@ -85,6 +89,39 @@ const Dashboard = () => {
         setUserData(data);
       }
     });
+  }, []);
+
+  useEffect(() => {
+    getPersonalDetail()
+    .then(data => {
+      console.log("getPersonalDetail");
+      console.log(data);
+      const user = data.data.data.user;
+
+      getOrgDetails(user.associatedOrg)
+      .then(data => {
+        console.log("getOrgDetails - attempt with associatedOrg");
+        console.log(data);
+
+        if(data.data === null || data.data === undefined ||
+          data.data.customerSubscriptions === null || data.data.customerSubscriptions === undefined ||
+          data.data.customerSubscriptions.data === null || data.data.customerSubscriptions.data === undefined ||
+          data.data.customerSubscriptions.data.length === 0) {
+          SetIsSubscriptionAndExtensionModalActive(true);
+        } else {
+          SetIsSubscriptionAndExtensionModalActive(false);
+        }
+      })
+      .catch(error => {
+        console.log("Error in getOrgDetails");
+        console.log(error);
+      });
+
+    })
+    .catch(error => {
+      console.log("Error in getPersonalDetail");
+      console.log(error);
+    })
   }, []);
 
   const sortByName = () => {
@@ -488,7 +525,22 @@ const Dashboard = () => {
  
   return (
     // <div className={styles.container}>
-      <div className="bg-#2E2E2E">
+    <>
+      {
+        isSubscriptionAndExtensionModalActive ? (
+          <div className="fixed bg-[#00000080] top-[-50px] left-0 right-0 bottom-[-50px] h-[130vh] z-[1000000]" style={{position: "fixed"}} >
+            <SubscriptionAndExtensionModal
+              className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-4/6 w-9/12"
+              OnCheckoutClicked={() => {
+                SetIsSubscriptionAndExtensionModalActive(false);
+              }}
+            />
+          </div>
+        ) : (<></>)
+      }
+      <div className={`bg-#2E2E2E`} >
+        
+
         <div className="mt-[50px] flex justify-center">
           <div className="w-[1601px]">
             <p className="text-[#24A3D9] text-[20px] font-normal">
@@ -992,7 +1044,7 @@ const Dashboard = () => {
           </div>
         </section>
       </div>
-    
+    </>
   );
 };
 
