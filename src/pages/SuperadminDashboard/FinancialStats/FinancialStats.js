@@ -43,7 +43,7 @@ useEffect(()=>{
 },[dateRange])
   return (
     <div className="max-w-[652px] flex-1">
-      <h2 className="font-semibold mb-1 text-[#26435F]">Financial Stats</h2>
+      <h2 className="font-semibold mb-1 text-[#26435F] text-[21.33px]">Financial Stats</h2>
       {/* <div className="grid grid-cols-2 gap-4 w-150 border border-solid border-grey-200 p-5">
         <div className="bg-blue-700 rounded p-4 shadow w-150 h-150">
           <h3 className="text-lg font-bold text-white">
@@ -84,43 +84,43 @@ useEffect(()=>{
       <div className="grid grid-cols-4 gap-x-7 gap-y-[18px]">
         <div className={`text-[#00ADD3] w-[146.66px] h-[193.33px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image} alt="" /></p>
-          <p className="text-sm mt-4">Scheduled</p>
+          <p className="text-18.66 mt-4">Scheduled</p>
           <p className="font-semibold text-2xl">{financialStats?.scheduledSessions}</p>
         </div>
         <div className={`text-[#42CD00] w-[146.66px] h-[193.33px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image1} alt="" /></p>
-          <p className="text-sm mt-4">Completed</p>
+          <p className="text-18.66 mt-4">Completed</p>
           <p className="font-semibold text-2xl">{financialStats?.completeSessions}</p>
         </div>
         <div className={`text-[#FF4D4D] w-[146.66px] h-[193.33px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image2} alt="" /></p>
-          <p className="text-sm mt-4">Missed</p>
+          <p className="text-18.66 mt-4">Missed</p>
           <p className="font-semibold text-2xl">{financialStats?.missedSessions}</p>
         </div>
         <div className={`text-[#969696] w-[146.66px] h-[193.33px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image3} alt="" /></p>
-          <p className="text-sm mt-4">Cancelled</p>
+          <p className="text-18.66 mt-4">Cancelled</p>
           <p className="font-semibold text-2xl">{financialStats?.canceledSessions}</p>
         </div>
         <div className={`text-[#26435F] w-[146.66px] h-[240px] ${styles.card2} `}>
           <p className="bg-[#26435F] rounded p-2 w-[40px] h-[40px] mx-auto mt-[28px]"><span><img src={image9} alt="" /></span></p>
-          <p className="text-sm text-center px-2 h-[50px] mb-1 mt-5">Invoice</p>
+          <p className="text-18.66 text-center px-2 h-[50px] mb-1 mt-5">Invoice</p>
           <p className="font-semibold text-2xl text-center ">51</p>
         </div>
         <div className={`text-[#26435F] w-[146.66px] h-[240px] ${styles.card2} `}>
           <p className="bg-[#26435F] rounded p-2 w-[40px] h-[40px] mx-auto mt-[28px]"><span><img src={image7} alt="" /></span></p>
-          <p className="text-sm text-center px-2 h-[50px] mb-1 mt-5"># of Transaction</p>
+          <p className="text-18.66 text-center px-2 h-[50px] mb-1 mt-5"># of Transaction</p>
           <p className="font-semibold text-2xl text-center ">51</p>
         </div>
         <div className={`text-[#26435F] w-[146.66px] h-[240px] ${styles.card2}`}>
           <p className="bg-[#26435F] rounded p-2 w-[40px] h-[40px] mx-auto mt-[28px]"><img src={image4} alt="" /></p>
-          <p className="text-sm text-center px-2 h-[50px] mb-1 mt-5">Transaction
+          <p className="text-18.66 text-center px-2 h-[50px] mb-1 mt-5">Transaction
             Amount Total</p>
           <p className="font-semibold text-2xl text-center ">51</p>
         </div>
         <div className={`text-[#26435F] w-[146.66px] h-[240px] ${styles.card2} `}>
           <p className="bg-[#26435F] rounded p-2 w-[40px] h-[40px] mx-auto mt-[28px]"><img src={image11} alt="" /></p>
-          <p className="text-sm text-center px-2 h-[50px] mb-1 mt-5 px-1">Avg transaction</p>
+          <p className="text-18.66 text-center px-2 h-[50px] mb-1 mt-5 px-1">Avg transaction</p>
           <p className="font-semibold text-2xl text-center ">51</p>
         </div>
       </div>
