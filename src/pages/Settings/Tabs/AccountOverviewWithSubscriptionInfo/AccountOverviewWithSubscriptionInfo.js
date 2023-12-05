@@ -874,7 +874,7 @@ function AccountOverviewWithSubscriptionInfo() {
                             className="flex items-center justify-between ml-[30px] mt-[20px]" 
                             style={{width: "92%"}}    
                         >
-                            <div className="font-[600] text-[#26435F] text-[0.972vw]" >Manage Payments</div>
+                            <div className="font-[600] text-[#26435F] text-21.33" >Manage Payments</div>
                             <button 
                                 className="font-[300] text-[#24A3D9] text-[12px] design:text-[15px] underline" 
                                 // onClick={OnViewPastTransactionsClicked}
