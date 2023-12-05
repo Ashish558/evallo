@@ -766,7 +766,7 @@ export default function TableItem({
       )}
       {dataFor === "studentTestsReport" && (
         <tr
-          className={`text-[17.5px] bg-red-900 leading-7 ${
+          className={`text-[17.5px] leading-7 ${
             !item.isCorrect ? "!bg-[#FF79791A]/[0.05]" : "odd:bg-white  "
           } `}
         >

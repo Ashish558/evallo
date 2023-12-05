@@ -672,6 +672,7 @@ export default function TestDetail() {
                   {subjects.map((item, idx) => {
                     return (
                       <PrimaryButton
+                        key={idx}
                         children={item.name}
                         className={`py-[10.25px] text-[17.5px] mr-[30px] bg-transparent font-normal w-fit ${
                           item.selected
@@ -687,16 +688,12 @@ export default function TestDetail() {
                 <div className="bg-gray-300 absolute bottom-[-1px] z-10 h-[1px] w-full"></div>
               </div>
               <div className="flex justify-between mt-7">
-                {/* <PrimaryButton
-                     children={<div className="flex items-center justify-center">
-                        Add new question
-                        <img src={AddIcon} className='w-6 ml-2' /> </div>}
-                     className={`py-3.5 pl-6 pr-6 mr-4 font-medium text-textGray" }`}
-                  /> */}
+              
               </div>
-              <div className="mt-4">
+              <div className="mt-4 ">
                 {questionsTable.length > 0 && (
                   <Table
+                    widthFullTable={true}
                     dataFor="testsDetailQuestions"
                     noArrow={true}
                     data={questionsTable}

@@ -17,7 +17,7 @@ export function TableHeaderNew({
 
   return (
     <th
-      className={`px-6 font-medium whitespace-nowrap  text-center  cursor-pointer ${
+      className={`px-6 py-[20px] font-medium whitespace-nowrap text-white text-center  cursor-pointer ${
         header.className ? header.className : ""
       } ${flag ? styles["no-arrow"] : ""} bg-[#26435F]`}
     >

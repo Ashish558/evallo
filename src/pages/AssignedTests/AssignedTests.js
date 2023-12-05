@@ -1672,6 +1672,7 @@ export default function AssignedTests() {
           )}
           <div className="mt-[21.25px]">
             <Table
+              widthFullTable={true}
               selectedId2={selectedId}
               setSelectedId2={setSelectedId}
               onClick={{ handleResend, handleDelete, handleNavigate }}

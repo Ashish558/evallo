@@ -626,8 +626,9 @@ export default function AllTests({
             </button>
           </div>
 
-          <div className="mt-[37.5px] w-full">
+          <div className="mt-[37.5px] w-[1600px]">
             <Table
+              widthFullTable={true}
               testtype={testtype2}
               dataFor="allTests"
               data={filteredTests}

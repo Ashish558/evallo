@@ -1304,8 +1304,9 @@ export default function StudentReport() {
             </div>
           </div>
 
-          <div className="mt-[62px]">
+          <div className="mt-[62px] w-[1600px] ">
             <Table
+              widthFullTable={true}
               noArrow={true}
               dataFor={
                 persona === "parent" || persona === "student"
