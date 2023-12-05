@@ -451,7 +451,9 @@ export default function TableItem({
             <div className="my-[6px]">{item.userType}</div>
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 text-left">
-            <div className="my-[6px]">{item?.email?.toLowerCase()}</div>
+            <div className="my-[6px]">
+              {item?.email?.toLowerCase().length > 15 ? item?.email?.toLowerCase().slice(0, 15) + '...' : item?.email?.toLowerCase()}
+              </div>
           </td>
 
           <td className=" text-[17.5px] !pl-6 pr-1  min-w-14  text-left capitalize">
