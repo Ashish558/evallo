@@ -373,9 +373,9 @@ const [loading2,setLoading2]=useState(false)
             <div
                className={`${persona === "superAdmin" ? "translate-x-[-44.16px]" : ""}`}
             >
-               <Link to="/">
-                  <div className="flex gap-x-[6px] items-center">
-                  <img className="inline-block w-full" src={evallo_logo} alt="evallo_logo" />
+               <Link to="/" className="cursor-default">
+                  <div className="flex gap-x-[6px] items-center w-[135px] h-[29.5px]">
+                  <img className="inline-block w-[25px] h-[25px]" src={evallo_logo} alt="evallo_logo" />
                   <p  className={`text-[43px] text-white font-bold pt-[3.2px] ${styles.customFont}`}>Evallo</p>
                   </div>
                </Link>
@@ -393,24 +393,24 @@ const [loading2,setLoading2]=useState(false)
                            <>
                               <p>
                                  <img
-                                    className="w-[21.33px] design:h-[20px] design:w-[20px]"
+                                    className="w-[21.33px] h-[21.33px]"
 
                                     src={item.activeIcon}
                                     alt=""
                                  />
                               </p>
-                              <p className="pl-[10px] text-[#FFA28D] text-[17.33px] "> {item.tooltip} </p>
+                              <p className="pl-[13.34px] text-[#FFA28D] text-[17.33px] "> {item.tooltip} </p>
                            </>
                         ) : (
                            <>
                               <p>
                                  <img
-                                    className="w-[21.33px] design:h-[20px] design:w-[20px]"
+                                    className="w-[21.34px] h-[21.34px]"
                                     src={item.icon}
                                     alt=""
                                  />
                               </p>
-                              <p className="pl-[10px] text-[17.33px] "> {item.tooltip} </p>
+                              <p className="pl-[13.34px] text-[17.33px] "> {item.tooltip} </p>
                            </>
                         )}
                      </div>

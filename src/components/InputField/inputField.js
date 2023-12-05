@@ -52,6 +52,7 @@ export default function InputField({
   iconPadding,
   biggerText,
   min,
+  customEyeIconSize,
   calenderIconClass,
 }) {
   //console.log({ hideTooltip })
@@ -183,7 +184,7 @@ export default function InputField({
         {type === "password" && (
           <img
             src={inputType === "password" ? EyeIcon : EyeIcon2}
-            className={`ml-4 w-[22.45px] h-[22.45px] cursor-pointer ${
+            className={`ml-4 ${customEyeIconSize ? customEyeIconSize :  "w-[22.45px] h-[22.45px]"} cursor-pointer ${
               inputType === "password" ? "" : "opacity-[0.7]"
             }`}
             alt="eye-active"
