@@ -382,7 +382,7 @@ function SuperadminDashboard() {
             />
           </p>
         </div>
-        {/* <Chart2 /> */}
+        <Chart2 />
         <p className="text-[#26435F] font-semibold mt-[50px]">
           User demography
         </p>
