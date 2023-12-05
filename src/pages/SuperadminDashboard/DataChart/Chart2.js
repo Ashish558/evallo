@@ -3,6 +3,7 @@ import { Bubble } from "react-chartjs-2";
 import { bubbleChartData } from "./ChartData";
 import arrow from '../../../assets/icons/arrow-chart.svg'
 import arrow1 from '../../../assets/icons/arrow-up-chart.svg'
+import styles from './styles.module.css'
 
 import {Chart, LinearScale, PointElement, Tooltip, Legend, TimeScale, CategoryScale} from "chart.js"; 
 
@@ -22,10 +23,9 @@ const BubbleChart2 = () => {
         <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]"><span className="bg-[#26435F] inline-block  rounded-full w-3 h-3 text-[#507CA8] "></span> Cancelled</div>
       
       </div>
-      <div className="flex flex-1 max-w-full justify-center p-4 mt-5 w-full">
+      <div className={`flex flex-1 max-w-full justify-center p-4 mt-5 w-full ${styles.financialChart}`}>
         <Bubble
           data={bubbleChartData} 
-          height={105}
           options={{
             layout: {
               padding: {

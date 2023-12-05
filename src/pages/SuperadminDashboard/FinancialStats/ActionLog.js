@@ -107,7 +107,7 @@ function ActionLog({ dateRange }) {
     headerDate = temp;
   }
   return (
-    <div className="w-[53.5vw]">
+    <div className="flex-1">
       <h2 className="font-semibold mb-1 text-[#26435F]">Action Log</h2>
 
       <div

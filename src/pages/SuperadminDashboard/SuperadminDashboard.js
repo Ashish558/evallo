@@ -174,9 +174,9 @@ function SuperadminDashboard() {
 
   return (
     <div className={styles.container}>
-      <div className=" mt-[34px] bg-#2E2E2E mx-auto pb-7 w-[88.59vw]">
+      <div className="mt-[34px] bg-#2E2E2E mx-auto pb-7 px-[150px]">
         <div className="flex justify-between">
-          <p className="text-[#24A3D9] text-base-20">Dashboard</p>
+          <p className="text-[#24A3D9]">Dashboard</p>
 
           <RangeDate
             optionClassName="!w-min"
@@ -187,47 +187,47 @@ function SuperadminDashboard() {
         </div>
 
         <div className="flex  justify-between mt-7 ">
-          <section className="w-[30.47vw]">
+          <section className="">
             <div className="w-[587.5px] whitespace-nowrap ">
               <p className={`${styles.subheading} `}> Organizations </p>
               <div className={`flex mr-0 ${styles.orgCard} mt-1.5 justify-evenly items-center`}>
-                <div className={`  ${orgStyles.container} w-[10.16vw]`}>
-                  <p className={`${orgStyles.heading} !text-[0.97vw]`}>
+                <div className={`  ${orgStyles.container}`}>
+                  <p className={`${orgStyles.heading} `}>
                     {" "}
                     Total # of Orgs
                   </p>
-                  <p className={`${orgStyles.text} !text-[1.39vw]`}>
+                  <p className={`${orgStyles.text} `}>
                     {" "}
                     {OrgStats?.total_no_of_orgs}{" "}
                   </p>
                 </div>
 
-                <div className={`${orgStyles.container} w-[6.15vw]`}>
-                  <p className={`${orgStyles.heading} !text-[0.97vw]`}>
+                <div className={`${orgStyles.container}`}>
+                  <p className={`${orgStyles.heading} `}>
                     {" "}
                     C:I Ratio
                   </p>
-                  <p className={`${orgStyles.text} !text-[1.39vw]`}>
+                  <p className={`${orgStyles.text} `}>
                     {" "}
                     {OrgStats?.ci_ratio}{" "}
                   </p>
                 </div>
-                <div className={`${orgStyles.container}  w-[6.15vw]`}>
-                  <p className={`${orgStyles.heading} !text-[0.97vw]`}>
+                <div className={`${orgStyles.container} `}>
+                  <p className={`${orgStyles.heading} `}>
                     {" "}
                     {dayDifferencesDash} Days
                   </p>
-                  <p className={`${orgStyles.text} !text-[1.39vw]`}>
+                  <p className={`${orgStyles.text} `}>
                     {" "}
                     {OrgStats?.days_12}{" "}
                   </p>
                 </div>
-                <div className={`${orgStyles.container}  w-[6.15vw]`}>
-                  <p className={`${orgStyles.heading} !text-[0.97vw]`}>
+                <div className={`${orgStyles.container} `}>
+                  <p className={`${orgStyles.heading} `}>
                     {" "}
                     Inactive
                   </p>
-                  <p className={`${orgStyles.text} !text-[1.39vw]`}>
+                  <p className={`${orgStyles.text} `}>
                     {OrgStats?.inactive}{" "}
                   </p>
                 </div>
@@ -253,7 +253,7 @@ function SuperadminDashboard() {
                         className={`  bg-white border-b-[1.4px] overflow-hidden relative cursor-pointer border-[rgb(10,30,40,0.27)] ${styles.userStat} h-[54px]`}
                       >
                         <span
-                          className={`!text-[0.97vw] ${currentUser?.name === item.text.toLowerCase()
+                          className={` ${currentUser?.name === item.text.toLowerCase()
                               ? "text-[#FFA28D]"
                               : ""
                             } `}
@@ -275,50 +275,50 @@ function SuperadminDashboard() {
                   >
                     <div className="w-1/5 flex flex-col items-center pt-[5px] pb-2">
                       <p
-                        className={`${styles.statHead} text-[1.39vw] font-semibold`}
+                        className={`${styles.statHead} text-[26.667px] font-semibold`}
                       >
                         {currentUser?.name
                           ? currentUser[`${currentUser.name}`]
                           : ""}
                       </p>
-                      <p className="!text-[0.97vw] text-[#26435F] ml-[-3px]">
+                      <p className=" text-[#26435F] ml-[-3px]">
                         Total
                       </p>
                     </div>
                     <div className="w-1/5 flex flex-col items-center pt-[5px] pb-2">
                       <p
-                        className={`${styles.statHead} text-[1.39vw] font-semibold`}
+                        className={`${styles.statHead} text-[26.667px] font-semibold`}
                       >
                         {currentUser?.no_of_active_users}
                       </p>
-                      <p className="!text-[0.97vw] text-[#26435F]">Active</p>
+                      <p className=" text-[#26435F]">Active</p>
                     </div>
                     <div className="w-1/5 flex flex-col items-center pt-[5px] pb-2">
                       <p
-                        className={`${styles.statHead} text-[1.39vw] font-semibold`}
+                        className={`${styles.statHead} text-[26.667px] font-semibold`}
                       >
                         {currentUser?.no_of_new_users}
                       </p>
-                      <p className="!text-[0.97vw] text-[#26435F]">New</p>
+                      <p className=" text-[#26435F]">New</p>
                     </div>
                     <div className="w-1/5 flex flex-col items-center pt-[5px] pb-2">
                       <p
-                        className={`${styles.statHead} text-[1.39vw] font-semibold`}
+                        className={`${styles.statHead} text-[26.667px] font-semibold`}
                       >
                         {currentUser?.no_of_avg_logins}
                       </p>
-                      <p className="!text-[0.97vw] text-center text-[#26435F] ">
+                      <p className=" text-center text-[#26435F] ">
                         Avg. # of logins
                       </p>
                     </div>
                     <div className="w-1/5 flex flex-col items-center pt-[5px] pb-2">
                       <p
-                        className={`${styles.statHead} text-[1.39vw] font-semibold`}
+                        className={`${styles.statHead} text-[26.667px] font-semibold`}
                       >
                         {currentUser?.avg_session_duration}
                         <span className="text-xs">min</span>
                       </p>
-                      <p className="!text-[0.97vw] text-[#26435F] text-center">
+                      <p className=" text-[#26435F] text-center">
                         Avg. Session duration
                       </p>
                     </div>
@@ -328,7 +328,7 @@ function SuperadminDashboard() {
                     className={`flex items-center  justify-start gap-12 pl-7 pt-1 pb-2 h-[80px] text-[#26435F] bg-[#FFFFFF] mt-[24px] ${styles.customBorder}`}
                   >
                     <div>
-                      <p className="font-semibold text-[1.39vw]">
+                      <p className="font-semibold text-[26.667px]">
                         {currentUser?.no_of_test_assigned}
                       </p>
                       <p className="text-[0.97vw] font-medium ">
@@ -336,7 +336,7 @@ function SuperadminDashboard() {
                       </p>
                     </div>
                     <div>
-                      <p className="font-semibold text-[1.39vw]">
+                      <p className="font-semibold text-[26.667px]">
                         {currentUser?.no_of_test_created}
                       </p>
                       <p className="text-[0.97vw] font-medium">
@@ -348,7 +348,7 @@ function SuperadminDashboard() {
               </div>
             </div>
           </section>
-          <section className="w-[55.83vw]  overflow-auto">
+          <section className="  overflow-auto">
             <p className="text-[#26435F] -mt-1 mb-[-7px] font-semibold text-md">
               {" "}
               Latest Org Signup{" "}
