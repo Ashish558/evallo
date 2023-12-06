@@ -75,7 +75,7 @@ export function TableHeader({
             ? "text-left pl-7"
             : ""
         } ${dataFor === "allUsers" ? "text-[17.5px]" : "text-[17.5px]"}
-        ${header==="Tutor Name"||header==="Tutor Status"?"!p-[0]":""}
+        ${header==="Tutor Name"||header==="Tutor Status"||header==="Average Hourly Rate"?"!p-[0]":""}
         ${header === "Q No." && "flex-col"}
        `}
       >

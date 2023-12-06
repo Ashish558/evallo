@@ -291,8 +291,8 @@ export default function TutorDashboard() {
     }
   };
   return (
-    <div className="bg-[#F5F8FA] mb-[100px]">
-      <div className="w-[85.05vw] mx-auto">
+    <div className="bg-[#F5F8FA] mb-[100px] px-[140px]">
+      <div className="mx-auto">
         <div className="">
           <p className="text-[#24A3D9] text-base-20 mb-[30px] mt-[50px]">
             {organization?.company +
@@ -323,13 +323,13 @@ export default function TutorDashboard() {
 
                </div> */}
 
-          <div className="flex items-start">
-            <div className="flex flex-col items-start flex-[7]">
-              <div className=" mb-[30px] relative">
+          <div className="flex items-start gap-x-10">
+            <div className="flex flex-col items-stretch flex-[7]">
+              <div className=" mb-[30px] relative ">
                 <p className="text-[#26435F] font-semibold text-xl mb-[12px] ">
                   Latest Students
                 </p>
-                <div className="rounded-[5.333px] bg-[#FFF] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] py-5 px-5 w-[55.52vw] h-[163px] flex justify-center items-center overflow-hidden">
+                <div className="rounded-[5.333px] bg-[#FFF] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] py-5 px-5  h-[163px] flex justify-center items-center overflow-hidden">
                   <div className={styles.studentImages} style={{position : "relative" , padding : "10px", minWidth : "90%"}}>
                     {students?.length > 0 ? (
                       <OwlCarousel
@@ -353,7 +353,7 @@ export default function TutorDashboard() {
                                 alt="studentImage"
                               />
                               <p
-                                className="text-[0.78125vw] text-[#517CA8]  mt-[10px] cursor-pointer w-full text-center"
+                                className=" text-[#517CA8]  mt-[10px] cursor-pointer w-full text-center"
                                 onClick={() =>
                                   navigate(`/profile/student/${student._id}`)
                                 }
@@ -400,11 +400,12 @@ export default function TutorDashboard() {
                 </div>
               </div>
 
-              <div className="flex w-[55.52vw] justify-between">
+              <div className="flex gap-x-[59px] self-stretch justify-between">
                 <DashboardCard
                   data={{
                     title: tutorHours,
                     subtitle: `${tutorHours > 1 ? "Hours" : "Hour"}`,
+                    titleClassName: "text-[27.52px]"
                   }}
                   header="Completed"
                   subHeader="This Month"
@@ -414,27 +415,27 @@ export default function TutorDashboard() {
                   data={{
                     title: "-",
                     subtitle: "USD",
-                    titleClassName: "text-[1.41vw]",
+                    titleClassName: "text-[27.52px]",
                   }}
                   header="Earned"
                   subHeader="This Month"
                   className="bg-[#FFA28D]"
                 />
 
-                <div className=" flex justify-center items-center w-[16.41vw] bg-[#F4F4F4]  rounded-[5px] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)]">
+                <div className="flex-1 flex justify-center items-center bg-[#F4F4F4]  rounded-[5px] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)]">
                   <div>
                     {" "}
-                    <p className="text-[1.41vw] text-center text-[#667085] font-semibold">
+                    <p className="text-[27.52px] text-center text-[#667085] font-semibold">
                       Tutor Rank
                     </p>
-                    <p className="text-[#667085] text-center text-[0.9375vw]">
+                    <p className="text-[#667085] text-center text-[18.33px]">
                       Coming Soon
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="w-[55.312vw] mt-10">
+              <div className="mt-10">
                 <p className="text-primary-dark font-semibold text-[20px] mb-[3px]">
                   Today’s Schedule
                 </p>
@@ -468,7 +469,7 @@ export default function TutorDashboard() {
                 </div>
               </div>
             </div>
-            <div>
+            <div className="max-w-[525px]">
               <p className="text-xl text-[#26435F] mb-[20px] font-semibold">
                 Last 10 Assignments
               </p>
@@ -508,7 +509,7 @@ export default function TutorDashboard() {
                         </div> */}
                 </div>
 
-                <div className="w-[27.34375vw]">
+                <div className="">
                   {/* <p className='text-primary font-semibold text-[21px] mb-4'>
                            Latest Practice Test
                         </p> */}
@@ -523,7 +524,7 @@ export default function TutorDashboard() {
                             <div className=" flex justify-between items-center">
                               <div className="w-2/6 ">
                                 <p
-                                  className="text-[#24A3D9] text-[1.172vw] font-bold cursor-pointer overflow-hidden text-ellipsis"
+                                  className="text-[#24A3D9] text-[22.5px] font-bold cursor-pointer overflow-hidden text-ellipsis"
                                   onClick={() =>
                                     navigate(
                                       `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`
@@ -533,7 +534,7 @@ export default function TutorDashboard() {
                                   {" "}
                                   {item.testName}{" "}
                                 </p>
-                                <div className=" text-[#517CA8] flex text-[0.911vw]">
+                                <div className=" text-[#517CA8] flex text-[17.55px]">
                                   <p className=""></p>
                                   <p className="text-base-17-5 overflow-hidden text-ellipsis">
                                     {" "}
@@ -555,7 +556,7 @@ export default function TutorDashboard() {
                                   alt=""
                                 />
                               </div>
-                              <div className=" font-medium text-[0.78125vw] text-white">
+                              <div className=" font-medium text-[18px] text-white">
                                 {item?.status === "notStarted" ? (
                                   <button
                                     onClick={() =>
@@ -563,7 +564,7 @@ export default function TutorDashboard() {
                                         `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`
                                       )
                                     }
-                                    className="bg-[#D4D9DF] rounded-5 w-[6.25vw] h-[31px] "
+                                    className="bg-[#D4D9DF] rounded-5 px-[14.5px] h-[31px] "
                                   >
                                     View Report
                                   </button>
@@ -576,7 +577,7 @@ export default function TutorDashboard() {
                                             `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`
                                           )
                                         }
-                                        className="bg-[#38C980] rounded-5 w-[6.25vw] h-[31px]"
+                                        className="bg-[#38C980] rounded-5 px-[14.5px] h-[31px]"
                                       >
                                         View Report
                                       </button>
@@ -587,7 +588,7 @@ export default function TutorDashboard() {
                                             `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`
                                           )
                                         }
-                                        className="bg-[#FFCE84] rounded-5 w-[6.25vw] h-[31px]"
+                                        className="bg-[#FFCE84] rounded-5 px-[14.5px] h-[31px]"
                                       >
                                         View Report
                                       </button>
