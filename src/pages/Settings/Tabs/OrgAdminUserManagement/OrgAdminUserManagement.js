@@ -200,13 +200,19 @@ function OrgAdminUserManagement() {
   }
 
   const handleSave = () => {
+    if(selectedTutors.map(tutor => tutor._id).length<1){
+      alert("Please select tutors");
+      return;
+    }
     bulkChangeUser({ tutorIds: selectedTutors.map(tutor => tutor._id) })
       .then(res => {
         if (res.error) {
           console.log('err', res.error);
         } else {
           console.log('res', res.data);
-
+          if(!res.error){
+            alert("Tutor is activated successfully")
+          }
         }
 
       })
