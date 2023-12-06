@@ -596,15 +596,15 @@ export default function TestDetail() {
 
                 <div className="gap-y-1 border rounded p-4 shadow-lg w-[830px] h-[224px] ">
                   <div className="mb-2 flex justify-between ">
-                    <p className="inline-block w-[170px] font-semibold opacity-60 text-[#26435F] opacity-100">
+                    <p className="inline-block w-[170px] font-semibold opacity-80 text-[#26435F] ">
                       {" "}
                       Section
                     </p>
                     <div className="flex">
-                      <div className="inline-block w-[120px] font-semibold opacity-60 text-[#26435F] opacity-100">
+                      <div className="inline-block w-[120px] font-semibold opacity-80 text-[#26435F] ">
                         Time
                       </div>
-                      <p className="inline-block w-[138px] font-semibold opacity-60 text-[#26435F] opacity-100 text-center">
+                      <p className="inline-block w-[138px] font-semibold opacity-80 text-[#26435F]  text-center">
                         {" "}
                         Questions
                       </p>

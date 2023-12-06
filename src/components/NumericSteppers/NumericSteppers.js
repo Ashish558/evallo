@@ -23,10 +23,10 @@ export default function NumericSteppers({
         customFieldsPresents ? (
           ""
         ) : (
-          <div key={i} className={`flex flex-col justify-center items-center ${totalSteps===4?"!w-[165px]":""}`}>
+          <div key={i} className={` flex flex-col justify-center items-center ${totalSteps===4?"!w-[165px]":""}`}>
             <button
               key={i}
-              className={`w-[40px] relative z-[5000] lg:block  h-[40px] bg-primary border rounded-full flex justify-center items-center font-medium
+              className={`w-[40px] relative z-[5000]  h-[40px] bg-primary border rounded-full flex justify-center items-center font-medium cursor-default
              ${
                i + 1 < parseInt(currentStep)
                  ? i+2===currentStep?"!bg-[#FFA28D] before:!bg-[#FFA28D]  !text-white ":"!bg-[#FFA28D] before:!bg-[#FFA28D]  !text-white "
@@ -65,9 +65,12 @@ export default function NumericSteppers({
                 className={`flex justify-center !tracking-wider  before:hidden items-center mt-2 mb-2 text-center ${NumericStepperfontSize} font-medium  
             ${i + 1 < parseInt(currentStep) ? "text-[#FFA28D]" : ""} 
              ${i + 1 === parseInt(currentStep) ? " text-[#24A3D9]  " : ""} 
-             ${i + 1 > parseInt(currentStep) ? "opacity-20  text-[#26435F]" : ""}
+             ${i + 1 > parseInt(currentStep) ? "opacity-35  text-[#26435F]" : ""}
              ${i + 1 === parseInt(currentStep) ? "text-[#24A3D9]  " : ""} 
              `}
+
+             style={{fontFamily : "Lexend"}}
+
             >
               {fieldNames ? fieldNames[i] : ""}{" "}
             </p>
@@ -75,7 +78,7 @@ export default function NumericSteppers({
         )
       )}
       <div className="hidden absolute top-[-23px] left-[-16.5%] w-screen">
-        <div className="flex gap-0.5">
+        <div className="flex gap-0.5 bg-red-100">
           {[...Array(totalSteps)].map((x, i) => (
             <div
               key={i}

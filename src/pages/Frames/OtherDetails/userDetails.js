@@ -260,7 +260,7 @@ export default function UserDetails({
       <div className="flex justify-between items-center mt-16">
         {!isAddedByAdmin && (
           <SecondaryButton
-            children="Go Back"
+            children="Go back"
             className="!text-[18.667] whitespace-nowrap mr-6 bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] w-[146.67px] font-medium h-[50px] design:h-[53px] rounded-5"
             onClick={handleBack}
           />

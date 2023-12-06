@@ -652,7 +652,7 @@ export default function AllTests({
               onClick: handleSubmit,
               type: "submit",
               className:
-                "!ml-5 text-sm  py-1 mr-auto mt-7 min-w-[120px]  flex gap-2 px-4  h-[49px] disabled:opacity-80 flex items-center  text-sm !font-medium  inline-block bg-[#FFA28D]",
+                "!ml-5 text-sm  py-1 mr-auto mt-7 w-[137.33px] h-[53.33px] flex gap-2 px-4 disabled:opacity-80 flex items-center  text-sm !font-medium  inline-block bg-[#FFA28D]",
               disabled: submitBtnDisabled,
               loading: loading,
               icon: (
@@ -667,15 +667,15 @@ export default function AllTests({
               <div id={styles.handleFileUpload}>
                 <div
                   id={styles.uploadButtons}
-                  className="mt-7   px-0  gap-5 flex justify-between  "
+                  className="mt-7 px-0 gap-5 flex justify-between  "
                 >
-                  {modalData.testType != "DSAT®" ? (
+                  {modalData.testType !== "DSAT®" ? (
                     <div id={styles.pdfUpload}>
                       <label
                         htmlFor="pdf"
                         className={`${
                           pdfFile !== null ? "bg-[#26435F] " : "bg-[#26435F] "
-                        } w-[8.9vw] min-w-[160px] text-sm !font-medium text-center pl-5 flex justify-center items-center`}
+                        } w-[173px] h-[53.33px] text-sm !font-medium text-center pl-5 flex justify-center items-center`}
                       >
                         Upload PDF
                         <img src={upload} alt="Upload" />
@@ -693,14 +693,14 @@ export default function AllTests({
                     </div>
                   ) : null}
 
-                  <div id={styles.csvUpload}>
+                  <div className="" id={styles.csvUpload}>
                     <label
                       htmlFor="csv"
                       className={`${
                         csvFile !== null && styles.fileUploaded
                           ? "bg-[#26435F] "
                           : "bg-[#26435F] "
-                      } w-[11vw] min-w-[185px] text-sm !font-medium text-center flex justify-center items-center`}
+                      } w-[209px] h-[53.33px] text-sm !font-medium text-center flex justify-center items-center`}
                     >
                       Upload Metadata
                       <img src={upload} alt="Upload" />
@@ -727,14 +727,14 @@ export default function AllTests({
             handleClose={handleClose}
             body={
               <form onSubmit={handleSubmit} id="add-test-form">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-6 !items-center  gap-y-4">
+                <div className="w-full flex justify-between items-center">
                   <InputField
                     label="Assignment Name"
                     labelClassname="ml-2 mb-1.2 text-[#26435F] !text-[16px] "
                     biggerText={true}
                     optionData={optionData}
                     placeholder="Text"
-                    parentClassName="w-full mr-4 mt-1"
+                    parentClassName="w-full mr-[33.33px] mt-1"
                     inputContainerClassName="pt-3 pb-3 bg-primary-50"
                     inputClassName="bg-transparent"
                     type="select"
@@ -750,12 +750,12 @@ export default function AllTests({
 
                   <InputSelect
                     label="Type"
-                    labelClassname="ml-2   !font-semibold mb-[9px] mt-1 !text-[#26435F]  !text-[16px]"
+                    labelClassname="ml-2 !font-semibold mb-[9px] mt-1 !text-[#26435F]  !text-[16px]"
                     biggerText={true}
                     optionData={testTypeOptions}
                     placeholder="Select"
                     inputContainerClassName="pt-3 pb-3 bg-primary-50 h-[45px]"
-                    parentClassName="w-full mr-4"
+                    parentClassName="w-full"
                     inputClassName="bg-transparent"
                     isRequired={true}
                     type="select"
