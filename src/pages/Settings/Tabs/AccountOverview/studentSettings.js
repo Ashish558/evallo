@@ -354,7 +354,7 @@ const StudentSettings = () => {
         </div>
 
         <div className="flex  gap-x-[100px] mt-16 mb-[163px]">
-          <div className="relative w-[33.54vw]">
+          <div className="relative flex-1">
 
             <p className=" text-sm text-[#26435F] font-semibold text-base-20">
               Submit Feedback
@@ -368,7 +368,7 @@ const StudentSettings = () => {
                   support: e.target.value
                 })
               }}
-              className="mt-1 block  resize-none focus:!ring-blue-500 p-5 focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18  placeholder:text-base-18  w-[33.54vw] h-[352px] "
+              className="mt-1 block  resize-none focus:!ring-blue-500 p-5 focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18  placeholder:text-base-18  w-full h-[352px] "
               placeholder=" If you have any feedback for this online platform, please submit it here. Our team takes every suggestion seriously."
             ></textarea>
 
@@ -382,7 +382,7 @@ const StudentSettings = () => {
               Submit
             </button>
           </div>
-          <div className=" relative w-[33.54vw]">
+          <div className=" relative flex-1">
             <p className=" text-sm text-[#26435F] font-semibold text-base-20">
               Request Technical Support
             </p>
@@ -396,7 +396,7 @@ const StudentSettings = () => {
                   tech: e.target.value
                 })
               }}
-              className="mt-1 block w-[33.54vw] h-[352px] resize-none focus:!ring-blue-500 p-5 focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18   placeholder:text-base-18  "
+              className="mt-1 block w-full h-[352px] resize-none focus:!ring-blue-500 p-5 focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18   placeholder:text-base-18  "
               placeholder=" If you require technical support, please submit your request here and our team will help you out accordingly."
             ></textarea>
             <button
