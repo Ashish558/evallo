@@ -9,6 +9,7 @@ export default function CheckBoxOptionContainer({
     selected = false,
     onChange = function(c){},
     onBodyClicked,
+    isCheckBoxDisabled,
 }) {
     return (
         <div
@@ -29,6 +30,7 @@ export default function CheckBoxOptionContainer({
                 checked={selected}
                 className={`ml-[20px] mt-[20px] ${checkBoxClassName}`}
                 onChange={onChange}
+                disabled={isCheckBoxDisabled}
             />
             {children}
         </div>

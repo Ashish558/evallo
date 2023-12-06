@@ -19,9 +19,9 @@ import { useSelector } from "react-redux";
 
 function SubscriptionAndExtensionModal({
     className,
-    openSubscriptionModal,
+    openSubscriptionModal = true,
     openExtensionsModal,
-    openedFromAccountOverview = false,
+    updateSubscriptionMode = false,
     OnCancelClicked,
     subscriptionsInfoFromAPI_Param,
     activeSubscriptionName = "",
@@ -35,7 +35,7 @@ function SubscriptionAndExtensionModal({
         company: "",
         role: "",
         userId: "",
-        registrationAs: "Company",
+        registrationAs: "",
         phoneCode:"",
         orgName: "",
         companyType: "",
@@ -49,7 +49,7 @@ function SubscriptionAndExtensionModal({
         activeStudents: "",
         activeTutors: "",
         services: [],
-        subscriptionPlan: "Starter",
+        subscriptionPlan: "",
         extensionsPlans: [],
         extensionsPricePlan: "",
     });
@@ -79,10 +79,12 @@ function SubscriptionAndExtensionModal({
     const [extensions, setExtensions] = useState(extensionsData);
     const [subscriptionsInfoFromAPI, SetSubscriptionsInfoFromAPI] = useState([]);
     const [chosenSubscriptionPlanName, SetChosenSubscriptionPlanName] = useState(
-        (openedFromAccountOverview ? activeSubscriptionName : "Professional")
+        (updateSubscriptionMode ? activeSubscriptionName : "Professional")
     );
     const [isCCRequired, SetIsCCRequired] = useState(false);
     const [stripeCustomerId, SetStripeCustomerId] = useState("");
+    const [isPaymentSuccessfullyComplete, SetIsPaymentSuccessfullyComplete] = useState(false);
+    const [isExtensionStepComplete, SetIsExtensionStepComplete] = useState(false);
 
     const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
     const [addSubscriptions, addSubscriptionsResp] = useAddSubscriptionsMutation();
@@ -132,6 +134,17 @@ function SubscriptionAndExtensionModal({
     }, [extensions]);
 
     useEffect(() => {
+        for(let i = 0; i < extensions.length; i++) {
+            if(extensions[i].checked) {
+                SetIsExtensionStepComplete(true);
+                return;
+            }
+        }
+
+        SetIsExtensionStepComplete(false);
+    }, [extensions]);
+
+    useEffect(() => {
         const chosenSubscriptionFromAPI = subscriptionsInfoFromAPI.find(item => {
             if(item.product) {
                 return item.product.name === chosenSubscriptionPlanName;
@@ -169,7 +182,21 @@ function SubscriptionAndExtensionModal({
                     }
 
                     if(data && data.data && data.data.organisation && data.data.user) {
-                        SetCompanyInfo({
+                        setValues((prev) => {
+                            return {
+                                ...prev,
+                                company: data.data.organisation.company,
+                                registrationAs: data.data.user.registrationAs,
+                                companyType: data.data.organisation.companyType,
+                                website: data.data.organisation.website,
+                                address: data.data.organisation.address,
+                                country: data.data.organisation.country,
+                                city: data.data.organisation.city,
+                                state: data.data.organisation.state,
+                                zip: data.data.organisation.zip,
+                            }
+                        })
+                        /* SetCompanyInfo({
                             nameOfBusiness: data.data.organisation.company,
                             accountType: data.data.user.registrationAs,
                             businessEntity: data.data.organisation.companyType,
@@ -177,7 +204,7 @@ function SubscriptionAndExtensionModal({
                             country: data.data.organisation.country,
                             city: data.data.organisation.zip,
                             state: data.data.organisation.state
-                        })
+                        }) */
                     }
 
                 })
@@ -195,66 +222,6 @@ function SubscriptionAndExtensionModal({
 
     useEffect(() => {
         loadOrgDetails();
-        return;
-        let orgDetails = sessionStorage.getItem("orgDetails");
-        console.log(orgDetails);
-        if(orgDetails === '' || orgDetails === undefined || orgDetails === null) {
-            getPersonalDetail()
-            .then(data => {
-                console.log("getPersonalDetail");
-                console.log(data);
-                const user = data.data.data.user;
-            
-                getOrgDetails(user.associatedOrg)
-                .then(data => {
-                    console.log("getOrgDetails");
-                    console.log(data);
-                    sessionStorage.setItem("orgDetails", JSON.stringify(data.data));
-                    if(data && data.data && data.data.stripeCustomerDetails) {
-                        SetStripeCustomerId(data.data.stripeCustomerDetails.id);
-                    }
-
-                    if(data && data.data && data.data.organisation && data.data.user) {
-                        SetCompanyInfo({
-                            nameOfBusiness: data.data.organisation.company,
-                            accountType: data.data.user.registrationAs,
-                            businessEntity: data.data.organisation.companyType,
-                            streetAddress: data.data.organisation.address,
-                            country: data.data.organisation.country,
-                            city: data.data.organisation.zip,
-                        })
-                    }
-
-                })
-                .catch(error => {
-                    console.log("Error in getOrgDetails");
-                    console.log(error);
-                });
-        
-            })
-            .catch(error => {
-            console.log("Error in getPersonalDetail");
-            console.log(error);
-            });
-
-            return;
-        }
-
-        orgDetails = JSON.parse(orgDetails);
-
-        if(orgDetails.stripeCustomerDetails) {
-            SetStripeCustomerId(orgDetails.stripeCustomerDetails.id);
-        }
-
-        if(orgDetails.organisation && orgDetails.user) {
-            SetCompanyInfo({
-                nameOfBusiness: orgDetails.organisation.company,
-                accountType: orgDetails.user.registrationAs,
-                businessEntity: orgDetails.organisation.companyType,
-            });
-        }
-        
-        
 
     }, []);
 
@@ -461,7 +428,7 @@ function SubscriptionAndExtensionModal({
     }, [frames]);
 
     useEffect(() => {
-        if(openedFromAccountOverview && openSubscriptionModal) {
+        if(updateSubscriptionMode && openSubscriptionModal) {
             setFrames({
                 orgDetails: false,
                 subscription: true,
@@ -471,7 +438,7 @@ function SubscriptionAndExtensionModal({
             return;
         }
 
-        if(openedFromAccountOverview && openExtensionsModal) {
+        if(updateSubscriptionMode && openExtensionsModal) {
             setFrames({
                 orgDetails: false,
                 subscription: false,
@@ -483,10 +450,10 @@ function SubscriptionAndExtensionModal({
     }, []);
 
     useEffect(() => {
-        if(openedFromAccountOverview) {
+        if(updateSubscriptionMode) {
             SetRestrictedIndices([0]);
         }
-    },[openedFromAccountOverview]);
+    },[updateSubscriptionMode]);
 
     const onBackToPreviousStepClicked = () => {
         setFrames(frames => {
@@ -612,6 +579,48 @@ function SubscriptionAndExtensionModal({
         console.log(response);
     };
 
+    function OnVerticalNumericSteppersStepClicked(index) {
+        if(index === 0) {
+            setFrames({
+                orgDetails: true,
+                subscription: false,
+                extensions: false,
+                review: false,
+            })
+            return;
+        }
+
+        if(index === 1) {
+            setFrames({
+                orgDetails: false,
+                subscription: true,
+                extensions: false,
+                review: false,
+            })
+            return;
+        }
+
+        if(index === 2) {
+            setFrames({
+                orgDetails: false,
+                subscription: false,
+                extensions: true,
+                review: false,
+            })
+            return;
+        }
+
+        if(index === 3) {
+            setFrames({
+                orgDetails: false,
+                subscription: false,
+                extensions: false,
+                review: true,
+            })
+            return;
+        }
+    }
+
     return (
         <div className={`aspect-[1400/900] bg-[#FFFFFF] flex rounded-[15px]  ${className} overflow-auto`} >
             <div className="h-[500px] w-1/12" >
@@ -620,13 +629,17 @@ function SubscriptionAndExtensionModal({
                     labels={["Account", "Subscription", "Extensions", "Review"]}
                     currentIndex={currentModalIndex}
                     restrictedIndices={restrictedIndices}
+                    onStepClicked={OnVerticalNumericSteppersStepClicked}
+                    incompleteIndices={(
+                        isExtensionStepComplete ? [] : [2]
+                    )}
                 />
             </div>
 
             <div className={`ml-[90px] w-9/12`} >
                 <div className="flex mt-[30px] w-full" >
                     {
-                        frames.orgDetails || openedFromAccountOverview && frames.subscription ? (
+                        frames.orgDetails || updateSubscriptionMode && frames.subscription ? (
                             <></>
                         ) : (
                             <button className="text-[#B3BDC7] text-[18.67px]" onClick={onBackToPreviousStepClicked} >
@@ -678,12 +691,14 @@ function SubscriptionAndExtensionModal({
                                 chosenSubscriptionPlanName={chosenSubscriptionPlanName}
                                 SetChosenSubscriptionPlanName={SetChosenSubscriptionPlanName}
                                 activeSubscriptionName={activeSubscriptionName}
+                                updateSubscriptionMode={updateSubscriptionMode}
                             />
                         ) : frames.extensions ? (
                             <ExtensionsChoosingModal
                                 extensions={extensions}
                                 setExtensions={setExtensions}
                                 extensionPlansInfo={extensionPlansData}
+                                updateExtensionMode={updateSubscriptionMode}
                             />
                         ) : frames.review ? (
                             <ReviewProduct
@@ -695,6 +710,7 @@ function SubscriptionAndExtensionModal({
                                 isCCRequired={isCCRequired}
                                 SetIsCCRequired={SetIsCCRequired}
                                 stripeCustomerId={stripeCustomerId}
+                                SetIsPaymentSuccessfull={SetIsPaymentSuccessfullyComplete}
                             />
                         ) : (<></>)
                     }
@@ -702,7 +718,7 @@ function SubscriptionAndExtensionModal({
 
                 <div className="flex mt-[20px] w-[1100px]" >
                     {
-                        openedFromAccountOverview ? (
+                        updateSubscriptionMode ? (
                             <button 
                                 className="font-[600] text-[#B3BDC7] text-[14px]" 
                                 onClick={() => {
@@ -729,6 +745,7 @@ function SubscriptionAndExtensionModal({
                       disabled={
                         values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
                       } */
+                      disabled={frames.review ? isCCRequired ? isPaymentSuccessfullyComplete ? false : true : false : false}
                       onClick={
                         // (frames.review ? handleSub : onSaveAndNextClicked)
                         () => {

@@ -14,6 +14,7 @@ function SubscriptionChoosingModal({
     chosenSubscriptionPlanName,
     SetChosenSubscriptionPlanName,
     activeSubscriptionName,
+    updateSubscriptionMode = false,
 }) {
     const [productDescriptions, SetProductDescriptions] = useState([]);
 
@@ -45,26 +46,26 @@ function SubscriptionChoosingModal({
                                                 `${plan.freeTrialDays} Days Free Trial`;
 
 
-                        if(plan.planName === activeSubscriptionName) {
+                        if(plan.planName === activeSubscriptionName && updateSubscriptionMode) {
                             return (
-                                <div className="mb-[25px] ml-[30px] mt-[25px] w-9/12" >
+                                <div className="mb-[40px] ml-[60px] mt-[40px] w-9/12" >
                                     <div className="flex w-full" >
                                         <img 
                                             src={greenCheckIcon}
                                         />
-                                        <div className="ml-[20px]" >
+                                        <div className="ml-[17.5px]" >
                                             <div 
-                                                className={`font-[600] text-[12px]`}
+                                                className={`font-[600] text-[18.67px]`}
                                             >
                                                 <span className="text-[#26435F]" >{plan.planDisplayName + " - "}</span>
                                                 <span className="text-[#24A3D9]" >{CurrencyNameToSymbole(plan.currency)}{plan.pricePerMonth}/month</span>
                                             </div>
 
-                                            <div className="font-[100] text-[12px]">
+                                            <div className="font-[100] text-[15px]">
                                             Active Tutors Allowed - {plan.activeTutorsAllowed === Infinity ? "unlimited" : plan.activeTutorsAllowed}
                                             </div>
 
-                                            <div className="text-[#38C980] text-[12px]" >
+                                            <div className="text-[#38C980] text-[15px]" >
                                                 Free Trial till
                                             </div>
                                         </div>

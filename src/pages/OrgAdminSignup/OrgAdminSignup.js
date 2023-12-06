@@ -486,10 +486,6 @@ export default function OrgAdminSignup() {
   }
 const [emailExistLoad,setEmailExistLoad]=useState(false)
 const handleClick = () => {
-
-  handleSignup();
-  return;
-
   const emailAlreadyExists = async () => {
       setEmailExistLoad(true)
       let cc=0;
@@ -543,12 +539,12 @@ const handleClick = () => {
       });
     }
     if (checked === true ) {
-      
-      setFrames({
+      handleSignup();
+      /* setFrames({
         ...frames,
         signupActive: false,
         subscription: true,
-      });
+      }); */
       // setcurrentStep(currentStep => currentStep + 1)
     }
     if(cc>=2){
@@ -681,7 +677,7 @@ const handleClick = () => {
       <div className="flex justify-center flex-col items-center md:grid-cols-2  mb-[100px] ">
         <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-4" />
         <>
-          {!frames.signupSuccessful ? (
+          {/* {!frames.signupSuccessful ? (
             <div className="lg:hidden bg-primary text-white pt-[79px] px-[49px]">
               <h1 className="text-[28px] mb-[13px]">
                 {frames.signupActive
@@ -695,7 +691,7 @@ const handleClick = () => {
             </div>
           ) : (
             <></>
-          )}
+          )} */}
           <div className={` flex lg:items-center relative bg-white rounded-md py-4 px-5 md:px-[48px] 
                           ${frames.extensions ? "lg:w-[1200px]" : "lg:w-[800px]"}`}>
             <div className="w-full py-4 ">
@@ -724,8 +720,8 @@ const handleClick = () => {
 
                   <div className="relative left-2/4 -translate-x-2/4 flex h-[50px] justify-around w-[120px]" >
                     <button
-                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]"
-                      onClick={google}
+                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px] hover:cursor-default"
+                      // onClick={google}
                     >
                       <img 
                         className="block"
@@ -741,7 +737,7 @@ const handleClick = () => {
                     </button> */}
 
                     <button
-                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]"
+                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px] hover:cursor-default"
                     >
                       <img 
                         className="block"
@@ -977,11 +973,11 @@ const handleClick = () => {
                       } 
                       
                       `}
-                      /* loading={emailExistLoad}
+                      loading={emailExistLoad}
                       disabled={
                         values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
-                      } */
-                      onClick={handleSignup}
+                      }
+                      onClick={handleClick}
                       children={`Create Account`}
                     />
                   </div>

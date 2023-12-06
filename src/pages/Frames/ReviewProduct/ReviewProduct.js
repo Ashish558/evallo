@@ -20,6 +20,7 @@ function ReviewProduct({
     SetIsCCRequired,
     subscriptionsInfoFromAPI = [],
     stripeCustomerId,
+    SetIsPaymentSuccessfull,
 }) {
     // const [isCCRequired, SetIsCCRequired] = useState(false);
     const [chosenSubscriptionPlan, SetChosenSubscriptionPlan] = useState(
@@ -298,6 +299,7 @@ function ReviewProduct({
                         <StripeCardDetailWidget
                             chosenSubscriptionObjectFromAPI={chosenSubscriptionObjectFromAPI}
                             stripeCustomerId={stripeCustomerId}
+                            SetIsPaymentSuccessfull={SetIsPaymentSuccessfull}
                         />
                     ) : (
                         <>
