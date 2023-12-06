@@ -123,7 +123,7 @@ function SubscriptionChoosingModal({
                                     <div className="flex mb-[5px]" key={index} >
                                         <div className="bg-[#B3BDC7] mt-[7px] rounded-full h-[3px] w-[3px]" ></div>
                                         <div className="leading-[0.8rem] ml-[10px] w-11/12" >
-                                            <span className="text-[#7C98B6] text-[10px] " >{item.title}</span><span className="font-thin text-[#B3BDC7] text-[10px]" >{" - " + item.description}</span>
+                                            <span className="text-[#7C98B6] text-[12px] " >{item.title}</span><span className="font-thin text-[#B3BDC7] text-[12px]" >{" - " + item.description}</span>
                                         </div>
                                     </div>
                                 )

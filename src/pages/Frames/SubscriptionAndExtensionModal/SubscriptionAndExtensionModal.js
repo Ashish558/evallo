@@ -700,7 +700,7 @@ function SubscriptionAndExtensionModal({
                     }
                 </div>
 
-                <div className="flex mt-[20px] w-full" >
+                <div className="flex mt-[20px] w-[1100px]" >
                     {
                         openedFromAccountOverview ? (
                             <button 

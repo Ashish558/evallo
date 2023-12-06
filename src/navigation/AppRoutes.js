@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState } from "react";
+import React, { Suspense, lazy, useState , useEffect } from "react";
 import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
@@ -6,6 +6,8 @@ import { RequireAuth } from "./PrivateRoute";
 import Footer from "../components/Footer/Footer"
 import Layout from "../pages/Layout/Layout";
 import Layout2 from "../pages/Layout/Layout2";
+import SubscriptionAndExtensionModal from "../pages/Frames/SubscriptionAndExtensionModal/SubscriptionAndExtensionModal";
+import { useLazyGetAuthQuery, useLazyGetOrganizationQuery, useLazyGetPersonalDetailQuery } from "../app/services/users";
 
 
 const AllTests = lazy(() => import("../pages/AllTests/AllTests"));
@@ -43,6 +45,7 @@ const AnnotatorComponent = lazy(() => import("../components/annotate"));
 const Testinstruction_2 = lazy(() => import("../components/TestItem/testinstruction_2"));
 const AdminPortal = lazy(() => import("../pages/SuperadminDashboard/components/About/AdminPortal"));
 const OrgAdminSignup = lazy(() => import("../pages/OrgAdminSignup/OrgAdminSignup"));
+
 // Lazy-load your components
 
 //  layout page
@@ -50,12 +53,70 @@ const OrgAdminSignup = lazy(() => import("../pages/OrgAdminSignup/OrgAdminSignup
 const AppRoutes = () => {
   const { isLoggedIn } = useSelector((state) => state.user);
   const { role: persona } = useSelector((state) => state.user);
+  const [isOrgAdmin, SetIsOrgAdmin] = useState(false);
+  const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(false);
+  const [getPersonalDetail, getPersonalDetailResp] = useLazyGetPersonalDetailQuery();
+  const [getOrgDetails, getOrgDetailsResp] = useLazyGetOrganizationQuery();
 
+  useEffect(() => {
+    if(persona === "parent" || persona === "student" || persona === "tutor" || 
+       persona === "contributor" || persona === "superAdmin" || persona === "manager") {
+        SetIsOrgAdmin(false);
+        return;
+    }
+
+    SetIsOrgAdmin(true);
+  }, [persona]);
+
+  useEffect(() => {
+    getPersonalDetail()
+    .then(data => {
+      console.log("getPersonalDetail");
+      console.log(data);
+      const user = data.data.data.user;
+
+      getOrgDetails(user.associatedOrg)
+      .then(data => {
+        console.log("getOrgDetails - attempt with associatedOrg");
+        console.log(data);
+
+        if(data.data === null || data.data === undefined ||
+          data.data.customerSubscriptions === null || data.data.customerSubscriptions === undefined ||
+          data.data.customerSubscriptions.data === null || data.data.customerSubscriptions.data === undefined ||
+          data.data.customerSubscriptions.data.length === 0) {
+          SetIsSubscriptionAndExtensionModalActive(true);
+        } else {
+          SetIsSubscriptionAndExtensionModalActive(false);
+        }
+      })
+      .catch(error => {
+        console.log("Error in getOrgDetails");
+        console.log(error);
+      });
+
+    })
+    .catch(error => {
+      console.log("Error in getPersonalDetail");
+      console.log(error);
+    })
+  }, []);
 
   return (
     <BrowserRouter>
       {/* <Navbar /> */}
       <Layout2>
+      {
+        isSubscriptionAndExtensionModalActive && isOrgAdmin ? (
+          <div className="fixed bg-[#00000080] top-[-50px] left-0 right-0 bottom-[-50px] z-[1000000]" style={{position: "fixed"}} >
+            <SubscriptionAndExtensionModal
+              className="relative top-[500px] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1400px] h-[900px]"
+              OnCheckoutClicked={() => {
+                SetIsSubscriptionAndExtensionModalActive(false);
+              }}
+            />
+          </div>
+        ) : (<></>)
+      }
       <Routes>
         <Route path="/" element={<Suspense fallback={<div>Loading...</div>}>{isLoggedIn ? <Home /> : <Login />}</Suspense>}/>
 
