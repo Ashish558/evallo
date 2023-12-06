@@ -583,14 +583,14 @@ function AccountOverviewWithSubscriptionInfo() {
             }
 
 
-            <div className="flex justify-between h-[700px] mb-[50px] w-full" >
+            <div className="flex justify-between h-[800px] w-full" >
                 <div 
-                    className="bg-[#fff] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)]" 
-                    style={{width: "34.375%", height: "100%"}} 
+                    className="bg-[#fff] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)] h-[800px] w-[550px]" 
+                    // style={{width: "34.375%", height: "100%"}} 
                 >
 
-                    <div className="relative mt-[20px] left-2/4 -translate-x-2/4"
-                        style={{width: "17.72%" , aspectRatio: 1}}
+                    <div className="relative mt-[30px] left-2/4 -translate-x-2/4 h-[97.5] w-[97.5px]"
+                        // style={{width: "17.72%" , aspectRatio: 1}}
                     >
                         <img
                             className="h-full w-full"
@@ -598,22 +598,22 @@ function AccountOverviewWithSubscriptionInfo() {
                         />
 
                         <img
-                            className="absolute bottom-[0px] right-[0px] aspect-square w-[30px]"
+                            className="absolute bottom-[0px] right-[0px] h-[29.25px] w-[29.25px]"
                             src={camIcon}
                         />
                     </div>
 
                     <div 
-                        className="relative flex justify-between mt-[20px] left-2/4 -translate-x-2/4"
+                        className="relative flex justify-between mt-[30px] left-2/4 -translate-x-2/4"
                         style={{width: "87.27%"}}
                     >
                         <InputField
                             placeholder=""
-                            parentStyle={{width: "47.9%"}}
-                            parentClassName="text-xs"
+                            // parentStyle={{width: "47.9%"}}
+                            parentClassName="text-xs w-[230px]"
                             label="First Name"
-                            labelClassname="text-[#26435F] font-semibold"
-                            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[40px] text-md"
+                            labelClassname="text-[#26435F] text-[15px] font-semibold"
+                            inputContainerClassName=" border border-[#D0D5DD] mt-[10px] rounded-md py-[9px] h-[40px] w-full text-md"
                         
                             value={values.firstName}
                             /* onChange={(e) =>
@@ -628,11 +628,11 @@ function AccountOverviewWithSubscriptionInfo() {
 
                         <InputField
                             placeholder=""
-                            parentStyle={{width: "47.9%"}}
-                            parentClassName="text-xs"
+                            // parentStyle={{width: "47.9%"}}
+                            parentClassName="text-xs w-[230px]"
                             label="Last Name"
-                            labelClassname="text-[#26435F] font-semibold"
-                            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[40px] text-md"
+                            labelClassname="text-[#26435F] text-[15px] font-semibold"
+                            inputContainerClassName=" border border-[#D0D5DD] mt-[10px] rounded-md py-[9px] h-[40px] w-full text-md"
                         
                             value={values.lastName}
                             /* onChange={(e) =>
@@ -648,11 +648,11 @@ function AccountOverviewWithSubscriptionInfo() {
 
                     <InputField
                         placeholder=""
-                        parentStyle={{width: "87.27%"}}
-                        parentClassName="relative mt-[20px] left-2/4 -translate-x-2/4 text-xs"
+                        // parentStyle={{width: "87.27%"}}
+                        parentClassName="relative mt-[25px] left-2/4 -translate-x-2/4 text-xs w-[480px]"
                         label="Role / Job Title"
-                        labelClassname="text-[#26435F] font-semibold"
-                        inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[40px] text-md"
+                        labelClassname="text-[#26435F] text-[15px] font-semibold"
+                        inputContainerClassName=" border border-[#D0D5DD] mt-[10px] rounded-md py-[9px] h-[40px] w-full text-md"
                     
                         value={values.role}
                         /* onChange={(e) =>
@@ -667,12 +667,12 @@ function AccountOverviewWithSubscriptionInfo() {
 
                     <InputField
                         placeholder=""
-                        parentStyle={{width: "87.27%"}}
-                        parentClassName="relative mt-[20px] left-2/4 -translate-x-2/4 text-xs"
+                        // parentStyle={{width: "87.27%"}}
+                        parentClassName="relative mt-[25px] left-2/4 -translate-x-2/4 text-xs w-[480px]"
                         label="Email"
                         IconLeft={octIcon}
-                        labelClassname="text-[#26435F] font-semibold"
-                        inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[40px] text-md"
+                        labelClassname="text-[#26435F] text-[15px] font-semibold"
+                        inputContainerClassName=" border border-[#D0D5DD] mt-[10px] rounded-md py-[9px] h-[40px] w-full text-md"
                     
                         value={values.email}
                         /* onChange={(e) =>
@@ -687,10 +687,11 @@ function AccountOverviewWithSubscriptionInfo() {
 
                     <InputFieldDropdown
                       placeholder=""
-                      parentStyle={{width: "87.27%"}}
-                      parentClassName="relative mt-[20px] left-2/4 -translate-x-2/4 text-xs"
-                      labelClassname="text-[#26435F] font-semibold"
-                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
+                    //   parentStyle={{width: "87.27%"}}
+                      parentClassName="relative mt-[25px] left-2/4 -translate-x-2/4 text-xs w-[480px]"
+                      labelClassname="text-[#26435F] text-[15px] font-semibold"
+                      inputContainerClassName=" border border-[#D0D5DD] mt-[10px] rounded-md py-[9px] h-[40px] w-[full] text-md"
+                      inputClassName="text-[17.5px]"
                       label="Phone"
                       value={values.phone}
                       codeValue={values.phoneCode}
@@ -713,36 +714,36 @@ function AccountOverviewWithSubscriptionInfo() {
                     />
 
                     <div
-                        className="relative mt-[20px] left-2/4 -translate-x-2/4"
-                        style={{width: "87.27%"}}
+                        className="relative mt-[25px] left-2/4 -translate-x-2/4 w-[480px]"
+                        // style={{width: "87.27%"}}
                     >
-                        <div className="font-[300] text-[#26435F]" >Short Bio / Intro</div>
+                        <div className="font-[500] text-[#26435F] text-[15px]" >Short Bio / Intro</div>
                         <textarea
-                            className={`rounded-[5px] resize-none shadow-[0px_0px_2px_rgba(0,0,0,0.25)] h-[150px] w-full ${styles.bioTextarea}`}
+                            className={`mt-[9.65px] rounded-[5px] resize-none shadow-[0px_0px_2px_rgba(0,0,0,0.25)] text-[15px] h-[150px] w-full ${styles.bioTextarea}`}
                             placeholder="Here, you can talk about your experience, your day-to-day tasks, your personality, your hobbies, or your methodology as a tutor. 
                             Anything you feel is relevant!"
                         ></textarea>
                     </div>
 
                     <div 
-                        className="relative flex justify-between mt-[20px] left-2/4 -translate-x-2/4"
+                        className="relative flex justify-between mt-[15px] left-2/4 -translate-x-2/4"
                         style={{width: "69.09%"}}
                     >
                         <PrimaryButton
-                            style={{width: "46.05%"}}
-                            className={` flex justify-center  bg-[#FFA28D]  disabled:opacity-60  rounded-[10px] text-white text-sm font-medium relative py-[9px]`}
+                            // style={{width: "46.05%"}}
+                            className={` flex justify-center h-[50px] w-[175px] bg-[#FFA28D]  disabled:opacity-60  rounded-[10px] text-white text-sm font-medium relative py-[9px]`}
                             /* loading={emailExistLoad}
                             disabled={
                                 values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
                             } */
                             // onClick={handleClick}
-                            children={`Save`}
+                            children={<span className="font-[600] text-[#fff] text-[20px]" >Save</span>}
                         />
 
                         <SecondaryButton
-                            style={{width: "46.05%", backgroundColor: "#fff"}}
-                            children={<span className="font-[500] text-[14px] text-[#26435F]" >Reset Password</span>}
-                            className="bg-[#fff] px-[0px] rounded-[10px] shadow-[0px_0px_10px_rgba(0,0,0,0.1)]"
+                            style={{backgroundColor: "#fff"}}
+                            children={<span className="font-[500] text-[17.5px] text-[#26435F]" >Reset Password</span>}
+                            className="bg-[#fff] px-[0px] rounded-[10px] shadow-[0px_0px_10px_rgba(0,0,0,0.1)] h-[50px] w-[175px]"
                             onClick={OnResetPasswordClicked}
                         />
                     </div>
@@ -753,13 +754,13 @@ function AccountOverviewWithSubscriptionInfo() {
                     style={{width: "62.5%", height: "100%"}}
                 >
                     <div
-                        className="bg-[#fff] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)]"
-                        style={{width: "100%", height: "54.75%"}}
+                        className="bg-[#fff] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)] h-[438px] w-[1000px]"
+                        // style={{width: "100%", height: "54.75%"}}
                     >
-                        <div className="font-[600] ml-[30px] mt-[30px] text-[#26435F] text-[14px]" >Manage Your Subscription Plan</div>
+                        <div className="font-[600] ml-[30px] mt-[30px] text-[#26435F] text-[18.67px]" >Manage Your Subscription Plan</div>
                         <div className="ml-[30px]" >
-                            <span className="font-[200] text-[#26435F] text-[12px]">For detailed breakdown of features, please visit our </span>
-                            <button className="font-[200] inline text-[#24A3D9] text-[12px]" >pricing page.</button>
+                            <span className="font-[200] text-[#26435F] text-[15px]">For detailed breakdown of features, please visit our </span>
+                            <button className="font-[200] inline text-[#24A3D9] text-[15px]" >pricing page.</button>
                         </div>
 
                         {/* <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Active Subscription</div> */}
@@ -768,13 +769,14 @@ function AccountOverviewWithSubscriptionInfo() {
                             !(activeSubscriptionInfo === undefined || activeSubscriptionInfo === null || activeSubscriptionInfo.planName === "") ?
                             (
                                 <>
-                                <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Active Subscription</div>
+                                <div className="font-[600] ml-[30px] mt-[30px] text-[#FFA28D] text-[17.5px]" >Active Subscription</div>
                                 <div 
                                     className="flex justify-between ml-[30px] mt-[5px]" 
                                     style={{width: "92%"}}
                                 >
                                     <ActiveSubscriptionWidget
-                                        style={{width: "65%"}}
+                                        // style={{width: "65%"}}
+                                        className="h-[106px] w-[600px]"
                                         canChangePlan={true}
                                         planDisplayName={activeSubscriptionInfo.planDisplayName}
                                         subscriptionPricePerMonth={activeSubscriptionInfo.subscriptionPricePerMonth}
@@ -785,28 +787,28 @@ function AccountOverviewWithSubscriptionInfo() {
 
                                     <div className="flex flex-col items-end" >
                                         <div className="flex" >
-                                            <span className="font-[100] text-[#517CA8] text-[12px]" >Subscription Start Date{" - "}</span>
-                                            <span className="font-[400] text-[#517CA8] text-[12px]" >{
+                                            <span className="font-[100] text-[#517CA8] text-[15px]" >Subscription Start Date{" - "}</span>
+                                            <span className="font-[400] text-[#517CA8] text-[15px]" >{
                                                 getDateAsString(activeSubscriptionInfo.subscriptionStartDate)
                                             }</span>
                                         </div>
 
                                         <div className="flex mt-[3px]" >
-                                            <span className="font-[100] text-[#517CA8] text-[12px]" >Auto-Renewal Date{" - "}</span>
-                                            <span className="font-[400] text-[#517CA8] text-[12px]" >{
+                                            <span className="font-[100] text-[#517CA8] text-[15px]" >Auto-Renewal Date{" - "}</span>
+                                            <span className="font-[400] text-[#517CA8] text-[15px]" >{
                                                 getDateAsString(activeSubscriptionInfo.autoRenewalDate)
                                             }</span>
                                         </div>
 
                                         <div className="flex mt-[3px]" >
-                                            <span className="font-[100] text-[#517CA8] text-[12px]" >Monthly Cost (after discount){" - "}</span>
-                                            <span className="font-[400] text-[#517CA8] text-[12px]" >{CurrencyNameToSymbole(activeSubscriptionInfo.currency) + activeSubscriptionInfo.subscriptionPricePerMonth}</span>
+                                            <span className="font-[100] text-[#517CA8] text-[15px]" >Monthly Cost (after discount){" - "}</span>
+                                            <span className="font-[400] text-[#517CA8] text-[15px]" >{CurrencyNameToSymbole(activeSubscriptionInfo.currency) + activeSubscriptionInfo.subscriptionPricePerMonth}</span>
                                         </div>
 
                                         <div className="grow" ></div>
 
                                         <button 
-                                            className="font-[400] underline text-[#24A3D9] text-[12px]" 
+                                            className="font-[400] underline text-[#24A3D9] text-[15px]" 
                                             onClick={
                                                 () => {
                                                     OnCancelSubscriptionClicked(activeSubscriptionId);
@@ -871,8 +873,8 @@ function AccountOverviewWithSubscriptionInfo() {
                     </div>
 
                     <div
-                        className="bg-[#fff] pb-[30px] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)]"
-                        style={{width: "100%"}}
+                        className="bg-[#fff] pb-[30px] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)] h-[342px] w-[1000px]"
+                        // style={{width: "100%"}}
                     >
                         <div 
                             className="flex items-center justify-between ml-[30px] mt-[20px]" 
