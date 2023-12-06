@@ -13,7 +13,7 @@ import SecondaryButton from "../Buttons/SecondaryButton";
 import { useCreateIntentMutation, useFinishSetupMutation } from '../../app/services/subscription';
 import { BASE_URL } from '../../app/constants/constants';
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`);
 
 function Payment({
     chosenSubscriptionObjectFromAPI,
