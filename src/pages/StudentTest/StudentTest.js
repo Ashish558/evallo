@@ -565,38 +565,44 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
       text: "Assignment Name", // testName
       className: "text-left pl-6",
       onCick: sortByAssignmentName,
-      willDisplayDownArrow: assignmentNameSortState !== SORT_STATES.DESCENDING_ORDER,
+      // willDisplayDownArrow: assignmentNameSortState !== SORT_STATES.DESCENDING_ORDER,
+      willDisplayDownArrow: null,
     },
     {
       id: 2,
       text: "Assigned on", // assignedOn
       onCick: sortByAssignedDate,
-      willDisplayDownArrow: assignedOnSortState !== SORT_STATES.DESCENDING_ORDER,
+      // willDisplayDownArrow: assignedOnSortState !== SORT_STATES.DESCENDING_ORDER,
+      willDisplayDownArrow: null,
     },
 
     {
       id: 3,
       text: "Due Date", // dueDate
       onCick: sortByDueDate,
-      willDisplayDownArrow: dueDateSortState !== SORT_STATES.DESCENDING_ORDER,
+      // willDisplayDownArrow: dueDateSortState !== SORT_STATES.DESCENDING_ORDER,
+      willDisplayDownArrow: null,
     },
     {
       id: 4,
       text: "Duration", // duration
       onCick: sortByDuration,
-      willDisplayDownArrow: durationSortState !== SORT_STATES.DESCENDING_ORDER,
+      // willDisplayDownArrow: durationSortState !== SORT_STATES.DESCENDING_ORDER,
+      willDisplayDownArrow: null,
     },
     {
       id: 1,
       text: "Status", // status
       onCick: sortByStatus,
-      willDisplayDownArrow: statusSortState !== SORT_STATES.DESCENDING_ORDER,
+      // willDisplayDownArrow: statusSortState !== SORT_STATES.DESCENDING_ORDER,
+      willDisplayDownArrow: null,
     },
     {
       id: 5,
       text: "Scores",
       onCick: sortByScore,
-      willDisplayDownArrow: scoreSortState !== SORT_STATES.DESCENDING_ORDER,
+      // willDisplayDownArrow: scoreSortState !== SORT_STATES.DESCENDING_ORDER,
+      willDisplayDownArrow: null,
     },
     {
       id: 6,
@@ -811,7 +817,7 @@ console.log("profile",fromProfile)
 
 
   return (
-    <div className="w-[83.23vw] mx-auto">
+    <div className="w-[1599px] mx-auto">
       <div className={`  ${fromProfile ? '!mx-0' : 'min-h-screen'}`}>
         <div className={`pb-4 mt-[35px]  ${fromProfile ? 'px-0 py-0 ' : ''}`}>
           {(persona === "student" || persona === "parent") && !fromProfile && (
@@ -819,7 +825,7 @@ console.log("profile",fromProfile)
               className={`${persona === "student" || true ? "flex justify-between items-center" : ""
                 }`}
             >
-              <p className="text-[#24A3D9]   text-base-20">
+              <p className="text-[#24A3D9]   text-[20px] font-normal">
                <span className="cursor-pointer" onClick={()=>navigate('/')}>
                {organization?.company +
                   "  >  " +
@@ -828,7 +834,7 @@ console.log("profile",fromProfile)
                   lastName +
                   "  >  "}
                </span>
-                <span className="font-semibold">Assignments</span>
+                <span className="font-bold">Assignments</span>
               </p>
               <div className="flex justify-end items-center">
 
@@ -914,6 +920,8 @@ console.log("profile",fromProfile)
           <div className={`mt-6 ${fromProfile ? '!mt-0' : ''}`}>
             {console.log(allTests)}
             <Table
+            theadWidth={"w-[1598px]"}
+            widthFullTable={true}
               testtype={testtype}
               fromProfile={fromProfile}
               awsLink={awsLink}            
