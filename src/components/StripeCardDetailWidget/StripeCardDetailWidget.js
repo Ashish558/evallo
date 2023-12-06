@@ -29,6 +29,7 @@ function Payment({
     const [createIntentForPayment , createIntentForPaymentResp] = useCreateIntentMutation();
     const [finishSetupForPayment , finishSetupForPaymentResp] = useFinishSetupMutation();
     const [isPaymentProcessOnGoing, SetIsPaymentProcessOnGoing] = useState(false);
+    const [isPaymentSuccessfullyComplete, SetIsPaymentSuccessfullyComplete] = useState(false);
 
     const handleError = (error) => {
         SetIsPaymentProcessOnGoing(false);
@@ -48,6 +49,7 @@ function Payment({
         }
 
         SetIsPaymentProcessOnGoing(true);
+        SetIsPaymentSuccessfullyComplete(false);
         setLoading(true);
 
         // Trigger form validation and wallet collection
@@ -108,6 +110,10 @@ function Payment({
             console.log(post);
 
             if(post) {
+                SetIsPaymentSuccessfullyComplete(true);
+            }
+
+            if(post && SetIsPaymentSuccessfull.constructor && SetIsPaymentSuccessfull.constructor.name === "Function") {
                 SetIsPaymentSuccessfull(true);
             }
         }
@@ -138,9 +144,10 @@ function Payment({
                 <PrimaryButton
                     className={`w-[70px] flex justify-center  bg-[#FFA28D]  disabled:opacity-60  rounded text-white text-[12px] font-medium relative py-[4px]`}
                     
-                    children={`Add`}
+                    children={(isPaymentSuccessfullyComplete ? "Added" : `Add`)}
                     onClick={handleSubmit}
                     loading={isPaymentProcessOnGoing}
+                    disabled={isPaymentSuccessfullyComplete ? true : false}
                 />
             </div>
         </div>

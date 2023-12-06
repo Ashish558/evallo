@@ -13,8 +13,10 @@ import Schedule from "../../assets/icons/Calendar_light.svg";
 import Schedule1 from "../../assets/icons/navbar-icons/calender-red.png";
 import Assignment from "../../assets/icons/Assignments_light.svg";
 import Assignment1 from "../../assets/icons/navbar-icons/Assignments_red.svg";
+import AssignmentDisabled from "../../assets/icons/navbar-icons/Assignments_grey.svg";
 import Content from "../../assets/icons/content-logo_light.svg";
 import Content2 from "../../assets/icons/navbar-icons/contents_red.svg";
+import ContentDisabled from "../../assets/icons/navbar-icons/contents_grey.svg";
 import Invoice from "../../assets/images/invoice-logo.svg";
 import Invoice2 from "../../assets/images/invoice-logo-red.svg";
 import Settings from "../../assets/images/Settings 1 new.svg";
@@ -61,6 +63,7 @@ let tempnavdata = [
    {
       icon: Assignment,
       activeIcon: Assignment1,
+      disabledIcon: AssignmentDisabled,
       path: "/assigned-tests",
       tooltip: "Assignments",
       isDisabled: true,
@@ -68,6 +71,7 @@ let tempnavdata = [
    {
       icon: Content,
       activeIcon: Content2,
+      disabledIcon: ContentDisabled,
       path: "/all-tests",
       tooltip: "Content",
       isDisabled: true,
@@ -465,6 +469,10 @@ const [loading2,setLoading2]=useState(false)
   }
 
   useEffect(() => {
+   if(persona === "parent" || persona === "student" || persona === "tutor" || 
+       persona === "contributor" || persona === "superAdmin" || persona === "manager") {
+         return;
+   }
    loadOrgDetails();
   }, [])
 
@@ -489,7 +497,7 @@ const [loading2,setLoading2]=useState(false)
                   return (
                      <div
                         key={idx}
-                        className={`flex items-center mr-6 design:mr-10  ${isLoggedIn ? "cursor-pointer" : ' cursor-default'}`}
+                        className={`flex items-center mr-6 design:mr-10  ${isLoggedIn && !item.isDisabled ? "cursor-pointer" : ' cursor-default'}`}
                         onClick={() => {
                            if(isLoggedIn && !item.isDisabled) {
                               handleNavigate(item.path)
@@ -514,11 +522,11 @@ const [loading2,setLoading2]=useState(false)
                               <p>
                                  <img
                                     className="w-[21.34px] h-[21.34px]"
-                                    src={item.icon}
+                                    src={(item.isDisabled && item.disabledIcon ? item.disabledIcon : item.icon)}
                                     alt=""
                                  />
                               </p>
-                              <p className={`pl-[10px] text-[17.33px] ${item.isDisabled ? "text-[#24A3D9]" : ""}`}> {item.tooltip} </p>
+                              <p className={`pl-[10px] text-[17.33px] ${item.isDisabled ? "text-[#B3BDC7]" : ""}`}> {item.tooltip} </p>
                            </>
                         )}
                      </div>

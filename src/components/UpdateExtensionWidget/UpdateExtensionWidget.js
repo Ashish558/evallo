@@ -1,5 +1,4 @@
 import { useRef } from "react";
-import CheckBoxOptionContainer from "../CheckBoxOptionContainer/CheckBoxOptionContainer";
 import { useEffect } from "react";
 import { useState } from "react";
 import { CurrencyNameToSymbole } from "../../utils/utils";
@@ -19,7 +18,7 @@ import styles from "./style.module.css";
     ]
 */
 
-function ExtensionSelectionWidget({
+function UpdateExtensionWidget({
     className,
     selected, 
     onChange,
@@ -53,12 +52,11 @@ function ExtensionSelectionWidget({
     }, [])
 
     return (
-        <CheckBoxOptionContainer
+        <div
             className={`${className}`}
             onChange={onChange}
             selected={selected}
             onBodyClicked={onBodyClicked}
-            isCheckBoxDisabled={isDisabled}
         >
             <div className="w-[650px] h-[270px]" >
                 <div className="flex items-center mt-[20px]" style={{width: "91%"}} >
@@ -141,8 +139,8 @@ function ExtensionSelectionWidget({
 
                 
             </div>
-        </CheckBoxOptionContainer>
+        </div>
     )
 }
 
-export default ExtensionSelectionWidget;
+export default UpdateExtensionWidget;
