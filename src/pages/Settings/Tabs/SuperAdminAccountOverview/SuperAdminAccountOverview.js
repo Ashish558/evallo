@@ -156,8 +156,8 @@ const AccountOverview = () => {
             style={{ color: "blue" }}
             placeholder=""
             labelClassname="mb-1"
-            parentClassName="text-xs text-[#26435F] "
-            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw] h-[53px]"
+            parentClassName="flex-1 text-xs text-[#26435F] "
+            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 h-[53px]"
             inputClassName="bg-transparent  font-normal text-[#667085]"
             label="First name"
             value={values.firstName}
@@ -173,8 +173,8 @@ const AccountOverview = () => {
           <InputField
             placeholder=""
             labelClassname="mb-1"
-            parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw] h-[53px]"
+            parentClassName="flex-1 text-xs text-[#26435F]"
+            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 h-[53px]"
             inputClassName="bg-transparent font-normal text-[#667085]"
             label="Last name"
             value={values.lastName}
@@ -190,8 +190,8 @@ const AccountOverview = () => {
           <InputField
             placeholder=""
             labelClassname="mb-1"
-            parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[21.0416666667vw] h-[53px]"
+            parentClassName="flex-1 text-xs text-[#26435F]"
+            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 h-[53px]"
             inputClassName="bg-transparent border border-white rounded-5 font-normal text-[#667085]"
             label="Email"
             value={values.email}
@@ -222,8 +222,8 @@ const AccountOverview = () => {
           <InputFieldDropdown
             placeholder=""
             labelClassname="mb-1"
-            parentClassName="text-xs w-[400px] text-[#26435F] "
-            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 h-[47px] w-[15.26vw] h-[53px]"
+            parentClassName="flex-1 text-xs text-[#26435F] "
+            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 h-[47px] h-[53px]"
             inputClassName="bg-transparent  font-normal text-[#667085]"
             label="Phone"
             value={values.phone}
@@ -256,7 +256,7 @@ const AccountOverview = () => {
             labelClassname="mb-1"
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw] h-[53px]"
+            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 h-[53px]"
             inputClassName="bg-transparent border border-white rounded-5 font-normal text-[#667085]"
             label="Current password"
             value={values.currentPassword}
@@ -272,7 +272,7 @@ const AccountOverview = () => {
             labelClassname="mb-1"
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw] h-[53px]"
+            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 h-[53px]"
             inputClassName="bg-transparent border border-white rounded-5 font-normal text-[#667085]"
             label="New password"
             value={values.newPassword}
@@ -289,7 +289,7 @@ const AccountOverview = () => {
             style={{ border: "1px solid white !important" }}
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw] h-[53px]"
+            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 h-[53px]"
             inputClassName="bg-transparent border border-white rounded-5 font-normal text-[#667085]"
             label="Confirm password"
             value={values.confirmPassword}
