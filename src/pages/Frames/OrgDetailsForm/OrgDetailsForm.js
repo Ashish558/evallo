@@ -3,6 +3,7 @@ import InputSelectNew from "../../../components/InputSelectNew/InputSelectNew";
 import RadioUnselected from "../../../assets/icons/radioUnChecked2.svg";
 import RadioSelected from "../../../assets/icons/radioChecked2.svg";
 import { Country, State } from "country-state-city";
+import { useEffect } from "react";
 
 const stateNames = State.getAllStates().map((state) => state.name);
 
@@ -35,6 +36,11 @@ function OrgDetailsForm({
     companyInfo,
     SetCompanyInfo,
 }) {
+
+    useEffect(() => {
+      console.log("companyInfo");
+      console.log(companyInfo);
+    },[]);
 
     const handleCompanyTypeChange = (e) => {
         setValues({

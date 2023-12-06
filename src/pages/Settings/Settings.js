@@ -1394,7 +1394,67 @@ export default function Settings() {
           </span>
           <span className="font-semibold">Settings</span>
         </p>
-        <div className="shivam-tabs rounded-md">
+
+        <div className={`flex items-end overflow-hidden pl-[17px] ${styles.navBar}`} >
+        {
+          tabs.map((item, index) => {
+            const isActive = activeTab === index + 1;
+            return (
+              <button 
+                key={index}
+                style={{height: "88.88%"}}
+                className={`relative flex items-center ${styles.navItem}
+                                  ${isActive ? styles.active : ""}
+              `} 
+                onClick={() => changeTab(index + 1)}
+              >
+                <div className="mr-[10px]" >
+                  <img
+                    src={
+                      isActive ? item.selectedStateIcon : item.unselectedStateIcon
+                    }
+                  />
+                </div>
+                <div className={`${styles.name}`} >
+                  {item.name}
+                </div>
+
+                {
+                  isActive ? (
+                    <>
+                      <div className="absolute bg-[#fff] h-full w-[10px] -translate-x-full z-[3]"
+                           style={{
+                            left: "1px",
+                           }}
+                      ></div>
+                      <div className="absolute bg-[#26435F] h-full w-[12px] left-0 -translate-x-full z-[3]" 
+                           style={{
+                            left: "1px",
+                            borderBottomRightRadius: "100px"
+                           }} 
+                      ></div>
+
+                      <div className="absolute bg-[#fff] h-full w-[10px] translate-x-full z-[3]" 
+                           style={{
+                            right: "1px"
+                           }}
+                      ></div>
+                      <div className="absolute bg-[#26435F] h-full w-[11px] translate-x-full z-[3]" 
+                           style={{
+                            right: "1px",
+                            borderBottomLeftRadius: "100px"
+                           }} 
+                      ></div>
+                    </>
+                  ) : (<></>)
+                }
+              </button>
+            )
+          })
+        }
+        </div>
+
+        {/* <div className="shivam-tabs rounded-md">
           <ul className="tabs group">
             {tabs.map((item, idx) => {
               return (
@@ -1430,7 +1490,8 @@ export default function Settings() {
               );
             })}
           </ul>
-        </div>
+        </div> */}
+
         <div className=" flex w-full flex-1 items-center mb-[30px]">
           <div
             className={`${styles.tabsContainer} gap-7 flex-1 !shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)]`}

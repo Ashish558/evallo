@@ -131,6 +131,18 @@ function SubscriptionAndExtensionModal({
         OnExtensionsChanged();
     }, [extensions]);
 
+    useEffect(() => {
+        const chosenSubscriptionFromAPI = subscriptionsInfoFromAPI.find(item => {
+            if(item.product) {
+                return item.product.name === chosenSubscriptionPlanName;
+            }
+            return false
+        })
+        sessionStorage.setItem("chosenSubscriptionFromAPI", JSON.stringify(chosenSubscriptionFromAPI));
+        console.log("chosenSubscriptionFromAPI");
+        console.log(chosenSubscriptionFromAPI);
+    }, [subscriptionsInfoFromAPI, chosenSubscriptionPlanName]);
+
     /* useEffect(() => {
         for(let i = 0; i < extensions.length; i++) {
             if(extensions[i].checked) {
@@ -140,7 +152,50 @@ function SubscriptionAndExtensionModal({
         }
     }, [extensions]); */
 
+    function loadOrgDetails() {
+        getPersonalDetail()
+            .then(data => {
+                console.log("getPersonalDetail");
+                console.log(data);
+                const user = data.data.data.user;
+            
+                getOrgDetails(user.associatedOrg)
+                .then(data => {
+                    console.log("getOrgDetails");
+                    console.log(data);
+                    sessionStorage.setItem("orgDetails", JSON.stringify(data.data));
+                    if(data && data.data && data.data.stripeCustomerDetails) {
+                        SetStripeCustomerId(data.data.stripeCustomerDetails.id);
+                    }
+
+                    if(data && data.data && data.data.organisation && data.data.user) {
+                        SetCompanyInfo({
+                            nameOfBusiness: data.data.organisation.company,
+                            accountType: data.data.user.registrationAs,
+                            businessEntity: data.data.organisation.companyType,
+                            streetAddress: data.data.organisation.address,
+                            country: data.data.organisation.country,
+                            city: data.data.organisation.zip,
+                            state: data.data.organisation.state
+                        })
+                    }
+
+                })
+                .catch(error => {
+                    console.log("Error in getOrgDetails");
+                    console.log(error);
+                });
+        
+            })
+            .catch(error => {
+            console.log("Error in getPersonalDetail");
+            console.log(error);
+            });
+    }
+
     useEffect(() => {
+        loadOrgDetails();
+        return;
         let orgDetails = sessionStorage.getItem("orgDetails");
         console.log(orgDetails);
         if(orgDetails === '' || orgDetails === undefined || orgDetails === null) {
@@ -155,12 +210,21 @@ function SubscriptionAndExtensionModal({
                     console.log("getOrgDetails");
                     console.log(data);
                     sessionStorage.setItem("orgDetails", JSON.stringify(data.data));
-                    SetStripeCustomerId(data.data.stripeCustomerDetails.id);
-                    SetCompanyInfo({
-                        nameOfBusiness: data.data.organisation.company,
-                        accountType: data.data.user.registrationAs,
-                        businessEntity: data.data.organisation.companyType,
-                    })
+                    if(data && data.data && data.data.stripeCustomerDetails) {
+                        SetStripeCustomerId(data.data.stripeCustomerDetails.id);
+                    }
+
+                    if(data && data.data && data.data.organisation && data.data.user) {
+                        SetCompanyInfo({
+                            nameOfBusiness: data.data.organisation.company,
+                            accountType: data.data.user.registrationAs,
+                            businessEntity: data.data.organisation.companyType,
+                            streetAddress: data.data.organisation.address,
+                            country: data.data.organisation.country,
+                            city: data.data.organisation.zip,
+                        })
+                    }
+
                 })
                 .catch(error => {
                     console.log("Error in getOrgDetails");
@@ -636,7 +700,7 @@ function SubscriptionAndExtensionModal({
                     }
                 </div>
 
-                <div className="flex mt-[20px] w-full" >
+                <div className="flex mt-[20px] w-[1100px]" >
                     {
                         openedFromAccountOverview ? (
                             <button 
