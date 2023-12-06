@@ -371,17 +371,19 @@ function AccountOverviewWithSubscriptionInfo() {
                             activeSub = subscriptionsInfoFromAPI.find(item => item.id === planId); */
                             console.log("activeSub")
                             console.log(activeSub);
-                            SetActiveSubscriptionName(activeSub.product.name);
-                            SetActiveSubscriptionInfo({
-                                planName: activeSub.product.name,
-                                planDisplayName: activeSub.product.name,
-                                activeTutorsAllowed: parseInt(activeSub.product.metadata.active_tutors),
-                                currency: activeSub.currency,
-                                subscriptionPricePerMonth: activeSub.unit_amount / 100,
-                                monthlyCostAfterDiscount: activeSub.unit_amount / 100,
-                                subscriptionStartDate: new Date(products[i].start_date * 1000),
-                                autoRenewalDate: new Date(products[i].trial_end * 1000),
-                            });
+                            if(activeSub && activeSub.product && products[i].metadata) {
+                                SetActiveSubscriptionName(activeSub.product.name);
+                                SetActiveSubscriptionInfo({
+                                    planName: activeSub.product.name,
+                                    planDisplayName: activeSub.product.name,
+                                    activeTutorsAllowed: products[i].metadata.active_tutors,
+                                    currency: activeSub.currency,
+                                    subscriptionPricePerMonth: activeSub.unit_amount / 100,
+                                    monthlyCostAfterDiscount: activeSub.unit_amount / 100,
+                                    subscriptionStartDate: new Date(products[i].start_date * 1000),
+                                    autoRenewalDate: new Date(products[i].trial_end * 1000),
+                                });
+                            }
                             SetActiveSubscriptionId(products[i].id);
                             
                         }
@@ -971,14 +973,15 @@ function AccountOverviewWithSubscriptionInfo() {
                         {
                             !(activeExtensionName === "") ? (
                                 <>
-                                    <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Active Extensions</div>
+                                    <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[17.5px]" >Extensions</div>
 
                                     <div 
                                         className="flex justify-between ml-[30px] mt-[5px]" 
                                         style={{width: "92%"}}
                                     >
                                         <ActiveExtensionWidget
-                                            style={{width: "65%"}}
+                                            // style={{width: "65%"}}
+                                            className="h-[106px] w-[600px]"
                                             canChangePlan={true}
                                             planDisplayName={activeExtensionName}
                                             subscriptionPricePerMonth={activeExtensionPrice}
@@ -989,29 +992,29 @@ function AccountOverviewWithSubscriptionInfo() {
 
                                         <div className="flex flex-col items-end" >
                                             <div className="flex" >
-                                                <span className="font-[100] text-[#517CA8] text-[12px]" >Subscription Start Date{" - "}</span>
-                                                <span className="font-[400] text-[#517CA8] text-[12px]" >{
+                                                <span className="font-[100] text-[#517CA8] text-[15px]" >Subscription Start Date{" - "}</span>
+                                                <span className="font-[400] text-[#517CA8] text-[15px]" >{
                                                     getDateAsString(activeExtensionInfo.startDate)
                                                 }</span>
                                             </div>
 
                                             <div className="flex mt-[3px]" >
-                                                <span className="font-[100] text-[#517CA8] text-[12px]" >Auto-Renewal Date{" - "}</span>
-                                                <span className="font-[400] text-[#517CA8] text-[12px]" >{
+                                                <span className="font-[100] text-[#517CA8] text-[15px]" >Auto-Renewal Date{" - "}</span>
+                                                <span className="font-[400] text-[#517CA8] text-[15px]" >{
                                                     getDateAsString(activeExtensionInfo.autoRenewalDate)
                                                 }</span>
                                             </div>
 
                                             <div className="flex mt-[3px]" >
-                                                <span className="font-[100] text-[#517CA8] text-[12px]" >Monthly Cost (after discount){" - "}</span>
-                                                <span className="font-[400] text-[#517CA8] text-[12px]" >{
+                                                <span className="font-[100] text-[#517CA8] text-[15px]" >Monthly Cost (after discount){" - "}</span>
+                                                <span className="font-[400] text-[#517CA8] text-[15px]" >{
                                                     CurrencyNameToSymbole(activeExtensionInfo.currency) + activeExtensionInfo.subscriptionPricePerMonth
                                                 }</span>
                                             </div>
 
                                             <div className="grow" ></div>
 
-                                            <button className="font-[400] underline text-[#24A3D9] text-[12px]" >Enable Auto-Renew</button>
+                                            <button className="font-[400] underline text-[#24A3D9] text-[15px]" >Enable Auto-Renew</button>
                                         </div>
                                     </div>
                                 </>
