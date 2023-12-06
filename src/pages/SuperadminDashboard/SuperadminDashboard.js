@@ -174,7 +174,7 @@ function SuperadminDashboard() {
 
   return (
     <div className={styles.container}>
-      <div className="mt-[34px] bg-#2E2E2E mx-auto pb-7 px-[150px]">
+      <div className="mt-[34px] bg-#2E2E2E w-[1703px] mx-auto pb-7">
         <div className="flex justify-between">
           <p className="text-[#24A3D9]">Dashboard</p>
 
@@ -354,6 +354,7 @@ function SuperadminDashboard() {
               Latest Org Signup{" "}
             </p>
             <Table
+              tableClass="w-[1068px]"
               className="!text-[18.6px] !font-normal"
               noArrow={true}
               data={orgSignUpData}
