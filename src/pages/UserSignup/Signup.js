@@ -555,7 +555,7 @@ export default function UserSignup() {
 
   return (
     <div className="" id={styles.signUp}>
-      <div className=" flex md:grid-cols-2 justify-center flex-col items-center ">
+      <div className=" flex md:grid-cols-2 justify-center flex-col items-center bg-red-900">
         <img
           src={cuate}
           alt="rocket"
@@ -630,7 +630,7 @@ export default function UserSignup() {
               {frames.signupActive ? (
                 <div>
                   <div
-                    className={`flex mt-[59px] justify-between gap-10 lg:mt-0  ${
+                    className={`flex mt-[59px] justify-between ${
                       stepOneDisabled
                         ? "pointer-events-none cursor-not-allowed opacity-70"
                         : ""
@@ -638,19 +638,13 @@ export default function UserSignup() {
                   >
                     <InputField
                       placeholder=""
-                      inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
-                      parentClassName="text-base-17-5 w-full "
+                      inputContainerClassName="text-[17.5px]  bg-white   border border-[#D0D5DD] h-[53px]"
+                      parentClassName="text-[17.5px] w-[325px] h-[53.33px]"
                       labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="First name"
                       value={values.firstName}
                       onChange={(e) => {
-                        // const alphabeticOnly = e.target.value.replace(
-                        //   /[^a-zA-Z]/g,
-                        //   ""
-                        // );
-                        // e.target.value = alphabeticOnly;
-                        // e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
-
+                    
                         setValues({
                           ...values,
                           firstName: e.target.value,
@@ -662,7 +656,7 @@ export default function UserSignup() {
                     <InputField
                       placeholder=""
                       inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
-                      parentClassName="text-base-17-5 w-full "
+                      parentClassName="text-[17.5px] w-[325px] h-[53.33px]"
                       labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="Last name"
                       value={values.lastName}
@@ -683,7 +677,7 @@ export default function UserSignup() {
                     />
                   </div>
                   <div
-                    className={`flex  items-end mt-[30px] mb-[29px] justify-between gap-10 ${
+                    className={`flex items-end mt-[30px] mb-[29px] justify-between ${
                       stepOneDisabled
                         ? "pointer-events-none cursor-not-allowed opacity-70"
                         : ""
@@ -695,7 +689,7 @@ export default function UserSignup() {
                       placeholder=""
                       inputClassName={"h-[52.5px]"}
                       inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
-                      parentClassName=" text-base-17-5  w-full"
+                      parentClassName=" text-base-17-5  w-[375px] h-[54px]"
                       value={values.email}
                       onChange={(e) =>
                         setValues({
@@ -708,8 +702,8 @@ export default function UserSignup() {
                     />
                     <InputFieldDropdown
                       placeholder=""
-                      inputContainerClassName="text-base-17-5  bg-white h-[53px]  border border-[#D0D5DD]"
-                      parentClassName="text-base-17-5 w-[85%]"
+                      inputContainerClassName="text-[17.5px] bg-white h-[53px]  border border-[#D0D5DD]"
+                      parentClassName="text-base-17-5 w-[275px] h-[53.33px]"
                       inputClassName="  bg-transparent text-400 text-base-17-5 h-[52.5px]"
                       labelClassname="mb-1 text-[#26435F]  !font-medium text-[#26435F] design:mb-2"
                       label="Phone"
@@ -777,7 +771,7 @@ export default function UserSignup() {
                             )}{" "}
                           </div>
 
-                          <span className="ml-[9px] text-[#507CA8] text-base-17-5">
+                          <span className="ml-[9px] text-[#507CA8] text-[17.5px]">
                             Parent / Guardian
                           </span>
                         </div>
@@ -809,35 +803,39 @@ export default function UserSignup() {
                             )}{" "}
                           </div>
 
-                          <span className="ml-2 text-[#507CA8] text-base-17-5">
+                          <span className="ml-2 text-[#507CA8] text-[17.5px]">
                             Student
                           </span>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className=" gap-x-2 my-5 ps-[5px]">
+                  <div className=" mt-[31.75px]">
                     <div className={`flex justify-start items-center ${styles.textLight} `}>
                       <CCheckbox
-                        className={`border-[#507CA8]`}
+                        className={`border-[#507CA8] `}
+                        customSize={`w-[22.5px] h-[22.5px] mt-[5px]`}
+                        customTickIconSize={`w-[17.5px] h-[17.5px]`}
                         checked={values.ageChecked}
                         onChange={handleCheckboxChangeAge}
                       />
 
-                      <div className="ml-2 text-base-17-5 text-[#507CA8]">
+                      <div className="ml-[16.25px] text-[17.5px] text-[#507CA8]">
                         I confirm that I am 13 years or older
                       </div>
                     </div>
                   </div>
 
-                  <div className="gap-x-2 mt-5 mb-[50px] w-[546px] ps-[5px]">
-                    <div className={`flex justify-start items-start ${styles.textLight}`}>
+                  <div className="mt-[31.75px] mb-[50px]">
+                    <div className={` flex justify-start items-start ${styles.textLight}`}>
                       <CCheckbox
                         className={`border-[#507CA8]`}
+                        customSize={`w-[22.5px] h-[22.5px] mt-[5px]`}
+                        customTickIconSize={`w-[17.5px] h-[17.5px]`}
                         checked={values.terms}
                         onChange={handleCheckboxChangeTerms}
                       />
-                      <div className={`ml-2 text-base-17-5 text-[#507CA8] pe-5`}>
+                      <div className={`ml-[15px] text-[17.5px] text-[#507CA8`}>
                         I have carefully read and agree to the{" "}
                         <a
                           href="http://evallo.org/tou"
@@ -855,11 +853,13 @@ export default function UserSignup() {
                       </div>
                     </div>
                   </div>
+
+                  {/*  buttons */}
                   <div className="flex items-center justify-between">
                     <SecondaryButton
-                      children="Go Back"
+                      children="Go back"
                       disabled={true}
-                      className="!text-[18.667px] mr-6 bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] font-medium h-[53px] rounded-5 w-[146.67px] "
+                      className="!text-[18.667px] bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] font-medium h-[53px] rounded-5 w-[146.67px] "
                       onClick={() => navigate("/")}
                     />
 
