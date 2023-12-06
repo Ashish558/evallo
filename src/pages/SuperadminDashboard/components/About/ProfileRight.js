@@ -49,7 +49,7 @@ const ProfileRight = ({ userData,orgs }) => {
   
   return (
     <>
-      <div className="flex flex-col gap-3 py-3  w-[58.2291667vw] bg-white shadow-[0px_0px_2.66667px_0px_rgba(0,0,0,0.25)] rounded-5 border border-white h-[686px]">
+      <div className="flex flex-col gap-3 py-3  w-[1118px] bg-white shadow-[0px_0px_2.66667px_0px_rgba(0,0,0,0.25)] rounded-5 border border-white h-[686px]">
         <div className="flex rounded-sm justify-between border-b-[1.5px] border-b-gray-300 w-[55%]">
           <span className="flex cursor-pointer gap-5 items-end py-0 relative z-20 translate-y-[2.4px] text-base-18 font-medium">
             <button

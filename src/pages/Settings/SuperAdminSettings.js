@@ -1357,7 +1357,7 @@ export default function SuperAdminSettings() {
                       alt="down-arrow"
                     />
                   }
-                  inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF] w-[20.15625vw]"
+                  inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF] w-[387px]"
                   placeholder="Select"
                   optionData={timeZones}
                   parentClassName=""
@@ -1378,7 +1378,7 @@ export default function SuperAdminSettings() {
                     alt="down-arrow"
                   />
                 }
-                inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF] w-[20.15625vw]"
+                inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF] w-[387px]"
                 optionData={["dd/mm/yy", "mm/dd/yy", "yy/mm/dd"]}
                 parentClassName=""
                 label="Default Date Format"

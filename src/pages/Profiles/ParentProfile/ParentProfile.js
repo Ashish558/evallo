@@ -564,7 +564,7 @@ const [toEdit, setToEdit] = useState({
   return (
     <>
       <div className={`w-[1600px] mx-auto pb-[70px]`}>
-        <p className="text-[#24A3D9] !my-[calc(50*0.0522vw)] text-base-20 relative z-[55]">
+        <p className="text-[#24A3D9] !my-[50px] text-base-20 relative z-[55]">
           {persona === "admin" ?
             <span >
               <span  onClick={() => navigate('/')} className=" cursor-pointer">
@@ -606,7 +606,7 @@ const [toEdit, setToEdit] = useState({
 
         <div className={` rounded-b-md w-full flex flex-col relative `}>
           <div className="flex gap-7">
-            <div className={` rounded-b-md w-[67.71vw] flex flex-col relative `}>
+            <div className={` rounded-b-md w-[1300.032px] flex flex-col relative `}>
               <div className=" bg-[#26435F]   px-[30px] h-[142px] border rounded-tr-5 rounded-tl-5  w-full  flex  items-center ">
                 <div className="flex flex-1 w-full relative">
                   <div className="h-fit">
@@ -635,13 +635,13 @@ const [toEdit, setToEdit] = useState({
                         })
                       }
                       text="Edit Profile"
-                      textClassName=" ml-2 text-[0.78vw]  mx-auto text-center text-[#26435F] text-underline font-semibold"
+                      textClassName=" ml-2 text-[15px]  mx-auto text-center text-[#26435F] text-underline font-semibold"
                       className="text-sm my-0 flex items-center justify-center text-center !translate-y-9  "
                     />}
                   </div>
                   <div className="flex-1 flex justify-between items-center">
                     <div className="ml-4 my-auto">
-                      <div className="flex  font-semibold items-center text-[#F3F5F7] text-[1.56vw]">
+                      <div className="flex  font-semibold items-center text-[#F3F5F7] text-[29.952px]">
                         {user.firstName} {user.lastName}
                       </div>
                       {(persona !== "tutor" || ((persona === 'tutor') && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <div className="flex mt-1 text-base-17-5 items-center text-[#F3F5F7]">
@@ -724,7 +724,7 @@ const [toEdit, setToEdit] = useState({
               </div>
               <div className="bg-white !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex design:h-[170px]  h-[170px] justify-between ">
                 <div className="ml-[220px] py-auto w-[80.33%] text-[12px] px-5    overflow-y-auto pt-3  ">
-                  <p className=" font-semibold text-[#26435F] text-[0.78vw]">
+                  <p className=" font-semibold text-[#26435F] text-[15px]">
                     About
                   </p>
                   <p className=" text-[#517CA8] text-base-17-5 overflow-y-auto">
@@ -733,7 +733,7 @@ const [toEdit, setToEdit] = useState({
                 </div>
               </div>
             </div>
-            <div className="w-[13.80vw]  bg-white rounded-md overflow-hidden !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] relative">
+            <div className="w-[264.96px]  bg-white rounded-md overflow-hidden !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] relative">
               <div
                 className={`${styles.studentsContainer} min-h-[290px] w-full`}
               >
@@ -837,7 +837,7 @@ const [toEdit, setToEdit] = useState({
               })
             }
             text="edit"
-            textClassName="text-[0.78vw] text-[#26435F]  text-underline"
+            textClassName="text-[15px] text-[#26435F]  text-underline"
             className="text-sm my-0 flex justify-end translate-y-7  float-right"
           />}
           <SPFrame0
