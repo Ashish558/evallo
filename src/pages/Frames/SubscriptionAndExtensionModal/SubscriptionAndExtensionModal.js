@@ -19,9 +19,9 @@ import { useSelector } from "react-redux";
 
 function SubscriptionAndExtensionModal({
     className,
-    openSubscriptionModal,
+    openSubscriptionModal = true,
     openExtensionsModal,
-    openedFromAccountOverview = false,
+    updateSubscriptionMode = false,
     OnCancelClicked,
     subscriptionsInfoFromAPI_Param,
     activeSubscriptionName = "",
@@ -79,10 +79,11 @@ function SubscriptionAndExtensionModal({
     const [extensions, setExtensions] = useState(extensionsData);
     const [subscriptionsInfoFromAPI, SetSubscriptionsInfoFromAPI] = useState([]);
     const [chosenSubscriptionPlanName, SetChosenSubscriptionPlanName] = useState(
-        (openedFromAccountOverview ? activeSubscriptionName : "Professional")
+        (updateSubscriptionMode ? activeSubscriptionName : "Professional")
     );
     const [isCCRequired, SetIsCCRequired] = useState(false);
     const [stripeCustomerId, SetStripeCustomerId] = useState("");
+    const [isPaymentSuccessfullyComplete, SetIsPaymentSuccessfullyComplete] = useState(false);
 
     const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
     const [addSubscriptions, addSubscriptionsResp] = useAddSubscriptionsMutation();
@@ -461,7 +462,7 @@ function SubscriptionAndExtensionModal({
     }, [frames]);
 
     useEffect(() => {
-        if(openedFromAccountOverview && openSubscriptionModal) {
+        if(updateSubscriptionMode && openSubscriptionModal) {
             setFrames({
                 orgDetails: false,
                 subscription: true,
@@ -471,7 +472,7 @@ function SubscriptionAndExtensionModal({
             return;
         }
 
-        if(openedFromAccountOverview && openExtensionsModal) {
+        if(updateSubscriptionMode && openExtensionsModal) {
             setFrames({
                 orgDetails: false,
                 subscription: false,
@@ -483,10 +484,10 @@ function SubscriptionAndExtensionModal({
     }, []);
 
     useEffect(() => {
-        if(openedFromAccountOverview) {
+        if(updateSubscriptionMode) {
             SetRestrictedIndices([0]);
         }
-    },[openedFromAccountOverview]);
+    },[updateSubscriptionMode]);
 
     const onBackToPreviousStepClicked = () => {
         setFrames(frames => {
@@ -612,6 +613,48 @@ function SubscriptionAndExtensionModal({
         console.log(response);
     };
 
+    function OnVerticalNumericSteppersStepClicked(index) {
+        if(index === 0) {
+            setFrames({
+                orgDetails: true,
+                subscription: false,
+                extensions: false,
+                review: false,
+            })
+            return;
+        }
+
+        if(index === 1) {
+            setFrames({
+                orgDetails: false,
+                subscription: true,
+                extensions: false,
+                review: false,
+            })
+            return;
+        }
+
+        if(index === 2) {
+            setFrames({
+                orgDetails: false,
+                subscription: false,
+                extensions: true,
+                review: false,
+            })
+            return;
+        }
+
+        if(index === 3) {
+            setFrames({
+                orgDetails: false,
+                subscription: false,
+                extensions: false,
+                review: true,
+            })
+            return;
+        }
+    }
+
     return (
         <div className={`aspect-[1400/900] bg-[#FFFFFF] flex rounded-[15px]  ${className} overflow-auto`} >
             <div className="h-[500px] w-1/12" >
@@ -620,13 +663,14 @@ function SubscriptionAndExtensionModal({
                     labels={["Account", "Subscription", "Extensions", "Review"]}
                     currentIndex={currentModalIndex}
                     restrictedIndices={restrictedIndices}
+                    onStepClicked={OnVerticalNumericSteppersStepClicked}
                 />
             </div>
 
             <div className={`ml-[90px] w-9/12`} >
                 <div className="flex mt-[30px] w-full" >
                     {
-                        frames.orgDetails || openedFromAccountOverview && frames.subscription ? (
+                        frames.orgDetails || updateSubscriptionMode && frames.subscription ? (
                             <></>
                         ) : (
                             <button className="text-[#B3BDC7] text-[18.67px]" onClick={onBackToPreviousStepClicked} >
@@ -678,12 +722,14 @@ function SubscriptionAndExtensionModal({
                                 chosenSubscriptionPlanName={chosenSubscriptionPlanName}
                                 SetChosenSubscriptionPlanName={SetChosenSubscriptionPlanName}
                                 activeSubscriptionName={activeSubscriptionName}
+                                updateSubscriptionMode={updateSubscriptionMode}
                             />
                         ) : frames.extensions ? (
                             <ExtensionsChoosingModal
                                 extensions={extensions}
                                 setExtensions={setExtensions}
                                 extensionPlansInfo={extensionPlansData}
+                                updateExtensionMode={updateSubscriptionMode}
                             />
                         ) : frames.review ? (
                             <ReviewProduct
@@ -695,6 +741,7 @@ function SubscriptionAndExtensionModal({
                                 isCCRequired={isCCRequired}
                                 SetIsCCRequired={SetIsCCRequired}
                                 stripeCustomerId={stripeCustomerId}
+                                SetIsPaymentSuccessfull={SetIsPaymentSuccessfullyComplete}
                             />
                         ) : (<></>)
                     }
@@ -702,7 +749,7 @@ function SubscriptionAndExtensionModal({
 
                 <div className="flex mt-[20px] w-[1100px]" >
                     {
-                        openedFromAccountOverview ? (
+                        updateSubscriptionMode ? (
                             <button 
                                 className="font-[600] text-[#B3BDC7] text-[14px]" 
                                 onClick={() => {
@@ -729,6 +776,7 @@ function SubscriptionAndExtensionModal({
                       disabled={
                         values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
                       } */
+                      disabled={frames.review ? isCCRequired ? isPaymentSuccessfullyComplete ? false : true : false : false}
                       onClick={
                         // (frames.review ? handleSub : onSaveAndNextClicked)
                         () => {

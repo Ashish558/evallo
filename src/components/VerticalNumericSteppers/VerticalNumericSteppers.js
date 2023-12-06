@@ -7,6 +7,7 @@ function VerticalNumericSteppers({
     currentIndex,
     restrictedIndices,
     completedIndices,
+    onStepClicked,
 }) {
 
     return (
@@ -26,7 +27,17 @@ function VerticalNumericSteppers({
 
                         return (
                             <React.Fragment key={index} >
-                                <div className="flex flex-col items-center" >
+                                <div 
+                                    className={`flex flex-col items-center 
+                                                ${isRestricted ? "" : "hover:cursor-pointer"}
+                                    `}
+                                    onClick={() => {
+                                        if(isRestricted) return;
+                                        if(onStepClicked.constructor && onStepClicked.constructor.name ) {
+                                            onStepClicked(index);
+                                        }
+                                    }} 
+                                >
                                     <div className={`aspect-square flex items-center justify-center rounded-[8px] align-middle text-[#fff] text-center w-[35px]
                                                      ${styles.numContainer}
                                                      ${isRestricted ? styles.restricted : currentIndex > index ? styles.completed : ""}

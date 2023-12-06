@@ -11,6 +11,7 @@ function ExtensionsChoosingModal({
     extensions,
     setExtensions,
     extensionPlansInfo,
+    updateExtensionMode = false,
 }) {
 
     const [productDescriptions, SetProductDescriptions] = useState([]);
@@ -114,6 +115,8 @@ function ExtensionsChoosingModal({
                                     />
                                 )
                             }
+
+                            // if(updateExtensionMode && item.checked) 
                             return (
                                 <ExtensionSelectionWidget
                                     key={index}
