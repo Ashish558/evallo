@@ -154,15 +154,15 @@ export default function UserSignup() {
       if (res.data.organisation.length === 0) return;
       if (res.data.organisation[0]) {
         setOrganisation(res.data.organisation[0]);
-         setCustomFields(res.data.organisation[0]?.settings?.customFields);
+        setCustomFields(res.data.organisation[0]?.settings?.customFields);
       }
     });
   }, [searchParams.get("orgName")]);
- 
+
   const paramUserId = searchParams.get("userid");
   const paramUserRole = searchParams.get("role");
-  
-  
+  const paramToken = searchParams.get("token");
+
 
   useEffect(() => {
     if (!paramUserId) return;
@@ -182,6 +182,7 @@ export default function UserSignup() {
       if (res.data?.user) {
         const { firstName, lastName, phone, email, role, associatedOrg, phoneCode } =
           res.data.user;
+        setOrganisation({ _id: associatedOrg })
         setValues((prev) => {
           return {
             ...prev,
@@ -193,8 +194,9 @@ export default function UserSignup() {
             role,
             phoneCode
           };
+
         });
-        if(phone){
+        if (phone) {
           setStepOneDisabled(true)
         }
         getUserDetail({ id: paramUserId }).then((res) => {
@@ -211,7 +213,7 @@ export default function UserSignup() {
               schoolName: detail.schoolName,
               PphoneCode: detail.phoneCode
             })
-            if(phone){
+            if (phone) {
               setStepTwoDisabled(true)
             }
             // setFrames({
@@ -234,13 +236,13 @@ export default function UserSignup() {
             setCustomFields(org.data.organisation?.settings?.customFields);
           }
         });
-       
+
       }
       const { user, userdetails } = res.data.user;
       let user_detail = { ...userdetails };
       console.log("user", user);
     });
-   
+
   }, [searchParams]);
 
   useEffect(() => {
@@ -339,10 +341,10 @@ export default function UserSignup() {
 
   const handleClick = async () => {
     var regex = new RegExp("^[a-zA-Z0-9 ]*[a-zA-Z][a-zA-Z0-9 ]*$");
-    let f =regex.test(values?.firstName)
+    let f = regex.test(values?.firstName)
     f = f && regex.test(values?.lastName)
-    
-   
+
+
     if (!f) {
       alert("Enter a valid name!")
       return
@@ -419,6 +421,7 @@ export default function UserSignup() {
         PhoneCode: otherDetails.PphoneCode,
         customFields: updatedCustomfields,
         associatedOrg: organisation._id,
+        token: paramToken
       };
       console.log({ reqBody });
       if (values.checked === false) {
@@ -555,7 +558,7 @@ export default function UserSignup() {
 
   return (
     <div className="" id={styles.signUp}>
-      <div className=" flex md:grid-cols-2 justify-center flex-col items-center ">
+      <div className=" flex md:grid-cols-2 justify-center flex-col items-center">
         <img
           src={cuate}
           alt="rocket"
@@ -569,8 +572,8 @@ export default function UserSignup() {
                 {frames.signupActive
                   ? "Sign Up"
                   : frames.setPasswordFields && !isAddedByAdmin
-                  ? "Set Password"
-                  : "Profile Details"}
+                    ? "Set Password"
+                    : "Profile Details"}
               </h1>
 
               <h6 className="mb-[10px]">Sign up with email address</h6>
@@ -579,11 +582,10 @@ export default function UserSignup() {
             <></>
           )}
           <div
-            className={`relative bg-white rounded-md w-[800px] h-auto mb-[140px] px-[50px] pt-[40px] pb-[66px] ${
-              customFields?.length > 0 && isAddedByAdmin
+            className={`relative bg-white rounded-md w-[800px] h-auto mb-[140px] px-[50px] pt-[40px] pb-[66px] ${customFields?.length > 0 && isAddedByAdmin
                 ? "!w-[45vw] min-w-[650px]"
                 : ""
-            }`}
+              }`}
           >
             <div className="w-full h-full">
               <h1
@@ -592,30 +594,29 @@ export default function UserSignup() {
                 {frames.signupActive
                   ? ""
                   : frames.setPasswordFields && !isAddedByAdmin
-                  ? "Set Password"
-                  : ""}
+                    ? "Set Password"
+                    : ""}
               </h1>
 
               {currentStep > 0 && !frames.signupSuccessful && (
                 <NumericSteppers
-                  className={`mt-3 !w-[520px] !mx-auto design:!w-[550px] ${
-                    customFields?.length > 0 && isAddedByAdmin
+                  className={`mt-3 !w-[520px] !mx-auto design:!w-[550px] ${customFields?.length > 0 && isAddedByAdmin
                       ? "!w-[650px] design:!w-[650px]"
                       : ""
-                  }`}
+                    }`}
                   fieldNames={
                     customFields?.length > 0 && isAddedByAdmin
                       ? [
-                          "Personal info",
-                          "Student / Parent",
-                          "Further details",
-                          "Set password",
-                        ]
+                        "Personal info",
+                        "Student / Parent",
+                        "Further details",
+                        "Set password",
+                      ]
                       : [
-                          "Personal Info",
-                          "Student / Parent",
-                          isAddedByAdmin ? "Set password" : "Further details",
-                        ]
+                        "Personal Info",
+                        "Student / Parent",
+                        isAddedByAdmin ? "Set password" : "Further details",
+                      ]
                   }
                   totalSteps={
                     customFields?.length === 0
@@ -630,26 +631,19 @@ export default function UserSignup() {
               {frames.signupActive ? (
                 <div>
                   <div
-                    className={`flex mt-[59px] justify-between gap-10 lg:mt-0  ${
-                      stepOneDisabled
+                    className={`flex mt-[59px] justify-between ${stepOneDisabled
                         ? "pointer-events-none cursor-not-allowed opacity-70"
                         : ""
-                    }`}
+                      }`}
                   >
                     <InputField
                       placeholder=""
-                      inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
-                      parentClassName="text-base-17-5 w-full "
+                      inputContainerClassName="text-[17.5px]  bg-white   border border-[#D0D5DD] h-[53px]"
+                      parentClassName="text-[17.5px] w-[325px] h-[53.33px]"
                       labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="First name"
                       value={values.firstName}
                       onChange={(e) => {
-                        // const alphabeticOnly = e.target.value.replace(
-                        //   /[^a-zA-Z]/g,
-                        //   ""
-                        // );
-                        // e.target.value = alphabeticOnly;
-                        // e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
 
                         setValues({
                           ...values,
@@ -662,7 +656,7 @@ export default function UserSignup() {
                     <InputField
                       placeholder=""
                       inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
-                      parentClassName="text-base-17-5 w-full "
+                      parentClassName="text-[17.5px] w-[325px] h-[53.33px]"
                       labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="Last name"
                       value={values.lastName}
@@ -683,11 +677,10 @@ export default function UserSignup() {
                     />
                   </div>
                   <div
-                    className={`flex  items-end mt-[30px] mb-[29px] justify-between gap-10 ${
-                      stepOneDisabled
+                    className={`flex items-end mt-[30px] mb-[29px] justify-between ${stepOneDisabled
                         ? "pointer-events-none cursor-not-allowed opacity-70"
                         : ""
-                    }`}
+                      }`}
                   >
                     <InputField
                       labelClassname="mb-1 text-[#26435F] !font-medium"
@@ -695,7 +688,7 @@ export default function UserSignup() {
                       placeholder=""
                       inputClassName={"h-[52.5px]"}
                       inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
-                      parentClassName=" text-base-17-5  w-full"
+                      parentClassName=" text-base-17-5  w-[375px] h-[54px]"
                       value={values.email}
                       onChange={(e) =>
                         setValues({
@@ -708,8 +701,8 @@ export default function UserSignup() {
                     />
                     <InputFieldDropdown
                       placeholder=""
-                      inputContainerClassName="text-base-17-5  bg-white h-[53px]  border border-[#D0D5DD]"
-                      parentClassName="text-base-17-5 w-[85%]"
+                      inputContainerClassName="text-[17.5px] bg-white h-[53px]  border border-[#D0D5DD]"
+                      parentClassName="text-base-17-5 w-[275px] h-[53.33px]"
                       inputClassName="  bg-transparent text-400 text-base-17-5 h-[52.5px]"
                       labelClassname="mb-1 text-[#26435F]  !font-medium text-[#26435F] design:mb-2"
                       label="Phone"
@@ -744,11 +737,10 @@ export default function UserSignup() {
                       Are you signing up as a Parent or a Student?
                     </p>
                     <div
-                      className={`flex items-center  text-[13.5px] gap-x-6 ${
-                        stepOneDisabled || paramUserRole
+                      className={`flex items-center  text-[13.5px] gap-x-6 ${stepOneDisabled || paramUserRole
                           ? "pointer-events-none cursor-not-allowed opacity-70"
                           : ""
-                      }`}
+                        }`}
                     >
                       <div
                         onClick={() => {
@@ -766,18 +758,17 @@ export default function UserSignup() {
                             id="radioOption"
                           />
                           <div
-                            className={`relative  ml-[2px] w-[25px] h-[25px] rounded-full border-[1.25px] flex justify-center items-center ${
-                              values.role === "parent"
+                            className={`relative  ml-[2px] w-[25px] h-[25px] rounded-full border-[1.25px] flex justify-center items-center ${values.role === "parent"
                                 ? "border-[#FFA28D]"
                                 : "border-gray-600"
-                            } cursor-pointer`}
+                              } cursor-pointer`}
                           >
                             {values.role === "parent" && (
                               <div className="absolute inset-0 my-auto mx-auto w-[12.5px] h-[12.5px] rounded-full bg-[#FFA28D]" />
                             )}{" "}
                           </div>
 
-                          <span className="ml-[9px] text-[#507CA8] text-base-17-5">
+                          <span className="ml-[9px] text-[#507CA8] text-[17.5px]">
                             Parent / Guardian
                           </span>
                         </div>
@@ -798,46 +789,49 @@ export default function UserSignup() {
                             id="radioOption"
                           />
                           <div
-                            className={`relative w-[25px] h-[25px] p-1 rounded-full border flex justify-center items-center ${
-                              values.role === "student"
+                            className={`relative w-[25px] h-[25px] p-1 rounded-full border flex justify-center items-center ${values.role === "student"
                                 ? "border-[#FFA28D]"
                                 : "border-gray-600"
-                            } cursor-pointer`}
+                              } cursor-pointer`}
                           >
                             {values.role === "student" && (
                               <div className="absolute inset-0 my-auto mx-auto w-[12.5px] h-[12.5px] rounded-full bg-[#FFA28D]" />
                             )}{" "}
                           </div>
 
-                          <span className="ml-2 text-[#507CA8] text-base-17-5">
+                          <span className="ml-2 text-[#507CA8] text-[17.5px]">
                             Student
                           </span>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className=" gap-x-2 my-5 ps-[5px]">
+                  <div className=" mt-[31.75px]">
                     <div className={`flex justify-start items-center ${styles.textLight} `}>
                       <CCheckbox
-                        className={`border-[#507CA8]`}
+                        className={`border-[#507CA8] `}
+                        customSize={`w-[22.5px] h-[22.5px] mt-[5px]`}
+                        customTickIconSize={`w-[17.5px] h-[17.5px]`}
                         checked={values.ageChecked}
                         onChange={handleCheckboxChangeAge}
                       />
 
-                      <div className="ml-2 text-base-17-5 text-[#507CA8]">
+                      <div className="ml-[16.25px] text-[17.5px] text-[#507CA8]">
                         I confirm that I am 13 years or older
                       </div>
                     </div>
                   </div>
 
-                  <div className="gap-x-2 mt-5 mb-[50px] w-[546px] ps-[5px]">
-                    <div className={`flex justify-start items-start ${styles.textLight}`}>
+                  <div className="mt-[31.75px] mb-[50px]">
+                    <div className={` flex justify-start items-start ${styles.textLight}`}>
                       <CCheckbox
                         className={`border-[#507CA8]`}
+                        customSize={`w-[22.5px] h-[22.5px] mt-[5px]`}
+                        customTickIconSize={`w-[17.5px] h-[17.5px]`}
                         checked={values.terms}
                         onChange={handleCheckboxChangeTerms}
                       />
-                      <div className={`ml-2 text-base-17-5 text-[#507CA8] pe-5`}>
+                      <div className={`ml-[15px] text-[17.5px] text-[#507CA8`}>
                         I have carefully read and agree to the{" "}
                         <a
                           href="http://evallo.org/tou"
@@ -855,24 +849,25 @@ export default function UserSignup() {
                       </div>
                     </div>
                   </div>
+
+                  {/*  buttons */}
                   <div className="flex items-center justify-between">
                     <SecondaryButton
-                      children="Go Back"
+                      children="Go back"
                       disabled={true}
-                      className="!text-[18.667px] mr-6 bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] font-medium h-[53px] rounded-5 w-[146.67px] "
+                      className="!text-[18.667px] bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] font-medium h-[53px] rounded-5 w-[146.67px] "
                       onClick={() => navigate("/")}
                     />
 
                     <PrimaryButton
-                      className={`bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[146.67px]   text-[#FFF] !text-[18.667px] font-medium relative h-[50px] design:h-[53px] rounded-5 ${
-                        loading
+                      className={`bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[146.67px]   text-[#FFF] !text-[18.667px] font-medium relative h-[50px] design:h-[53px] rounded-5 ${loading
                           ? "cursor-wait opacity-60 pointer-events-none"
                           : "cursor-pointer"
-                      }`}
+                        }`}
                       disabled={
                         values.email.trim().length === 0 ||
-                        !values.terms ||
-                        !values.ageChecked
+                          !values.terms ||
+                          !values.ageChecked
                           ? true
                           : false
                       }

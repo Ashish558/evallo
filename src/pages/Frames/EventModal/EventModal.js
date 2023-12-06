@@ -875,7 +875,7 @@ export default function EventModal({
    return (
       <>
          <Modal
-            classname="max-w-[827px]  mx-auto max-h-[1309px] overflow-y-auto custom-scroller h-full"
+            classname="max-w-[827px]  mx-auto overflow-y-auto custom-scroller h-full"
             handleClose={() => setEventModalActive(false)}
             wrapperClassName='flex flex-col h-full'
             title={isEditable === false ? 'Session Details' : isUpdating ? "Update Session" : ` ${persona == "tutor" ? "Session Details" : "Schedule New Session"}`}

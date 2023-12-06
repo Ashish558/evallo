@@ -6,11 +6,39 @@ import ExtensionSelectionWidget from "../../../components/ExtensionSelectionWidg
 import styles from "./style.module.css";
 import { extensionProductDescriptions } from "./DummyData/ExtensionsProductDescriptions";
 
+const listOfExtensions = [
+    {
+        title: "Assignments & Content",
+        description: "",
+    },
+    {
+        title: "Mass Emailer",
+        description: "(coming soon)",
+    },
+    {
+        title: "In-app chat / calls",
+        description: "(coming soon)",
+    },
+    {
+        title: "Mobile Application",
+        description: "(coming soon)",
+    },
+    {
+        title: "Session Recordings",
+        description: "(coming soon)",
+    },
+    {
+        title: "Digital Whiteboards",
+        description: "(coming soon)",
+    },
+]
+
 function ExtensionsChoosingModal({
     className,
     extensions,
     setExtensions,
     extensionPlansInfo,
+    updateExtensionMode = false,
 }) {
 
     const [productDescriptions, SetProductDescriptions] = useState([]);
@@ -28,7 +56,11 @@ function ExtensionsChoosingModal({
     useEffect(() => {
         console.log("extensionNameInFocus - " + extensionNameInFocus);
         const extInFocus = extensionProductDescriptions.find(item => item.planName === extensionNameInFocus);
-        if(extInFocus === undefined || extInFocus === null) return;
+        if(extInFocus === undefined || extInFocus === null) {
+            SetProductDescriptionsTitle("Extensions");
+            SetProductDescriptions(listOfExtensions);
+            return;
+        }
 
         SetProductDescriptionsTitle(extInFocus.planDisplayName);
         if(extInFocus.info) {
@@ -36,35 +68,10 @@ function ExtensionsChoosingModal({
         }
     }, [extensionNameInFocus]);
 
-    useEffect(() => {
+    /* useEffect(() => {
         SetProductDescriptionsTitle("Extensions");
-        SetProductDescriptions([
-            {
-                title: "Assignments & Content",
-                description: "",
-            },
-            {
-                title: "Mass Emailer",
-                description: "(coming soon)",
-            },
-            {
-                title: "In-app chat / calls",
-                description: "(coming soon)",
-            },
-            {
-                title: "Mobile Application",
-                description: "(coming soon)",
-            },
-            {
-                title: "Session Recordings",
-                description: "(coming soon)",
-            },
-            {
-                title: "Digital Whiteboards",
-                description: "(coming soon)",
-            },
-        ])
-    }, []);
+        SetProductDescriptions(listOfExtensions);
+    }, []); */
 
     const handleCheckboxChange = (text, arr, setValue) => {
         const temp = arr.map((topic) => {
@@ -79,7 +86,7 @@ function ExtensionsChoosingModal({
         <div
             className={`flex h-full w-full ${className}`}
         >
-            <div className="h-full w-[750]" >
+            <div className="h-full w-[750px]" >
                 <div className="ml-[30px] mt-[55px]" >
                     <div
                         className={`block text-base font-[500] text-[#26435F] ml-0 text-[18.67px]`}
@@ -102,7 +109,9 @@ function ExtensionsChoosingModal({
                                 return (
                                     <ExtensionSelectionWidget
                                         key={index}
-                                        className="mb-[20px] w-[650px] h-[86px]"
+                                        className={`mb-[20px] w-[650px] h-[86px] 
+                                                    ${extensionNameInFocus === extension.planName ? "shadow-[0px_0px_10px_rgba(0,0,0,0.25)]" : ""}
+                                        `}
                                         planDisplayName={extension.planDisplayName}
                                         descriptionInDisabledState={extension.description}
                                         isDisabled={true}
@@ -112,10 +121,12 @@ function ExtensionsChoosingModal({
                                     />
                                 )
                             }
+
+                            // if(updateExtensionMode && item.checked) 
                             return (
                                 <ExtensionSelectionWidget
                                     key={index}
-                                    className="mb-[20px] w-full"
+                                    className="mb-[20px] w-[650px]"
                                     extensions={extensions}
                                     setExtensions={setExtensions}
                                     planName={extension.planName}
@@ -126,7 +137,12 @@ function ExtensionsChoosingModal({
                                     extensionPriceOption={extension.extensionPriceOption}
                                     onChange={() => {
                                         handleCheckboxChange(item.text, extensions, setExtensions);
-                                        SetExtensionNameInFocus(extension.planName);
+                                        if(!item.checked) {
+                                            SetExtensionNameInFocus(extension.planName);
+                                            return;
+                                        }
+                                        SetExtensionNameInFocus("");
+                                        
                                     }}
                                     onBodyClicked={() => {
                                         SetExtensionNameInFocus(extension.planName);
@@ -140,9 +156,9 @@ function ExtensionsChoosingModal({
                 
             </div>
 
-            <div className="border-l-[1px] border-[#E3E3E3] overflow-hidden h-full w-4/12" >
+            <div className="border-l-[1px] border-[#E3E3E3] overflow-hidden h-full w-[349px]" >
                 <div className="font-[200] ml-[30px] mt-[30px] text-[#FFA28D] text-[12px]" >{productDescriptionsTitle}</div>
-                <div className="ml-[35px] overflow-y-scroll w-11/12" >
+                <div className="ml-[35px] mt-[10px] w-[289px]" >
                     {
                         !(productDescriptions === undefined || productDescriptions === null || productDescriptions.length === 0) ?
                         (
@@ -151,7 +167,7 @@ function ExtensionsChoosingModal({
                                     <div className="flex mb-[5px]" key={index}>
                                         <div className="bg-[#B3BDC7] mt-[7px] rounded-full h-[3px] w-[3px]" ></div>
                                         <div className="leading-[0.8rem] ml-[10px] w-11/12" >
-                                            <span className="text-[#7C98B6] text-[10px] " >{item.title}</span><span className="font-thin text-[#B3BDC7] text-[10px]" >{item.description}</span>
+                                            <span className="text-[#7C98B6] text-[12px] " >{item.title}</span><span className="font-thin text-[#B3BDC7] text-[12px]" >{item.description}</span>
                                         </div>
                                     </div>
                                 )

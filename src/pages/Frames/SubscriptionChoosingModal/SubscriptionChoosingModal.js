@@ -14,6 +14,7 @@ function SubscriptionChoosingModal({
     chosenSubscriptionPlanName,
     SetChosenSubscriptionPlanName,
     activeSubscriptionName,
+    updateSubscriptionMode = false,
 }) {
     const [productDescriptions, SetProductDescriptions] = useState([]);
 
@@ -45,26 +46,26 @@ function SubscriptionChoosingModal({
                                                 `${plan.freeTrialDays} Days Free Trial`;
 
 
-                        if(plan.planName === activeSubscriptionName) {
+                        if(plan.planName === activeSubscriptionName && updateSubscriptionMode) {
                             return (
-                                <div className="mb-[25px] ml-[30px] mt-[25px] w-9/12" >
+                                <div className="mb-[40px] ml-[60px] mt-[40px] w-9/12" >
                                     <div className="flex w-full" >
                                         <img 
                                             src={greenCheckIcon}
                                         />
-                                        <div className="ml-[20px]" >
+                                        <div className="ml-[17.5px]" >
                                             <div 
-                                                className={`font-[600] text-[12px]`}
+                                                className={`font-[600] text-[18.67px]`}
                                             >
                                                 <span className="text-[#26435F]" >{plan.planDisplayName + " - "}</span>
                                                 <span className="text-[#24A3D9]" >{CurrencyNameToSymbole(plan.currency)}{plan.pricePerMonth}/month</span>
                                             </div>
 
-                                            <div className="font-[100] text-[12px]">
+                                            <div className="font-[100] text-[15px]">
                                             Active Tutors Allowed - {plan.activeTutorsAllowed === Infinity ? "unlimited" : plan.activeTutorsAllowed}
                                             </div>
 
-                                            <div className="text-[#38C980] text-[12px]" >
+                                            <div className="text-[#38C980] text-[15px]" >
                                                 Free Trial till
                                             </div>
                                         </div>
@@ -114,16 +115,16 @@ function SubscriptionChoosingModal({
                 className="border-l-[1px] border-[#E3E3E3] flex flex-col h-full w-[549px]"
             >
                 <div className="font-[200] ml-[30px] mt-[30px] text-[#FFA28D] text-[12px]" >What’s Included?</div>
-                <div className="ml-[35px] overflow-y-scroll w-11/12" >
+                <div className="ml-[35px] w-11/12" >
                     {
                         !(productDescriptions === undefined || productDescriptions === null || productDescriptions.length === 0) ?
                         (
-                            productDescriptions.map(item => {
+                            productDescriptions.map((item, index) => {
                                 return (
-                                    <div className="flex mb-[5px]" >
+                                    <div className="flex mb-[5px]" key={index} >
                                         <div className="bg-[#B3BDC7] mt-[7px] rounded-full h-[3px] w-[3px]" ></div>
                                         <div className="leading-[0.8rem] ml-[10px] w-11/12" >
-                                            <span className="text-[#7C98B6] text-[10px] " >{item.title}</span><span className="font-thin text-[#B3BDC7] text-[10px]" >{" - " + item.description}</span>
+                                            <span className="text-[#7C98B6] text-[12px] " >{item.title}</span><span className="font-thin text-[#B3BDC7] text-[12px]" >{" - " + item.description}</span>
                                         </div>
                                     </div>
                                 )

@@ -111,12 +111,13 @@ function AccountOverviewWithSubscriptionInfo() {
     const [deletePaymentMethod] = useDeletePaymentMethodMutation();
     const [cancelSubscription] = useCancelSubscriptionMutation();
     const [subscriptionsInfoFromAPI, SetSubscriptionsInfoFromAPI] = useState([]);
-    const [activeSubscriptionName, SetActiveSubscriptionName] = useState("Professional");
+    const [activeSubscriptionName, SetActiveSubscriptionName] = useState("");
     const [activeSubscriptionId, SetActiveSubscriptionId] = useState("");
     const [activeExtensionName, SetActiveExtensionName] = useState("");
     const [activeExtensionPrice, SetActiveExtensionPrice] = useState(100);
     const [activeExtensionProductQuantity, SetActiveExtensionProductQuantity] = useState(500);
     const [activeExtensionInfo, SetActiveExtensionInfo] = useState({
+        planName: "",
         planDisplayName: "",
         activeTutorsAllowed: 0,
         productQuantity: 0,
@@ -130,6 +131,7 @@ function AccountOverviewWithSubscriptionInfo() {
     });
 
     const [activeSubscriptionInfo, SetActiveSubscriptionInfo] = useState({
+        planName: "",
         planDisplayName: "",
         activeTutorsAllowed: 0,
         currency: "",
@@ -226,6 +228,7 @@ function AccountOverviewWithSubscriptionInfo() {
                                 }
 
                                 SetActiveExtensionInfo({
+                                    planName: "Assignment",
                                     planDisplayName: "Assignement",
                                     productQuantity: productQuantity,
                                     currency: products[i].currency,
@@ -243,6 +246,7 @@ function AccountOverviewWithSubscriptionInfo() {
                             console.log(activeSub);
                             SetActiveSubscriptionName(activeSub.product.name);
                             SetActiveSubscriptionInfo({
+                                planName: activeSub.product.name,
                                 planDisplayName: activeSub.product.name,
                                 activeTutorsAllowed: parseInt(activeSub.product.metadata.active_tutors),
                                 currency: activeSub.currency,
@@ -442,7 +446,7 @@ function AccountOverviewWithSubscriptionInfo() {
         <div className="flex w-full" >
 
             {
-                isSubscriptionAndExtensionModalActive ? (
+                isSubscriptionAndExtensionModalActive && false ? (
                     <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
                         <SubscriptionAndExtensionModal
                             className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-5/6 w-9/12"
@@ -761,7 +765,7 @@ function AccountOverviewWithSubscriptionInfo() {
                         {/* <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Active Subscription</div> */}
 
                         {
-                            !(activeSubscriptionInfo === undefined || activeSubscriptionInfo === null) ?
+                            !(activeSubscriptionInfo === undefined || activeSubscriptionInfo === null || activeSubscriptionInfo.planName === "") ?
                             (
                                 <>
                                 <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Active Subscription</div>

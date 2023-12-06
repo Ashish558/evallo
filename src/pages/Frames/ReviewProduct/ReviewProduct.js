@@ -20,6 +20,7 @@ function ReviewProduct({
     SetIsCCRequired,
     subscriptionsInfoFromAPI = [],
     stripeCustomerId,
+    SetIsPaymentSuccessfull,
 }) {
     // const [isCCRequired, SetIsCCRequired] = useState(false);
     const [chosenSubscriptionPlan, SetChosenSubscriptionPlan] = useState(
@@ -271,7 +272,7 @@ function ReviewProduct({
             </div>
 
             <div className="border-l-[1px] border-[#E3E3E3] h-full w-[399px]" >
-                <div className="ml-[30px] mt-[30px] w-9/12" >
+                <div className="ml-[49px] mt-[55px] w-9/12" >
                     <div className="flex" >
                         <div className="font-[500] text-[#26435F] text-[18px]" >Subscription</div>
                         <div className="border-dotted border-b-[1px] border-[#26435F] grow" ></div>
@@ -298,21 +299,22 @@ function ReviewProduct({
                         <StripeCardDetailWidget
                             chosenSubscriptionObjectFromAPI={chosenSubscriptionObjectFromAPI}
                             stripeCustomerId={stripeCustomerId}
+                            SetIsPaymentSuccessfull={SetIsPaymentSuccessfull}
                         />
                     ) : (
                         <>
                             <img
-                                className="ml-[30px] mt-[20px] w-9/12"
+                                className="ml-[49px] mt-[37px] h-[216.01px] w-[301px]"
                                 src={creditCardSVG}
                             />
 
-                            <div className="font-[500] mt-[25px] text-center text-[t#26435F] text-[16px] w-full" >
+                            <div className="font-[600] mt-[46.99px] text-center text-[t#26435F] text-[20px] w-full" >
                                 {
                                     isCCRequired ? "Card Required!" : "Card Not Required!"
                                 }
                             </div>
 
-                            <div className="font-[100] mt-[15px] text-center text-[t#26435F] text-[12px] whitespace-pre-line w-full" >
+                            <div className="font-[300] mt-[41px] text-center text-[#26435F] text-[16px] whitespace-pre-line w-full" >
                                 {
                                     isCCRequired ? 
                                     `Click the button below to make 
