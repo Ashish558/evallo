@@ -181,6 +181,7 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
           // {name:"Last Year",days: 700},
           // {name:"Life Time",days:1000}
         ]}
+        valueClass={"mr-0"}
         optionType={"object"}
         setSelectedDate={setSelectedDate}
         onChange={handleQuickOptions}

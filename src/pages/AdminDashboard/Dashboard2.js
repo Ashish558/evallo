@@ -553,7 +553,7 @@ const Dashboard = () => {
               <span className="font-semibold">Dashboard</span>
             </p>
 
-            <div className="flex mt-[40px] justify-between items-center w-[1601px]">
+            <div className="flex mt-[40px] justify-between items-center w-[1601px] mr-[-20px]">
               <p className="font-bold  text-[#FFA28D] text-[20px]">
                 BUSINESS OVERVIEW{" "}
               </p>
@@ -752,7 +752,7 @@ const Dashboard = () => {
 
           <div className="flex  w-[1601px] gap-x-5 mx-auto">
             <div className=" h-full  !whitespace-nowrap ">
-              <p className="font-semibold text-[#26435F] mb-[7.5px] text-[20px]">
+              <p className="font-semibold text-[#26435F] mb-[0.5px] text-[20px]">
                 User Stats
               </p>
               <div className={`${styles.sidebox} h-[330px] w-[312.5px] `}>
@@ -820,7 +820,7 @@ const Dashboard = () => {
             </div>
 
             <div className="  pl-[17.5px]">
-              <p className="font-semibold text-[#26435F] mb-[7.5px] text-[20px]">
+              <p className="font-semibold text-[#26435F] mb-[0.5px] text-[20px]">
                 Action Log
               </p>
               <ActionLog
@@ -853,6 +853,7 @@ const Dashboard = () => {
               tableHeaders={latestSignUpHeaders}
               maxPageSize={5}
               widthFullTable={true}
+              signupTable={true}
             />
           </div>
         </section>
@@ -1027,7 +1028,7 @@ const Dashboard = () => {
 
         <section className="mx-auto  w-[1601px]">
           <Table
-            headerWidth="w-[150px] whitespace-normal !px-5"
+            headerWidth="w-[150px] whitespace-normal px-5"
             data={tutorPerformanceData}
             tableHeaders={tutorTableHeaders}
             maxPageSize={5}

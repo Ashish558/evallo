@@ -201,14 +201,14 @@ const StudentSettings = () => {
   return (
     <div className="w-[1600px] mx-auto">
       <div className="flex flex-col gap-10   my-12">
-        <div className="text-[#24A3D9] font-lexend-deca text-md design:text-xl  font-semibold leading-normal">
+        <div className="text-[#24A3D9] font-lexend-deca text-xl  font-semibold leading-normal">
           <span onClick={() => navigate('/')}
             className=" font-medium text-base-22-5 cursor-pointer">{organization?.company + ' > '}   {firstName + ' ' + lastName}</span>
 
           <span className="font-semibold text-base-22-5">{"  > Settings"}</span>
         </div>
         {console.log(error)}
-        <div className="flex gap-6 design:gap-8 items-center">
+        <div className="flex gap-8 items-center">
           <InputField
             placeholder=""
             labelClassname="mb-1 text-md text-base-20 text-[#26435F] font-semibold"
@@ -255,7 +255,7 @@ const StudentSettings = () => {
             placeholder=""
             labelClassname="mb-1 text-md text-base-20 text-[#26435F] font-semibold"
             parentClassName="text-[#26435F]"
-            inputContainerClassName=" h-[50px] bg-white border  w-[calc(376*0.05050vw)] min-w-[230px] border-white text-[#667085]"
+            inputContainerClassName=" h-[50px] bg-white border  w-[376px] min-w-[230px] border-white text-[#667085]"
             inputClassName=" text-400 bg-transparent"
             label="Email"
 
@@ -287,7 +287,7 @@ const StudentSettings = () => {
           <div id="number" >
             <InputFieldDropdown
               placeholder=""
-              labelClassname=" text-md text-base-20 text-[#26435F] !mb-2 design:!mb-3 font-semibold"
+              labelClassname=" text-md text-base-20 text-[#26435F] !mb-3 font-semibold"
               parentClassName="text-[#26435F]"
               inputContainerClassName="h-[50px] !py-[14px] px-[14px]   flex items-center rounded   bg-white border  min-w-[230px] border-white text-[#667085]  "
               inputClassName=" outline-0 w-full text-[17.5px]  pl-1 placeholder:text-base-17-5  text-400 bg-transparent  text-base-17-5"
@@ -354,7 +354,7 @@ const StudentSettings = () => {
         </div>
 
         <div className="flex  gap-x-[100px] mt-16 mb-[163px]">
-          <div className="relative w-[33.54vw]">
+          <div className="relative w-[643.968px]">
 
             <p className=" text-sm text-[#26435F] font-semibold text-base-20">
               Submit Feedback
@@ -368,7 +368,7 @@ const StudentSettings = () => {
                   support: e.target.value
                 })
               }}
-              className="mt-1 block  resize-none focus:!ring-blue-500 p-5 focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18  placeholder:text-base-18  w-[33.54vw] h-[352px] "
+              className="mt-1 block  resize-none focus:!ring-blue-500 p-5 focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18  placeholder:text-base-18  w-[643.968px] h-[352px] "
               placeholder=" If you have any feedback for this online platform, please submit it here. Our team takes every suggestion seriously."
             ></textarea>
 
@@ -382,7 +382,7 @@ const StudentSettings = () => {
               Submit
             </button>
           </div>
-          <div className=" relative w-[33.54vw]">
+          <div className=" relative w-[643.968px]">
             <p className=" text-sm text-[#26435F] font-semibold text-base-20">
               Request Technical Support
             </p>
@@ -396,7 +396,7 @@ const StudentSettings = () => {
                   tech: e.target.value
                 })
               }}
-              className="mt-1 block w-[33.54vw] h-[352px] resize-none focus:!ring-blue-500 p-5 focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18   placeholder:text-base-18  "
+              className="mt-1 block w-[643.968px] h-[352px] resize-none focus:!ring-blue-500 p-5 focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18   placeholder:text-base-18  "
               placeholder=" If you require technical support, please submit your request here and our team will help you out accordingly."
             ></textarea>
             <button
