@@ -579,6 +579,8 @@ const [loading2,setLoading2]=useState(false)
                      You Want To Log Out?
                   </>
                }
+               topClass="!h-[115%]"
+               parentClass="flex flex-col justify-center items-center pb-[100px]"
                alignBtn={true}
                titleClassName="leading-9 text-center whitespace-nowrap mb-[22.67px]"
                cancelBtn={true}
@@ -592,7 +594,7 @@ const [loading2,setLoading2]=useState(false)
                }}
                handleClose={() => setLogoutModalActive(false)}
                body={<div className="mb-6"></div>}
-               classname={"!w-[666px] mx-auto !pt-7 !pb-[33px] !rounded-[8px] px-[33.33px] !text-center"}
+               classname={"!w-[666px] mx-auto !pt-7 !pb-[33px] !rounded-[8px] px-[33.33px] !text-center scale-50 md:scale-75 lg:scale-90 2xl:scale-100"}
             />
          )}
 </>
