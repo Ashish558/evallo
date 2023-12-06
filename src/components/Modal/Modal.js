@@ -52,7 +52,7 @@ export default function Modal({
     <>
       {
         <div className={styles.modalContainer}>
-          <div className="w-full p-1">
+          <div className="w-full h-full pt-[200px]">
             <div
               ref={handleClose ? selectRef : null}
               className={`${modalSize ? modalSize : "w-full"} bg-white pt-[28px] pb-[33.34px] md:px-[33.33px] rounded-lg relative ${

@@ -856,9 +856,9 @@ const handleClick = () => {
 
   const [clientSecret, SetClientSecret] = useState();
 
-  const secretKey = "sk_test_51O1tgLSFF3kgujFeaEQ6Uh7PkOtF4SgSk5ATR8xxmCgLGIW4lkkDzeLDKMoMfjAwZVQyTDJjBkTCwJiIMGgVqrlQ00b9M9MyKZ"
-  const publishableKey = "pk_test_51O1tgLSFF3kgujFe23VYSyhW5lbx2N3b7cjC1q1Q1alW9lwocUKObR8j4hBdpYx5xzDnFcPsNBbkzDu6hcDmHSP3004Sr0qX5e";
-  const stripePromise = loadStripe(publishableKey);
+  const secretKey = loadStripe(process.env.REACT_APP_STRIPE_SECRET_KEY)
+  
+  const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
   const stripe = require("stripe")(secretKey);
 
   const appearance = {

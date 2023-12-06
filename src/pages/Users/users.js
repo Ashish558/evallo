@@ -1408,7 +1408,7 @@ export default function Users() {
   }, []);
   //console.log("users",{selectedId,bulkEdits})
   return (
-    <div className="px-[120px] mx-auto mt-[5vw] min-h-screen">
+    <div className="px-[120px] mx-auto min-h-screen">
       <div className="pb-10  mt-[50px] ">
         <div className="flex justify-between items-center mb-3">
           <p className="text-[#24A3D9] mb-6 text-xl text-base-20 cursor-pointer">
