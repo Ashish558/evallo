@@ -498,6 +498,7 @@ function SubscriptionAndExtensionModal({
                 review: false,
                 extensions: true
             }
+            return frames;
         })
     }
 
@@ -519,6 +520,7 @@ function SubscriptionAndExtensionModal({
                 orgDetails: false,
                 subscription: true
             }
+            return frames;
         })
     }
 
@@ -538,6 +540,7 @@ function SubscriptionAndExtensionModal({
                         orgDetails: false,
                         subscription: true
                     }
+                    return frames;
                 })
             })
             .catch(error => {
@@ -575,6 +578,7 @@ function SubscriptionAndExtensionModal({
                 orgDetails: false,
                 subscription: true
             }
+            return frames;
         });
 }
 
