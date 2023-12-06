@@ -1613,7 +1613,7 @@ export default function AssignedTests() {
               {/* filter options */}
               <div className="flex items-center  justify-between gap-[20px] mt-[10px] ">
                 <div className="flex text-[#26435F] items-center text-[17.5px]">
-                  <div className="ml-6 flex items-center">
+                  <div className="ml-3 flex items-center">
                     <SCheckbox
                       stopM={true}
                       checked={isChecked}
@@ -1694,12 +1694,12 @@ export default function AssignedTests() {
           title="New Assignment"
           buttonParentClassName="justify-center"
           titleClassName=" text-start pb-2"
-          classname={"max-w-[700px] mx-auto"}
+          classname={"w-[667px] h-[585px] mx-auto"}
           cancelBtn={true}
-          cancelBtnClassName="max-w-140 !bg-[rgba(38,67,95,0.20)] !text-[#26435F]"
+          cancelBtnClassName="w-[146.67px] h-[46.667px] !bg-[rgba(38,67,95,0.20)] !text-[#26435F]"
           primaryBtn={{
             text: "Assign",
-            className: "max-w-140 pl-8 pr-8 !bg-[#FFA28D] !text-white ",
+            className: "w-[140px] pl-8 pr-8 !bg-[#FFA28D] !text-white ",
             onClick: () => handleAssignTestSubmit(),
             disabled: submitBtnDisabled,
 
@@ -1708,15 +1708,15 @@ export default function AssignedTests() {
           handleClose={handleClose}
           body={
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-6  gap-y-0 mb-7">
-                <div className="mb-10 student-name-container">
+              <div className="h-[200px] grid grid-cols-1 md:grid-cols-2 gap-x-[36px] gap-y-[15px]">
+                <div className=" student-name-container">
                   <InputSearch
                     label="Student Name"
-                    labelClassname="text-base-20 text-[#26435F] mb-1"
+                    labelClassname="text-[20px] text-[#26435F] mb-[8px]"
                     placeholder="Search Student"
                     placeholderClass="text-[17.5px]"
-                    parentClassName=" text-[17.5px] py-0 w-full"
-                    inputContainerClassName=" text-[17.5px] bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
+                    parentClassName=" text-[17.5px] py-0 w-[280px] h-[53.33px]"
+                    inputContainerClassName="text-[17.5px] bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
                     inputClassName="bg-[#F3F5F7]"
                     type="text"
                     value={modalData.name}
@@ -1738,39 +1738,10 @@ export default function AssignedTests() {
                     // right={<img className="" src={down} />}
                     onOptionClick={(item) => {
                       handleMultipleStudent(item);
-                      // handleTestChange(item);
-                      // setStudent(item.value);
-                      // handleStudentsChange(item)
-                      // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
+                    
                     }}
                   />
-                  {/* <InputSearch
-                    label="Student Name"
-                    value={modalData.name}
-                    onChange={(val) =>
-                      setModalData({
-                        ...modalData,
-                        name: val.target.value,
-                      })
-                    }
-                    placeholderClass="text-[17.5px]"
-                    optionData={students}
-                    onOptionClick={(item) => {
-                      setModalData({
-                        ...modalData,
-                        name: item.value,
-                        studentId: item._id,
-                      });
-                    }}
-                    optionPrefix="s"
-                    parentClassName="w-full mr-4"
-                    labelClassname=" !font-medium text-[#26435F] ml-2 mb-0.5 !font-semibold text-[#26435F]"
-
-                    inputContainerClassName="px-5 py-3.5 text-[17.5px] bg-primary-50 border-0"
-                    inputClassName="text-[17.5px] bg-transparent "
-                    placeholder="Student Name"
-                    type="select"
-                  /> */}
+               
                   <div className="flex flex-row items-center">
                     <p className="font-medium whitespace-nowrap text-container text-base-15 mt-1 text-[#667085]">
                       {selectedtext}
@@ -1798,8 +1769,8 @@ export default function AssignedTests() {
                     }}
                     label="Assignment"
                     placeholder="Select Assignment Name"
-                    parentClassName="w-full mr-4"
-                    labelClassname=" !font-medium text-[#26435F] text-base-20 ml-2 mb-0.5 !font-semibold text-[#26435F]"
+                    parentClassName=" w-[280px] h-[53.33px]"
+                    labelClassname=" !font-medium text-[#26435F] text-[20px] ml-2 mb-[8px] text-[#26435F]"
                     inputContainerClassName="px-5 py-3.5 text-[17.5px] bg-primary-50 border-0"
                     inputClassName="text-[17.5px] bg-transparent"
                     type="select"
@@ -1814,8 +1785,8 @@ export default function AssignedTests() {
                     }
                     placeholderClass="text-[17.5px]"
                     optionData={timeLimits}
-                    parentClassName="w-full mr-4 "
-                    labelClassname=" !font-medium text-[#26435F] text-base-20 ml-2 mb-1 !font-semibold text-[#26435F]"
+                    parentClassName="w-[280px] h-[53.33px]"
+                    labelClassname=" !font-medium text-[#26435F] text-[20px] ml-2 mb-[8px] text-[#26435F]"
                     inputContainerClassName="px-5 text-[17.5px] py-3.5 bg-primary-50 border-0"
                     inputClassName="text-[17.5px] bg-transparent"
                     placeholder="Select Duration"
@@ -1826,7 +1797,7 @@ export default function AssignedTests() {
                   <InputField
                     label="Due Date"
                     iconSize="medium"
-                    labelClassname=" !font-medium text-[#26435F] text-base-20 ml-2 mb-0.5 !font-semibold text-[#26435F]"
+                    labelClassname="!font-medium text-[#26435F] text-[20px] ml-2 mb-[16px] text-[#26435F]"
                     min={getCurrentDate()}
                     value={modalData.date}
                     onChange={(val) =>
@@ -1835,9 +1806,9 @@ export default function AssignedTests() {
                         date: val.target.value,
                       })
                     }
-                    parentClassName="w-full mr-4"
-                    inputContainerClassName="px-5 py-3.5 bg-primary-50 border-0"
-                    inputClassName="text-[17.5px] bg-transparent text-[17.5px]"
+                    parentClassName="w-[280px] h-[53.33px]"
+                    inputContainerClassName="w-full h-full px-5 bg-primary-50 border-0 py-3.5"
+                    inputClassName="text-[17.5px] w-full h-full bg-transparent text-[17.5px] font-normal"
                     placeholderClass="text-[17.5px]"
                     optionData={optionData}
                     placeholder="Date"
@@ -1845,8 +1816,8 @@ export default function AssignedTests() {
                   />
                 </div>
               </div>
-              <div className="relative  mx-1">
-                <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
+              <div className="relative mx-1 mt-[20px]">
+                <p className=" text-[18.667px] text-[#26435F] font-semibold mb-1">
                   Assignment Instructions{" "}
                   <span className="text-[#667085]">(optional)</span>
                 </p>
@@ -1859,7 +1830,7 @@ export default function AssignedTests() {
                       instruction: val.target.value,
                     })
                   }
-                  className="mt-2 block  mb-7 resize-none focus:!ring-blue-500 p-3 focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18  placeholder:text-base-18  w-full h-[100px] shadow-small  rounded-[5px]"
+                  className="mt-[2px] block mb-[71.33px] resize-none focus:!ring-blue-500 px-[20px] pt-[12.67px] focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18  placeholder:text-base-18  w-full h-[100px] shadow-small  rounded-[5px]"
                   placeholder="Please add any custom instructions related to the test here. These will be visible to the students before they start a section during the assignment."
                 ></textarea>
               </div>
@@ -1891,21 +1862,21 @@ export default function AssignedTests() {
       {resendModalActive && (
         <Modal
           title={
-            <span className="leading-10  capitalize">
+            <span className="leading-10 capitalize text-[21.332px]">
               Do you want to resend the assignments via email?
             </span>
           }
-          titleClassName="mb-5 leading-10"
+          titleClassName="mb-[22.87px] leading-10"
           cancelBtn={true}
-          cancelBtnClassName="max-w-140"
+          cancelBtnClassName="w-[146.67px] h-[46.67px]"
           primaryBtn={{
             text: "Send Email",
-            className: "w-[140px] pl-4 px-4",
+            className: "w-[146.667px] h-[46.67px] flex justify-center items-center",
             onClick: () => handleResendTestSubmit(),
             loading: resendLoading,
           }}
           handleClose={() => setResendModalActive(false)}
-          classname={"max-w-[630px] mx-auto"}
+          classname={"w-[666px] h-[194.667px] mx-auto"}
         />
       )}
       {deleteModalActive && (
@@ -1915,18 +1886,18 @@ export default function AssignedTests() {
               Are you sure you want to delete the assigned test ?
             </span>
           }
-          titleClassName="mb-5 leading-10"
+          titleClassName="mb-[22.87px] leading-10"
           cancelBtn={true}
-          cancelBtnClassName="w-[140px] px-3"
+          cancelBtnClassName="w-[146.667px] h-[46.67px]"
           primaryBtn={{
             text: "Delete",
-            className: "w-[140px] pl-4 px-4",
+            className: "w-[146.667px] h-[46.67px]",
             onClick: () => deleteTest(),
             bgDanger: true,
             loading: deleteLoading,
           }}
           handleClose={() => setDeleteModalActive(false)}
-          classname={"max-w-[630px] mx-auto"}
+          classname={"w-[666px] h-[194.667px] mx-auto"}
         />
       )}
       {deleteBulkModalActive && (
@@ -1936,21 +1907,22 @@ export default function AssignedTests() {
               Are you sure you want to Delete the Assignments?
             </span>
           }
-          titleClassName="mb-5 leading-10"
+          titleClassName="mb-[22.87px] leading-10"
           cancelBtn={true}
           crossBtn={true}
-          cancelBtnClassName="w-[140px] !bg-[#26435F1A] px-3  !text-[#26435F] !rounded-md"
+          cancelBtnClassName="w-[146.667px] h-[46.67px] !bg-[#26435F1A] px-3 !text-[#26435F] !rounded-md"
           primaryBtn={{
             text: "Delete",
-            className: "w-[140px]  pl-4 px-4 !bg-[#FF7979] text-white",
+            className: "w-[146.667px] h-[46.67px] !bg-[#FF7979] text-white",
             onClick: () => bulkSelectDelete(),
             bgDanger: true,
             loading: deleteSelectLoading,
           }}
           handleClose={() => setDeleteBulkModalActive(false)}
-          classname={"max-w-[630px]  mx-auto"}
+          classname={"w-[666px] h-[194.667px] mx-auto"}
         />
       )}
+      
       {markBulkModalActive && (
         <Modal
           title={
@@ -1973,7 +1945,7 @@ export default function AssignedTests() {
             <>
               <p className="text-[17.5px] mt-[-5px] text-[#667085] mb-6">
                 <span className="font-semibold mr-1">
-                  <div className="!scale-[0.8] mr-[-4px] mt-[-4px] inline-block">
+                  <div className="!scale-[0.8] mr-[-4px] inline-block">
                     ⚠️
                   </div>{" "}
                   Note:

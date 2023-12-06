@@ -49,12 +49,12 @@ export default function AllTestDetail({ testData }) {
       {persona === "admin" ? (
         <div className="w-full flex flex-col">
           <div className="flex justify-between items-center mb-[6px]">
-            <p className="inline-block w-138 font-medium  text-[#26435F] ">
+            <p className="inline-block w-[172px] font-medium  text-[#26435F] ">
               {" "}
               Created on
             </p>
             <p className="inline-block mr-7">:</p>
-            <p className="inline-block text-[#24A3D9] w-138 font-semibold">
+            <p className="inline-block text-[#24A3D9] w-[172px] font-semibold">
               {/* {testData.createdAt?.split("T")[0]} */}
               {getFormattedDate(testData.createdAt?.split("T")[0], dateFormat)}
             </p>
@@ -62,24 +62,24 @@ export default function AllTestDetail({ testData }) {
 
         
           <div className="flex justify-between items-center mb-[6px]">
-            <p className="inline-block w-138 font-medium  text-[#26435F] ">
+            <p className="inline-block w-[172px] font-medium  text-[#26435F] ">
               {" "}
               Updated on{" "}
             </p>
             <p className="inline-block mr-7">:</p>
-            <p className="inline-block text-[#24A3D9] w-138 font-semibold  ">
+            <p className="inline-block text-[#24A3D9] w-[172px] font-semibold  ">
               {" "}
               {/* {testData.updatedAt?.split("T")[0]} */}
               {getFormattedDate(testData.updatedAt?.split("T")[0], dateFormat)}
             </p>
           </div>
           <div className="flex justify-between items-center mb-[6px]">
-            <p className="inline-block w-138 font-medium text-[#26435F]">
+            <p className="inline-block w-[172px] font-medium text-[#26435F]">
               {" "}
               Name{" "}
             </p>
             <p className="inline-block mr-7">:</p>
-            <p className="inline-block w-138 text-[#24A3D9] font-semibold ">
+            <p className="inline-block w-[172px] text-[#24A3D9] font-semibold ">
               {" "}
               {testData.testName}
             </p>
@@ -87,13 +87,13 @@ export default function AllTestDetail({ testData }) {
 
           
           <div className="flex justify-between items-center mb-[6px]">
-            <p className="inline-block w-138 font-medium text-[#26435F]">
+            <p className="inline-block w-[172px] font-medium text-[#26435F]">
               {" "}
               Type{" "}
             </p>
             <p className="inline-block mr-7">:</p>
             {console.log(testData.testType)}
-            <p className="inline-block w-138 text-[#24A3D9] font-semibold ">
+            <p className="inline-block w-[172px] text-[#24A3D9] font-semibold ">
               {" "}
               {testData.testType?.includes("®")
                 ? testData.testType
@@ -104,24 +104,24 @@ export default function AllTestDetail({ testData }) {
           </div>  
 
           <div className="flex justify-between items-center mb-[6px]">
-            <p className="inline-block w-138 font-medium  text-[#26435F] ">
+            <p className="inline-block w-[172px] font-medium  text-[#26435F] ">
               {" "}
               Created by
             </p>
             <p className="inline-block mr-7">:</p>
-            <p className="inline-block text-[#24A3D9]  w-138 font-semibold ">
+            <p className="inline-block text-[#24A3D9]  w-[172px] font-semibold ">
               {detail.createdBy}
             </p>
           </div>
 
           
           <div className="flex justify-between items-center mb-[6px]">
-            <p className="inline-block w-138 font-medium text-[#26435F] ">
+            <p className="inline-block w-[172px] font-medium text-[#26435F] ">
               {" "}
               Updated By{" "}
             </p>
             <p className="inline-block mr-7">:</p>
-            <p className="inline-block text-[#24A3D9] w-138 font-semibold ">
+            <p className="inline-block text-[#24A3D9] w-[172px] font-semibold ">
               {" "}
               {detail.updatedBy}
             </p>
@@ -130,35 +130,35 @@ export default function AllTestDetail({ testData }) {
       ) : (
         <div className="w-full flex flex-col gap-y-2">
           <div className="flex justify-between items-center">
-            <p className="inline-block w-138 font-medium  text-[#26435F] ">
+            <p className="inline-block w-[172px] font-medium  text-[#26435F] ">
               {" "}
               Created on
             </p>
             <p className="inline-block mr-7">:</p>
-            <p className="inline-block text-[#24A3D9] w-138 font-semibold">
+            <p className="inline-block text-[#24A3D9] w-[172px] font-semibold">
               {/* {testData.createdAt?.split("T")[0]} */}
               {getFormattedDate(testData.createdAt?.split("T")[0], dateFormat)}
             </p>
           </div>
 
           <div className="flex justify-between items-center">
-            <p className="inline-block w-138 font-medium  text-[#26435F] ">
+            <p className="inline-block w-[172px] font-medium  text-[#26435F] ">
               {" "}
               Created by
             </p>
             <p className="inline-block mr-7">:</p>
-            <p className="inline-block text-[#24A3D9]  w-138 font-semibold ">
+            <p className="inline-block text-[#24A3D9]  w-[172px] font-semibold ">
               {detail.createdBy}
             </p>
           </div>
 
           <div className="flex justify-between items-center">
-            <p className="inline-block w-138 font-medium  text-[#26435F] ">
+            <p className="inline-block w-[172px] font-medium  text-[#26435F] ">
               {" "}
               Updated on{" "}
             </p>
             <p className="inline-block mr-7">:</p>
-            <p className="inline-block text-[#24A3D9] w-138 font-semibold  ">
+            <p className="inline-block text-[#24A3D9] w-[172px] font-semibold  ">
               {" "}
               {/* {testData.updatedAt?.split("T")[0]} */}
               {getFormattedDate(testData.updatedAt?.split("T")[0], dateFormat)}
@@ -166,36 +166,36 @@ export default function AllTestDetail({ testData }) {
           </div>
 
           <div className="flex justify-between items-center">
-            <p className="inline-block w-138 font-medium text-[#26435F] ">
+            <p className="inline-block w-[172px] font-medium text-[#26435F] ">
               {" "}
               Updated By{" "}
             </p>
             <p className="inline-block mr-7">:</p>
-            <p className="inline-block text-[#24A3D9] w-138 font-semibold ">
+            <p className="inline-block text-[#24A3D9] w-[172px] font-semibold ">
               {" "}
               {detail.updatedBy}
             </p>
           </div>
 
           <div className="flex justify-between items-center">
-            <p className="inline-block w-138 font-medium text-[#26435F]">
+            <p className="inline-block w-[172px] font-medium text-[#26435F]">
               {" "}
               Name{" "}
             </p>
             <p className="inline-block mr-7">:</p>
-            <p className="inline-block w-138 text-[#24A3D9] font-semibold ">
+            <p className="inline-block w-[172px] text-[#24A3D9] font-semibold">
               {" "}
               {testData.testName}
             </p>
           </div>
           <div className="flex justify-between items-center">
-            <p className="inline-block w-138 font-medium text-[#26435F]">
+            <p className="inline-block w-[172px] font-medium text-[#26435F]">
               {" "}
               Type{" "}
             </p>
             <p className="inline-block mr-7">:</p>
             {console.log(testData.testType)}
-            <p className="inline-block w-138 text-[#24A3D9] font-semibold ">
+            <p className="inline-block w-[172px] text-[#24A3D9] font-semibold ">
               {" "}
               {testData.testType?.includes("®")
                 ? testData.testType

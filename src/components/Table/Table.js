@@ -112,7 +112,7 @@ export default function Table(props) {
       >
         <table className={`bg-white customTable mb-3 text-center whitespace-nowrap ${widthFullTable===true?"w-full":""}`}>
           <thead className={`pb-2 whitespace-nowrap bg-[#26435f] ${theadWidth??"w-[1601px]"}`}>
-            <tr className={`whitespace-nowrap bg-[#26435f]`}>
+            <tr className={`whitespace-nowrap bg-[#26435f] text-white`}>
               {tableHeaders.map((item, idx) => {
                 return headerObject === true ? (
                   <React.Fragment key={idx}>
