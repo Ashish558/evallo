@@ -128,6 +128,12 @@ export default function Login({ setLoginFormActive }) {
             //    return { ...prev, password: 'Wrong password' }
             // })
           }
+          if (res.error.data.message) {
+            alert(res.error.data.message);
+            // setError(prev => {
+            //    return { ...prev, password: 'Wrong password' }
+            // })
+          }
           return;
         }
         sessionStorage.setItem("token", res.data.data.token);
