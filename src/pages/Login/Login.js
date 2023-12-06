@@ -288,7 +288,7 @@ export default function Login({ setLoginFormActive }) {
 
                 <div className="w-full flex justify-center items-center gap-[30px] mt-[11px]" >
                     <div
-                      className="aspect-square bg-[#fff] flex items-center justify-center h-[50px] w-[50px] relative rounded-[7px] hover:cursor-pointer shadow-md"
+                      className="aspect-square bg-[#fff] flex items-center justify-center h-[50px] w-[50px] relative rounded-[7px] shadow-md"
                       
                       // onClick={google}
                     >
@@ -299,7 +299,7 @@ export default function Login({ setLoginFormActive }) {
 
                   
                     <div
-                      className="aspect-square bg-[#fff] flex items-center justify-center h-[50px] w-[50px] relative rounded-[7px] hover:cursor-pointer shadow-md"
+                      className="aspect-square bg-[#fff] flex items-center justify-center h-[50px] w-[50px] relative rounded-[7px] shadow-md"
                       
                     >
                       <img 

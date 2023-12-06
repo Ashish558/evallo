@@ -724,7 +724,7 @@ const handleClick = () => {
 
                   <div className="relative left-2/4 -translate-x-2/4 flex h-[50px] justify-around w-[120px]" >
                     <button
-                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]"
+                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px] hover:cursor-default"
                       // onClick={google}
                     >
                       <img 
@@ -741,7 +741,7 @@ const handleClick = () => {
                     </button> */}
 
                     <button
-                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]"
+                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px] hover:cursor-default"
                     >
                       <img 
                         className="block"
