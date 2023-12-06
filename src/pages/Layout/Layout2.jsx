@@ -37,17 +37,17 @@ const Layout2 = ({ children }) => {
     const scale = screenWidth > 0 ? screenWidth / 1920 : 0;
     setScaleState(scale);
     const layoutRealHeightAfterScale =
-      layoutRef.current.clientHeight * (scale > 1 ? 1 : scale);
+      layoutRef.current?.clientHeight * (scale > 1 ? 1 : scale);
       if((layoutRealHeightAfterScale+72+67)<windowHeight){
         const heightForFullScreenLayout = windowHeight-67;
         layoutRef.current.style.marginTop = `-${72*(scale>1?0:(1-scale))}px`;
-    console.warn({windowHeight,layoutRealHeightAfterScale,heightForFullScreenLayout});
+    // console.warn({windowHeight,layoutRealHeightAfterScale,heightForFullScreenLayout});
         setLayoutParentHeight(heightForFullScreenLayout);
         // footerRef.current.style.position = 'absolute';
       }else{
         // footerRef.current.style.position = 'static';
         layoutRef.current.style.marginTop = `-${130*(scale>1?0:(1-scale))}px`;
-        console.warn({layoutRefMarginTop:130*(scale>1?0:(1-scale)),layoutRealHeightAfterScale})
+        // console.warn({layoutRefMarginTop:130*(scale>1?0:(1-scale)),layoutRealHeightAfterScale})
     setLayoutParentHeight(layoutRealHeightAfterScale);
   };
   // if (navRef.current && layoutParentRef.current) {

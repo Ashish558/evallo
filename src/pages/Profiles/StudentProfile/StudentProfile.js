@@ -735,7 +735,7 @@ const [toEdit, setToEdit] = useState({
 
   return (
     <>
-      <div className={`w-[83.3vw] mx-auto pb-[70px]`}>
+      <div className={`w-[1600px] mx-auto pb-[70px]`}>
         <p className="text-[#24A3D9] mt-[50px] mb-[30px] text-base-22-5">
           {persona === "admin" ?
             <span >

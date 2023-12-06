@@ -508,12 +508,11 @@ export default function StartTest() {
 
   if (subjects.length === 0) return;
   return (
-    <div className="w-screen bg-[#F5F8FA] flex justify-center items-center">
-      <div className="w-[83.77vw] min-h-full">
-        <div className="py-8 px-5">
+    <div className="w-[1920px] bg-[#F5F8FA] flex justify-center items-center">
+      <div className="w-[1600px] min-h-full">
           <div className="flex">
             <div className="flex-1">
-              <p className="text-[#24A3D9] ml-8 !mt-[calc(50*0.052vw)] !mb-[calc(25*0.052vw)] text-base-20">
+              <p className="text-[#24A3D9] ml-8 mt-[50px] mb-[31px] text-[20px] font-normal">
                 <span onClick={() => navigate("/")} className="cursor-pointer">
                   {organization?.company +
                     "  >  " +
@@ -526,17 +525,18 @@ export default function StartTest() {
                 >
                   {"Assignments > "}{" "}
                 </span>
-                <span className="font-semibold">
+                <span className="font-bold">
                   {testHeaderDetails.testName}
                 </span>
               </p>
+              <p className="text-[#26435F] text-[20px] font-bold mb-[41.25px]">{testHeaderDetails.testName}</p>
               {!testStarted && (
-                <div className="grid grid-cols-3 ml-4 w-full text-sm px-4 gap-y-4 mt-2">
+                <div className="flex justify-start items-start ml-4 w-full text-sm px-4 gap-y-4 mt-2">
                   <div className=" grid grid-flow-col  grid-rows-3 mr-3 justify-start items-start">
-                    <div className="w-[20vw] flex flex-1 flex-grow-1 mb-3 justify-between ">
+                    <div className="w-[384px] flex flex-1 flex-grow-1 mb-3 justify-between ">
                       <p className="inline-block min-w-1/2 mr-4 font-medium text-[20px] text-[#517CA8] ">
                         {" "}
-                        Student’s Name
+                        Student Name
                       </p>
 
                       <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]">
@@ -550,10 +550,9 @@ export default function StartTest() {
                         {" "}
                         Date Assigned{" "}
                       </p>
-                      {console.log(testHeaderDetails)}
 
                       <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]  ">
-
+                          {testHeaderDetails?.dateAssigned}
                       </p>
                     </div>
                     <div className="w-full flex mb-3 justify-between">
@@ -569,41 +568,41 @@ export default function StartTest() {
                   </div>
                   <div className=" grid grid-flow-col  grid-rows-3 justify-start items-start">
                     <div className="w-full flex mb-3 justify-between">
-                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] ">
+                      <p className="inline-block w-[138px] mr-4 font-medium  text-[20px] text-[#517CA8] ">
                         {" "}
                         Due on{" "}
                       </p>
 
-                      <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8] ">
+                      <p className="inline-block w-[87px] font-light  text-[20px] text-[#517CA8] ">
                         {testHeaderDetails.dueDate
                           ? formatDate2(testHeaderDetails.dueDate)
                           : "-"}
                       </p>
                     </div>
                     <div className="w-full flex mb-3 justify-between">
-                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] ">
+                      <p className="inline-block w-[138px] mr-4 font-medium  text-[20px] text-[#517CA8] ">
                         {" "}
                         Started on{" "}
                       </p>
 
-                      <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]">
+                      <p className="inline-block w-[87px] font-light  text-[20px] text-[#517CA8]">
                         {testHeaderDetails.startedOn
                           ? formatDate2(testHeaderDetails.startedOn)
                           : "-"}
                       </p>
                     </div>
-                    <div className="w-full flex mb-3 justify-between">
-                      <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] ">
+                    <div className="w-full flex mb-3 justify-between min-w-[250px]">
+                      <p className="inline-block w-[138px] mr-4 font-medium  text-[20px] text-[#517CA8] ">
                         {" "}
                         Completed on{" "}
                       </p>
 
-                      <p className="inline-block w-[160px] font-light  text-[20px] text-[#517CA8]">
+                      <p className="inline-block w-[87px] font-light  text-[20px] text-[#517CA8]">
                         -{" "}
                       </p>
                     </div>
                   </div>
-                  <div className="w-full flex mb-3 justify-between">
+                  <div className="w-full ml-[90px] flex mb-3 justify-between">
                     <div className="flex flex-col">
                       <p className="inline-block mr-4 font-medium  text-[20px] text-[#517CA8] ">
                         {" "}
@@ -647,29 +646,29 @@ export default function StartTest() {
                   <div className="bg-gray-300 absolute bottom-[0px] z-10 h-[1px] w-full"></div>
                 </div>
                 {!testStarted && (
-                  <div className="border shadow-lg border-1 bg-white pt-[60px] pr-8 pl-12 pb-[50px] m-4 relative">
-                    <div className="bg-[#24A3D9] absolute top-4 right-4 rounded px-4 flex items-center flex-col py-2">
-                      <p className="text-[15px] text-[#FFFFFF] font-medium">
+                  <div className="border w-[1600px] min-h-[435px] shadow-lg border-1 bg-white pt-[30px] pr-8 pl-[30px] pb-[26px] mt-[41px] relative">
+                    <div className="bg-[#24A3D9] absolute top-[30px] right-[30px] min-w-[128.5px] min-h-[62.34px] rounded px-4 flex items-center flex-col pb-[4.92px] pt-[10.17px]">
+                      <p className="text-[15px] text-[#FFFFFF] font-medium leading-[19px]">
                         Time
                       </p>
-                      <p className="text-[25px] text-[#FFFFFF] font-normal">
+                      <p className="text-[25px] text-[#FFFFFF] font-bold mt-[-3.4px]">
                         {activeSection.timer + ":00"}
                       </p>
                     </div>
-                    <div className="flex flex-col items-start gap-2">
-                      <p className="text-[#26435F] text-[17.5] font-bold mb-4">
+                    <div className="flex flex-col items-start">
+                      <p className="text-[#26435F] text-[17.5px] leading-[31.25px] font-bold">
                         Section Instructions:
                       </p>
-                      <p className="text-[#26435F] texxt-[17.5] font-normal">
+                      <p className="text-[#26435F] text-[17.5px] leading-[31.25px] font-medium mt-[20px]">
                         Time: {activeSection.timer} minutes
                       </p>
-                      <p className="text-[#517CA8] texxt-[17.5] font-normal">
+                      <p className="text-[#517CA8] text-[17.5px] leading-[31.25px] font-normal max-w-[1245px]">
                         {activeSection.description}
                       </p>
                     </div>
 
-                    <div className="flex items-start flex-col mt-16 relative">
-                      <div className="flex flex-row justify-start items-center bg-[#FF696133] py-2 px-5 rounded-20 mb-[15px]">
+                    <div className="flex items-start flex-col mt-[94px] relative">
+                      <div className="flex flex-row justify-start items-center bg-[#FF696133] py-2 px-5 rounded-20 mb-[30px]">
                         <img src={Warning} />
                         <p className="text-red-500 text-[15px] font-medium">
                           Warning
@@ -694,8 +693,7 @@ export default function StartTest() {
           <div className="flex flex-row justify-between  ">
             {testStarted && (
               <div
-                className="mt-[15px] w-[962px] overflow-auto custom-scroller"
-                style={{ maxHeight: "calc(100vh - 240px)" }}
+                className="mt-[15px] w-[962px] h-[776px] overflow-auto custom-scroller"
               >
                 {answers.map((item, idx) => {
                   return (
@@ -758,7 +756,6 @@ export default function StartTest() {
               )}
             </div>
           </div>
-        </div>
 
         {popUp && (
           <Modal
