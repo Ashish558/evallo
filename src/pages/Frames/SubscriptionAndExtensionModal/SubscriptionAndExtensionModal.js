@@ -17,6 +17,9 @@ import { useLazyGetAuthQuery, useLazyGetOrganizationQuery, useLazyGetPersonalDet
 import { useUpdateOrganizationDetailMutation } from "../../../app/services/organization";
 import { useSelector } from "react-redux";
 
+const TEMPORARY_CHOSEN_SUBSCRIPTION_PLAN_NAME = "TEMPORARY_CHOSEN_SUBSCRIPTION_PLAN_NAME";
+const TEMPORARY_CHOSEN_EXTENSIONS_NAME = "TEMPORARY_CHOSEN_EXTENSIONS_NAME";
+
 function SubscriptionAndExtensionModal({
     className,
     openSubscriptionModal = true,
@@ -108,13 +111,19 @@ function SubscriptionAndExtensionModal({
           const ext = extensions[i];
     
           const chosenExtension = subscriptionsInfoFromAPI.find(item => {
-            return item.product.metadata.type === "extension" && 
+            if(item && item.product) {
+                return item.product.metadata.type === "extension" && 
                    item.product.name === ext.text && 
                    item.lookup_key === ext.packageName;
+            }
+            return false;
           });
     
           chosenExtentionObjectsFromAPI = chosenExtentionObjectsFromAPI.filter(item => {
-            return item.product.metadata.type === "extension" && item.product.name !== ext.text;
+            if(item && item.product && item.product.metadata) {
+                return item.product.metadata.type === "extension" && item.product.name !== ext.text;
+            }
+            return false;
           })
 
           if(!extensions[i].checked) {
@@ -392,6 +401,22 @@ function SubscriptionAndExtensionModal({
           console.error(error)
         })
     }
+
+    useEffect(() => {
+        const chosenSubName = sessionStorage.getItem(TEMPORARY_CHOSEN_SUBSCRIPTION_PLAN_NAME);
+        if(!(chosenSubName === "" || chosenSubName === undefined || chosenSubName === null)) {
+            SetChosenSubscriptionPlanName(chosenSubName);
+        }
+
+        let ext = sessionStorage.getItem(TEMPORARY_CHOSEN_EXTENSIONS_NAME);
+        
+        if(!(ext === undefined || ext === null)) {
+            ext = JSON.parse(ext);
+            console.log("ext");
+            console.log(ext);
+            setExtensions(ext);
+        }
+    }, []);
     
     useEffect(() => {
         if(subscriptionsInfoFromAPI_Param && subscriptionsInfoFromAPI_Param.length > 0) {
@@ -473,6 +498,7 @@ function SubscriptionAndExtensionModal({
                 review: false,
                 extensions: true
             }
+            return frames;
         })
     }
 
@@ -494,6 +520,7 @@ function SubscriptionAndExtensionModal({
                 orgDetails: false,
                 subscription: true
             }
+            return frames;
         })
     }
 
@@ -513,9 +540,26 @@ function SubscriptionAndExtensionModal({
                         orgDetails: false,
                         subscription: true
                     }
+                    return frames;
                 })
             })
-        }else{
+            .catch(error => {
+                console.error("Error from updateOrgDetails");
+                console.error(error);
+            })
+        }
+
+        if(frames.subscription) {
+            sessionStorage.setItem(TEMPORARY_CHOSEN_SUBSCRIPTION_PLAN_NAME,
+                                   chosenSubscriptionPlanName
+            );
+        }
+
+        if(frames.extensions) {
+            sessionStorage.setItem(TEMPORARY_CHOSEN_EXTENSIONS_NAME,
+                                   JSON.stringify(extensions)
+            );
+        }
 
         setFrames(frames => {
             if (frames.review) return frames;
@@ -534,8 +578,8 @@ function SubscriptionAndExtensionModal({
                 orgDetails: false,
                 subscription: true
             }
-        })
-    }
+            return frames;
+        });
 }
 
     async function handleSub(){
@@ -577,6 +621,8 @@ function SubscriptionAndExtensionModal({
 
         console.log('Subscribed');
         console.log(response);
+        sessionStorage.removeItem(TEMPORARY_CHOSEN_SUBSCRIPTION_PLAN_NAME);
+        sessionStorage.removeItem(TEMPORARY_CHOSEN_EXTENSIONS_NAME);
     };
 
     function OnVerticalNumericSteppersStepClicked(index) {
