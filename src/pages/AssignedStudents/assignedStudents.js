@@ -336,6 +336,7 @@ export default function AssignedStudents() {
                      excludes={['_id']}
                      tableHeaders={tableHeaders}
                      maxPageSize={10}
+                     widthFullTable={true}
                   />
                </div>
             </div>
