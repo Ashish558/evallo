@@ -679,7 +679,7 @@ const handleClick = () => {
       </div>
 
       {/* <AdminNavbar></AdminNavbar> */}
-      <div className="flex justify-center flex-col items-center md:grid-cols-2  mb-[100px]">
+      <div className="flex justify-center flex-col items-center md:grid-cols-2  mb-[100px] bg-red-900">
         <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-4" />
         <>
           {!frames.signupSuccessful ? (
