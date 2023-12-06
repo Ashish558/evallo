@@ -32,7 +32,7 @@ const Dashboard = lazy(() => import("../pages/AdminDashboard/Dashboard"));
 const AdminContent = lazy(() => import("../pages/AdminContent/AdminContent"));
 const AllOrgs = lazy(() => import("../pages/SuperadminDashboard/components/AllOrgs/AllOrgs"));
 
-const Settings = lazy(() => import("../pages/Settings/Settings"));
+const Settings = lazy(() => import("../pages/Settings/Settings2"));
 const SuperAdminSettings = lazy(() => import("../pages/Settings/SuperAdminSettings"));
 const SuperAdminProfile = lazy(() => import("../pages/SuperadminDashboard/components/About/About"));
 const EmailVerify = lazy(() => import("../pages/Settings/Tabs/AccountOverview/EmailVerify"));

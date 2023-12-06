@@ -108,7 +108,7 @@ export default function Table(props) {
           noScrollbar
             ? ` lg:overflow-x-auto ${customScrollBarClass??'scrollbar-content custom-scroller-2'} scroll-m-1 ${styles.noOverflow}`
             : `overflow-x-auto ${customScrollBarClass??'scrollbar-content custom-scroller-2'} scroll-m-1`
-        }  p-[2px]  `}
+        }`}
       >
         <table className={`bg-white customTable mb-3 text-center whitespace-nowrap ${widthFullTable===true?"w-full":""}`}>
           <thead className={`pb-2 whitespace-nowrap bg-[#26435f] ${theadWidth??"w-[1601px]"}`}>
@@ -236,7 +236,7 @@ export default function Table(props) {
           >
             <button
               onClick={() => navigate(`/${belowBoxLink}`)}
-              className="inline-block rounded-[5.33px] bg-[#FFA28D] text-[#FFF] font-semibold py-[10px] px-[15.5px] text-base"
+              className="inline-block rounded-[5.33px] bg-[#FFA28D] text-[#FFF] font-semibold py-[10px] px-[8px] text-base"
             >
               {belowBoxText}
               <img className="inline-block pl-2" src={belowBoxIcon} alt="" />

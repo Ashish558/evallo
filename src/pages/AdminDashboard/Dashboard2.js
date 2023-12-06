@@ -61,7 +61,7 @@ const Dashboard = () => {
     useGetFilteredActionLogMutation();
   const [filteredActionLog, setFilteredActionLog] = useState([]);
   const [userData, setUserData] = useState([]);
-  const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(true);
+  const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(false);
   const [latestSignUp_flag,setlatestsignup_flag]=useState([1,1,1,1,1,1,1,1,1])
   const [popular_Service_flag,setpopular_Service_flag] = useState([1,1,1,1,1,1])
   const [star_client_flag,setstar_client_flag] = useState([1,1,1])
@@ -398,7 +398,7 @@ const Dashboard = () => {
     {
       id: 2,
       // willDisplayDownArrow : 0,
-      text: "User Type",
+      text: "User type",
       willDisplayDownArrow : latestSignUp_flag[1],
       onCick: () => sortByString("role"),
     },
@@ -553,8 +553,8 @@ const Dashboard = () => {
               <span className="font-semibold">Dashboard</span>
             </p>
 
-            <div className="flex mt-[40px] justify-between items-center ">
-              <p className="font-bold  text-[#FFA28D] text-base">
+            <div className="flex mt-[40px] justify-between items-center w-[1601px]">
+              <p className="font-bold  text-[#FFA28D] text-[20px]">
                 BUSINESS OVERVIEW{" "}
               </p>
 
@@ -752,7 +752,7 @@ const Dashboard = () => {
 
           <div className="flex  w-[1601px] gap-x-5 mx-auto">
             <div className=" h-full  !whitespace-nowrap ">
-              <p className="font-semibold text-[#26435F] mb-1 text-[20px]">
+              <p className="font-semibold text-[#26435F] mb-[7.5px] text-[20px]">
                 User Stats
               </p>
               <div className={`${styles.sidebox} h-[330px] w-[312.5px] `}>
@@ -820,7 +820,7 @@ const Dashboard = () => {
             </div>
 
             <div className="  pl-[17.5px]">
-              <p className="font-semibold text-[#26435F] mb-1 text-[20px]">
+              <p className="font-semibold text-[#26435F] mb-[7.5px] text-[20px]">
                 Action Log
               </p>
               <ActionLog
@@ -832,11 +832,11 @@ const Dashboard = () => {
         </section>
 
         <section className="mt-[70px] w-[1601px] mx-auto ">
-          <p className="font-semibold text-[#26435F] text-[20px]">
+          <p className="font-semibold text-[#26435F] text-[20px] leading-[14px]">
             Latest Sign-Ups <span className="font-light">(Last 7 Days)</span>
           </p>
 
-          <div className="mt-2">
+          <div className="mt-[7px]">
             <Table
               data={userData}
               AdminLatestSignUp={true}
@@ -881,7 +881,7 @@ const Dashboard = () => {
               <p className="font-semibold text-[#26435F] text-[17.5px]">
                 Popular Services
               </p>
-              <div className="text-base-17-5 mt-2 pr-[32px]">
+              <div className="text-[17.5px] mt-[6.5px] pr-[32px]">
                 <Table
                   dataFor="popularServices"
                   noScrollbar={true}
@@ -1012,8 +1012,8 @@ const Dashboard = () => {
           </div>
         </div>
         <div className=" relative z-[50000] w-[1601px] mx-auto  mt-[13px] text-[#FFA28D] ">
-          <div className=" relative z-[50000] flex justify-between items-center  translate-y-[15px] mb-[10px]">
-            <p className="font-bold uppercase mb-1 text-base-17-5">
+          <div className=" relative z-[50000] flex justify-between items-center  translate-y-[15px] mb-[28.5px]">
+            <p className="font-bold uppercase mb-1 text-[20px]">
               Tutor Performance Overview{" "}
             </p>
 

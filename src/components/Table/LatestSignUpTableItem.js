@@ -78,39 +78,62 @@ else [ year, month, day] = value.split("-");
         </span>
       </td>
       <td className=" text-[17.5px] px-[16px] min-w-14 py-4 ">
-        <div >{item.role}</div>
+        <div className="flex flex-col max-w-[207px]">
+          {item.email?.length > 19 ? (
+            <>
+              <p>{item.role?.slice(0, 19)}</p>
+              <p>{item.role?.slice(19, item?.role?.length)}</p>
+            </>
+          ) : (
+            <p>{item.role}</p>
+          )}
+        </div>
       </td>
       <td className=" text-[17.5px] pr-[16px] pl-6  min-w-14 py-4 text-left">
         {/* <p className="max-w-[207px] text-ellipsis overflow-hidden whitespace-normal ">{item.email}</p> */}
         <div className="flex flex-col max-w-[207px]">
-        {item.email?.length>19?<><p>{item.email?.slice(0,19)}</p><p>{item.email?.slice(19,item?.email?.length)}</p></>:<p>{item.email}</p>}
+          {item.email?.length > 19 ? (
+            <>
+              <p>{item.email?.slice(0, 19)}</p>
+              <p>{item.email?.slice(19, item?.email?.length)}</p>
+            </>
+          ) : (
+            <p>{item.email}</p>
+          )}
         </div>
         {/* <p className="max-w-[207px] text-ellipsis">{item.email?.length>19?item.email?.slice(0,19)+"...":item.email}</p> */}
       </td>
       <td className=" text-[17.5px] px-[16px]  min-w-14 py-4">
-        <div >{item.phone}</div>
+        <div>{item.phone}</div>
       </td>
       <td className=" text-[17.5px] px-[16px]  py-4">
-        <div className="max-w-[300px] overflow-x-auto custom-scroller-2  min-w-[100px]">
-          {tutor && tutor?.length>0 ?tutor : "NA"}
+        <div className="max-w-[200px] custom-scroller-2  min-w-[100px]">
+          {tutor && tutor?.length > 0 ? (
+            <div className="flex flex-col max-w-[200px]">
+               <>
+                {tutor.map((item)=><p>{item}</p>)}
+              </>
+            </div>
+          ) : (
+            "NA"
+          )}
         </div>
       </td>
       <td className=" text-[17.5px] px-[16px]  min-w-14 py-4">
-        <div >{item.credits}</div>
+        <div>{item.credits}</div>
       </td>
       <td className=" text-[17.5px] px-[16px]  min-w-14 py-4">
-        <div >{item.userStatus}</div>
+        <div>{item.userStatus}</div>
       </td>
       <td className=" text-[17.5px] px-[16px]  min-w-14 py-4">
-        <div >
+        <div>
           {item?.specialization?.length > 0 ? item.specialization : "NA"}
         </div>
       </td>
       <td className=" text-[17.5px] px-[16px]  min-w-14 py-4">
-        <div >
+        <div>
           {/* {new Date(item.lastSignUp).toDateString()} */}
-        {  formatDate(getFormattedDate(item.lastSignUp, dateFormat))}
-        
+          {formatDate(getFormattedDate(item.lastSignUp, dateFormat))}
         </div>
       </td>
     </tr>

@@ -74,7 +74,9 @@ nav .active {
   border-radius: 6px;
   margin-top: 10px;
 }
-
+.users-table-scrollbar::-webkit-scrollbar {
+  width: 200px !important;
+}
 
 #root {
   display: contents;

@@ -41,19 +41,24 @@ export default function Modal({
   });
 
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    // 
+    // document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "unset";
     };
   }, []);
 
-
+  const screenWidth = document.body.clientWidth;
+  const scale = screenWidth > 0 ? screenWidth / 1920 : 0;
   return (
     <>
       {
         <div className={styles.modalContainer}>
-          <div className="w-full p-1">
+          <div className="w-full h-full pt-[150px]">
+        {/* <div style={{marginTop:`-${(1/(scale > 1 ? 1 : scale))*70}px`,marginBottom:`-${(1-(scale > 1 ? 1 : scale))*70}px`}} className={styles.modalContainer+" "}>
+          <div className="w-full p-1"> */}
             <div
+            style={{marginTop:"100px",maxHeight:"90vh",overflowY:"auto"}}
               ref={handleClose ? selectRef : null}
               className={`${modalSize ? modalSize : "w-full"} bg-white pt-[28px] pb-[33.34px] md:px-[33.33px] rounded-lg relative ${
                 classname ? classname : ""
@@ -147,7 +152,7 @@ export default function Modal({
                 )}
               </div>
             </div>
-            <div className={styles.modalOverlay}></div>
+            {/* <div className={styles.modalOverlay}></div> */}
           </div>
         </div>
       }

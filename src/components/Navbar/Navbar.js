@@ -30,44 +30,54 @@ import Modal from "../../components/Modal/Modal";
 import { updateIsLoggedIn } from "../../app/slices/user";
 import { useLazyGetLogoutQuery } from "../../app/services/superAdmin";
 import styles from './navbar.module.css'
+import {
+   useLazyGetPersonalDetailQuery,
+   useLazyGetOrganizationQuery,
+ } from "../../app/services/users";
 
-const tempnavdata = [
+let tempnavdata = [
    {
       icon: Dashboard,
       activeIcon: Dashboard1,
       path: "/",
       excludes: ["student", "parent", "tutor"],
       tooltip: "Dashboard",
+      isDisabled: false,
    },
    {
       icon: UsersIcon,
       activeIcon: UsersIcon1,
       path: "/users",
       tooltip: "CRM",
+      isDisabled: false,
    },
    {
       icon: Schedule,
       activeIcon: Schedule1,
       path: "/calendar",
       tooltip: "Schedule",
+      isDisabled: false,
    },
    {
       icon: Assignment,
       activeIcon: Assignment1,
       path: "/assigned-tests",
       tooltip: "Assignments",
+      isDisabled: true,
    },
    {
       icon: Content,
       activeIcon: Content2,
       path: "/all-tests",
       tooltip: "Content",
+      isDisabled: true,
    },
    {
       icon: Invoice,
       activeIcon: Invoice2,
       path: "/invoice",
       tooltip: "Invoicing",
+      isDisabled: false,
    },
    {
       icon: Settings,
@@ -75,6 +85,7 @@ const tempnavdata = [
       path: "/settings",
       excludes: ["student", "parent", "tutor"],
       tooltip: "Settings",
+      isDisabled: false,
    },
 ];
 
@@ -271,6 +282,8 @@ const Navbar = ({myRef}) => {
    const { width } = useWindowDimensions();
    const { isLoggedIn } = useSelector((state) => state.user);
    const [logOutApi, setLogOutApi] = useLazyGetLogoutQuery();
+   const [getPersonalDetail, getPersonalDetailResp] = useLazyGetPersonalDetailQuery();
+    const [getOrgDetails, getOrgDetailsResp] = useLazyGetOrganizationQuery();
    const { role: persona } = useSelector((state) => state.user);
 
    useEffect(() => {
@@ -365,6 +378,96 @@ const [loading2,setLoading2]=useState(false)
    //    };
    //  }, []);
 
+   function loadOrgDetails() {
+      getPersonalDetail()
+          .then(data => {
+              // console.log("getPersonalDetail");
+              // console.log(data);
+              const user = data.data.data.user;
+          
+              getOrgDetails(user.associatedOrg)
+              .then(data => {
+                  console.log("getOrgDetails");
+                  console.log(data);
+
+                  if(data.data && 
+                     data.data.customerSubscriptions && 
+                     data.data.customerSubscriptions.data && 
+                     data.data.customerSubscriptions.data.length > 0) {
+                        tempnavdata = [
+                           {
+                              icon: Dashboard,
+                              activeIcon: Dashboard1,
+                              path: "/",
+                              excludes: ["student", "parent", "tutor"],
+                              tooltip: "Dashboard",
+                              isDisabled: false,
+                           },
+                           {
+                              icon: UsersIcon,
+                              activeIcon: UsersIcon1,
+                              path: "/users",
+                              tooltip: "CRM",
+                              isDisabled: false,
+                           },
+                           {
+                              icon: Schedule,
+                              activeIcon: Schedule1,
+                              path: "/calendar",
+                              tooltip: "Schedule",
+                              isDisabled: false,
+                           },
+                           {
+                              icon: Assignment,
+                              activeIcon: Assignment1,
+                              path: "/assigned-tests",
+                              tooltip: "Assignments",
+                              isDisabled: false,
+                           },
+                           {
+                              icon: Content,
+                              activeIcon: Content2,
+                              path: "/all-tests",
+                              tooltip: "Content",
+                              isDisabled: false,
+                           },
+                           {
+                              icon: Invoice,
+                              activeIcon: Invoice2,
+                              path: "/invoice",
+                              tooltip: "Invoicing",
+                              isDisabled: false,
+                           },
+                           {
+                              icon: Settings,
+                              activeIcon: Settings1,
+                              path: "/settings",
+                              excludes: ["student", "parent", "tutor"],
+                              tooltip: "Settings",
+                              isDisabled: false,
+                           },
+                        ];
+
+                        setNavData(tempnavdata);
+                  }
+                  
+              })
+              .catch(error => {
+                  console.log("Error in getOrgDetails");
+                  console.log(error);
+              });
+      
+          })
+          .catch(error => {
+          console.log("Error in getPersonalDetail");
+          console.log(error);
+          });
+  }
+
+  useEffect(() => {
+   loadOrgDetails();
+  }, [])
+
    return (
       <>
       {/* this div will take navbar's height */}
@@ -387,7 +490,12 @@ const [loading2,setLoading2]=useState(false)
                      <div
                         key={idx}
                         className={`flex items-center mr-6 design:mr-10  ${isLoggedIn ? "cursor-pointer" : ' cursor-default'}`}
-                        onClick={() => isLoggedIn && handleNavigate(item.path)}
+                        onClick={() => {
+                           if(isLoggedIn && !item.isDisabled) {
+                              handleNavigate(item.path)
+                           }
+                           // isLoggedIn && handleNavigate(item.path)
+                        }}
                      >
                         {isLoggedIn && item?.path === activeRoute ? (
                            <>
@@ -410,7 +518,7 @@ const [loading2,setLoading2]=useState(false)
                                     alt=""
                                  />
                               </p>
-                              <p className="pl-[13.34px] text-[17.33px] "> {item.tooltip} </p>
+                              <p className={`pl-[10px] text-[17.33px] ${item.isDisabled ? "text-[#24A3D9]" : ""}`}> {item.tooltip} </p>
                            </>
                         )}
                      </div>

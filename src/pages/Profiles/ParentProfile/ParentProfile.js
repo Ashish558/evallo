@@ -563,7 +563,7 @@ const [toEdit, setToEdit] = useState({
   //console.log({user,userDetail})
   return (
     <>
-      <div className={`w-[83.3vw] mx-auto pb-[70px]`}>
+      <div className={`w-[1600px] mx-auto pb-[70px]`}>
         <p className="text-[#24A3D9] !my-[calc(50*0.0522vw)] text-base-20 relative z-[55]">
           {persona === "admin" ?
             <span >

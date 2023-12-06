@@ -26,7 +26,7 @@ const About = () => {
 
   return (
     <>
-      <div className="w-[88.9583333vw] pt-[36px] mb-12 mx-auto">
+      <div className="w-[1708px] pt-[36px] mb-12 mx-auto">
         <div className="flex gap-2 text-sm mb-7">
           <span onClick={()=>navigate('/all-orgs')} className="text-[#667085] text-base-18 cursor-pointer">All Orgs</span>
           <img src={icon} alt="right-arrow" />

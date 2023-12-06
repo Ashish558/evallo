@@ -29,7 +29,7 @@ export function TableHeaderNew({
           header.text === "Email" ||
           header.text === "Phone" ||
           header.text === "Assignment Name" ||
-          header.text === "Assignment"
+          header.text === "Assignment" || header.text === "Service"
             ? `justify-start ${
                 header.text === "Assignment" ? "ps-6 overflow-hidden" : ""
               }`
@@ -60,7 +60,7 @@ export function TableHeaderNew({
             <span className="text-center text-[17.5px] ">{header.text}</span>
           </div>
         ) : (
-          <div className={`text-[17.5px] ${header.text === "Score" ? "text-center" : "text-left w-full" }`}>{header.text}</div>
+          <div className={`text-[17.5px] ${header.text === "Score" ? "text-center" : "text-left" }`}>{header.text}</div>
         )}
       </div>
     </th>

@@ -13,7 +13,7 @@ import SecondaryButton from "../Buttons/SecondaryButton";
 import { useCreateIntentMutation, useFinishSetupMutation } from '../../app/services/subscription';
 import { BASE_URL } from '../../app/constants/constants';
 
-const stripePromise = loadStripe('pk_test_51NoBsUSF4WnDe9WBCtTkvFmGCbP7V13FRSIeozP8zfnhFFlSrYRlcQ2j6is9viJUjCrENLlq7uauG5ztDOsLBpdA00QIKLXblk');
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
 function Payment({
     chosenSubscriptionObjectFromAPI,
@@ -66,10 +66,11 @@ function Payment({
         body: JSON.stringify({ customer_id: 'cus_OteUYhKgkeuICE' })
         }); */
 
-        console.log("response from create_intent");
-        console.log(res);
+        // console.log("response from create_intent");
+        // console.log(res);
 
         const { client_secret: clientSecret } = res.data;
+        console.log("client",stripeCustomerId)
         // const { client_secret: clientSecret } = await res.json();
 
         // Confirm the SetupIntent using the details collected by the Payment Element
@@ -78,7 +79,7 @@ function Payment({
         clientSecret,
         redirect: 'if_required',
         confirmParams: {
-            return_url: 'https://stackblitz-starters-vzyaus.stackblitz.io/payment',
+            return_url: 'http://localhost:3000',
         },
         });
 
@@ -118,17 +119,17 @@ function Payment({
 
     
     return (
-        <div className="mt-[-50px] mb-3 w-full">
-            <form onSubmit={handleSubmit} className='scale-[0.6] w-full'>
+        <div className="w-[301px] mx-auto mt-[40px]">
+            <form onSubmit={handleSubmit} className='w-full'>
                 <PaymentElement 
-                    className='scale-[1]'
+                    className='w-full'
                 />
                 {errorMessage && <div>{errorMessage}</div>}
             </form>
 
             {/* <div className="border-[1px] mt-[25px] w-full"></div> */}
 
-            <div className="flex items-center mt-[-40px] ml-[-40px] justify-end w-full">
+            <div className="flex items-center mt-[40px] justify-end w-full">
                 {/* <SecondaryButton
                     children="Go back"
                     className="text-sm mr-6 bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 "

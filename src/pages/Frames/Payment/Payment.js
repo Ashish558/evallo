@@ -13,7 +13,7 @@ import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 import { useCreateIntentMutation, useFinishSetupMutation } from '../../../app/services/subscription';
 import { BASE_URL } from '../../../app/constants/constants';
 
-const stripePromise = loadStripe('pk_test_51NoBsUSF4WnDe9WBCtTkvFmGCbP7V13FRSIeozP8zfnhFFlSrYRlcQ2j6is9viJUjCrENLlq7uauG5ztDOsLBpdA00QIKLXblk');
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
 function Payment({
     setFrames,

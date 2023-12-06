@@ -398,7 +398,7 @@ export default function TableItem({
       {dataFor === "popularServices" && (
         <>
           <tr className=" text-[17.5px] font-medium">
-            <td className="py-4 px-[10px]">{item.service}</td>
+            <td className="py-4 px-[10px]">{item.service?.length>15?<div className="flex flex-col"><p>{item.service?.slice(0,15)}</p><p>{item.service?.slice(15,item?.service?.length)}</p></div>:item.service}</td>
             <td className="py-4 px-[10px]">{item.actively_using}</td>
             <td className="py-4 px-[10px]">{item.total_used}</td>
             <td className="py-4 px-[10px]">{item.scheduled_hours}</td>
@@ -801,7 +801,7 @@ export default function TableItem({
             excludes.includes(key) ? (
               <React.Fragment key={i}></React.Fragment>
             ) : key == "testtype" ? null : (
-              <td key={i} className="font-medium px-1  min-w-14 py-4">
+              <td key={i} className="font-medium pl-[10px]  min-w-14 pt-[7px] pb-[8px]">
                 {key === "status" ? (
                   <div className="flex justify-center">
                     {returnStatus(item.status)}
@@ -848,7 +848,7 @@ export default function TableItem({
                             onClick={() => window.open(`${item.pdfLink}`)}
                             alt="download"
                           />
-                        ) : null}{" "}
+                        ) : <div className=" w-[35px] h-[35px]"></div>}{" "}
                       </div>{" "}
                       {persona == "parent" && (
                         <div>
@@ -860,7 +860,7 @@ export default function TableItem({
                           />
                         </div>
                       )}
-                      <span className="pl-6">{item[key]}</span>
+                      <span className="pl-[35px]">{item[key]}</span>
                     </div>
                   </>
                 ) : key == "duration" ? (
@@ -956,7 +956,7 @@ export default function TableItem({
                           const indexx = testtype.findIndex(
                             (obj) => obj.testId === item.testId
                           );
-                          testtype[indexx].testtype == "DSAT"
+                          testtype[indexx]?.testtype == "DSAT"
                             ? navigate(
                                 `/testpage/${item.testId}/${item.assignedTestId}`
                               )

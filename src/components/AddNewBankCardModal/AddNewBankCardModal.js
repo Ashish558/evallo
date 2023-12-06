@@ -14,7 +14,7 @@ import { useCreateIntentMutation, useFinishSetupMutation } from '../../app/servi
 import { BASE_URL } from '../../app/constants/constants';
 import Modal2 from "../Modal2/Modal2";
 
-const stripePromise = loadStripe('pk_test_51NoBsUSF4WnDe9WBCtTkvFmGCbP7V13FRSIeozP8zfnhFFlSrYRlcQ2j6is9viJUjCrENLlq7uauG5ztDOsLBpdA00QIKLXblk');
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
 function Payment({
     chosenSubscriptionObjectFromAPI,
@@ -80,7 +80,7 @@ function Payment({
         clientSecret,
         redirect: 'if_required',
         confirmParams: {
-            return_url: 'https://stackblitz-starters-vzyaus.stackblitz.io/payment',
+            return_url: 'http://localhost:3000/settings?tab=3',
         },
         });
 

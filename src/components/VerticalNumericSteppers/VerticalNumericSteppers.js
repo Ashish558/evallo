@@ -36,16 +36,17 @@ function VerticalNumericSteppers({
                                     >
                                         <div
                                             className={`
-                                                        ${currentIndex === index ? "text-[18px]" : " text-[14px]"}
+                                                        ${currentIndex === index ? "text-[30px]" : " text-[20px]"}
                                             `}
                                         >
                                             {index + 1}
                                         </div>
                                     </div>
-                                    <div className={`font-[100] text-[14px]
+                                    <div className={`font-[100] text-[18px]
                                                     ${styles.label}
                                                     ${isRestricted ? styles.restricted : currentIndex > index ? styles.completed : ""}
                                                     ${currentIndex === index ? styles.currentIndex : ""}
+                                                    ${currentIndex === index ? "text-[22px]" : ""}
                                                      
                                     `} >{item}</div>
                                 </div>
