@@ -84,6 +84,7 @@ function SubscriptionAndExtensionModal({
     const [isCCRequired, SetIsCCRequired] = useState(false);
     const [stripeCustomerId, SetStripeCustomerId] = useState("");
     const [isPaymentSuccessfullyComplete, SetIsPaymentSuccessfullyComplete] = useState(false);
+    const [isExtensionStepComplete, SetIsExtensionStepComplete] = useState(false);
 
     const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
     const [addSubscriptions, addSubscriptionsResp] = useAddSubscriptionsMutation();
@@ -130,6 +131,17 @@ function SubscriptionAndExtensionModal({
     
     useEffect(() => {
         OnExtensionsChanged();
+    }, [extensions]);
+
+    useEffect(() => {
+        for(let i = 0; i < extensions.length; i++) {
+            if(extensions[i].checked) {
+                SetIsExtensionStepComplete(true);
+                return;
+            }
+        }
+
+        SetIsExtensionStepComplete(false);
     }, [extensions]);
 
     useEffect(() => {
@@ -664,6 +676,9 @@ function SubscriptionAndExtensionModal({
                     currentIndex={currentModalIndex}
                     restrictedIndices={restrictedIndices}
                     onStepClicked={OnVerticalNumericSteppersStepClicked}
+                    incompleteIndices={(
+                        isExtensionStepComplete ? [] : [2]
+                    )}
                 />
             </div>
 
