@@ -811,7 +811,7 @@ const [toEdit, setToEdit] = useState({
               </div>
               <div className="flex-1 flex justify-between  items-center">
                 <div className="ml-4 my-auto design:-translate-y-4">
-                  <div className="flex  items-center font-semibold text-[#F3F5F7] text-[1.5625vw]">
+                  <div className="flex  items-center font-semibold text-[#F3F5F7] text-[30px]">
                     {user.firstName} {user.lastName}
 
                   </div>
@@ -945,7 +945,7 @@ const [toEdit, setToEdit] = useState({
               {userDetail?.about}
             </div>
             <div className="min-w-[250px] ml-6 design:!ml-0  my-0 relative">
-              <div className="flex items-center absolute top-[20%] -left-[10%] design:-left-[25%]">
+              <div className="flex items-center absolute top-[20%] -left-[25%]">
                 <ProfilePhoto
                   src={
                     associatedParent?.photo
@@ -1070,12 +1070,12 @@ const [toEdit, setToEdit] = useState({
             <div
 
 
-              className="border !border-[#CBD6E2] w-[calc(1500*0.0522vw)] mx-auto mb-[calc(50*0.0522vw)]"
+              className="border !border-[#CBD6E2] w-[1500px] mx-auto mb-[50px]"
             ></div>
             <SPFrame3 isOwn={isOwn} userDetail={userDetail} user={user} />
             <div
               id="borderDashed"
-              className="border !border-[#CBD6E3] w-[calc(1500*0.0522vw)] mx-auto my-[calc(50*0.0522vw)]"
+              className="border !border-[#CBD6E3] w-[1500px] mx-auto my-[50px]"
             ></div>
             {
               persona === "admin" &&

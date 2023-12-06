@@ -662,7 +662,7 @@ export default function TutorProfile({ isOwn }) {
         {/* <div className="py-8">
                <p className='text-[#24A3D9] text-xl '>Org</p>
             </div> */}
-        <p className="text-[#24A3D9] text-base-20 mb-8 my-[calc(50*0.0522vw)] ">
+        <p className="text-[#24A3D9] text-base-20 mb-8 my-[50px] ">
           {persona === "admin" ? (
             <span>
               <span className="!cursor-pointer" onClick={() => navigate("/")}>
@@ -708,7 +708,7 @@ export default function TutorProfile({ isOwn }) {
             hideShadow
             titleClassName="text-left"
             bgClassName="bg-profilecard"
-            className=" w-[68.5vw]"
+            className=" w-[1315.2px]"
             // title={
             //    <EditableText text=''
             //       editable={editable}
@@ -849,7 +849,7 @@ export default function TutorProfile({ isOwn }) {
               </>
             }
           />
-          <div className="w-[13vw]">
+          <div className="w-[249.6px]">
             <div className="flex ">
               <img className="" src={experience} alt="experience"></img>
               <div className="ml-6">
@@ -1372,7 +1372,7 @@ export default function TutorProfile({ isOwn }) {
           {/* address row */}
           {(isOwn === true || persona === "admin") && (
             <div className="flex justify-between mt-[55px] gap-x-[37px]">
-              <div className="w-[53.32vw]">
+              <div className="w-[1023.744px]">
                 <div className="flex items-center mb-1">
                   {(isOwn === true || persona === "admin") && (
                     <>
@@ -1458,7 +1458,7 @@ export default function TutorProfile({ isOwn }) {
                 </div>
               </div>
               {persona === "admin" && false && (
-                <div className="w-[10.49vw]">
+                <div className="w-[201.408px]">
                   <div className="flex items-center">
                     <div className="text-xl text-[#26435F] font-semibold text-base-20">
                       Salary
@@ -1491,7 +1491,7 @@ export default function TutorProfile({ isOwn }) {
                 </div>
               )}
               {isOwn === true || persona === "admin" ? (
-                <div className="w-[32.10vw]">
+                <div className="w-[616.32px]">
                   <div className="flex items-center relative z-[99]">
                     <div className="text-[#26435F] text-xl font-semibold text-base-20">
                       Payment Info
@@ -1539,7 +1539,7 @@ export default function TutorProfile({ isOwn }) {
           {persona === "admin" || <div className="mt-[100px]"></div>}
           {persona === "admin" && (
             <div className="flex justify-between mt-20 mb-[96px] min-h-[630px]">
-              <div className="w-[36.5vw]">
+              <div className="w-[700.8px]">
                 <div className="text-xl text-[#26435F] font-semibold mb-[-10px] text-base-20">
                   Recent Feedback History
                 </div>
@@ -1560,7 +1560,7 @@ export default function TutorProfile({ isOwn }) {
               </div>
 
               {persona === "admin" && (
-                <div className="w-[19.8vw] min-h-[630px]">
+                <div className="w-[380.16px] min-h-[630px]">
                   <BarChart studentFeedbacks={studentFeedbacks}></BarChart>
                 </div>
               )}
@@ -1568,7 +1568,7 @@ export default function TutorProfile({ isOwn }) {
                 <div className=" w-[1.25px] h-[630px] bg-[#CBD6E2] "></div>
               )}
               {persona === "admin" && (
-                <div className="w-[20.9vw] ">
+                <div className="w-[401.28px] ">
                   <div className="flex items-center">
                     <div className="text-[#26435F] text-[20px] text-base-20 font-semibold">
                       Tutor Status

@@ -449,7 +449,7 @@ export default function AllTests() {
   return (
     <div className=" bg-lightWhite min-h-screen">
       <div className="py-14  pt-0">
-        <div className="flex justify-end items-center">
+        <div className="flex justify-end items-center w-[1700px]">
           <button
             className="bg-[#FFA28D] py-3.5 px-6 flex items-center text-white  rounded-lg "
             onClick={() => setModalActive(true)}
@@ -471,8 +471,10 @@ export default function AllTests() {
                />
             </div> */}
 
-        <div className="mt-6">
+        <div className="mt-6 w-[1700px]">
           <Table
+          widthFullTable={true}
+          theadWidth={"w-[1700px]"}
             headerWidth="pl-6 pr-1"
             // noArrow={true}
             dataFor="allTestsSuperAdmin"
