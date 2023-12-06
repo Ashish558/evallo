@@ -4,7 +4,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    min-height: 100vh;
+    height: 100%;
     z-index: 5000000;
     overflow: auto;
     display: flex;
@@ -12,7 +12,8 @@
     background-color: rgba(0, 0, 0, 0.5);
     justify-content: flex-start;
     align-items: center;
-    overflow: hidden;
+    margin-top: -75px;
+    /* overflow: hidden; */
 }
 
 .modalOverlay {

@@ -53,8 +53,10 @@ export default function Modal({
   return (
     <>
       {
-        <div style={{marginTop:`-${(1/(scale > 1 ? 1 : scale))*70}px`,marginBottom:`-${(1-(scale > 1 ? 1 : scale))*70}px`}} className={styles.modalContainer+" "}>
-          <div className="w-full p-1">
+        <div className={styles.modalContainer}>
+          <div className="w-full h-full pt-[150px]">
+        {/* <div style={{marginTop:`-${(1/(scale > 1 ? 1 : scale))*70}px`,marginBottom:`-${(1-(scale > 1 ? 1 : scale))*70}px`}} className={styles.modalContainer+" "}>
+          <div className="w-full p-1"> */}
             <div
             style={{marginTop:"100px",maxHeight:"90vh",overflowY:"auto"}}
               ref={handleClose ? selectRef : null}
