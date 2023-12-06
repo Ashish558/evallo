@@ -465,7 +465,7 @@ export default function UserSignup() {
                 return;
               }
               if (res.error) {
-                alert("Something went wrong 2");
+                alert("Something went wrong");
                 return;
               }
 
