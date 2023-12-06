@@ -54,15 +54,14 @@ export default function Modal({
     <>
       {
         <div className={styles.modalContainer}>
-          <div className="w-full h-full pt-[150px]">
-        {/* <div style={{marginTop:`-${(1/(scale > 1 ? 1 : scale))*70}px`,marginBottom:`-${(1-(scale > 1 ? 1 : scale))*70}px`}} className={styles.modalContainer+" "}>
+          <div className="w-full h-full pt-[100px] pb-[20px]">
+            {/* <div style={{marginTop:`-${(1/(scale > 1 ? 1 : scale))*70}px`,marginBottom:`-${(1-(scale > 1 ? 1 : scale))*70}px`}} className={styles.modalContainer+" "}>
           <div className="w-full p-1"> */}
             <div
-            style={{marginTop:"100px",maxHeight:"90vh",overflowY:"auto"}}
+              // style={{  overflowY: "auto" }}
               ref={handleClose ? selectRef : null}
-              className={`${modalSize ? modalSize : "w-full"} bg-white pt-[28px] pb-[33.34px] md:px-[33.33px] rounded-lg relative ${
-                classname ? classname : ""
-              }`}
+              className={`${modalSize ? modalSize : "w-full"} bg-white pt-[28px] pb-[33.34px] md:px-[33.33px] rounded-lg relative ${classname ? classname : ""
+                }`}
             >
               <div className={wrapperClassName ? wrapperClassName : ""}>
                 <p
@@ -100,11 +99,9 @@ export default function Modal({
                       onClick={primaryBtn.onClick ? primaryBtn.onClick : null}
                       form={primaryBtn.form ? primaryBtn.form : null}
                       type={primaryBtn.type ? primaryBtn.type : "button"}
-                      className={`w-[120px] ${
-                        primaryBtn.bgDanger ? "bg-[#FFA28D]" : "bg-[#FFA28D]"
-                      } relative disabled:opacity-75 rounded-lg font-medium text-white cursor-pointer  ml-9 ${
-                        primaryBtn.className ? primaryBtn.className : ""
-                      }`}
+                      className={`w-[120px] ${primaryBtn.bgDanger ? "bg-[#FFA28D]" : "bg-[#FFA28D]"
+                        } relative disabled:opacity-75 rounded-lg font-medium text-white cursor-pointer  ml-9 ${primaryBtn.className ? primaryBtn.className : ""
+                        }`}
                       disabled={
                         primaryBtn?.loading === true
                           ? true
@@ -138,15 +135,15 @@ export default function Modal({
                     onClick={handleClose}
                   >
                     <div className="w-full h-full flex justify-center items-center relative ">
-                    <img
-                      className={`${cancelIconState ? "block" : "hidden"}`}
-                      src={
-                        primaryCancel ? primaryCancelIcon : primaryCancelIcon
-                      }
-                      alt="close-btn"
-                      onClick={handleClose}
+                      <img
+                        className={`${cancelIconState ? "block" : "hidden"}`}
+                        src={
+                          primaryCancel ? primaryCancelIcon : primaryCancelIcon
+                        }
+                        alt="close-btn"
+                        onClick={handleClose}
 
-                    />
+                      />
                     </div>
                   </button>
                 )}
