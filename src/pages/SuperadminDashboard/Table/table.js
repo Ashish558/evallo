@@ -21,7 +21,8 @@ export default function Table(props) {
     noArrow,
     Icon,
     AdminLatestSignUp,
-    className
+    className,
+    tableClass
   } = props;
 
   const [dummy, setDummy] = useState([]);
@@ -71,7 +72,7 @@ export default function Table(props) {
     <div className="w-full">
       <div className="overflow-x-auto custom-scroller-2   scroll-m-1 ">
         <table
-          className={`${styles.customTable} px-[2px] border-collapse border-spacing-2 whitespace-nowrap  mb-3 text-center w-full min-h-[300px]`}
+          className={`${styles.customTable} px-[2px] border-collapse border-spacing-2 whitespace-nowrap  mb-3 text-center w-full min-h-[300px] ${tableClass??""}`}
         >
           <thead className="bg-[#26435F] whitespace-nowrap">
             <tr className=" whitespace-nowrap">

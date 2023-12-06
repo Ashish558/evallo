@@ -555,7 +555,7 @@ export default function UserSignup() {
 
   return (
     <div className="" id={styles.signUp}>
-      <div className=" flex md:grid-cols-2 justify-center flex-col items-center bg-red-900">
+      <div className=" flex md:grid-cols-2 justify-center flex-col items-center">
         <img
           src={cuate}
           alt="rocket"
