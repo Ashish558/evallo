@@ -119,7 +119,7 @@ const Demography1 = ({ dateRange }) => {
             </div>
           </div>
         </div>
-        <div className=" translate-y-[-35px] w-[45.2vw]">
+        <div className=" translate-y-[-35px] flex-1">
           <p className="text-[#26435F]  font-semibold ">
             <span className="shadow-md rounded-md ml-[-20px] mr-2 ">
               <ReactCountryFlag

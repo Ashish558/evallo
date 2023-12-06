@@ -657,7 +657,7 @@ const handleClick = () => {
   };
 
   return (
-    <div className="   pb-6 bg-primary relative" id={styles.signUp}>
+    <div className="   pb-6 relative" id={styles.signUp}>
       <div className={`absolute bg-[#0000007a] flex items-center justify-center h-full w-full z-10`} 
         style={{
           display: isOtplessModalActive ? "" : "none"

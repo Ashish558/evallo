@@ -617,7 +617,7 @@ export default function TestPage() {
   const [pages, setPage] = useState(arr);
 
   return (
-    <div className=" relative ">
+    <div className=" relative w-[1920px] flex flex-col items-center">
       {loader && sectionindex == 0 ? (
         <LoaderPage />
       ) : loader && sectionindex > 0 ? (

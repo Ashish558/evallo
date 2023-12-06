@@ -658,7 +658,7 @@ export default function TutorProfile({ isOwn }) {
   // console.log(formattedDate);
   return (
     <>
-      <div className="w-[83.3vw] mx-auto">
+      <div className="w-[1600px] mx-auto">
         {/* <div className="py-8">
                <p className='text-[#24A3D9] text-xl '>Org</p>
             </div> */}

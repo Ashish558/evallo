@@ -199,7 +199,7 @@ const StudentSettings = () => {
   }
 
   return (
-    <div className="w-[83.23vw] mx-auto">
+    <div className="w-[1600px] mx-auto">
       <div className="flex flex-col gap-10   my-12">
         <div className="text-[#24A3D9] font-lexend-deca text-md design:text-xl  font-semibold leading-normal">
           <span onClick={() => navigate('/')}

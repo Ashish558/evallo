@@ -100,7 +100,7 @@ else [ year, month, day] = value.split("-");
       className={`flex flex-col h-[330px] max-h-[500px]  shadow-[0px_0px_2px_rgba(0,0,0,0.25)]  rounded-5 bg-[#FFFFFF] ${width??"w-[1250px]"} ${className}`}
     >
       <div className=" border-b-[1.6px]  border-b-[#CBD6E2] ">
-        <p className="uppercase  pl-[29px] pt-[16px] pb-2 text-[#26435F] text-base-20 text-[20px] font-normal">
+        <p className="uppercase  pl-[29px] pt-[20px] pb-[16.5px] text-[#26435F] text-[20px] font-normal">
           {formatDate(getFormattedDate(headerDate, dateFormat))}
         </p>
       </div>
@@ -129,7 +129,7 @@ else [ year, month, day] = value.split("-");
           }
           return (
             
-              <div key={index} className="flex h-[57px] pl-5 relative ">
+              <div key={index} className="flex h-[57px] relative ">
                 <p className="text-[#517CA8] pt-6 !font-light text-[15px] mr-2 w-[137px] text-center whitespace-nowrap">
                {
                 item?.message &&
