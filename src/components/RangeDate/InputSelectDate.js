@@ -29,7 +29,8 @@ export default function InputSelect({
   DateSelect,
   setSelectedDate,
   optionContainerClassName,
-  optionPadding
+  optionPadding,
+  valueClass
 }) {
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
@@ -82,7 +83,7 @@ export default function InputSelect({
               {" "}
             </span>
           ) : (
-            <div className={`mr-5 pl-5 text-[17.5px] cursor-default whitespace-nowrap h-full flex items-center justify-between`} >
+            <div className={`pl-5 ${valueClass??"mr-5"} text-[17.5px] cursor-default whitespace-nowrap h-full flex items-center justify-between`} >
               <span className={`${valueClassName}`} onClick={handleOption}>{value}</span>
              {IconRight&& <img
                 className={`w-[30px] inline-block relative h-[10px] text-lg cursor-pointer  z-[5000] ${IconRightClass} mx-4`}
