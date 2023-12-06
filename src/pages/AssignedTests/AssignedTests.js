@@ -1693,8 +1693,8 @@ export default function AssignedTests() {
         <Modal
           title="New Assignment"
           buttonParentClassName="justify-center"
-          titleClassName=" text-start pb-2"
-          classname={"w-[667px] h-[585px] mx-auto"}
+          titleClassName="text-start pb-2"
+          modalSize={"w-[667px] h-[585px] mx-auto"}
           cancelBtn={true}
           cancelBtnClassName="w-[146.67px] h-[46.667px] !bg-[rgba(38,67,95,0.20)] !text-[#26435F]"
           primaryBtn={{
