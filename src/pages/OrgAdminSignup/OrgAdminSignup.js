@@ -486,10 +486,6 @@ export default function OrgAdminSignup() {
   }
 const [emailExistLoad,setEmailExistLoad]=useState(false)
 const handleClick = () => {
-
-  handleSignup();
-  return;
-
   const emailAlreadyExists = async () => {
       setEmailExistLoad(true)
       let cc=0;
@@ -543,12 +539,12 @@ const handleClick = () => {
       });
     }
     if (checked === true ) {
-      
-      setFrames({
+      handleSignup();
+      /* setFrames({
         ...frames,
         signupActive: false,
         subscription: true,
-      });
+      }); */
       // setcurrentStep(currentStep => currentStep + 1)
     }
     if(cc>=2){
@@ -981,7 +977,7 @@ const handleClick = () => {
                       disabled={
                         values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
                       }
-                      onClick={handleSignup}
+                      onClick={handleClick}
                       children={`Create Account`}
                     />
                   </div>

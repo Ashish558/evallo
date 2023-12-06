@@ -489,7 +489,7 @@ const [loading2,setLoading2]=useState(false)
                   return (
                      <div
                         key={idx}
-                        className={`flex items-center mr-6 design:mr-10  ${isLoggedIn ? "cursor-pointer" : ' cursor-default'}`}
+                        className={`flex items-center mr-6 design:mr-10  ${isLoggedIn && !item.isDisabled ? "cursor-pointer" : ' cursor-default'}`}
                         onClick={() => {
                            if(isLoggedIn && !item.isDisabled) {
                               handleNavigate(item.path)
@@ -518,7 +518,7 @@ const [loading2,setLoading2]=useState(false)
                                     alt=""
                                  />
                               </p>
-                              <p className={`pl-[10px] text-[17.33px] ${item.isDisabled ? "text-[#24A3D9]" : ""}`}> {item.tooltip} </p>
+                              <p className={`pl-[10px] text-[17.33px] ${item.isDisabled ? "text-[#B3BDC7]" : ""}`}> {item.tooltip} </p>
                            </>
                         )}
                      </div>
