@@ -8,6 +8,14 @@ import { BASE_URL } from "../../app/constants/constants";
 import { useApplyCouponQuery, useLazyApplyCouponQuery } from "../../app/services/subscription";
 import { CurrencyNameToSymbole } from "../../utils/utils";
 
+function getDateAsString(date) {
+    if(!(date && date.constructor && date.constructor.name === "Date")) return "05/12/23";
+    const d = date.getDate();
+    const m = date.getMonth() + 1;
+    const y = date.getFullYear() % 2000;
+    return "" + d + "/" + m + "/" + y;
+}
+
 function ActiveSubscriptionWidget({
     canChangePlan,
     canAddPromoCode = false,
@@ -70,27 +78,21 @@ function ActiveSubscriptionWidget({
                     <div className="font-[200] text-[#26435F] text-[12px]">Active Tutors Allowed - {activeTutorsAllowed === Infinity ? "unlimited" : activeTutorsAllowed}</div>
                     {
                         (() => {
-                            return (
-                                <div className="font-[500] text-sm text-[#38C980]">
-                                    Free Trial till 
-                                </div>
-                            )
-                            const freeTrialStatement = freeTrialDays === 0 ? "Free Trial Not Available" :
-                                               freeTrialDays >= 30 ?  `${freeTrialDays / 30} Months Free Trial` :
-                                               `${freeTrialDays} Days Free Trial`;
-
-                            if(freeTrialDays === 0) {
+                            const today = new Date();
+                            if(freeTrialExpiryDate && freeTrialExpiryDate.constructor && 
+                               freeTrialExpiryDate.constructor.name === "Date" && today <= freeTrialExpiryDate) {
                                 return (
-                                    <div className="font-[100] text-[#26435F] text-[14px]" >
-                                        Free Trial Not Available
+                                    <div className="font-[500] text-sm text-[#38C980]">
+                                        Free Trial till {getDateAsString(freeTrialExpiryDate)}
                                     </div>
                                 )
                             }
                             return (
-                                <div className="font-[500] text-sm text-[#38C980]">
-                                    {freeTrialStatement}
+                                <div className="font-[100] text-sm text-[#26435F]">
+                                    Free Trial has ended.
                                 </div>
                             )
+
                         })()
                     }
                 </div>
