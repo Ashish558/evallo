@@ -290,7 +290,7 @@ export default function Login({ setLoginFormActive }) {
                     <div
                       className="aspect-square bg-[#fff] flex items-center justify-center h-[50px] w-[50px] relative rounded-[7px] hover:cursor-pointer shadow-md"
                       
-                      onClick={google}
+                      // onClick={google}
                     >
                       <img 
                         className="block"
