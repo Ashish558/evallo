@@ -472,7 +472,7 @@ const [loading2,setLoading2]=useState(false)
       <>
       {/* this div will take navbar's height */}
          {/* <div className="h-[72px]"></div> */}
-         <div ref={myRef} style={{top:`${navTop}px`,transformOrigin:"top left"}} className={`flex bg-[#26435F] h-[72px] items-center w-[1920px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] sticky left-0 ${persona=="superAdmin"?"justify-between px-[5%]":"justify-around"} design:left-[calc(50vw-960px)] z-[100000]`}>
+         <div ref={myRef} style={{top:`${navTop}px`,transformOrigin:"top left"}} className={`flex bg-[#26435F] h-[72px] items-center w-[1920px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] sticky left-0 ${persona==="superAdmin"?"justify-between px-[5%]":"justify-around"} design:left-[calc(50vw-960px)] z-[100000]`}>
             <div
                className={`${persona === "superAdmin" ? "translate-x-[-44.16px]" : ""}`}
             >

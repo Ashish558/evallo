@@ -857,7 +857,7 @@ export default function UserSignup() {
                   {/*  buttons */}
                   <div className="flex items-center justify-between">
                     <SecondaryButton
-                      children="Go Back"
+                      children="Go back"
                       disabled={true}
                       className="!text-[18.667px] bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] font-medium h-[53px] rounded-5 w-[146.67px] "
                       onClick={() => navigate("/")}
