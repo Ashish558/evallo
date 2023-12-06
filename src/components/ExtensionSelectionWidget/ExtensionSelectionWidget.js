@@ -58,6 +58,7 @@ function ExtensionSelectionWidget({
             onChange={onChange}
             selected={selected}
             onBodyClicked={onBodyClicked}
+            isCheckBoxDisabled={isDisabled}
         >
             <div className="w-[650px] h-[270px]" >
                 <div className="flex items-center mt-[20px]" style={{width: "91%"}} >

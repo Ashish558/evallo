@@ -43,10 +43,10 @@ function OrgDetailsForm({
     },[]);
 
     const handleCompanyTypeChange = (e) => {
-        setValues({
+        setValues((values) => ({
           ...values,
           companyType: e,
-        });
+        }));
       };
 
     return (
@@ -60,20 +60,20 @@ function OrgDetailsForm({
                 labelClassname="text-[#26435F] font-semibold text-[18.67px]"
                 inputContainerClassName=" border border-[#D0D5DD] mt-[6px] rounded-md py-[9px] h-[54px] text-md w-[999.99px]"
             
-                value={companyInfo.nameOfBusiness}
-                onChange={(e) =>
-                    /* setValues({
+                value={values.company}
+                onChange={(e) => {
+                    setValues((values) => ({
                         ...values,
-                        firstName: e.target.value,
-                    })
- */
-                    SetCompanyInfo(values => {
+                        company: e.target.value,
+                    }));
+
+                    /* SetCompanyInfo(values => {
                       return {
                         ...values,
                         nameOfBusiness: e.target.value
                       }
-                    })
-                }
+                    }) */
+                }}
                 // totalErrors={error}
                 // error={error.firstName}
             />
@@ -86,15 +86,15 @@ function OrgDetailsForm({
                   <button
                       className="flex mr-6  items-center cursor-pointer"
                       onClick={() =>
-                        /* setValues((prev) => ({
+                        setValues((prev) => ({
                           ...prev,
                           registrationAs: "Individual",
-                        })) */
+                        }))
 
-                        SetCompanyInfo((prev) => ({
+                        /* SetCompanyInfo((prev) => ({
                           ...prev,
                           accountType: "Individual"
-                        }))
+                        })) */
                       }
                     >
                       {/* <input type="radio" defaultChecked={values.registrationAs === "Individual"
@@ -103,7 +103,7 @@ function OrgDetailsForm({
                       <div className="w-[30px]  flex justify-center">
                         <img
                           src={
-                            companyInfo.accountType === "Individual"
+                            values.registrationAs === "Individual"
                               ? RadioSelected
                               : RadioUnselected
                           }
@@ -114,7 +114,7 @@ function OrgDetailsForm({
 
                       <p
                         className={`${
-                          companyInfo.accountType === "Individual"
+                          values.registrationAs === "Individual"
                             ? "text-[#FFA28D] font-[500] "
                             : "text-[#7C98B6] font-[400]"
                         } text-[18.67px] `}
@@ -126,15 +126,15 @@ function OrgDetailsForm({
                     <button
                       className="flex items-center cursor-pointer"
                       onClick={() =>
-                        /* setValues((prev) => ({
+                        setValues((prev) => ({
                           ...prev,
                           registrationAs: "Company",
-                        })) */
+                        }))
 
-                        SetCompanyInfo((prev) => ({
+                        /* SetCompanyInfo((prev) => ({
                           ...prev,
                           accountType: "Company"
-                        }))
+                        })) */
                       }
                     >
                       {/* <input type="radio"  defaultChecked={values.registrationAs === "Company"
@@ -143,7 +143,7 @@ function OrgDetailsForm({
                       <div className="w-[30px] flex justify-center">
                         <img
                           src={
-                            companyInfo.accountType === "Company"
+                            values.registrationAs === "Company"
                               ? RadioSelected
                               : RadioUnselected
                           }
@@ -153,7 +153,7 @@ function OrgDetailsForm({
                       </div>
                       <p
                         className={`${
-                          companyInfo.accountType === "Company"
+                          values.registrationAs === "Company"
                             ? "text-[#FFA28D] font-[500] "
                             : "text-[#7C98B6] font-[400]"
                         } text-[18.67px] `}
@@ -166,7 +166,7 @@ function OrgDetailsForm({
             </div>
 
             <InputSelectNew
-                value={companyInfo.businessEntity}
+                value={values.companyType}
                 parentClassName="mt-[30px] w-full"
                 optionContainerClassName="text-[13px] "
                 optionsEachClassName="py-[7px]"
@@ -187,18 +187,18 @@ function OrgDetailsForm({
                 labelClassname="text-[#26435F] text-[18.67px] font-semibold"
                 inputContainerClassName=" border border-[#D0D5DD] mt-[8px] rounded-md py-[9px] h-[54px] w-[1000px] text-md"
             
-                value={companyInfo.website}
-                onChange={(e) =>
-                    /* setValues({
+                value={values.website}
+                onChange={(e) =>{
+                    setValues((values) => ({
                         ...values,
-                        firstName: e.target.value,
-                    }) */
+                        website: e.target.value,
+                    }));
 
-                    SetCompanyInfo((prev) => ({
+                    /* SetCompanyInfo((prev) => ({
                       ...prev,
                       website: e.target.value,
-                    }))
-                }
+                    })) */
+                }}
                 // totalErrors={error}
                 // error={error.firstName}
             />
@@ -210,25 +210,25 @@ function OrgDetailsForm({
                 labelClassname="text-[#26435F] text-[18.67px] font-semibold"
                 inputContainerClassName=" border border-[#D0D5DD] mt-[8px] rounded-md py-[9px] h-[54px] w-[1000px] text-md"
             
-                value={companyInfo.streetAddress}
-                onChange={(e) =>
-                    /* setValues({
+                value={values.address}
+                onChange={(e) => {
+                    setValues((values) => ({
                         ...values,
-                        firstName: e.target.value,
-                    }) */
+                        address: e.target.value,
+                    }));
 
-                    SetCompanyInfo((prev) => ({
+                    /* SetCompanyInfo((prev) => ({
                       ...prev,
                       streetAddress: e.target.value,
-                    }))
-                }
+                    })) */
+                }}
                 // totalErrors={error}
                 // error={error.firstName}
             />
 
             <div className="flex items-center justify-between mt-[29.67px] w-full" >
                 <InputSelectNew
-                    value={companyInfo.country}
+                    value={values.country}
                     parentClassName="w-[300px]"
                     optionContainerClassName="text-[13px] "
                     optionsEachClassName="py-[7px]"
@@ -240,17 +240,22 @@ function OrgDetailsForm({
                     inputClassName="ml-80"
                     // required={persona === "student" ? true : false}
                     onChange={(e) => {
-                      SetCompanyInfo((prev) => {
+                      setValues((values) => ({
+                          ...values,
+                          country: e,
+                      }));
+
+                      /* SetCompanyInfo((prev) => {
                         return {
                           ...prev,
                           country: e
                         }
-                      })
+                      }) */
                     }}
                 />
 
                 <InputSelectNew
-                    value={companyInfo.state}
+                    value={values.state}
                     parentClassName="w-[250px]"
                     optionContainerClassName="text-[13px] w-1/4"
                     optionsEachClassName="py-[7px]"
@@ -262,12 +267,17 @@ function OrgDetailsForm({
                     inputClassName="ml-80"
                     // required={persona === "student" ? true : false}
                     onChange={(e) => {
-                      SetCompanyInfo((prev) => {
+                      setValues((values) => ({
+                          ...values,
+                          state: e,
+                      }));
+
+                      /* SetCompanyInfo((prev) => {
                         return {
                           ...prev,
                           state: e
                         }
-                      })
+                      }) */
                     }}
                 />
 
@@ -278,18 +288,18 @@ function OrgDetailsForm({
                     labelClassname="text-[#26435F] text-[18.67px] font-semibold"
                     inputContainerClassName=" border border-[#D0D5DD] mt-[8px] rounded-md py-[9px] h-[54px] w-[200px] text-md"
                 
-                    value={companyInfo.city}
-                    onChange={(e) =>
-                        /* setValues({
-                            ...values,
-                            firstName: e.target.value,
-                        }) */
+                    value={values.city}
+                    onChange={(e) => {
+                      setValues((values) => ({
+                          ...values,
+                          city: e.target.value,
+                      }));
 
-                        SetCompanyInfo((prev) => ({
+                        /* SetCompanyInfo((prev) => ({
                           ...prev,
                           city: e.target.value,
-                        }))
-                    }
+                        })) */
+                    }}
                     // totalErrors={error}
                     // error={error.firstName}
                 />
@@ -301,18 +311,18 @@ function OrgDetailsForm({
                     labelClassname="text-[#26435F] text-[18.67px] font-semibold"
                     inputContainerClassName=" border border-[#D0D5DD] mt-[8px] rounded-md py-[9px] h-[54px] w-[150px] text-md"
                     type="number"
-                    value={companyInfo.zipcode}
-                    onChange={(e) =>
-                        /* setValues({
+                    value={values.zip}
+                    onChange={(e) => {
+                        setValues((values) => ({
                             ...values,
-                            firstName: e.target.value,
-                        }) */
+                            zip: e.target.value,
+                        }));
 
-                        SetCompanyInfo((prev) => ({
+                        /* SetCompanyInfo((prev) => ({
                           ...prev,
                           zipcode: e.target.value,
-                        }))
-                    }
+                        })) */
+                    }}
                     // totalErrors={error}
                     // error={error.firstName}
                 />

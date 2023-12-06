@@ -6,6 +6,33 @@ import ExtensionSelectionWidget from "../../../components/ExtensionSelectionWidg
 import styles from "./style.module.css";
 import { extensionProductDescriptions } from "./DummyData/ExtensionsProductDescriptions";
 
+const listOfExtensions = [
+    {
+        title: "Assignments & Content",
+        description: "",
+    },
+    {
+        title: "Mass Emailer",
+        description: "(coming soon)",
+    },
+    {
+        title: "In-app chat / calls",
+        description: "(coming soon)",
+    },
+    {
+        title: "Mobile Application",
+        description: "(coming soon)",
+    },
+    {
+        title: "Session Recordings",
+        description: "(coming soon)",
+    },
+    {
+        title: "Digital Whiteboards",
+        description: "(coming soon)",
+    },
+]
+
 function ExtensionsChoosingModal({
     className,
     extensions,
@@ -29,7 +56,11 @@ function ExtensionsChoosingModal({
     useEffect(() => {
         console.log("extensionNameInFocus - " + extensionNameInFocus);
         const extInFocus = extensionProductDescriptions.find(item => item.planName === extensionNameInFocus);
-        if(extInFocus === undefined || extInFocus === null) return;
+        if(extInFocus === undefined || extInFocus === null) {
+            SetProductDescriptionsTitle("Extensions");
+            SetProductDescriptions(listOfExtensions);
+            return;
+        }
 
         SetProductDescriptionsTitle(extInFocus.planDisplayName);
         if(extInFocus.info) {
@@ -37,35 +68,10 @@ function ExtensionsChoosingModal({
         }
     }, [extensionNameInFocus]);
 
-    useEffect(() => {
+    /* useEffect(() => {
         SetProductDescriptionsTitle("Extensions");
-        SetProductDescriptions([
-            {
-                title: "Assignments & Content",
-                description: "",
-            },
-            {
-                title: "Mass Emailer",
-                description: "(coming soon)",
-            },
-            {
-                title: "In-app chat / calls",
-                description: "(coming soon)",
-            },
-            {
-                title: "Mobile Application",
-                description: "(coming soon)",
-            },
-            {
-                title: "Session Recordings",
-                description: "(coming soon)",
-            },
-            {
-                title: "Digital Whiteboards",
-                description: "(coming soon)",
-            },
-        ])
-    }, []);
+        SetProductDescriptions(listOfExtensions);
+    }, []); */
 
     const handleCheckboxChange = (text, arr, setValue) => {
         const temp = arr.map((topic) => {
@@ -131,7 +137,12 @@ function ExtensionsChoosingModal({
                                     extensionPriceOption={extension.extensionPriceOption}
                                     onChange={() => {
                                         handleCheckboxChange(item.text, extensions, setExtensions);
-                                        SetExtensionNameInFocus(extension.planName);
+                                        if(!item.checked) {
+                                            SetExtensionNameInFocus(extension.planName);
+                                            return;
+                                        }
+                                        SetExtensionNameInFocus("");
+                                        
                                     }}
                                     onBodyClicked={() => {
                                         SetExtensionNameInFocus(extension.planName);
