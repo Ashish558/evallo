@@ -14,7 +14,7 @@ import { useCreateIntentMutation, useFinishSetupMutation } from '../../app/servi
 import { BASE_URL } from '../../app/constants/constants';
 import Modal2 from "../Modal2/Modal2";
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`);
 
 function Payment({
     chosenSubscriptionObjectFromAPI,
