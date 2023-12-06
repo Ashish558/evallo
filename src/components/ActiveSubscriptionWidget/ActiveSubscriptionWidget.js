@@ -49,6 +49,9 @@ function ActiveSubscriptionWidget({
         });
     } */
 
+    console.log("activeTutorsAllowed");
+    console.log(activeTutorsAllowed);
+
     const OnPressApplyCoupon = async () => {
         if(couponCode === "") return;
 

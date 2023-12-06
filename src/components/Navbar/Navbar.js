@@ -397,7 +397,12 @@ const [loading2,setLoading2]=useState(false)
                   if(data.data && 
                      data.data.customerSubscriptions && 
                      data.data.customerSubscriptions.data && 
-                     data.data.customerSubscriptions.data.length > 0) {
+                     data.data.customerSubscriptions.data.length > 0 &&
+                     data.data.customerSubscriptions.data.findIndex(item => {
+                        if(item && item.metadata) {
+                           return item.metadata.type === "extension";
+                        }
+                     }) !== -1) {
                         tempnavdata = [
                            {
                               icon: Dashboard,
