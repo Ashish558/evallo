@@ -36,7 +36,7 @@ export default function AnnotationPopup({setAnnotations,index,annotations,sethov
   };
 
   return (
-    <div className="popup absolute w-[100%] left-0 right-0 bottom-2 transform z-10 translate-y-full transition-transform duration-300">
+    <div className="popup absolute w-[100%] left-0 right-0 bottom-2 transform z-10  transition-transform duration-300">
       {showannotate?
             <div className='flex z-40 absolute flex-col items-start rounded bottom-[65px] transition-all left-[20px] p-2'>
               <p className='font-normal text-base text-red-600'>Make a Selection First</p>
