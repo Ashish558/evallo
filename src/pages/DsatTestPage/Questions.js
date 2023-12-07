@@ -167,10 +167,10 @@ export default function Que(props) {
  
   return (
     <div
-      className={` px-20 h-[25rem] relative flex flex-row ${
+      className={` px-20 h-[100%] relative flex flex-row min-h-[440px] ${
         props.check && "bg-gray-200"
       } ${!para ? "justify-center" : "justify-between"} `}
-      style={s}
+      // style={s}
     >
       {showannotate ? (
         <AnnotationPopup
@@ -190,7 +190,7 @@ export default function Que(props) {
         />
       ) : null}
       {para ? (
-        <div className="overflow-y-auto w-1/2 mr-4 pt-5">
+        <div className="overflow-y-auto w-1/2 mr-4 pt-5 max-h-[440px]">
           <div>
             <div
               contentEditable="true"
@@ -202,7 +202,7 @@ export default function Que(props) {
       ) : null}
       <div
         className={`mt-5 overflow-y-auto ${props.check && "hidden"} ${
-          !para ? "flex w-1/2 flex-col" : "w-1/2"
+          !para ? "flex w-[661px] flex-col" : "w-[661px]"
         }`}
       >
         <div className=" flex bg-slate-200  text-center relative">

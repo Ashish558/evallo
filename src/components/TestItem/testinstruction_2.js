@@ -45,9 +45,9 @@ const Testinstruction_2 = ({
   return (
     <>
       {console.log("testName", loader)}
-      <div className="w-screen flex justify-center items-center">
-      <div className="w-[83.3vw] relative">
-        <p className="text-[#24A3D9] ml-8 !mt-[calc(50*0.052vw)] !mb-[calc(25*0.052vw)] text-base-20">
+      <div className="w-[1920px] flex justify-center items-center">
+      <div className="w-[1600px] relative">
+        <p className="text-[#24A3D9] ml-8 !mt-[50px] !mb-[25px] text-base-20">
           <span onClick={() => navigate("/")} className="cursor-pointer">
             {organization?.company +
               "  >  " +
