@@ -144,6 +144,9 @@ function AccountOverviewWithSubscriptionInfo() {
         monthlyCostAfterDiscount: 0,
         autoRenewalDate: null,
         startDate: null,
+        expiryDate: null,
+        hasExpired: false,
+        isCancelled: false,
     });
 
     const [activeSubscriptionInfo, SetActiveSubscriptionInfo] = useState({
@@ -157,6 +160,9 @@ function AccountOverviewWithSubscriptionInfo() {
         monthlyCostAfterDiscount: 0,
         autoRenewalDate: null,
         startDate: null,
+        expiryDate: null,
+        hasExpired: false,
+        isCancelled: false,
     });
     const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(false);
     const [isResetPasswordModalActive, SetIsResetPasswordModalActive] = useState(false);
@@ -337,6 +343,7 @@ function AccountOverviewWithSubscriptionInfo() {
                        subscriptionsInfoFromAPI.length > 0) {
                         const products = data.data.customerSubscriptions.data;
                         let activeSub;
+                        const todayDate = new Date();
                         for(let i = 0; i < products.length; i++) {
                             let planId = products[i].plan.id;
                             activeSub = subscriptionsInfoFromAPI.find(item => item.id === planId);
@@ -361,15 +368,22 @@ function AccountOverviewWithSubscriptionInfo() {
                                     productQuantity = Infinity;
                                 }
 
+                                const expiryDate = new Date(products[i].current_period_end * 1000);
+                                const isCancelled = products[i].canceled_at === null || products[i].canceled_at === undefined ? false : true;
+
                                 SetActiveExtensionInfo({
                                     planName: "Assignment",
                                     planDisplayName: "Assignement",
                                     productQuantity: productQuantity,
                                     currency: products[i].currency,
                                     startDate: new Date(products[i].start_date * 1000),
-                                    autoRenewalDate: new Date(products[i].trial_end * 1000),
+                                    autoRenewalDate: new Date(products[i].current_period_end * 1000),
+                                    expiryDate: expiryDate,
                                     subscriptionPricePerMonth: products[i].plan.amount / 100,
                                     monthlyCostAfterDiscount: products[i].plan.amount / 100,
+                                    freeTrialExpiryDate: new Date(products[i].trial_end * 1000),
+                                    hasExpired: expiryDate < todayDate,
+                                    isCancelled: isCancelled,
                                 })
 
                                 continue;
@@ -379,6 +393,9 @@ function AccountOverviewWithSubscriptionInfo() {
                             console.log("activeSub")
                             console.log(activeSub);
                             if(activeSub && activeSub.product && products[i].metadata) {
+                                const expiryDate = new Date(products[i].current_period_end * 1000);
+                                const isCancelled = products[i].canceled_at === null || products[i].canceled_at === undefined ? false : true;
+
                                 SetActiveSubscriptionName(activeSub.product.name);
                                 SetActiveSubscriptionInfo({
                                     planName: activeSub.product.name,
@@ -387,8 +404,12 @@ function AccountOverviewWithSubscriptionInfo() {
                                     currency: activeSub.currency,
                                     subscriptionPricePerMonth: activeSub.unit_amount / 100,
                                     monthlyCostAfterDiscount: activeSub.unit_amount / 100,
-                                    subscriptionStartDate: new Date(products[i].start_date * 1000),
-                                    autoRenewalDate: new Date(products[i].trial_end * 1000),
+                                    startDate: new Date(products[i].start_date * 1000),
+                                    autoRenewalDate: new Date(products[i].current_period_end * 1000),
+                                    expiryDate: expiryDate,
+                                    freeTrialExpiryDate: new Date(products[i].trial_end * 1000),
+                                    hasExpired: expiryDate < todayDate,
+                                    isCancelled: isCancelled,
                                 });
                             }
                             SetActiveSubscriptionId(products[i].id);
@@ -503,8 +524,6 @@ function AccountOverviewWithSubscriptionInfo() {
         .then(data => {
             console.log("cancelSubscription");
             console.log(data);
-            SetActiveSubscriptionName("");
-            SetActiveSubscriptionInfo(null);
         })
         .error(error => {
             console.log("error in cancelSubscription");
@@ -938,22 +957,42 @@ function AccountOverviewWithSubscriptionInfo() {
                                         subscriptionPricePerMonth={activeSubscriptionInfo.subscriptionPricePerMonth}
                                         activeTutorsAllowed={activeSubscriptionInfo.activeTutorsAllowed}
                                         handleChangePlan={OnActiveSubscriptionChangePlanClicked}
-                                        freeTrialExpiryDate={activeSubscriptionInfo.autoRenewalDate}
+                                        freeTrialExpiryDate={activeSubscriptionInfo.freeTrialExpiryDate}
                                     />
 
                                     <div className="flex flex-col items-end" >
                                         <div className="flex" >
                                             <span className="font-[100] text-[#517CA8] text-[15px]" >{"Subscription Start Date -  "}</span>
                                             <span className="font-[400] text-[#517CA8] text-[15px]" >{
-                                                getFormattedDate(activeSubscriptionInfo.subscriptionStartDate, dateFormat)
+                                                getFormattedDate(activeSubscriptionInfo.startDate, dateFormat)
                                             }</span>
                                         </div>
 
                                         <div className="flex mt-[3px]" >
-                                            <span className="font-[100] text-[#517CA8] text-[15px]" >{"Auto-Renewal Date -  "}</span>
-                                            <span className="font-[400] text-[#517CA8] text-[15px]" >{
-                                                getFormattedDate(activeSubscriptionInfo.autoRenewalDate, dateFormat)
-                                            }</span>
+                                            {
+                                                activeSubscriptionInfo.hasExpired ? (
+                                                    <>
+                                                    <span className="font-[500] text-[#FF725E] text-[15px]" >{"Plan Expired on -  "}</span>
+                                                    <span className="font-[500] text-[#FF725E] text-[15px]" >{
+                                                        getFormattedDate(activeSubscriptionInfo.expiryDate, dateFormat)
+                                                    }</span>
+                                                    </>
+                                                ) : activeSubscriptionInfo.isCancelled ? (
+                                                    <>
+                                                    <span className="font-[500] text-[#FF725E] text-[15px]" >{"Plan Expires on -  "}</span>
+                                                    <span className="font-[500] text-[#FF725E] text-[15px]" >{
+                                                        getFormattedDate(activeSubscriptionInfo.expiryDate, dateFormat)
+                                                    }</span>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                    <span className="font-[300] text-[#517CA8] text-[15px]" >{"Auto-Renewal Date -  "}</span>
+                                                    <span className="font-[500] text-[#517CA8] text-[15px]" >{
+                                                        getFormattedDate(activeSubscriptionInfo.autoRenewalDate, dateFormat)
+                                                    }</span>
+                                                    </>
+                                                )
+                                            }
                                         </div>
 
                                         <div className="flex mt-[3px]" >
@@ -963,14 +1002,36 @@ function AccountOverviewWithSubscriptionInfo() {
 
                                         <div className="grow" ></div>
 
-                                        <button 
-                                            className="font-[400] underline text-[#24A3D9] text-[15px]" 
-                                            onClick={
-                                                () => {
-                                                    OnCancelSubscriptionClicked(activeSubscriptionId);
-                                                }
-                                            } 
-                                        >Cancel Subscription</button>
+                                        {
+                                            activeSubscriptionInfo.hasExpired ? (
+                                                <button 
+                                                    className="font-[500] underline text-[#38C980] text-[15px]" 
+                                                    onClick={
+                                                        () => {
+                                                            // OnCancelSubscriptionClicked(activeSubscriptionId);
+                                                        }
+                                                    } 
+                                                >Renew Subscription</button>
+                                            ) : activeSubscriptionInfo.isCancelled ? (
+                                                <button 
+                                                    className="font-[500] underline text-[#26435F] text-[15px]" 
+                                                    onClick={
+                                                        () => {
+                                                            // OnCancelSubscriptionClicked(activeSubscriptionId);
+                                                        }
+                                                    } 
+                                                >Enable Auto-Renew</button>
+                                            ) : (
+                                                <button 
+                                                    className="font-[500] underline text-[#24A3D9] text-[15px]" 
+                                                    onClick={
+                                                        () => {
+                                                            OnCancelSubscriptionClicked(activeSubscriptionId);
+                                                        }
+                                                    } 
+                                                >Cancel Subscription</button>
+                                            )
+                                        }
                                     </div>
                                 </div>
                                 </>
@@ -1006,11 +1067,38 @@ function AccountOverviewWithSubscriptionInfo() {
                                             </div>
 
                                             <div className="flex mt-[3px]" >
+                                                {
+                                                    activeExtensionInfo.hasExpired ? (
+                                                        <>
+                                                        <span className="font-[500] text-[#FF725E] text-[15px]" >{"Plan Expired on -  "}</span>
+                                                        <span className="font-[500] text-[#FF725E] text-[15px]" >{
+                                                            getFormattedDate(activeExtensionInfo.expiryDate, dateFormat)
+                                                        }</span>
+                                                        </>
+                                                    ) : activeExtensionInfo.isCancelled ? (
+                                                        <>
+                                                        <span className="font-[500] text-[#FF725E] text-[15px]" >{"Plan Expires on -  "}</span>
+                                                        <span className="font-[500] text-[#FF725E] text-[15px]" >{
+                                                            getFormattedDate(activeExtensionInfo.expiryDate, dateFormat)
+                                                        }</span>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                        <span className="font-[300] text-[#517CA8] text-[15px]" >{"Auto-Renewal Date -  "}</span>
+                                                    <span className="font-[500] text-[#517CA8] text-[15px]" >{
+                                                        getFormattedDate(activeExtensionInfo.autoRenewalDate, dateFormat)
+                                                    }</span>
+                                                        </>
+                                                    )
+                                                }
+                                            </div>
+
+                                            {/* <div className="flex mt-[3px]" >
                                                 <span className="font-[100] text-[#517CA8] text-[15px]" >Auto-Renewal Date{" - "}</span>
                                                 <span className="font-[400] text-[#517CA8] text-[15px]" >{
                                                     getFormattedDate(activeExtensionInfo.autoRenewalDate, dateFormat)
                                                 }</span>
-                                            </div>
+                                            </div> */}
 
                                             <div className="flex mt-[3px]" >
                                                 <span className="font-[100] text-[#517CA8] text-[15px]" >Monthly Cost (after discount){" - "}</span>
@@ -1021,7 +1109,38 @@ function AccountOverviewWithSubscriptionInfo() {
 
                                             <div className="grow" ></div>
 
-                                            <button className="font-[400] underline text-[#24A3D9] text-[15px]" >Enable Auto-Renew</button>
+                                            {
+                                                activeExtensionInfo.hasExpired ? (
+                                                    <button 
+                                                        className="font-[500] underline text-[#38C980] text-[15px]" 
+                                                        onClick={
+                                                            () => {
+                                                                // OnCancelSubscriptionClicked(activeSubscriptionId);
+                                                            }
+                                                        } 
+                                                    >Renew Subscription</button>
+                                                ) : activeExtensionInfo.isCancelled ? (
+                                                    <button 
+                                                        className="font-[500] underline text-[#26435F] text-[15px]" 
+                                                        onClick={
+                                                            () => {
+                                                                // OnCancelSubscriptionClicked(activeSubscriptionId);
+                                                            }
+                                                        } 
+                                                    >Enable Auto-Renew</button>
+                                                ) : (
+                                                    <button 
+                                                        className="font-[500] underline text-[#24A3D9] text-[15px]" 
+                                                        onClick={
+                                                            () => {
+                                                                // OnCancelSubscriptionClicked(activeSubscriptionId);
+                                                            }
+                                                        } 
+                                                    >Cancel Subscription</button>
+                                                )
+                                            }
+
+                                            {/* <button className="font-[400] underline text-[#24A3D9] text-[15px]" >Enable Auto-Renew</button> */}
                                         </div>
                                     </div>
                                 </>
