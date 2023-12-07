@@ -3,8 +3,6 @@ import ReactApexChart from 'react-apexcharts'
 
 export default function BarGraph({ series, options, height, width }) {
 
-   
-console.log("value", series)
    return (
       
       <div>
