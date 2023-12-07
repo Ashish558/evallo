@@ -114,7 +114,55 @@ function SubscriptionChoosingModal({
             <div
                 className="border-l-[1px] border-[#E3E3E3] flex flex-col h-full w-[549px]"
             >
-                <div className="font-[200] ml-[30px] mt-[30px] text-[#FFA28D] text-[12px]" >What’s Included?</div>
+                {
+                    true ? (
+                        <>
+                            <div className="font-[200] ml-[30px] mt-[68px] text-[#FFA28D] text-[12px]" >What’s Included?</div>
+                            <div className="ml-[35px] w-11/12" >
+                                {
+                                    !(productDescriptions === undefined || productDescriptions === null || productDescriptions.length === 0) ?
+                                    (
+                                        productDescriptions.map((item, index) => {
+                                            return (
+                                                <div className="flex mb-[5px]" key={index} >
+                                                    <div className="bg-[#B3BDC7] mt-[7px] rounded-full h-[3px] w-[3px]" ></div>
+                                                    <div className="leading-[0.8rem] ml-[10px] w-11/12" >
+                                                        <span className="text-[#7C98B6] text-[12px] " >{item.title}</span><span className="font-thin text-[#B3BDC7] text-[12px]" >{" - " + item.description}</span>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    ) : (<></>)
+                                }
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <div className="font-[700] ml-[30px] mt-[75px] text-[#26435F] text-[15px]" >⚠️ Note: </div>
+                            <div className="font-[300] ml-[30px] mt-[20px] text-[12px] w-[289px]" >
+                                <div className="text-[#7C98B6]" >
+                                When downgrading from one plan to another, the 
+                                change only takes effect AFTER the old 
+                                subscription has expired and the new (lower) tier 
+                                gets started. Your account will only be charged on 
+                                that renewal date.
+                                </div>
+
+                                <div className="mt-[20px] text-[#517CA8]" >
+                                However, when upgrading from a <span className="font-[500]" >lower</span> current 
+                                subscription to a <span className="font-[500]" >higher</span> new one, the payment 
+                                needs to be made immediately, and the new start 
+                                date for subscription is set to THAT date.
+                                </div>
+
+                                <div className="font-[500] mt-[20px] text-[#517CA8]" >
+                                The remaining days in the old subscription are discarded.
+                                </div>
+                            </div>
+                        </>
+                    )
+                }
+                {/* <div className="font-[200] ml-[30px] mt-[30px] text-[#FFA28D] text-[12px]" >What’s Included?</div>
                 <div className="ml-[35px] w-11/12" >
                     {
                         !(productDescriptions === undefined || productDescriptions === null || productDescriptions.length === 0) ?
@@ -131,7 +179,7 @@ function SubscriptionChoosingModal({
                             })
                         ) : (<></>)
                     }
-                </div>
+                </div> */}
             </div>
         </div>
     )

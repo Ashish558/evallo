@@ -1,8 +1,9 @@
-import { useRef } from "react";
+import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useState } from "react";
-import { CurrencyNameToSymbole } from "../../utils/utils";
+import { CurrencyNameToSymbole, getFormattedDate } from "../../utils/utils";
 import styles from "./style.module.css";
+import CheckboxGreenIcon from "../../assets/icons/check-box-green.svg";
 
 /*
     TYPES 
@@ -32,8 +33,11 @@ function UpdateExtensionWidget({
     setExtensions,
     isDisabled,
     descriptionInDisabledState,
+    freeTrialExpiryDate,
 }) {
 
+    const { dateFormat } = useSelector((state) => state.user);
+    const [hasFreeTrialExpired, SetHasFreeTrialExpired] = useState(true);
     const handleRadioButtonClick = (packageName, arr, extensionName, setValue) => {
         const temp = arr.map((topic) => {
             if(topic.text !== extensionName) return topic;
@@ -49,16 +53,34 @@ function UpdateExtensionWidget({
     useEffect(() => {
         console.log("ExtensionSelectionWidget - planDisplayName")
         console.log(planDisplayName);
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if(!(freeTrialExpiryDate && freeTrialExpiryDate.constructor && freeTrialExpiryDate.constructor.name === "Date")) {
+            SetHasFreeTrialExpired(true);
+            return;
+        }
+
+        if(freeTrialExpiryDate < (new Date())) {
+            SetHasFreeTrialExpired(true);
+            return;
+        }
+
+        SetHasFreeTrialExpired(false);
+    }, [freeTrialExpiryDate])
 
     return (
         <div
-            className={`${className}`}
+            className={`flex rounded-[10px] shadow-[0px_0px_20px_rgba(36,163,217,0.2)] ${className}`}
             onChange={onChange}
             selected={selected}
             onBodyClicked={onBodyClicked}
         >
-            <div className="w-[650px] h-[270px]" >
+            <img
+                src={CheckboxGreenIcon}
+                className="ml-[17.22px] mt-[22.22px] h-[22.18px] w-[22.18px]"
+            />
+            <div className="ml-[10.38px] w-[650px] h-[270px]" >
                 <div className="flex items-center mt-[20px]" style={{width: "91%"}} >
                     <div 
                         className={`font-[600] text-[#26435F] text-[18.67px] 
@@ -68,12 +90,21 @@ function UpdateExtensionWidget({
                     >{planDisplayName}</div>
                     <div className="grow" ></div>
                     {
+                        hasFreeTrialExpired ? (
+                            <div className="font-[300] text-[#26435F] text-[15px]" >Free Trial has ended.</div>
+                        ) : (
+                            <div className="font-[500] text-[#38C980] text-[15px]" >
+                                Free Trial till {getFormattedDate(freeTrialExpiryDate, dateFormat)}
+                            </div>
+                        )
+                    }
+                    {/* {
                         isDisabled ? (
                             <></>
                         ) : (
                             <div className="font-[100] text-[#38C980] text-[18px]" >1 Month Free Trial</div>
                         )
-                    }
+                    } */}
                     
                 </div>
 

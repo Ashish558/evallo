@@ -5,6 +5,7 @@ import React, {
 import ExtensionSelectionWidget from "../../../components/ExtensionSelectionWidget/ExtensionSelectionWidget";
 import styles from "./style.module.css";
 import { extensionProductDescriptions } from "./DummyData/ExtensionsProductDescriptions";
+import UpdateExtensionWidget from "../../../components/UpdateExtensionWidget/UpdateExtensionWidget";
 
 const listOfExtensions = [
     {

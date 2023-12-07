@@ -2,6 +2,9 @@ import {
     useState,
     useEffect,
 } from "react";
+import {
+    useSelector
+} from "react-redux";
 import InputField from "../../../../components/InputField/inputField";
 import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
 import PrimaryButton from "../../../../components/Buttons/PrimaryButton";
@@ -32,7 +35,7 @@ import AddNewBankCardModal from "../../../../components/AddNewBankCardModal/AddN
 import visaIcon from "../../../../assets/BankCard/visa.svg";
 import { useCancelSubscriptionMutation } from "../../../../app/services/subscription";
 import DeletePaymentMethodModal from "../../../../components/DeletePaymentMethodModal/DeletePaymentMethodModal";
-import { CurrencyNameToSymbole } from "../../../../utils/utils";
+import { CurrencyNameToSymbole, getFormattedDate } from "../../../../utils/utils";
 
 function getDateAsString(date) {
     if(!(date && date.constructor && date.constructor.name === "Date")) return "05/12/23";
@@ -171,6 +174,7 @@ function AccountOverviewWithSubscriptionInfo() {
     const [activeTutorsCount, setActiveTutorsCount] = useState(0);
     const [loading, setLoading] = useState(false);
     const [fetchedData, setFetchedData] = useState({});
+    const { dateFormat } = useSelector((state) => state.user);
 
     const isEmail = (val) => {
         let regEmail =
@@ -322,7 +326,10 @@ function AccountOverviewWithSubscriptionInfo() {
                     if(data.data && data.data.stripeCustomerDetails && data.data.stripeCustomerDetails.id) {
                         SetStripeCustomerId(data.data.stripeCustomerDetails.id);
                     }
-                    SetPaymentMethods(data.data.stripCustomerPaymentDetails.data);
+                    if(data && data.data && data.data.stripCustomerPaymentDetails) {
+                        SetPaymentMethods(data.data.stripCustomerPaymentDetails.data);
+                    }
+                    
                     if(data.data && 
                        data.data.customerSubscriptions && 
                        data.data.customerSubscriptions.data && 
@@ -936,16 +943,16 @@ function AccountOverviewWithSubscriptionInfo() {
 
                                     <div className="flex flex-col items-end" >
                                         <div className="flex" >
-                                            <span className="font-[100] text-[#517CA8] text-[15px]" >Subscription Start Date{" - "}</span>
+                                            <span className="font-[100] text-[#517CA8] text-[15px]" >{"Subscription Start Date -  "}</span>
                                             <span className="font-[400] text-[#517CA8] text-[15px]" >{
-                                                getDateAsString(activeSubscriptionInfo.subscriptionStartDate)
+                                                getFormattedDate(activeSubscriptionInfo.subscriptionStartDate, dateFormat)
                                             }</span>
                                         </div>
 
                                         <div className="flex mt-[3px]" >
-                                            <span className="font-[100] text-[#517CA8] text-[15px]" >Auto-Renewal Date{" - "}</span>
+                                            <span className="font-[100] text-[#517CA8] text-[15px]" >{"Auto-Renewal Date -  "}</span>
                                             <span className="font-[400] text-[#517CA8] text-[15px]" >{
-                                                getDateAsString(activeSubscriptionInfo.autoRenewalDate)
+                                                getFormattedDate(activeSubscriptionInfo.autoRenewalDate, dateFormat)
                                             }</span>
                                         </div>
 
@@ -994,14 +1001,14 @@ function AccountOverviewWithSubscriptionInfo() {
                                             <div className="flex" >
                                                 <span className="font-[100] text-[#517CA8] text-[15px]" >Subscription Start Date{" - "}</span>
                                                 <span className="font-[400] text-[#517CA8] text-[15px]" >{
-                                                    getDateAsString(activeExtensionInfo.startDate)
+                                                    getFormattedDate(activeExtensionInfo.startDate, dateFormat)
                                                 }</span>
                                             </div>
 
                                             <div className="flex mt-[3px]" >
                                                 <span className="font-[100] text-[#517CA8] text-[15px]" >Auto-Renewal Date{" - "}</span>
                                                 <span className="font-[400] text-[#517CA8] text-[15px]" >{
-                                                    getDateAsString(activeExtensionInfo.autoRenewalDate)
+                                                    getFormattedDate(activeExtensionInfo.autoRenewalDate, dateFormat)
                                                 }</span>
                                             </div>
 

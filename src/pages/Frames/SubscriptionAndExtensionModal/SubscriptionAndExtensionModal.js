@@ -29,6 +29,7 @@ function SubscriptionAndExtensionModal({
     subscriptionsInfoFromAPI_Param,
     activeSubscriptionName = "",
     OnCheckoutClicked,
+    OnSubscriptionAddedSuccessfully,
 }) {
     const [values, setValues] = useState({
         firstName: "",
@@ -88,6 +89,7 @@ function SubscriptionAndExtensionModal({
     const [stripeCustomerId, SetStripeCustomerId] = useState("");
     const [isPaymentSuccessfullyComplete, SetIsPaymentSuccessfullyComplete] = useState(false);
     const [isExtensionStepComplete, SetIsExtensionStepComplete] = useState(false);
+    const [isSubscriptionProcessGoingOn, SetIsSubscriptionProcessGoingOn] = useState(false);
 
     const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
     const [addSubscriptions, addSubscriptionsResp] = useAddSubscriptionsMutation();
@@ -585,6 +587,7 @@ function SubscriptionAndExtensionModal({
     async function handleSub(){
         // SetIsSubscriptionProcessOnGoing(true);
         console.log(subscriptionsInfoFromAPI);
+        SetIsSubscriptionProcessGoingOn(true);
 
         let subscriptionSessionStorageOutput = sessionStorage.getItem("chosenSubscriptionFromAPI");
         if(subscriptionSessionStorageOutput === '' || subscriptionSessionStorageOutput === undefined) {
@@ -621,8 +624,15 @@ function SubscriptionAndExtensionModal({
 
         console.log('Subscribed');
         console.log(response);
+        SetIsSubscriptionProcessGoingOn(false);
         sessionStorage.removeItem(TEMPORARY_CHOSEN_SUBSCRIPTION_PLAN_NAME);
         sessionStorage.removeItem(TEMPORARY_CHOSEN_EXTENSIONS_NAME);
+        if(OnSubscriptionAddedSuccessfully && 
+           OnSubscriptionAddedSuccessfully.constructor && 
+           OnSubscriptionAddedSuccessfully.constructor.name === "Function"
+        ) {
+            OnSubscriptionAddedSuccessfully();
+        }
     };
 
     function OnVerticalNumericSteppersStepClicked(index) {
@@ -787,7 +797,8 @@ function SubscriptionAndExtensionModal({
                       )}
                       className={`w-[150px] h-[50px] flex justify-center disabled:opacity-60   rounded text-white text-sm font-medium relative py-[11.5px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)]   
                       `}
-                      /* loading={emailExistLoad}
+                      loading={frames.review ? isSubscriptionProcessGoingOn ? true : false : false}
+                      /*
                       disabled={
                         values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
                       } */
