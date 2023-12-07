@@ -137,11 +137,12 @@ export default function Que(props) {
       // Add a backslash and the word to the result
       result += " \\ " + word + " ";
     }
-    console.log("resuly", result);
+    // console.log("string--", string);
+    // console.log("result--", result);
     // Trim the trailing space and return the result
     return result.trim();
   }
-
+ 
   const config = {
     loader: { load: ["input/asciimath"] },
     asciimath: {
@@ -165,6 +166,7 @@ export default function Que(props) {
     // return `${str.slice(1, -1)} `;
   };
  
+  // console.log('op', op);
   return (
     <div
       className={` px-20 h-[25rem] relative flex flex-row ${
@@ -306,6 +308,7 @@ export default function Que(props) {
           </div>
         ) : (
           op?.map((e, i) => {
+            let text = `${e.text}`
             return (
               <div
                 className={`flex flex-row w-full cursor-pointer border-[3px] rounded-xl my-2 px-2 items-center ${
@@ -334,7 +337,7 @@ export default function Que(props) {
                     >
                       <p>
                         {" "}
-                        {e?.text && e?.text?.length>0 && e?.text?.split("#")?.map((it, id) => {
+                        {text && text?.length>0 && text?.split("#")?.map((it, id) => {
                           if (id % 2 !== 0){
                             return (
                               <MathJaxContext config={config}>

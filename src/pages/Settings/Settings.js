@@ -430,7 +430,7 @@ export default function Settings() {
         maxContentLength: Infinity,
       })
       .then((res) => {
-        // //console.log('resp--' ,res.data.data.updatedSetting.settings);
+        console.log('resp--', res.data);
         dispatch(
           updateOrganizationSettings(res.data.data.updatedSetting.settings)
         );
@@ -443,7 +443,7 @@ export default function Settings() {
         setSaveLoading(false);
       })
       .catch((err) => {
-        //console.log("err", err);
+        console.log("err", err);
         alert("Could not upload image");
         setSaveLoading(false);
       });
@@ -1203,7 +1203,7 @@ export default function Settings() {
       .then((res) => {
         setSaveLoading(false);
         setLoading2(false);
-        console.log("resp--", res.data.data.updatedSetting.settings);
+        console.log("resp--", res.data);
         dispatch(
           updateOrganizationSettings(res.data.data.updatedSetting.settings)
         );
@@ -2248,11 +2248,11 @@ export default function Settings() {
                           >
                             <option value={item.choosedValue}>
                               {`   ${item.permissionActionName ===
-                                  "notifyParentBefSession"
-                                  ? item.choosedValue === 0
-                                    ? "OFF"
-                                    : item.choosedValue + " hours before"
-                                  : item.choosedValue
+                                "notifyParentBefSession"
+                                ? item.choosedValue === 0
+                                  ? "OFF"
+                                  : item.choosedValue + " hours before"
+                                : item.choosedValue
                                 }`}
                             </option>
                             {item.values.map((values, i) => {
@@ -2260,11 +2260,11 @@ export default function Settings() {
                                 item.choosedValue !== values && (
                                   <option key={i} value={values}>
                                     {` ${item.permissionActionName ===
-                                        "notifyParentBefSession"
-                                        ? values === 0
-                                          ? "OFF"
-                                          : values + " hours before"
-                                        : values
+                                      "notifyParentBefSession"
+                                      ? values === 0
+                                        ? "OFF"
+                                        : values + " hours before"
+                                      : values
                                       }`}
                                   </option>
                                 )
@@ -2893,8 +2893,8 @@ export default function Settings() {
           primaryBtn={{
             text: "Save",
             className: `w-140 ml-0 bg-primaryOrange mt-2 ${tagText.trim().length < 1 || tagImage === null
-                ? "pointer-events-none opacity-60"
-                : ""
+              ? "pointer-events-none opacity-60"
+              : ""
               } `,
             form: "settings-form",
             type: "submit",
