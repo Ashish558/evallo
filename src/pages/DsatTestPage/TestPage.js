@@ -615,9 +615,35 @@ export default function TestPage() {
   const arr = new Array(size);
   arr.fill(false);
   const [pages, setPage] = useState(arr);
-
+  const [minHeight,setMinHeight] = useState(window.innerHeight??800);
+  const [margin,setMargin] = useState(0);
+  useEffect(() => {
+    const adjustUI = () => {
+      const screenWidth = document.body.clientWidth;
+      const scale = screenWidth > 0 ? screenWidth / 1920 : 0;
+      const revScale = ((1 / scale)<1?1:1/scale);
+      const scaleDiff = ((1 - scale)<0?0:1-scale);
+      const windowHeight = window.innerHeight;
+      const requiredHeight = (windowHeight - 67) * revScale;
+      console.warn({ requiredHeight, revScale, reqMargin:scaleDiff * 72 });
+      setMinHeight(requiredHeight);
+      setMargin(scaleDiff * 72);
+    };
+  
+    // Initial adjustment
+    adjustUI();
+  
+    // Event listener for window resize
+    window.addEventListener("resize", adjustUI);
+  
+    // Cleanup: Remove the event listener when the component is unmounted
+    return () => {
+      window.removeEventListener("resize", adjustUI);
+    };
+  }, []); // Empty dependency array means this effect runs once, like componentDidMount
+  
   return (
-    <div className=" relative w-[1920px] min-h-[calc(100vh-67px)] h-full flex flex-col items-center mt-[0px]">
+    <div style={{minHeight:`${minHeight}px`,marginTop:`${margin}px`}} className=" relative w-[1920px] min-h-[calc(100vh-67px)] h-full flex flex-col items-center mt-[0px]">
       {loader && sectionindex == 0 ? (
         <LoaderPage />
       ) : loader && sectionindex > 0 ? (
