@@ -98,7 +98,7 @@ export default function Foot(props) {
       ) : null}
       <div className=" ">
         {toggle ? (
-          <div className="absolute w-full flex bottom-20  justify-center items-center ">
+          <div className="absolute w-full flex bottom-20 left-0 justify-center items-center ">
             <section className=" bg-white  shadow-md shadow-gray-400 px-12 pt-2 h-64">
               <h3 className=" text-center text-lg py-3 font-semibold">
                 Section {" " + sectionindex + " "} :{" "}
