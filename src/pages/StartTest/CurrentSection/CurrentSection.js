@@ -57,6 +57,8 @@ export default function CurrentSection({ answers,activeSection, submitSection, s
       {popUp && (
         <Modal
         classname="max-w-[700px] mx-auto"
+        parentClass="flex flex-col justify-center items-center"
+        topClass={"!h-[110%] !mt-0"}
         handleClose={() => setPopUp(false)}
           title="Are you sure you want to Submit the Section?"
           primaryBtn={{
