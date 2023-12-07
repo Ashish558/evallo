@@ -69,7 +69,7 @@ export default function Que(props) {
       const selectedText = window.getSelection().toString();
       if (selectedText) {
         setshow_ann(true);
-        console.log(selectedText);
+        // console.log(selectedText);
         setslectedt(window.getSelection().getRangeAt(0));
       }
     };
@@ -81,22 +81,22 @@ export default function Que(props) {
     };
   }, []);
   useEffect(() => {
-    console.log("asdasd", showannotate, show_ann);
+    // console.log("asdasd", showannotate, show_ann);
 
     if (!show_ann && showannotate) {
       setshow_ann(true);
-      console.log("Selected Text:", selectedt);
+      // console.log("Selected Text:", selectedt);
     }
   }, [selectedt]);
 
   useEffect(() => {
-    console.log(showannotate, show_ann);
+    // console.log(showannotate, show_ann);
     if (!showannotate && show_ann) {
       const span = document.createElement("span");
       span.style.backgroundColor = color;
       span.style.position = "relative";
       const range = selectedt;
-      console.log("select", selectedt);
+      // console.log("select", selectedt);
       try {
         range.surroundContents(span);
 
@@ -118,10 +118,10 @@ export default function Que(props) {
       } catch (error) {
         console.log(error);
       }
-      console.log(selectedt, hovert[index - 1]);
+      // console.log(selectedt, hovert[index - 1]);
       setshow_ann(false);
     }
-    console.log("fin");
+    // console.log("fin");
   }, [showannotate]);
 
   useEffect(() => {
@@ -142,7 +142,7 @@ export default function Que(props) {
     // Trim the trailing space and return the result
     return result.trim();
   }
- 
+
   const config = {
     loader: { load: ["input/asciimath"] },
     asciimath: {
@@ -165,14 +165,22 @@ export default function Que(props) {
     return `${str} `;
     // return `${str.slice(1, -1)} `;
   };
- 
-  // console.log('op', op);
+
+  const QuestionComp = ({ key, it }) => {
+    return (
+      <MathJaxContext key={key} config={config}>
+        <MathJax hideUntilTypeset={"first"} inline dynamic>
+          `{addBackslash(removeHashSymbols(it))} `
+        </MathJax>
+      </MathJaxContext>
+    )
+  }
+
   return (
     <div
-      className={` px-20 h-[100%] relative flex flex-row min-h-[440px] ${
-        props.check && "bg-gray-200"
-      } ${!para ? "justify-center" : "justify-between"} `}
-      // style={s}
+      className={` px-20 h-[100%] relative flex flex-row min-h-[440px] ${props.check && "bg-gray-200"
+        } ${!para ? "justify-center" : "justify-between"} `}
+    // style={s}
     >
       {showannotate ? (
         <AnnotationPopup
@@ -203,9 +211,8 @@ export default function Que(props) {
         </div>
       ) : null}
       <div
-        className={`mt-5 overflow-y-auto ${props.check && "hidden"} ${
-          !para ? "flex w-[661px] flex-col" : "w-[661px]"
-        }`}
+        className={`mt-5 overflow-y-auto ${props.check && "hidden"} ${!para ? "flex w-[661px] flex-col" : "w-[661px]"
+          }`}
       >
         <div className=" flex bg-slate-200  text-center relative">
           <span className=" bg-black text-white py-1 px-2">{index}</span>
@@ -224,9 +231,8 @@ export default function Que(props) {
           <h3 className=" relative top-1 text-gray-600">Mark for review</h3>
           {cross_O_check ? (
             <div
-              className={`absolute line-through right-2 bottom-[2px] cursor-pointer border border-black px-1 rounded ${
-                cutcheck && "bg-blue-400"
-              }`}
+              className={`absolute line-through right-2 bottom-[2px] cursor-pointer border border-black px-1 rounded ${cutcheck && "bg-blue-400"
+                }`}
               onClick={() => {
                 showcutcheck();
               }}
@@ -239,37 +245,16 @@ export default function Que(props) {
 
         <div className="mathjax-box flex py-3 flex-col items-start justify-center">
           {ques != null && ques?.length > 0 ? (
-            index % 2 === 0 ? (
-              <h1>
-                {ques?.split("#")?.map((it, id) => {
-                  if (id % 2 !== 0){
-                    return (
-                      <MathJaxContext config={config}>
-                        <MathJax hideUntilTypeset={"first"} inline dynamic>
-                          `{addBackslash(removeHashSymbols(it))} `
-                        </MathJax>
-                      </MathJaxContext>
-                    );
+            <h1>
+              {ques?.split("#")?.map((it, id) => {
+                if (id % 2 !== 0) {
+                  return (
+                    <QuestionComp key={id} it={it} />
+                  );
                 }
-                  return `${it} `;
-                })}
-              </h1>
-            ) : (
-              <h1>
-                {ques?.split("#")?.map((it, id) => {
-                  if (id % 2 !== 0) {
-                    return (
-                      <MathJaxContext config={config}>
-                        <MathJax hideUntilTypeset={"first"} inline dynamic>
-                          `{addBackslash(removeHashSymbols(it))} `
-                        </MathJax>
-                      </MathJaxContext>
-                    );
-                  }
-                  return `${it} `;
-                })}
-              </h1>
-            )
+                return `${it} `;
+              })}
+            </h1>
           ) : null}
           {quesImg != "" && quesImg !== "no" ? (
             <img className="max-w-8 max-h-8" src={quesImg} />
@@ -290,13 +275,13 @@ export default function Que(props) {
                 const updatedanswer = answers.map((q) =>
                   q.QuestionNumber === index
                     ? {
-                        ...q,
-                        ResponseAnswer: ans,
-                        responseTime:
-                          q.responseTime > 0
-                            ? q.responseTime + timeTaken
-                            : timeTaken,
-                      }
+                      ...q,
+                      ResponseAnswer: ans,
+                      responseTime:
+                        q.responseTime > 0
+                          ? q.responseTime + timeTaken
+                          : timeTaken,
+                    }
                     : q
                 );
                 setAnswers(updatedanswer);
@@ -311,19 +296,17 @@ export default function Que(props) {
             let text = `${e.text}`
             return (
               <div
-                className={`flex flex-row w-full cursor-pointer border-[3px] rounded-xl my-2 px-2 items-center ${
-                  answers[index - 1].ResponseAnswer == e.label
-                    ? "border-blue-400"
-                    : null
-                } `}
+                className={`flex flex-row w-full cursor-pointer border-[3px] rounded-xl my-2 px-2 items-center ${answers[index - 1].ResponseAnswer == e.label
+                  ? "border-blue-400"
+                  : null
+                  } `}
               >
                 {" "}
                 <span
-                  className={` font-semibold text-sm mr-4 border-[3px] rounded-full px-2 py-1 ml-2  ${
-                    answers[index - 1].ResponseAnswer == e.label
-                      ? "bg-blue-400 text-white"
-                      : null
-                  }`}
+                  className={` font-semibold text-sm mr-4 border-[3px] rounded-full px-2 py-1 ml-2  ${answers[index - 1].ResponseAnswer == e.label
+                    ? "bg-blue-400 text-white"
+                    : null
+                    }`}
                 >
                   {e.label}
                 </span>{" "}
@@ -337,8 +320,8 @@ export default function Que(props) {
                     >
                       <p>
                         {" "}
-                        {text && text?.length>0 && text?.split("#")?.map((it, id) => {
-                          if (id % 2 !== 0){
+                        {text && text?.length > 0 && text?.split("#")?.map((it, id) => {
+                          if (id % 2 !== 0) {
                             return (
                               <MathJaxContext config={config}>
                                 <MathJax
@@ -368,9 +351,8 @@ export default function Que(props) {
                     </div>
                     {cutcheck ? (
                       <p
-                        className={`text-gray-600 font-semibold text-sm border border-gray-800 px-2 py-1 ml-2 rounded-full cursor-pointer line-through ${
-                          cutanswer[index - 1].markcut == i && "bg-gray-300"
-                        }`}
+                        className={`text-gray-600 font-semibold text-sm border border-gray-800 px-2 py-1 ml-2 rounded-full cursor-pointer line-through ${cutanswer[index - 1].markcut == i && "bg-gray-300"
+                          }`}
                         onClick={() => {
                           cutanswers(index, i);
                         }}
