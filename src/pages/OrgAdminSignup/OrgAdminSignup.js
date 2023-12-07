@@ -61,15 +61,6 @@ import Extensions from "../Frames/Extensions/Extensions";
 import CheckOut from "../Frames/CheckOut/CheckOut";
 import { useLazyGetSubscriptionsInfoQuery } from "../../app/services/orgSignup";
 
-import {
-  Elements,
-  PaymentElement,
-  LinkAuthenticationElement,
-  useStripe,
-  useElements
-} from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-import Payment from "../Frames/Payment/Payment";
 import { BASE_URL } from "../../app/constants/constants";
 
 export default function OrgAdminSignup() {
@@ -639,18 +630,6 @@ const handleClick = () => {
   };
 
   const [clientSecret, SetClientSecret] = useState();
-
-  const secretKey = loadStripe(process.env.REACT_APP_STRIPE_SECRET_KEY)
-  const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
-  const stripe = require("stripe")(secretKey);
-
-  const appearance = {
-    theme: 'stripe',
-  };
-  const options = {
-    clientSecret: clientSecret,
-    appearance,
-  };
 
   return (
     <div className="   pb-6 relative" id={styles.signUp}>

@@ -68,7 +68,7 @@ else [ year, month, day] = value.split("-");
     return formattedDate
    }
   return (
-    <tr className=" leading-8 ">
+    <tr className=" leading-8  border-separate border-spacing-2.5">
       <td className="  text-[17.5px] px-[16px]  min-w-14 py-4 text-left">
         <span
           className="inline-block cursor-pointer pl-4 "

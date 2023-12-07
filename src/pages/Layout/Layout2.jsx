@@ -36,6 +36,7 @@ const Layout2 = ({ children }) => {
     const windowHeight = window.innerHeight;
     const scale = screenWidth > 0 ? screenWidth / 1920 : 0;
     setScaleState(scale);
+    if(layoutRef.current){
     const layoutRealHeightAfterScale =
       layoutRef.current?.clientHeight * (scale > 1 ? 1 : scale);
       if((layoutRealHeightAfterScale+72+67)<windowHeight){
@@ -49,7 +50,7 @@ const Layout2 = ({ children }) => {
         layoutRef.current.style.marginTop = `-${130*(scale>1?0:(1-scale))}px`;
         // console.warn({layoutRefMarginTop:130*(scale>1?0:(1-scale)),layoutRealHeightAfterScale})
     setLayoutParentHeight(layoutRealHeightAfterScale);
-  };
+  };}
   // if (navRef.current && layoutParentRef.current) {
   //   const rect1 = navRef.current.getBoundingClientRect();
   //   const rect2 = layoutParentRef.current.getBoundingClientRect();

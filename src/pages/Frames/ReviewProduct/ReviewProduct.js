@@ -203,6 +203,7 @@ function ReviewProduct({
                                                     canChangePlan={true}
                                                     setFrames={setFrames}
                                                     planName={item.planName}
+                                                    freeTrialDays={30}
                                                     planDisplayName={item.planDisplayName}
                                                     extensionPriceOption={chosenPackage}
                                                     subscriptionPricePerMonth={chosenPackage.pricePerMonth}
