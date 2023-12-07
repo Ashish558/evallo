@@ -7,6 +7,7 @@ export function TableHeaderNew({
   dataFor,
   Handler,
   noArrow,
+  wrapperClassName
 }) {
   const [flag, setFlag] = useState(
     header?.className ? header.className.includes("no-arrow") : false
@@ -28,6 +29,7 @@ export function TableHeaderNew({
         ${
           header.text === "Email" ||
           header.text === "Phone" ||
+          header.text === "Full Name" ||
           header.text === "Assignment Name" ||
           header.text === "Assignment" || header.text === "Service"
             ? `justify-start ${
@@ -43,7 +45,7 @@ export function TableHeaderNew({
                   ? styles.marker: header.willDisplayDownArrow === null?""
                   : styles.upArrow
               }`
-        }`}
+        } ${wrapperClassName ?? wrapperClassName} `}
         onClick={() =>
           header.text === "Full Name" && dataFor === "allUsers"
             ? null
