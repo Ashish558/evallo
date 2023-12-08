@@ -44,6 +44,11 @@ function ReviewProduct({
     const [applyCoupon, applyCouponResp] = useLazyApplyCouponQuery();
 
     useEffect(() => {
+        console.log("extensions");
+        console.log(extensions);
+    },[]);
+
+    useEffect(() => {
         // console.log("chosenSubscriptionFromAPI from sessionStorage");
         let subscriptionSessionStorageOutput = sessionStorage.getItem("chosenSubscriptionFromAPI");
         if(subscriptionSessionStorageOutput === '' || subscriptionSessionStorageOutput === undefined) {
