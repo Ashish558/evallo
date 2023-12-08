@@ -571,7 +571,7 @@ export default function Users() {
     {
       id: 1,
       text: "Full Name",
-      className: "text-left pl-6 text-white",
+      className: "text-left pl-5 text-white",
       wrapperClassName: 'justify-start',
       onCick: sortByName, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
       willDisplayDownArrow: usernameSortState !== SORT_STATES.DESCENDING_ORDER,
@@ -1605,15 +1605,15 @@ export default function Users() {
           </div>
         </div>
         <div
-          className={`flex justify-between items-center gap-7 mb-6 relative ${showTooltip ? "z-[1]" : "z-[50]"
+          className={`flex justify-between items-center gap-x-[46.25px] mb-6 relative ${showTooltip ? "z-[1]" : "z-[50]"
             }`}
         >
           <InputField
             IconRight={SearchIcon}
             placeholder="Search"
             inputClassName="text-base-17-5 pl-4 text-[#667085] placeholder:text-[#667085]"
-            parentClassName="flex-1  py-1"
-            inputContainerClassName="text-base-17-5  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1  !py-[14.5px]"
+            parentClassName="w-[423.75px]"
+            inputContainerClassName="text-base-17-5 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white !py-[14.5px]"
             type="text"
             value={filterData.typeName}
             onChange={(e) =>
@@ -1626,9 +1626,9 @@ export default function Users() {
             customArrowClassName={`w-[12px] h-[12px]`}
             optionData={userTypesList}
             optionListClassName="text-base-17-5 text-[#667085]"
-            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[15px]"
+            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] h-[50px] py-[14.5px]"
             placeholder="User type"
-            parentClassName="flex-1 relative  relative z-[50]  text-[#667085]"
+            parentClassName="flex-1 relative w-[247.83px] relative z-[50]  text-[#667085]"
             type="select"
             value={filterData.userType.length > 0 ? filterData.userType[0] : ""}
             checkbox={{
@@ -1652,8 +1652,8 @@ export default function Users() {
             placeholderClass="text-base-17-5"
             optionData={settings.leadStatus}
             placeholder="Lead Status"
-            parentClassName="flex-1 relative  relative  border-none text-[#667085]"
-            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
+            parentClassName="flex-1 w-[247.83px] relative  relative  border-none text-[#667085]"
+            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] h-[50px] py-[14.5px]"
             type="select"
             checkbox={{
               visible: true,
@@ -1677,9 +1677,9 @@ export default function Users() {
             placeholderClass="text-base-17-5"
             optionData={specializations}
             placeholder="Services"
-            parentClassName="flex-1 relative  relative   text-[#667085] -z-5000"
+            parentClassName="flex-1 relative w-[247.83px] relative text-[#667085] -z-5000"
             type="select"
-            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px] "
+            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] h-[50px] py-[14.5px]"
             value={
               filterData.specialization.length > 0
                 ? filterData.specialization[0]
@@ -1712,9 +1712,9 @@ export default function Users() {
               };
             })}
             placeholder="Tutor"
-            parentClassName="flex-1 relative  relative   text-[#667085] -z-5000"
+            parentClassName="flex-1 w-[247.83px] relative relative text-[#667085] -z-5000"
             type="select"
-            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
+            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] h-[50px] py-[14.5px]"
             optionType="object"
             value={filterData.tutor.length > 0 ? filterData.tutor[0] : ""}
             checkbox={{
@@ -1862,13 +1862,13 @@ export default function Users() {
               Save
             </button>
           </div>
-          <div className="flex justify-end flex-1 gap-5 design:gap-10 relative z-[50] ">
+          <div className="flex justify-end flex-1 items-end gap-x-5 relative z-[50] ">
             <button
               disabled={selectedId?.length === 0 ? true : false}
               onClick={() =>
                 selectedId?.length > 0 && setInviteBulkModalActive(true)
               }
-              className={`bg-[#517CA8] opacity-100 text-[17.5px]  font-semibold tracking-wider relative px-[19px] py-[11px] rounded-[7.5px] text-white h-[44px] ${selectedId?.length === 0 ? "opacity-75" : ""
+              className={`bg-[#517CA8] flex justify-center opacity-100 text-[17.5px]  font-semibold tracking-wider relative whitespace-nowrap py-[9px] pb-[13px] rounded-[7.5px] text-white w-[157px] h-[44px] ${selectedId?.length === 0 ? "opacity-75" : ""
                 } `}
             >
               + Invite Users
@@ -1924,7 +1924,7 @@ export default function Users() {
                 selectedId?.length > 0 &&
                 setDeleteBulkModalActive(true)
               }
-              className={`bg-[#FF7979] opacity-100  text-[17.5px] flex gap-x-[10px] justify-center items-center gap-2 px-[21px] tracking-wider font-semibold py-[9.5px] rounded-[5px] text-white ${selectedId?.length === 0 || true || adminSelectedForDelete
+              className={`bg-[#FF7979] opacity-100  text-[17.5px] flex gap-x-[10px] justify-center items-center gap-2 w-[175px] h-[43.75px] font-semibold py-[9.5px] rounded-[5px] text-white ${selectedId?.length === 0 || true || adminSelectedForDelete
                   ? "opacity-75 cursor-not-allowed"
                   : ""
                 } `}

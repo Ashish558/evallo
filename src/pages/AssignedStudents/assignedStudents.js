@@ -240,8 +240,8 @@ export default function AssignedStudents() {
                         optionData={optionData}
                         placeholder="Search"
                         iconPadding="pl-3"
-                        inputContainerClassName="border bg-white py-[16px] px-[20px] w-[22.03125vw] rounded-[7.5px]"
-                        parentClassName="w-full mr-4"
+                        inputContainerClassName="border bg-white py-[16px] px-[20px] rounded-[7.5px]"
+                        parentClassName="w-full mr-4 max-w-[423.75px]"
                         type="text"
 
                      /> :

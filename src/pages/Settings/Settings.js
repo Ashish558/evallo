@@ -36,9 +36,6 @@ import AccOverviewLogo from "../../assets/icons/account overview.svg";
 import AccOverviewLogo2 from "../../assets/icons/account-overview 2.svg";
 import ClientsSignupLogo from "../../assets/icons/Client sign up 1.svg";
 import ClientsSignupLogo2 from "../../assets/icons/Client sign up 2.svg";
-import UserManagementLogo1 from "../../assets/icons/User-Management-1.svg";
-import UserManagementLogo2 from "../../assets/icons/User-Management-2.svg";
-// import EditBlueIcon from "../../assets/icons/edit-blue.svg";
 import EditBlueIcon from "../../assets/YIcons/edit2.svg";
 import fileupload from "../../assets/icons/basil_file-upload-outline (2).svg";
 import InputSearch from "../../components/InputSearch/InputSearch";
@@ -56,9 +53,11 @@ import { updateOrganizationSettings } from "../../app/slices/organization";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import { permissionsStaticData } from "./Tabs/staticData";
 import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
+import moment from "moment-timezone";
 import AccountOverviewWithSubscriptionInfo from "./Tabs/AccountOverviewWithSubscriptionInfo/AccountOverviewWithSubscriptionInfo";
 import OrgAdminUserManagement from "./Tabs/OrgAdminUserManagement/OrgAdminUserManagement";
-import moment from "moment-timezone";
+import UserManagementLogo1 from "../../assets/icons/User-Management-1.svg";
+import UserManagementLogo2 from "../../assets/icons/User-Management-2.svg";
 
 // import questionMark from '../../assets/images/question-mark.svg'
 const initialState = {
@@ -117,7 +116,6 @@ const initialTabs = [
   },
 ];
 export default function Settings() {
-
   const [modalActive, setModalActive] = useState(false);
   const { firstName, lastName } = useSelector((state) => state.user);
   const [tagModalActive, setTagModalActive] = useState(false);
@@ -324,8 +322,9 @@ export default function Settings() {
 
   const fetchSettings = () => {
     getSettings().then((res) => {
-      console.log('organization-----', organization);
+      console.log("get settings", res);
       setSettingsData(organization?.settings);
+
       setThePermission(organization?.settings?.permissions);
     });
 
@@ -431,7 +430,7 @@ export default function Settings() {
         maxContentLength: Infinity,
       })
       .then((res) => {
-        // //console.log('resp--' ,res.data.data.updatedSetting.settings);
+        console.log('resp--', res.data);
         dispatch(
           updateOrganizationSettings(res.data.data.updatedSetting.settings)
         );
@@ -444,7 +443,7 @@ export default function Settings() {
         setSaveLoading(false);
       })
       .catch((err) => {
-        //console.log("err", err);
+        console.log("err", err);
         alert("Could not upload image");
         setSaveLoading(false);
       });
@@ -735,7 +734,7 @@ export default function Settings() {
         subscriptionCode: updated,
       };
       // //console.log('updatedSetting', updatedSetting);
-      // updateAndFetchsettingsNew2(updatedSetting);
+      updateAndFetchsettingsNew2(updatedSetting);
     } else {
       let updated = [
         ...subscriptionCode,
@@ -749,7 +748,7 @@ export default function Settings() {
         subscriptionCode: updated,
       };
       // //console.log('updatedSetting', updatedSetting);
-      // updateAndFetchsettingsNew2(updatedSetting);
+      updateAndFetchsettingsNew2(updatedSetting);
     }
   };
 
@@ -1003,6 +1002,7 @@ export default function Settings() {
 
 
   };
+  console.log({ selectedServiceData });
   useEffect(() => {
     if (settingsData && settingsData?.offerImages) {
       let arr = [];
@@ -1163,6 +1163,7 @@ export default function Settings() {
     setAddSessionModalActive(false);
     setSubModalSessionData(subModalInitialSessionState);
   };
+  console.log({ offersNew, offerImages });
 
   const submitImageModalNew = (file2, val, e) => {
     // //console.log(tagText)
@@ -1202,7 +1203,7 @@ export default function Settings() {
       .then((res) => {
         setSaveLoading(false);
         setLoading2(false);
-        console.log("resp--", res.data.data.updatedSetting.settings);
+        console.log("resp--", res.data);
         dispatch(
           updateOrganizationSettings(res.data.data.updatedSetting.settings)
         );
@@ -1379,11 +1380,12 @@ export default function Settings() {
       }));
     }
   };
+  console.log({ subModalData, addOne, addServices2, addSession2 });
 
   return (
     <>
-      <div className="px-[150px]  min-h-screen mx-auto">
-        <p className="text-[#24A3D9]  !my-[calc(50*0.052vw)] text-base-20">
+      <div className="  min-h-screen px-[140px] mx-auto">
+        <p className="text-[#24A3D9]   text-base-20">
           <span onClick={() => navigate("/")} className="cursor-pointer ">
             {organization?.company +
               "  >  " +
@@ -1394,67 +1396,7 @@ export default function Settings() {
           </span>
           <span className="font-semibold">Settings</span>
         </p>
-
-        <div className={`flex items-end overflow-hidden pl-[17px] ${styles.navBar}`} >
-        {
-          tabs.map((item, index) => {
-            const isActive = activeTab === index + 1;
-            return (
-              <button 
-                key={index}
-                style={{height: "88.88%"}}
-                className={`relative flex items-center ${styles.navItem}
-                                  ${isActive ? styles.active : ""}
-              `} 
-                onClick={() => changeTab(index + 1)}
-              >
-                <div className="mr-[10px]" >
-                  <img
-                    src={
-                      isActive ? item.selectedStateIcon : item.unselectedStateIcon
-                    }
-                  />
-                </div>
-                <div className={`${styles.name}`} >
-                  {item.name}
-                </div>
-
-                {
-                  isActive ? (
-                    <>
-                      <div className="absolute bg-[#fff] h-full w-[10px] -translate-x-full z-[3]"
-                           style={{
-                            left: "1px",
-                           }}
-                      ></div>
-                      <div className="absolute bg-[#26435F] h-full w-[12px] left-0 -translate-x-full z-[3]" 
-                           style={{
-                            left: "1px",
-                            borderBottomRightRadius: "100px"
-                           }} 
-                      ></div>
-
-                      <div className="absolute bg-[#fff] h-full w-[10px] translate-x-full z-[3]" 
-                           style={{
-                            right: "1px"
-                           }}
-                      ></div>
-                      <div className="absolute bg-[#26435F] h-full w-[11px] translate-x-full z-[3]" 
-                           style={{
-                            right: "1px",
-                            borderBottomLeftRadius: "100px"
-                           }} 
-                      ></div>
-                    </>
-                  ) : (<></>)
-                }
-              </button>
-            )
-          })
-        }
-        </div>
-
-        {/* <div className="shivam-tabs rounded-md">
+        <div className="shivam-tabs rounded-md">
           <ul className="tabs group">
             {tabs.map((item, idx) => {
               return (
@@ -1490,8 +1432,7 @@ export default function Settings() {
               );
             })}
           </ul>
-        </div> */}
-
+        </div>
         <div className=" flex w-full flex-1 items-center mb-[30px]">
           <div
             className={`${styles.tabsContainer} gap-7 flex-1 !shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)]`}
@@ -1567,7 +1508,7 @@ export default function Settings() {
                   optionClassName="text-base-17-5"
                   optionData={timeZones}
                   placeholderClass="text-base-17-5"
-                  parentClassName=" text-base-17-5 py-0 w-[calc(387*0.0522vw)] min-w-[300px]"
+                  parentClassName=" text-base-17-5 py-0 min-w-[300px]"
                   label="Default Time Zone"
                   value={settingsData.timeZone}
                   onChange={(val) => handleChange("timeZone", val)}
@@ -1580,7 +1521,7 @@ export default function Settings() {
                 optionClassName="text-base-17-5"
                 optionData={["dd/mm/yy", "mm/dd/yy", "yy/mm/dd"]}
                 placeholderClass="text-base-17-5"
-                parentClassName=" text-base-17-5 py-0 w-[calc(387*0.0522vw)] min-w-[300px]"
+                parentClassName=" text-base-17-5 py-0 min-w-[300px]"
                 label="Default Date Format"
                 value={settingsData.dateFormat}
                 onChange={(val) => handleChange("dateFormat", val)}
@@ -1756,7 +1697,7 @@ export default function Settings() {
                                 ></ToggleBar>
                                 <div
                                   className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
-                                  // onClick={() => onEditService(service)}
+                                  onClick={() => onEditService(service)}
                                 >
                                   <img
                                     src={EditBlueIcon}
@@ -1852,7 +1793,7 @@ export default function Settings() {
                                 ></ToggleBar>
                                 <div
                                   className=" flex items-center justify-center  rounded-full cursor-pointer"
-                                  // onClick={() => onEditSession(service)}
+                                  onClick={() => onEditSession(service)}
                                 >
                                   <img
                                     src={EditBlueIcon}
@@ -1991,7 +1932,7 @@ export default function Settings() {
                                           </label>
                                           <input
                                             accept="image/*"
-                                            // className="hidden"
+                                            className="hidden"
                                             onChange={(e) => {
                                               console.log('szszs', e.target.files[0]);
                                               handleaddimage(i, e.target.files[0])
@@ -2095,13 +2036,13 @@ export default function Settings() {
                                   </label>
                                   <input
                                     accept="image/*"
-                                    disabled={loading2}
                                     className="hidden"
+                                    disabled={loading2}
                                     onChange={(e) => {
                                       let arr = offersNew;
                                       arr[idx].image = e.target.files[0];
                                       setOffersNew((prev) => [...arr]);
-                                      // submitImageModalNew(off?.image, off, e);
+                                      submitImageModalNew(off?.image, off, e);
                                       // setImageName(e.target.files[0].name);
                                     }}
                                     id="file2"
@@ -2192,10 +2133,10 @@ export default function Settings() {
                 </p>
 
                 <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
-                  <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
+                  <h3 className="text-[#24A3D9] text-[20px] py-1 font-medium mb-1">
                     Set Permissions
                   </h3>
-                  <span className="font-light leading-[0.5px] text-[0.69vw]">
+                  <span className="font-light leading-[0.5px] text-[18px]">
                     Here, you can select Viewing, Editing or Deleting
                     permissions for various users. Use the toggles below to
                     select these permissions for specific items related to
@@ -2209,6 +2150,7 @@ export default function Settings() {
             <div
               className={`bg-[#FFFFFF] border-[2.5px] px-[82px] border-dotted border-[#CBD6E2] mb-[30px] ${styles.permission}`}
             >
+              {console.log(fetchedPermissions)}
               {fetchedPermissions?.map((item, id) => {
                 return (
                   <>
@@ -2234,14 +2176,14 @@ export default function Settings() {
                               </p>
 
                               <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
-                                <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
+                                <h3 className="text-[#24A3D9] text-[20px] py-1 font-medium mb-1">
                                   {id == 5
                                     ? "Set Permissions"
                                     : id == 7
                                       ? " New Assignment Email Notifications "
                                       : null}{" "}
                                 </h3>
-                                <span className="font-light leading-[0.5px] text-[0.69vw]">
+                                <span className="font-light leading-[0.5px] text-[17.5px]">
                                   {id == 5
                                     ? "Enable or disable tutor access to add, update or delete sessions scheduled on a calendar. When disabled, tutors in your Organization will only be able to reconcile sessions and add session notes & tags, but will not be able to make any changes to the remaining details of a session. Enable this if you want to provide more autonomy to your tutors. Disable if you want to discourage them from managing their own schedule."
                                     : id == 7
@@ -2278,14 +2220,14 @@ export default function Settings() {
                               </p>
 
                               <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
-                                <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
+                                <h3 className="text-[#24A3D9] text-[20px] py-1 font-medium mb-1">
                                   {id == 5
                                     ? "Set Permissions"
                                     : id == 7
                                       ? " New Assignment Email Notifications "
                                       : null}{" "}
                                 </h3>
-                                <span className="font-light leading-[0.5px] text-[0.69vw]">
+                                <span className="font-light leading-[0.5px] text-[17.5px]">
                                   {id == 5
                                     ? "Enable or disable tutor access to add, update or delete sessions scheduled on a calendar. When disabled, tutors in your Organization will only be able to reconcile sessions and add session notes & tags, but will not be able to make any changes to the remaining details of a session. Enable this if you want to provide more autonomy to your tutors. Disable if you want to discourage them from managing their own schedule."
                                     : id == 7
@@ -2566,7 +2508,7 @@ export default function Settings() {
                     optionData={filteredTests}
                     rightIcon={down}
                     onOptionClick={(item) => {
-                      // handleTestChange2(item);
+                      handleTestChange2(item);
                       // setStudent(item.value);
                       // handleStudentsChange(item)
                       // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
@@ -2623,12 +2565,12 @@ export default function Settings() {
               onSubmit={(e) => {
                 e.preventDefault();
                 if (addOne) {
-                  // handleAddNewService();
+                  handleAddNewService();
                 } else {
-                  /* handleAddServiceName2(
+                  handleAddServiceName2(
                     selectedServiceData?.service,
                     subModalServiceData?._id
-                  ); */
+                  );
                 }
               }}
             >
@@ -2686,7 +2628,7 @@ export default function Settings() {
                   <AddTag
                     onAddTag={
                       addOne
-                        ? null//handleAddNewSpecialisation
+                        ? handleAddNewSpecialisation
                         : handleAddSpecialization2
                     }
                     keyName={
@@ -2710,8 +2652,7 @@ export default function Settings() {
                         : selectedServiceData.specialization
                     }
                     onRemoveFilter={
-                      addOne ? null//handleNewServiceRemove 
-                      : onRemoveSpecialization2
+                      addOne ? handleNewServiceRemove : onRemoveSpecialization2
                     }
                     className="pt-1 pb-1 mr-15 text-base-17-5"
                   />
@@ -2770,12 +2711,12 @@ export default function Settings() {
               onSubmit={(e) => {
                 e.preventDefault();
                 if (addOne) {
-                  // handleAddNewSession();
+                  handleAddNewSession();
                 } else {
-                  /* handleAddSessionName2(
+                  handleAddSessionName2(
                     selectedSessionData?.heading,
                     subModalSessionData?._id
-                  ); */
+                  );
                 }
               }}
             >
@@ -2832,7 +2773,7 @@ export default function Settings() {
                 </div>
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] mt-5">
                   <AddTag
-                    // onAddTag={addOne ? handleAddNewTags : handleAddSessionTag2}
+                    onAddTag={addOne ? handleAddNewTags : handleAddSessionTag2}
                     keyName={
                       addOne
                         ? addSession2?.heading
@@ -2851,9 +2792,9 @@ export default function Settings() {
                     items={
                       addOne ? addSession2?.items : selectedSessionData.items
                     }
-                    /* onRemoveFilter={
+                    onRemoveFilter={
                       addOne ? handleNewSessionRemove : onRemoveSessionTagItem2
-                    } */
+                    }
                     className="pt-1 pb-1 mr-15 text-base-17-5"
                   />
                 </div>

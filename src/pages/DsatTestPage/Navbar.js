@@ -34,8 +34,8 @@ export default function Navbar({secnd,setCountDown,showannotate,setshowannotate,
       setCal(!cal)
     }
   return (
-    <div className='relative'>
-      <nav className=' border border-black text-xl flex justify-between py-4 px-12 left-0 right-0 navb'>
+    <div className=''>
+      <nav className='sticky top-0 border w-[1920px] border-black text-xl flex justify-between py-4 px-12 left-0 right-0 navb'>
         <div className='flex w-1/3 flex-col items-start'>
         <div>
             <h3>{sectionDetails?.name?sectionDetails.name:'loading...'}</h3>
