@@ -16,7 +16,9 @@ export function TableHeaderNew({
     Handler(c);
   };
 
-  return (
+  return dataFor==="assignedTests"?(<th className={`pt-[26.25px] pb-[24.25px] text-white text-[17.5px] leading-3 font-medium ${header.text==="Due On"||header.text==="Completion"||header.text==="Score"?"text-center":" text-left pl-[30px]"}`}>
+    <div className={``}>{header.text}</div>
+  </th>): (
     <th
       className={`px-6 py-[20px] font-normal whitespace-nowrap text-white text-center cursor-pointer ${
         header.className ? header.className : ""

@@ -176,3 +176,20 @@ input[type="password"]::-ms-clear {
     background-image: url(./assets/form/eye-open.svg); 
     
 */
+
+.table-with-gaps{
+    border-collapse: separate;
+    border-spacing: 0 4px;
+}
+
+.table-with-gaps td {
+    border-style: solid none;
+    padding: 5.7px;
+}
+
+.text-break{
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+  
+}

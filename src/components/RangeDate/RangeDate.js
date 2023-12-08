@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { getFormattedDate, getMonthName } from "../../utils/utils";
 import DateIcon from "../../assets/icons/solar_calendar-date-outline.svg"
 
-const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, className, manualHide, inputContainerClassName }) => {
+const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, className, manualHide, inputContainerClassName, iconRightClass }) => {
 
   const [dateFormat, setDateFormat] = useState("dd/mm/yy")
   const { organization: organization2 } = useSelector((state) => state.organization)
@@ -186,7 +186,7 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
         setSelectedDate={setSelectedDate}
         onChange={handleQuickOptions}
         IconRight={allorg?DateIcon:downR}
-        IconRightClass={`${allorg?"w-[50px] h-[20px] ml-[-10px]":""}`}
+        IconRightClass={`${allorg?iconRightClass??"w-[50px] h-[20px] ml-[-10px]":""}`}
         DateSelect={
           !manualHide &&
           <div className={`flex relative flex-col hover:bg-white items-center pt-2 z-5000 border-b`}>

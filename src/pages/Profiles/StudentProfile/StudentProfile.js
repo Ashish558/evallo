@@ -806,7 +806,7 @@ const [toEdit, setToEdit] = useState({
                   }
                   text="Edit Profile"
                   textClassName=" ml-2   mx-auto text-center text-[#26435F] text-underline text-base-15 font-semibold"
-                  className=" my-0 flex items-center justify-center text-center   absolute -bottom-[60%] design:-bottom-[35%] design:left-[23%] left-[26%]"
+                  className=" my-0 flex items-center justify-center text-center   absolute -bottom-[60%] design:-bottom-[35%] left-[34px]"
                 />}
               </div>
               <div className="flex-1 flex justify-between  items-center">
@@ -1062,7 +1062,7 @@ const [toEdit, setToEdit] = useState({
             toEdit={toEdit}
           />
           <div className="flex-1 mt-16 min-h-[400px]">
-            <p className="mb-[-40px] text-sm text-[#26435F] font-semibold text-base-20 pl-[2px]">
+            <p className="mb-[-33px] text-sm text-[#26435F] font-semibold text-base-20 pl-[2px]">
               Latest Assignments
             </p>
 
