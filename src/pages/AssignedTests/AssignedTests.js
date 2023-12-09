@@ -1613,7 +1613,7 @@ export default function AssignedTests() {
               {/* filter options */}
               <div className="flex items-center  justify-between gap-[20px] mt-[10px] ">
                 <div className="flex text-[#26435F] items-center text-[17.5px]">
-                  <div className="ml-3 flex items-center">
+                  <div className="ml-[33px] flex items-center">
                     <SCheckbox
                       stopM={true}
                       checked={isChecked}
@@ -1685,6 +1685,7 @@ export default function AssignedTests() {
               setMaxPageSize={setMaxPageSize}
               setAllAssignedTests={setAllAssignedTests}
               setFilteredTests={setFilteredTests}
+              theadWidth={"bg-[#26435F]"}
             />
           </div>
         </div>

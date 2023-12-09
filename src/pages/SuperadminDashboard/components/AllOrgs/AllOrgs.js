@@ -198,10 +198,10 @@ const AllOrgs = () => {
   console.log({organization,adminData})
   return (
     <>
-      <div className=" pt-7 mb-12">
-        <h4 className="pl-[105px] text-[#24A3D9]">All Orgs</h4>
-        <div className=" px-[105px] flex items-center justify-between py-5 ">
-          <div className="w-[1382.4px] flex min-w-[860px]  gap-x-[28px]  items-center">
+      <div className=" pt-7 mb-12 max-xl:mt-[20px] max-sm:mt-[40px]">
+        <h4 className="pl-[105px] text-[#24A3D9] text-[21.333px] font-normal">All Orgs</h4>
+        <div className=" px-[105px] flex items-center justify-between pb-[20px] pt-[33px] ">
+          <div className="min-w-[1382.4px] flex w-full  gap-x-[28px]  items-center">
             <InputField
             inputClassName="!text-[#667085] placeholder:!text-[#667085]"
               placeholder="Search"
@@ -242,8 +242,8 @@ const AllOrgs = () => {
               parentClassName=" "
               refS={inputRef}
              
-              inputClassName="text-[16px] !text-[#667085] placeholder:!text-[#667085] hidden"
-              inputContainerClassName="bg-white  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] w-[249.6px] !h-[53.3px]"
+              inputClassName="text-[16px] !text-[#667085] placeholder:!text-[#667085] hidden !w-[100%]"
+              inputContainerClassName="bg-white  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] min-w-[249.6px] !h-[53.3px]"
               value={values.joinDate}
               onChange={(e) =>
                 setValues({
@@ -254,7 +254,7 @@ const AllOrgs = () => {
               }
               dateBody={
               <div className="ml-[-30px]">
-              <RangeDate allorg={true} removeUnderline={true} handleRangeData={handleDataRange}/>
+              <RangeDate iconRightClass={"w-[50px] h-[20px] mr-[-20px]"} allorg={true} removeUnderline={true} handleRangeData={handleDataRange}/>
             </div>
             }
               error={error.joinDate}
@@ -297,10 +297,10 @@ const AllOrgs = () => {
             />
             <InputField
               placeholder="# of Students"
-              parentClassName="w-full w-[186px] py-1 text-[#667085]"
+              parentClassName="w-full !max-w-[186px] py-1 text-[#667085]"
               inputContainerClassName="bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] !h-[53.3px] text-[#667085]"
               optionClassName="w-[186px] py-1"
-              inputClassName={"placeholder:!text-[#667085]"}
+              inputClassName={"placeholder:!text-[#667085] !w-[186px]"}
               value={values.numberOfStudent}
               onChange={(e) =>
                 setValues({
@@ -342,16 +342,19 @@ const AllOrgs = () => {
             </button>
           </div>
         </div>
-        <div className="overflow-x-auto scrollbar-content scroll-mt-3 ml-[105px] mt-2 max-w-[1707px]" >
+        <div className="overflow-x-auto scrollbar-content scroll-mt-3 ml-[105px] mt-[18px] max-w-[1707px]" >
           <Table
             noArrow={false}
-            headerWidth="pl-6 !pr-0"
+            headerWidth="pl-[2.85px]"
             data={adminData}
             tableHeaders={frameHeaderNames}
             maxPageSize={100}
             handleAllOrgRefetch={handleRefetch}
             dataFor="allOrgs"
             excludes={["_id"]}
+            tableClass="table-with-gaps !bg-transparent"
+            theadWidth="w-[1708px] rounded-[5.333px]"
+            // theadWidth="pl-[73px]"
           />
         </div>
       </div>

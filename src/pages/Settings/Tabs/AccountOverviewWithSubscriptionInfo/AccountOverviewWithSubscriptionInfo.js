@@ -995,7 +995,7 @@ function AccountOverviewWithSubscriptionInfo() {
                                 >
                                     <ActiveSubscriptionWidget
                                         // style={{width: "65%"}}
-                                        className="h-[106px] w-[600px]"
+                                        className="h-[106px] max-w-[600px]"
                                         canChangePlan={true}
                                         planDisplayName={activeSubscriptionInfo.planDisplayName}
                                         subscriptionPricePerMonth={activeSubscriptionInfo.subscriptionPricePerMonth}

@@ -38,7 +38,7 @@ export default function AddTag({
   };
 
   return (
-    <button className={`${className ? className : ' bg-primary'} flex items-center text-white font-medium text-[17.5px] pl-3 pr-3 pt-1.4 pb-1.5 rounded-7 mr-[15px] ${isClicked ? 'justify-center' : ''} text-base-17-5`}
+    <button className={`${className ? className : ' bg-primary'} flex justify-center items-center text-white font-medium text-[17.5px] px-[10.75px] py-[9.90px] h-[46px] rounded-7 ${isClicked ? 'justify-center' : ''} gap-x-[6.25px]`}
       onClick={handleClick}
       type="button" >
       {
@@ -49,7 +49,7 @@ export default function AddTag({
             </p>
             {
               !hideIcon &&
-              <img src={AddIcon} alt='tag-icon' className='w-4 ml-1' />
+              <img src={AddIcon} alt='tag-icon' className='w-medium ml-1' />
             }
           </>
           :
