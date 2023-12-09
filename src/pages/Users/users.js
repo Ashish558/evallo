@@ -1136,7 +1136,7 @@ export default function Users() {
   };
   const handleBulkExport = async () => {
     getExportData().then((res) => {
-
+      console.log('exprting..');
       const csvSheetData = [
         { data: [{ name: true }], sheetName: 'parents' },
         { data: [{ name: true }], sheetName: 'students' },
@@ -1149,7 +1149,7 @@ export default function Users() {
       getAllUsers()
         .then((res) => {
           let result = res?.data?.data?.user;
-
+          console.log('exprting user..', result);
           if (result) {
             let arr = [];
             result?.forEach((it) => {
@@ -1526,7 +1526,8 @@ export default function Users() {
                         <button
                           data-modal-target="popup-modal"
                           data-modal-toggle="popup-modal"
-                          className="block mr-6 text-white bg-[#FFA28D] hover:bg-[#FFA28D]  font-medium rounded-lg  px-[13.33px] py-3 text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
+                          disabled={!xlsFile}
+                          className="block mr-6 text-white bg-[#FFA28D] hover:bg-[#FFA28D]  font-medium rounded-lg  px-[13.33px] py-3 text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] disabled:opacity-60"
                           type="button"
                           onClick={saveData}
                         >
@@ -1539,7 +1540,7 @@ export default function Users() {
                             setInviteUsers(true);
                             setBulkUpload(false);
                           }}
-                          className="  block text-[#FFA28D] border-[1.33px] border-[#FFA28D] bg-white hover:shadow-md ms-3 font-medium rounded-lg  px-[13.33px] py-3 text-center dark:bg-white "
+                          className="  block text-[#FFA28D] border-[1.33px] border-[#FFA28D] bg-white hover:shadow-md ms-3 font-medium rounded-lg  px-[13.33px] py-3 text-center dark:bg-white disabled:opacity-50"
                         >
                           Save Data and Invite Users
                         </button>
@@ -1925,8 +1926,8 @@ export default function Users() {
                 setDeleteBulkModalActive(true)
               }
               className={`bg-[#FF7979] opacity-100  text-[17.5px] flex gap-x-[10px] justify-center items-center gap-2 w-[175px] h-[43.75px] font-semibold py-[9.5px] rounded-[5px] text-white ${selectedId?.length === 0 || true || adminSelectedForDelete
-                  ? "opacity-75 cursor-not-allowed"
-                  : ""
+                ? "opacity-75 cursor-not-allowed"
+                : ""
                 } `}
             >
               <span>
