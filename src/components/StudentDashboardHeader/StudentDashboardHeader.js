@@ -68,6 +68,8 @@ const StudentDashboardHeader = () => {
   const openLink = (link) => {
     window.open(link);
   };
+
+  // console.log('images', images);
   return (
     <>
       {/* <div className="flex h-[250px]" id={styles.StudentDashboardHeader}>
@@ -95,7 +97,7 @@ const StudentDashboardHeader = () => {
             id={styles.exploreBgDisable}
           >
             <div className={styles.images}>
-              {images?.length > 0 ? (
+              {images?.length >= 1 ? (
                 <OwlCarousel
                   ref={tutorCarouselRef}
                   className="owl-theme h-full"
@@ -115,7 +117,7 @@ const StudentDashboardHeader = () => {
 
                         <button
                           onClick={() => openLink(image.link)}
-                          className="bg-[#FFA28D] text-white p-2 text-base-17-5 px-4 rounded-lg absolute left-5 bottom-4"
+                          className="bg-[#FFA28D] text-white p-2 text-base-17-5 px-4 rounded-lg absolute left-[30px] bottom-[26px]"
                         >
                           {image?.buttonText ? image?.buttonText : "Register"}
                         </button>
