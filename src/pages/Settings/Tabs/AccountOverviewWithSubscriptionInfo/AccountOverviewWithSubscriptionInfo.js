@@ -951,7 +951,7 @@ function AccountOverviewWithSubscriptionInfo() {
                                 >
                                     <ActiveSubscriptionWidget
                                         // style={{width: "65%"}}
-                                        className="h-[106px] w-[600px]"
+                                        className="h-[106px] max-w-[600px]"
                                         canChangePlan={true}
                                         planDisplayName={activeSubscriptionInfo.planDisplayName}
                                         subscriptionPricePerMonth={activeSubscriptionInfo.subscriptionPricePerMonth}
@@ -1156,19 +1156,19 @@ function AccountOverviewWithSubscriptionInfo() {
                             className="flex items-center justify-between ml-[30px] mt-[20px]" 
                             style={{width: "92%"}}    
                         >
-                            <div className="font-[600] text-[#26435F] text-21.33" >Manage Payments</div>
+                            <div className="font-[600] text-[#26435F] text-18.66" >Manage Payments</div>
                             <button 
                                 className="font-[300] text-[#24A3D9] text-[12px] design:text-[15px] underline" 
                                 // onClick={OnViewPastTransactionsClicked}
                             >View Past Transactions</button>
                         </div>
                         
-                        <div className="font-[100] ml-[30px] text-[12px]" >
+                        <div className="font-[100] ml-[30px] text-[15px]" >
                             <span className="text-[#26435F]" >Read more documentation about payment methods on Evallo’s </span>
                             <button className="inline text-[#24A3D9]" >knowledge base.</button>
                         </div>
 
-                        <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Saved Cards</div>
+                        <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[17.5px]" >Saved Cards</div>
 
                         <div className={`flex items-start gap-x-[45px] gap-y-[30px] flex-wrap ml-[30px] pl-[0px] pb-[0px] pt-[0px] w-11/12`} >
 

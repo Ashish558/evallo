@@ -335,7 +335,7 @@ export default function SignupTab({
   return (
     <div className="">
       <div className="mb-[40px]">
-        <div className="text-base-17-5 flex items-start w-300 text-[#507CA8] mb-4">
+        <div className="text-medium flex items-start w-300 text-[#507CA8] mb-4">
           <p className="mt-[3px]">
             <img src={que} alt="que"></img>
           </p>
@@ -346,7 +346,7 @@ export default function SignupTab({
             and students.
           </p>
         </div>
-        <div className="text-base-17-5 flex items-start w-300 text-[#507CA8]">
+        <div className="text-medium flex items-start w-300 text-[#507CA8]">
           <p className="mt-[3px]">
             <img width="14px" src={que} alt="que"></img>
           </p>
@@ -369,54 +369,55 @@ export default function SignupTab({
           <div
             className={`hidden lg:flex mb-[24px] items-center justify-between text-[#26435F] font-semibold text-base-20 text-base-20`}
           >
-            <p className="whitespace-nowrap ">
-              {" "}
+            <p className="whitespace-nowrap text-20">
               Page 1: Basic Details (all fields mandatory)
             </p>
 
             <p className="ml-6">
-              {" "}
               <img src={que2} alt="que"></img>
             </p>
           </div>
           <div className={`flex mt-[55px] lg:mt-0 ${styles.inputs}`}>
             <InputField
               placeholder=""
-              inputContainerClassName="bg-gray-200 border border-gray-200"
-              inputClassName="bg-gray-200"
-              parentClassName="text-xs text-[#26435F] mb-2"
+              inputContainerClassName="bg-[#e5e7eb] border border-gray-200"
+              inputClassName="bg-[#e5e7eb]"
+              parentClassName="text-xs text-[#26435F] mb-2 w-[275px] flex-shrink-0"
               label="First Name"
+              labelClassname='mb-1 text-medium'
             />
             <InputField
               placeholder=""
-              inputContainerClassName="bg-gray-200 border border-gray-200"
-              inputClassName="bg-gray-200"
-              parentClassName="text-xs text-[#26435F] mb-2"
+              inputContainerClassName="bg-[#e5e7eb] border border-gray-200"
+              inputClassName="bg-[#e5e7eb]"
+              parentClassName="text-xs text-[#26435F] mb-2 w-[275px]"
               label="Last Name"
+              labelClassname='mb-1 text-medium'
             />
             <InputField
               label="Email"
-              inputContainerClassName="bg-gray-200 border border-gray-200"
-              inputClassName="bg-gray-200"
+              inputContainerClassName="bg-[#e5e7eb] border border-gray-200"
+              inputClassName="bg-[#e5e7eb]"
               placeholder=""
-              parentClassName="text-xs  text-[#26435F] mb-2"
+              parentClassName="text-xs  text-[#26435F] mb-2 w-[583.75px]"
+              labelClassname='mb-1 text-medium'
             />
             <div className="flex gap-1 items-center">
-              <div className="bg-gray-200 border translate-y-[6px] p-2 rounded-[3.5px] border-gray-200 h-[50px] text-[#667085] text-xs px-3 flex items-center">
+              <div className="bg-[#e5e7eb] border translate-y-[6px] p-2 rounded-[3.5px] border-gray-200 h-[50px] text-[#667085] text-xs px-3 flex items-center">
                 +91
               </div>
               <InputField
                 placeholder=""
-                parentClassName="text-xs  text-[#26435F] mb-2 "
-                inputContainerClassName="bg-gray-200 border border-gray-200 w-[275px] h-[50px]"
-                inputClassName="bg-gray-200 "
+                parentClassName="text-xs  text-[#26435F] mb-2 w-[333.75px]"
+                inputContainerClassName="bg-[#e5e7eb] border border-gray-200 w-[275px] h-[50px]"
+                inputClassName="bg-[#e5e7eb] "
                 label=" Phone"
-                labelClassname={"translate-x-[-50px]"}
+                labelClassname={"mb-1 translate-x-[-50px] text-medium"}
               />
             </div>
           </div>
           <div>
-            <p className={`mb-5 ${styles.label} text-base-17-5 mt-[42px]`}>
+            <p className={`mb-5 ${styles.label} text-medium mt-[42px]`}>
               Are you signing up as a Parent or a Student?
             </p>
             <div className="flex items-center gap-x-6">
@@ -441,7 +442,7 @@ export default function SignupTab({
                     )}{" "}
                   </label>
 
-                  <span className="ml-2 text-[#507CA8] text-base-17-5">
+                  <span className="ml-2 text-[#507CA8] text-medium">
                     Parent / Guardian
                   </span>
                 </div>
@@ -466,7 +467,7 @@ export default function SignupTab({
                     )}{" "}
                   </label>
 
-                  <span className="ml-2 text-[#507CA8] text-base-17-5">
+                  <span className="ml-2 text-[#507CA8] text-medium">
                     Student
                   </span>
                 </div>
@@ -486,7 +487,7 @@ export default function SignupTab({
                     isChecked ? "checked" : ""
                   }`}
                 ></span>
-                <span className="ml-2 text-[#507CA8] text-base-17-5">
+                <span className="ml-2 text-[#507CA8] text-medium">
                   I confirm that I am 13 years or older
                 </span>
               </label>
@@ -505,7 +506,7 @@ export default function SignupTab({
                     isChecked ? "checked" : ""
                   }`}
                 ></span>
-                <p className={` ml-2 text-[#507CA8] text-base-17-5`}>
+                <p className={` ml-2 text-[#507CA8] text-medium`}>
                   I have carefully read and agree to the{" "}
                   <span className="font-semibold text-[#26435F]">
                     Terms of Use and Privacy Policy
@@ -519,7 +520,7 @@ export default function SignupTab({
           <div
             className={`hidden lg:flex mb-[26px] items-center justify-between text-[#26435F] font-semibold text-base-20 pt-5`}
           >
-            <p className=" pl-5 ">
+            <p className=" pl-5 text-20">
               Page 2: Associated Student / Parent Details (all fields mandatory)
             </p>
 
@@ -533,52 +534,57 @@ export default function SignupTab({
           >
             <InputField
               placeholder=""
-              parentClassName="text-xs  text-[#26435F] mb-2"
-              inputContainerClassName="bg-gray-200 border border-gray-200 "
-              inputClassName="bg-gray-200"
+              parentClassName="text-xs  text-[#26435F] mb-2 w-[275px]"
+              inputContainerClassName="bg-[#e5e7eb] border border-gray-200 "
+              inputClassName="bg-[#e5e7eb]"
               label="Student / Parent First Name"
+              labelClassname='mb-1 text-medium'
             />
             <InputField
               placeholder=""
-              parentClassName="text-xs  text-[#26435F] mb-2"
-              inputContainerClassName="bg-gray-200 border border-gray-200 "
-              inputClassName="bg-gray-200"
+              parentClassName="text-xs  text-[#26435F] mb-2 w-[275px]"
+              inputContainerClassName="bg-[#e5e7eb] border border-gray-200 "
+              inputClassName="bg-[#e5e7eb]"
               label="Student / Parent Last Name"
+              labelClassname='mb-1 text-medium'
             />
             <InputField
               label="Student / Parent Email"
               placeholder=" "
-              inputContainerClassName="bg-gray-200 border border-gray-200"
-              inputClassName="bg-gray-200"
-              parentClassName="text-xs  text-[#26435F] mb-2"
+              inputContainerClassName="bg-[#e5e7eb] border border-gray-200"
+              inputClassName="bg-[#e5e7eb]"
+              parentClassName="text-xs  text-[#26435F] mb-2 w-[583.75px]"
+              labelClassname='mb-1 text-medium'
             />
-            <div className="flex gap-1 items-center">
-              <div className="bg-gray-200 border translate-y-[6px] p-2 rounded-[3.5px] border-gray-200 h-[50px] text-[#667085] text-xs px-3 flex items-center">
+            <div className="flex gap-1 items-center w-[560px]">
+              <div className="bg-[#e5e7eb] border translate-y-[6px] p-2 rounded-[3.5px] border-gray-200 h-[50px] text-[#667085] text-medium px-3 flex items-center">
                 +91
               </div>
               <InputField
                 placeholder=""
                 parentClassName="text-xs  text-[#26435F] mb-1.5 "
-                inputContainerClassName="bg-gray-200 border border-gray-200 h-[50px] w-[275px]"
-                inputClassName="bg-gray-200 "
+                inputContainerClassName="bg-[#e5e7eb] border border-gray-200 h-[50px] w-[275px]"
+                inputClassName="bg-[#e5e7eb] "
                 label=" Student / Parent Phone"
-                labelClassname={"translate-x-[-50px]"}
+                labelClassname={"translate-x-[-50px] text-medium"}
               />
             </div>
             <InputField
               placeholder=""
-              parentClassName="text-xs  text-[#26435F] mb-2"
-              inputContainerClassName="bg-gray-200 border border-gray-200"
-              inputClassName="bg-gray-200"
+              parentClassName="text-xs  text-[#26435F] mb-2 w-[583.75px]"
+              inputContainerClassName="bg-[#e5e7eb] border border-gray-200"
+              inputClassName="bg-[#e5e7eb]"
               label="School Name"
+              labelClassname='mb-1 text-medium'
             />
             <InputField
               placeholder=""
               IconRight={dropdown}
-              parentClassName="text-xs  text-[#26435F] mb-2"
-              inputContainerClassName="bg-gray-200 border border-gray-200 w-[150px]"
-              inputClassName="bg-gray-200"
+              parentClassName="text-xs  text-[#26435F] mb-2 w-[178.75px]"
+              inputContainerClassName="bg-[#e5e7eb] border border-gray-200 w-[150px]"
+              inputClassName="bg-[#e5e7eb]"
               label="Student's Grade"
+              labelClassname='mb-1 text-medium'
             />
           </div>
         </div>
@@ -590,11 +596,11 @@ export default function SignupTab({
         }`}
       >
         <span
-          className={`hidden lg:flex mb-[26px]  items-center text-base-20`}
+          className={`hidden lg:flex mb-[26px]  items-center text-20`}
           style={{ color: "#26435F", fontWeight: 600 }}
         >
           Page 3: Custom Fields (Add a maximum of 5 items)
-          <img className="ml-[100px]" src={que2}></img>
+          <img className="ml-[30px]" src={que2}></img>
         </span>
         <div className="mb-10">
           {customFields?.map((item, idx) => {
@@ -604,13 +610,13 @@ export default function SignupTab({
                 className={`${styles.customField} w-full grid grid-cols-12 gap-x-12 mb-8 py-4 pb-8 border-b-[1.25px] border-b-[#CBD6E2]`}
               >
                 <div className="col-span-8">
-                  <div className="py-3 px-4 border-b border-[#26435f] bg-[#F5F8FA] text-base-17-5 ">
+                  <div className="py-3 px-4 border-b border-[#26435f] bg-[#F5F8FA] text-medium ">
                     <p>
-                      <span className="text-base-17-5 ">{idx + 1}. </span>
+                      <span className="text-medium ">{idx + 1}. </span>
                       <input
                         value={item.name}
                         placeholder="Type your question here."
-                        className="bg-transparent w-[90%] py-1 outline-none border-none text-base-17-5 "
+                        className="bg-transparent w-[90%] py-1 outline-none border-none text-medium "
                         disabled={true}
                       />
                     </p>
@@ -645,7 +651,7 @@ export default function SignupTab({
                         return (
                           <div key={value} className="flex items-center">
                             <img src={CheckboxIcon} alt="checkbox" />
-                            <p className="ml-2 !text-[#507CA8] !font-normal text-base-17-5 ">
+                            <p className="ml-2 !text-[#507CA8] !font-normal text-medium ">
                               {" "}
                               {value ? value : "-"}{" "}
                             </p>
@@ -667,10 +673,10 @@ export default function SignupTab({
                                     placeholder={`Dropdown Option ${idx + 1} ${
                                       idx < 2 ? "(required)" : ""
                                     }`}
-                                    inputContainerClassName="!text-[#507CA8] text-base-17-5 !px-3 bg-primary-50 border-0 shadow-small rounded-[6px]"
+                                    inputContainerClassName="!text-[#507CA8] text-medium !px-3 bg-primary-50 border-0 shadow-small rounded-[6px]"
                                     inputClassName="bg-transparent"
-                                    placeholderClass="text-base-17-5"
-                                    parentClassName="flex-1 text-base-17-5 py-0 w-full  mr-4 !mb-0"
+                                    placeholderClass="text-medium"
+                                    parentClassName="flex-1 text-medium py-0 w-full  mr-4 !mb-0"
                                     type="text"
                                     value={value}
                                     disabled={true}
@@ -688,18 +694,18 @@ export default function SignupTab({
 
                 <div className="col-span-4">
                   <div className="max-w-[230px]">
-                    <div className="flex rounded-[6px] mb-4 items-center justify-between cursor-pointer bg-[#EBEEF2] text-[#26435F] font-medium text-sm px-4 py-[8px] text-base-17-5 ">
+                    <div className="flex rounded-[6px] mb-4 items-center justify-between cursor-pointer bg-[#EBEEF2] text-[#26435F] font-medium text-sm px-4 py-[8px] text-medium ">
                       {item.dataType}
                     </div>
                     <div
-                      className="flex rounded-[6px]  items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F] font-medium text-sm px-4 py-[12px] text-base-17-5 "
+                      className="flex rounded-[6px]  items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F] font-medium text-sm px-4 py-[12px] text-medium "
                       onClick={() => handleEditQuestion(item)}
                     >
                       Edit
                       <img src={EditIcon} alt="edit" />
                     </div>
                     <div className="flex rounded-[6px] items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F]  text-sm px-4 py-[12px] my-4">
-                      <p className="!font-medium text-base-17-5 ">Required?</p>
+                      <p className="!font-medium text-medium ">Required?</p>
                       <ToggleBar
                         toggle={{ value: item.required, key: item._id }}
                         onToggle={() => {
@@ -709,7 +715,7 @@ export default function SignupTab({
                     </div>
 
                     <div
-                      className="flex rounded-[6px] items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F] font-medium text-sm px-4 py-[12px] text-base-17-5 "
+                      className="flex rounded-[6px] items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F] font-medium text-sm px-4 py-[12px] text-medium "
                       onClick={() => handleDelete(item._id)}
                     >
                       Delete
@@ -726,7 +732,7 @@ export default function SignupTab({
           disabled={customFields?.length >= 5 ? true : false}
           children={"Add New Question "}
           Icon={plus1}
-          className="text-base-17-5 text-white"
+          className="text-medium text-white"
           onClick={(e) => setQuestionModalActive(true)}
         />
         {loadingCustom && (
@@ -783,7 +789,7 @@ export default function SignupTab({
                           Question Text
                         </p>
                         <textarea
-                          className="bg-primary-50 rounded-[6px] p-2 outline-none  text-base-17-5 !h-[80px] shadow-small"
+                          className="bg-primary-50 rounded-[6px] p-2 outline-none  text-medium !h-[80px] shadow-small"
                           name=""
                           id=""
                           cols="30"
@@ -802,17 +808,17 @@ export default function SignupTab({
                         {" "}
                         <InputSelect
                           labelClassname="text-base-18 mb-1"
-                          inputContainerClassName="flex-1 text-base-17-5 shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-primary-50 shadow-small"
-                          optionListClassName="text-base-17-5"
-                          optionClassName="text-base-17-5"
+                          inputContainerClassName="flex-1 text-medium shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-primary-50 shadow-small"
+                          optionListClassName="text-medium"
+                          optionClassName="text-medium"
                           optionData={[
                             "Paragraph Text Box",
                             "Single-line Text Box",
                             "Dropdown Options",
                             "Multi-select Checkboxes",
                           ]}
-                          placeholderClass="text-base-17-5"
-                          parentClassName="flex-1 text-base-17-5 py-0 w-[calc(387*0.0522vw)] "
+                          placeholderClass="text-medium"
+                          parentClassName="flex-1 text-medium py-0 w-[calc(387*0.0522vw)] "
                           label="Select Question Type"
                           value={selectedQuestionData.dataType}
                           required={true}
@@ -829,7 +835,7 @@ export default function SignupTab({
                           }
                         />
                         <div className="flex rounded-[6px] translate-y-[-14px]  items-center justify-between gap-6 cursor-pointer bg-[#F5F8FA] text-[#26435F]  text-sm px-4 py-[10px] ">
-                        <p className="!font-medium text-base-17-5 mr-7">
+                        <p className="!font-medium text-medium mr-7">
                             Required?
                           </p>
                           <ToggleBar
@@ -865,10 +871,10 @@ export default function SignupTab({
                                     placeholder={`Dropdown Option ${idx + 1} ${
                                       idx < 2 ? "(required)" : ""
                                     }`}
-                                    inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0 shadow-small rounded-[6px]"
+                                    inputContainerClassName=" text-medium !px-3 bg-primary-50 border-0 shadow-small rounded-[6px]"
                                     inputClassName="bg-transparent"
-                                    placeholderClass="text-base-17-5"
-                                    parentClassName="flex-1 text-base-17-5 py-0 w-[95%]  mr-4 mb-2"
+                                    placeholderClass="text-medium"
+                                    parentClassName="flex-1 text-medium py-0 w-[95%]  mr-4 mb-2"
                                     type="text"
                                     value={selectedQuestionData.Values[idx]}
                                     isRequired={idx < 2}

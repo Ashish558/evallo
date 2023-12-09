@@ -8,8 +8,8 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    width: 14px;
-    height: 14px;
+    width: 17.5px;
+    height: 17.5px;
 }
 
 .container input {
@@ -24,10 +24,10 @@
     position: absolute;
     top: 0;
     left: 0;
-    height: 15px;
-    width: 15px;
+    height: 17.5px;
+    width: 17.5px;
     border: 1.5px solid rgba(0, 0, 0, 0.2);
-    border-radius: 2px;
+    border-radius: 2.5px;
 }
 
 .container input:checked ~ .checkmark {
