@@ -98,6 +98,7 @@ export default function SuperAdminSettings() {
   const [tagModalActive, setTagModalActive] = useState(false);
   const [addCodeModalActive, setAddCodeModalActive] = useState(false);
   const [subModalData, setSubModalData] = useState(subModalInitialState);
+  const [company,setCompany]=useState("Company Name")
   const timeZones = moment.tz.names(); // String[]
 
   const [addTestModalActive, setAddTestModalActive] = useState(false);
@@ -1273,14 +1274,14 @@ export default function SuperAdminSettings() {
   };
   return (
     <>
-      <div className=" bg-lightWhite min-h-screen px-24 pt-[30px] pb-[50px]">
-        <p className="text-[#24A3D9]  mb-9 ">
-          <span className="font-medium text-lg">
+      <div className={` bg-lightWhite min-h-screen px-24 pt-[30px] pb-[50px] ${activeTab===1? 'mt-0':'mt-5' } `}>
+        <p className="text-[#24A3D9]  mb-9">
+          <span className="font-[400] text-[23px] ">
             {" "}
            Settings
           </span>
         </p>
-        <div className="w-[1706.67px] flex justify-between items-center mb-[45px]">
+        <div className="w-[1706.67px] flex justify-between items-center mb-[40px]">
           <div className={`${styles.tabsContainer} w-full`}>
             {tabs.map((item, idx) => {
               return (
@@ -1290,16 +1291,17 @@ export default function SuperAdminSettings() {
                   } cursor-pointer`}
                   onClick={() => changeTab(idx + 1)}
                 >
-                  <div className={` flex justify-center w-full `}>
-                    <div>
+                
+                  <div className={` flex justify-center items-center w-full `}>
+                    <div className="">
                       {activeTab === idx + 1 && (
-                        <img src={item.Icon} className="" alt="item-logo" />
+                        <img src={item.Icon} className="mb-1" alt="item-logo" />
                       )}
                       {activeTab === idx + 1 || (
-                        <img src={item.Icon2} className="" alt="item-logo" />
+                        <img src={item.Icon2} className="mb-1" alt="item-logo" />
                       )}
                     </div>
-                    <p className="">{item.name} </p>
+                    <p className="font-medium">{item.name} </p>
                   </div>
                   {activeTab === idx + 1 && (
                     <img
@@ -1344,8 +1346,16 @@ export default function SuperAdminSettings() {
         {activeTab === 1 || !activeTab ? <AccountOverview /> : <></>}
         {activeTab === 3 ? (
           <div>
+          <div className="company_name flex  ml-1 mb-9 item-center">
+          {/* in below this company state variable  created on line no.101 */}
+              <p className="text-[#24A3D9] pr-1 text-[22px] ">&#123;<span>{company}</span> &#125;</p> 
+              <p className="text-[#24A3D9]  text-[22px]"> <span className="pl-[2px] pr-[2px]">&gt; </span> <span className="text-[#24A3D9] font-medium pt-[3px]">Settings</span></p>
+            </div>
             <div className="flex items-center gap-x-[50px] mb-4">
+            
               <div>
+
+          
                 <InputSelect
                     labelClassname="text-20 mb-1"
                   IconRight={
