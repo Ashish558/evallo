@@ -1091,11 +1091,11 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "allTestsSuperAdmin" && (
-        <tr className=" font-medium  lead  text-[17.5px] ">
-          <td className="pl-12 !text-left ">
+        <tr className=" font-medium  lead  text-[18.5px] ">
+          <td className="pl-[55px] !text-left ">
             <span className="">{item.testName}</span>
           </td>
-          <td className=" pl-5 !text-center ">
+          <td className=" pr-7 ">
             {item.testType === "Other"
               ? "ACT®"
               : item.testType.endsWith("®")
@@ -1107,17 +1107,17 @@ export default function TableItem({
               ? item.testType
               : item.testType + "®"}
           </td>
-          <td className=" pl-5 !text-center ">
+          <td className="  pl-1">
             {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}
           </td>
-          <td className=" pl-5 !text-center ">
+          <td className="  pr-3">
             {getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}
           </td>
-          <td className=" pl-5 !text-center ">
+          <td className="  ">
             {" "}
             {item.no_of_assign ? item.no_of_assign : "-"}{" "}
           </td>
-          <td className="font-medium pl-2 pr-1 py-3 pl-5 !text-center">
+          <td className="font-medium pl-2 pr-1 py-3  !text-center">
             <div className="flex justify-center">
               <p
                 className="flex leading-none text-[#517CA8] underline py-1.8 px-0 underline-offset-1 cursor-pointer rounded"

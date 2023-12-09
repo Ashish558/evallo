@@ -125,16 +125,6 @@ export default function Chart({
   useEffect(() => {
     setChartData(subjects);
   }, [subjects]);
-  console.log("first", {
-    setSubjects,
-    chartData,
-    subjects,
-    selectedSubject,
-    selectedStudent,
-    currentSubData,
-    setCurrentSubData,
-    selectedConceptIdx,
-  });
 
   const getColor = (idx, len) => {
     let index = idx;
@@ -266,7 +256,7 @@ export default function Chart({
   }, [selectedSubject, chartData, selectedConceptIdx]);
 
   useEffect(() => {}, [currentSubData]);
-  console.log("data", data);
+  // console.log("data", data);
   // //console.log('currentSubData', currentSubData)
   // //console.log('selectedConceptIdx', selectedConceptIdx)
 

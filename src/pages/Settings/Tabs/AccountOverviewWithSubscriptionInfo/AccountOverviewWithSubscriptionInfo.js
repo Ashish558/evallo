@@ -3,6 +3,7 @@ import {
     useEffect,
 } from "react";
 import {
+    useDispatch,
     useSelector
 } from "react-redux";
 import InputField from "../../../../components/InputField/inputField";
@@ -21,6 +22,14 @@ import ActiveExtensionWidget from "../../../../components/ActiveExtensionWidget/
 import SubscriptionAndExtensionModal from "../../../Frames/SubscriptionAndExtensionModal/SubscriptionAndExtensionModal";
 import { useLazyGetSubscriptionsInfoQuery } from "../../../../app/services/orgSignup";
 import { useUpdateEmailMutation } from "../../../../app/services/organization";
+import { useForgotPasswordMutation } from "../../../../app/services/auth";
+import { 
+    closeModal as closeSubscriptionAndExtensionModal, 
+    openModal as openSubscriptionAndExtensionModal ,
+    openModalInUpdateMode as openSubscriptionAndExtensionModalInUpdateMode,
+    openSubscriptionPanelInUpdateMode,
+    openExtensionsPanelInUpdateMode,
+} from "../../../../app/slices/subscriptionUI";
 
 import {
     useLazyGetPersonalDetailQuery,
@@ -36,6 +45,9 @@ import visaIcon from "../../../../assets/BankCard/visa.svg";
 import { useCancelSubscriptionMutation } from "../../../../app/services/subscription";
 import DeletePaymentMethodModal from "../../../../components/DeletePaymentMethodModal/DeletePaymentMethodModal";
 import { CurrencyNameToSymbole, getFormattedDate } from "../../../../utils/utils";
+import EnableAutoRenewal from "../../../../components/EnableAutoRenewal/EnableAutoRenewal";
+import ResetPasswordModal from "../../../../components/ResetPasswordModal/ResetPasswordModal";
+import ChangeEmailModal from "../../../../components/ChangeEmailModal/ChangeEmailModal";
 
 function getDateAsString(date) {
     if(!(date && date.constructor && date.constructor.name === "Date")) return "05/12/23";
@@ -126,6 +138,7 @@ function AccountOverviewWithSubscriptionInfo() {
     const [cancelSubscription] = useCancelSubscriptionMutation();
     const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
     const [updateEmail, setUpdateEmail] = useUpdateEmailMutation();
+    const [forgotPassword, forgotPasswordResp] = useForgotPasswordMutation();
     const [subscriptionsInfoFromAPI, SetSubscriptionsInfoFromAPI] = useState([]);
     const [activeSubscriptionName, SetActiveSubscriptionName] = useState("");
     const [activeSubscriptionId, SetActiveSubscriptionId] = useState("");
@@ -171,6 +184,8 @@ function AccountOverviewWithSubscriptionInfo() {
     const [isViewTransactionsModalActive, SetIsViewTransactionsModalActive] = useState(false);
     const [isAddNewBankCardModalActive, SetIsAddNewBankCardModalActive] = useState(false);
     const [isDeletePaymentMethodModalActive, SetIsDeletePaymentMethodModalActive] = useState(false);
+    const [isEnableAutoRenewalModalActive, SetIsEnableAutoRenewalModalActive] = useState(false);
+    const [isChangeEmailModalActive, SetIsChangeEmailModalActive] = useState(false);
     const [openSubscriptionModal, SetOpenSubscriptionModal] = useState(false);
     const [openExtensionsModal, SetOpenExtensionsModal] = useState(false);
     const [stripeCustomerId, SetStripeCustomerId] = useState("");
@@ -181,6 +196,7 @@ function AccountOverviewWithSubscriptionInfo() {
     const [loading, setLoading] = useState(false);
     const [fetchedData, setFetchedData] = useState({});
     const { dateFormat } = useSelector((state) => state.user);
+    const dispatch = useDispatch();
 
     const isEmail = (val) => {
         let regEmail =
@@ -307,9 +323,9 @@ function AccountOverviewWithSubscriptionInfo() {
             setValues({
                 ...res?.data.data.user,
             });
-            /* setFetchedData({
+            setFetchedData({
                 ...res?.data.data.user,
-            }); */
+            });
         })
         .catch((err) => {
             console.log(err);
@@ -408,8 +424,8 @@ function AccountOverviewWithSubscriptionInfo() {
                                     autoRenewalDate: new Date(products[i].current_period_end * 1000),
                                     expiryDate: expiryDate,
                                     freeTrialExpiryDate: new Date(products[i].trial_end * 1000),
-                                    hasExpired: expiryDate < todayDate,
-                                    isCancelled: isCancelled,
+                                    hasExpired: false,//expiryDate < todayDate,
+                                    isCancelled: true,//isCancelled,
                                 });
                             }
                             SetActiveSubscriptionId(products[i].id);
@@ -482,14 +498,28 @@ function AccountOverviewWithSubscriptionInfo() {
         fetchSubscriptionsInfo();
     }, []);
 
+    function handlePasswordReset(){
+        forgotPassword({ email: values.email }).then((res) => {
+          if (res.error) {
+            console.log(res.error);
+            alert(res.error.data.message);
+            return;
+          }
+          console.log(res.data);
+        //   alert("Password reset link sent to your email.");
+        });
+      };
+
     function OnActiveSubscriptionChangePlanClicked() {
-        SetIsSubscriptionAndExtensionModalActive(true);
-        SetOpenSubscriptionModal(true);
+        /* SetIsSubscriptionAndExtensionModalActive(true);
+        SetOpenSubscriptionModal(true); */
+        dispatch(openSubscriptionPanelInUpdateMode());
     }
 
     function OnActiveExtensionChangePlanClicked() {
-        SetIsSubscriptionAndExtensionModalActive(true);
-        SetOpenExtensionsModal(true);
+        /* SetIsSubscriptionAndExtensionModalActive(true);
+        SetOpenExtensionsModal(true); */
+        dispatch(openExtensionsPanelInUpdateMode());
     }
 
     function OnResetPasswordClicked() {
@@ -500,8 +530,15 @@ function AccountOverviewWithSubscriptionInfo() {
         SetIsResetPasswordModalActive(false);
     }
 
-    function OnResetPasswordModalSendClicked() {
+    async function OnResetPasswordModalSendClicked() {
+        const res = await forgotPassword({ email: values.email });
         SetIsResetPasswordModalActive(false);
+        if (res.error) {
+            console.log(res.error);
+            alert(res.error.data.message);
+            return;
+        }
+
         SetIsPasswordResetLinkSentModalActive(true);
 
         const makePasswordResetLinkSentModalDisappearAfterFewSeconds = () => {
@@ -597,6 +634,14 @@ function AccountOverviewWithSubscriptionInfo() {
         loadOrgDetails();
     }
 
+    function OnEnableAutoRenewalClicked() {
+        SetIsEnableAutoRenewalModalActive(true);
+    }
+
+    function OnEnableAutoRenewalModalCrossIconClicked() {
+        SetIsEnableAutoRenewalModalActive(false);
+    }
+
     return (
         <div className="flex w-full" >
 
@@ -619,31 +664,10 @@ function AccountOverviewWithSubscriptionInfo() {
             {
                 isResetPasswordModalActive ? (
                     <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
-                        <div className="relative flex flex-col items-center bg-[#fff] rounded-[8px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 aspect-[666/190] w-[600px]" >
-                            <div className="font-[100] mt-[20px] text-center text-[#26435F] text-[21px] w-11/12" >
-                            A Password Reset Link will be sent to you. Please click on it to change your password.
-                            </div>
-
-                            <div className="flex justify-between mt-[20px] w-6/12" >
-                                <SecondaryButton
-                                    style={{width: "46.05%", backgroundColor: "#fff"}}
-                                    children={<span className="font-[500] text-[14px] text-[#FF7979]" >Cancel</span>}
-                                    className="bg-[#fff] border-[#FF7979] border-[1px] px-[0px] rounded-[10px]"
-                                    onClick={OnResetPasswordModalCancelClicked}
-                                />
-
-                                <PrimaryButton
-                                    style={{width: "46.05%"}}
-                                    className={` flex justify-center  bg-[#FFA28D]  disabled:opacity-60  rounded-[10px] text-white text-sm font-medium relative py-[9px]`}
-                                    /* loading={emailExistLoad}
-                                    disabled={
-                                        values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
-                                    } */
-                                    onClick={OnResetPasswordModalSendClicked}
-                                    children={`Okay`}
-                                />    
-                            </div>
-                        </div>
+                        <ResetPasswordModal
+                            OnCancelClicked={OnResetPasswordModalCancelClicked}
+                            OnOkayClicked={OnResetPasswordModalSendClicked}
+                        />
                     </div>
                 ) : (<></>)
             }
@@ -663,39 +687,49 @@ function AccountOverviewWithSubscriptionInfo() {
                 isCancelSubscriptionModalActive ? (
                     <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
                         <Modal2
-                            className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 aspect-[497/266] w-[25.88vw]"
+                            className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[8px] h-[266px] w-[497px]"
                             title="Cancel Subscription"
-                            titleClassName="font-[600] text-[20px]"
-                            headerClassName={`pl-[20px] pr-[20px] pb-[10px] pt-[30px]`}
+                            titleClassName="font-[600] text-[21.33px]"
+                            headerClassName={`pl-[30px] pr-[30px] pb-[21.67px] pt-[30px]`}
                             OnCrossIconClicked={OnCancelSubscriptionModalCrossIconClicked}
                         >
                             <div 
                                 className="flex flex-col items-center w-full"
                             >
-                                <div className="mt-[20px] text-[#517CA8] text-[13px] w-11/12" >
-                                ⚠️ <span className="font-[600]" >Note:</span> If you cancel the plan, you will lose ALL access to your Evallo account after the subscription reaches expiry date.
+                                <div className="mt-[20px] font-[400] text-[#517CA8] text-[17.5px] w-[437px]" >
+                                ⚠️ <span className="font-[700]" >Note:</span> If you cancel the plan, you will lose ALL access to your Evallo account after the subscription reaches expiry date.
                                 </div>
-                                <div className="flex items-center justify-between 2xl:mt-[0px] design:mt-[40px] w-9/12" >
+                                <div className="flex items-center justify-between mt-[20px] w-[373px]" >
                                     <SecondaryButton
-                                        style={{width: "46.05%", backgroundColor: "#fff"}}
-                                        children={<span className="font-[500] text-[12px] text-[#FF7979]" >Cancel Subscription</span>}
-                                        className="bg-[#fff] px-[0px] rounded-[10px]"
+                                        style={{backgroundColor: "#fff"}}
+                                        children={<span className="font-[500] text-[16px] text-[#FF7979]" >Cancel Subscription</span>}
+                                        className="bg-[#fff] px-[0px] rounded-[10px] flex"
                                         onClick={OnCancelSubscriptionModalCancelSubscriptionButtonClicked}
                                     />
 
                                     <PrimaryButton
-                                        style={{width: "46.05%"}}
-                                        className={` flex justify-center px-[0px] 2xl:px-[5px] bg-[#FFA28D]  disabled:opacity-60  rounded-[10px] text-white text-sm font-medium relative py-[9px]`}
+                                        // style={{width: "46.05%"}}
+                                        className={` flex justify-center h-[41px] w-[186px] px-[15px] bg-[#FFA28D]  disabled:opacity-60  rounded-[10px] text-white text-sm font-medium relative`}
                                         /* loading={emailExistLoad}
                                         disabled={
                                             values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
                                         } */
                                         onClick={OnCancelSubscriptionModalChangePlanClicked}
-                                        children={<span className="text-[12px]" >Change Plan Instead</span>}
+                                        children={<span className="font-[500] text-[15px]" >Change Plan Instead</span>}
                                     />   
                                 </div>
                             </div>
                         </Modal2>
+                    </div>
+                ) : (<></>)
+            }
+
+            {
+                isEnableAutoRenewalModalActive ? (
+                    <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
+                        <EnableAutoRenewal
+                            OnCrossIconClicked={OnEnableAutoRenewalModalCrossIconClicked}
+                        />
                     </div>
                 ) : (<></>)
             }
@@ -733,6 +767,16 @@ function AccountOverviewWithSubscriptionInfo() {
                         OnAddClicked={OnAddNewPaymentModalAddButtonClicked}
                         stripeCustomerId={stripeCustomerId}
                     />
+                    </div>
+                ) : (<></>)
+            }
+
+            {
+                isChangeEmailModalActive ? (
+                    <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
+                        <ChangeEmailModal
+                            email={values.email}
+                        />
                     </div>
                 ) : (<></>)
             }
@@ -1017,7 +1061,7 @@ function AccountOverviewWithSubscriptionInfo() {
                                                     className="font-[500] underline text-[#26435F] text-[15px]" 
                                                     onClick={
                                                         () => {
-                                                            // OnCancelSubscriptionClicked(activeSubscriptionId);
+                                                            OnEnableAutoRenewalClicked();
                                                         }
                                                     } 
                                                 >Enable Auto-Renew</button>
@@ -1124,7 +1168,7 @@ function AccountOverviewWithSubscriptionInfo() {
                                                         className="font-[500] underline text-[#26435F] text-[15px]" 
                                                         onClick={
                                                             () => {
-                                                                // OnCancelSubscriptionClicked(activeSubscriptionId);
+                                                                OnEnableAutoRenewalClicked();
                                                             }
                                                         } 
                                                     >Enable Auto-Renew</button>
@@ -1133,7 +1177,7 @@ function AccountOverviewWithSubscriptionInfo() {
                                                         className="font-[500] underline text-[#24A3D9] text-[15px]" 
                                                         onClick={
                                                             () => {
-                                                                // OnCancelSubscriptionClicked(activeSubscriptionId);
+                                                                OnCancelSubscriptionClicked("");
                                                             }
                                                         } 
                                                     >Cancel Subscription</button>
@@ -1156,21 +1200,21 @@ function AccountOverviewWithSubscriptionInfo() {
                             className="flex items-center justify-between ml-[30px] mt-[20px]" 
                             style={{width: "92%"}}    
                         >
-                            <div className="font-[600] text-[#26435F] text-18.66" >Manage Payments</div>
+                            <div className="font-[500] text-[#26435F] text-[18.67px]" >Manage Payments</div>
                             <button 
-                                className="font-[300] text-[#24A3D9] text-[12px] design:text-[15px] underline" 
+                                className="font-[500] text-[#24A3D9] text-[15px] underline" 
                                 // onClick={OnViewPastTransactionsClicked}
                             >View Past Transactions</button>
                         </div>
                         
-                        <div className="font-[100] ml-[30px] text-[15px]" >
+                        <div className="font-[300] ml-[30px] text-[15px]" >
                             <span className="text-[#26435F]" >Read more documentation about payment methods on Evallo’s </span>
                             <button className="inline text-[#24A3D9]" >knowledge base.</button>
                         </div>
 
-                        <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[17.5px]" >Saved Cards</div>
+                        <div className="font-[600] ml-[30px] mt-[30px] text-[#FFA28D] text-[17.5px]" >Saved Cards</div>
 
-                        <div className={`flex items-start gap-x-[45px] gap-y-[30px] flex-wrap ml-[30px] pl-[0px] pb-[0px] pt-[0px] w-11/12`} >
+                        <div className={`flex items-start gap-x-[45px] gap-y-[30px] flex-wrap ml-[30px] mt-[5px] pl-[0px] pb-[0px] pt-[0px] w-11/12`} >
 
                             {
                                 paymentMethods.map((item, index) => {
