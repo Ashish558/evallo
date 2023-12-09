@@ -1091,8 +1091,8 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "allTestsSuperAdmin" && (
-        <tr className=" font-medium  lead  text-[17.5px] ">
-          <td className="pl-5 !text-left ">
+        <tr className=" font-medium  lead  text-[18.5px] ">
+          <td className="pl-[55px] !text-left ">
             <span className="">{item.testName}</span>
           </td>
           <td className=" pr-7 ">
@@ -1107,7 +1107,7 @@ export default function TableItem({
               ? item.testType
               : item.testType + "®"}
           </td>
-          <td className="  pl-3">
+          <td className="  pl-1">
             {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}
           </td>
           <td className="  pr-3">
@@ -1142,7 +1142,7 @@ export default function TableItem({
             />
           </td>
           <td className=" gap-x-2 ">
-            <div className="flex items-center gap-x-2 justify-center pl-3">
+            <div className="flex items-center gap-x-2 justify-center pr-3">
               <button className="px-1  text-[#517CA8] bg-[rgba(81,124,168,0.1)] w-[66px] h-[26px] rounded-[2.6px]">
                 Beta
               </button>

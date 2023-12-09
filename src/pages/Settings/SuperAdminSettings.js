@@ -182,6 +182,9 @@ export default function SuperAdminSettings() {
   const dispatch = useDispatch();
   const [selectedtest, setselectedtest] = useState([])
 
+
+  console.log("for company name",organization)
+
   const handlePermissionOption = (value, key) => {
     let nvalue = value;
     if (!isNaN(Number(value))) {
@@ -1295,13 +1298,13 @@ export default function SuperAdminSettings() {
                   <div className={` flex justify-center items-center w-full `}>
                     <div className="">
                       {activeTab === idx + 1 && (
-                        <img src={item.Icon} className="mb-1" alt="item-logo" />
+                        <img src={item.Icon} className="mb-1 w-[18px] h-[18px]" alt="item-logo" />
                       )}
                       {activeTab === idx + 1 || (
-                        <img src={item.Icon2} className="mb-1" alt="item-logo" />
+                        <img src={item.Icon2} className="mb-1 w-[18px] h-[18px]" alt="item-logo" />
                       )}
                     </div>
-                    <p className="font-medium">{item.name} </p>
+                    <p className="font-medium">{item.name}</p>
                   </div>
                   {activeTab === idx + 1 && (
                     <img
@@ -1345,13 +1348,13 @@ export default function SuperAdminSettings() {
         </div>
         {activeTab === 1 || !activeTab ? <AccountOverview /> : <></>}
         {activeTab === 3 ? (
-          <div>
+          <div className="ml-14 w-[93%]">
           <div className="company_name flex  ml-1 mb-9 item-center">
           {/* in below this company state variable  created on line no.101 */}
               <p className="text-[#24A3D9] pr-1 text-[22px] ">&#123;<span>{company}</span> &#125;</p> 
               <p className="text-[#24A3D9]  text-[22px]"> <span className="pl-[2px] pr-[2px]">&gt; </span> <span className="text-[#24A3D9] font-medium pt-[3px]">Settings</span></p>
             </div>
-            <div className="flex items-center gap-x-[50px] mb-4">
+            <div className="flex items-center gap-x-[50px]  mb-4">
             
               <div>
 
