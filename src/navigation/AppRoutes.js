@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useState , useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
 import { RequireAuth } from "./PrivateRoute";
@@ -8,6 +8,7 @@ import Layout from "../pages/Layout/Layout";
 import Layout2 from "../pages/Layout/Layout2";
 import SubscriptionAndExtensionModal from "../pages/Frames/SubscriptionAndExtensionModal/SubscriptionAndExtensionModal";
 import { useLazyGetAuthQuery, useLazyGetOrganizationQuery, useLazyGetPersonalDetailQuery } from "../app/services/users";
+import { closeModal as closeSubscriptionAndExtensionModal, openModal as openSubscriptionAndExtensionModal } from "../app/slices/subscriptionUI";
 
 
 const AllTests = lazy(() => import("../pages/AllTests/AllTests"));
@@ -51,10 +52,17 @@ const OrgAdminSignup = lazy(() => import("../pages/OrgAdminSignup/OrgAdminSignup
 //  layout page
 
 const AppRoutes = () => {
+  const dispatch = useDispatch();
   const { isLoggedIn } = useSelector((state) => state.user);
+  const { 
+    isActive: isSubscriptionAndExtensionModalActive , 
+    isInUpdateMode: isSubscriptionAndExtensionModalInUpateMode ,
+    openSubscriptionPanel,
+    openExtensionsPanel,
+  } = useSelector((state) => state.subscriptionUI);
   const { role: persona } = useSelector((state) => state.user);
   const [isOrgAdmin, SetIsOrgAdmin] = useState(false);
-  const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(false);
+  // const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(false);
   const [getPersonalDetail, getPersonalDetailResp] = useLazyGetPersonalDetailQuery();
   const [getOrgDetails, getOrgDetailsResp] = useLazyGetOrganizationQuery();
 
@@ -84,9 +92,11 @@ const AppRoutes = () => {
           data.data.customerSubscriptions === null || data.data.customerSubscriptions === undefined ||
           data.data.customerSubscriptions.data === null || data.data.customerSubscriptions.data === undefined ||
           data.data.customerSubscriptions.data.length === 0) {
-          SetIsSubscriptionAndExtensionModalActive(true);
+          // SetIsSubscriptionAndExtensionModalActive(true);
+          dispatch(openSubscriptionAndExtensionModal());
         } else {
-          SetIsSubscriptionAndExtensionModalActive(false);
+          // SetIsSubscriptionAndExtensionModalActive(false);
+          dispatch(closeSubscriptionAndExtensionModal());
         }
       })
       .catch(error => {
@@ -110,10 +120,18 @@ const AppRoutes = () => {
           <div className="fixed bg-[#00000080] top-[-50px] left-0 right-0 bottom-[-50px] z-[1000000]" style={{position: "fixed"}} >
             <SubscriptionAndExtensionModal
               className="relative top-[500px] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1400px] h-[900px]"
-              // updateSubscriptionMode={true}
-              // activeSubscriptionName="Professional"
+              updateSubscriptionMode={isSubscriptionAndExtensionModalInUpateMode}
+              openSubscriptionModal={openSubscriptionPanel}
+              openExtensionsModal={openExtensionsPanel}
+              activeSubscriptionName="Professional"
               OnSubscriptionAddedSuccessfully={() => {
-                SetIsSubscriptionAndExtensionModalActive(false);
+                // SetIsSubscriptionAndExtensionModalActive(false);
+                dispatch(closeSubscriptionAndExtensionModal());
+              }}
+
+              OnCancelClicked={() => {
+                // SetIsSubscriptionAndExtensionModalActive(false);
+                dispatch(closeSubscriptionAndExtensionModal());
               }}
             />
           </div>
