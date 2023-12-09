@@ -83,11 +83,13 @@ const SubFrame0 = ({ userData }) => {
                 12 Days
               </div>
               <div>
+                <div className="mr-[19px] my-[2px]">
               <RangeDate
               optionClassName="!w-min"
-              inputContainerClassName="!w-min "
+              inputContainerClassName="!w-min !text-[16px] font-medium"
               handleRangeData={handleRangeData}
             />
+                </div>
               </div>
           </div>
             <div className="w-full flex justify-between items-center pr-6 ps-[56px]">

@@ -26,13 +26,13 @@ const About = () => {
 
   return (
     <>
-      <div className="w-[1708px] pt-[36px] mb-12 mx-auto">
-        <div className="flex gap-2 text-sm mb-7">
-          <span onClick={()=>navigate('/all-orgs')} className="text-[#667085] text-base-18 cursor-pointer">All Orgs</span>
+      <div className="w-[1708px] pt-[36px] mx-auto max-xl:pt-[50px] max-lg:pt-[36px]">
+        <div className="flex gap-2 text-sm mb-7 font-normal">
+          <span onClick={()=>navigate('/all-orgs')} className="text-[#667085] text-[18.667px] cursor-pointer">All Orgs</span>
           <img src={icon} alt="right-arrow" />
-          <span className="text-[#24A3D9] text-base-20">{userData?.data?.user?.company}</span>
+          <span className="text-[#24A3D9] text-[20px]">{userData?.data?.user?.company}</span>
         </div>
-        <div className="flex gap-7">
+        <div className="flex gap-7 mt-[54.5px]">
           <ProfileLeft userData={{ ...userData?.data?.user, ...orgData }}   userOnly={userData?.data?.user} />
           <ProfileRight userData={{ ...userData?.data?.user, ...orgData }} orgs={orgData} />
         </div>
