@@ -1,12 +1,15 @@
 import {
     useState
 } from "react";
+import {
+    useSelector
+} from "react-redux";
 import PrimaryButton from "../Buttons/PrimaryButton"
 import SecondaryButton from "../Buttons/SecondaryButton"
 import InputField from "../../components/InputField/inputField";
 import { BASE_URL } from "../../app/constants/constants";
 import { useApplyCouponQuery, useLazyApplyCouponQuery } from "../../app/services/subscription";
-import { CurrencyNameToSymbole } from "../../utils/utils";
+import { CurrencyNameToSymbole, getFormattedDate } from "../../utils/utils";
 
 function getDateAsString(date) {
     if(!(date && date.constructor && date.constructor.name === "Date")) return "05/12/23";
@@ -41,6 +44,7 @@ function ActiveSubscriptionWidget({
     const [couponDiscountPercent, SetCouponDiscountPercent] = useState(0);
     const [applyCoupon, applyCouponResp] = useLazyApplyCouponQuery();
     const [isCouponApplyProcessOnGoing, SetIsCouponApplyProcessOnGoing] = useState(false);
+    const { dateFormat } = useSelector((state) => state.user);
 
     /* const handleChangePlan = () => {
         if(!setFrames) return;
@@ -86,7 +90,7 @@ function ActiveSubscriptionWidget({
                                freeTrialExpiryDate.constructor.name === "Date" && today <= freeTrialExpiryDate) {
                                 return (
                                     <div className="font-[500] text-[15px] text-[#38C980]">
-                                        Free Trial till {getDateAsString(freeTrialExpiryDate)}
+                                        Free Trial till {getFormattedDate(freeTrialExpiryDate, dateFormat)}
                                     </div>
                                 )
                             }

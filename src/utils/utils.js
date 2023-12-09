@@ -523,6 +523,7 @@ export const checkTest = (persona, item) => {
 }
 
 export function CurrencyNameToSymbole(currency = "") {
+   if(currency === undefined || currency === null) return "";
    if(currency.toLowerCase() === "usd") return "$";
    if(currency.toLowerCase() === "inr") return "₹";
    return "";

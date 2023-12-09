@@ -112,7 +112,7 @@ const AppRoutes = () => {
               className="relative top-[500px] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1400px] h-[900px]"
               // updateSubscriptionMode={true}
               // activeSubscriptionName="Professional"
-              OnCheckoutClicked={() => {
+              OnSubscriptionAddedSuccessfully={() => {
                 SetIsSubscriptionAndExtensionModalActive(false);
               }}
             />

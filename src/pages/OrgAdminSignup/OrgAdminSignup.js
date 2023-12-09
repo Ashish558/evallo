@@ -742,14 +742,17 @@ const handleClick = () => {
                       label="First Name"
                       labelClassname="text-[#26435F] font-semibold"
                       inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
-                    
+                      pattern="[a-zA-Z0-9]+"
                       value={values.firstName}
-                      onChange={(e) =>
-                        setValues({
-                          ...values,
-                          firstName: e.target.value,
-                        })
-                      }
+                      onChange={(e) => {
+                        const regex = /^[a-zA-Z0-9 ]*$/;
+                        const isValid = regex.test(e.target.value);
+                        if (isValid)
+                          setValues({
+                            ...values,
+                            firstName: e.target.value,
+                          });
+                      }}
                       totalErrors={error}
                       error={error.firstName}
                     />
@@ -759,14 +762,17 @@ const handleClick = () => {
                       labelClassname="text-[#26435F] font-semibold"
                       inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
                       label="Last Name"
+                      pattern="[a-zA-Z0-9]+"
                       value={values.lastName}
-                      onChange={(e) =>
-                        setValues({
-                          ...values,
-                          lastName: e.target.value,
-                        })
-                      }
-                      
+                      onChange={(e) => {
+                        const regex = /^[a-zA-Z0-9 ]*$/;
+                        const isValid = regex.test(e.target.value);
+                        if (isValid)
+                          setValues({
+                            ...values,
+                            lastName: e.target.value,
+                          });
+                      }}
                       totalErrors={error}
                       error={error.lastName}
                     />

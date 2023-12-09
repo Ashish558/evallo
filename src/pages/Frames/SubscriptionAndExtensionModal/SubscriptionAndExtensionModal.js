@@ -17,6 +17,7 @@ import { useLazyGetAuthQuery, useLazyGetOrganizationQuery, useLazyGetPersonalDet
 import { useUpdateOrganizationDetailMutation } from "../../../app/services/organization";
 import { useSelector } from "react-redux";
 
+const TEMPORARY_ACCOUNT_DETAILS = "TEMPORARY_ACCOUNT_DETAILS";
 const TEMPORARY_CHOSEN_SUBSCRIPTION_PLAN_NAME = "TEMPORARY_CHOSEN_SUBSCRIPTION_PLAN_NAME";
 const TEMPORARY_CHOSEN_EXTENSIONS_NAME = "TEMPORARY_CHOSEN_EXTENSIONS_NAME";
 
@@ -29,6 +30,7 @@ function SubscriptionAndExtensionModal({
     subscriptionsInfoFromAPI_Param,
     activeSubscriptionName = "",
     OnCheckoutClicked,
+    OnSubscriptionAddedSuccessfully,
 }) {
     const [values, setValues] = useState({
         firstName: "",
@@ -88,6 +90,7 @@ function SubscriptionAndExtensionModal({
     const [stripeCustomerId, SetStripeCustomerId] = useState("");
     const [isPaymentSuccessfullyComplete, SetIsPaymentSuccessfullyComplete] = useState(false);
     const [isExtensionStepComplete, SetIsExtensionStepComplete] = useState(false);
+    const [isSubscriptionProcessGoingOn, SetIsSubscriptionProcessGoingOn] = useState(false);
 
     const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
     const [addSubscriptions, addSubscriptionsResp] = useAddSubscriptionsMutation();
@@ -191,7 +194,25 @@ function SubscriptionAndExtensionModal({
                     }
 
                     if(data && data.data && data.data.organisation && data.data.user) {
-                        setValues((prev) => {
+                        const updatedValues = {
+                            ...values,
+                            company: data.data.organisation.company,
+                            registrationAs: data.data.user.registrationAs,
+                            companyType: data.data.organisation.companyType,
+                            website: data.data.organisation.website,
+                            address: data.data.organisation.address,
+                            country: data.data.organisation.country,
+                            city: data.data.organisation.city,
+                            state: data.data.organisation.state,
+                            zip: data.data.organisation.zip,
+                        }
+
+                        setValues(updatedValues);
+                        sessionStorage.setItem(TEMPORARY_ACCOUNT_DETAILS,
+                                               JSON.stringify(updatedValues)    
+                        );
+
+                        /* setValues((prev) => {
                             return {
                                 ...prev,
                                 company: data.data.organisation.company,
@@ -204,16 +225,9 @@ function SubscriptionAndExtensionModal({
                                 state: data.data.organisation.state,
                                 zip: data.data.organisation.zip,
                             }
-                        })
-                        /* SetCompanyInfo({
-                            nameOfBusiness: data.data.organisation.company,
-                            accountType: data.data.user.registrationAs,
-                            businessEntity: data.data.organisation.companyType,
-                            streetAddress: data.data.organisation.address,
-                            country: data.data.organisation.country,
-                            city: data.data.organisation.zip,
-                            state: data.data.organisation.state
                         }) */
+                        
+
                     }
 
                 })
@@ -406,16 +420,26 @@ function SubscriptionAndExtensionModal({
         const chosenSubName = sessionStorage.getItem(TEMPORARY_CHOSEN_SUBSCRIPTION_PLAN_NAME);
         if(!(chosenSubName === "" || chosenSubName === undefined || chosenSubName === null)) {
             SetChosenSubscriptionPlanName(chosenSubName);
+            return;
         }
 
+        sessionStorage.setItem(TEMPORARY_CHOSEN_SUBSCRIPTION_PLAN_NAME,
+            chosenSubscriptionPlanName
+        );
+    }, []);
+
+    useEffect(() => {
         let ext = sessionStorage.getItem(TEMPORARY_CHOSEN_EXTENSIONS_NAME);
         
-        if(!(ext === undefined || ext === null)) {
+        if(!(ext === undefined || ext === null || ext === "")) {
             ext = JSON.parse(ext);
-            console.log("ext");
-            console.log(ext);
             setExtensions(ext);
+            return;
         }
+
+        sessionStorage.setItem(TEMPORARY_CHOSEN_EXTENSIONS_NAME,
+                               JSON.stringify(extensions)    
+        );
     }, []);
     
     useEffect(() => {
@@ -448,6 +472,32 @@ function SubscriptionAndExtensionModal({
 
         if(frames.review) {
             SetCurrentModalIndex(3);
+            return;
+        }
+    }, [frames]);
+
+    useEffect(() => {
+        if(frames.orgDetails) {
+            let accountDetails = sessionStorage.getItem(TEMPORARY_ACCOUNT_DETAILS);
+            if(accountDetails === "" || accountDetails === undefined || accountDetails === null) return;
+            setValues(JSON.parse(accountDetails));
+            return;
+        }
+
+        if(frames.subscription) {
+            let sub = sessionStorage.getItem(TEMPORARY_CHOSEN_SUBSCRIPTION_PLAN_NAME);
+            if(sub === "" || sub === null || sub === undefined) return;
+            SetChosenSubscriptionPlanName(sub);
+            return;
+        }
+
+        if(frames.extensions) {
+            let ext = sessionStorage.getItem(TEMPORARY_CHOSEN_EXTENSIONS_NAME);
+            if(!(ext === undefined || ext === null || ext === "")) {
+                ext = JSON.parse(ext);
+                setExtensions(ext);
+                return;
+            }
             return;
         }
     }, [frames]);
@@ -528,7 +578,8 @@ function SubscriptionAndExtensionModal({
         console.log('frames--', frames);
         if(frames.orgDetails){
             console.log('click', values);
-            updateOrgDetails({...values, orgId:organization._id})
+            const newValues = {...values, orgId:organization._id}
+            updateOrgDetails(newValues)
             .then((res) => {
                 if(res.error){
                     console.log('err', res.error);
@@ -541,7 +592,10 @@ function SubscriptionAndExtensionModal({
                         subscription: true
                     }
                     return frames;
-                })
+                });
+                sessionStorage.setItem(TEMPORARY_ACCOUNT_DETAILS,
+                    JSON.stringify(newValues)    
+                );
             })
             .catch(error => {
                 console.error("Error from updateOrgDetails");
@@ -585,6 +639,7 @@ function SubscriptionAndExtensionModal({
     async function handleSub(){
         // SetIsSubscriptionProcessOnGoing(true);
         console.log(subscriptionsInfoFromAPI);
+        SetIsSubscriptionProcessGoingOn(true);
 
         let subscriptionSessionStorageOutput = sessionStorage.getItem("chosenSubscriptionFromAPI");
         if(subscriptionSessionStorageOutput === '' || subscriptionSessionStorageOutput === undefined) {
@@ -621,8 +676,15 @@ function SubscriptionAndExtensionModal({
 
         console.log('Subscribed');
         console.log(response);
+        SetIsSubscriptionProcessGoingOn(false);
         sessionStorage.removeItem(TEMPORARY_CHOSEN_SUBSCRIPTION_PLAN_NAME);
         sessionStorage.removeItem(TEMPORARY_CHOSEN_EXTENSIONS_NAME);
+        if(OnSubscriptionAddedSuccessfully && 
+           OnSubscriptionAddedSuccessfully.constructor && 
+           OnSubscriptionAddedSuccessfully.constructor.name === "Function"
+        ) {
+            OnSubscriptionAddedSuccessfully();
+        }
     };
 
     function OnVerticalNumericSteppersStepClicked(index) {
@@ -748,10 +810,18 @@ function SubscriptionAndExtensionModal({
                             />
                         ) : frames.review ? (
                             <ReviewProduct
-                                chosenSubscriptionPlanName={chosenSubscriptionPlanName}
+                                chosenSubscriptionPlanName={(() => {
+                                    let chosenSub = sessionStorage.getItem(TEMPORARY_CHOSEN_SUBSCRIPTION_PLAN_NAME);
+                                    if(!(chosenSub === undefined ||  chosenSub === null || chosenSub === "")) return chosenSub;
+                                    return "Professional";
+                                })()}
                                 subscriptionsInfo={subscriptionPlanInfo}
                                 setFrames={setFrames}
-                                extensions={extensions}
+                                extensions={(() => {
+                                    let ext = sessionStorage.getItem(TEMPORARY_CHOSEN_EXTENSIONS_NAME);
+                                    if(!(ext === undefined || ext === null || ext === "")) return JSON.parse(ext);
+                                    return extensions;
+                                })()}
                                 extensionPlansInfo={extensionPlansData}
                                 isCCRequired={isCCRequired}
                                 SetIsCCRequired={SetIsCCRequired}
@@ -787,7 +857,8 @@ function SubscriptionAndExtensionModal({
                       )}
                       className={`w-[150px] h-[50px] flex justify-center disabled:opacity-60   rounded text-white text-sm font-medium relative py-[11.5px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)]   
                       `}
-                      /* loading={emailExistLoad}
+                      loading={frames.review ? isSubscriptionProcessGoingOn ? true : false : false}
+                      /*
                       disabled={
                         values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
                       } */
