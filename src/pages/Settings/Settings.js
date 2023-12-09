@@ -5,7 +5,7 @@ import ActiveTab from "../../assets/icons/active-tab.svg";
 import SettingsCard from "../../components/SettingsCard/SettingsCard";
 import ToggleBar from "../../components/SettingsCard/ToogleBar";
 import AddTag from "../../components/Buttons/AddTag";
-import "./tab.css";
+import "./tab2.css"
 import FilterItems from "../../components/FilterItems/filterItems";
 import InputField from "../../components/InputField/inputField";
 import Modal from "../../components/Modal/Modal";
@@ -1396,42 +1396,63 @@ export default function Settings() {
           </span>
           <span className="font-semibold">Settings</span>
         </p>
-        <div className="shivam-tabs rounded-md">
-          <ul className="tabs group">
-            {tabs.map((item, idx) => {
+        <div className={`flex items-end overflow-hidden pl-[17px] ${styles.navBar}`} >
+          {
+            tabs.map((item, index) => {
+              const isActive = activeTab === index + 1;
               return (
-                <li
-                  className={`" ${activeTab === idx + 1 ? "active" : ""}`}
-                  onClick={() => changeTab(idx + 1)}
+                <button
+                  key={index}
+                  style={{ height: "88.88%" }}
+                  className={`relative flex items-center ${styles.navItem}
+                                  ${isActive ? styles.active : ""}
+              `}
+                  onClick={() => changeTab(index + 1)}
                 >
-                  <a
-                    className={`"w-full cursor-pointer flex justify-center items-center ${activeTab === idx + 1 ? "!text-[#26435F]" : "!text-white"
-                      }`}
-                  >
-                    <span className="pb-1">
-                      {activeTab === idx + 1 && (
-                        <img
-                          src={item.Icon}
-                          className="!w-[15px] !h-[15px] "
-                          alt="item-logo"
-                        />
-                      )}
-                      {activeTab === idx + 1 || (
-                        <img
-                          src={item.Icon2}
-                          className="!w-[15px] !h-[15px]"
-                          alt="item-logo"
-                        />
-                      )}
-                    </span>
-                    <p className="py-2 px-2 pb-3 font-medium  text-base-17-5  whitespace-nowrap">
-                      {item.name}{" "}
-                    </p>
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
+                  <div className="mr-[10px]" >
+                    <img
+                      src={
+                        isActive ? item.selectedStateIcon : item.unselectedStateIcon
+                      }
+                    />
+                  </div>
+                  <div className={`${styles.name}`} >
+                    {item.name}
+                  </div>
+
+                  {
+                    isActive ? (
+                      <>
+                        <div className="absolute bg-[#fff] h-full w-[10px] -translate-x-full z-[3]"
+                          style={{
+                            left: "1px",
+                          }}
+                        ></div>
+                        <div className="absolute bg-[#26435F] h-full w-[12px] left-0 -translate-x-full z-[3]"
+                          style={{
+                            left: "1px",
+                            borderBottomRightRadius: "100px"
+                          }}
+                        ></div>
+
+                        <div className="absolute bg-[#fff] h-full w-[10px] translate-x-full z-[3]"
+                          style={{
+                            right: "1px"
+                          }}
+                        ></div>
+                        <div className="absolute bg-[#26435F] h-full w-[11px] translate-x-full z-[3]"
+                          style={{
+                            right: "1px",
+                            borderBottomLeftRadius: "100px"
+                          }}
+                        ></div>
+                      </>
+                    ) : (<></>)
+                  }
+                </button>
+              )
+            })
+          }
         </div>
         <div className=" flex w-full flex-1 items-center mb-[30px]">
           <div
@@ -1551,7 +1572,7 @@ export default function Settings() {
               title="Tutor Status Items"
               body={
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] gap-x-[18.75px] gap-y-[25px] px-[31.25px] py-[26.25px]  bg-white shadow-small p-4 rounded-5 text-base-17-5">
-                  <AddTag onAddTag={handleAddTag} keyName="tutorStatus" className='w-[143.25px] bg-primary mr-[1px]'  />
+                  <AddTag onAddTag={handleAddTag} keyName="tutorStatus" className='w-[143.25px] bg-primary mr-[1px]' />
                   <FilterItems
                     onlyItems={true}
                     isString={true}
@@ -1642,7 +1663,7 @@ export default function Settings() {
                   </div>
                   <AddTag
                     children="Add New Code"
-                    className="px-[18px] py-3 mt-5 bg-primary text-white w-[189.25px]"
+                    className="px-[12px] py-3 mt-5 bg-primary text-white w-[189.25px]"
                     text="Add New Code"
                     hideIcon={false}
                     openModal={true}
@@ -1844,8 +1865,8 @@ export default function Settings() {
               toggle={{ value: toggleImage.offer, key: "offer" }}
               onToggle={onToggle}
               body={
-                <div className=" bg-white w-full  gap-x-5 p-4 rounded-br-5 rounded-bl-5 !pr-4">
-                  <p className="text-base-17-5 font-medium mt-[-5px] text-[#667085] mb-6">
+                <div className=" bg-white w-full  gap-x-5 py-5 px-[52px] rounded-br-5 rounded-bl-5 pr-12">
+                  <p className="text-medium font-medium mt-[-5px] text-[#667085] mb-6">
                     <span className="font-bold mr-1">⚠️ Note:</span>
                     Announcements, as the name implies, can be used to announce
                     important aspects of your business. Displayed on the
@@ -1864,7 +1885,7 @@ export default function Settings() {
                       knowledge base.
                     </span>
                   </p>
-                  <div className="flex items-center gap-5 pr-3  flex-1 !w-[100%] overflow-x-auto custom-scroller-2    [&>*]:mb-[10px] bg-white  gap-x-5 p-4 rounded-br-5 rounded-bl-5 mb-3 !px-6 py-5 ">
+                  <div className="flex items-center flex-1 !w-[100%] overflow-x-auto custom-scroller-2 [&>*]:mb-[10px] bg-white rounded-br-5 rounded-bl-5 mb-3 py-5 ">
                     {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
                            onChange={e => onImageChange(e)} /> */}
 
@@ -2003,7 +2024,7 @@ export default function Settings() {
                       offersNew?.map((off, idx) => {
                         return (
                           <div className="relative flex min-w-[250px] ">
-                            <div className=" relative w-[2px] rounded-md  bg-[#00000030] !h-[300px] mx-[50px]"></div>
+                            <div className=" relative w-[2px] rounded-md  bg-[#00000030] !h-[300px] mx-[48px]"></div>
 
                             <div className="flex-shrink-0 w-[300px]">
                               <div className="flex w-[100%] bg-[#F5F8FA] rounded-md mb-8 flex-col justify-center items-center">
@@ -2113,7 +2134,8 @@ export default function Settings() {
                 </div>
               }
             />
-            <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl text-20">
+
+            {/* <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl text-20">
               <p className="pr-2">Set Permissions </p>
               <div className="group relative">
                 <p>
@@ -2271,7 +2293,7 @@ export default function Settings() {
                   </>
                 );
               })}
-            </div>
+            </div> */}
           </div>
         ) : (
           <></>
