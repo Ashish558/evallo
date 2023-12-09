@@ -123,7 +123,22 @@ function ExtensionsChoosingModal({
                                 )
                             }
 
-                            // if(updateExtensionMode && item.checked) 
+                            if(updateExtensionMode && item.checked) {
+                                return (
+                                    <UpdateExtensionWidget
+                                        key={index}
+                                        className="mb-[20px] w-[650px]"
+                                        extensions={extensions}
+                                        setExtensions={setExtensions}
+                                        planName={extension.planName}
+                                        planDisplayName={extension.planDisplayName}
+                                        productGraphStatement="Maximum number of Assignments per month"
+                                        selected={item.checked}
+                                        chosenPackage={item.packageName}
+                                        extensionPriceOption={extension.extensionPriceOption}
+                                    />
+                                )
+                            }
                             return (
                                 <ExtensionSelectionWidget
                                     key={index}
