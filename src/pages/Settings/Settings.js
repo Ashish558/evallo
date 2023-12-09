@@ -5,7 +5,7 @@ import ActiveTab from "../../assets/icons/active-tab.svg";
 import SettingsCard from "../../components/SettingsCard/SettingsCard";
 import ToggleBar from "../../components/SettingsCard/ToogleBar";
 import AddTag from "../../components/Buttons/AddTag";
-import "./tab.css";
+import "./tab2.css"
 import FilterItems from "../../components/FilterItems/filterItems";
 import InputField from "../../components/InputField/inputField";
 import Modal from "../../components/Modal/Modal";
@@ -322,7 +322,6 @@ export default function Settings() {
 
   const fetchSettings = () => {
     getSettings().then((res) => {
-      console.log("get settings", res);
       setSettingsData(organization?.settings);
 
       setThePermission(organization?.settings?.permissions);
@@ -376,12 +375,11 @@ export default function Settings() {
     const body = {
       settings,
     };
-    //console.log("body", body);
+
     setloadingCustom && setloadingCustom(true);
     setSaveLoading(true);
     updateSetting(body)
       .then((res) => {
-        //console.log("updated", res.data.data);
         setloadingCustom && setloadingCustom(false);
         setSaveLoading(false);
         setSettingsData(res.data.data.updatedOrg.settings);
@@ -418,7 +416,6 @@ export default function Settings() {
       formData.delete("text");
       formData.delete("image");
     }
-    console.log({ selectedImageTag, tagText, tagImage });
     // //console.log(append)
 
     if (append === "") return;
@@ -502,7 +499,7 @@ export default function Settings() {
     const formData = new FormData();
     console.log({ file, idx })
     formData.append("file", file);
-    formData.append("imageIndex", idx + 1);
+    formData.append("imageIndex", idx);
     setSaveLoading(true);
     axios.patch(`${BASE_URL}api/user/setting/updateSpecificImg`, formData, {
       headers: getAuthHeader(),
@@ -536,7 +533,6 @@ export default function Settings() {
       let updatedSetting = {
         offerImages: arr,
       };
-      console.log('arasrra r', arr);
 
       updateAndFetchsettings(updatedSetting);
     }
@@ -547,7 +543,6 @@ export default function Settings() {
 
       // Update the array with the modified object
       arr[idx] = modifiedObject;
-      console.log(idx, arr);
       let updatedSetting = {
         offerImages: arr,
       };
@@ -555,7 +550,6 @@ export default function Settings() {
     }
   };
   const handleOfferChange = (i, key, value) => {
-    console.log('asASAsaS', key, value, i);
     let updatedField = settingsData.offerImages.map((item, idx) => {
       if (idx == i) {
         return { ...item, [key]: value };
@@ -1002,7 +996,7 @@ export default function Settings() {
 
 
   };
-  console.log({ selectedServiceData });
+
   useEffect(() => {
     if (settingsData && settingsData?.offerImages) {
       let arr = [];
@@ -1163,7 +1157,6 @@ export default function Settings() {
     setAddSessionModalActive(false);
     setSubModalSessionData(subModalInitialSessionState);
   };
-  console.log({ offersNew, offerImages });
 
   const submitImageModalNew = (file2, val, e) => {
     // //console.log(tagText)
@@ -1380,7 +1373,6 @@ export default function Settings() {
       }));
     }
   };
-  console.log({ subModalData, addOne, addServices2, addSession2 });
 
   return (
     <>
@@ -1396,42 +1388,63 @@ export default function Settings() {
           </span>
           <span className="font-semibold">Settings</span>
         </p>
-        <div className="shivam-tabs rounded-md">
-          <ul className="tabs group">
-            {tabs.map((item, idx) => {
+        <div className={`flex items-end overflow-hidden pl-[17px] ${styles.navBar}`} >
+          {
+            tabs.map((item, index) => {
+              const isActive = activeTab === index + 1;
               return (
-                <li
-                  className={`" ${activeTab === idx + 1 ? "active" : ""}`}
-                  onClick={() => changeTab(idx + 1)}
+                <button
+                  key={index}
+                  style={{ height: "88.88%" }}
+                  className={`relative flex items-center ${styles.navItem}
+                                  ${isActive ? styles.active : ""}
+              `}
+                  onClick={() => changeTab(index + 1)}
                 >
-                  <a
-                    className={`"w-full cursor-pointer flex justify-center items-center ${activeTab === idx + 1 ? "!text-[#26435F]" : "!text-white"
-                      }`}
-                  >
-                    <span className="pb-1">
-                      {activeTab === idx + 1 && (
-                        <img
-                          src={item.Icon}
-                          className="!w-[15px] !h-[15px] "
-                          alt="item-logo"
-                        />
-                      )}
-                      {activeTab === idx + 1 || (
-                        <img
-                          src={item.Icon2}
-                          className="!w-[15px] !h-[15px]"
-                          alt="item-logo"
-                        />
-                      )}
-                    </span>
-                    <p className="py-2 px-2 pb-3 font-medium  text-base-17-5  whitespace-nowrap">
-                      {item.name}{" "}
-                    </p>
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
+                  <div className="mr-[10px]" >
+                    <img
+                      src={
+                        isActive ? item.selectedStateIcon : item.unselectedStateIcon
+                      }
+                    />
+                  </div>
+                  <div className={`${styles.name}`} >
+                    {item.name}
+                  </div>
+
+                  {
+                    isActive ? (
+                      <>
+                        <div className="absolute bg-[#fff] h-full w-[10px] -translate-x-full z-[3]"
+                          style={{
+                            left: "1px",
+                          }}
+                        ></div>
+                        <div className="absolute bg-[#26435F] h-full w-[12px] left-0 -translate-x-full z-[3]"
+                          style={{
+                            left: "1px",
+                            borderBottomRightRadius: "100px"
+                          }}
+                        ></div>
+
+                        <div className="absolute bg-[#fff] h-full w-[10px] translate-x-full z-[3]"
+                          style={{
+                            right: "1px"
+                          }}
+                        ></div>
+                        <div className="absolute bg-[#26435F] h-full w-[11px] translate-x-full z-[3]"
+                          style={{
+                            right: "1px",
+                            borderBottomLeftRadius: "100px"
+                          }}
+                        ></div>
+                      </>
+                    ) : (<></>)
+                  }
+                </button>
+              )
+            })
+          }
         </div>
         <div className=" flex w-full flex-1 items-center mb-[30px]">
           <div
@@ -1551,7 +1564,7 @@ export default function Settings() {
               title="Tutor Status Items"
               body={
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] gap-x-[18.75px] gap-y-[25px] px-[31.25px] py-[26.25px]  bg-white shadow-small p-4 rounded-5 text-base-17-5">
-                  <AddTag onAddTag={handleAddTag} keyName="tutorStatus" className='w-[143.25px] bg-primary mr-[1px]'  />
+                  <AddTag onAddTag={handleAddTag} keyName="tutorStatus" className='w-[143.25px] bg-primary mr-[1px]' />
                   <FilterItems
                     onlyItems={true}
                     isString={true}
@@ -1642,7 +1655,7 @@ export default function Settings() {
                   </div>
                   <AddTag
                     children="Add New Code"
-                    className="px-[18px] py-3 mt-5 bg-primary text-white w-[189.25px]"
+                    className="px-[12px] py-3 mt-5 bg-primary text-white w-[189.25px]"
                     text="Add New Code"
                     hideIcon={false}
                     openModal={true}
@@ -1844,8 +1857,8 @@ export default function Settings() {
               toggle={{ value: toggleImage.offer, key: "offer" }}
               onToggle={onToggle}
               body={
-                <div className=" bg-white w-full  gap-x-5 p-4 rounded-br-5 rounded-bl-5 !pr-4">
-                  <p className="text-base-17-5 font-medium mt-[-5px] text-[#667085] mb-6">
+                <div className=" bg-white w-full  gap-x-5 py-5 px-[52px] rounded-br-5 rounded-bl-5 pr-12">
+                  <p className="text-medium font-medium mt-[-5px] text-[#667085] mb-6">
                     <span className="font-bold mr-1">⚠️ Note:</span>
                     Announcements, as the name implies, can be used to announce
                     important aspects of your business. Displayed on the
@@ -1864,7 +1877,7 @@ export default function Settings() {
                       knowledge base.
                     </span>
                   </p>
-                  <div className="flex items-center gap-5 pr-3  flex-1 !w-[100%] overflow-x-auto custom-scroller-2    [&>*]:mb-[10px] bg-white  gap-x-5 p-4 rounded-br-5 rounded-bl-5 mb-3 !px-6 py-5 ">
+                  <div className="flex items-center flex-1 !w-[100%] overflow-x-auto custom-scroller-2 [&>*]:mb-[10px] bg-white rounded-br-5 rounded-bl-5 mb-3 py-5 ">
                     {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
                            onChange={e => onImageChange(e)} /> */}
 
@@ -1890,113 +1903,111 @@ export default function Settings() {
 
                     {offerImages?.map((offer, i) => {
                       return (
-                        <div className="flex-shrink-0 w-[300px]" key={offer._id}>
-                          <div className="relative">
-                            {toggleImage.offer && (
-                              <div className=" overflow-hidden mb-5">
-                                <div className="flex">
-                                  {offer.image !== '' ?
-                                    <div className="w-[300px] h-[150px]">
-                                      <img
-                                        src={`${awsLink}${offer.image}`}
-                                        alt="offer-image3"
-                                        className="w-full h-full object-cover rounded-7"
-                                      />
-                                    </div>
-                                    : <div className="w-[300px] h-[150px] flex-1">
-                                      <div className="flex w-[100%] bg-[#F5F8FA] rounded-md mb-8 flex-col justify-center items-center">
-                                        <div className="mt-[20px] mb-[10px] items-center flex justify-center">
-                                          <img
-                                            src={fileupload}
-                                            alt="fileuploadIcon"
-                                          ></img>
-                                        </div>
-
-                                        <div className="flex items-center text-center justify-center text-base-15">
-                                          {/* {xlsFile == undefined ? (
-                           <p className=""></p>
-                         ) : (
-                           <p className="block ">{xlsFile.name}</p>
-                         )} */}
-                                        </div>
-
-                                        <div className="flex justify-center">
-                                          <label
-                                            htmlFor="file3"
-                                            className={`block cursor-pointer text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ${loading2 ? "cursor-wait" : ""
-                                              }`}
-                                          >
-                                            {loading2 && offer?.image
-                                              ? "Submitting..."
-                                              : " Choose File"}
-                                          </label>
-                                          <input
-                                            accept="image/*"
-                                            className="hidden"
-                                            onChange={(e) => {
-                                              console.log('szszs', e.target.files[0]);
-                                              handleaddimage(i, e.target.files[0])
-                                              // setImageName(e.target.files[0].name);
-                                            }}
-                                            id="file3"
-                                            type="file"
-                                          />
-                                        </div>
-
-                                        <label
-                                          htmlFor="file"
-                                          className="block text-xs items-center justify-center  rounded-[5px]  px-4 py-2 font-normal text-center text-[#517CA8] text-base-15"
-                                        >
-                                          Less than 1 MB
-                                        </label>
+                        <>
+                          <div className="flex-shrink-0 w-[300px]" key={offer._id}>
+                            <div className="relative">
+                              {toggleImage.offer && (
+                                <div className=" overflow-hidden mb-5">
+                                  <div className="flex">
+                                    {offer.image !== '' ?
+                                      <div className="w-[300px] h-[150px]">
+                                        <img
+                                          src={`${awsLink}${offer.image}`}
+                                          alt="offer-image3"
+                                          className="w-full h-full object-cover rounded-7"
+                                        />
                                       </div>
-                                    </div>
-                                  }
+                                      : <div className="w-[300px] h-[150px] flex-1">
+                                        <div className="flex w-[100%] bg-[#F5F8FA] rounded-md mb-8 flex-col justify-center items-center">
+                                          <div className="mt-[20px] mb-[10px] items-center flex justify-center">
+                                            <img
+                                              src={fileupload}
+                                              alt="fileuploadIcon"
+                                            ></img>
+                                          </div>
+                                          <div className="flex justify-center">
+                                            <label
+                                              htmlFor="file3"
+                                              className={`block cursor-pointer text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ${loading2 ? "cursor-wait" : ""
+                                                }`}
+                                            >
+                                              {loading2 && offer?.image
+                                                ? "Submitting..."
+                                                : " Choose File"}
+                                            </label>
+                                            <input
+                                              accept="image/*"
+                                              className="hidden"
+                                              onChange={(e) => {
+                                                console.log('szszs', e.target.files[0]);
+                                                handleaddimage(i, e.target.files[0])
+                                                // setImageName(e.target.files[0].name);
+                                              }}
+                                              id="file3"
+                                              type="file"
+                                            />
+                                          </div>
+
+                                          <label
+                                            htmlFor="file"
+                                            className="block text-xs items-center justify-center  rounded-[5px]  px-4 py-2 font-normal text-center text-[#517CA8] text-base-15"
+                                          >
+                                            Less than 1 MB
+                                          </label>
+                                        </div>
+                                      </div>
+                                    }
+                                  </div>
                                 </div>
-                              </div>
-                            )}
-                            <div>
-                              {offer.image !== '' && <div
-                                onClick={() => handleImageRemoval(i)}
-                                className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center  rounded-full cursor-pointer"
-                              >
-                                <img
-                                  src={DeleteIcon}
-                                  className="w-5"
-                                  alt="delete"
+                              )}
+                              <div>
+                                {offer.image !== '' && <div
+                                  onClick={() => handleImageRemoval(i)}
+                                  className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center  rounded-full cursor-pointer"
+                                >
+                                  <img
+                                    src={DeleteIcon}
+                                    className="w-5"
+                                    alt="delete"
+                                  />
+                                </div>}
+                                <InputField
+                                  defaultValue={offer?.link?.trim()}
+                                  inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
+                                  parentClassName={"mb-3 bg-[#F5F8FA]"}
+                                  placeholder={"Hyperlink"}
+                                  onBlur={(e) =>
+                                    handleOfferChange(
+                                      i,
+                                      "link",
+                                      e.target.value
+                                    )
+                                  }
                                 />
-                              </div>}
-                              <InputField
-                                defaultValue={offer?.link?.trim()}
-                                inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
-                                parentClassName={"mb-3 bg-[#F5F8FA]"}
-                                placeholder={"Hyperlink"}
-                                onBlur={(e) =>
-                                  handleOfferChange(
-                                    i,
-                                    "link",
-                                    e.target.value
-                                  )
-                                }
-                              />
-                              <InputField
-                                defaultValue={offer.buttonText}
-                                parentClassName={"bg-[#F5F8FA]"}
-                                inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
-                                placeholder={
-                                  "Button Text (eg. View, Enroll, etc.)"
-                                }
-                                onBlur={(e) =>
-                                  handleOfferChange(
-                                    i,
-                                    "buttonText",
-                                    e.target.value
-                                  )
-                                }
-                              />
+                                <InputField
+                                  defaultValue={offer.buttonText}
+                                  parentClassName={"bg-[#F5F8FA]"}
+                                  inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
+                                  placeholder={
+                                    "Button Text (eg. View, Enroll, etc.)"
+                                  }
+                                  onBlur={(e) =>
+                                    handleOfferChange(
+                                      i,
+                                      "buttonText",
+                                      e.target.value
+                                    )
+                                  }
+                                />
+                              </div>
                             </div>
                           </div>
-                        </div>
+                          {
+                            offerImages.length - 1 > i ?
+                              <div className=" relative w-[2px] rounded-md  bg-[#00000030] !h-[300px] mx-[50px]"></div>
+                              : <></>
+                          }
+                        </>
                       );
                     })}
                     {offersNew?.length > 0 &&
@@ -2113,7 +2124,8 @@ export default function Settings() {
                 </div>
               }
             />
-            <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl text-20">
+
+            {/* <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl text-20">
               <p className="pr-2">Set Permissions </p>
               <div className="group relative">
                 <p>
@@ -2271,7 +2283,7 @@ export default function Settings() {
                   </>
                 );
               })}
-            </div>
+            </div> */}
           </div>
         ) : (
           <></>

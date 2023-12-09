@@ -112,11 +112,10 @@ else [ year, month, day] = value.split("-");
           let date = new Date(item.createdAt);
           const offset = date.getTimezoneOffset() * 60000;
           if (offset > 0) {
-            // startDate = startDate + offset
             date = new Date(date.getTime() + offset);
           }
-          let hours = date.getHours();
-          var minutes = date.getMinutes();
+          let hours = date.getUTCHours();
+          var minutes = date.getUTCMinutes();
 
           if(0 <= minutes && minutes < 10){
             minutes = `0` + minutes;

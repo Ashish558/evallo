@@ -16,6 +16,7 @@ import InputSelect from "../../../../components/InputSelect/InputSelect";
 import questionMark from "../../../../assets/images/Vector (6).svg";
 import SCheckbox from "../../../../components/CCheckbox/SCheckbox";
 import downChevronEnabledState from "../../../../assets/icons/down-chevron-dark-blue.svg";
+import downChevronDisabledState from "../../../../assets/icons/down-chevron-grey.svg";
 
 import {
   useLazyGetPersonalDetailQuery,
@@ -262,13 +263,13 @@ function OrgAdminUserManagement() {
   return (
     <div>
       <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl text-base-20">
-        <p className="pr-2">Set Permissions </p>
+        <p className="pr-2 text-[20px]">Set Permissions </p>
         <p>
           <img src={questionMark} alt="" />
         </p>
       </div>
 
-      <div className={`bg-[#FFFFFF] px-[82px] mb-[30px] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)] ${styles.permission}`}>
+      <div className={`bg-[#FFFFFF] px-[82px] mb-[30px] mt-[5px] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)] ${styles.permission}`}>
         {fetchedPermissions?.map((item, id) => {
           return (
             <>
@@ -294,9 +295,11 @@ function OrgAdminUserManagement() {
                         handlePermissionOption(e.target.value, item._id)
                       }
                       id="option"
-                      className="border border-gray-300 px-2  rounded-md text-[#26435F] bg-[#E9ECEF]"
+                      className="px-2 text-[#26435F] bg-[#fff] rounded-[5px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] h-[40px] w-[200px]"
                     >
-                      <option value={item.choosedValue}>
+                      <option 
+                        className="text-[#26435F] text-[17.5px]"
+                        value={item.choosedValue}>
                         {`   ${item.permissionActionName ===
                           "notifyParentBefSession"
                           ? item.choosedValue === 0
@@ -308,7 +311,7 @@ function OrgAdminUserManagement() {
                       {item.values.map((values, i) => {
                         return (
                           item.choosedValue !== values && (
-                            <option key={i} value={values}>
+                            <option key={i} value={values} className="text-[#26435F] text-[17.5px]" >
                               {` ${item.permissionActionName ===
                                 "notifyParentBefSession"
                                 ? values === 0
@@ -330,41 +333,47 @@ function OrgAdminUserManagement() {
       </div>
 
       <div
-        className="bg-[#FFFFFF] mb-[30px] pl-[30px] pb-[30px] pt-[30px] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)]"
+        className="bg-[#FFFFFF] mb-[30px] pl-[50px] pb-[30px] pt-[50px] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)] h-[896px]"
       >
-        <div className="font-[500] text-[#26435F] text-[14px]" >Select Active Tutors</div>
+        <div className="font-[500] text-[#26435F] text-[18.67px]" >Select Active Tutors</div>
 
-        <div className="font-[100] mt-[5px] text-[#26435F] text-[12px]" style={{ width: "97%" }} >
+        <div className="font-[300] mt-[5px] text-[#26435F] text-[15px] w-[1501px]">
           {`Tutors with an “Active” account status will be able to login to their Evallo account within your organization. 
                     This number is limited by your chosen subscription plan (for detailed breakdown of each subscription, please visit our `}<button className="inline text-[#24A3D9]" >pricing page</button>{`). 
-                    Currently, your `}<span className="font-[600]" >{currentSubscriptionName}</span>{` subscription plan allows `}<span className="font-[600]" >{tutorLimit}</span>{` number of Active Tutor slots. Please fill them below.`}
+                    Currently, your `}<span className="font-[500]" >{currentSubscriptionName}</span>{` subscription plan allows `}<span className="font-[500]" >{tutorLimit}</span>{` number of Active Tutor slots. Please fill them below.`}
         </div>
 
-        <div className={`flex mt-[50px] ${styles.tutorSelectionContainer}`} >
+        <div className={`flex mt-[50px]`} >
           <div
-            className="flex flex-col flex-wrap"
-            style={{ width: "70%" }}
+            className="flex flex-col flex-wrap gap-x-[50px] h-[680px] w-[1108px]"
+            // style={{ width: "70%" }}
           >
             {
-              [...Array(activeTutorsCount)].map((item, index) => {
+              [...Array(30)].map((item, index) => {
                 const tutor = selectedTutors.find((user, idx) => idx === index)
+                const isEnabled = index < tutorLimit ? true : false;
                 return (
                   <React.Fragment>
-                    <div className="flex mb-[15px] items-center h-[40px]" >
-                      <div className="text-[#26435F] text-[14px] w-[20px]" >{index + 1}.</div>
+                    <div className="flex mb-[15px] items-center h-[50px]" >
+                      <div className={`font-[500] text-[20px] w-[36px]
+                                       ${isEnabled ? "text-[#26435F]" : "text-[#B3BDC7]"}
+                      `} 
+                      >{index + 1}.</div>
                       <InputSelect
                         labelClassname="h-[0px]"
-                        inputContainerClassName=" text-base-17-5 h-full shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
+                        inputContainerClassName="text-base-17-5 h-full w-[300px] shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
                         optionListClassName="text-base-17-5"
                         optionClassName="text-base-17-5"
                         optionData={allTutors}
                         placeholder={"Select"}
-                        placeholderClass="text-base-17-5"
-                        parentClassName=" ml-[10px] text-base-17-5 py-0 h-full w-[230px]"
-                        // disabled={i/sDisabled}
+                        placeholderClass={`text-base-17-5
+                                           ${isEnabled ? "text-[#26435F]" : "text-[#B3BDC7]"}
+                        `}
+                        parentClassName=" ml-[0px] text-base-17-5 py-0 h-full w-[230px]"
+                        disabled={!isEnabled}
                         optionType={'object'}
-                        customArrow={downChevronEnabledState}
-                        downArrowClassName="h-[15px] w-[15px]"
+                        customArrow={(isEnabled ? downChevronEnabledState : downChevronDisabledState)}
+                        downArrowClassName="h-[8.79px] w-[15.26px]"
                         // label="Default Time Zone"
                         value={tutor ? tutor.name : ''}
                         onChange={val => {
@@ -379,23 +388,24 @@ function OrgAdminUserManagement() {
             }
             {/* <div className="flex justify-end"> */}
 
-            <PrimaryButton children={'Change Status'} className='w-[170px] ml-auto' onClick={handleSave} />
+            {/* <PrimaryButton children={'Change Status'} className='w-[170px] ml-auto' onClick={handleSave} /> */}
             {/* </div> */}
           </div>
 
-          <div className="ml-[20px]" >
+          <div className="ml-[50px]" >
             <div className="flex items-center" >
               <SCheckbox
                 checked={true}
               />
-              <div className="font-[300] text-[#507CA8] text-[12px]" >Enable autofill when spots are empty</div>
+              <div className="font-[400] text-[#507CA8] text-[15px]" >Enable autofill when spots are empty</div>
             </div>
 
-            <div className="flex items-center mt-[20px]" >
+            <div className="flex mt-[10px]" >
               <SCheckbox
+                className="mt-[3px]"
                 checked={true}
               />
-              <div className="font-[300] text-[#507CA8] text-[12px] w-[250px]" >Notify tutors when their account status is changed by an Admin</div>
+              <div className="font-[400] leading-[19.5px] text-[#507CA8] text-[15px] w-[308px]" >Notify tutors when their account status is changed by an Admin</div>
             </div>
           </div>
         </div>

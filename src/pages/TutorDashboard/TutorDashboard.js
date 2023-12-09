@@ -93,7 +93,10 @@ export default function TutorDashboard() {
   useEffect(() => {
     const url = `/api/session/tutor/${id}`;
     fetchUserSessions(url).then((res) => {
-      // console.log(res.data.data.session)
+      console.log('sessions', res)
+      if(res.error){
+        return 
+      }
       let temp = res.data.data.session.filter((session) => {
         let date = new Date(session.date).getDate();
         let now = new Date().getDate();

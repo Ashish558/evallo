@@ -66,9 +66,9 @@
   flex-wrap: wrap;
   gap: 16px;
 }
-.inputs > div {
+/* .inputs > div {
   flex-basis: calc(50% - 16px);
-}
+} */
 .textGrayed {
   font-weight: 400;
   font-size: 11.7354px;
@@ -82,7 +82,7 @@
 }
 .label {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 17.5px;
   line-height: 18px;
   color: #26435F;
 }
