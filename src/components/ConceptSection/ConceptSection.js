@@ -25,7 +25,7 @@ import {
 import ParentTest from "./ParentTest/ParentTest";
 import InputSelectNew from "../InputSelectNew/InputSelectNew";
 import RangeDate from "../RangeDate/RangeDate";
-
+import "./Owlcarousel.css"
 const initData = [
   {
     firstName: "Shivam",
@@ -259,7 +259,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
         <div className="flex items-center justify-between">
           <h1 className="text-[#26435F]  text-[20px] font-semibold mb-1">
             Conceptual Accuracy
-            <span className="inline-block my-auto ml-2 translate-y-1">
+            <span className="inline-block my-auto ml-2 translate-y-1 h-[18px] w-[18px]">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="15"
@@ -275,7 +275,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
             </span>
           </h1>
 
-          <div className="flex  justify-end absolute z-40 top-[51.5%] right-[38%]">
+          <div className="flex items-center justify-end absolute z-40 top-[42.5%] right-[39%] mt-[24px]">
             <InputSelectNew
               placeholder={""}
               parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
@@ -319,7 +319,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
             <h1 className="text-[#26435F]  text-[20px] font-semibold ">
               Tutor Profile
             </h1>
-            <div className="mb-3 bg-[#26435F] flex items-center h-[204px] rounded-md w-[491px]">
+            <div className="mb-3 bg-[#26435F] flex items-center h-[204px] rounded-md w-[491px] tutorsProfile">
               {filteredTutors.length > 0 ? (
                 <OwlCarousel
                   ref={tutorCarouselRef}
@@ -335,7 +335,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
                         className="item flex gap-2 my-auto  h-[240px]"
                       >
                         <div className="w-[40%] ml-10 flex justify-center flex-col h-full ">
-                          <h3 className="mb-1 mt-2.5 text-[#FFA28D] font-semibold max-w-[130px] overflow-x-auto">
+                          <h3 className="mb-1 mt-2.5 text-[#FFA28D] font-semibold  overflow-x-auto text-[22.5px]">
                             {" "}
                             {`${tutor.firstName}  ${tutor.lastName} `}
                           </h3>
@@ -363,14 +363,14 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
                             View Profile
                           </button>
                         </div>
-                        <div className="w-[60%] flex items-center h-full flex-1">
+                        <div className="w-[60%] flex h-full flex-1 justify-end items-end">
                           <img
                             src={
                               tutor.photo
                                 ? `${awsLink}${tutor.photo}`
                                 : "/images/tutorDefault.svg"
                             }
-                            className="mx-auto object-cover !w-[100px] !h-[100px] rounded-full"
+                            className="mr-[40px] mb-[40px]  object-cover !w-[128px] !h-[128px] rounded-full border-3 border-solid border-[#FFA28D] "
                             alt="profile-icon"
                           />
                         </div>
