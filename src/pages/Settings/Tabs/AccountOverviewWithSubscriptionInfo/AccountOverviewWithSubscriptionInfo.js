@@ -2,6 +2,9 @@ import {
     useState,
     useEffect,
 } from "react";
+import {
+    useSelector
+} from "react-redux";
 import InputField from "../../../../components/InputField/inputField";
 import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
 import PrimaryButton from "../../../../components/Buttons/PrimaryButton";
@@ -17,11 +20,13 @@ import ActiveSubscriptionWidget from "../../../../components/ActiveSubscriptionW
 import ActiveExtensionWidget from "../../../../components/ActiveExtensionWidget/ActiveExtensionWidget";
 import SubscriptionAndExtensionModal from "../../../Frames/SubscriptionAndExtensionModal/SubscriptionAndExtensionModal";
 import { useLazyGetSubscriptionsInfoQuery } from "../../../../app/services/orgSignup";
+import { useUpdateEmailMutation } from "../../../../app/services/organization";
 
 import {
     useLazyGetPersonalDetailQuery,
     useLazyGetOrganizationQuery,
     useDeletePaymentMethodMutation,
+    useUpdateUserAccountMutation,
   } from "../../../../app/services/users";
 import Modal from "../../../../components/Modal/Modal";
 import Modal2 from "../../../../components/Modal2/Modal2";
@@ -30,7 +35,7 @@ import AddNewBankCardModal from "../../../../components/AddNewBankCardModal/AddN
 import visaIcon from "../../../../assets/BankCard/visa.svg";
 import { useCancelSubscriptionMutation } from "../../../../app/services/subscription";
 import DeletePaymentMethodModal from "../../../../components/DeletePaymentMethodModal/DeletePaymentMethodModal";
-import { CurrencyNameToSymbole } from "../../../../utils/utils";
+import { CurrencyNameToSymbole, getFormattedDate } from "../../../../utils/utils";
 
 function getDateAsString(date) {
     if(!(date && date.constructor && date.constructor.name === "Date")) return "05/12/23";
@@ -81,6 +86,15 @@ function BankCardWidgetContainer({
 function AccountOverviewWithSubscriptionInfo() {
     const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
 
+    const [error, setError] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        subscriptionCode: "",
+        company: "",
+    });
+
     const [values, setValues] = useState({
         firstName: "",
         lastName: "",
@@ -110,6 +124,8 @@ function AccountOverviewWithSubscriptionInfo() {
     const [getOrgDetails, getOrgDetailsResp] = useLazyGetOrganizationQuery();
     const [deletePaymentMethod] = useDeletePaymentMethodMutation();
     const [cancelSubscription] = useCancelSubscriptionMutation();
+    const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
+    const [updateEmail, setUpdateEmail] = useUpdateEmailMutation();
     const [subscriptionsInfoFromAPI, SetSubscriptionsInfoFromAPI] = useState([]);
     const [activeSubscriptionName, SetActiveSubscriptionName] = useState("");
     const [activeSubscriptionId, SetActiveSubscriptionId] = useState("");
@@ -128,6 +144,9 @@ function AccountOverviewWithSubscriptionInfo() {
         monthlyCostAfterDiscount: 0,
         autoRenewalDate: null,
         startDate: null,
+        expiryDate: null,
+        hasExpired: false,
+        isCancelled: false,
     });
 
     const [activeSubscriptionInfo, SetActiveSubscriptionInfo] = useState({
@@ -141,6 +160,9 @@ function AccountOverviewWithSubscriptionInfo() {
         monthlyCostAfterDiscount: 0,
         autoRenewalDate: null,
         startDate: null,
+        expiryDate: null,
+        hasExpired: false,
+        isCancelled: false,
     });
     const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(false);
     const [isResetPasswordModalActive, SetIsResetPasswordModalActive] = useState(false);
@@ -155,7 +177,122 @@ function AccountOverviewWithSubscriptionInfo() {
     const [paymentMethods, SetPaymentMethods] = useState([]);
     const [cancelProductSubscriptionId, SetCancelProductSubscriptionId] = useState("");
     const [deletePaymenMethodInfo, SetDeletePaymenMethodInfo] = useState(null);
-    const [activeTutorsCount, setActiveTutorsCount] = useState(0)
+    const [activeTutorsCount, setActiveTutorsCount] = useState(0);
+    const [loading, setLoading] = useState(false);
+    const [fetchedData, setFetchedData] = useState({});
+    const { dateFormat } = useSelector((state) => state.user);
+
+    const isEmail = (val) => {
+        let regEmail =
+          /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!regEmail.test(val)) {
+          return false;
+        } else {
+          return true;
+        }
+    };
+
+    const handleEmailUpdate = (email) => {
+        console.log("Email Updation invoked", email);
+        if (email?.trim() === "") {
+          alert("Email address can't be empty");
+          return;
+        }
+        if (!isEmail(email)) {
+          alert("Enter valid email!");
+          return;
+        }
+        if (email?.trim() !== "") {
+          updateEmail({ email }).then((res) => {
+            if (res?.data) {
+              alert("Email reset link sent, please verify");
+            } else {
+              alert("Error occured while senting email reset link!");
+            }
+            console.log("Email Link sent", res);
+          });
+        }
+    };
+
+    const checkName = (inputString) => {
+        const letterRegex = /^[a-zA-Z]+$/;
+        return letterRegex.test(inputString);
+    }
+
+    const checkPhoneNumber = (inputString) => {
+        const numberRegex = /^[0-9]+$/;
+        return numberRegex.test(inputString);
+    }
+
+    const handleDataUpdate = () => {
+        const arr = ["email", "firstName", "lastName", "phone", "phoneCode"];
+        let boo = true;
+        let ff = null;
+        arr.forEach((it) => {
+          if (boo && (!values[it] || values[it]?.trim() === "")) {
+            boo = false;
+            alert(it + " can't be empty.");
+            return;
+          }
+        });
+        if (!boo) {
+          return;
+        }
+        if (!isEmail(values?.email)) {
+          alert("Enter valid email!");
+          return;
+        }
+        if (!checkName(values?.firstName)) {
+          alert("Enter valid First Name!");
+          return;
+        }
+        if (!checkName(values?.lastName)) {
+          alert("Enter valid Last Name!");
+          return;
+        }
+        if (!checkPhoneNumber(values?.phone)) {
+          alert("Enter valid Phone Number!");
+          return;
+        }
+        if (
+          values?.email?.trim() === "" ||
+          values?.firstName?.trim() === "" ||
+          values?.lastName?.trim() === "" ||
+          values?.phone?.trim() === "" ||
+          values?.phoneCode?.trim() === ""
+        ) {
+          alert("Please fill all the fields to update your account!");
+          return;
+        }
+        setLoading(true);
+        const updateUserAccount = async () => {
+          try {
+            let reqBody = { ...values };
+            delete reqBody["_id"];
+            delete reqBody["email"];
+            updateAccount(reqBody)
+              .then((res) => {
+                setLoading(false);
+                if (res?.error) {
+                  alert("Error occured while updating!", res?.error?.message);
+                }
+                if (res?.data) {
+                  alert("changes saved!");
+                }
+                console.log(res);
+              })
+              .catch((err) => {
+                setLoading(false);
+                console.log(err?.message);
+              });
+          } catch (e) {
+            console.error(e?.response?.data?.message);
+          }
+        };
+        updateUserAccount();
+        if (fetchedData?.email !== values.email) handleEmailUpdate(values.email);
+        console.log({ fetchedData, values });
+    };
 
     // console.log("activeTutorsCount - " + activeTutorsCount);
     useEffect(() => {
@@ -195,7 +332,10 @@ function AccountOverviewWithSubscriptionInfo() {
                     if(data.data && data.data.stripeCustomerDetails && data.data.stripeCustomerDetails.id) {
                         SetStripeCustomerId(data.data.stripeCustomerDetails.id);
                     }
-                    SetPaymentMethods(data.data.stripCustomerPaymentDetails.data);
+                    if(data && data.data && data.data.stripCustomerPaymentDetails) {
+                        SetPaymentMethods(data.data.stripCustomerPaymentDetails.data);
+                    }
+                    
                     if(data.data && 
                        data.data.customerSubscriptions && 
                        data.data.customerSubscriptions.data && 
@@ -203,6 +343,7 @@ function AccountOverviewWithSubscriptionInfo() {
                        subscriptionsInfoFromAPI.length > 0) {
                         const products = data.data.customerSubscriptions.data;
                         let activeSub;
+                        const todayDate = new Date();
                         for(let i = 0; i < products.length; i++) {
                             let planId = products[i].plan.id;
                             activeSub = subscriptionsInfoFromAPI.find(item => item.id === planId);
@@ -227,15 +368,22 @@ function AccountOverviewWithSubscriptionInfo() {
                                     productQuantity = Infinity;
                                 }
 
+                                const expiryDate = new Date(products[i].current_period_end * 1000);
+                                const isCancelled = products[i].canceled_at === null || products[i].canceled_at === undefined ? false : true;
+
                                 SetActiveExtensionInfo({
                                     planName: "Assignment",
                                     planDisplayName: "Assignement",
                                     productQuantity: productQuantity,
                                     currency: products[i].currency,
                                     startDate: new Date(products[i].start_date * 1000),
-                                    autoRenewalDate: new Date(products[i].trial_end * 1000),
+                                    autoRenewalDate: new Date(products[i].current_period_end * 1000),
+                                    expiryDate: expiryDate,
                                     subscriptionPricePerMonth: products[i].plan.amount / 100,
                                     monthlyCostAfterDiscount: products[i].plan.amount / 100,
+                                    freeTrialExpiryDate: new Date(products[i].trial_end * 1000),
+                                    hasExpired: expiryDate < todayDate,
+                                    isCancelled: isCancelled,
                                 })
 
                                 continue;
@@ -244,17 +392,26 @@ function AccountOverviewWithSubscriptionInfo() {
                             activeSub = subscriptionsInfoFromAPI.find(item => item.id === planId); */
                             console.log("activeSub")
                             console.log(activeSub);
-                            SetActiveSubscriptionName(activeSub.product.name);
-                            SetActiveSubscriptionInfo({
-                                planName: activeSub.product.name,
-                                planDisplayName: activeSub.product.name,
-                                activeTutorsAllowed: parseInt(activeSub.product.metadata.active_tutors),
-                                currency: activeSub.currency,
-                                subscriptionPricePerMonth: activeSub.unit_amount / 100,
-                                monthlyCostAfterDiscount: activeSub.unit_amount / 100,
-                                subscriptionStartDate: new Date(products[i].start_date * 1000),
-                                autoRenewalDate: new Date(products[i].trial_end * 1000),
-                            });
+                            if(activeSub && activeSub.product && products[i].metadata) {
+                                const expiryDate = new Date(products[i].current_period_end * 1000);
+                                const isCancelled = products[i].canceled_at === null || products[i].canceled_at === undefined ? false : true;
+
+                                SetActiveSubscriptionName(activeSub.product.name);
+                                SetActiveSubscriptionInfo({
+                                    planName: activeSub.product.name,
+                                    planDisplayName: activeSub.product.name,
+                                    activeTutorsAllowed: products[i].metadata.active_tutors,
+                                    currency: activeSub.currency,
+                                    subscriptionPricePerMonth: activeSub.unit_amount / 100,
+                                    monthlyCostAfterDiscount: activeSub.unit_amount / 100,
+                                    startDate: new Date(products[i].start_date * 1000),
+                                    autoRenewalDate: new Date(products[i].current_period_end * 1000),
+                                    expiryDate: expiryDate,
+                                    freeTrialExpiryDate: new Date(products[i].trial_end * 1000),
+                                    hasExpired: expiryDate < todayDate,
+                                    isCancelled: isCancelled,
+                                });
+                            }
                             SetActiveSubscriptionId(products[i].id);
                             
                         }
@@ -367,8 +524,6 @@ function AccountOverviewWithSubscriptionInfo() {
         .then(data => {
             console.log("cancelSubscription");
             console.log(data);
-            SetActiveSubscriptionName("");
-            SetActiveSubscriptionInfo(null);
         })
         .error(error => {
             console.log("error in cancelSubscription");
@@ -446,7 +601,7 @@ function AccountOverviewWithSubscriptionInfo() {
         <div className="flex w-full" >
 
             {
-                isSubscriptionAndExtensionModalActive ? (
+                isSubscriptionAndExtensionModalActive && false ? (
                     <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
                         <SubscriptionAndExtensionModal
                             className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-5/6 w-9/12"
@@ -583,14 +738,14 @@ function AccountOverviewWithSubscriptionInfo() {
             }
 
 
-            <div className="flex justify-between h-[700px] mb-[50px] w-full" >
+            <div className="flex justify-between h-[800px] w-full" >
                 <div 
-                    className="bg-[#fff] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)]" 
-                    style={{width: "34.375%", height: "100%"}} 
+                    className="bg-[#fff] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)] h-[800px] w-[550px]" 
+                    // style={{width: "34.375%", height: "100%"}} 
                 >
 
-                    <div className="relative mt-[20px] left-2/4 -translate-x-2/4"
-                        style={{width: "17.72%" , aspectRatio: 1}}
+                    <div className="relative mt-[30px] left-2/4 -translate-x-2/4 h-[97.5] w-[97.5px]"
+                        // style={{width: "17.72%" , aspectRatio: 1}}
                     >
                         <img
                             className="h-full w-full"
@@ -598,151 +753,172 @@ function AccountOverviewWithSubscriptionInfo() {
                         />
 
                         <img
-                            className="absolute bottom-[0px] right-[0px] aspect-square w-[30px]"
+                            className="absolute bottom-[0px] right-[0px] h-[29.25px] w-[29.25px]"
                             src={camIcon}
                         />
                     </div>
 
                     <div 
-                        className="relative flex justify-between mt-[20px] left-2/4 -translate-x-2/4"
+                        className="relative flex justify-between mt-[30px] left-2/4 -translate-x-2/4"
                         style={{width: "87.27%"}}
                     >
                         <InputField
                             placeholder=""
-                            parentStyle={{width: "47.9%"}}
-                            parentClassName="text-xs"
+                            // parentStyle={{width: "47.9%"}}
+                            parentClassName="text-xs w-[230px]"
                             label="First Name"
-                            labelClassname="text-[#26435F] font-semibold"
-                            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[40px] text-md"
+                            labelClassname="text-[#26435F] text-[15px] font-semibold"
+                            inputContainerClassName=" border border-[#D0D5DD] mt-[10px] rounded-md py-[9px] h-[40px] w-full text-md"
                         
                             value={values.firstName}
-                            /* onChange={(e) =>
-                                setValues({
+                            onChange={(e) => {
+                                setValues((values) => ({
                                     ...values,
                                     firstName: e.target.value,
-                                })
-                            } */
-                            // totalErrors={error}
-                            // error={error.firstName}
+                                }));
+                            }}
+                            totalErrors={error}
+                            error={error.firstName}
                         />
 
                         <InputField
                             placeholder=""
-                            parentStyle={{width: "47.9%"}}
-                            parentClassName="text-xs"
+                            // parentStyle={{width: "47.9%"}}
+                            parentClassName="text-xs w-[230px]"
                             label="Last Name"
-                            labelClassname="text-[#26435F] font-semibold"
-                            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[40px] text-md"
+                            labelClassname="text-[#26435F] text-[15px] font-semibold"
+                            inputContainerClassName=" border border-[#D0D5DD] mt-[10px] rounded-md py-[9px] h-[40px] w-full text-md"
                         
                             value={values.lastName}
-                            /* onChange={(e) =>
-                                setValues({
+                            onChange={(e) => {
+                                setValues((values) => ({
                                     ...values,
-                                    firstName: e.target.value,
-                                })
-                            } */
-                            // totalErrors={error}
-                            // error={error.firstName}
+                                    lastName: e.target.value,
+                                }));
+                            }}
+                            totalErrors={error}
+                            error={error.lastName}
                         />
                     </div>
 
                     <InputField
                         placeholder=""
-                        parentStyle={{width: "87.27%"}}
-                        parentClassName="relative mt-[20px] left-2/4 -translate-x-2/4 text-xs"
+                        // parentStyle={{width: "87.27%"}}
+                        parentClassName="relative mt-[25px] left-2/4 -translate-x-2/4 text-xs w-[480px]"
                         label="Role / Job Title"
-                        labelClassname="text-[#26435F] font-semibold"
-                        inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[40px] text-md"
+                        labelClassname="text-[#26435F] text-[15px] font-semibold"
+                        inputContainerClassName=" border border-[#D0D5DD] mt-[10px] rounded-md py-[9px] h-[40px] w-full text-md"
                     
                         value={values.role}
-                        /* onChange={(e) =>
-                            setValues({
+                        onChange={(e) => {
+                            setValues((values) => ({
                                 ...values,
-                                firstName: e.target.value,
-                            })
-                        } */
-                        // totalErrors={error}
-                        // error={error.firstName}
+                                role: e.target.value,
+                            }));
+                        }}
+                        totalErrors={error}
+                        error={error.role}
                     />
 
                     <InputField
                         placeholder=""
-                        parentStyle={{width: "87.27%"}}
-                        parentClassName="relative mt-[20px] left-2/4 -translate-x-2/4 text-xs"
+                        // parentStyle={{width: "87.27%"}}
+                        parentClassName="relative mt-[25px] left-2/4 -translate-x-2/4 text-xs w-[480px]"
                         label="Email"
-                        IconLeft={octIcon}
-                        labelClassname="text-[#26435F] font-semibold"
-                        inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[40px] text-md"
-                    
+                        // IconLeft={octIcon}
+                        IconLeft={fetchedData?.isVerified ? null : octIcon}
+                        labelClassname="text-[#26435F] text-[15px] font-semibold"
+                        inputContainerClassName=" border border-[#D0D5DD] mt-[10px] rounded-md py-[9px] h-[40px] w-full text-md"
+                        type="text"
                         value={values.email}
-                        /* onChange={(e) =>
-                            setValues({
+                        onChange={(e) => {
+                            setValues((values) => ({
                                 ...values,
-                                firstName: e.target.value,
-                            })
-                        } */
+                                email: e.target.value,
+                            }));
+                        }}
                         // totalErrors={error}
-                        // error={error.firstName}
+                        error={error.email}
+                        Tooltip={
+                            <span className="absolute top-10 w-[333px] h-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white z-[2] group-hover:scale-100">
+                              <h3 className="text-[#24A3D9] font-semibold mb-1">
+                                Email Confirmation Sent
+                              </h3>
+                              You need to verify your email if
+                              <ul className="list-disc pl-3 mb-2">
+                                <li>you created a new account.</li>
+                                <li>you recently changed your email.</li>
+                              </ul>
+                              We have sent you an email verification link to your current
+                              email address to make sure that it really is you who requested
+                              a change.
+                            </span>
+                          }
                     />
 
                     <InputFieldDropdown
                       placeholder=""
-                      parentStyle={{width: "87.27%"}}
-                      parentClassName="relative mt-[20px] left-2/4 -translate-x-2/4 text-xs"
-                      labelClassname="text-[#26435F] font-semibold"
-                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
+                    //   parentStyle={{width: "87.27%"}}
+                      parentClassName="relative mt-[25px] left-2/4 -translate-x-2/4 text-xs w-[480px]"
+                      labelClassname="text-[#26435F] text-[15px] font-semibold"
+                      inputContainerClassName=" border border-[#D0D5DD] mt-[10px] rounded-md py-[9px] h-[40px] w-[full] text-md"
+                      inputClassName="text-[17.5px]"
                       label="Phone"
                       value={values.phone}
                       codeValue={values.phoneCode}
-                      
-                      /* handleCodeChange={(e) =>
-                        setValues({
+                      handleCodeChange={(e) => {
+                        setValues((values) => ({
                           ...values,
                           phoneCode: e.target.value,
-                        })
-                      }
-                      onChange={(e) =>
-                        setValues({
+                        }));
+                      }}
+                      onChange={(e) => {
+                        setValues((values) => ({
                           ...values,
                           phone: e.target.value,
-                        })
-                      }
-                      totalErrors={error}
-                      codeError={error.phoneCode}
-                      error={error.phone} */
+                        }));
+                      }}
+                      error={error.phone}
                     />
 
                     <div
-                        className="relative mt-[20px] left-2/4 -translate-x-2/4"
-                        style={{width: "87.27%"}}
+                        className="relative mt-[25px] left-2/4 -translate-x-2/4 w-[480px]"
+                        // style={{width: "87.27%"}}
                     >
-                        <div className="font-[300] text-[#26435F]" >Short Bio / Intro</div>
+                        <div className="font-[500] text-[#26435F] text-[15px]" >Short Bio / Intro</div>
                         <textarea
-                            className={`rounded-[5px] resize-none shadow-[0px_0px_2px_rgba(0,0,0,0.25)] h-[150px] w-full ${styles.bioTextarea}`}
+                            className={`mt-[9.65px] rounded-[5px] resize-none shadow-[0px_0px_2px_rgba(0,0,0,0.25)] text-[15px] h-[150px] w-full ${styles.bioTextarea}`}
                             placeholder="Here, you can talk about your experience, your day-to-day tasks, your personality, your hobbies, or your methodology as a tutor. 
                             Anything you feel is relevant!"
+                            value={values.about}
+                            onChange={(e) => {
+                                setValues((values) => ({
+                                    ...values,
+                                    about: e.target.value,
+                                }));
+                            }}
                         ></textarea>
                     </div>
 
                     <div 
-                        className="relative flex justify-between mt-[20px] left-2/4 -translate-x-2/4"
+                        className="relative flex justify-between mt-[15px] left-2/4 -translate-x-2/4"
                         style={{width: "69.09%"}}
                     >
                         <PrimaryButton
-                            style={{width: "46.05%"}}
-                            className={` flex justify-center  bg-[#FFA28D]  disabled:opacity-60  rounded-[10px] text-white text-sm font-medium relative py-[9px]`}
+                            // style={{width: "46.05%"}}
+                            className={` flex justify-center h-[50px] w-[175px] bg-[#FFA28D]  disabled:opacity-60  rounded-[10px] text-white text-sm font-medium relative py-[9px]`}
                             /* loading={emailExistLoad}
                             disabled={
                                 values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
                             } */
-                            // onClick={handleClick}
-                            children={`Save`}
+                            onClick={handleDataUpdate}
+                            children={<span className="font-[600] text-[#fff] text-[20px]" >Save</span>}
                         />
 
                         <SecondaryButton
-                            style={{width: "46.05%", backgroundColor: "#fff"}}
-                            children={<span className="font-[500] text-[14px] text-[#26435F]" >Reset Password</span>}
-                            className="bg-[#fff] px-[0px] rounded-[10px] shadow-[0px_0px_10px_rgba(0,0,0,0.1)]"
+                            style={{backgroundColor: "#fff"}}
+                            children={<span className="font-[500] text-[17.5px] text-[#26435F]" >Reset Password</span>}
+                            className="bg-[#fff] px-[0px] rounded-[10px] shadow-[0px_0px_10px_rgba(0,0,0,0.1)] h-[50px] w-[175px]"
                             onClick={OnResetPasswordClicked}
                         />
                     </div>
@@ -753,13 +929,13 @@ function AccountOverviewWithSubscriptionInfo() {
                     style={{width: "62.5%", height: "100%"}}
                 >
                     <div
-                        className="bg-[#fff] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)]"
-                        style={{width: "100%", height: "54.75%"}}
+                        className="bg-[#fff] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)] h-[438px] w-[1000px]"
+                        // style={{width: "100%", height: "54.75%"}}
                     >
-                        <div className="font-[600] ml-[30px] mt-[30px] text-[#26435F] text-[14px]" >Manage Your Subscription Plan</div>
+                        <div className="font-[600] ml-[30px] mt-[30px] text-[#26435F] text-[18.67px]" >Manage Your Subscription Plan</div>
                         <div className="ml-[30px]" >
-                            <span className="font-[200] text-[#26435F] text-[12px]">For detailed breakdown of features, please visit our </span>
-                            <button className="font-[200] inline text-[#24A3D9] text-[12px]" >pricing page.</button>
+                            <span className="font-[200] text-[#26435F] text-[15px]">For detailed breakdown of features, please visit our </span>
+                            <button className="font-[200] inline text-[#24A3D9] text-[15px]" >pricing page.</button>
                         </div>
 
                         {/* <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Active Subscription</div> */}
@@ -768,51 +944,94 @@ function AccountOverviewWithSubscriptionInfo() {
                             !(activeSubscriptionInfo === undefined || activeSubscriptionInfo === null || activeSubscriptionInfo.planName === "") ?
                             (
                                 <>
-                                <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Active Subscription</div>
+                                <div className="font-[600] ml-[30px] mt-[30px] text-[#FFA28D] text-[17.5px]" >Active Subscription</div>
                                 <div 
                                     className="flex justify-between ml-[30px] mt-[5px]" 
                                     style={{width: "92%"}}
                                 >
                                     <ActiveSubscriptionWidget
-                                        style={{width: "65%"}}
+                                        // style={{width: "65%"}}
+                                        className="h-[106px] max-w-[600px]"
                                         canChangePlan={true}
                                         planDisplayName={activeSubscriptionInfo.planDisplayName}
                                         subscriptionPricePerMonth={activeSubscriptionInfo.subscriptionPricePerMonth}
                                         activeTutorsAllowed={activeSubscriptionInfo.activeTutorsAllowed}
                                         handleChangePlan={OnActiveSubscriptionChangePlanClicked}
-                                        freeTrialExpiryDate={activeSubscriptionInfo.autoRenewalDate}
+                                        freeTrialExpiryDate={activeSubscriptionInfo.freeTrialExpiryDate}
                                     />
 
                                     <div className="flex flex-col items-end" >
                                         <div className="flex" >
-                                            <span className="font-[100] text-[#517CA8] text-[12px]" >Subscription Start Date{" - "}</span>
-                                            <span className="font-[400] text-[#517CA8] text-[12px]" >{
-                                                getDateAsString(activeSubscriptionInfo.subscriptionStartDate)
+                                            <span className="font-[100] text-[#517CA8] text-[15px]" >{"Subscription Start Date -  "}</span>
+                                            <span className="font-[400] text-[#517CA8] text-[15px]" >{
+                                                getFormattedDate(activeSubscriptionInfo.startDate, dateFormat)
                                             }</span>
                                         </div>
 
                                         <div className="flex mt-[3px]" >
-                                            <span className="font-[100] text-[#517CA8] text-[12px]" >Auto-Renewal Date{" - "}</span>
-                                            <span className="font-[400] text-[#517CA8] text-[12px]" >{
-                                                getDateAsString(activeSubscriptionInfo.autoRenewalDate)
-                                            }</span>
+                                            {
+                                                activeSubscriptionInfo.hasExpired ? (
+                                                    <>
+                                                    <span className="font-[500] text-[#FF725E] text-[15px]" >{"Plan Expired on -  "}</span>
+                                                    <span className="font-[500] text-[#FF725E] text-[15px]" >{
+                                                        getFormattedDate(activeSubscriptionInfo.expiryDate, dateFormat)
+                                                    }</span>
+                                                    </>
+                                                ) : activeSubscriptionInfo.isCancelled ? (
+                                                    <>
+                                                    <span className="font-[500] text-[#FF725E] text-[15px]" >{"Plan Expires on -  "}</span>
+                                                    <span className="font-[500] text-[#FF725E] text-[15px]" >{
+                                                        getFormattedDate(activeSubscriptionInfo.expiryDate, dateFormat)
+                                                    }</span>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                    <span className="font-[300] text-[#517CA8] text-[15px]" >{"Auto-Renewal Date -  "}</span>
+                                                    <span className="font-[500] text-[#517CA8] text-[15px]" >{
+                                                        getFormattedDate(activeSubscriptionInfo.autoRenewalDate, dateFormat)
+                                                    }</span>
+                                                    </>
+                                                )
+                                            }
                                         </div>
 
                                         <div className="flex mt-[3px]" >
-                                            <span className="font-[100] text-[#517CA8] text-[12px]" >Monthly Cost (after discount){" - "}</span>
-                                            <span className="font-[400] text-[#517CA8] text-[12px]" >{CurrencyNameToSymbole(activeSubscriptionInfo.currency) + activeSubscriptionInfo.subscriptionPricePerMonth}</span>
+                                            <span className="font-[100] text-[#517CA8] text-[15px]" >Monthly Cost (after discount){" - "}</span>
+                                            <span className="font-[400] text-[#517CA8] text-[15px]" >{CurrencyNameToSymbole(activeSubscriptionInfo.currency) + activeSubscriptionInfo.subscriptionPricePerMonth}</span>
                                         </div>
 
                                         <div className="grow" ></div>
 
-                                        <button 
-                                            className="font-[400] underline text-[#24A3D9] text-[12px]" 
-                                            onClick={
-                                                () => {
-                                                    OnCancelSubscriptionClicked(activeSubscriptionId);
-                                                }
-                                            } 
-                                        >Cancel Subscription</button>
+                                        {
+                                            activeSubscriptionInfo.hasExpired ? (
+                                                <button 
+                                                    className="font-[500] underline text-[#38C980] text-[15px]" 
+                                                    onClick={
+                                                        () => {
+                                                            // OnCancelSubscriptionClicked(activeSubscriptionId);
+                                                        }
+                                                    } 
+                                                >Renew Subscription</button>
+                                            ) : activeSubscriptionInfo.isCancelled ? (
+                                                <button 
+                                                    className="font-[500] underline text-[#26435F] text-[15px]" 
+                                                    onClick={
+                                                        () => {
+                                                            // OnCancelSubscriptionClicked(activeSubscriptionId);
+                                                        }
+                                                    } 
+                                                >Enable Auto-Renew</button>
+                                            ) : (
+                                                <button 
+                                                    className="font-[500] underline text-[#24A3D9] text-[15px]" 
+                                                    onClick={
+                                                        () => {
+                                                            OnCancelSubscriptionClicked(activeSubscriptionId);
+                                                        }
+                                                    } 
+                                                >Cancel Subscription</button>
+                                            )
+                                        }
                                     </div>
                                 </div>
                                 </>
@@ -822,14 +1041,15 @@ function AccountOverviewWithSubscriptionInfo() {
                         {
                             !(activeExtensionName === "") ? (
                                 <>
-                                    <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Active Extensions</div>
+                                    <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[17.5px]" >Extensions</div>
 
                                     <div 
                                         className="flex justify-between ml-[30px] mt-[5px]" 
                                         style={{width: "92%"}}
                                     >
                                         <ActiveExtensionWidget
-                                            style={{width: "65%"}}
+                                            // style={{width: "65%"}}
+                                            className="h-[106px] w-[600px]"
                                             canChangePlan={true}
                                             planDisplayName={activeExtensionName}
                                             subscriptionPricePerMonth={activeExtensionPrice}
@@ -840,29 +1060,87 @@ function AccountOverviewWithSubscriptionInfo() {
 
                                         <div className="flex flex-col items-end" >
                                             <div className="flex" >
-                                                <span className="font-[100] text-[#517CA8] text-[12px]" >Subscription Start Date{" - "}</span>
-                                                <span className="font-[400] text-[#517CA8] text-[12px]" >{
-                                                    getDateAsString(activeExtensionInfo.startDate)
+                                                <span className="font-[100] text-[#517CA8] text-[15px]" >Subscription Start Date{" - "}</span>
+                                                <span className="font-[400] text-[#517CA8] text-[15px]" >{
+                                                    getFormattedDate(activeExtensionInfo.startDate, dateFormat)
                                                 }</span>
                                             </div>
 
                                             <div className="flex mt-[3px]" >
-                                                <span className="font-[100] text-[#517CA8] text-[12px]" >Auto-Renewal Date{" - "}</span>
-                                                <span className="font-[400] text-[#517CA8] text-[12px]" >{
-                                                    getDateAsString(activeExtensionInfo.autoRenewalDate)
-                                                }</span>
+                                                {
+                                                    activeExtensionInfo.hasExpired ? (
+                                                        <>
+                                                        <span className="font-[500] text-[#FF725E] text-[15px]" >{"Plan Expired on -  "}</span>
+                                                        <span className="font-[500] text-[#FF725E] text-[15px]" >{
+                                                            getFormattedDate(activeExtensionInfo.expiryDate, dateFormat)
+                                                        }</span>
+                                                        </>
+                                                    ) : activeExtensionInfo.isCancelled ? (
+                                                        <>
+                                                        <span className="font-[500] text-[#FF725E] text-[15px]" >{"Plan Expires on -  "}</span>
+                                                        <span className="font-[500] text-[#FF725E] text-[15px]" >{
+                                                            getFormattedDate(activeExtensionInfo.expiryDate, dateFormat)
+                                                        }</span>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                        <span className="font-[300] text-[#517CA8] text-[15px]" >{"Auto-Renewal Date -  "}</span>
+                                                    <span className="font-[500] text-[#517CA8] text-[15px]" >{
+                                                        getFormattedDate(activeExtensionInfo.autoRenewalDate, dateFormat)
+                                                    }</span>
+                                                        </>
+                                                    )
+                                                }
                                             </div>
 
+                                            {/* <div className="flex mt-[3px]" >
+                                                <span className="font-[100] text-[#517CA8] text-[15px]" >Auto-Renewal Date{" - "}</span>
+                                                <span className="font-[400] text-[#517CA8] text-[15px]" >{
+                                                    getFormattedDate(activeExtensionInfo.autoRenewalDate, dateFormat)
+                                                }</span>
+                                            </div> */}
+
                                             <div className="flex mt-[3px]" >
-                                                <span className="font-[100] text-[#517CA8] text-[12px]" >Monthly Cost (after discount){" - "}</span>
-                                                <span className="font-[400] text-[#517CA8] text-[12px]" >{
+                                                <span className="font-[100] text-[#517CA8] text-[15px]" >Monthly Cost (after discount){" - "}</span>
+                                                <span className="font-[400] text-[#517CA8] text-[15px]" >{
                                                     CurrencyNameToSymbole(activeExtensionInfo.currency) + activeExtensionInfo.subscriptionPricePerMonth
                                                 }</span>
                                             </div>
 
                                             <div className="grow" ></div>
 
-                                            <button className="font-[400] underline text-[#24A3D9] text-[12px]" >Enable Auto-Renew</button>
+                                            {
+                                                activeExtensionInfo.hasExpired ? (
+                                                    <button 
+                                                        className="font-[500] underline text-[#38C980] text-[15px]" 
+                                                        onClick={
+                                                            () => {
+                                                                // OnCancelSubscriptionClicked(activeSubscriptionId);
+                                                            }
+                                                        } 
+                                                    >Renew Subscription</button>
+                                                ) : activeExtensionInfo.isCancelled ? (
+                                                    <button 
+                                                        className="font-[500] underline text-[#26435F] text-[15px]" 
+                                                        onClick={
+                                                            () => {
+                                                                // OnCancelSubscriptionClicked(activeSubscriptionId);
+                                                            }
+                                                        } 
+                                                    >Enable Auto-Renew</button>
+                                                ) : (
+                                                    <button 
+                                                        className="font-[500] underline text-[#24A3D9] text-[15px]" 
+                                                        onClick={
+                                                            () => {
+                                                                // OnCancelSubscriptionClicked(activeSubscriptionId);
+                                                            }
+                                                        } 
+                                                    >Cancel Subscription</button>
+                                                )
+                                            }
+
+                                            {/* <button className="font-[400] underline text-[#24A3D9] text-[15px]" >Enable Auto-Renew</button> */}
                                         </div>
                                     </div>
                                 </>
@@ -871,26 +1149,26 @@ function AccountOverviewWithSubscriptionInfo() {
                     </div>
 
                     <div
-                        className="bg-[#fff] pb-[30px] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)]"
-                        style={{width: "100%"}}
+                        className="bg-[#fff] pb-[30px] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)] h-[342px] w-[1000px]"
+                        // style={{width: "100%"}}
                     >
                         <div 
                             className="flex items-center justify-between ml-[30px] mt-[20px]" 
                             style={{width: "92%"}}    
                         >
-                            <div className="font-[600] text-[#26435F] text-21.33" >Manage Payments</div>
+                            <div className="font-[600] text-[#26435F] text-18.66" >Manage Payments</div>
                             <button 
                                 className="font-[300] text-[#24A3D9] text-[12px] design:text-[15px] underline" 
                                 // onClick={OnViewPastTransactionsClicked}
                             >View Past Transactions</button>
                         </div>
                         
-                        <div className="font-[100] ml-[30px] text-[12px]" >
+                        <div className="font-[100] ml-[30px] text-[15px]" >
                             <span className="text-[#26435F]" >Read more documentation about payment methods on Evallo’s </span>
                             <button className="inline text-[#24A3D9]" >knowledge base.</button>
                         </div>
 
-                        <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[14px]" >Saved Cards</div>
+                        <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[17.5px]" >Saved Cards</div>
 
                         <div className={`flex items-start gap-x-[45px] gap-y-[30px] flex-wrap ml-[30px] pl-[0px] pb-[0px] pt-[0px] w-11/12`} >
 

@@ -31,7 +31,9 @@ export default function Modal({
   wrapperClassName,
   btnClassName,
   buttonParentClassName,
-  cancelIconState
+  cancelIconState,
+  parentClass,
+  topClass
 }) {
   const selectRef = useRef();
   // console.log(selectRef)
@@ -53,8 +55,8 @@ export default function Modal({
   return (
     <>
       {
-        <div className={styles.modalContainer}>
-          <div className="w-full h-full pt-[100px] pb-[20px]">
+        <div className={`${styles.modalContainer} ${topClass??""}`}>
+          <div className={` h-full pt-[100px] pb-[20px] ${parentClass??""}`}>
             {/* <div style={{marginTop:`-${(1/(scale > 1 ? 1 : scale))*70}px`,marginBottom:`-${(1-(scale > 1 ? 1 : scale))*70}px`}} className={styles.modalContainer+" "}>
           <div className="w-full p-1"> */}
             <div

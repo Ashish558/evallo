@@ -98,7 +98,7 @@ export default function Foot(props) {
       ) : null}
       <div className=" ">
         {toggle ? (
-          <div className="absolute w-full flex bottom-20  justify-center items-center ">
+          <div className="absolute w-full flex bottom-20 left-0 justify-center items-center ">
             <section className=" bg-white  shadow-md shadow-gray-400 px-12 pt-2 h-64">
               <h3 className=" text-center text-lg py-3 font-semibold">
                 Section {" " + sectionindex + " "} :{" "}
@@ -175,7 +175,7 @@ export default function Foot(props) {
             </section>
           </div>
         ) : null}
-        <footer className="   left-0 right-0 bottom-0 flex justify-between px-12 pt-4 pb-8 border border-black ">
+        <footer className="w-[1920px] absolute   left-0 right-0 bottom-0 flex justify-between px-12 pt-4 pb-8 border border-black ">
           <div className="flex justify-start items-center w-1/3">
             <h2 className=" text-xl font-semibold ">{name}</h2>
           </div>
@@ -212,7 +212,9 @@ export default function Foot(props) {
       {btnloader ? (
         <div className="max-w-1/2 relative flex justify-center items-center h-full">
           <Modal
-            classname="max-w-[700px] mx-auto"
+
+          topClass={"!h-[115%]"}
+            classname="max-w-[700px] mx-auto !mt-[120px]"
             title="Are you sure you want to Submit the section?"
             titleClassName="mr-4  mb-4"
             primaryBtn={{

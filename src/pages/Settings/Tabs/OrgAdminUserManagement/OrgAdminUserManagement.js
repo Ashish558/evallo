@@ -200,13 +200,19 @@ function OrgAdminUserManagement() {
   }
 
   const handleSave = () => {
+    if(selectedTutors.map(tutor => tutor._id).length<1){
+      alert("Please select tutors");
+      return;
+    }
     bulkChangeUser({ tutorIds: selectedTutors.map(tutor => tutor._id) })
       .then(res => {
         if (res.error) {
           console.log('err', res.error);
         } else {
           console.log('res', res.data);
-
+          if(!res.error){
+            alert("Tutor is activated successfully")
+          }
         }
 
       })
@@ -326,9 +332,9 @@ function OrgAdminUserManagement() {
       <div
         className="bg-[#FFFFFF] mb-[30px] pl-[30px] pb-[30px] pt-[30px] rounded-[15px] shadow-[0px_0px_30px_rgba(213,230,250,0.5)]"
       >
-        <div className="font-[500] text-[#26435F] text-[14px]" >Select Active Tutors</div>
+        <div className="font-[500] text-[#26435F] text-18.66" >Select Active Tutors</div>
 
-        <div className="font-[100] mt-[5px] text-[#26435F] text-[12px]" style={{ width: "97%" }} >
+        <div className="font-[100] mt-[5px] text-[#26435F] text-[15px]" style={{ width: "97%" }} >
           {`Tutors with an “Active” account status will be able to login to their Evallo account within your organization. 
                     This number is limited by your chosen subscription plan (for detailed breakdown of each subscription, please visit our `}<button className="inline text-[#24A3D9]" >pricing page</button>{`). 
                     Currently, your `}<span className="font-[600]" >{currentSubscriptionName}</span>{` subscription plan allows `}<span className="font-[600]" >{tutorLimit}</span>{` number of Active Tutor slots. Please fill them below.`}
@@ -382,14 +388,14 @@ function OrgAdminUserManagement() {
               <SCheckbox
                 checked={true}
               />
-              <div className="font-[300] text-[#507CA8] text-[12px]" >Enable autofill when spots are empty</div>
+              <div className="font-[300] text-[#507CA8] text-[15px]" >Enable autofill when spots are empty</div>
             </div>
 
             <div className="flex items-center mt-[20px]" >
               <SCheckbox
                 checked={true}
               />
-              <div className="font-[300] text-[#507CA8] text-[12px] w-[250px]" >Notify tutors when their account status is changed by an Admin</div>
+              <div className="font-[300] text-[#507CA8] text-[15px] w-[250px]" >Notify tutors when their account status is changed by an Admin</div>
             </div>
           </div>
         </div>

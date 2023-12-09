@@ -54,6 +54,8 @@ export default function Table(props) {
     widthFullTable,
     theadWidth,
     customScrollBarClass,
+    signupTable,
+    tableClass
   } = props;
   const [dummy, setDummy] = useState([]);
   const [tableData, setTableData] = useState(data);
@@ -110,7 +112,7 @@ export default function Table(props) {
             : `overflow-x-auto ${customScrollBarClass??'scrollbar-content custom-scroller-2'} scroll-m-1`
         }`}
       >
-        <table className={`bg-white customTable mb-3 text-center whitespace-nowrap ${widthFullTable===true?"w-full":""}`}>
+        <table className={`bg-white customTable mb-3 text-center whitespace-nowrap ${widthFullTable===true?"w-full":""} ${tableClass??""}`}>
           <thead className={`pb-2 whitespace-nowrap bg-[#26435f] ${theadWidth??"w-[1601px]"}`}>
             <tr className={`whitespace-nowrap bg-[#26435f] text-white`}>
               {tableHeaders.map((item, idx) => {
@@ -236,7 +238,7 @@ export default function Table(props) {
           >
             <button
               onClick={() => navigate(`/${belowBoxLink}`)}
-              className="inline-block rounded-[5.33px] bg-[#FFA28D] text-[#FFF] font-semibold py-[10px] px-[8px] text-base"
+              className={`inline-block rounded-[5.33px] bg-[#FFA28D] text-[#FFF] font-semibold py-[10px] ${signupTable?"px-[8px]":"pr-[16.5px] pl-[15.5px]"} text-base`}
             >
               {belowBoxText}
               <img className="inline-block pl-2" src={belowBoxIcon} alt="" />

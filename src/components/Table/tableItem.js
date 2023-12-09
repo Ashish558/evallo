@@ -632,7 +632,7 @@ export default function TableItem({
       {dataFor === "assignedTests" && (
         <tr className=" text-[17.5px] ">
           <td className="px-1 font-medium  min-w-14  text-left flex items-center  pb-[14px] pt-4">
-            <span className="inline-block cursor-pointer pl-4">
+            <span className="inline-block cursor-pointer pl-[30px]">
               <div className="flex ">
                 {dataFor === "assignedTests" ? (
                   <SCheckbox
@@ -1165,7 +1165,7 @@ export default function TableItem({
       )}
       {dataFor === "allOrgs" && (
         <tr className="odd:bg-white  leading-8">
-          <td className="font-medium text-[17.5px] pl-8  min-w-14 py-4  text-left">
+          <td className="font-medium text-[17.5px] !pl-[60px]  min-w-14 py-4  text-left !max-w-[346px]">
             <span
               className="inline-block cursor-pointer pl-4"
               onClick={() => navigate(`/orgadmin-profile/${item._id}`)}
@@ -1175,14 +1175,16 @@ export default function TableItem({
                 : item.company?.toLowerCase()}
             </span>
           </td>
-          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
-            <div className="my-[6px]">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left  !max-w-[286px]">
+            <div className="my-[6px] !max-w-[286px] text-ellipsis whitespace-nowrap overflow-hidden">
               {item.firstName + " " + item?.lastName}
             </div>
           </td>
 
-          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
-            <div className="my-[6px]">{item.email}</div>
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left !max-w-[323px]">
+            <div className="my-[6px] w-[323px] max-w-[323px] flex flex-col">
+              {item.email.length>30?<><p>{item.email.slice(0,30)}</p><p>{item.email.slice(30,item.email.length)}</p></>:<p>{item.email}</p>}
+              </div>
           </td>
 
           <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
@@ -1195,20 +1197,20 @@ export default function TableItem({
           <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item?.registrationAs}</div>
           </td>
-          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
-            <div className="my-[6px]">{item?.userStatus}</div>
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left !max-w-[186px]">
+            <div className="my-[6px] w-[186px]">{item?.userStatus}</div>
           </td>
-          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
-            <div className="my-[6px]">{item.associatedOrg?.numberOfTutors}</div>
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left !max-w-[168px]">
+            <div className="my-[6px] w-[168px]">{item.associatedOrg?.numberOfTutors}</div>
           </td>
-          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
-            <div className="my-[6px]">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left !max-w-[200px]">
+            <div className="my-[6px] w-[200px]">
               {item.associatedOrg?.numberOfActiveStudent}
             </div>
           </td>
 
-          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
-            <div className="my-[6px]">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left !max-w-[181px]">
+            <div className="my-[6px] w-[181px]">
               {getFormattedDate(item.createdAt, dateFormat)}
               {/* {new Date(item.createdAt).toLocaleDateString()} */}
             </div>

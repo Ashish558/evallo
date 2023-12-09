@@ -55,17 +55,24 @@ export function TableHeader({
       } ${dataFor === "allUsers" ? "text-sm" : "text-sm"} ${
         flag ? styles["no-arrow"] : ""
       }
+      ${dataFor==="allOrgs"&&"rounded-[5.333px,0,0,5.333px]"}
        `}
     >
       <div
-        className={` ${headerWidth ? headerWidth : ""} ${
-          noArrow
+        className={` ${headerWidth ? headerWidth : ""}
+        ${header === "Org Name"&&dataFor == "allOrgs" && "!pl-[73px] w-[346px]"}
+        ${header === "A Name"&&dataFor == "allOrgs" && "!w-[286px]"}
+        ${header === "A Phone"&&dataFor == "allOrgs" && "w-[187px]"}
+        ${header=== "Country"&&dataFor == "allOrgs"&&"w-[176px]"}
+        ${header=== "Type"&&dataFor == "allOrgs"&&"!w-[266px]"} ${
+          noArrow||header==="Type"
             ? ""
             : `${
                 dataFor == "allOrgs"
                   ? styles.markerCustomAllOrgs
                   : `${styles.marker} justify-center`
-              }`
+              }
+        `
           } 
         flex items-center font-medium 
          ${
@@ -75,7 +82,7 @@ export function TableHeader({
             ? "text-left pl-7"
             : ""
         } ${dataFor === "allUsers" ? "text-[17.5px]" : "text-[17.5px]"}
-        ${header==="Tutor Name"||header==="Tutor Status"?"!p-[0]":""}
+        ${header==="Tutor Name"||header==="Tutor Status"||header==="Average Hourly Rate"?"!p-[0]":""}
         ${header === "Q No." && "flex-col"}
        `}
       >

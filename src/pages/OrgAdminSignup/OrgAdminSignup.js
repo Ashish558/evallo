@@ -61,15 +61,6 @@ import Extensions from "../Frames/Extensions/Extensions";
 import CheckOut from "../Frames/CheckOut/CheckOut";
 import { useLazyGetSubscriptionsInfoQuery } from "../../app/services/orgSignup";
 
-import {
-  Elements,
-  PaymentElement,
-  LinkAuthenticationElement,
-  useStripe,
-  useElements
-} from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-import Payment from "../Frames/Payment/Payment";
 import { BASE_URL } from "../../app/constants/constants";
 
 export default function OrgAdminSignup() {
@@ -486,10 +477,6 @@ export default function OrgAdminSignup() {
   }
 const [emailExistLoad,setEmailExistLoad]=useState(false)
 const handleClick = () => {
-
-  handleSignup();
-  return;
-
   const emailAlreadyExists = async () => {
       setEmailExistLoad(true)
       let cc=0;
@@ -543,12 +530,12 @@ const handleClick = () => {
       });
     }
     if (checked === true ) {
-      
-      setFrames({
+      handleSignup();
+      /* setFrames({
         ...frames,
         signupActive: false,
         subscription: true,
-      });
+      }); */
       // setcurrentStep(currentStep => currentStep + 1)
     }
     if(cc>=2){
@@ -644,18 +631,6 @@ const handleClick = () => {
 
   const [clientSecret, SetClientSecret] = useState();
 
-  const secretKey = loadStripe(process.env.REACT_APP_STRIPE_SECRET_KEY)
-  const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
-  const stripe = require("stripe")(secretKey);
-
-  const appearance = {
-    theme: 'stripe',
-  };
-  const options = {
-    clientSecret: clientSecret,
-    appearance,
-  };
-
   return (
     <div className="   pb-6 relative" id={styles.signUp}>
       <div className={`absolute bg-[#0000007a] flex items-center justify-center h-full w-full z-10`} 
@@ -681,7 +656,7 @@ const handleClick = () => {
       <div className="flex justify-center flex-col items-center md:grid-cols-2  mb-[100px] ">
         <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-4" />
         <>
-          {!frames.signupSuccessful ? (
+          {/* {!frames.signupSuccessful ? (
             <div className="lg:hidden bg-primary text-white pt-[79px] px-[49px]">
               <h1 className="text-[28px] mb-[13px]">
                 {frames.signupActive
@@ -695,7 +670,7 @@ const handleClick = () => {
             </div>
           ) : (
             <></>
-          )}
+          )} */}
           <div className={` flex lg:items-center relative bg-white rounded-md py-4 px-5 md:px-[48px] 
                           ${frames.extensions ? "lg:w-[1200px]" : "lg:w-[800px]"}`}>
             <div className="w-full py-4 ">
@@ -724,8 +699,8 @@ const handleClick = () => {
 
                   <div className="relative left-2/4 -translate-x-2/4 flex h-[50px] justify-around w-[120px]" >
                     <button
-                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]"
-                      onClick={google}
+                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px] hover:cursor-default"
+                      // onClick={google}
                     >
                       <img 
                         className="block"
@@ -741,7 +716,7 @@ const handleClick = () => {
                     </button> */}
 
                     <button
-                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]"
+                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px] hover:cursor-default"
                     >
                       <img 
                         className="block"
@@ -767,14 +742,17 @@ const handleClick = () => {
                       label="First Name"
                       labelClassname="text-[#26435F] font-semibold"
                       inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
-                    
+                      pattern="[a-zA-Z0-9]+"
                       value={values.firstName}
-                      onChange={(e) =>
-                        setValues({
-                          ...values,
-                          firstName: e.target.value,
-                        })
-                      }
+                      onChange={(e) => {
+                        const regex = /^[a-zA-Z0-9 ]*$/;
+                        const isValid = regex.test(e.target.value);
+                        if (isValid)
+                          setValues({
+                            ...values,
+                            firstName: e.target.value,
+                          });
+                      }}
                       totalErrors={error}
                       error={error.firstName}
                     />
@@ -784,14 +762,17 @@ const handleClick = () => {
                       labelClassname="text-[#26435F] font-semibold"
                       inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
                       label="Last Name"
+                      pattern="[a-zA-Z0-9]+"
                       value={values.lastName}
-                      onChange={(e) =>
-                        setValues({
-                          ...values,
-                          lastName: e.target.value,
-                        })
-                      }
-                      
+                      onChange={(e) => {
+                        const regex = /^[a-zA-Z0-9 ]*$/;
+                        const isValid = regex.test(e.target.value);
+                        if (isValid)
+                          setValues({
+                            ...values,
+                            lastName: e.target.value,
+                          });
+                      }}
                       totalErrors={error}
                       error={error.lastName}
                     />
@@ -977,11 +958,11 @@ const handleClick = () => {
                       } 
                       
                       `}
-                      /* loading={emailExistLoad}
+                      loading={emailExistLoad}
                       disabled={
                         values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
-                      } */
-                      onClick={handleSignup}
+                      }
+                      onClick={handleClick}
                       children={`Create Account`}
                     />
                   </div>

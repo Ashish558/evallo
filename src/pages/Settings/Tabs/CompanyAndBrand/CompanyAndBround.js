@@ -271,10 +271,10 @@ const CompanyAndBround = () => {
           <InputField
             placeholder="Company/Individual"
             IconLeft={lock}
-            parentClassName="flex-1 text-[#26435F]"
+            parentClassName="text-[#26435F] w-[312.5px]"
             inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
-            inputClassName="text-base-17-5 bg-transparent placeholder:text-[#B3BDC7]"
-            labelClassname=" text-base-17-5 !font-medium "
+            inputClassName="text-medium bg-transparent placeholder:text-[#B3BDC7]"
+            labelClassname=" text-medium !font-medium mb-[2px]"
             label="Account Type"
             disabled={true}
             value={"Company"}
@@ -283,10 +283,10 @@ const CompanyAndBround = () => {
           />
           <InputField
             placeholder="Your business identity"
-            parentClassName="flex-1  text-[#26435F] "
+            parentClassName="text-[#26435F] w-[275.5px]"
             inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white  h-[50px]"
-            inputClassName="text-base-17-5 bg-transparent placeholder:text-[#B3BDC7]"
-            labelClassname="mb-[2.5px] text-base-17-5 !font-medium"
+            inputClassName="text-medium bg-transparent placeholder:text-[#B3BDC7]"
+            labelClassname="mb-[2.5px] text-medium !font-medium"
             label="Company Name"
             value={values.company}
             onChange={(e) =>
@@ -300,10 +300,10 @@ const CompanyAndBround = () => {
           />
           <InputField
             placeholder="Support email for your clients"
-            parentClassName="flex-1 text-[#26435F]"
+            parentClassName="w-[275.5px] text-[#26435F]"
             inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white  h-[50px]"
-            inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7]"
-            labelClassname="mb-[2.5px] text-base-17-5 !font-medium flex justify-between"
+            inputClassName="text-medium bg-transparent placeholder:!text-[#B3BDC7]"
+            labelClassname="mb-[2.5px] text-medium !font-medium flex justify-between"
             label="Support Email"
             value={values.supportEmail}
             onChange={(e) =>
@@ -317,10 +317,10 @@ const CompanyAndBround = () => {
           />
           <InputField
             placeholder="What is your title at work?"
-            parentClassName="flex-1  text-[#26435F]"
+            parentClassName="w-[275.5px] text-[#26435F]"
             inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
-            inputClassName="bg-transparent placeholder:text-[#B3BDC7] text-base-17-5 capitalize"
-            labelClassname={" text-base-17-5 !font-medium capitalize"}
+            inputClassName="bg-transparent placeholder:text-[#B3BDC7] text-medium capitalize"
+            labelClassname={" text-medium !font-medium capitalize"}
             label="Role / Position"
             disabled={true}
             value={values.role}
@@ -334,15 +334,14 @@ const CompanyAndBround = () => {
           />
         </div>
 
-        <div className="flex gap-5 justify-between flex-1">
+        <div className="flex gap-x-[38px] justify-between flex-1">
           <div className="">
-            <label className="inline-block text-[15px] font-medium undefined ml-0 text-[#26435F] text-base-17-5">
-              {" "}
+            <label className="inline-block font-medium undefined ml-0 mb-1 text-[#26435F] text-medium">
               Business Logo{" "}
             </label>
             <div
               id="borderDashed"
-              className="w-[312px] h-[200px]  relative p-2 bg-[#FFFFFF] rounded-[5px]"
+              className="w-[312px] h-[169px] border border-dashed border-1.5 border-[#517CA8] relative p-2 bg-[#FFFFFF] rounded-[5px]"
             >
               {logoUrl && (
                 <img
@@ -407,10 +406,10 @@ const CompanyAndBround = () => {
             <div className="flex gap-x-[37.5px] items-center justify-between ">
               <InputField
                 placeholder="https://yourwebsite.com"
-                parentClassName=" text-[#26435F] flex-1"
+                parentClassName=" text-[#26435F] w-[587.5px]"
                 inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white  rounded-[5px] h-[50px]"
-                inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7]"
-                labelClassname="text-base-17-5 !font-medium "
+                inputClassName="text-medium bg-transparent placeholder:!text-[#B3BDC7]"
+                labelClassname="text-medium !font-medium mb-2"
                 label="Website"
                 value={values.website}
                 onChange={(e) =>
@@ -423,10 +422,10 @@ const CompanyAndBround = () => {
               />
               <InputSelect
                 placeholder="Select"
-                parentClassName="text-[#26435F] w-[275px]"
+                parentClassName="text-[#26435F] w-[275.5px]"
                 inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
-                labelClassname="text-base-17-5 !font-medium "
-                inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7] "
+                labelClassname="text-medium !font-medium "
+                inputClassName="text-medium bg-transparent placeholder:!text-[#B3BDC7] "
                 placeholderClass="!mr-0 !whitespace-normal "
                 label="Company Type"
                 value={
@@ -447,10 +446,10 @@ const CompanyAndBround = () => {
             <div className="flex items-center  gap-x-[37.5px] justify-between mt-6">
               <InputField
                 placeholder="Enter your street address"
-                parentClassName=" text-[#26435F] flex-1"
+                parentClassName=" text-[#26435F] w-[587.5px]"
                 inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white  rounded-[5px] h-[50px]"
-                inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7]"
-                labelClassname="text-base-17-5 !font-medium "
+                inputClassName="text-medium bg-transparent placeholder:!text-[#B3BDC7]"
+                labelClassname="text-medium !font-medium "
                 label="Street Address"
                 value={values.address}
                 onChange={(e) =>
@@ -464,10 +463,10 @@ const CompanyAndBround = () => {
 
               <InputSelect
                 placeholder="Select"
-                parentClassName="text-[#26435F] w-[275px]"
+                parentClassName="text-[#26435F] w-[275.5px]"
                 inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
-                labelClassname="text-base-17-5 !font-medium "
-                inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7] "
+                labelClassname="text-medium !font-medium "
+                inputClassName="text-medium bg-transparent placeholder:!text-[#B3BDC7] "
                 placeholderClass="!mr-0 !whitespace-normal "
                 label="Country"
                 value={values.country}
@@ -483,10 +482,10 @@ const CompanyAndBround = () => {
             <div className="flex justify-between mt-6 gap-x-5 items-center">
               <InputSelect
                 placeholder="Select"
-                parentClassName="text-[#26435F] flex-1"
+                parentClassName="text-[#26435F] w-[275.5px]"
                 inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
-                labelClassname="text-base-17-5 !font-medium "
-                inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7] "
+                labelClassname="text-medium !font-medium "
+                inputClassName="text-medium bg-transparent placeholder:!text-[#B3BDC7] "
                 placeholderClass="!mr-0 !whitespace-normal "
                 label="State / Region "
                 value={
@@ -507,10 +506,10 @@ const CompanyAndBround = () => {
               />
               <InputField
                 placeholder="Text"
-                parentClassName="text-[#26435F] flex-1"
+                parentClassName="text-[#26435F] w-[293px]"
                 inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
-                labelClassname="text-base-17-5 !font-medium "
-                inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7] "
+                labelClassname="text-medium !font-medium "
+                inputClassName="text-medium bg-transparent placeholder:!text-[#B3BDC7] "
                 label="City"
                 totalErrors={error}
                 value={values.city}
@@ -526,10 +525,10 @@ const CompanyAndBround = () => {
 
               <InputField
                 placeholder="Numeric"
-                parentClassName="text-[#26435F] flex-1"
+                parentClassName="text-[#26435F] w-[275.5px]"
                 inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
-                inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7] "
-                labelClassname="text-base-17-5 !font-medium "
+                inputClassName="text-medium bg-transparent placeholder:!text-[#B3BDC7] "
+                labelClassname="text-medium !font-medium "
                 label="Zip Code"
                 value={values.zip}
                 totalErrors={error}
@@ -549,9 +548,9 @@ const CompanyAndBround = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-1  gap-8 my-3 mb-10 ml-[335px]  min-w-[500px] pb-0">
-          <div className="flex flex-col w-[275px] rounded-md shadow-[0px_0px_2.500000476837158px_0px_#00000040] min-w-[170px] flex-wrap gap-3 bg-white p-3">
-            <h1 className="mt-[-35px]  text-[#26435F] font-medium text-base-17-5 ml-[-10px] mb-1 text-base-17-5 ">
+        <div className="flex flex-1  gap-8 my-3 mb-10 ml-[350px]  min-w-[500px] pb-0">
+          <div className="flex flex-col w-[275px] rounded-md shadow-[0px_0px_2.500000476837158px_0px_#00000040] min-w-[170px] flex-wrap gap-3 bg-white pt-[17.5px] px-[17.5px]">
+            <h1 className="mt-[-45px]  text-[#26435F] font-medium ml-[-10px] text-medium ">
               Format Of Instructions
             </h1>
             {instructions.map((item, id) => (
@@ -562,11 +561,13 @@ const CompanyAndBround = () => {
                 setBoxData={setInstructions}
                 Dname={"formatOfInstruction"}
                 handleCheckboxChange={handleCheckboxChange}
+                className='mb-[17.5px]'
+                textClassName='text-[15px]'
               />
             ))}
           </div>
-          <div className="flex flex-1 flex-col rounded-md shadow-[0px_0px_2.500000476837158px_0px_#00000040] min-w-[370px]  h-[200px] flex-wrap gap-3 p-3 bg-white">
-            <h1 className="mt-[-35px]  text-[#26435F] font-medium text-base-17-5 ml-[-10px] mb-1 text-base-17-5">
+          <div className="flex flex-1 w-[595px] flex-col rounded-md shadow-[0px_0px_2.500000476837158px_0px_#00000040] min-w-[370px]  h-[200px] flex-wrap gap-3 pt-[17.5px] px-[17.5px] bg-white">
+            <h1 className="mt-[-45px]  text-[#26435F] font-medium ml-[-10px] text-medium">
               Students Served
             </h1>
             {studentServed.map((item, id) => (

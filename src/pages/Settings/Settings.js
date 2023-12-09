@@ -5,7 +5,7 @@ import ActiveTab from "../../assets/icons/active-tab.svg";
 import SettingsCard from "../../components/SettingsCard/SettingsCard";
 import ToggleBar from "../../components/SettingsCard/ToogleBar";
 import AddTag from "../../components/Buttons/AddTag";
-import "./tab.css";
+import "./tab2.css"
 import FilterItems from "../../components/FilterItems/filterItems";
 import InputField from "../../components/InputField/inputField";
 import Modal from "../../components/Modal/Modal";
@@ -36,9 +36,6 @@ import AccOverviewLogo from "../../assets/icons/account overview.svg";
 import AccOverviewLogo2 from "../../assets/icons/account-overview 2.svg";
 import ClientsSignupLogo from "../../assets/icons/Client sign up 1.svg";
 import ClientsSignupLogo2 from "../../assets/icons/Client sign up 2.svg";
-import UserManagementLogo1 from "../../assets/icons/User-Management-1.svg";
-import UserManagementLogo2 from "../../assets/icons/User-Management-2.svg";
-// import EditBlueIcon from "../../assets/icons/edit-blue.svg";
 import EditBlueIcon from "../../assets/YIcons/edit2.svg";
 import fileupload from "../../assets/icons/basil_file-upload-outline (2).svg";
 import InputSearch from "../../components/InputSearch/InputSearch";
@@ -56,9 +53,11 @@ import { updateOrganizationSettings } from "../../app/slices/organization";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import { permissionsStaticData } from "./Tabs/staticData";
 import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
+import moment from "moment-timezone";
 import AccountOverviewWithSubscriptionInfo from "./Tabs/AccountOverviewWithSubscriptionInfo/AccountOverviewWithSubscriptionInfo";
 import OrgAdminUserManagement from "./Tabs/OrgAdminUserManagement/OrgAdminUserManagement";
-import moment from "moment-timezone";
+import UserManagementLogo1 from "../../assets/icons/User-Management-1.svg";
+import UserManagementLogo2 from "../../assets/icons/User-Management-2.svg";
 
 // import questionMark from '../../assets/images/question-mark.svg'
 const initialState = {
@@ -117,7 +116,6 @@ const initialTabs = [
   },
 ];
 export default function Settings() {
-
   const [modalActive, setModalActive] = useState(false);
   const { firstName, lastName } = useSelector((state) => state.user);
   const [tagModalActive, setTagModalActive] = useState(false);
@@ -324,8 +322,9 @@ export default function Settings() {
 
   const fetchSettings = () => {
     getSettings().then((res) => {
-      console.log('organization-----', organization);
+      console.log("get settings", res);
       setSettingsData(organization?.settings);
+
       setThePermission(organization?.settings?.permissions);
     });
 
@@ -431,7 +430,7 @@ export default function Settings() {
         maxContentLength: Infinity,
       })
       .then((res) => {
-        // //console.log('resp--' ,res.data.data.updatedSetting.settings);
+        console.log('resp--', res.data);
         dispatch(
           updateOrganizationSettings(res.data.data.updatedSetting.settings)
         );
@@ -444,7 +443,7 @@ export default function Settings() {
         setSaveLoading(false);
       })
       .catch((err) => {
-        //console.log("err", err);
+        console.log("err", err);
         alert("Could not upload image");
         setSaveLoading(false);
       });
@@ -735,7 +734,7 @@ export default function Settings() {
         subscriptionCode: updated,
       };
       // //console.log('updatedSetting', updatedSetting);
-      // updateAndFetchsettingsNew2(updatedSetting);
+      updateAndFetchsettingsNew2(updatedSetting);
     } else {
       let updated = [
         ...subscriptionCode,
@@ -749,7 +748,7 @@ export default function Settings() {
         subscriptionCode: updated,
       };
       // //console.log('updatedSetting', updatedSetting);
-      // updateAndFetchsettingsNew2(updatedSetting);
+      updateAndFetchsettingsNew2(updatedSetting);
     }
   };
 
@@ -1003,6 +1002,7 @@ export default function Settings() {
 
 
   };
+  console.log({ selectedServiceData });
   useEffect(() => {
     if (settingsData && settingsData?.offerImages) {
       let arr = [];
@@ -1163,6 +1163,7 @@ export default function Settings() {
     setAddSessionModalActive(false);
     setSubModalSessionData(subModalInitialSessionState);
   };
+  console.log({ offersNew, offerImages });
 
   const submitImageModalNew = (file2, val, e) => {
     // //console.log(tagText)
@@ -1202,7 +1203,7 @@ export default function Settings() {
       .then((res) => {
         setSaveLoading(false);
         setLoading2(false);
-        console.log("resp--", res.data.data.updatedSetting.settings);
+        console.log("resp--", res.data);
         dispatch(
           updateOrganizationSettings(res.data.data.updatedSetting.settings)
         );
@@ -1379,11 +1380,12 @@ export default function Settings() {
       }));
     }
   };
+  console.log({ subModalData, addOne, addServices2, addSession2 });
 
   return (
     <>
-      <div className="px-[150px]  min-h-screen mx-auto">
-        <p className="text-[#24A3D9]  !my-[calc(50*0.052vw)] text-base-20">
+      <div className="  min-h-screen px-[140px] mx-auto">
+        <p className="text-[#24A3D9]   text-20">
           <span onClick={() => navigate("/")} className="cursor-pointer ">
             {organization?.company +
               "  >  " +
@@ -1394,104 +1396,64 @@ export default function Settings() {
           </span>
           <span className="font-semibold">Settings</span>
         </p>
-
         <div className={`flex items-end overflow-hidden pl-[17px] ${styles.navBar}`} >
-        {
-          tabs.map((item, index) => {
-            const isActive = activeTab === index + 1;
-            return (
-              <button 
-                key={index}
-                style={{height: "88.88%"}}
-                className={`relative flex items-center ${styles.navItem}
+          {
+            tabs.map((item, index) => {
+              const isActive = activeTab === index + 1;
+              return (
+                <button
+                  key={index}
+                  style={{ height: "88.88%" }}
+                  className={`relative flex items-center ${styles.navItem}
                                   ${isActive ? styles.active : ""}
-              `} 
-                onClick={() => changeTab(index + 1)}
-              >
-                <div className="mr-[10px]" >
-                  <img
-                    src={
-                      isActive ? item.selectedStateIcon : item.unselectedStateIcon
-                    }
-                  />
-                </div>
-                <div className={`${styles.name}`} >
-                  {item.name}
-                </div>
+              `}
+                  onClick={() => changeTab(index + 1)}
+                >
+                  <div className="mr-[10px]" >
+                    <img
+                      src={
+                        isActive ? item.selectedStateIcon : item.unselectedStateIcon
+                      }
+                    />
+                  </div>
+                  <div className={`${styles.name}`} >
+                    {item.name}
+                  </div>
 
-                {
-                  isActive ? (
-                    <>
-                      <div className="absolute bg-[#fff] h-full w-[10px] -translate-x-full z-[3]"
-                           style={{
+                  {
+                    isActive ? (
+                      <>
+                        <div className="absolute bg-[#fff] h-full w-[10px] -translate-x-full z-[3]"
+                          style={{
                             left: "1px",
-                           }}
-                      ></div>
-                      <div className="absolute bg-[#26435F] h-full w-[12px] left-0 -translate-x-full z-[3]" 
-                           style={{
+                          }}
+                        ></div>
+                        <div className="absolute bg-[#26435F] h-full w-[12px] left-0 -translate-x-full z-[3]"
+                          style={{
                             left: "1px",
                             borderBottomRightRadius: "100px"
-                           }} 
-                      ></div>
+                          }}
+                        ></div>
 
-                      <div className="absolute bg-[#fff] h-full w-[10px] translate-x-full z-[3]" 
-                           style={{
+                        <div className="absolute bg-[#fff] h-full w-[10px] translate-x-full z-[3]"
+                          style={{
                             right: "1px"
-                           }}
-                      ></div>
-                      <div className="absolute bg-[#26435F] h-full w-[11px] translate-x-full z-[3]" 
-                           style={{
+                          }}
+                        ></div>
+                        <div className="absolute bg-[#26435F] h-full w-[11px] translate-x-full z-[3]"
+                          style={{
                             right: "1px",
                             borderBottomLeftRadius: "100px"
-                           }} 
-                      ></div>
-                    </>
-                  ) : (<></>)
-                }
-              </button>
-            )
-          })
-        }
+                          }}
+                        ></div>
+                      </>
+                    ) : (<></>)
+                  }
+                </button>
+              )
+            })
+          }
         </div>
-
-        {/* <div className="shivam-tabs rounded-md">
-          <ul className="tabs group">
-            {tabs.map((item, idx) => {
-              return (
-                <li
-                  className={`" ${activeTab === idx + 1 ? "active" : ""}`}
-                  onClick={() => changeTab(idx + 1)}
-                >
-                  <a
-                    className={`"w-full cursor-pointer flex justify-center items-center ${activeTab === idx + 1 ? "!text-[#26435F]" : "!text-white"
-                      }`}
-                  >
-                    <span className="pb-1">
-                      {activeTab === idx + 1 && (
-                        <img
-                          src={item.Icon}
-                          className="!w-[15px] !h-[15px] "
-                          alt="item-logo"
-                        />
-                      )}
-                      {activeTab === idx + 1 || (
-                        <img
-                          src={item.Icon2}
-                          className="!w-[15px] !h-[15px]"
-                          alt="item-logo"
-                        />
-                      )}
-                    </span>
-                    <p className="py-2 px-2 pb-3 font-medium  text-base-17-5  whitespace-nowrap">
-                      {item.name}{" "}
-                    </p>
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        </div> */}
-
         <div className=" flex w-full flex-1 items-center mb-[30px]">
           <div
             className={`${styles.tabsContainer} gap-7 flex-1 !shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)]`}
@@ -1561,26 +1523,26 @@ export default function Settings() {
             <div className="flex items-center gap-x-8 mb-4">
               <div>
                 <InputSelect
-                  labelClassname="text-base-20 mb-1"
+                  labelClassname="text-20 mb-1"
                   inputContainerClassName=" text-base-17-5 shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
                   optionListClassName="text-base-17-5"
                   optionClassName="text-base-17-5"
                   optionData={timeZones}
                   placeholderClass="text-base-17-5"
-                  parentClassName=" text-base-17-5 py-0 w-[calc(387*0.0522vw)] min-w-[300px]"
+                  parentClassName=" text-base-17-5 py-0 min-w-[387.5px]"
                   label="Default Time Zone"
                   value={settingsData.timeZone}
                   onChange={(val) => handleChange("timeZone", val)}
                 />
               </div>
               <InputSelect
-                labelClassname="text-base-20 mb-1"
+                labelClassname="text-20 mb-1"
                 inputContainerClassName=" text-base-17-5 shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
                 optionListClassName="text-base-17-5"
                 optionClassName="text-base-17-5"
                 optionData={["dd/mm/yy", "mm/dd/yy", "yy/mm/dd"]}
                 placeholderClass="text-base-17-5"
-                parentClassName=" text-base-17-5 py-0 w-[calc(387*0.0522vw)] min-w-[300px]"
+                parentClassName=" text-base-17-5 py-0 min-w-[387.5px]"
                 label="Default Date Format"
                 value={settingsData.dateFormat}
                 onChange={(val) => handleChange("dateFormat", val)}
@@ -1588,43 +1550,43 @@ export default function Settings() {
             </div>
             <div className="h-[1.25px] bg-[#CBD6E2] mb-4 mt-8"></div>
             <SettingsCard
-              titleClassName="text-base-20"
+              titleClassName="text-20"
               title="Lead Status Items (Parent / Student)"
               body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-4 rounded-5">
-                  <AddTag onAddTag={handleAddTag} keyName="leadStatus" />
+                <div className="flex items-center flex-wrap gap-x-[18.75px] gap-y-[25px] [&>*]:mb-[10px] px-[31.25px] py-[26.25px] bg-white shadow-small rounded-5">
+                  <AddTag onAddTag={handleAddTag} keyName="leadStatus" className='w-[143.25px] bg-primary mr-[1px]' />
                   <FilterItems
                     onlyItems={true}
                     isString={true}
                     items={leadStatus ? leadStatus : []}
                     keyName="leadStatus"
                     onRemoveFilter={onRemoveFilter}
-                    className="pt-1 pb-1 mr-15 text-base-17-5"
+                    className="pt-1 pb-1"
                   />
                 </div>
               }
             />
             <div className="h-[1.25px] bg-[#CBD6E2] my-4"></div>
             <SettingsCard
-              titleClassName="text-base-20"
+              titleClassName="text-20"
               title="Tutor Status Items"
               body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-4 rounded-5 text-base-17-5">
-                  <AddTag onAddTag={handleAddTag} keyName="tutorStatus" />
+                <div className="flex items-center flex-wrap [&>*]:mb-[10px] gap-x-[18.75px] gap-y-[25px] px-[31.25px] py-[26.25px]  bg-white shadow-small p-4 rounded-5 text-base-17-5">
+                  <AddTag onAddTag={handleAddTag} keyName="tutorStatus" className='w-[143.25px] bg-primary mr-[1px]' />
                   <FilterItems
                     onlyItems={true}
                     isString={true}
                     items={tutorStatus ? tutorStatus : []}
                     keyName="tutorStatus"
                     onRemoveFilter={onRemoveFilter}
-                    className="pt-1 pb-1 mr-15 text-base-17-5"
+                    className="pt-1 pb-1 text-base-17-5"
                   />
                 </div>
               }
             />
             <div className="h-[1.25px] bg-[#CBD6E2] mb-8"></div>
             <SettingsCard
-              titleClassName="text-base-20"
+              titleClassName="text-20"
               title="Manage Referral Codes"
               className={styles["bordered-settings-container"]}
               body={
@@ -1635,18 +1597,18 @@ export default function Settings() {
                         return (
                           <div
                             key={i}
-                            className="bg-white shadow-small mb-3 p-3 shadow-[0px_0px_2.500000476837158px_0px_#00000040] rounded-md"
+                            className="bg-white px-[31.25px] py-[26.25px] shadow-small mb-3 shadow-[0px_0px_2.500000476837158px_0px_#00000040] rounded-md"
                           >
-                            <div className="flex items-center justify-between gap-3 pr-8 py-1">
-                              <p className="font-medium text-[#24A3D9] ">
+                            <div className="flex items-center justify-between gap-3 pr-8">
+                              <p className="font-medium text-[#24A3D9] text-medium">
                                 {subscription.code}
-                                <span className="inline-block ml-6 -mt-1 !font-normal text-base-17-5 text-[#517CA8]">
+                                <span className="inline-block ml-6 -mt-1 font-light text-[#517CA8]">
                                   {subscription.expiry} Weeks
                                 </span>
                               </p>
-                              <div className="flex items-center ml-6 flex-1 flex-wrap  ">
+                              <div className="flex items-center ml-6 gap-x-[27.5px] gap-y-[25px] flex-1 flex-wrap">
                                 {/* <AddTag
-                              openModal={true}
+                              openModal={true
                               onAddTag={(code) => handleAddTest(subscription)}
                               keyName={subscription.code}
                               text="Add Tests"
@@ -1660,7 +1622,7 @@ export default function Settings() {
                                   filteredTests={filteredTests}
                                   api="test"
                                   onRemoveFilter={onRemoveCodeTest}
-                                  className="pt-1 pb-1 mr-15 text-base-17-5"
+                                  className="pt-1 pb-1 text-base-17-5"
                                 />
                               </div>
                               <div className="flex items-center gap-x-4">
@@ -1701,7 +1663,7 @@ export default function Settings() {
                   </div>
                   <AddTag
                     children="Add New Code"
-                    className="px-[18px] py-3 mt-5 bg-primary text-white"
+                    className="px-[12px] py-3 mt-5 bg-primary text-white w-[189.25px]"
                     text="Add New Code"
                     hideIcon={false}
                     openModal={true}
@@ -1712,7 +1674,7 @@ export default function Settings() {
             />
 
             <SettingsCard
-              titleClassName="text-base-20"
+              titleClassName="text-20"
               title="Manage Services & Topics"
               className={styles["bordered-settings-container"]}
               body={
@@ -1723,13 +1685,13 @@ export default function Settings() {
                         return (
                           <div
                             key={i}
-                            className="bg-white shadow-small p-4 mb-3 rounded-md"
+                            className="bg-white shadow-small px-[31.25px] py-[26.25px] mb-3 rounded-md"
                           >
-                            <div className="flex items-center gap-3 py-1 justify-between pr-8">
-                              <p className="font-medium text-[#24A3D9] min-w-[100px]">
+                            <div className="flex items-center gap-3 justify-between pr-8">
+                              <p className="font-medium text-[#24A3D9] text-medium min-w-[100px]">
                                 {service.service}
                               </p>
-                              <div className="flex ml-16 flex-1 items-center flex-wrap ">
+                              <div className="flex ml-16 flex-1 gap-x-[27.5px] gap-y-[25px] items-center flex-wrap ">
                                 {/* <AddTag
                                 onAddTag={handleAddSpecialization}
                                 keyName={service.service}
@@ -1741,7 +1703,7 @@ export default function Settings() {
                                   keyName={service.service}
                                   items={service.specialization}
                                   onRemoveFilter={onRemoveSpecialization}
-                                  className="pt-1 pb-1 mr-15 text-base-17-5"
+                                  className="pt-1 pb-1 text-base-17-5"
                                 />
                               </div>
                               <div className="flex items-center gap-x-4">
@@ -1756,7 +1718,7 @@ export default function Settings() {
                                 ></ToggleBar>
                                 <div
                                   className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
-                                  // onClick={() => onEditService(service)}
+                                  onClick={() => onEditService(service)}
                                 >
                                   <img
                                     src={EditBlueIcon}
@@ -1807,7 +1769,7 @@ export default function Settings() {
             />
 
             <SettingsCard
-              titleClassName="text-base-20"
+              titleClassName="text-20"
               title="Session Tags & Reconciliation"
               className={styles["bordered-settings-container"]}
               body={
@@ -1818,13 +1780,13 @@ export default function Settings() {
                         return (
                           <div
                             key={i}
-                            className="bg-white shadow-small p-4 mb-3 rounded-md"
+                            className="bg-white shadow-small px-[31.25px] py-[26.25px] mb-3 rounded-md"
                           >
                             <div className="flex items-center  py-1 justify-between pr-8">
-                              <p className="font-medium text-[#24A3D9]  min-w-[100px]">
+                              <p className="font-medium text-[#24A3D9] text-medium min-w-[100px]">
                                 {service.heading}
                               </p>
-                              <div className="flex items-center flex-wrap flex-1 ml-16">
+                              <div className="flex items-center gap-x-[27.5px] gap-y-[25px] flex-wrap flex-1 ml-16">
                                 {/* <AddTag
                               onAddTag={handleAddSessionTag}
                               keyName={service.heading}
@@ -1836,7 +1798,7 @@ export default function Settings() {
                                   keyName={service.heading}
                                   items={service.items}
                                   onRemoveFilter={onRemoveSessionTagItem}
-                                  className="pt-1 pb-1 mr-15 text-base-17-5"
+                                  className="pt-1 pb-1 text-base-17-5"
                                 />
                               </div>
                               <div className="flex items-center gap-x-4">
@@ -1852,7 +1814,7 @@ export default function Settings() {
                                 ></ToggleBar>
                                 <div
                                   className=" flex items-center justify-center  rounded-full cursor-pointer"
-                                  // onClick={() => onEditSession(service)}
+                                  onClick={() => onEditSession(service)}
                                 >
                                   <img
                                     src={EditBlueIcon}
@@ -1898,13 +1860,13 @@ export default function Settings() {
             />
 
             <SettingsCard
-              titleClassName="text-base-20"
+              titleClassName="text-20"
               title="Edit Announcements"
               toggle={{ value: toggleImage.offer, key: "offer" }}
               onToggle={onToggle}
               body={
-                <div className=" bg-white w-full  gap-x-5 p-4 rounded-br-5 rounded-bl-5 !pr-4">
-                  <p className="text-base-17-5 font-medium mt-[-5px] text-[#667085] mb-6">
+                <div className=" bg-white w-full  gap-x-5 py-5 px-[52px] rounded-br-5 rounded-bl-5 pr-12">
+                  <p className="text-medium font-medium mt-[-5px] text-[#667085] mb-6">
                     <span className="font-bold mr-1">⚠️ Note:</span>
                     Announcements, as the name implies, can be used to announce
                     important aspects of your business. Displayed on the
@@ -1923,7 +1885,7 @@ export default function Settings() {
                       knowledge base.
                     </span>
                   </p>
-                  <div className="flex items-center gap-5 pr-3  flex-1 !w-[100%] overflow-x-auto custom-scroller-2    [&>*]:mb-[10px] bg-white  gap-x-5 p-4 rounded-br-5 rounded-bl-5 mb-3 !px-6 py-5 ">
+                  <div className="flex items-center flex-1 !w-[100%] overflow-x-auto custom-scroller-2 [&>*]:mb-[10px] bg-white rounded-br-5 rounded-bl-5 mb-3 py-5 ">
                     {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
                            onChange={e => onImageChange(e)} /> */}
 
@@ -1944,12 +1906,12 @@ export default function Settings() {
                     baseLink={awsLink}
                     onRemoveFilter={onRemoveImage}
                     // onRemoveFilter={onRemoveFilter}
-                    className="pt-1 pb-1 mr-15 text-base-17-5"
+                    className="pt-1 pb-1 text-base-17-5"
                   /> */}
 
                     {offerImages?.map((offer, i) => {
                       return (
-                        <div className="flex-1" key={offer._id}>
+                        <div className="flex-shrink-0 w-[300px]" key={offer._id}>
                           <div className="relative">
                             {toggleImage.offer && (
                               <div className=" overflow-hidden mb-5">
@@ -1991,7 +1953,7 @@ export default function Settings() {
                                           </label>
                                           <input
                                             accept="image/*"
-                                            // className="hidden"
+                                            className="hidden"
                                             onChange={(e) => {
                                               console.log('szszs', e.target.files[0]);
                                               handleaddimage(i, e.target.files[0])
@@ -2011,7 +1973,6 @@ export default function Settings() {
                                       </div>
                                     </div>
                                   }
-                                  <div className="w-[1.25px] h-[150px] bg-[#CBD6E2] ml-5" />
                                 </div>
                               </div>
                             )}
@@ -2062,10 +2023,10 @@ export default function Settings() {
                     {offersNew?.length > 0 &&
                       offersNew?.map((off, idx) => {
                         return (
-                          <div className="flex-1 relative flex gap-2 min-w-[250px] ">
-                            <div className=" relative w-[2px] rounded-md  bg-[#00000030] !h-[300px] mx-4"></div>
+                          <div className="relative flex min-w-[250px] ">
+                            <div className=" relative w-[2px] rounded-md  bg-[#00000030] !h-[300px] mx-[48px]"></div>
 
-                            <div className="w-full flex-1">
+                            <div className="flex-shrink-0 w-[300px]">
                               <div className="flex w-[100%] bg-[#F5F8FA] rounded-md mb-8 flex-col justify-center items-center">
                                 <div className="mt-[20px] mb-[10px] items-center flex justify-center">
                                   <img
@@ -2075,11 +2036,6 @@ export default function Settings() {
                                 </div>
 
                                 <div className="flex items-center text-center justify-center text-base-15">
-                                  {/* {xlsFile == undefined ? (
-                    <p className=""></p>
-                  ) : (
-                    <p className="block ">{xlsFile.name}</p>
-                  )} */}
                                 </div>
 
                                 <div className="flex justify-center">
@@ -2095,13 +2051,13 @@ export default function Settings() {
                                   </label>
                                   <input
                                     accept="image/*"
-                                    disabled={loading2}
                                     className="hidden"
+                                    disabled={loading2}
                                     onChange={(e) => {
                                       let arr = offersNew;
                                       arr[idx].image = e.target.files[0];
                                       setOffersNew((prev) => [...arr]);
-                                      // submitImageModalNew(off?.image, off, e);
+                                      submitImageModalNew(off?.image, off, e);
                                       // setImageName(e.target.files[0].name);
                                     }}
                                     id="file2"
@@ -2178,7 +2134,8 @@ export default function Settings() {
                 </div>
               }
             />
-            <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl text-base-20">
+
+            {/* <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl text-20">
               <p className="pr-2">Set Permissions </p>
               <div className="group relative">
                 <p>
@@ -2192,10 +2149,10 @@ export default function Settings() {
                 </p>
 
                 <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
-                  <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
+                  <h3 className="text-[#24A3D9] text-[20px] py-1 font-medium mb-1">
                     Set Permissions
                   </h3>
-                  <span className="font-light leading-[0.5px] text-[0.69vw]">
+                  <span className="font-light leading-[0.5px] text-[18px]">
                     Here, you can select Viewing, Editing or Deleting
                     permissions for various users. Use the toggles below to
                     select these permissions for specific items related to
@@ -2209,6 +2166,7 @@ export default function Settings() {
             <div
               className={`bg-[#FFFFFF] border-[2.5px] px-[82px] border-dotted border-[#CBD6E2] mb-[30px] ${styles.permission}`}
             >
+              {console.log(fetchedPermissions)}
               {fetchedPermissions?.map((item, id) => {
                 return (
                   <>
@@ -2234,14 +2192,14 @@ export default function Settings() {
                               </p>
 
                               <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
-                                <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
+                                <h3 className="text-[#24A3D9] text-[20px] py-1 font-medium mb-1">
                                   {id == 5
                                     ? "Set Permissions"
                                     : id == 7
                                       ? " New Assignment Email Notifications "
                                       : null}{" "}
                                 </h3>
-                                <span className="font-light leading-[0.5px] text-[0.69vw]">
+                                <span className="font-light leading-[0.5px] text-[17.5px]">
                                   {id == 5
                                     ? "Enable or disable tutor access to add, update or delete sessions scheduled on a calendar. When disabled, tutors in your Organization will only be able to reconcile sessions and add session notes & tags, but will not be able to make any changes to the remaining details of a session. Enable this if you want to provide more autonomy to your tutors. Disable if you want to discourage them from managing their own schedule."
                                     : id == 7
@@ -2278,14 +2236,14 @@ export default function Settings() {
                               </p>
 
                               <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
-                                <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
+                                <h3 className="text-[#24A3D9] text-[20px] py-1 font-medium mb-1">
                                   {id == 5
                                     ? "Set Permissions"
                                     : id == 7
                                       ? " New Assignment Email Notifications "
                                       : null}{" "}
                                 </h3>
-                                <span className="font-light leading-[0.5px] text-[0.69vw]">
+                                <span className="font-light leading-[0.5px] text-[17.5px]">
                                   {id == 5
                                     ? "Enable or disable tutor access to add, update or delete sessions scheduled on a calendar. When disabled, tutors in your Organization will only be able to reconcile sessions and add session notes & tags, but will not be able to make any changes to the remaining details of a session. Enable this if you want to provide more autonomy to your tutors. Disable if you want to discourage them from managing their own schedule."
                                     : id == 7
@@ -2335,7 +2293,7 @@ export default function Settings() {
                   </>
                 );
               })}
-            </div>
+            </div> */}
           </div>
         ) : (
           <></>
@@ -2357,7 +2315,7 @@ export default function Settings() {
       {modalActive && (
         <Modal
           classname={"max-w-840 mx-auto"}
-          titleClassName="text-base-20 mb-[18px]"
+          titleClassName="text-20 mb-[18px]"
           title="Edit Details"
           cancelBtn={true}
           cancelBtnClassName="w-140"
@@ -2374,7 +2332,7 @@ export default function Settings() {
                 <div>
                   <InputField
                     label="Admin First Name"
-                    labelClassname="text-base-20 ml-4 mb-0.5"
+                    labelClassname="text-20 ml-4 mb-0.5"
                     placeholder="Admin Name"
                     inputContainerClassName=" text-base-17-5 px-5 bg-primary-50 border-0"
                     inputClassName="bg-transparent"
@@ -2394,7 +2352,7 @@ export default function Settings() {
                 <div>
                   <InputField
                     label="Admin Last Name"
-                    labelClassname="text-base-20 ml-4 mb-0.5"
+                    labelClassname="text-20 ml-4 mb-0.5"
                     placeholder="Admin Name"
                     inputContainerClassName=" text-base-17-5 px-5 bg-primary-50 border-0"
                     inputClassName="bg-transparent"
@@ -2414,7 +2372,7 @@ export default function Settings() {
                 <div>
                   <InputField
                     label="Phone No."
-                    labelClassname="text-base-20 ml-4 mb-0.5"
+                    labelClassname="text-20 ml-4 mb-0.5"
                     isRequired={true}
                     placeholder="+91 Phone Number"
                     inputContainerClassName=" text-base-17-5 px-5 bg-primary-50 border-0"
@@ -2434,7 +2392,7 @@ export default function Settings() {
                 <div>
                   <InputField
                     label="Email Address"
-                    labelClassname="text-base-20 ml-4 mb-0.5"
+                    labelClassname="text-20 ml-4 mb-0.5"
                     isRequired={true}
                     placeholder="Email Address"
                     type="email"
@@ -2459,7 +2417,7 @@ export default function Settings() {
       {addCodeModalActive && (
         <Modal
           classname={"max-w-[560px] mx-auto"}
-          titleClassName="text-base-20 mb-[18px]"
+          titleClassName="text-20 mb-[18px]"
           title="Add / Edit Referral Code"
           cancelBtn={false}
           cancelBtnClassName="w-140 "
@@ -2496,7 +2454,7 @@ export default function Settings() {
                   <div className="flex-1">
                     <InputField
                       label="Referral Code"
-                      labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                      labelClassname="text-20 text-[#26435F] mb-0.5"
                       placeholder="Add a single-word referral code"
                       inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"
                       inputClassName="bg-transparent"
@@ -2517,7 +2475,7 @@ export default function Settings() {
                   <div className="flex-1">
                     <InputField
                       label="Duration (in weeks)"
-                      labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                      labelClassname="text-20 text-[#26435F] mb-0.5"
                       isRequired={true}
                       placeholder="Access duration allowed in weeks"
                       inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"
@@ -2547,7 +2505,7 @@ export default function Settings() {
                 <div className="mt-3 flex-1">
                   <InputSearch
                     label="Select Assignments (optional)"
-                    labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                    labelClassname="text-20 text-[#26435F] mb-0.5"
                     placeholder="Select"
                     placeholderClass="text-base-17-5"
                     parentClassName=" text-base-17-5 py-0 w-full  mb-10"
@@ -2566,7 +2524,7 @@ export default function Settings() {
                     optionData={filteredTests}
                     rightIcon={down}
                     onOptionClick={(item) => {
-                      // handleTestChange2(item);
+                      handleTestChange2(item);
                       // setStudent(item.value);
                       // handleStudentsChange(item)
                       // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
@@ -2574,7 +2532,7 @@ export default function Settings() {
                   />
                   {/* <InputField
                   label="Select Assignments (optional)"
-                  labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                  labelClassname="text-20 text-[#26435F] mb-0.5"
                   placeholder="Select"
                   inputContainerClassName="bg-primary-50 w-[100%]"
                   inputClassName="bg-transparent"
@@ -2604,7 +2562,7 @@ export default function Settings() {
       {addServiceModalActive && (
         <Modal
           classname={"max-w-[560px] mx-auto"}
-          titleClassName="text-base-20 mb-[18px]"
+          titleClassName="text-20 mb-[18px]"
           title="Add / Edit Services"
           cancelBtn={false}
           cancelBtnClassName="w-140 "
@@ -2623,12 +2581,12 @@ export default function Settings() {
               onSubmit={(e) => {
                 e.preventDefault();
                 if (addOne) {
-                  // handleAddNewService();
+                  handleAddNewService();
                 } else {
-                  /* handleAddServiceName2(
+                  handleAddServiceName2(
                     selectedServiceData?.service,
                     subModalServiceData?._id
-                  ); */
+                  );
                 }
               }}
             >
@@ -2653,7 +2611,7 @@ export default function Settings() {
                   <div className="flex-1">
                     <InputField
                       label="Service Name"
-                      labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                      labelClassname="text-20 text-[#26435F] mb-0.5"
                       placeholder="Add a service you provide (Test Prep, Career Counseling, Evaluations, etc.)"
                       inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"
                       inputClassName="bg-transparent"
@@ -2682,11 +2640,11 @@ export default function Settings() {
                     />
                   </div>
                 </div>
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px] mt-5">
+                <div className="flex items-center flex-wrap [&>*]:mb-[10px] px-[31.25px] py-[26.25px]  mt-5">
                   <AddTag
                     onAddTag={
                       addOne
-                        ? null//handleAddNewSpecialisation
+                        ? handleAddNewSpecialisation
                         : handleAddSpecialization2
                     }
                     keyName={
@@ -2710,10 +2668,9 @@ export default function Settings() {
                         : selectedServiceData.specialization
                     }
                     onRemoveFilter={
-                      addOne ? null//handleNewServiceRemove 
-                      : onRemoveSpecialization2
+                      addOne ? handleNewServiceRemove : onRemoveSpecialization2
                     }
-                    className="pt-1 pb-1 mr-15 text-base-17-5"
+                    className="pt-1 pb-1 text-base-17-5"
                   />
                 </div>
                 <div className="w-full border-[1.33px_solid_#00000033] bg-[#00000033] my-5 h-[1.3px]"></div>
@@ -2748,7 +2705,7 @@ export default function Settings() {
       {addSessionModalActive && (
         <Modal
           classname={"max-w-[560px] mx-auto"}
-          titleClassName="text-base-20 mb-[18px]"
+          titleClassName="text-20 mb-[18px]"
           title="Add / Edit Sessions"
           cancelBtn={false}
           cancelBtnClassName="w-140 "
@@ -2770,12 +2727,12 @@ export default function Settings() {
               onSubmit={(e) => {
                 e.preventDefault();
                 if (addOne) {
-                  // handleAddNewSession();
+                  handleAddNewSession();
                 } else {
-                  /* handleAddSessionName2(
+                  handleAddSessionName2(
                     selectedSessionData?.heading,
                     subModalSessionData?._id
-                  ); */
+                  );
                 }
               }}
             >
@@ -2801,7 +2758,7 @@ export default function Settings() {
                   <div className="flex-1">
                     <InputField
                       label="Session Name"
-                      labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                      labelClassname="text-20 text-[#26435F] mb-0.5"
                       placeholder="Add a heading for session tags (such as “Topics Covered”)"
                       inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"
                       inputClassName="bg-transparent"
@@ -2830,9 +2787,9 @@ export default function Settings() {
                     />
                   </div>
                 </div>
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px] mt-5">
+                <div className="flex items-center flex-wrap [&>*]:mb-[10px] px-[31.25px] py-[26.25px]  mt-5">
                   <AddTag
-                    // onAddTag={addOne ? handleAddNewTags : handleAddSessionTag2}
+                    onAddTag={addOne ? handleAddNewTags : handleAddSessionTag2}
                     keyName={
                       addOne
                         ? addSession2?.heading
@@ -2851,10 +2808,10 @@ export default function Settings() {
                     items={
                       addOne ? addSession2?.items : selectedSessionData.items
                     }
-                    /* onRemoveFilter={
+                    onRemoveFilter={
                       addOne ? handleNewSessionRemove : onRemoveSessionTagItem2
-                    } */
-                    className="pt-1 pb-1 mr-15 text-base-17-5"
+                    }
+                    className="pt-1 pb-1 text-base-17-5"
                   />
                 </div>
                 <div className="w-full border-[1.33px_solid_#00000033] bg-[#00000033] my-5 h-[1.3px]"></div>
@@ -2892,7 +2849,7 @@ export default function Settings() {
       {addTestModalActive && (
         <Modal
           classname={"max-w-[700px] mx-auto"}
-          titleClassName="text-base-20 mb-[18px]"
+          titleClassName="text-20 mb-[18px]"
           title="Add Tests"
           cancelBtn={false}
           cancelBtnClassName="w-0"
@@ -2911,7 +2868,7 @@ export default function Settings() {
               <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5">
                 <div>
                   <InputSearch
-                    labelClassname="text-base-20 hidden"
+                    labelClassname="text-20 hidden"
                     placeholder="Type Test Name"
                     placeholderClass="text-base-17-5"
                     parentClassName=" text-base-17-5 py-0 w-full  mb-10"
@@ -2945,7 +2902,7 @@ export default function Settings() {
       {tagModalActive && (
         <Modal
           classname={"max-w-[540px] mx-auto"}
-          titleClassName="text-base-20 mb-[18px]"
+          titleClassName="text-20 mb-[18px]"
           title=""
           cancelBtn={true}
           cancelBtnClassName="w-140 hidden"
@@ -2965,7 +2922,7 @@ export default function Settings() {
               <div className="flex flex-col items-start mb-5">
                 <InputField
                   label="Text"
-                  labelClassname="text-base-20 ml-4 mb-0.5"
+                  labelClassname="text-20 ml-4 mb-0.5"
                   placeholder="Text"
                   inputContainerClassName=" text-base-17-5 px-5 pt-3 pb-3 bg-primary-50 border-0"
                   inputClassName="bg-transparent"
@@ -3004,7 +2961,7 @@ export default function Settings() {
       {addNewQuestionModalActive && (
         <Modal
           classname={"max-w-[650px] mx-auto"}
-          titleClassName="text-base-20 mb-[18px]"
+          titleClassName="text-20 mb-[18px]"
           title="Add Question"
           cancelBtn={true}
           buttonParentClassName="justify-center"

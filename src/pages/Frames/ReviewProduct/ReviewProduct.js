@@ -20,6 +20,7 @@ function ReviewProduct({
     SetIsCCRequired,
     subscriptionsInfoFromAPI = [],
     stripeCustomerId,
+    SetIsPaymentSuccessfull,
 }) {
     // const [isCCRequired, SetIsCCRequired] = useState(false);
     const [chosenSubscriptionPlan, SetChosenSubscriptionPlan] = useState(
@@ -41,6 +42,11 @@ function ReviewProduct({
     );
     const [totalPrice, SetTotalPrice] = useState(0);
     const [applyCoupon, applyCouponResp] = useLazyApplyCouponQuery();
+
+    useEffect(() => {
+        console.log("extensions");
+        console.log(extensions);
+    },[]);
 
     useEffect(() => {
         // console.log("chosenSubscriptionFromAPI from sessionStorage");
@@ -152,12 +158,14 @@ function ReviewProduct({
                         <div className="grow" ></div>
 
                         <div className="flex flex-col items-end text-[#24A3D9] text-[18.67px]" >
-                            <div>{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + 
+                            <div>{chosenSubscriptionPlan ? (CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + 
                                   (chosenSubscriptionPlan.ccRequired ? chosenSubscriptionPlan.pricePerMonth : 0)
-                            }</div>
+                            ) : ""}</div>
                             <div>
                                 {
                                     (() => {
+                                        if (chosenSubscriptionPlan === null || chosenSubscriptionPlan === undefined) return (<></>);
+
                                         const freeTrialDays = chosenSubscriptionPlan.freeTrialDays;
                                         const freeTrialStatement = freeTrialDays === 0 ? "1 Month" :
                                                            freeTrialDays >= 30 ?  `${freeTrialDays / 30} Months` :
@@ -202,6 +210,7 @@ function ReviewProduct({
                                                     canChangePlan={true}
                                                     setFrames={setFrames}
                                                     planName={item.planName}
+                                                    freeTrialDays={30}
                                                     planDisplayName={item.planDisplayName}
                                                     extensionPriceOption={chosenPackage}
                                                     subscriptionPricePerMonth={chosenPackage.pricePerMonth}
@@ -275,21 +284,39 @@ function ReviewProduct({
                     <div className="flex" >
                         <div className="font-[500] text-[#26435F] text-[18px]" >Subscription</div>
                         <div className="border-dotted border-b-[1px] border-[#26435F] grow" ></div>
-                        <div className="font-[500] text-[#26435F] text-[15px]" >{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + (isCCRequired ? chosenSubscriptionPlan.pricePerMonth : 0)}</div>
+                        <div className="font-[500] text-[#26435F] text-[15px]" >{
+                        chosenSubscriptionPlan ?
+                        (CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + (isCCRequired ? chosenSubscriptionPlan.pricePerMonth : 0))
+                        : ""
+                        }
+                        </div>
                     </div>
-                    <div className="text-[#7C98B6] text-[15px]" >{chosenSubscriptionPlan.planDisplayName} Plan</div>
+                    <div className="text-[#7C98B6] text-[15px]" >{
+                    chosenSubscriptionPlan ?
+                    chosenSubscriptionPlan.planDisplayName 
+                    : ""} Plan
+                    </div>
 
                     <div className="flex mt-[10px]" >
                         <div className="font-[500] text-[#26435F] text-[18px]" >Extensions</div>
                         <div className="border-dotted border-b-[1px] border-[#26435F] grow" ></div>
-                        <div className="font-[500] text-[#26435F] text-[15px]" >{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + 0}</div>
+                        <div className="font-[500] text-[#26435F] text-[15px]" >{
+                        chosenSubscriptionPlan ?
+                        (CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + 0)
+                        : ""
+                        }
+                        </div>
                     </div>
                     <div className="text-[#7C98B6] text-[15px]" >Assignments</div>
 
                     <div className="flex mt-[10px]" >
                         <div className="font-[500] text-[#24A3D9] text-[20px]" >Total</div>
                         <div className="border-dotted border-b-[1px] border-[#24A3D9] grow" ></div>
-                        <div className="font-[500] text-[#24A3D9] text-[20px]" >{CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + (isCCRequired ? chosenSubscriptionPlan.pricePerMonth : 0)}</div>
+                        <div className="font-[500] text-[#24A3D9] text-[20px]" >{
+                        chosenSubscriptionPlan ?
+                        (CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + (isCCRequired ? chosenSubscriptionPlan.pricePerMonth : 0))
+                        : ""
+                        }</div>
                     </div>
                 </div>
 
@@ -298,6 +325,7 @@ function ReviewProduct({
                         <StripeCardDetailWidget
                             chosenSubscriptionObjectFromAPI={chosenSubscriptionObjectFromAPI}
                             stripeCustomerId={stripeCustomerId}
+                            SetIsPaymentSuccessfull={SetIsPaymentSuccessfull}
                         />
                     ) : (
                         <>

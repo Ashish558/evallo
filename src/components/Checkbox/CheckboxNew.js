@@ -1,41 +1,41 @@
 import React from 'react'
 import styles from "./style.module.css";
 
-export  const CheckboxNew = ({item, handleCheckboxChange,boxData,setBoxData,Dname}) => {
-    return (
-     
-          <div  className="flex items-center mb-3 mr-6 ">
-            <div
-              onClick={() =>
-                
-                handleCheckboxChange(item.text,boxData,setBoxData,Dname)
-              }
-              className={`${styles.container} `}
-            >
-              <input
-                checked={item.checked}
-                type="checkbox"
-                name="hearAboutUs"
-                value=""
-              />
-              <span class={styles.checkmark}></span>
-            </div>
-            <p
-              onClick={() =>
-                    
-                handleCheckboxChange(item.text,boxData,setBoxData,Dname)
-              }
-              className="font-medium text-[#507CA8] ml-2  text-[13px] opacity-90 leading-5 text-base-15"
-            >
-              {item.text}
-            </p>
-           
-          </div>
-      
-   
-    )
-  }
-  
+export const CheckboxNew = ({ item, handleCheckboxChange, boxData, setBoxData, Dname, className, textClassName }) => {
+  return (
+
+    <div className={`flex items-center mb-3 mr-6 ${className ?? className}`}>
+      <div
+        onClick={() =>
+
+          handleCheckboxChange(item.text, boxData, setBoxData, Dname)
+        }
+        className={`${styles.container} `}
+      >
+        <input
+          checked={item.checked}
+          type="checkbox"
+          name="hearAboutUs"
+          value=""
+        />
+        <span class={styles.checkmark}></span>
+      </div>
+      <p
+        onClick={() =>
+
+          handleCheckboxChange(item.text, boxData, setBoxData, Dname)
+        }
+        className={`font-medium text-[#507CA8] ml-2  text-[15px] opacity-90 leading-5 ${textClassName ?? textClassName} `}
+      >
+        {item.text}
+      </p>
+
+    </div>
+
+
+  )
+}
+
 
 
 //   export  const CheckBoxContainer = ({boxData, handleCheckboxChange, setBoxData}) => {

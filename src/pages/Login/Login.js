@@ -128,6 +128,12 @@ export default function Login({ setLoginFormActive }) {
             //    return { ...prev, password: 'Wrong password' }
             // })
           }
+          if (res.error.data.message) {
+            alert(res.error.data.message);
+            // setError(prev => {
+            //    return { ...prev, password: 'Wrong password' }
+            // })
+          }
           return;
         }
         sessionStorage.setItem("token", res.data.data.token);
@@ -288,9 +294,9 @@ export default function Login({ setLoginFormActive }) {
 
                 <div className="w-full flex justify-center items-center gap-[30px] mt-[11px]" >
                     <div
-                      className="aspect-square bg-[#fff] flex items-center justify-center h-[50px] w-[50px] relative rounded-[7px] hover:cursor-pointer shadow-md"
+                      className="aspect-square bg-[#fff] flex items-center justify-center h-[50px] w-[50px] relative rounded-[7px] shadow-md"
                       
-                      onClick={google}
+                      // onClick={google}
                     >
                       <img 
                         className="block"
@@ -299,7 +305,7 @@ export default function Login({ setLoginFormActive }) {
 
                   
                     <div
-                      className="aspect-square bg-[#fff] flex items-center justify-center h-[50px] w-[50px] relative rounded-[7px] hover:cursor-pointer shadow-md"
+                      className="aspect-square bg-[#fff] flex items-center justify-center h-[50px] w-[50px] relative rounded-[7px] shadow-md"
                       
                     >
                       <img 

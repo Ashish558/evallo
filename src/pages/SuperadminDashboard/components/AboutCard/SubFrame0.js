@@ -83,24 +83,26 @@ const SubFrame0 = ({ userData }) => {
                 12 Days
               </div>
               <div>
+                <div className="mr-[19px] my-[2px]">
               <RangeDate
               optionClassName="!w-min"
-              inputContainerClassName="!w-min "
+              inputContainerClassName="!w-min !text-[16px] font-medium"
               handleRangeData={handleRangeData}
             />
+                </div>
               </div>
           </div>
             <div className="w-full flex justify-between items-center pr-6 ps-[56px]">
             <div className="flex h-[160px] flex-col justify-evenly items-center py-2 pr-3 gap-2 text-[#26435F]">
               <span className="w-full h-1/2 flex flex-col justify-start items-center">
-                <p className="text-[0.8333vw] w-full text-left"># Tutors</p>
-                <p className="font-medium text-[1.3542vw]">
+                <p className="text-[15.99936px] w-full text-left"># Tutors</p>
+                <p className="font-medium text-[26.00064px]">
                   {totalHours?.totalTutor}
                 </p>
               </span>
               <span className="w-full h-1/2 flex flex-col justify-start items-center">
-                <p className="text-[0.8333vw]"># Students</p>
-                <p className="font-medium text-[1.3542vw]">
+                <p className="text-[15.99936px]"># Students</p>
+                <p className="font-medium text-[26.00064px]">
                   {totalHours?.totalStudent}
                 </p>
               </span>
@@ -115,9 +117,9 @@ const SubFrame0 = ({ userData }) => {
                 );
               })}
             </div>
-            <div className="bg-[#26435F] w-[15vw] h-[160px] rounded-md py-[26px] px-[3%] text-white ">
+            <div className="bg-[#26435F] w-[288px] h-[160px] rounded-md py-[26px] px-[3%] text-white ">
               <span className="flex text-xs justify-between">
-                <p className="text-[0.8333vw] w-[50px] font-medium mb-[22px]">
+                <p className="text-[15.99936px] w-[50px] font-medium mb-[22px]">
                   Revenue Generated
                 </p>
                 {/* <InputSelect

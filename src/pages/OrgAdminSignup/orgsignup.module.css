@@ -144,3 +144,23 @@
     -ms-transform: rotate(45deg);
     transform: translateX(-50%) translateY(-50%) rotate(45deg);
 }
+
+
+@media screen and (min-width:1000px) {
+    #signUp{
+        margin-top: 50px;
+    }   
+}
+
+
+@media screen and (min-width:1200px) {
+    #signUp{
+        margin-top: 25px;
+    }
+}
+
+@media screen and (min-width:1400px) {
+    #signUp{
+        margin-top: 0px;
+    }
+}

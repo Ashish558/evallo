@@ -13,8 +13,10 @@ import Schedule from "../../assets/icons/Calendar_light.svg";
 import Schedule1 from "../../assets/icons/navbar-icons/calender-red.png";
 import Assignment from "../../assets/icons/Assignments_light.svg";
 import Assignment1 from "../../assets/icons/navbar-icons/Assignments_red.svg";
+import AssignmentDisabled from "../../assets/icons/navbar-icons/Assignments_grey.svg";
 import Content from "../../assets/icons/content-logo_light.svg";
 import Content2 from "../../assets/icons/navbar-icons/contents_red.svg";
+import ContentDisabled from "../../assets/icons/navbar-icons/contents_grey.svg";
 import Invoice from "../../assets/images/invoice-logo.svg";
 import Invoice2 from "../../assets/images/invoice-logo-red.svg";
 import Settings from "../../assets/images/Settings 1 new.svg";
@@ -61,6 +63,7 @@ let tempnavdata = [
    {
       icon: Assignment,
       activeIcon: Assignment1,
+      disabledIcon: AssignmentDisabled,
       path: "/assigned-tests",
       tooltip: "Assignments",
       isDisabled: true,
@@ -68,6 +71,7 @@ let tempnavdata = [
    {
       icon: Content,
       activeIcon: Content2,
+      disabledIcon: ContentDisabled,
       path: "/all-tests",
       tooltip: "Content",
       isDisabled: true,
@@ -393,7 +397,12 @@ const [loading2,setLoading2]=useState(false)
                   if(data.data && 
                      data.data.customerSubscriptions && 
                      data.data.customerSubscriptions.data && 
-                     data.data.customerSubscriptions.data.length > 0) {
+                     data.data.customerSubscriptions.data.length > 0 &&
+                     data.data.customerSubscriptions.data.findIndex(item => {
+                        if(item && item.metadata) {
+                           return item.metadata.type === "extension";
+                        }
+                     }) !== -1) {
                         tempnavdata = [
                            {
                               icon: Dashboard,
@@ -465,6 +474,10 @@ const [loading2,setLoading2]=useState(false)
   }
 
   useEffect(() => {
+   if(persona === "parent" || persona === "student" || persona === "tutor" || 
+       persona === "contributor" || persona === "superAdmin" || persona === "manager") {
+         return;
+   }
    loadOrgDetails();
   }, [])
 
@@ -489,7 +502,7 @@ const [loading2,setLoading2]=useState(false)
                   return (
                      <div
                         key={idx}
-                        className={`flex items-center mr-6 design:mr-10  ${isLoggedIn ? "cursor-pointer" : ' cursor-default'}`}
+                        className={`flex items-center mr-6 design:mr-10  ${isLoggedIn && !item.isDisabled ? "cursor-pointer" : ' cursor-default'}`}
                         onClick={() => {
                            if(isLoggedIn && !item.isDisabled) {
                               handleNavigate(item.path)
@@ -514,11 +527,11 @@ const [loading2,setLoading2]=useState(false)
                               <p>
                                  <img
                                     className="w-[21.34px] h-[21.34px]"
-                                    src={item.icon}
+                                    src={(item.isDisabled && item.disabledIcon ? item.disabledIcon : item.icon)}
                                     alt=""
                                  />
                               </p>
-                              <p className={`pl-[10px] text-[17.33px] ${item.isDisabled ? "text-[#24A3D9]" : ""}`}> {item.tooltip} </p>
+                              <p className={`pl-[10px] text-[17.33px] ${item.isDisabled ? "text-[#B3BDC7]" : ""}`}> {item.tooltip} </p>
                            </>
                         )}
                      </div>
@@ -571,6 +584,8 @@ const [loading2,setLoading2]=useState(false)
                      You Want To Log Out?
                   </>
                }
+               topClass="!h-[115%]"
+               parentClass="flex flex-col justify-center items-center pb-[100px]"
                alignBtn={true}
                titleClassName="leading-9 text-center whitespace-nowrap mb-[22.67px]"
                cancelBtn={true}
@@ -584,7 +599,7 @@ const [loading2,setLoading2]=useState(false)
                }}
                handleClose={() => setLogoutModalActive(false)}
                body={<div className="mb-6"></div>}
-               classname={"!w-[666px] mx-auto !pt-7 !pb-[33px] !rounded-[8px] px-[33.33px] !text-center"}
+               classname={"!w-[666px] mx-auto !pt-7 !pb-[33px] !rounded-[8px] px-[33.33px] !text-center scale-50 md:scale-75 lg:scale-90 2xl:scale-100"}
             />
          )}
 </>

@@ -760,6 +760,8 @@ export default function StartTest() {
         {popUp && (
           <Modal
             classname="max-w-[700px] mx-auto"
+            parentClass="flex flex-col justify-center items-center"
+            topClass={"!h-[130%] !mt-0"}
             title="Note that the time will begin as soon as you start this section. make sure that you have everything set up."
             titleClassName="mr-4  mb-4"
             underline={true}

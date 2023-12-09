@@ -38,8 +38,8 @@ export default function SingleItem({
   return (
     <div
       key={idx}
-      className={`mr-3 ${className ? className : ""
-        } bg-[#26435f1a]  py-1 px-3 rounded-7 group ${styles.filterItem} m-1`}
+      className={`${className ? className : ""
+        } bg-[#26435f1a] py-1 px-3 rounded-7 group ${styles.filterItem}`}
     >
       {image && (
         <div className="w-[85px] h-[85px] mx-auto flex justify-center">
