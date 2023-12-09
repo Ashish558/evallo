@@ -60,11 +60,8 @@ div{
    background-color: #26435F;
 }
 
-.navBar .navItem {
-   
-}
-
 .navBar .navItem .name {
+   font-size: 17.5px;
    color: #fff;
 }
 
@@ -77,6 +74,7 @@ div{
 
 .navBar .navItem.active .name {
    color: #26435F;
+   font-size: 17.5px;
 }
 
 @media screen and (min-width: 900px) {
