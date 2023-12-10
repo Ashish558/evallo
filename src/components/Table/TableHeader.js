@@ -44,7 +44,15 @@ export function TableHeader({
         onChange={(e) => setSorted(e.target.checked)}
       />
     </th>
-  ) : (
+  ) :
+  
+  dataFor==="testsDetailQuestions"?(<th className={`pt-[13px] pb-[12.5px] bg-[#26435F] text-left text-[17.5px] leading-[25px] font-normal text-white ${header==="Q. Image"&&"!max-w-[110px]"}`}>
+    <div className={`${header==="Q No. (Raw Score)"&&"ml-[27px] w-[104px] flex flex-col text-center rounded-l-[5px]"} ${header==="Q. Image"&&"!max-w-[110px]"}`}>
+        {header==="Q No. (Raw Score)"?<><p>Q No.</p><p>(Raw Score)</p></>:<p>{header}</p>}
+    </div>
+  </th>)
+  :
+  (
     <th
       className={`${
         headerWidth ? headerWidth : "px-6"

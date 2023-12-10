@@ -47,13 +47,13 @@ export default function AllTestDetail({ testData }) {
   return (
     <>
       {persona === "admin" ? (
-        <div className="w-full flex flex-col">
+        <div className="w-full flex flex-col justify-between">
           <div className="flex justify-between items-center mb-[6px]">
             <p className="inline-block w-[172px] font-medium  text-[#26435F] ">
               {" "}
               Created on
             </p>
-            <p className="inline-block mr-7">:</p>
+            <p className="inline-block mr-7 opacity-60">:</p>
             <p className="inline-block text-[#24A3D9] w-[172px] font-semibold">
               {/* {testData.createdAt?.split("T")[0]} */}
               {getFormattedDate(testData.createdAt?.split("T")[0], dateFormat)}
@@ -66,7 +66,7 @@ export default function AllTestDetail({ testData }) {
               {" "}
               Updated on{" "}
             </p>
-            <p className="inline-block mr-7">:</p>
+            <p className="inline-block mr-7 opacity-60">:</p>
             <p className="inline-block text-[#24A3D9] w-[172px] font-semibold  ">
               {" "}
               {/* {testData.updatedAt?.split("T")[0]} */}
@@ -78,7 +78,7 @@ export default function AllTestDetail({ testData }) {
               {" "}
               Name{" "}
             </p>
-            <p className="inline-block mr-7">:</p>
+            <p className="inline-block mr-7 opacity-60">:</p>
             <p className="inline-block w-[172px] text-[#24A3D9] font-semibold ">
               {" "}
               {testData.testName}
@@ -91,8 +91,8 @@ export default function AllTestDetail({ testData }) {
               {" "}
               Type{" "}
             </p>
-            <p className="inline-block mr-7">:</p>
-            {console.log(testData.testType)}
+            <p className="inline-block mr-7 opacity-60">:</p>
+            {/* {console.log(testData.testType)} */}
             <p className="inline-block w-[172px] text-[#24A3D9] font-semibold ">
               {" "}
               {testData.testType?.includes("®")
@@ -108,7 +108,7 @@ export default function AllTestDetail({ testData }) {
               {" "}
               Created by
             </p>
-            <p className="inline-block mr-7">:</p>
+            <p className="inline-block mr-7 opacity-60">:</p>
             <p className="inline-block text-[#24A3D9]  w-[172px] font-semibold ">
               {detail.createdBy}
             </p>
@@ -120,7 +120,7 @@ export default function AllTestDetail({ testData }) {
               {" "}
               Updated By{" "}
             </p>
-            <p className="inline-block mr-7">:</p>
+            <p className="inline-block mr-7 opacity-60">:</p>
             <p className="inline-block text-[#24A3D9] w-[172px] font-semibold ">
               {" "}
               {detail.updatedBy}
@@ -134,7 +134,7 @@ export default function AllTestDetail({ testData }) {
               {" "}
               Created on
             </p>
-            <p className="inline-block mr-7">:</p>
+            <p className="inline-block mr-7 opacity-60">:</p>
             <p className="inline-block text-[#24A3D9] w-[172px] font-semibold">
               {/* {testData.createdAt?.split("T")[0]} */}
               {getFormattedDate(testData.createdAt?.split("T")[0], dateFormat)}
@@ -146,7 +146,7 @@ export default function AllTestDetail({ testData }) {
               {" "}
               Created by
             </p>
-            <p className="inline-block mr-7">:</p>
+            <p className="inline-block mr-7 opacity-60">:</p>
             <p className="inline-block text-[#24A3D9]  w-[172px] font-semibold ">
               {detail.createdBy}
             </p>
@@ -157,7 +157,7 @@ export default function AllTestDetail({ testData }) {
               {" "}
               Updated on{" "}
             </p>
-            <p className="inline-block mr-7">:</p>
+            <p className="inline-block mr-7 opacity-60">:</p>
             <p className="inline-block text-[#24A3D9] w-[172px] font-semibold  ">
               {" "}
               {/* {testData.updatedAt?.split("T")[0]} */}
@@ -170,7 +170,7 @@ export default function AllTestDetail({ testData }) {
               {" "}
               Updated By{" "}
             </p>
-            <p className="inline-block mr-7">:</p>
+            <p className="inline-block mr-7 opacity-60">:</p>
             <p className="inline-block text-[#24A3D9] w-[172px] font-semibold ">
               {" "}
               {detail.updatedBy}
@@ -182,7 +182,7 @@ export default function AllTestDetail({ testData }) {
               {" "}
               Name{" "}
             </p>
-            <p className="inline-block mr-7">:</p>
+            <p className="inline-block mr-7 opacity-60">:</p>
             <p className="inline-block w-[172px] text-[#24A3D9] font-semibold">
               {" "}
               {testData.testName}
@@ -193,7 +193,7 @@ export default function AllTestDetail({ testData }) {
               {" "}
               Type{" "}
             </p>
-            <p className="inline-block mr-7">:</p>
+            <p className="inline-block mr-7 opacity-60">:</p>
             {console.log(testData.testType)}
             <p className="inline-block w-[172px] text-[#24A3D9] font-semibold ">
               {" "}

@@ -833,7 +833,7 @@ const Dashboard = () => {
 
         <section className="mt-[70px] w-[1601px] mx-auto ">
           <p className="font-semibold text-[#26435F] text-[20px] leading-[14px]">
-            Latest Sign-Ups <span className="font-light">(Last 7 Days)</span>
+            Latest Sign-ups <span className="font-light">(Last 7 Days)</span>
           </p>
 
           <div className="mt-[7px]">
