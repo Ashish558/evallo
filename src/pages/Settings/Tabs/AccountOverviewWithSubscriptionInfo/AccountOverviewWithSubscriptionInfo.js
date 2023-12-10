@@ -323,9 +323,9 @@ function AccountOverviewWithSubscriptionInfo() {
             setValues({
                 ...res?.data.data.user,
             });
-            /* setFetchedData({
+            setFetchedData({
                 ...res?.data.data.user,
-            }); */
+            });
         })
         .catch((err) => {
             console.log(err);

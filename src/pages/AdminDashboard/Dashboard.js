@@ -495,7 +495,7 @@ const Dashboard = () => {
       onCick: sortByDate,
     },
   ];
-  console.log({ userData });
+  // console.log({ userData });
   const convertDateToRange = (startDate) => {
     let startD = startDate.split("-")[0];
 
@@ -871,7 +871,7 @@ const Dashboard = () => {
             </div>
 
             <div className="  pl-[17.5px]">
-              <p className="mb-1 font-semibold text-[#26435F] mb-1 text-base-20  ">
+              <p className="mb-1 font-semibold text-[#26435F] text-base-20  ">
                 Action Log
               </p>
               <ActionLog
@@ -886,7 +886,6 @@ const Dashboard = () => {
           <p className="font-semibold text-[#26435F]  text-base-20">
             Latest Sign-Ups <span className="font-light">(Last 7 Days)</span>
           </p>
-{console.log(userData)}
           <div className="-mt-3">
             <Table
               data={userData}

@@ -2,25 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getMonthName } from "../../utils/utils";
 
-import ResendConfirmation from "../../assets/assignedTests/resendConfirmation.svg";
 import UploadIcon from "../../assets/assignedTests/upload.svg";
 import DownloadIcon from "../../assets/icons/download.png";
 import SuccessIcon from "../../assets/assignedTests/success_green.svg";
 import FailIcon from "../../assets/assignedTests/fail_red.svg";
 import YellowIcon from "../../assets/assignedTests/yellow.svg";
 import LightBlueIcon from "../../assets/icons/Test Statusred.svg";
-import RedIcon from "../../assets/assignedTests/red.svg";
 import GreenIcon from "../../assets/assignedTests/green.svg";
-import GrayIcon from "../../assets/assignedTests/gray.svg";
 import editIcon3 from "../../assets/YIcons/material-symbols_edit-outline.svg";
-
-import RemoveIcon from "../../assets/icons/remove.svg";
-import EditTestIcon from "../../assets/icons/edit-test.svg";
 import TrashIcon from "../../assets/icons/ic_outline-delete.svg";
 import TrashIcon2 from "../../assets/icons/trash-blue.svg";
-import styles from "./styles.module.css";
 import AddIcon from "../../assets/icons/plus_colored.svg";
-import EditIcon from "../../assets/icons/edit_logo.svg";
 import DeleteIcon from "../../assets/icons/delete_logo.svg";
 import DeleteIconAllOrgs from "../../assets/icons/blue_delete.svg";
 import DeleteTutorIcon from "../../assets/icons/delete-tutor.svg";
@@ -39,14 +31,10 @@ import { useLazyGetTestResponseQuery } from "../../app/services/test";
 import {
   checkTest,
   getFormattedDate,
-  getScore,
   getScoreStr,
 } from "../../utils/utils";
 import InputField from "../InputField/inputField";
-import CCheckbox from "../CCheckbox/CCheckbox";
 import SCheckbox from "../CCheckbox/SCheckbox";
-import organization from "../../app/slices/organization";
-import { useDeleteUserMutation } from "../../app/services/admin";
 import Modal from "../Modal/Modal";
 import { useDeleteAdminMutation } from "../../app/services/superAdmin";
 
@@ -998,10 +986,59 @@ export default function TableItem({
           {MapData(item, dataFor, excludes, onClick)}
         </tr>
       )}
-      {dataFor === "testsDetailQuestions" && (
+      {dataFor === "testsDetailQuestions" && (testtype === "DSAT" || testtype === "DSAT®")&& (
         <tr className="bg-white text-[17.5px]   leading-7 mt-[10px]">
-          {MapData(item, dataFor, excludes)}
-          {testtype === "DSAT" || testtype === "DSAT®" ? (
+          <td className="w-[174px] pl-[27px] pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-center">
+            <div>{item?.QuestionNumber}</div>
+          </td>
+          <td className="w-[124px] pl-[0] text-[#517CA8] text-[17.5px] font-normal text-left">
+            <div>{item?.QuestionType}</div>
+          </td>
+          <td className="w-[90px] pl-[0] text-[#517CA8] text-[17.5px] font-normal text-left">
+            <div>{item?.CorrectAnswer}</div>
+          </td>
+
+          <td className="w-[110px] pl-[0] pr-[28px]">
+            {item?.QuestionImage==="no"?"":<div className="w-[20px] h-[20px] bg-[#38C980] rounded-full mx-auto"></div>}
+          </td>
+          <td className="w-[114px] pl-[0] pr-[34px]">
+            {item?.AnswerImage==="no"?"":<div className="w-[20px] h-[20px] bg-[#FFCE84] rounded-full mx-auto"></div>}
+          </td>
+          <td
+                className={`w-[140px] pr-[58px] ${
+                  extratableitem[item?.QuestionNumber - 1]?.Passage == "Yes"
+                    ? "text-[#38C980]"
+                    : "text-[#FF7979]"
+                } text-[17.5px] font-semibold `}
+              >
+                {extratableitem[item?.QuestionNumber - 1]?.Passage}
+              </td>
+              <td className="w-[385px] pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-left max-w-[385px] text-ellipsis">
+                <div className="max-w-[342px] text-ellipsis overflow-hidden">{item?.Concepts}</div>
+              </td>
+              <td className="w-[220px] pr-[70.5px] text-[#517CA8] text-[17.5px] font-normal text-left">
+              <div className="max-w-[150px] text-ellipsis overflow-hidden">{item?.Strategies}</div>
+              </td>
+              <td className="w-[108px] pr-[28px] text-[#517CA8] text-[17.5px] font-normal text-left">
+              <div>{item?.AnswerChoices}</div>
+              </td>
+              <td className="w-[111.25px] pr-[45.25px] text-[#517CA8] text-[17.5px] font-normal text-left">
+              <div>{item?.scoring??"{Scale}"}</div>
+              </td>
+              <td className="font-medium flex justify-center px-1 min-w-[45px] py-[12.5px] pr-[20px]">
+            {!item.editable ? (
+              <></>
+            ) : (
+              <img
+                src={editIcon3}
+                className="cursor-pointer h-[25px] w-[25px]"
+                onClick={() => onClick.handleEditTestClick(item)}
+                alt=""
+              />
+            )}
+          </td>
+          {/* {MapData(item, dataFor, excludes)} */}
+          {/* {testtype === "DSAT" || testtype === "DSAT®" ? (
          
             <>
               <td>
@@ -1050,24 +1087,59 @@ export default function TableItem({
                 onClick={() => onClick.handleEditTestClick(item)}
               />
             )}
-          </td>
+          </td> */}
         </tr>
       )}
+      {dataFor === "testsDetailQuestions" && testtype==="SAT"&&(<tr>
+        <td className="w-[174px] pl-[27px] pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-center">
+            <div>{item?.QuestionNumber}</div>
+          </td>
+          <td className="w-[124px] pl-[0] text-[#517CA8] text-[17.5px] font-normal text-left">
+            <div>{item?.QuestionType}</div>
+          </td>
+          <td className="w-[394px] pl-[0] pr-[42.5px] text-[#517CA8] text-[17.5px] font-normal text-left">
+            <div className="max-w-[349px] overflow-hidden text-ellipsis">{item?.CorrectAnswer}</div>
+          </td>
+          <td className="w-[445px] pl-[0] pr-[103px] text-[#517CA8] text-[17.5px] font-normal text-left">
+            <div className="max-w-[342px] overflow-hidden text-ellipsis">{item?.Concepts}</div>
+          </td>
+          <td className="w-[219.5px] pl-[0] pr-[60.75px] text-[#517CA8] text-[17.5px] font-normal text-left">
+            <div className="max-w-[158.75px] overflow-hidden text-ellipsis">{item?.Strategies}</div>
+          </td>
+          <td className="w-[219.5px] pl-[0] pr-[60.75px] text-[#517CA8] text-[17.5px] font-normal text-left">
+            <div className="max-w-[158.75px] overflow-hidden text-ellipsis">{item?.Strategies}</div>
+          </td>
+          <td className="w-[108px] pl-[0] pr-[28px] text-[#517CA8] text-[17.5px] font-normal text-left">
+            <div className="max-w-[80px] overflow-hidden text-ellipsis">{item?.scoring??"{Scale}"}</div>
+          </td>
+          <td className="font-medium flex justify-center px-1 min-w-[45px] py-[12.5px] pr-[20px]">
+            {!item.editable ? (
+              <></>
+            ) : (
+              <img
+                src={editIcon3}
+                className="cursor-pointer h-[25px] w-[25px]"
+                onClick={() => onClick.handleEditTestClick(item)}
+                alt=""
+              />
+            )}
+          </td>
+      </tr>)}
       {dataFor === "allTests" && (
         <tr className="odd:bg-white font-medium text-[17.5px]  lead">
-          <td className="text-left pl-10">{item.testName}</td>
-          <td>
+          <td className="text-left pl-[66.5px] w-[350px] max-w-[350px] overflow-hidden text-ellipsis">{item.testName}</td>
+          <td className="w-[223px] text-left">
             {item.testType.endsWith("®")
               ? item.testType
               : item.testType.includes("Other")
               ? item.testType
               : item.testType + "®"}
           </td>
-          <td> {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
-          <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
-          <td> {item.no_of_assign !== null ? item.no_of_assign : "-"} </td>
-          <td className="font-medium px-1 py-4 ">
-            <div className="flex justify-end">
+          <td className="w-[241px] text-left pl-[8.75px]"> {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
+          <td className="w-[235.5px] text-left pl-[16px]">{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
+          <td className="w-[249px] text-center"> {item.no_of_assign !== null ? item.no_of_assign : "-"} </td>
+          <td className="font-medium px-1 py-4 w-[137.5px]">
+            <div className="flex justify-start items-center">
               <button
                 className="flex leading-none bg-[#FFA28D] text-white py-1.5 px-9 w-[100px] cursor-pointer rounded !text-base-15 !text-center justify-center"
                 onClick={() => navigate(`/all-tests/${item._id}`)}
@@ -1078,7 +1150,7 @@ export default function TableItem({
           </td>
           <td className="font-medium px-1 ">
             {checkTest(persona, item) && (
-              <div className="  flex justify-center items-center">
+              <div className="  flex justify-start items-center">
                 <button
                   className="flex leading-none bg-[#26435f4d] text-white py-1.5 px-6  w-[100px] !text-center cursor-pointer rounded !text-base-15 justify-center"
                   onClick={() => onClick.openRemoveTestModal(item)}
@@ -1091,11 +1163,11 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "allTestsSuperAdmin" && (
-        <tr className=" font-medium  lead  text-[17.5px] ">
-          <td className="pl-12 !text-left ">
+        <tr className=" font-medium  lead  text-[18.5px] ">
+          <td className="pl-[55px] !text-left ">
             <span className="">{item.testName}</span>
           </td>
-          <td className=" pl-5 !text-center ">
+          <td className=" pr-7 ">
             {item.testType === "Other"
               ? "ACT®"
               : item.testType.endsWith("®")
@@ -1107,17 +1179,17 @@ export default function TableItem({
               ? item.testType
               : item.testType + "®"}
           </td>
-          <td className=" pl-5 !text-center ">
+          <td className="  pl-1">
             {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}
           </td>
-          <td className=" pl-5 !text-center ">
+          <td className="  pr-3">
             {getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}
           </td>
-          <td className=" pl-5 !text-center ">
+          <td className="  ">
             {" "}
             {item.no_of_assign ? item.no_of_assign : "-"}{" "}
           </td>
-          <td className="font-medium pl-2 pr-1 py-3 pl-5 !text-center">
+          <td className="font-medium pl-2 pr-1 py-3  !text-center">
             <div className="flex justify-center">
               <p
                 className="flex leading-none text-[#517CA8] underline py-1.8 px-0 underline-offset-1 cursor-pointer rounded"

@@ -222,7 +222,7 @@ export default function TestDetail() {
     if (allQuestions.length === 0) return;
     let idx = subjects.findIndex((item) => item.selected === true);
     let tempdata = allQuestions[idx].map((item) => {
-      // console.log(item);
+      console.log(item);
       const {
         QuestionNumber,
         QuestionType,
@@ -235,6 +235,7 @@ export default function TestDetail() {
         Passage,
         Answers,
       } = item;
+      console.log({item})
       if (!item.Strategies) {
         return {
           QuestionNumber,
@@ -542,19 +543,28 @@ export default function TestDetail() {
     }
   };
   console.log(testData);
-  const tableHeaders = [
-    "Q No.",
+  const tableHeaders = testData.testType === "DSAT" || testData.testType === "DSAT®"? [
+    "Q No. (Raw Score)",
     "Q type",
     "Answer",
+    // ...(!testData?.testType?.includes("DSAT") ? [] : ["Q. Image"]),
+    // ...(!testData?.testType?.includes("DSAT") ? [] : ["A. Image"]),
+    "Q. Image",
+    "A. Image",
+    "Passage?",
+    // ...(!testData?.testType?.includes("DSAT") ? [] : ["Passage?"]),
     "Concept",
     "Strategy",
-    ...(!testData?.testType?.includes("DSAT") ? ["Choices"] : []),
-    ...(!testData?.testType?.includes("DSAT") ? [] : ["Q. Image"]),
-    ...(!testData?.testType?.includes("DSAT") ? [] : ["A. Image"]),
-    ...(!testData?.testType?.includes("DSAT") ? [] : ["Passage?"]),
+    "Choices",
+    // ...(!testData?.testType?.includes("DSAT") ? ["Choices"] : []),
     // ...(!testData?.testType?.includes("DSAT") ? ["Scoring"] : []),
+    "Scoring",
     "",
-  ];
+  ]:["Q No. (Raw Score)","Q type",
+  "Answer","Concept",
+  "Strategy",
+  "Choices","Scoring",
+  "",];
   const [richTextContent, setRichTextContent] = useState("");
   return (
     <>
@@ -585,7 +595,7 @@ export default function TestDetail() {
                       : testData.testName.substring(0, 11) + "..."
                     : ""}
                 </p>
-                <div className="border w-[364px] h-[224px] flex rounded shadow-lg justify-center items-center py-[20px] px-[27.5px]">
+                <div style={{boxShadow:"0px 0px 2.5px 0px rgba(0, 0, 0, 0.25)"}} className="border w-[364px] h-[224px] flex rounded justify-center items-center py-[20px] px-[13.75px]">
                   <AllTestDetail testData={testData} />
                 </div>
               </div>
@@ -594,7 +604,7 @@ export default function TestDetail() {
                   Sections
                 </p>
 
-                <div className="gap-y-1 border rounded p-4 shadow-lg w-[830px] h-[224px] ">
+                <div style={{boxShadow:"0px 0px 2.5px 0px rgba(0, 0, 0, 0.25)"}} className="gap-y-1 border rounded p-4 shadow-lg w-[830px] h-[224px] ">
                   <div className="mb-2 flex justify-between ">
                     <p className="inline-block w-[170px] font-semibold opacity-80 text-[#26435F] ">
                       {" "}
@@ -673,15 +683,18 @@ export default function TestDetail() {
                     return (
                       <PrimaryButton
                         key={idx}
-                        children={item.name}
-                        className={`py-[10.25px] text-[17.5px] mr-[30px] bg-transparent font-normal w-fit ${
+                        className={`py-[10.25px] text-[17.5px] mr-[30px] bg-transparent font-normal w-fit relative ${
                           item.selected
-                            ? "text-[#FFA28D] border-b-[#FFA28D] border-b-[2px]"
-                            : " text-[#26435F] border-b-[2px] border-b-[#26435F]"
+                            ? "text-[#FFA28D] border-b-transparent border-b-[3.75px]"
+                            : " text-[#26435F] border-b-[3.75px] border-b-transparent"
                         }`}
                         roundedClass="rounded-none"
                         onClick={() => handleSubjectChange(item._id)}
-                      />
+                      >{item.name}
+                      {item.selected&&<div className="h-[3.75px] bg-[#FFA28D] absolute bottom-[-3.333px] left-0 right-0 rounded-t-[3.75px]">
+
+                      </div>}
+                      </PrimaryButton>
                     );
                   })}
                 </div>

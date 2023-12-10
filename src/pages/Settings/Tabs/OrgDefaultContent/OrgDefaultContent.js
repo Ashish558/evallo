@@ -271,18 +271,21 @@ export default function AllTests() {
       text: "Assignment", //testName
       onCick: sortByAssignment,
       willDisplayDownArrow: assignmentSortState !== SORT_STATES.DESCENDING_ORDER,
+      className:'pl-[55px]'
     },
     {
       id: 2,
       text: "Type", // testType
       onCick: sortByType,
       willDisplayDownArrow: typeSortState !== SORT_STATES.DESCENDING_ORDER,
+      className:'pr-[50px]'
     },
     {
       id: 3,
       text: "Created On", // createdAt
       onCick: sortBycreateDate,
       willDisplayDownArrow: createdOnSortState !== SORT_STATES.DESCENDING_ORDER,
+      className:'pl-[40px]'
     },
     {
       id: 4,
@@ -309,7 +312,8 @@ export default function AllTests() {
     {
       id: 8,
       text: "Available For",
-      noArrow: true
+      noArrow: true,
+      className:'pr-[50px]'
     },
   ];
 
@@ -471,7 +475,7 @@ export default function AllTests() {
                />
             </div> */}
 
-        <div className="mt-6 w-[1700px]">
+        <div className="mt-3 w-[1700px] ">
           <Table
           widthFullTable={true}
           theadWidth={"w-[1700px]"}
@@ -480,6 +484,7 @@ export default function AllTests() {
             dataFor="allTestsSuperAdmin"
             data={filteredTests}
             tableHeaders={tableHeaders}
+            wrapperClassName={'pl-2'}
             headerObject={true}
             maxPageSize={10}
             onClick={{ openRemoveTestModal }}
