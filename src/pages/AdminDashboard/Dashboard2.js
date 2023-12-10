@@ -853,7 +853,7 @@ const plusSvg = (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" 
           <div className="mt-[7px] relative">
             <Table
               data={userData}
-              tableClass="table-auto !mt-0"
+              tableClass="table-auto !mt-0 !bg-transparent"
               AdminLatestSignUp={true}
               noScrollbar={true}
               headerObject={true}

@@ -89,7 +89,7 @@ else [ year, month, day] = value.split("-");
           )}
         </div>
       </td>
-      <td className=" text-[17.5px] !pr-[16px] pl-6  min-w-14 !py-4 text-left">
+      <td className=" text-[17.5px] !pr-[16px] !pl-6  min-w-14 !py-4 text-left">
         {/* <p className="max-w-[207px] text-ellipsis overflow-hidden whitespace-normal ">{item.email}</p> */}
         <div className="flex flex-col max-w-[207px]">
           {item.email?.length > 19 ? (

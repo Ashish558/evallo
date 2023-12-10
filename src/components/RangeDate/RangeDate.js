@@ -164,7 +164,7 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
 
       <InputSelect
         placeholder="Select"
-        valueClassName={`${removeUnderline ? "" : "font-semibold text-[15px]"} ${allorg?"!text-gray-500 ":"text-[#FFA28D]"} cursor-pointer items-center`}
+        valueClassName={`${removeUnderline ? "" : "font-semibold text-[15px] underline"} ${allorg?"!text-gray-500 ":"text-[#FFA28D]"} cursor-pointer items-center`}
         parentClassName="border-none text-xs text-[#26435F] w-fit relative z-[500] text-[17.5px] items-center"
         labelClassname="text-sm text-[17.5px]"
         inputContainerClassName={`border-none text-[17.5px] whitespace-nowrap font-normal ${allorg?"":"text-[#FFA28D]"} text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]} `}
