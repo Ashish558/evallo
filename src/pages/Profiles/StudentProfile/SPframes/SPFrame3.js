@@ -172,7 +172,7 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
   return (
     <div className="flex flex-col gap-5 -mt-5 design:gap-10">
       {" "}
-      <h1 className="text-[#26435F] translate-y-8 text-sm font-semibold cursor-pointer  text-base-20 flex items-center justify-start">
+      <h1 className="text-[#26435F] translate-y-8 text-sm font-semibold cursor-pointer  text-[20px] pb-4 flex items-center justify-start">
         Score progression
         <div className="inline-block my-auto ml-[18.75px] ">
           <svg
@@ -240,7 +240,7 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
       </div>
       <div className=" flex-1 w-full">
         <div className="flex items-center justify-between">
-          <h1 className="text-[#26435F]  text-sm font-semibold mb-1 text-base-20   flex items-center justify-start">
+          <h1 className="text-[#26435F]  text-sm font-semibold mb-1 text-[20px] pb-1  flex items-center justify-start">
             Time Management
             <div className="inline-block my-auto ml-[18.75px] cursor-pointer">
               <svg
@@ -321,7 +321,7 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
       </div>
       <div className=" flex-1 w-full">
         <div className="flex items-center justify-between">
-          <h1 className="text-[#26435F] text-sm font-semibold mb-1 text-base-20  flex items-center justify-start">
+          <h1 className="text-[#26435F] text-sm font-semibold mb-1 text-[20px] pb-1  flex items-center justify-start">
             Conceptual Accuracy 
             <div className="inline-block my-auto ml-[18.75px] cursor-pointer">
               <svg

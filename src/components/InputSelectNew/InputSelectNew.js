@@ -57,7 +57,7 @@ export default function InputSelectNew({
     >
       {label && (
         <label className={`font-semibold  inline-block ${biggerText ? "text-lg" : 'text-[17.5px]'} ${labelClassname}`}>
-          {label}
+          {label} 
           {required && (
             <span className="text-primaryRed inline-block pl-1">*</span>
           )}
@@ -96,7 +96,7 @@ export default function InputSelectNew({
               {placeholder}{" "}
             </span>
           ) : (
-            <span className={`mr-10 ${customFontSize?customFontSize:'text-[17.5px]'} whitespace-nowrap ${false ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>{value}</span>
+            <span className={`mr-12 ${customFontSize?customFontSize:'text-[15px]'} whitespace-nowrap ${false ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>{value}</span>
           )}
           {ICON2 && <img src={ICON2} className={`ml-4 inline-block ${iconClass} mt-[-5px] `} alt="icon" />}
 
