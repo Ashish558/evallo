@@ -708,7 +708,7 @@ export default function TutorProfile({ isOwn }) {
             hideShadow
             titleClassName="text-left"
             bgClassName="bg-profilecard"
-            className=" w-[1315.2px]"
+            className=" w-[1313.954px]"
             // title={
             //    <EditableText text=''
             //       editable={editable}
@@ -720,15 +720,15 @@ export default function TutorProfile({ isOwn }) {
 
             body={
               <>
-                <div className="bg-white rounded-md shadow-[0px_0px_2px_0px_#00000040]">
-                  <div className="h-[120px]  rounded-t-md shadow-t-[0px_0px_2px_0px_#00000040] flex relative bg-[#26435F]">
+                <div className="bg-white rounded-md shadow-[0px_0px_2px_0px_#00000040] h-[297.547px]">
+                  <div className="h-[125.519px]  rounded-t-md shadow-t-[0px_0px_2px_0px_#00000040] flex relative bg-[#26435F]">
                     <div className="ml-8  pt-1  w-4/6">
                       <div className="flex h-full  items-end">
-                        <div className="mb-[-80px] h-min">
+                        <div className={isOwn === true || persona === "admin" ? "mb-[-135px] h-min" : "mb-[-112px] h-min"}>
                           <ProfilePhoto
                             isTutor={true}
-                            imgSizeClass={"!w-[150px] !h-[150px]"}
-                            className={"!w-[150px] !h-[150px]"}
+                            imgSizeClass={"!w-[187.529px] !h-[187.529px]"}
+                            className={"!w-[187.529px] !h-[187.529px] "}
                             src={
                               user.photo
                                 ? `${awsLink}${user.photo}`
@@ -753,7 +753,7 @@ export default function TutorProfile({ isOwn }) {
                             </p>
                           )}
                         </div>
-                        <div className="pl-4">
+                        <div className="pl-[26px]">
                           <div className="flex justify-start items-center ">
                             <p className="text-white text-[25px] text-base-25 font-semibold">
                               {user.firstName + " "}
@@ -803,22 +803,22 @@ export default function TutorProfile({ isOwn }) {
                     )}
                     {(persona === "student" || persona === "parent") &&
                       organization?.settings?.permissions[2]?.choosedValue && (
-                        <div className="ml-auto mt-auto pt-[25px] pb-[15px] mr-8">
-                          <div className="flex gap-4 items-center mb-[10px]">
-                            <img src={mail} alt="mailLogo"></img>
+                        <div className="ml-auto  mt-[20px] mr-8">
+                          <div className="flex gap-[20px] items-center mb-[8px] leading-normal font-normal">
+                            <img className="h-[17.95px]" src={mail} alt="mailLogo"></img>
                             <p className="text-white text-[17.503px] text-base-17-5">
                               {user.email}
                             </p>
                           </div>
-                          <div className="flex gap-4 items-center mb-[10px]">
-                            <img src={call} alt="callLogo"></img>
+                          <div className="flex gap-[20px] items-center mb-[8px] leading-normal font-normal">
+                            <img className="h-[17.95px]" src={call} alt="callLogo"></img>
                             <p className="text-white text-[17.503px] text-base-17-5">
                               {user.phoneCode}
                               {user.phone}
                             </p>
                           </div>
-                          <div className="flex gap-4 items-center mb-[10px]">
-                            <img src={linkedin} alt="linkedinLogo"></img>
+                          <div className="flex gap-[20px] items-center leading-normal font-normal">
+                            <img className="h-[17.95px]" src={linkedin} alt="linkedinLogo"></img>
                             <a
                               className="text-white text-[17.503px] text-base-17-5"
                               href={userDetail.linkedIn}
@@ -836,7 +836,7 @@ export default function TutorProfile({ isOwn }) {
                   </div>
                   <div className="flex ml-4  h-[120px] overflow-y-auto">
                     <div className="min-w-[182px]"></div>
-                    <div className="my-[33px] pl-1 pr-[41px]">
+                    <div className="my-[33px] pl-[48px] pr-[41px]">
                       <p className="text-[17.503px] text-base-17-5 text-[#517CA8] whitespace-normal text-left">
                         {userDetail.about}
                       </p>
@@ -851,9 +851,9 @@ export default function TutorProfile({ isOwn }) {
             }
           />
           <div className="w-[249.6px]">
-            <div className="flex ">
-              <img className="" src={experience} alt="experience"></img>
-              <div className="ml-6">
+            <div className="flex items-start">
+              <img className="mt-[7px]" src={experience} alt="experience"></img>
+              <div className="ml-[22.5px]">
                 <p className="text-[#24A3D9] font-semibold text-[20px] text-base-20">
                   Education
                 </p>
@@ -862,10 +862,10 @@ export default function TutorProfile({ isOwn }) {
                 </p>
               </div>
             </div>
-            <div className="flex  pl-2 mt-[43.76px] ">
-              <img className="" src={bag} alt="experience"></img>
+            <div className="flex  pl-2 mt-[43.76px] items-start ">
+              <img className="mt-[7px]" src={bag} alt="experience"></img>
 
-              <div className="ml-6">
+              <div className="ml-[22.5px]">
                 <p className="text-[#24A3D9] font-semibold text-[20px] text-base-20">
                   Experience
                 </p>
@@ -899,7 +899,7 @@ export default function TutorProfile({ isOwn }) {
                      }  */}
               <div>
                 <div className="flex font-semibold items-center">
-                  <div className="text-xl text-[#26435F] text-base-20 text-[#26435F] font-semibold">
+                  <div className="text-xl text-[#26435F] text-base-20 mb-[7.3px] font-semibold">
                     Expertise
                   </div>
                   {(isOwn == true || persona === "admin") && (
@@ -965,7 +965,7 @@ export default function TutorProfile({ isOwn }) {
                             it[0] !== "6" && (
                               <div
                                 key={idx}
-                                className="bg-white px-2 py-[16px] h-min  text-[#517CA8] text-base-17-5 !rounded-5 mb-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040]  w-full"
+                                className="bg-white px-2 py-[16px] h-min  text-[#517CA8] text-[17.5px] !rounded-5 mb-[7.5px] shadow-[0px_0px_2.500001907348633px_0px_#00000040]  w-full"
                               >
                                 {it}
                               </div>
@@ -1155,7 +1155,7 @@ export default function TutorProfile({ isOwn }) {
                             </button>
                           </div>
                           <div>
-                            <button className="rounded-full h-[33px] w-[100px] bg-[#26435F33] text-base-15 text-[#26435F]">
+                            <button className="rounded-full h-[33px] px-[22px] bg-[#26435F33] text-base-15 text-[#26435F]">
                               {tutorTotalReviews[currentPage - 1]?.service[0]}
                             </button>
                           </div>
@@ -1215,7 +1215,7 @@ export default function TutorProfile({ isOwn }) {
 
             <div className="col-span-3">
               <div className="flex font-semibold items-center">
-                <div className="text-xl text-[#26435F] text-base-20 text-[#26435F] font-semibold">
+                <div className="text-xl text-[#26435F] text-base-20 mb-[7.3px] font-semibold">
                   Interests
                 </div>
                 {(isOwn === true || persona === "admin") && (
@@ -1281,7 +1281,7 @@ export default function TutorProfile({ isOwn }) {
                   //    </div> */}
 
                   // </div>
-                  <div className="w-full relative  h-[660px] p-1 flex flex-col gap-1 !bg-[#F5F8FA]  rounded-md items-center overflow-y-auto custom-scroller">
+                  <div className="w-full relative  h-[660px] p-1 flex flex-col gap-[7.5px] !bg-[#F5F8FA]  rounded-md items-center overflow-y-auto custom-scroller">
                     {/* {settings ? (
                              settings.interest.length > 0 &&
                              userDetail.interest.map((id, idx) => {

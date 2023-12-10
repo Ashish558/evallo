@@ -103,7 +103,8 @@
 
 #listedData h1 {
     color: black;
-    font-size: 17px;
+    font-size: 20px;
+    word-wrap: break-word;
     font-weight: 500;
     display: block;
     padding: 0;
@@ -111,8 +112,8 @@
 }
 
 #listedData img {
-    width: 28px;
-    height: 28px;
+    width: 35px;
+    height: 35px;
 }
 
 .btnGreen {

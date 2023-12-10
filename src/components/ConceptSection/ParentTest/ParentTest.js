@@ -66,8 +66,8 @@ export default function ParentTest({ styles, assignedTestId, testId, testName, s
                   className="flex mr-2"
                   style={{ gap: "6px" }}
                >
-                  <p className="text-xs font-semibold opacity-50 text-[#517CA8] text-base-15">Due Date: </p>
-                  <h3 className="opacity-60 text-xs font-semibold text-[#517CA8] text-base-15">
+                  <p className=" font-semibold opacity-50 text-[#517CA8] text-base-15 text-[15px]">Due Date: </p>
+                  <h3 className="opacity-60  font-semibold text-[#517CA8] text-base-15 text-[15px]">
                   {getFormattedDate(dueDate, dateFormat)}
                   </h3>
                </div>
@@ -80,8 +80,8 @@ export default function ParentTest({ styles, assignedTestId, testId, testName, s
                      className="flex items-center justify-end"
                      style={{ gap: "10px" }}
                   >
-                     <img src={downloadImage} onClick={handleReportNavigate} alt='download-icon' className='cursor-pointer' />
-                     <div className="button  text-[#7D7] p-[10px] rounded-[6px] w-[190px] text-center text-base-17-5 font-semibold cursor-pointer" onClick={handleNavigate} >
+                     <img src={downloadImage} onClick={handleReportNavigate} alt='download-icon' className='h-[35px] w-[35px] cursor-pointer' />
+                     <div className="button  text-[#7D7] p-[10px] rounded-[6px] w-[190px] text-center text-[17.5px] font-normal cursor-pointer" onClick={handleNavigate} >
                         {/* {score} */}
                         View Report
                      </div>
@@ -93,8 +93,8 @@ export default function ParentTest({ styles, assignedTestId, testId, testName, s
                         className="flex items-center justify-end"
                         style={{ gap: "10px" }}
                      >
-                        <img src={downloadImage} alt='download-icon' onClick={handleReportNavigate} className="cursor-pointer" />
-                        <div className="button  text-[#FFCE84] p-[10px] rounded-[6px] w-[190px] text-center text-base-17-5 font-semibold">
+                        <img src={downloadImage} alt='download-icon' onClick={handleReportNavigate} className="h-[35px] w-[35px] cursor-pointer" />
+                        <div className="button  text-[#FFCE84] p-[10px] rounded-[6px] w-[190px] text-center text-[17.5px] font-semibold">
                            Started
                         </div>
                      </div>
@@ -105,8 +105,8 @@ export default function ParentTest({ styles, assignedTestId, testId, testName, s
                         className="flex items-center justify-end"
                         style={{ gap: "10px" }}
                      >
-                        <img alt='download-icon' src={downloadImage} onClick={handleReportNavigate} className="cursor-pointer" />
-                        <div className="button  text-[#FF6961] p-[10px] rounded-[6px] w-[190px] text-center text-base-17-5 font-semibold">
+                        <img alt='download-icon' src={downloadImage} onClick={handleReportNavigate} className="h-[35px] w-[35px] cursor-pointer" />
+                        <div className="button  text-[#FF6961] p-[10px] rounded-[6px] w-[190px] text-center text-[17.5px] font-normal">
                            Not Started
                         </div>
                      </div>

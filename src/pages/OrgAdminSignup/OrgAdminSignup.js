@@ -475,81 +475,86 @@ export default function OrgAdminSignup() {
     return flag;
    }
   }
-const [emailExistLoad,setEmailExistLoad]=useState(false)
-const handleClick = () => {
-  const emailAlreadyExists = async () => {
-      setEmailExistLoad(true)
-      let cc=0;
-    let checked = false;
-    try {
-      
-      let data = {
-        workemail: values.email,
-      };
-      //   alert(data.workemail)
-      let result = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}api/user/CheckEmail`,
-        data,
-        {
-          headers: {
-            "content-Type": "application/json",
-          },
-        }
-      );
-      if (result) checked = true;
-      cc++;
-    } catch (e) {
-      console.error(e.response?.data?.message);
-      cc++;
-      setError({
-        ...error,
-        email: e.response?.data?.message,
-      });
-    }
-    try {
-      let data = {
-        company: values.company,
-      };
-      //   alert(data.workemail)
-      let result = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}api/user/CheckCompany`,
-        data,
-        {
-          headers: {
-            "content-Type": "application/json",
-          },
-        }
-      );
-      cc++;
-    } catch (e) {
-      checked = false;
-      cc++;
-      setError({
-        ...error,
-        company: e.response.data.message,
-      });
-    }
-    if (checked === true ) {
-      handleSignup();
-      /* setFrames({
-        ...frames,
-        signupActive: false,
-        subscription: true,
-      }); */
-      // setcurrentStep(currentStep => currentStep + 1)
-    }
-    if(cc>=2){
-      setEmailExistLoad(false)
-    }
-  };
-  
-  if(!handleNextErrors(true)){
-    return 
+  function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   }
+  
+const [emailExistLoad,setEmailExistLoad]=useState(false)
+  const handleClick = () => {
+    const emailAlreadyExists = async () => {
+      setEmailExistLoad(true)
+      let cc = 0;
+      let checked = false;
+      try {
 
-  else
-    emailAlreadyExists();
-};
+        let data = {
+          workemail: values.email,
+        };
+        //   alert(data.workemail)
+        let result = await axios.post(
+          `${process.env.REACT_APP_BASE_URL}api/user/CheckEmail`,
+          data,
+          {
+            headers: {
+              "content-Type": "application/json",
+            },
+          }
+        );
+        if (result) checked = true;
+        cc++;
+      } catch (e) {
+        console.error(e.response?.data?.message);
+        cc++;
+        setError({
+          ...error,
+          email: e.response?.data?.message,
+        });
+      }
+      try {
+        let data = {
+          company: values.company,
+        };
+        //   alert(data.workemail)
+        let result = await axios.post(
+          `${process.env.REACT_APP_BASE_URL}api/user/CheckCompany`,
+          data,
+          {
+            headers: {
+              "content-Type": "application/json",
+            },
+          }
+        );
+        cc++;
+      } catch (e) {
+        checked = false;
+        cc++;
+        setError({
+          ...error,
+          company: e.response.data.message,
+        });
+      }
+      if (checked === true) {
+        handleSignup();
+        /* setFrames({
+          ...frames,
+          signupActive: false,
+          subscription: true,
+        }); */
+        // setcurrentStep(currentStep => currentStep + 1)
+      }
+      if (cc >= 2) {
+        setEmailExistLoad(false)
+      }
+    };
+
+    if (!handleNextErrors(true)) {
+      return
+    }
+
+    else
+      emailAlreadyExists();
+  };
  
 
 
@@ -632,7 +637,7 @@ const handleClick = () => {
   const [clientSecret, SetClientSecret] = useState();
 
   return (
-    <div className="   pb-6 relative" id={styles.signUp}>
+    <div className="pb-6 relative" id={styles.signUp}>
       <div className={`absolute bg-[#0000007a] flex items-center justify-center h-full w-full z-10`} 
         style={{
           display: isOtplessModalActive ? "" : "none"
@@ -745,7 +750,7 @@ const handleClick = () => {
                       pattern="[a-zA-Z0-9]+"
                       value={values.firstName}
                       onChange={(e) => {
-                        const regex = /^[a-zA-Z0-9 ]*$/;
+                        const regex = /^[a-zA-Z]*$/;
                         const isValid = regex.test(e.target.value);
                         if (isValid)
                           setValues({
@@ -765,7 +770,7 @@ const handleClick = () => {
                       pattern="[a-zA-Z0-9]+"
                       value={values.lastName}
                       onChange={(e) => {
-                        const regex = /^[a-zA-Z0-9 ]*$/;
+                        const regex = /^[a-zA-Z]*$/;
                         const isValid = regex.test(e.target.value);
                         if (isValid)
                           setValues({
