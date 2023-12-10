@@ -1181,7 +1181,7 @@ export default function TableItem({
           <td className="text-left pl-[66.5px] w-[350px] max-w-[350px] overflow-hidden text-ellipsis">
             {item.testName}
           </td>
-          <td className="w-[223px] text-left">
+          <td className="w-[223px] text-left pl-14">
             {item.testType.endsWith("®")
               ? item.testType
               : item.testType.includes("Other")
