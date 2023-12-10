@@ -815,12 +815,12 @@ const [toEdit, setToEdit] = useState({
                     {user.firstName} {user.lastName}
 
                   </div>
-                  <div className="flex mt-1 text-base-17-5 items-center text-[#F3F5F7]">
+                  <div className="flex text-[17.5px]  items-center text-[#F3F5F7]">
                     {userDetail?.schoolName
                       ? userDetail?.schoolName
                       : "Sample School Name"}
                   </div>
-                  <div className="flex  text-base-17-5 mt-1 items-center text-[#F3F5F7]">
+                  <div className="flex  text-[17.5px] mt-1 items-center text-[#F3F5F7]">
                     {userDetail?.grade ? userDetail?.grade + `${' '} Grade` : "12th Grade"}
 
                     {/* <p className='font-semibold text-[22px] mr-4'>
@@ -855,7 +855,7 @@ const [toEdit, setToEdit] = useState({
                         <p>
                           <span>
                             <img
-                              className="inline-block  w-[22.521px] h-[18px] mr-2 cursor-pointer "
+                              className="inline-block  w-[24px] h-[18px] mr-2 cursor-pointer "
                               src={emailIcon}
                               alt="email"
                             />
@@ -864,17 +864,17 @@ const [toEdit, setToEdit] = useState({
                           <span>
                             <img
                               onClick={() => handleCopyClick(user?.email)}
-                              className="inline-block ml-2 w-[22.521px] h-[18px] mr-2 cursor-pointer"
+                              className="inline-block ml-2 w-[10.94px] h-[13.13px] mr-2 cursor-pointer"
                               src={copy1}
                               alt="copy"
 
                             />
                           </span>
                         </p>
-                        <p>
-                          <span>
+                        <p className="ml-[2px] mt-1">
+                          <span className=" ">
                             <img
-                              className="inline-block  w-[22.521px] h-[18px] mr-2 cursor-pointer"
+                              className="inline-block  w-[24px] h-[18px] mr-2 cursor-pointer"
                               src={phoneIcon}
                               alt="phone"
                             />
@@ -1062,7 +1062,7 @@ const [toEdit, setToEdit] = useState({
             toEdit={toEdit}
           />
           <div className="flex-1 mt-16 min-h-[400px]">
-            <p className="mb-[-33px] text-sm text-[#26435F] font-semibold text-base-20 pl-[2px]">
+            <p className="mb-[-33px] text-sm text-[#26435F] font-semibold text-[20px] pb-[2px] pl-[2px]">
               Latest Assignments
             </p>
 

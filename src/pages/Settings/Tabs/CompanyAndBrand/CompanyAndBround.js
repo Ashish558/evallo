@@ -12,7 +12,7 @@ import logo from "../../../../assets/icons/Frame 31070.svg";
 import orgDefaultLogo from "../../../../assets/images/org-default.png";
 import lock from "../../../../assets/icons/lock.svg";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Country } from "country-state-city";
 import UploadIcon from "../../../../assets/icons/basil_file-upload-outline.svg";
@@ -20,22 +20,31 @@ import styles from "./styles.module.css";
 
 import { useRef } from "react";
 
-import { useUpdateUserMutation } from "../../../../app/services/users";
+import { 
+  useUpdateUserMutation,
+  useLazyGetPersonalDetailQuery,
+  useLazyGetOrganizationQuery,
+} from "../../../../app/services/users";
+
 import {
   useUpdateOrgLogoMutation,
   useUpdateUserOrganizationMutation,
 } from "../../../../app/services/organization";
 import { object } from "prop-types";
 import axios from "axios";
+import { updateOrganization } from "../../../../app/slices/organization";
 // import { trim } from "jquery";
 
 const CompanyAndBround = () => {
+  const dispatch = useDispatch();
   const { organization } = useSelector((state) => state.organization);
   const userData = useSelector((state) => state.user);
   const [updateRole, updateRoleStatus] = useUpdateUserMutation();
   const [updateUserOrg, updateUserOrgStatus] =
     useUpdateUserOrganizationMutation();
   const [updateOrgLogo, updateOrgLogoStatus] = useUpdateOrgLogoMutation();
+  const [getPersonalDetail, getPersonalDetailResp] = useLazyGetPersonalDetailQuery();
+  const [getOrgDetails, getOrgDetailsResp] = useLazyGetOrganizationQuery();
 
   const [studentServed, setStudentServed] = useState(studentServedData);
   const [instructions, setInstructions] = useState(instructionFormat);
@@ -107,10 +116,13 @@ const CompanyAndBround = () => {
     try {
       updateUserOrg(values)
         .then((res) => {
-          if (res?.data) {
+          if (res?.error) {
+            alert("An unexpected error occured");
+          } else if (res?.data) {
             alert("Updated successfully!");
-          } else if (res?.error) {
-            alert("Updated successfully!");
+            console.log('resp-', res.data);
+            dispatch(updateOrganization(res.data.orgDetails));
+            // window.location.reload()
           }
           console.log("org updated", values);
         })
@@ -126,6 +138,31 @@ const CompanyAndBround = () => {
       console.error(e);
     }
   };
+
+  useEffect(() => {
+    getPersonalDetail()
+    .then(data => {
+        if(data?.error) {
+          console.error("Error in getPersonalDetail");
+          console.error(data?.error);
+          return;
+        }
+        const user = data?.data?.data?.user;
+    
+        getOrgDetails(user?.associatedOrg)
+        .then(data => {
+          if(data?.error) {
+            console.error("Error in getPersonalDetail");
+            console.error(data?.error);
+            return;
+          }
+          console.log("org data");
+          console.log(data);
+          dispatch(updateOrganization(data?.data?.organisation));
+        })
+    })
+
+  }, []);
 
   useEffect(() => {
     if (country.length === 0) {

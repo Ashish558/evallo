@@ -1894,7 +1894,7 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                                  rows={5}
                                  className="bg-lightWhite w-full outline-0 px-5 py-4 rounded"
                               ></textarea> */}
-                    <div>
+                    <div className="">
                       <div className="grid grid-cols-12">
                         <div className="col-span-2">
                           <ProfilePhoto

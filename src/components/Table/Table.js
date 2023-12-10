@@ -214,15 +214,15 @@ export default function Table(props) {
                 return (
                   <tr
                     key={index}
-                    className="bg-white leading-8 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] text-[17.5px] "
+                    className="bg-transparent shadow-[0px_0px_2px_rgba(0,0,0,0.25)] text-[17.5px] text-[#517CA8] font-normal leading-[21px]"
                   >
-                    <td className="opacity-0 text-[17.5px] px-[10px] min-w-14 py-4 ">
+                    <td className="opacity-1 text-[17.5px] px-[10px] !pt-[18.5px] !pb-[19.5px] min-w-14 py-4 ">
                       {it.service}
                     </td>
-                    <td className="opacity-0 text-[17.5px] px-[10px] min-w-14 py-4 ">
+                    <td className="opacity-1 text-[17.5px] px-[10px] !pt-[18.5px] !pb-[19.5px] min-w-14 py-4 ">
                       {it.actively_using}
                     </td>
-                    <td className="opacity-0 text-[17.5px] px-[10px] min-w-14 py-4 ">
+                    <td className="opacity-1 text-[17.5px] px-[10px] !pt-[18.5px] !pb-[19.5px] min-w-14 py-4 ">
                       {it.total_used}
                     </td>
                   </tr>

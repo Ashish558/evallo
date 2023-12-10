@@ -2,25 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getMonthName } from "../../utils/utils";
 
-import ResendConfirmation from "../../assets/assignedTests/resendConfirmation.svg";
 import UploadIcon from "../../assets/assignedTests/upload.svg";
 import DownloadIcon from "../../assets/icons/download.png";
 import SuccessIcon from "../../assets/assignedTests/success_green.svg";
 import FailIcon from "../../assets/assignedTests/fail_red.svg";
 import YellowIcon from "../../assets/assignedTests/yellow.svg";
 import LightBlueIcon from "../../assets/icons/Test Statusred.svg";
-import RedIcon from "../../assets/assignedTests/red.svg";
 import GreenIcon from "../../assets/assignedTests/green.svg";
-import GrayIcon from "../../assets/assignedTests/gray.svg";
 import editIcon3 from "../../assets/YIcons/material-symbols_edit-outline.svg";
-
-import RemoveIcon from "../../assets/icons/remove.svg";
-import EditTestIcon from "../../assets/icons/edit-test.svg";
 import TrashIcon from "../../assets/icons/ic_outline-delete.svg";
 import TrashIcon2 from "../../assets/icons/trash-blue.svg";
-import styles from "./styles.module.css";
 import AddIcon from "../../assets/icons/plus_colored.svg";
-import EditIcon from "../../assets/icons/edit_logo.svg";
 import DeleteIcon from "../../assets/icons/delete_logo.svg";
 import DeleteIconAllOrgs from "../../assets/icons/blue_delete.svg";
 import DeleteTutorIcon from "../../assets/icons/delete-tutor.svg";
@@ -36,17 +28,9 @@ import {
 } from "../../app/services/users";
 import { useSelector } from "react-redux";
 import { useLazyGetTestResponseQuery } from "../../app/services/test";
-import {
-  checkTest,
-  getFormattedDate,
-  getScore,
-  getScoreStr,
-} from "../../utils/utils";
+import { checkTest, getFormattedDate, getScoreStr } from "../../utils/utils";
 import InputField from "../InputField/inputField";
-import CCheckbox from "../CCheckbox/CCheckbox";
 import SCheckbox from "../CCheckbox/SCheckbox";
-import organization from "../../app/slices/organization";
-import { useDeleteUserMutation } from "../../app/services/admin";
 import Modal from "../Modal/Modal";
 import { useDeleteAdminMutation } from "../../app/services/superAdmin";
 
@@ -134,18 +118,24 @@ export default function TableItem({
           setScore(`${score.cumulative} ${score.right}`);
 
           setAllTestsForStudentTest((list) => {
-            if(list === undefined || list === null || list.length === 0) return list;
+            if (list === undefined || list === null || list.length === 0)
+              return list;
             const newList = [...list];
-            newList.find(i => i.assignedTestId === item.assignedTestId).scores = score;
+            newList.find(
+              (i) => i.assignedTestId === item.assignedTestId
+            ).scores = score;
             return newList;
           });
 
           setfilteredTestsForStudentTest((list) => {
-            if(list === undefined || list === null || list.length === 0) return list;
+            if (list === undefined || list === null || list.length === 0)
+              return list;
             const newList = [...list];
-            newList.find(i => i.assignedTestId === item.assignedTestId).scores = score;
+            newList.find(
+              (i) => i.assignedTestId === item.assignedTestId
+            ).scores = score;
             return newList;
-          })
+          });
         });
       }
     }
@@ -201,8 +191,7 @@ export default function TableItem({
             ).scores = score;
             return newList;
           });
-          });
-        
+        });
       }
     }
   }, [dataFor, item]);
@@ -320,32 +309,28 @@ export default function TableItem({
   const options = { year: "numeric", month: "long", day: "numeric" };
   const formattedDate = date.toLocaleDateString("en-US", options);
 
-     //  format monthName date, year
-     const formatDate= (value)=>{
-      return value
-      let [ year, month, day] = value.split("-");
-       if(dateFormat==="dd/mm/yy"){
-        [ day, month,  year] = value.split("-");
-       }
-      else  if(dateFormat==="mm/dd/yy"){
-        [ month, day, year] = value.split("-");
-       }
-  else [ year, month, day] = value.split("-");
-      const monthName = getMonthName(month-1);
-      console.log(
-       { 
-         value : value,
-         day : day,
-         month : month,
-         year : year,
-         monthName :monthName
-        }
-     );
-      
-      let formattedDate = `${monthName}` + " " + `${year}` + `,` + `${day}`;
-     
-      return formattedDate
-     }
+  //  format monthName date, year
+  const formatDate = (value) => {
+    return value;
+    let [year, month, day] = value.split("-");
+    if (dateFormat === "dd/mm/yy") {
+      [day, month, year] = value.split("-");
+    } else if (dateFormat === "mm/dd/yy") {
+      [month, day, year] = value.split("-");
+    } else [year, month, day] = value.split("-");
+    const monthName = getMonthName(month - 1);
+    console.log({
+      value: value,
+      day: day,
+      month: month,
+      year: year,
+      monthName: monthName,
+    });
+
+    let formattedDate = `${monthName}` + " " + `${year}` + `,` + `${day}`;
+
+    return formattedDate;
+  };
 
   const getPhone = (val) => {
     //console.log(item)
@@ -398,12 +383,12 @@ export default function TableItem({
       {dataFor === "popularServices" && (
         <>
           <tr className=" text-[17.5px] font-medium">
-            <td className="py-4 px-[10px]">{item.service?.length>15?<div className="flex flex-col"><p>{item.service?.slice(0,15)}</p><p>{item.service?.slice(15,item?.service?.length)}</p></div>:item.service}</td>
-            <td className="py-4 px-[10px]">{item.actively_using}</td>
-            <td className="py-4 px-[10px]">{item.total_used}</td>
-            <td className="py-4 px-[10px]">{item.scheduled_hours}</td>
-            <td className="py-4 px-[10px]">{item.completed_hours}</td>
-            <td className="py-4 px-[10px]">{item.percent_of_business}</td>
+            <td className="!py-[18.5px] px-[10px] w-[205.6px] !pl-[31.25px] text-left">{item.service?.length>15?<div className="flex flex-col"><p>{item.service?.slice(0,15)}</p><p>{item.service?.slice(15,item?.service?.length)}</p></div>:item.service}</td>
+            <td className="!py-[18.5px] px-[10px] w-[178.5px] !pr-[31.5px] text-center">{item.actively_using}</td>
+            <td className="!py-[18.5px] px-[10px] w-[147.13px] !pr-[36.13px] text-center">{item.total_used}</td>
+            <td className="!py-[18.5px] px-[10px] w-[207.13px] !pr-[31.13px] text-center">{item.scheduled_hours}</td>
+            <td className="!py-[18.5px] px-[10px] w-[211.11px] !pr-[31.11px] text-center">{item.completed_hours}</td>
+            <td className="!py-[18.5px] px-[10px] w-[174.37px] !pr-[31.37px] text-center">{item.percent_of_business}</td>
           </tr>
         </>
       )}
@@ -452,8 +437,10 @@ export default function TableItem({
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 text-left">
             <div className="my-[6px]">
-              {item?.email?.toLowerCase().length > 15 ? item?.email?.toLowerCase().slice(0, 15) + '...' : item?.email?.toLowerCase()}
-              </div>
+              {item?.email?.toLowerCase().length > 15
+                ? item?.email?.toLowerCase().slice(0, 15) + "..."
+                : item?.email?.toLowerCase()}
+            </div>
           </td>
 
           <td className=" text-[17.5px] !pl-6 pr-1  min-w-14  text-left capitalize">
@@ -493,7 +480,11 @@ export default function TableItem({
                     : true
                 }
                 tableDropdown={true}
-                value={organization2?.settings?.leadStatus?.includes(leadStatus) ? leadStatus : "-"}
+                value={
+                  organization2?.settings?.leadStatus?.includes(leadStatus)
+                    ? leadStatus
+                    : "-"
+                }
                 placeholderClass="text-base-17-5"
                 optionData={organization2?.settings?.leadStatus}
                 inputContainerClassName={`min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center capitalize `}
@@ -508,7 +499,11 @@ export default function TableItem({
             <InputSelect
               disabled={item?.userType === "tutor" ? false : true}
               tableDropdown={true}
-              value={organization2?.settings?.tutorStatus?.includes(tutorStatus) ? tutorStatus : "-"}
+              value={
+                organization2?.settings?.tutorStatus?.includes(tutorStatus)
+                  ? tutorStatus
+                  : "-"
+              }
               optionData={organization2?.settings?.tutorStatus}
               inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center capitalize text-base-17-5"
               optionClassName="text-[17.5px] text-base-17-5"
@@ -571,7 +566,12 @@ export default function TableItem({
           </td>
           <td className="font-normal text-[17.5px] px-1  min-w-14 ">
             <div className="cursor-pointer">
-              <span className="font-['Inter']" style={{ textDecoration: "underline" }}>edit</span>
+              <span
+                className="font-['Inter']"
+                style={{ textDecoration: "underline" }}
+              >
+                edit
+              </span>
             </div>
           </td>
           <td className="font-normal">
@@ -652,13 +652,27 @@ export default function TableItem({
               {item.studentName}
             </span>
           </td>
-          <td className={`font-medium px-1 py-3 text-left ${persona === "admin" ? "pl-[28px]" : ""}`}>{item.testName}</td>
-          <td className={`text-[17.5px] px-1  min-w-14 py-3  ${persona === "admin" ? "pl-[28px] text-left" : "text-center"}`}>
+          <td
+            className={`font-medium px-1 py-3 text-left ${
+              persona === "admin" ? "pl-[28px]" : ""
+            }`}
+          >
+            {item.testName}
+          </td>
+          <td
+            className={`text-[17.5px] px-1  min-w-14 py-3  ${
+              persona === "admin" ? "pl-[28px] text-left" : "text-center"
+            }`}
+          >
             <span onClick={() => onClick.redirect(item)} className="">
               {getFormattedDate(item.assignedOn, dateFormat).replace(/-/g, "/")}
             </span>
           </td>
-          <td className={`text-[17.5px] px-1 min-w-14 py-3 text-center ${persona === "admin" ? "text-left" : "text-center"} `}>
+          <td
+            className={`text-[17.5px] px-1 min-w-14 py-3 text-center ${
+              persona === "admin" ? "text-left" : "text-center"
+            } `}
+          >
             <span
               onClick={() => onClick.redirect(item)}
               className={`${
@@ -669,13 +683,23 @@ export default function TableItem({
             </span>
           </td>
 
-          <td className={`font-medium px-1  min-w-14 py-3 ${persona === "admin" ? "text-left pl-[28px]" : "text-center"}`}>{item.assignedBy}</td>
+          <td
+            className={`font-medium px-1  min-w-14 py-3 ${
+              persona === "admin" ? "text-left pl-[28px]" : "text-center"
+            }`}
+          >
+            {item.assignedBy}
+          </td>
           <td className="font-medium px-1 min-w-14 py-3">
             <div className={`flex items-center no-wrap justify-center`}>
               {returnStatus(item.status)}
             </div>
           </td>
-          <td className={`font-medium px-1  min-w-14 py-3 ${persona === "admin" ? "text-left pl-[28px]" : "text-center"} `}>
+          <td
+            className={`font-medium px-1  min-w-14 py-3 ${
+              persona === "admin" ? "text-left pl-[28px]" : "text-center"
+            } `}
+          >
             {item.duration === "-" ? "Unlimited" : item.duration}
           </td>
           <td className="font-medium px-1 min-w-14 py-3">
@@ -742,6 +766,7 @@ export default function TableItem({
                   <img
                     src={item[key] > 80 ? SuccessIcon : FailIcon}
                     className="flex"
+                    alt=""
                   />
                 </div>
               </td>
@@ -754,7 +779,7 @@ export default function TableItem({
               <span className="inline-block mr-3 text-textBlue">
                 Upload Answer
               </span>
-              <img src={UploadIcon} />
+              <img src={UploadIcon} alt="" />
             </button>
           </td>
         </tr>
@@ -801,7 +826,10 @@ export default function TableItem({
             excludes.includes(key) ? (
               <React.Fragment key={i}></React.Fragment>
             ) : key == "testtype" ? null : (
-              <td key={i} className="font-medium pl-[10px]  min-w-14 pt-[7px] pb-[8px]">
+              <td
+                key={i}
+                className="font-medium pl-[10px]  min-w-14 pt-[7px] pb-[8px]"
+              >
                 {key === "status" ? (
                   <div className="flex justify-center">
                     {returnStatus(item.status)}
@@ -848,7 +876,9 @@ export default function TableItem({
                             onClick={() => window.open(`${item.pdfLink}`)}
                             alt="download"
                           />
-                        ) : <div className=" w-[35px] h-[35px]"></div>}{" "}
+                        ) : (
+                          <div className=" w-[35px] h-[35px]"></div>
+                        )}{" "}
                       </div>{" "}
                       {persona == "parent" && (
                         <div>
@@ -864,10 +894,8 @@ export default function TableItem({
                     </div>
                   </>
                 ) : key == "duration" ? (
-              
                   item[key]
                 ) : null}
-             
               </td>
             )
           )}
@@ -998,10 +1026,59 @@ export default function TableItem({
           {MapData(item, dataFor, excludes, onClick)}
         </tr>
       )}
-      {dataFor === "testsDetailQuestions" && (
+      {dataFor === "testsDetailQuestions" && (testtype === "DSAT" || testtype === "DSAT®")&& (
         <tr className="bg-white text-[17.5px]   leading-7 mt-[10px]">
-          {MapData(item, dataFor, excludes)}
-          {testtype === "DSAT" || testtype === "DSAT®" ? (
+          <td className="w-[174px] pl-[27px] pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-center pt-[15px] pb-[13.5px]">
+            <div>{item?.QuestionNumber}</div>
+          </td>
+          <td className="w-[124px] pl-[0] text-[#517CA8] text-[17.5px] font-normal text-left pt-[15px] pb-[13.5px]">
+            <div>{item?.QuestionType}</div>
+          </td>
+          <td className="w-[90px] pl-[0] text-[#517CA8] text-[17.5px] font-normal text-left pt-[15px] pb-[13.5px]">
+            <div>{item?.CorrectAnswer}</div>
+          </td>
+
+          <td className="w-[110px] pl-[0] pr-[28px] pt-[15px] pb-[13.5px]">
+            {item?.QuestionImage==="no"?"":<div className="w-[20px] h-[20px] bg-[#38C980] rounded-full mx-auto"></div>}
+          </td>
+          <td className="w-[114px] pl-[0] pr-[34px] pt-[15px] pb-[13.5px]">
+            {item?.AnswerImage==="no"?"":<div className="w-[20px] h-[20px] bg-[#FFCE84] rounded-full mx-auto"></div>}
+          </td>
+          <td
+                className={`w-[140px] pr-[58px] ${
+                  extratableitem[item?.QuestionNumber - 1]?.Passage == "Yes"
+                    ? "text-[#38C980]"
+                    : "text-[#FF7979]"
+                } text-[17.5px] font-semibold `}
+              >
+                {extratableitem[item?.QuestionNumber - 1]?.Passage}
+              </td>
+              <td className="w-[385px] pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-left max-w-[385px] text-ellipsis pt-[15px] pb-[13.5px]">
+                <div className="max-w-[342px] text-ellipsis overflow-hidden">{item?.Concepts}</div>
+              </td>
+              <td className="w-[220px] pr-[70.5px] text-[#517CA8] text-[17.5px] font-normal text-left pt-[15px] pb-[13.5px]">
+              <div className="max-w-[150px] text-ellipsis overflow-hidden">{item?.Strategies}</div>
+              </td>
+              <td className="w-[108px] pr-[28px] text-[#517CA8] text-[17.5px] font-normal text-left">
+              <div>{item?.AnswerChoices}</div>
+              </td>
+              <td className="w-[111.25px] pr-[45.25px] text-[#517CA8] text-[17.5px] font-normal text-left pt-[15px] pb-[13.5px]">
+              <div>{item?.scoring??"{Scale}"}</div>
+              </td>
+              <td className="font-medium flex justify-center px-1 min-w-[45px] py-[12.5px] pr-[20px]">
+            {!item.editable ? (
+              <></>
+            ) : (
+              <img
+                src={editIcon3}
+                className="cursor-pointer h-[25px] w-[25px]"
+                onClick={() => onClick.handleEditTestClick(item)}
+                alt=""
+              />
+            )}
+          </td>
+          {/* {MapData(item, dataFor, excludes)} */}
+          {/* {testtype === "DSAT" || testtype === "DSAT®" ? (
          
             <>
               <td>
@@ -1050,24 +1127,80 @@ export default function TableItem({
                 onClick={() => onClick.handleEditTestClick(item)}
               />
             )}
+          </td> */}
+        </tr>
+      )}
+      {dataFor === "testsDetailQuestions" && (testtype === "SAT" || testtype === "ACT")&&(<tr>
+        <td className="w-[174px] pl-[27px] pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-center">
+            <div>{item?.QuestionNumber}</div>
+          </td>
+          <td className="w-[124px] pl-[0] text-[#517CA8] text-[17.5px] font-normal text-left">
+            <div>{item?.QuestionType}</div>
+          </td>
+          <td className="w-[394px] pl-[0] pr-[42.5px] text-[#517CA8] text-[17.5px] font-normal text-left">
+            <div className="max-w-[349px] overflow-hidden text-ellipsis">
+              {item?.CorrectAnswer}
+            </div>
+          </td>
+          <td className="w-[445px] pl-[0] pr-[103px] text-[#517CA8] text-[17.5px] font-normal text-left">
+            <div className="max-w-[342px] overflow-hidden text-ellipsis">
+              {item?.Concepts}
+            </div>
+          </td>
+          <td className="w-[219.5px] pl-[0] pr-[60.75px] text-[#517CA8] text-[17.5px] font-normal text-left">
+            <div className="max-w-[158.75px] overflow-hidden text-ellipsis">
+              {item?.Strategies}
+            </div>
+          </td>
+          <td className="w-[219.5px] pl-[0] pr-[60.75px] text-[#517CA8] text-[17.5px] font-normal text-left">
+            <div className="max-w-[158.75px] overflow-hidden text-ellipsis">
+              {item?.Strategies}
+            </div>
+          </td>
+          <td className="w-[108px] pl-[0] pr-[28px] text-[#517CA8] text-[17.5px] font-normal text-left">
+            <div className="max-w-[80px] overflow-hidden text-ellipsis">
+              {item?.scoring ?? "{Scale}"}
+            </div>
+          </td>
+          <td className="font-medium flex justify-center px-1 min-w-[45px] py-[12.5px] pr-[20px]">
+            {!item.editable ? (
+              <></>
+            ) : (
+              <img
+                src={editIcon3}
+                className="cursor-pointer h-[25px] w-[25px]"
+                onClick={() => onClick.handleEditTestClick(item)}
+                alt=""
+              />
+            )}
           </td>
         </tr>
       )}
       {dataFor === "allTests" && (
         <tr className="odd:bg-white font-medium text-[17.5px]  lead">
-          <td className="text-left pl-10">{item.testName}</td>
-          <td>
+          <td className="text-left pl-[66.5px] w-[350px] max-w-[350px] overflow-hidden text-ellipsis">
+            {item.testName}
+          </td>
+          <td className="w-[223px] text-left pl-14">
             {item.testType.endsWith("®")
               ? item.testType
               : item.testType.includes("Other")
               ? item.testType
               : item.testType + "®"}
           </td>
-          <td> {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
-          <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
-          <td> {item.no_of_assign !== null ? item.no_of_assign : "-"} </td>
-          <td className="font-medium px-1 py-4 ">
-            <div className="flex justify-end">
+          <td className="w-[241px] text-left pl-[8.75px]">
+            {" "}
+            {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}
+          </td>
+          <td className="w-[235.5px] text-left pl-[16px]">
+            {getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}
+          </td>
+          <td className="w-[249px] text-center">
+            {" "}
+            {item.no_of_assign !== null ? item.no_of_assign : "-"}{" "}
+          </td>
+          <td className="font-medium px-1 py-4 w-[137.5px]">
+            <div className="flex justify-start items-center">
               <button
                 className="flex leading-none bg-[#FFA28D] text-white py-1.5 px-9 w-[100px] cursor-pointer rounded !text-base-15 !text-center justify-center"
                 onClick={() => navigate(`/all-tests/${item._id}`)}
@@ -1078,7 +1211,7 @@ export default function TableItem({
           </td>
           <td className="font-medium px-1 ">
             {checkTest(persona, item) && (
-              <div className="  flex justify-center items-center">
+              <div className="  flex justify-start items-center">
                 <button
                   className="flex leading-none bg-[#26435f4d] text-white py-1.5 px-6  w-[100px] !text-center cursor-pointer rounded !text-base-15 justify-center"
                   onClick={() => onClick.openRemoveTestModal(item)}
@@ -1183,8 +1316,15 @@ export default function TableItem({
 
           <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left !max-w-[323px]">
             <div className="my-[6px] w-[323px] max-w-[323px] flex flex-col">
-              {item.email.length>30?<><p>{item.email.slice(0,30)}</p><p>{item.email.slice(30,item.email.length)}</p></>:<p>{item.email}</p>}
-              </div>
+              {item.email.length > 30 ? (
+                <>
+                  <p>{item.email.slice(0, 30)}</p>
+                  <p>{item.email.slice(30, item.email.length)}</p>
+                </>
+              ) : (
+                <p>{item.email}</p>
+              )}
+            </div>
           </td>
 
           <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
@@ -1201,7 +1341,9 @@ export default function TableItem({
             <div className="my-[6px] w-[186px]">{item?.userStatus}</div>
           </td>
           <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left !max-w-[168px]">
-            <div className="my-[6px] w-[168px]">{item.associatedOrg?.numberOfTutors}</div>
+            <div className="my-[6px] w-[168px]">
+              {item.associatedOrg?.numberOfTutors}
+            </div>
           </td>
           <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left !max-w-[200px]">
             <div className="my-[6px] w-[200px]">
@@ -1215,10 +1357,16 @@ export default function TableItem({
               {/* {new Date(item.createdAt).toLocaleDateString()} */}
             </div>
           </td>
-          <td className={`opacity-70 !cursor-not-allowed pointer-events-none font-medium text-[17.5px] px-1 ${persona == "superAdmin" ? "min-w-[158px] flex justify-center items-center" : "min-w-14" }  py-4 cursor-pointer`}>
+          <td
+            className={`opacity-70 !cursor-not-allowed pointer-events-none font-medium text-[17.5px] px-1 ${
+              persona == "superAdmin"
+                ? "min-w-[158px] flex justify-center items-center"
+                : "min-w-14"
+            }  py-4 cursor-pointer`}
+          >
             <div className="my-[6px] opacity-70 ">
               <img
-                 className="cursor-pointer"
+                className="cursor-pointer"
                 onClick={() => setDeleteAdminModalActive(true)}
                 src={DeleteIconAllOrgs}
                 alt="delete"
@@ -1227,7 +1375,9 @@ export default function TableItem({
           </td>
         </tr>
       )}
+      {dataFor === "starClients" &&(<th className="">
 
+      </th>)}
 
       {deleteAdminModalActive && (
         <Modal
@@ -1239,7 +1389,7 @@ export default function TableItem({
                 : item.company}
             </span>
           }
-          modalSize = "w-[666.67px] h-[194.67px]"
+          modalSize="w-[666.67px] h-[194.67px]"
           titleClassName="mb-[22px] leading-10 text-center"
           cancelBtn={true}
           crossBtn={true}
@@ -1276,7 +1426,7 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
     ) : key === "isCorrect" ? (
       <td
         key={i}
-        className={`font-medium px-1  min-w-14 py-4 ${
+        className={`font-medium px-1 min-w-14 py-4  ${
           data[key] ? "" : "!bg-[#FF79791A]/[0.05]"
         }`}
       >
@@ -1289,10 +1439,9 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
         </div>
       </td>
     ) : key === "QuestionNumber" ? (
-   
       <td
         key={i}
-        className={`font-medium px-1  py-4  ${
+        className={`font-medium px-1 py-4  ${
           dataFor === "studentTestsReport" && !data["isCorrect"]
             ? "!bg-[#FF79791A]/[0.05]"
             : ""
@@ -1406,12 +1555,18 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
             : ""
         } ${dataFor === "testsDetailQuestions" && "text-left pl-7"} 
         ${
-          dataFor === "studentTestsReport" &&
-          (key === "Concept" || key === "Strategy")
-            ? "text-start"
+          dataFor === "studentTestsReport" && key === "Concept"
+            ? "w-[100px] text-start ps-[20px]"
             : null
-        }`}
+        }
+        
+        ${
+          dataFor === "studentTestsReport" &&  key === "Strategy"
+            ? "text-start ps-[28px]"
+            : null
+        }
 
+        `}
       >
         {data[key]}
       </td>

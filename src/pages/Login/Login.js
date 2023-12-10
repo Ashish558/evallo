@@ -67,13 +67,42 @@ export default function Login({ setLoginFormActive }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (loginLoading || !(emailValidation.test(email.trim()) && password.length > 0))
-      return;
+    if(!email || email === ''){
+      setError((prev) => {
+        return {
+          password: "",
+          email: "This field is required",
+        };
+      });
+      return
+    }
+    
+    if(!password || password === ''){
+      setError((prev) => {
+        return {
+          email: "",
+          password: "This field is required",
+        };
+      });
+      return
+    }
+    if(!emailValidation.test(email.trim())){
+      setError((prev) => {
+        return {
+          password: "",
+          email: "Enter a valid email",
+        };
+      });
+      return
+    }
+    // if (loginLoading || !(emailValidation.test(email.trim()) && password.length > 0))
+    //   return;
     setLoginLoading(true);
     const promiseState = async (state) =>
       new Promise((resolve) => {
         resolve(resetErrors());
       });
+      
     promiseState().then(() => {
       loginUser({ email:email?.trim(), password }).then((res) => {
         setLoginLoading(false);

@@ -257,7 +257,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
   <path d="M489.25 93.7501V0C486.489 0 484.25 2.23853 484.25 4.99989L484.25 50.6251L484.25 88.1251C484.25 90.8865 482.012 93.1251 479.25 93.1251H11.125C8.36358 93.1251 6.125 90.8865 6.125 88.1251V49.3751L6.125 5.625C6.125 2.5184 3.6066 0 0.5 0V93.7501C0.5 96.5115 2.73858 98.7501 5.5 98.7501H484.25C487.012 98.7501 489.25 96.5115 489.25 93.7501Z" fill="#26435F"/>
 </svg>
             <div
-              className={` relative  w-100 h-[250px] px-[22px] `}
+              className={` relative  w-100 h-[250px] px-[22px] z-5000`}
             >
               <div className="flex flex-1 px-3 justify-between py-auto h-[250px] items-center">
                 {associatedStudents.length > 0 && (

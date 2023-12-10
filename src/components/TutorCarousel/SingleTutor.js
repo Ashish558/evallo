@@ -14,7 +14,7 @@ export default function SingleTutor({turorsLength, idx, tutor, handlePrev,handle
     <div key={idx} className="item px-2 h-full  ">
       <div className="flex h-full items-center my-auto justify-between">
 
-        <div className="w-2/3 mb-3">
+        <div className="w-2/3 mb-3 relative z-5000">
           {/* <h5 className={`${styles.tag}`}>
             {tutor.tutorLevel && `${tutor.tutorLevel} Belt`}
           </h5>
@@ -27,7 +27,10 @@ export default function SingleTutor({turorsLength, idx, tutor, handlePrev,handle
           
           <div className="flex flex-col justify-start items-start gap-[5px]">
           <p className="text-[#517CA8] text-[17.5px]">
-            {tutor?.tagLine ? tutor?.tagLine : "Test Prep Math Tutoring"}
+                {tutor?.tagLine ?
+                  tutor?.tagLine.length > 50 ?
+                    `${tutor?.tagLine.slice(0, 50)}...` : tutor?.tagLine :
+                  ''}
           </p>
           <p className="text-[#517CA8]  text-[17.5px]">
             {tutor?.topic ? tutor?.topic : "No topic"}
@@ -35,7 +38,7 @@ export default function SingleTutor({turorsLength, idx, tutor, handlePrev,handle
           </div>
 
           <button
-            className="p-2 mt-2 rounded-lg whitespace-nowrap text-sm px-4 bg-[#FFA28D] text-white"
+            className="p-2 rounded-lg whitespace-nowrap text-sm px-4 bg-[#FFA28D] text-white"
             onClick={() => tutor._id && navigate(`/profile/tutor/${tutor._id}`)}
           >
             View Profile
@@ -55,11 +58,12 @@ export default function SingleTutor({turorsLength, idx, tutor, handlePrev,handle
             <svg
               xmlns="http://www.w3.org/2000/svg"
 
-              className="z-5000 rotate-[0.7deg]"
+              className="z-[-1] rotate-[0.7deg]"
               width="127"
               height="142"
               viewBox="1 .5 100 143"
               fill="none"
+              style={{zIndex: '-1'}}
             >
               <path
                 d="M1.08485 11.1823C11.5308 5.14155 23.363 1.90312 35.4341 1.78098C47.5053 1.65883 59.406 4.65711 69.9823 10.4851C80.5587 16.3132 89.4518 24.7732 95.7996 35.045C102.147 45.3168 105.734 57.0519 106.213 69.1125C106.691 81.1731 104.045 93.15 98.5308 103.882C93.0163 114.614 84.8207 123.737 74.7387 130.367C64.6566 136.996 53.0301 140.907 40.9863 141.721C28.9425 142.534 16.8902 140.223 5.99775 135.01"

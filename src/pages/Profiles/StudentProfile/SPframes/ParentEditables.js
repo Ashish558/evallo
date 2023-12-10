@@ -755,7 +755,7 @@ export default function ParentEditables({
               >
                 {/* {currentField.fields && currentField.fields} */}
                 {currentField.name === "frame0" && (
-                  <div className="flex flex-col px-2 max-h-[60vh] !w-[50.63vw]">
+                  <div className="flex flex-col px-2 max-h-[60vh] !w-[1030px]">
                     <div className="flex gap-3 items-center justify-between">
                       <div className="!w-[140px]">
                         <ProfilePhoto
@@ -771,13 +771,13 @@ export default function ParentEditables({
                           editable={editable}
                         />
                       </div>
-                      <div className="flex flex-col gap-5  w-[80%]">
-                        <div className="flex !text-sm gap-4 justify-between">
+                      <div className="flex flex-col gap-5 mr-[65px]  w-[80%]">
+                        <div className="flex !text-sm gap-4 justify-around mr-10 ">
                           <InputField
                             label="First name"
                             labelClassname="text-[#26435F] font-medium my-2"
-                            placeholder="First name"
-                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040]  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] !w-[10.05208vw]"
+                            placeholder="Student First name"
+                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040]  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] !w-[193px]"
                             inputClassName="bg-transparent text-xs   "
                             parentClassName=""
                             type="text"
@@ -796,8 +796,8 @@ export default function ParentEditables({
                           <InputField
                             label="Last name"
                             labelClassname="text-[#26435F] font-medium my-2"
-                            placeholder="Last name"
-                            inputContainerClassName="text-xs  !shadow-[0px_0px_2px_0px_#00000040] bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] !w-[10.05208vw]"
+                            placeholder="Student Last name"
+                            inputContainerClassName="text-xs  !shadow-[0px_0px_2px_0px_#00000040] bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] !w-[193px]"
                             inputClassName="bg-transparent text-xs   "
                             parentClassName=""
                             type="text"
@@ -816,7 +816,7 @@ export default function ParentEditables({
                             label="School / College"
                             labelClassname="text-[#26435F] font-medium my-2"
                             placeholder="School / College"
-                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] w-[14.89583vw]"
+                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] w-[270px]"
                             inputClassName="bg-transparent text-xs   "
                             parentClassName=" "
                             type="text"
@@ -829,14 +829,16 @@ export default function ParentEditables({
                             }
                           />
                         </div>
-                        <div className="flex !text-sm  justify-between">
+                        <div className="flex !text-sm ml-1  justify-around  mt-[-10px]">
                           <InputField
-                            IconLeft={caution}
+                            // IconLeft={caution}
+                            IconRight={caution}
+                            iconRIghtClassName={'mr-1 ml-1' }
                             hideTooltip={hideTooltip}
                             label="Email"
                             labelClassname="text-[#26435F] font-medium my-2"
-                            placeholder="Email Id"
-                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040]  bg-primary-50 border-0 !py-3 !px-1 !rounded-[5px] h-[50px] w-[15.625vw]"
+                            placeholder="Student Email Id"
+                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040]  bg-primary-50 border-0 !py-3 !px-1 !rounded-[5px] h-[50px] w-[290px]"
                             inputClassName="bg-transparent !w-[200px] text-xs   "
                             parentClassName=""
                             type="text"
@@ -870,8 +872,8 @@ export default function ParentEditables({
                               codeClassName="!bg-white !rounded-sm"
                               placeholder="Student's Phone"
                               labelClassname="text-[#26435F] font-medium my-2"
-                              inputContainerClassName="!text-xs flex-1 !border-none  bg-primary-50  !shadow-[0px_0px_2px_0px_#00000040] h-[50px] w-[14.32292vw]"
-                              inputClassName="bg-transparent flex-1 !w-[90px] !text-xs rounded-[4px] "
+                              inputContainerClassName="!text-xs flex-1 !border-none  bg-primary-50  !shadow-[0px_0px_2px_0px_#00000040] h-[50px] w-[250px]"
+                              inputClassName="bg-transparent flex-1 !w-[90px]  !text-xs rounded-[4px] "
                               parentClassName=""
                               label="Student Phone"
                               value={currentToEdit.phone}
@@ -898,7 +900,7 @@ export default function ParentEditables({
                             labelClassname={`text-[#26435F] font-medium  my-2`}
                             label="Grade"
                             placeholder="Select"
-                            inputContainerClassName="text-xs  bg-primary-50 !py-3 border-0 !rounded-[5px] !shadow-[0px_0px_2px_0px_#00000040] h-[50px] w-[7.13542vw]"
+                            inputContainerClassName="text-xs  bg-primary-50 !py-3 border-0 !rounded-[5px] !shadow-[0px_0px_2px_0px_#00000040] h-[50px] w-[190px]"
                             inputClassName="bg-transparent text-xs  "
                             parentClassName=""
                             type="text"

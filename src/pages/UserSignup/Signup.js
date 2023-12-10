@@ -504,9 +504,13 @@ export default function UserSignup() {
                 sessionStorage.clear();
                 return;
               }
-              if (res?.error?.data?.message === "Referral code not match.")
+              if (res?.error?.data?.message === "Referral code not match."){
                 alert("Referal code is not valid! Enter valid referal code.");
-              else alert("something went wrong , please try again");
+              }else if (res?.error?.data?.message){
+                alert(res.error.data.message);
+              }else{
+                alert("something went wrong , please try again");
+              }
             })
             .catch((err) => {
               setLoading(false);
