@@ -78,7 +78,7 @@ export default function NumericSteppers({
         )
       )}
       <div className="hidden absolute top-[-23px] left-[-16.5%] w-screen">
-        <div className="flex gap-0.5 bg-red-100">
+        <div className="flex gap-0.5">
           {[...Array(totalSteps)].map((x, i) => (
             <div
               key={i}
