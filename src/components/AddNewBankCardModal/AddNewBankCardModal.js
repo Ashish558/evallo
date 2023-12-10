@@ -22,6 +22,7 @@ function Payment({
     SetIsPaymentSuccessfull,
     stripeCustomerId,
     OnAddClicked,
+    OnSuccess,
 }) {
     const stripe = useStripe();
     const elements = useElements();
@@ -107,7 +108,15 @@ function Payment({
             SetIsPaymentProcessOnGoing(false);
             console.log("response from finish_setup");
             console.log(post);
-            OnAddClicked();
+
+            if(OnAddClicked?.constructor?.name === "Function") {
+                OnAddClicked();
+            }
+            
+            if(OnSuccess?.constructor?.name === "Function") {
+                OnSuccess();
+            }
+            
 
             if(post) {
                 SetIsPaymentSuccessfull(true);
@@ -156,6 +165,7 @@ function StripeCardDetailWidget({
     SetIsPaymentSuccessfull,
     stripeCustomerId,
     OnAddClicked,
+    OnSuccess,
 }) {
     const options = {
         mode: 'setup',
@@ -171,6 +181,7 @@ function StripeCardDetailWidget({
                 SetIsPaymentSuccessfull={SetIsPaymentSuccessfull}
                 stripeCustomerId={stripeCustomerId}
                 OnAddClicked={OnAddClicked}
+                OnSuccess={OnSuccess}
             />
         </Elements>
     )
@@ -181,6 +192,7 @@ function AddNewBankCardModal({
     OnCrossIconClicked,
     OnAddClicked,
     stripeCustomerId,
+    OnSuccess
 }) {
     return (
         <Modal2
@@ -193,6 +205,7 @@ function AddNewBankCardModal({
             <StripeCardDetailWidget 
                 stripeCustomerId={stripeCustomerId}
                 OnAddClicked={OnAddClicked}
+                OnSuccess={OnSuccess}
             />
         </Modal2>
     )

@@ -342,6 +342,7 @@ export default function AllTests({
       text: "Type",
       // onCick: () => sortByString("testType"),
       onCick: sortByType,
+      className:"pl-7",
       willDisplayDownArrow: typeSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {

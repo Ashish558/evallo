@@ -8,6 +8,7 @@ import ReviewExtensionWidget from "../../../components/ReviewExtensionWidget/Rev
 import { useEffect } from "react";
 import StripeCardDetailWidget from "../../../components/StripeCardDetailWidget/StripeCardDetailWidget";
 import { useApplyCouponQuery, useLazyApplyCouponQuery } from "../../../app/services/subscription";
+import { useSelector } from "react-redux";
 
 function ReviewProduct({
     className,
@@ -21,8 +22,13 @@ function ReviewProduct({
     subscriptionsInfoFromAPI = [],
     stripeCustomerId,
     SetIsPaymentSuccessfull,
+    updateSubscriptionMode = false,
+    renewProductMode = false,
 }) {
     // const [isCCRequired, SetIsCCRequired] = useState(false);
+    const {
+        paymentMethods,
+    } = useSelector(state => state.subscription);
     const [chosenSubscriptionPlan, SetChosenSubscriptionPlan] = useState(
         subscriptionsInfo ? subscriptionsInfo.find(item => item.planName === chosenSubscriptionPlanName) : null
     );
@@ -74,13 +80,22 @@ function ReviewProduct({
 
     useEffect(() => {
         if(!(SetIsCCRequired.constructor && SetIsCCRequired.constructor.name === "Function")) return;
+        if(paymentMethods?.length > 0) {
+            SetIsCCRequired(false);
+            return;
+        }
+
+        if(updateSubscriptionMode || renewProductMode) {
+            SetIsCCRequired(true);
+            return;
+        }
         if(chosenSubscriptionPlan.ccRequired) {
             SetIsCCRequired(true);
             return;
         }
 
         SetIsCCRequired(false);
-    }, [chosenSubscriptionPlan]);
+    }, [chosenSubscriptionPlan, paymentMethods]);
 
     async function OnApplyCouponForSubscriptionClicked(couponCode, chosenSubscriptionObjectFromAPI_Id){
         const response = await applyCoupon({
@@ -119,7 +134,7 @@ function ReviewProduct({
                         activeTutorsAllowed={chosenSubscriptionPlan && chosenSubscriptionPlan.activeTutorsAllowed ? chosenSubscriptionPlan.activeTutorsAllowed : null}
                         currency={chosenSubscriptionPlan && chosenSubscriptionPlan.currency ? chosenSubscriptionPlan.currency : null}
                         subscriptionPricePerMonth={chosenSubscriptionPlan && chosenSubscriptionPlan.pricePerMonth ? chosenSubscriptionPlan.pricePerMonth : null}
-                        freeTrialDays={chosenSubscriptionPlan ? chosenSubscriptionPlan.freeTrialDays : null}
+                        freeTrialDays={!updateSubscriptionMode ? chosenSubscriptionPlan?.freeTrialDays : 0}
                     />
 
                     <div className="flex items-center mt-[10px] w-full" >

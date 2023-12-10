@@ -337,7 +337,7 @@ const AdminNavbar = () => {
                 { isLoggedIn && (item?.path === activeRoute) ? (
                   <>
                     <p>
-                      <img
+                      <im
                         className="w-[16px] h-[16px]"
                         style={{ height: "16px" }}
                         src={item.activeIcon}

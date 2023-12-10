@@ -1448,7 +1448,7 @@ export default function AssignedTests() {
 
   return (
     <>
-     <div className="w-[1920px] flex justify-center items-center ">
+     <div className="w-[1920px] flex justify-center items-center">
       <div className="w-[1600px] h-auto mb-[40px] flex flex-col justify-center items-center">
         <div className=" w-full">
 
@@ -1656,9 +1656,9 @@ export default function AssignedTests() {
                     onClick={() =>
                       selectedId?.length > 0 && setMarkBulkModalActive(true)
                     }
-                    className="px-1 py-[11px] cursor-pointer bg-[#FFF] rounded-5 ml-[25px] w-[172px] h-[44px] text-center"
+                    className="cursor-pointer bg-[#FFF] rounded-5 ml-[25px] w-[172px] h-[44px] text-center flex justify-center items-center"
                   >
-                    <p>Mark Completed</p>
+                   Mark Completed
                   </div>
                 </div>
                 <div className="flex items-center justify-between gap-x-[20px] text-[17.5px]">
@@ -1697,8 +1697,8 @@ export default function AssignedTests() {
         <Modal
           title="New Assignment"
           buttonParentClassName="justify-center"
-          titleClassName=" text-start pb-2"
-          classname={"w-[667px] h-[585px] mx-auto"}
+          titleClassName="text-start pb-2"
+          modalSize={"w-[667px] h-[585px] mx-auto"}
           cancelBtn={true}
           cancelBtnClassName="w-[146.67px] h-[46.667px] !bg-[rgba(38,67,95,0.20)] !text-[#26435F]"
           primaryBtn={{

@@ -7,7 +7,7 @@ export function TableHeaderNew({
   dataFor,
   Handler,
   noArrow,
-  wrapperClassName
+  wrapperClassName,
 }) {
   const [flag, setFlag] = useState(
     header?.className ? header.className.includes("no-arrow") : false
@@ -21,63 +21,89 @@ export function TableHeaderNew({
 
   return dataFor === "assignedTests" ? (<th className={`pt-[26.25px] pb-[24.25px] text-white text-[17.5px] leading-3 font-medium ${header.text === "Due On" || header.text === "Completion" || header.text === "Score" ? "text-center" : " text-left pl-[30px]"}`}>
     <div className={``}>{header.text}</div>
-  </th>) :
-    dataFor === "allTests" ? (
-      <th className={`pt-[26.25px] pb-[24.25px] text-white text-[17.5px] leading-[25px] font-medium ${header.text === "Assignment Name" ? "text-left pl-[65.6px]" : header.text === "Total Assignments" ? "text-center" : " text-left"}`}>
-        <div onClick={() => header.onCick && header.onCick()} className={`flex items-center gap-0 ${header.text === "Total Assignments" && "justify-center"}`}><p className="">{header.text}</p>{
-          header.noArrow ? "" :
-            header.willDisplayDownArrow === null || header.text.lenght === 0 ? "" :
-              header.willDisplayDownArrow ||
+  </th>):
+  dataFor==="allTests"?(<th className={`pt-[26.25px] pb-[24.25px] text-white text-[17.5px] leading-[25px] font-medium ${header.text==="Assignment Name"?"text-left pl-[65.6px]":header.text==="Total Assignments"?"text-center":" text-left"}`}>
+  <div onClick={() => header.onCick && header.onCick()} className={`flex items-center gap-0 ${header.text==="Total Assignments"&&"justify-center"}`}><p className={`${header.text==="Type"? 'pl-11':''}`}>{header.text}</p>{
+    header.noArrow?"":
+     header.willDisplayDownArrow=== null||header.text.lenght===0?"":
+                header.willDisplayDownArrow ||
                 header.willDisplayDownArrow === undefined
-                ? downArrow
-                : upArrow
-        }</div>
-      </th>
-    ) :
-      (
-        <th
-          className={`px-6 py-[20px] font-normal whitespace-nowrap text-white text-center cursor-pointer ${header.className ? header.className : ""
-            } ${flag ? styles["no-arrow"] : ""} bg-[#26435F]`}
-        >
-          <div
-            className={`flex 
+                  ? downArrow
+                  : upArrow
+              }</div>
+  </th>):
+  dataFor==="popularServices"?(<th className="text-center py-[18.75px] text-[17.5px] font-medium leading-[21px] text-white">
+<div onClick={() => header.onCick && header.onCick()} className={`${header.text==="Service"&&"w-[205.6px] pl-[21.25px] text-left"}
+${header.text==="Actively Using"&&"w-[168.5px] pr-[11.5px] text-left"} flex gap-0
+`}>
+            <p>{header.text}</p>{
+    header.noArrow?"":
+     header.willDisplayDownArrow=== null||header.text.lenght===0?"":
+                header.willDisplayDownArrow ||
+                header.willDisplayDownArrow === undefined
+                  ? downArrow
+                  : upArrow
+              }
+</div>
+  </th>):
+  (
+    <th
+      className={`px-6 py-[20px] font-normal whitespace-nowrap text-white text-center cursor-pointer ${
+        header.className ? header.className : ""
+      } ${flag ? styles["no-arrow"] : ""} bg-[#26435F] ${header.text==="% of Business"?" rounded-r-[5.333px]":""}`}
+    >
+      <div
+        className={`flex
         ${header.text === "Student Name" ? "ml-[40px] text-left " : ""} 
         ${header.text === "Assignment Name" ? "ml-[12px]" : ""} 
-        ${header.text === "Email" ||
-                header.text === "Phone" ||
-                header.text === "Full Name" ||
-                header.text === "Assignment Name" ||
-                header.text === "Assignment" || header.text === "Service"
-                ? `justify-start ${header.text === "Assignment" ? "ps-6 overflow-hidden" : ""
-                }`
-                : "justify-center"
-              } items-center ${noArrow || header.noArrow
-                ? ""
-                : `${header.willDisplayDownArrow ||
-                  header.willDisplayDownArrow === undefined
-                  ? styles.marker : header.willDisplayDownArrow === null ? ""
-                    : styles.upArrow
-                }`
-              } ${wrapperClassName ?? wrapperClassName} `}
-            onClick={() =>
-              header.text === "Full Name" && dataFor === "allUsers"
-                ? null
-                : header.onCick && header.onCick()
-            }
-          >
-            {header.text === "Full Name" && dataFor === "allUsers" ? (
-              <SCheckbox checked={checkedHeader} onChange={handleCheckboxChange} />
-            ) : (
-              ""
-            )}
-            {header.text === "Full Name" && dataFor === "allUsers" ? (
-              <div onClick={() => header.onCick && header.onCick()}>
-                <span className="text-center text-[17.5px] ">{header.text}</span>
-              </div>
-            ) : (
-              <div className={`text-[17.5px] ${header.text === "Score" ? "text-center" : "text-left"}`}>{header.text}</div>
-            )}
+        ${
+          header.text === "Email" ||
+          header.text === "Phone" ||
+          header.text === "Full Name" ||
+          header.text === "Assignment Name" ||
+          header.text === "Assignment" ||
+          header.text === "Service"
+            ? `justify-start ${
+                header.text === "Assignment" ? "ps-6 overflow-hidden" : ""
+              }`
+            : "justify-center"
+        } items-center ${
+          noArrow || header.noArrow
+            ? ""
+            : `${
+                header.willDisplayDownArrow ||
+                header.willDisplayDownArrow === undefined
+                  ? styles.marker
+                  : header.willDisplayDownArrow === null
+                  ? ""
+                  : styles.upArrow
+              }`
+        } ${wrapperClassName ?? wrapperClassName} `}
+        onClick={() =>
+          header.text === "Full Name" && dataFor === "allUsers"
+            ? null
+            : header.onCick && header.onCick()
+        }
+      >
+        {header.text === "Full Name" && dataFor === "allUsers" ? (
+          <SCheckbox checked={checkedHeader} onChange={handleCheckboxChange} />
+        ) : (
+          ""
+        )}
+        {header.text === "Full Name" && dataFor === "allUsers" ? (
+          <div onClick={() => header.onCick && header.onCick()}>
+            <span className="text-center text-[17.5px]">{header.text}</span>
           </div>
-        </th>
-      );
+        ) : (
+          <div
+            className={` text-[17.5px] ${
+              header.text === "Score" ? "text-center" : "text-left"
+            }`}
+          >
+            {header.text}
+          </div>
+        )}
+      </div>
+    </th>
+  );
 }

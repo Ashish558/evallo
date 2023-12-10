@@ -294,10 +294,10 @@ export default function TutorDashboard() {
     }
   };
   return (
-    <div className="bg-[#F5F8FA] mb-[100px] px-[140px]">
-      <div className="mx-auto">
-        <div className="">
-          <p className="text-[#24A3D9] text-base-20 mb-[30px] mt-[50px]">
+    <div className="w-[1920px] h-auto flex justify-center items-center">
+    <div className="bg-[#F5F8FA] w-[1600px] h-auto mb-[100px] flex justify-center items-center">
+        <div className="flex flex-col justify-start items-start relative">
+          <p className="text-[#24A3D9] text-[20px] mb-[30px] mt-[50px]">
             {organization?.company +
               "  >  " +
               firstName +
@@ -306,29 +306,9 @@ export default function TutorDashboard() {
               "  >  "}
             <span className="font-bold">Dashboard</span>
           </p>
-
-          {/* 
-               <div className='px-4 w-[521px] mx-auto'>
-                  <div className='flex justify-between items-center px-4'>
-                     <p className='text-[#26435F]  text-[21px] cursor-pointer'
-                        onClick={() => navigate('/profile')}>
-                        Complete your Profile
-                     </p>
-                     <img src={RightIcon} className='cursor-pointer' onClick={() => navigate('/profile')} alt="RightIcon" />
-                  </div>
-                  <div className='px-4  text-lg font-medium  flex justify-between items-center'>
-                    
-                     <ProgressBar num={profileProgress} />
-                     <p className='pl-3'>
-                        {`${profileProgress}%`}
-                     </p>
-                  </div>
-
-               </div> */}
-
-          <div className="flex items-start gap-x-10">
-            <div className="flex flex-col items-stretch flex-[7]">
-              <div className=" mb-[30px] relative ">
+          <div className="w-full flex">
+            <div className="w-[1063px] flex flex-col me-[40px]">
+              <div className=" mb-[38.5px] relative ">
                 <p className="text-[#26435F] font-semibold text-xl mb-[12px] ">
                   Latest Students
                 </p>
@@ -345,7 +325,7 @@ export default function TutorDashboard() {
                       >
                         {students.map((student) => {
                           return (
-                            <div className="flex flex-col justify-center items-center text-center w-[145px] bg-white py-2">
+                            <div className="flex flex-col justify-center items-center text-center bg-white mr-[50px]">
                               <img
                                 src={`${
                                   student.photo
@@ -356,7 +336,7 @@ export default function TutorDashboard() {
                                 alt="studentImage"
                               />
                               <p
-                                className=" text-[#517CA8]  mt-[10px] cursor-pointer w-full text-center"
+                                className=" text-[#517CA8]  mt-[10.31px] cursor-pointer w-full text-center"
                                 onClick={() =>
                                   navigate(`/profile/student/${student._id}`)
                                 }
@@ -412,7 +392,7 @@ export default function TutorDashboard() {
                   }}
                   header="Completed"
                   subHeader="This Month"
-                  className="bg-[#FFA28D]"
+                  className="bg-[#FFA28D] w-[315px]"
                 />
                 <DashboardCard
                   data={{
@@ -422,10 +402,10 @@ export default function TutorDashboard() {
                   }}
                   header="Earned"
                   subHeader="This Month"
-                  className="bg-[#FFA28D]"
+                  className="bg-[#FFA28D] w-[315px]"
                 />
 
-                <div className="flex-1 flex justify-center items-center bg-[#F4F4F4]  rounded-[5px] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)]">
+                <div className="w-[315px] flex-1 flex justify-center items-center bg-[#F4F4F4]  rounded-[5px] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)]">
                   <div>
                     {" "}
                     <p className="text-[27.52px] text-center text-[#667085] font-semibold">
@@ -438,15 +418,16 @@ export default function TutorDashboard() {
                 </div>
               </div>
 
-              <div className="mt-10">
-                <p className="text-primary-dark font-semibold text-[20px] mb-[3px]">
+              <div className="mt-[41.27px]">
+                <p className="text-primary-dark font-semibold text-[20px] mb-[12.23px]">
                   Today’s Schedule
                 </p>
-                <div className="px-[43px] py-[26px] bg-white  rounded-[5.333px] scrollbar-content scrollbar-vertical h-[530px] overflow-y-auto shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]">
+                <div className="w-[1061px] px-[43px] py-[26px] bg-white  rounded-[5.333px] scrollbar-content scrollbar-vertical h-[530px] overflow-y-auto shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]">
                   {sessions && sessions?.length > 0 ? (
                     sessions?.map((item, idx) => {
                       return (
                         <TutorSchedule
+                          key={idx}
                           {...item}
                           setIsOpen={setIsOpen}
                           handleLinkClick={handleLinkClick}
@@ -454,8 +435,8 @@ export default function TutorDashboard() {
                       );
                     })
                   ) : (
-                    <div id="sschedule" className=" w-full  z-[5000] h-full rounded-md bg-white flex justify-center items-center flex-col text-center items-center">
-                      <div className="w-[90%] mx-auto   flex flex-col items-start">
+                    <div id="sschedule" className=" w-full z-[5000] h-full rounded-md bg-white flex justify-center items-center flex-col text-center">
+                      <div className="w-[90%] mx-auto flex flex-col items-start">
                         <button className="bg-[#FF7979] text-white rounded-md p-2 py-1 mb-3">
                           No Sessions Scheduled
                         </button>
@@ -472,60 +453,22 @@ export default function TutorDashboard() {
                 </div>
               </div>
             </div>
-            <div className="max-w-[525px]">
-              <p className="text-xl text-[#26435F] mb-[20px] font-semibold">
+
+
+            {/* last Assignments */}
+            <div className="w-[525px] flex flex-col items-start justify-start ">
+              <p className="text-xl text-[#26435F] mb-[12.5px] font-semibold">
                 Last 10 Assignments
               </p>
-              <div className="bg-[#FFFFFF]  rounded-[5px] shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]">
-                <div className="">
-                  {/* <div className={`py-[17px] px-[19px] flex flex-1 text-white rounded-20  first:mr-[30px] bg-primary`}>
-                           <div className='self-stretch w-[80px] h-[80px] my-auto text-center bg-black/20 rounded-[15px] flex flex-col justify-center'>
-                              <img src={HatIcon} className='objects-contain' />
-                           </div>
-
-                           <div className='px-6 flex flex-1'>
-                              <div className='flex-1'>
-                                 <div className='pt-[6px] font-bold text-[27px] flex items-center justify-between'>
-                                    <p>
-                                       Tutor Rank
-                                    </p>
-                                 </div>
-                                 <p className='text-xs font-semibold'>
-                                    <p>
-                                       Total Tutoring Hours: -
-                                    </p>
-                                    <p>
-                                       Avg Session Feedback: -
-                                    </p>
-                                    <p>
-                                       Total Client Referrals: -
-                                    </p>
-                                 </p>
-                              </div>
-                              <div className='flex items-center justify-center px-4 pr-0'>
-                                 <p className='inline-block pr-4 text-[#392976] font-bold text-[30px]'>
-                                    {tutorRank === '-' ? '-' : tutorRank}
-                                 </p>
-                              </div>
-                           </div>
-
-                        </div> */}
-                </div>
-
-                <div className="">
-                  {/* <p className='text-primary font-semibold text-[21px] mb-4'>
-                           Latest Practice Test
-                        </p> */}
-                  <div className="pl-[30px] pr-[26px] h-[922px]  overflow-auto pt-[20px]  bg-white rounded-20 removeDefaultScrollStyling">
+              <div className="bg-[#FFFFFF]  rounded-[5px] shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)] w-full px-[33.33px] pt-[20px]">
+                  <div className="w-full overflow-auto bg-white rounded-20 removeDefaultScrollStyling">
                     {allAssignedTests?.length > 0? (
                       allAssignedTests?.slice(-10).map((item) => {
+                      
                         return (
-                          <div className=" mb-[15px]" key={item._id}>
-                            <div>
-                              {/* <img src={`${item.photo ? `${awsLink}${item.photo}` : '/images/default.jpeg'} `} className='w-[62px] h-[62px] rounded-full' /> */}
-                            </div>
+                          <div className="" key={item._id}>
                             <div className=" flex justify-between items-center">
-                              <div className="w-2/6 ">
+                              <div className="w-[200px]">
                                 <p
                                   className="text-[#24A3D9] text-[22.5px] font-bold cursor-pointer overflow-hidden text-ellipsis"
                                   onClick={() =>
@@ -534,12 +477,10 @@ export default function TutorDashboard() {
                                     )
                                   }
                                 >
-                                  {" "}
-                                  {item.testName}{" "}
+                                  { item.testName.length > 9 ? item.testName.slice(0,9) + "..."  :item.testName } 
                                 </p>
-                                <div className=" text-[#517CA8] flex text-[17.55px]">
-                                  <p className=""></p>
-                                  <p className="text-base-17-5 overflow-hidden text-ellipsis">
+                                <div className=" text-[#517CA8] flex text-[17.55px] mt-[6.25px]">
+                                  <p className="text-[17.5px] overflow-hidden text-ellipsis">
                                     {" "}
                                     {item.studentName}
                                   </p>
@@ -567,7 +508,7 @@ export default function TutorDashboard() {
                                         `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`
                                       )
                                     }
-                                    className="bg-[#D4D9DF] rounded-5 px-[14.5px] h-[31px] "
+                                    className="bg-[#D4D9DF] rounded-5 px-[14.5px] h-[31px]"
                                   >
                                     View Report
                                   </button>
@@ -600,11 +541,8 @@ export default function TutorDashboard() {
                                 )}
                               </div>
                             </div>
-                            {/* <button className={`bg-primaryOrange font-semibold text-sm rounded-[6px] px-8 py-3 text-white ${item.status !== 'completed' && item.status !== 'started' ? 'opacity-50 pointer-events-none' : ''}`}
-                                          onClick={() => navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`)} >
-                                          View
-                                       </button> */}
-                            <div className="mt-5 h-[1px] w-[100%] bg-[#D9D9D9]"></div>
+                             
+                            <div className={`mt-[16.75px] mb-[20px] h-[1px] w-[100%] bg-[#D9D9D9]`}></div>
                           </div>
                         );
                       })
@@ -622,7 +560,7 @@ export default function TutorDashboard() {
                         </div>
                       </div>
                     )}
-                  </div>
+        
                 </div>
               </div>
             </div>
@@ -632,7 +570,8 @@ export default function TutorDashboard() {
           text="Session link has been copied to your clipboard"
           isOpen={isOpen}
         />
-      </div>
+     
+    </div>
     </div>
   );
 }

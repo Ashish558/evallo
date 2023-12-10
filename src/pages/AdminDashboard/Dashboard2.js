@@ -31,6 +31,12 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SubscriptionAndExtensionModal from "../Frames/SubscriptionAndExtensionModal/SubscriptionAndExtensionModal";
 import { useLazyGetAuthQuery, useLazyGetOrganizationQuery, useLazyGetPersonalDetailQuery } from "../../app/services/users";
+import nosignupimage from "../../../src/assets/images/latestNoSignup.png"
+import noservices from "../../../src/assets/images/noServices.png"
+import nostarClients from "../../../src/assets/images/noStarClients.png"
+import notutorPerformance from "../../../src/assets/images/tutorPerformance.png"
+import redCalendar from "../../../src/assets/icons/redCalender.svg"
+import greyCalendar from "../../../src/assets/icons/greyCalendar.svg"
 
 const Dashboard = () => {
   const [latestSignUp, latsestStatus] = useGetLatestSignUpRangeMutation();
@@ -522,7 +528,13 @@ const Dashboard = () => {
       });
   };
   const redirect = (item) => navigate(`/profile/${item.role}/${item._id}`);
- 
+ const addUsersSvg = (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+ <path d="M15.8333 14.166V15.8327H5.83333V14.166C5.83333 14.166 5.83333 10.8327 10.8333 10.8327C15.8333 10.8327 15.8333 14.166 15.8333 14.166ZM13.3333 6.66602C13.3333 6.17156 13.1867 5.68821 12.912 5.27709C12.6373 4.86597 12.2469 4.54554 11.79 4.35632C11.3332 4.1671 10.8306 4.11759 10.3456 4.21405C9.86065 4.31052 9.4152 4.54862 9.06557 4.89825C8.71593 5.24788 8.47783 5.69334 8.38137 6.17829C8.28491 6.66324 8.33442 7.16591 8.52363 7.62273C8.71285 8.07954 9.03328 8.46999 9.44441 8.74469C9.85553 9.01939 10.3389 9.16602 10.8333 9.16602C11.4964 9.16602 12.1323 8.90262 12.6011 8.43378C13.0699 7.96494 13.3333 7.32906 13.3333 6.66602ZM16 10.8827C16.4555 11.3029 16.8228 11.8097 17.0803 12.3734C17.3379 12.9372 17.4805 13.5466 17.5 14.166V15.8327H20V14.166C20 14.166 20 11.291 16 10.8827ZM15 4.16602C14.7482 4.16617 14.498 4.20553 14.2583 4.28268C14.7459 4.98182 15.0073 5.81367 15.0073 6.66602C15.0073 7.51836 14.7459 8.35021 14.2583 9.04935C14.498 9.1265 14.7482 9.16587 15 9.16602C15.663 9.16602 16.2989 8.90262 16.7678 8.43378C17.2366 7.96494 17.5 7.32906 17.5 6.66602C17.5 6.00298 17.2366 5.36709 16.7678 4.89825C16.2989 4.42941 15.663 4.16602 15 4.16602ZM6.66667 8.33268H4.16667V5.83268H2.5V8.33268H0V9.99935H2.5V12.4993H4.16667V9.99935H6.66667V8.33268Z" fill="white"/>
+</svg>)
+const plusSvg = (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+<path d="M9.16602 9.16602V4.16602H10.8327V9.16602H15.8327V10.8327H10.8327V15.8327H9.16602V10.8327H4.16602V9.16602H9.16602Z" fill="white"/>
+</svg>)
+
   return (
     // <div className={styles.container}>
     <>
@@ -562,12 +574,13 @@ const Dashboard = () => {
                 optionClassName="!w-min"
                 inputContainerClassName="!w-min "
                 handleRangeData={handleRevenue}
+                icon={redCalendar}
               />
             </div>
           </div>
         </div>
 
-        <section className="flex justify-center w-[1601px] mx-auto ">
+        <section className="flex justify-center w-[1601px] mx-auto mt-[11px]">
           <div className={styles.mainBox}>
             <div className="grid grid-cols-2 px-[37.5px]">
               <div className={`${styles.gridBorder} my-auto `}>
@@ -745,6 +758,7 @@ const Dashboard = () => {
                   optionClassName="!w-min"
                   inputContainerClassName="!w-min "
                   handleRangeData={handleUserStats}
+                icon={redCalendar}
                 />
               </div>
             </div>
@@ -836,9 +850,10 @@ const Dashboard = () => {
             Latest Sign-ups <span className="font-light">(Last 7 Days)</span>
           </p>
 
-          <div className="mt-[7px]">
+          <div className="mt-[7px] relative">
             <Table
               data={userData}
+              tableClass="table-auto !mt-0 !bg-transparent"
               AdminLatestSignUp={true}
               noScrollbar={true}
               headerObject={true}
@@ -846,7 +861,8 @@ const Dashboard = () => {
               onClick={{
                 redirect,
               }}
-              belowBoxHeight="h-[192px]"
+              hidePagination={userData?.length===0?true:false}
+              belowBoxHeight={userData?.length===0?"h-[303px]":"h-[192px]"}
               belowBoxText="Invite Parents or Students"
               belowBoxLink="users"
               belowBoxIcon={userLogo}
@@ -855,6 +871,12 @@ const Dashboard = () => {
               widthFullTable={true}
               signupTable={true}
             />
+           {userData?.length===0&& <div className="bg-white w-[1600px] h-[303px] left-0 absolute top-[90px] rounded-[5px]">
+                <img src={nosignupimage} alt="" className="absolute left-[501px] bottom-0" />
+                <button className="absolute rounded-[5.333px] w-[273px] h-[40px] flex gap-[8px] py-[10px] px-[15.5px] top-[131px] left-[663.5px] bg-[#38C980] text-[16px] font-semibold leading-[20px] text-white">
+                  <p>Invite Parents or Students</p>{addUsersSvg}
+                </button>
+            </div>}
           </div>
         </section>
         <div className="flex justify-center">
@@ -872,6 +894,7 @@ const Dashboard = () => {
               optionClassName="!w-min"
               inputContainerClassName="!w-min "
               handleRangeData={handlePopularServices}
+              icon={redCalendar}
             />
           </div>
         </div>
@@ -882,8 +905,9 @@ const Dashboard = () => {
               <p className="font-semibold text-[#26435F] text-[17.5px]">
                 Popular Services
               </p>
-              <div className="text-[17.5px] mt-[6.5px] pr-[32px]">
+              <div className="text-[17.5px] mt-0 pr-[32px]">
                 <Table
+                tableClass={"w-[1126.25px] table-auto !bg-transparent !mt-0"}
                   dataFor="popularServices"
                   noScrollbar={true}
                   data={popularServices}
@@ -896,16 +920,21 @@ const Dashboard = () => {
                   belowBoxIcon={plusIcon}
                   belowBoxHeight="h-[168px]"
                   maxPageSize={5}
-                  widthFullTable={true}
                   theadWidth={"w-[1126.25px]"}
                 />
               </div>
+              {popularServices?.length===0&&(<div className="absolute w-[1126px] h-[335px] top-[97px] rounded-[5.33px] bg-white">
+                <img src={noservices} alt=""className="absolute top-[13px] left-[50px]" />
+                <button className="absolute rounded-[5.333px] w-[189px] h-[40px] flex gap-[8px] py-[10px] px-[8px] top-[147px] left-[456px] bg-[#38C980] text-[16px] font-semibold leading-[20px] text-white">
+                  <p>Add New Services</p>{plusSvg}
+                </button>
+              </div>)}
             </div>
             <div className=" relative">
               <p className="pl-[32px] font-semibold text-[#26435F] text-[17.5px]">
                 Star Clients
               </p>
-              <div className="relative pl-[30px] mt-2">
+              <div className="relative pl-[30px] mt-0">
                 {/* <div
                   className={`h-[85px] flex justify-center items-center text-sm text-[#667085] bg-[#E5E8EA]`}
                 >
@@ -915,6 +944,7 @@ const Dashboard = () => {
                   noArrow={false}
                   noScrollbar={true}
                   headerWidth="!px-1.5"
+                  tableClass="table-auto !bg-transparent !mt-0"
                   dummyRowStarClients={popularServices}
                   data={[]}
                   hidePagination={true}
@@ -929,6 +959,12 @@ const Dashboard = () => {
                   widthFullTable={true}
                   theadWidth={"w-[411.25px]"}
                 />
+                {popularServices?.length===0&&(<div className="absolute w-[412px] h-[335px] top-[97px] rounded-[5.33px] bg-white">
+                <img src={nostarClients} alt=""className="absolute top-[13px] left-[50px]" />
+                <button className="absolute rounded-[5.333px] w-[199.5px] h-[40px] flex gap-[8px] py-[10px] px-[8px] top-[147px] left-[107px] bg-[#38C980] text-[16px] font-semibold leading-[20px] text-white">
+                  <p>Add Referral Codes</p>{plusSvg}
+                </button>
+              </div>)}
               </div>
               <div className="h-[90%] absolute bottom-0 left-0 bg-[#CBD6E2] top-[55%] transform -translate-y-1/2 w-px"></div>
             </div>
@@ -943,7 +979,7 @@ const Dashboard = () => {
                   Total # Of Referrals
                 </p>
                 <div
-                  className={`mt-1 h-[72.5px] max-w-[245px] min-w-[245px] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
+                  className={`mt-1 h-[72.5px] max-w-[217.5px] min-w-[217.5px] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
                 >
                   <p className="text-[#FFA28D] h-full w-full justify-center font-bold text-[37.5px] flex items-center text-center">
                     {improvementStats?.no_of_referrals}
@@ -955,7 +991,7 @@ const Dashboard = () => {
                   Average SAT Improvement
                 </p>
                 <div
-                  className={`mt-1 h-[72.5px] max-w-[245px] min-w-[245px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox3}`}
+                  className={`mt-1 h-[72.5px] max-w-[237.5px] min-w-[237.5px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox3}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-bold text-[37.5px] flex items-center text-center">
                     {improvementStats?.avg_sat_improvement
@@ -964,12 +1000,12 @@ const Dashboard = () => {
                   </p>
                 </div>
               </div>
-              <div>
+              <div className="w-[239px]">
                 <p className="font-semibold text-[17.5px] leading-[21px]">
                   Average ACT Improvement
                 </p>
                 <div
-                  className={` mt-1 h-[72.5px] max-w-[245px] min-w-[245px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox3}`}
+                  className={` mt-1 h-[72.5px] max-w-[238.5px] min-w-[237.5px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox3}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-bold text-[37.5px] flex items-center text-center">
                     {improvementStats?.avg_act_improvement
@@ -1022,11 +1058,12 @@ const Dashboard = () => {
               optionClassName="!w-min"
               inputContainerClassName="!w-min "
               handleRangeData={handleTutorPerformance}
+              icon={redCalendar}
             />
           </div>
         </div>
 
-        <section className="mx-auto  w-[1601px]">
+        <section className="mx-auto  w-[1601px] relative">
           <Table
             headerWidth="w-[150px] whitespace-normal px-5"
             data={tutorPerformanceData}
@@ -1039,7 +1076,12 @@ const Dashboard = () => {
             belowBoxHeight="h-[143px]"
             // customScrollBarClass={"scrollbar-content1"}
           />
-
+          {tutorPerformanceData?.length===0&&(<div className="absolute w-[1600px] h-[251px] rounded-[5.33px] bg-white top-[82px]">
+                <img src={notutorPerformance} alt=""className="absolute top-[5px] left-[416px]" />
+                <button className="absolute rounded-[5.333px] w-[148px] h-[40px] flex gap-[8px] py-[10px] px-[8px] top-[105px] left-[726px] bg-[#38C980] text-[16px] font-semibold leading-[20px] text-white">
+                  <p>Invite Tutors</p>{addUsersSvg}
+                </button>
+              </div>)}
           <div className="flex justify-center">
             <div className="mt-[36px] mb-[44px] bg-[#CBD6E2] h-[1px] w-[100px]"></div>
           </div>

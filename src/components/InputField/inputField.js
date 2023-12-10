@@ -26,6 +26,7 @@ export default function InputField({
   label,
   labelClassname,
   IconRight,
+  iconRIghtClassName,
   IconLeft,
   inputClassName,
   inputLeftField,
@@ -74,7 +75,7 @@ export default function InputField({
       {label && (
         <label
           className={`${
-            biggerText ? "text-lg" : "text-base-17-5"
+            biggerText ? "text-lg" : "text-[16.5px]"
           }  inline-block  font-semibold ${labelClassname} ml-0 `}
         >
           <span className="inline-block !cursor-default">{label}</span>
@@ -113,7 +114,7 @@ export default function InputField({
         </label>
       )}
       <div
-        className={`py-[13px] px-[21px] flex items-center rounded  ${
+        className={`py-[13px] px-[21px]  flex items-center rounded  ${
           inputContainerClassName ? inputContainerClassName : ""
         } ${disabled === true ? "cursor-not-allowed" : ""} `}
       >
@@ -132,13 +133,13 @@ export default function InputField({
         {prefix && <span className="mr-3">{prefix}</span>}
         {dateBody && dateBody}
         {IconRight && !hideTooltip && (
-          <div className="group relative w-fit">
+          <div className={`group relative w-fit ${iconRIghtClassName}`}>
             <img
               src={IconRight}
               alt="icon-right"
               className={` cursor-pointer ${
                 iconSize === "medium" && "w-[24px]"
-              }`}
+              } ${iconRIghtClassName}`}
             />
             {Tooltip}
           </div>
