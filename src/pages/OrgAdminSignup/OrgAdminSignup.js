@@ -769,13 +769,13 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                   </div>
 
 
-                  <div className={`w-full flex mt-[30px] justify-between  `}>
+                  <div className={`w-full flex mt-[30px] justify-between`}>
                     <InputField
                       label="Work Email"
                       placeholder=""
                       parentClassName="text-xs w-full "
                       labelClassname="text-[#26435F] font-medium mb-[7.45px] text-[18.667px]"
-                      inputContainerClassName=" border border-[#D0D5DD] rounded-md w-[325px] h-[53.33px] text-[18.667px]"
+                      inputContainerClassName=" border border-[#D0D5DD] rounded-md w-[375px] h-[53.33px] text-[18.667px]"
                       value={values.email}
                       onChange={(e) =>
                         setValues({
@@ -789,7 +789,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
 
                     <InputFieldDropdown
                       placeholder=""
-                      parentClassName="text-xs w-4/5 ml-8 "
+                      parentClassName=""
                       labelClassname="text-[#26435F] font-medium mb-[7.45px] text-[18.667px]"
                       inputContainerClassName=" border border-[#D0D5DD] rounded-md w-[275px] h-[53.33px] text-[18.667px]"
                       label="Phone"
@@ -830,7 +830,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                     totalErrors={error}
                     error={error.company}
                   />
-                  <p className="text-[15px]  font-semibold mt-[30px] mb-[18px] text-[#26435F] text-[18.667px]">
+                  <p className="font-semibold mt-[30px] mb-[18px] text-[#26435F] text-[18.667px]">
                     {" "}
                     Registering as{" "}
                   </p>
@@ -847,7 +847,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                       {/* <input type="radio" defaultChecked={values.registrationAs === "Individual"
                             ? true
                             : false} className="w-3 h-3"/> */}
-                      <div className="w-[30px]  flex justify-center">
+                      <div className="w-[30px] flex justify-center">
                         <img
                           src={
                             values.registrationAs === "Individual"
@@ -864,10 +864,10 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                           values.registrationAs === "Individual"
                             ? "text-[#FFA28D] font-semibold "
                             : "text-[#26435F] font-semibold"
-                        } text-[14px] `}
+                        } text-[18.667px] `}
                       >
-                        {" "}
-                        Individual{" "}
+                        
+                        Individual
                       </p>
                     </div>
                     <div
@@ -898,15 +898,14 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                           values.registrationAs === "Company"
                             ? "text-[#FFA28D] font-semibold "
                             : "text-[#26435F] font-semibold"
-                        } text-[14px] `}
+                        } text-[18.667px] `}
                       >
-                        {" "}
-                        Company{" "}
+                        Company
                       </p>
                     </div>
                     
                   </div>
-                  <div className="mt-[25px] flex">
+                  <div className="mt-[39.97px] flex">
                     
                     <div className="flex items-center">
                    
@@ -920,7 +919,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                      
                     </span>
                   </div>
-                    <p className="text-[15px] text-[#26435F] font-medium  leading-5 ml-1 pl-2">
+                    <p className="text-[18.667px] text-[#26435F] font-medium leading-[26.67px] ml-1 pl-2">
                       Selecting this would confirm that you have carefully read
                       through and agree to our{" "}
                       <span className="text-[#FFA28D] font-semibold">
@@ -938,12 +937,12 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                   <div className="flex items-center mt-[60px] justify-end">
                     <SecondaryButton
                       children="Back to login"
-                      className="w-[160px] text-sm mr-6 bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 "
+                      className="w-[177px] h-[47px] text-[20px] mr-[29.9px] bg-white text-[#cad0db] px-0 border-[1.7px] border-[#D0D5DD]"
                       style={{backgroundColor: "#fff"}}
                       onClick={handleBack}
                     />
                     <PrimaryButton
-                      className={`w-[160px] flex justify-center  bg-[#FFA28D]  disabled:opacity-60  rounded text-white text-sm font-medium relative py-[9px] ${
+                      className={`w-[194px] h-[47px] flex justify-center items-center bg-[#FFA28D] disabled:opacity-60 rounded text-white text-[20px] font-semibold relative px-0 py-0 ${
                         loading
                           ? "cursor-wait opacity-60 pointer-events-none"
                           : "cursor-pointer"
