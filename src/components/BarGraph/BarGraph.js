@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import ReactApexChart from 'react-apexcharts'
-
-export default function BarGraph({ series, options, height, width }) {
-
-   // console.log('timeSeries', series);
+ 
+function BarGraph({ series, options, height, width }) {
+ 
    return (
 
       <div>
@@ -16,3 +15,5 @@ export default function BarGraph({ series, options, height, width }) {
       </div>
    )
 }
+
+export default BarGraph;
