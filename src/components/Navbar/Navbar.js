@@ -514,7 +514,7 @@ const [loading2,setLoading2]=useState(false)
                            <>
                               <p>
                                  <img
-                                    className="w-[21.33px] h-[21.33px]"
+                                    className={item.path==="/invoice"?"w-[14.667px] h-[19.556px]":"w-[21.33px] h-[21.33px]"}
 
                                     src={item.activeIcon}
                                     alt=""
@@ -526,7 +526,7 @@ const [loading2,setLoading2]=useState(false)
                            <>
                               <p>
                                  <img
-                                    className="w-[21.34px] h-[21.34px]"
+                                    className={item.path==="/invoice"?"w-[14.667px] h-[19.556px]":"w-[21.33px] h-[21.33px]"}
                                     src={(item.isDisabled && item.disabledIcon ? item.disabledIcon : item.icon)}
                                     alt=""
                                  />

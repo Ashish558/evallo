@@ -1130,7 +1130,7 @@ export default function StudentReport() {
           {/* {console.log(testDetails)} */}
 
           <div className="mt-[53px] flex justify-between items-end">
-            <div>
+            <div className="border-b-[1.25px] border-[#D3D3D3]">
               {subjects.map((item, idx) => {
                 return (
                   <>
@@ -1139,7 +1139,7 @@ export default function StudentReport() {
                       children={item.name}
                       onClick={() => handleChange(item)}
                       className={` px-4 mr-7   ${item.selected
-                        ? "border-b-4 rounded border-[#FFA28D] text-[#FFA28D]"
+                        ? "border-b-4 rounded-[-4px] border-[#FFA28D] text-[#FFA28D]"
                         : ""
                         }`}
                     />
@@ -1148,7 +1148,7 @@ export default function StudentReport() {
               })}
             </div>
           </div>
-          <hr className="border-t-[1.25px] border-[#D3D3D3] w-[461px]" />
+          {/* <hr className="border-t-[1.25px] border-[#D3D3D3] w-[461px]" /> */}
           <div className="mt-[32.5px] flex ">
 
             {/* concepts */}

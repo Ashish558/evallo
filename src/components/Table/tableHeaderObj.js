@@ -32,11 +32,25 @@ export function TableHeaderNew({
                   : upArrow
               }</div>
   </th>):
+  dataFor==="popularServices"?(<th className="text-center py-[18.75px] text-[17.5px] font-medium leading-[21px] text-white">
+<div onClick={() => header.onCick && header.onCick()} className={`${header.text==="Service"&&"w-[205.6px] pl-[21.25px] text-left"}
+${header.text==="Actively Using"&&"w-[168.5px] pr-[11.5px] text-left"} flex gap-0
+`}>
+            <p>{header.text}</p>{
+    header.noArrow?"":
+     header.willDisplayDownArrow=== null||header.text.lenght===0?"":
+                header.willDisplayDownArrow ||
+                header.willDisplayDownArrow === undefined
+                  ? downArrow
+                  : upArrow
+              }
+</div>
+  </th>):
   (
     <th
       className={`px-6 py-[20px] font-normal whitespace-nowrap text-white text-center cursor-pointer ${
         header.className ? header.className : ""
-      } ${flag ? styles["no-arrow"] : ""} bg-[#26435F]`}
+      } ${flag ? styles["no-arrow"] : ""} bg-[#26435F] ${header.text==="% of Business"?" rounded-r-[5.333px]":""}`}
     >
       <div
         className={`flex 
