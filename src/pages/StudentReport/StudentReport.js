@@ -292,7 +292,7 @@ export default function StudentReport() {
       setIsSet(true);
     });
   }, [responseData]);
-  // console.log('subjects----', subjects);
+ 
 
   const getSelectedString = (arr) => {
     let strArr = [];
@@ -975,13 +975,6 @@ export default function StudentReport() {
     getSortedConcepts();
   }, [selectedSubject, answerKey, answerKeySubjects]);
 
-  // console.log('concepts', selectedSubject.concepts)
-  // console.log('sortedConcepts', sortedConcepts)
-  // console.log('selectedSubject', selectedSubject)
-  // console.log('selectedSubject', responseData.response)
-  // console.log('responseData', responseData)
-  // console.log('answerKey', answerKey)
-
   const [startSectionDate, startSectionTime, startSectionFormat] =
     selectedSubject?.startSectionTime
       ? getFormattedDateTime(selectedSubject?.startSectionTime)?.split(" ")
@@ -1184,10 +1177,7 @@ export default function StudentReport() {
                   Incorrect
                 </p>
                 {
-                  // selectedSubject.no_of_correct === 0 ?
-                  //    <>
-                  //       {getSubjectSectionsScore()}
-                  //    </> :
+                  
                   selectedSubject.concepts ? (
                     sortedConcepts.map((item, idx) => {
                       return (
@@ -1287,7 +1277,7 @@ export default function StudentReport() {
               <div className="  text-[#24A3D9] px-4 py-3 ml-[45px] border-[2.5px] border-[#FFA28D] rounded-7 w-[338px] mt-[70px]">
                 <p className="text-center font-semibold text-base-20">
                   Section Score:
-                  <span className="text-[#517CA8] text-[1.30vw] pl-1 font-medium">
+                 {/*  <span className="text-[#517CA8] text-[1.30vw] pl-1 font-medium">
                     {Object.keys(responseData).length >= 1 &&
                       Object.keys(selectedSubject).length >= 1 && (
                         <>
@@ -1295,9 +1285,9 @@ export default function StudentReport() {
                           {getSubjectScore(responseData, selectedSubject)}
                         </>
                       )}
-                  </span>
+                  </span>*/}
                 </p>
-              </div>
+              </div> 
             </div>
           </div>
 
@@ -1322,9 +1312,9 @@ export default function StudentReport() {
           <p className="text-primary-dark font-bold text-[20px] mt-[83.75px]">
             Time Taken
           </p>
-          <div className="bg-white mt-[7.25px] rounded-5 h-[589px]  relative flex justify-center items-center">
-            {/* <p className='text-primary-dark font-bold text-3xl text-center mb-6 mt-2'>Time Taken</p> */}
-            <BarGraph
+          <div className="bg-white mt-[7.25px] rounded-5 h-[589px] w-full relative flex justify-center items-center">
+            {/* {/* <p className='text-primary-dark font-bold text-3xl text-center mb-6 mt-2'>Time Taken</p> */}
+            {/* <BarGraph
               series={[timeSeries]}
               options={timeSeriesOptions}
               height="450px"
@@ -1335,22 +1325,22 @@ export default function StudentReport() {
             </p>
             <p className="text-[#24A3D9] text-xl font-medium absolute top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2 -rotate-90 ml-[51.76px]">
               Time Taken (Seconds)
-            </p>
-          </div>
+            </p>*/}
+          </div> 
 
 
           {/* conceptual accuracy */}
           <p className="text-primary-dark font-bold text-[20px] mt-[62.25px]">
             Conceptual Accuracy
           </p>
-          <div className="bg-white mt-[7.25px] rounded-5 h-[589px] py-[81.25px] ps-[28px]">
+          {/* <div className="bg-white mt-[7.25px] rounded-5 h-[589px] py-[81.25px] ps-[28px]">
             <BarGraph
               series={[accuracySeries]}
               options={accuracyGraphOptions}
               height="475px"
               width={"1452px"}
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

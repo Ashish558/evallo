@@ -59,7 +59,7 @@ export function TableHeader({
        `}
     >
       <div
-        className={` ${headerWidth ? headerWidth : ""}
+        className={`${headerWidth ? headerWidth : ""}
         ${header === "Org Name"&&dataFor == "allOrgs" && "!pl-[73px] w-[346px]"}
         ${header === "A Name"&&dataFor == "allOrgs" && "!w-[286px]"}
         ${header === "A Phone"&&dataFor == "allOrgs" && "w-[187px]"}
