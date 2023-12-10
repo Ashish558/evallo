@@ -270,6 +270,9 @@ const managerNavData = [
 ];
 
 const Navbar = ({myRef}) => {
+   const {
+      hasSubscriptionExpired
+   } = useSelector(state => state.subscription);
    const [navData, setNavData] = useState(tempnavdata);
    const location = useLocation();
    const [activeRoute, setActiveRoute] = useState(location.pathname);

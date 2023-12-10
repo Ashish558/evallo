@@ -158,7 +158,7 @@ function ReviewProduct({
                         activeTutorsAllowed={chosenSubscriptionPlan && chosenSubscriptionPlan.activeTutorsAllowed ? chosenSubscriptionPlan.activeTutorsAllowed : null}
                         currency={chosenSubscriptionPlan && chosenSubscriptionPlan.currency ? chosenSubscriptionPlan.currency : null}
                         subscriptionPricePerMonth={chosenSubscriptionPlan && chosenSubscriptionPlan.pricePerMonth ? chosenSubscriptionPlan.pricePerMonth : null}
-                        freeTrialDays={!updateSubscriptionMode ? chosenSubscriptionPlan?.freeTrialDays : 0}
+                        freeTrialDays={!(updateSubscriptionMode || renewProductMode) ? chosenSubscriptionPlan?.freeTrialDays : 0}
                     />
 
                     <div className="flex items-center mt-[10px] w-full" >
@@ -201,14 +201,14 @@ function ReviewProduct({
 
                         <div className="flex flex-col items-end text-[#24A3D9] text-[18.67px]" >
                             <div>{chosenSubscriptionPlan ? (CurrencyNameToSymbole(chosenSubscriptionPlan.currency) + 
-                                  (chosenSubscriptionPlan.ccRequired ? chosenSubscriptionPlan.pricePerMonth : 0)
+                                  ((chosenSubscriptionPlan.ccRequired || updateSubscriptionMode || renewProductMode) ? chosenSubscriptionPlan.pricePerMonth : 0)
                             ) : ""}</div>
                             <div>
                                 {
                                     (() => {
                                         if (chosenSubscriptionPlan === null || chosenSubscriptionPlan === undefined) return (<></>);
 
-                                        const freeTrialDays = chosenSubscriptionPlan.freeTrialDays;
+                                        const freeTrialDays = (updateSubscriptionMode || renewProductMode) ? 0 : chosenSubscriptionPlan.freeTrialDays;
                                         const freeTrialStatement = freeTrialDays === 0 ? "1 Month" :
                                                            freeTrialDays >= 30 ?  `${freeTrialDays / 30} Months` :
                                                            `${freeTrialDays} Days`;
@@ -259,7 +259,7 @@ function ReviewProduct({
                                                     canChangePlan={true}
                                                     setFrames={setFrames}
                                                     planName={item.planName}
-                                                    freeTrialDays={(!updateSubscriptionMode ? 30 : 0)}
+                                                    freeTrialDays={(!(updateSubscriptionMode || renewProductMode) ? 30 : 0)}
                                                     planDisplayName={item.planDisplayName}
                                                     extensionPriceOption={chosenPackage}
                                                     subscriptionPricePerMonth={chosenPackage.pricePerMonth}
@@ -299,7 +299,9 @@ function ReviewProduct({
                                                     <div className="grow" ></div>
 
                                                     <div className="flex flex-col items-end text-[#24A3D9]" >
-                                                        <div>{CurrencyNameToSymbole(chosenPackage.currency) + 0}</div>
+                                                        <div>{CurrencyNameToSymbole(chosenPackage.currency) + 
+                                                              ((updateSubscriptionMode || renewProductMode) ? chosenPackage.pricePerMonth : 0)
+                                                        }</div>
                                                         <div>1 Month</div>
                                                     </div>
                                                 </div>

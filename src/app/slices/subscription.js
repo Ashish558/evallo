@@ -38,7 +38,8 @@ const initialState = {
         subscriptionId: ""
     },
     paymentMethods: [],
-    subscriptionUpdateTrigger: null
+    subscriptionUpdateTrigger: null,
+    hasSubscriptionExpired: false,
 }
 
 const subscription = createSlice({
@@ -61,12 +62,13 @@ const subscription = createSlice({
             state.subscriptionsInfoFromAPI = payload;
         },
         updatePaymentMethods: (state, { payload }) => {
-            console.log("payload in updatePaymentMethods");
-            console.log(payload);
             state.paymentMethods = payload;
         },
         triggerSubscriptionUpdate: (state) => {
             state.subscriptionUpdateTrigger = {};
+        },
+        updateHasSubscriptionExpired: (state, { payload }) => {
+            state.hasSubscriptionExpired = payload;
         }
     }
 });
@@ -79,5 +81,6 @@ export const {
     updateSubscriptionsInfoFromAPI,
     updatePaymentMethods,
     triggerSubscriptionUpdate,
+    updateHasSubscriptionExpired,
 } = subscription.actions;
 export default subscription.reducer;

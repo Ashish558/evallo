@@ -963,7 +963,7 @@ function SubscriptionAndExtensionModal({
 
                 <div className="flex mt-[20px] w-[1100px]" >
                     {
-                        updateSubscriptionMode || renewProductMode ? (
+                        updateSubscriptionMode || (renewProductMode && !openSubscriptionModal) ? (
                             <button 
                                 className="font-[600] text-[#B3BDC7] text-[14px]" 
                                 onClick={() => {
