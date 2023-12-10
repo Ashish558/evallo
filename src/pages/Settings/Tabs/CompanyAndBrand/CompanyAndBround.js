@@ -12,7 +12,7 @@ import logo from "../../../../assets/icons/Frame 31070.svg";
 import orgDefaultLogo from "../../../../assets/images/org-default.png";
 import lock from "../../../../assets/icons/lock.svg";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Country } from "country-state-city";
 import UploadIcon from "../../../../assets/icons/basil_file-upload-outline.svg";
@@ -27,6 +27,7 @@ import {
 } from "../../../../app/services/organization";
 import { object } from "prop-types";
 import axios from "axios";
+import { updateOrganization } from "../../../../app/slices/organization";
 // import { trim } from "jquery";
 
 const CompanyAndBround = () => {
@@ -44,6 +45,7 @@ const CompanyAndBround = () => {
   const [states, setStates] = useState([]);
   const [values, setValues] = useState({ role: userData.role });
   const [orgBussinessLogo, setOrgBussinessLogo] = useState(null)
+  const dispatch = useDispatch();
 
   const [error, setError] = useState({
     firstName: "",
@@ -107,10 +109,13 @@ const CompanyAndBround = () => {
     try {
       updateUserOrg(values)
         .then((res) => {
-          if (res?.data) {
+          if (res?.error) {
+            alert("An unexpected error occured");
+          } else if (res?.data) {
             alert("Updated successfully!");
-          } else if (res?.error) {
-            alert("Updated successfully!");
+            console.log('resp-', res.data);
+            dispatch(updateOrganization(res.data.orgDetails));
+            // window.location.reload()
           }
           console.log("org updated", values);
         })

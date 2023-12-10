@@ -142,10 +142,17 @@ export default function SetPassword({
                 placeholder=""
                 inputContainerClassName="border border-[0.98px_solid_#D0D5DD] w-[266px] h-[53px]"
                 inputClassName={"py-[2px] "}
-                label="Set New Password"
+                label="Set New Passworzd"
                 labelClassname="ml-2 mb-2 !font-semibold !text-[0.9719vw]"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  // Check if the value contains any whitespace
+                  if (!/\s/.test(value)) {
+                    setPassword(value);
+                  }
+                }
+                }
                 error={error.password}
               />
 
@@ -158,7 +165,14 @@ export default function SetPassword({
                 label="Confirm New Password"
                 labelClassname="ml-2 mb-2 !font-semibold  !text-[0.9719vw]"
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  // Check if the value contains any whitespace
+                  if (!/\s/.test(value)) {
+                    setConfirmPassword(value);
+                  }
+                }
+                }
                 error={error.confirmPassword}
               />
             </div>
