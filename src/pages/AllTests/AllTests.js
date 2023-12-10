@@ -485,7 +485,7 @@ export default function AllTests({
         headers: getAuthHeader(),
       })
       .then((res) => {
-        alert("CSV UPLOADED");
+        alert("CSV and PDF uploaded");
         console.log("csv post resp", res);
         setModalData(initialState);
         setModalActive(false);

@@ -1136,7 +1136,7 @@ export default function Users() {
   };
   const handleBulkExport = async () => {
     getExportData().then((res) => {
-      console.log('exprting..');
+      console.log('exporting..', selectedId);
       const csvSheetData = [
         { data: [{ name: true }], sheetName: 'parents' },
         { data: [{ name: true }], sheetName: 'students' },
