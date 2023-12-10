@@ -30,7 +30,7 @@ function EnableAutoRenewal({
                         disabled={
                             values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
                         } */
-                        // onClick={OnCancelSubscriptionModalChangePlanClicked}
+                        onClick={OnEnableAutoRenewClicked}
                         children={<span className="font-[500] text-[15px]" >Enable Auto-Renew</span>}
                     />   
                 </div>
