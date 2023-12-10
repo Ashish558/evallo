@@ -59,12 +59,13 @@ export default function Modal({
           <div className={` h-full pt-[100px] pb-[20px] ${parentClass??""}`}>
             {/* <div style={{marginTop:`-${(1/(scale > 1 ? 1 : scale))*70}px`,marginBottom:`-${(1-(scale > 1 ? 1 : scale))*70}px`}} className={styles.modalContainer+" "}>
           <div className="w-full p-1"> */}
+          {/* <div className="absolute top-[150px] right-[150px]">X</div> */}
             <div
-              // style={{  overflowY: "auto" }}
               ref={handleClose ? selectRef : null}
               className={`${modalSize ? modalSize : "w-full"} bg-white pt-[28px] pb-[33.34px] md:px-[33.33px] rounded-lg relative ${classname ? classname : ""
                 }`}
             >
+            <div onClick={handleClose} className="absolute top-[20px] right-[50px]">X</div>
               <div className={wrapperClassName ? wrapperClassName : ""}>
                 <p
                   className={`font-semibold text-xl md:text-[21px] text-left text-[#26435F] 

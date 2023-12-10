@@ -383,21 +383,12 @@ export default function TableItem({
       {dataFor === "popularServices" && (
         <>
           <tr className=" text-[17.5px] font-medium">
-            <td className="py-4 px-[10px]">
-              {item.service?.length > 15 ? (
-                <div className="flex flex-col">
-                  <p>{item.service?.slice(0, 15)}</p>
-                  <p>{item.service?.slice(15, item?.service?.length)}</p>
-                </div>
-              ) : (
-                item.service
-              )}
-            </td>
-            <td className="py-4 px-[10px]">{item.actively_using}</td>
-            <td className="py-4 px-[10px]">{item.total_used}</td>
-            <td className="py-4 px-[10px]">{item.scheduled_hours}</td>
-            <td className="py-4 px-[10px]">{item.completed_hours}</td>
-            <td className="py-4 px-[10px]">{item.percent_of_business}</td>
+            <td className="!py-[18.5px] px-[10px] w-[205.6px] !pl-[31.25px] text-left">{item.service?.length>15?<div className="flex flex-col"><p>{item.service?.slice(0,15)}</p><p>{item.service?.slice(15,item?.service?.length)}</p></div>:item.service}</td>
+            <td className="!py-[18.5px] px-[10px] w-[178.5px] !pr-[31.5px] text-center">{item.actively_using}</td>
+            <td className="!py-[18.5px] px-[10px] w-[147.13px] !pr-[36.13px] text-center">{item.total_used}</td>
+            <td className="!py-[18.5px] px-[10px] w-[207.13px] !pr-[31.13px] text-center">{item.scheduled_hours}</td>
+            <td className="!py-[18.5px] px-[10px] w-[211.11px] !pr-[31.11px] text-center">{item.completed_hours}</td>
+            <td className="!py-[18.5px] px-[10px] w-[174.37px] !pr-[31.37px] text-center">{item.percent_of_business}</td>
           </tr>
         </>
       )}
@@ -1035,72 +1026,59 @@ export default function TableItem({
           {MapData(item, dataFor, excludes, onClick)}
         </tr>
       )}
-      {dataFor === "testsDetailQuestions" &&
-        (testtype === "DSAT" || testtype === "DSAT®") && (
-          <tr className="bg-white text-[17.5px]   leading-7 mt-[10px]">
-            <td className="w-[174px] pl-[27px] pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-center">
-              <div>{item?.QuestionNumber}</div>
-            </td>
-            <td className="w-[124px] pl-[0] text-[#517CA8] text-[17.5px] font-normal text-left">
-              <div>{item?.QuestionType}</div>
-            </td>
-            <td className="w-[90px] pl-[0] text-[#517CA8] text-[17.5px] font-normal text-left">
-              <div>{item?.CorrectAnswer}</div>
-            </td>
+      {dataFor === "testsDetailQuestions" && (testtype === "DSAT" || testtype === "DSAT®")&& (
+        <tr className="bg-white text-[17.5px]   leading-7 mt-[10px]">
+          <td className="w-[174px] pl-[27px] pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-center pt-[15px] pb-[13.5px]">
+            <div>{item?.QuestionNumber}</div>
+          </td>
+          <td className="w-[124px] pl-[0] text-[#517CA8] text-[17.5px] font-normal text-left pt-[15px] pb-[13.5px]">
+            <div>{item?.QuestionType}</div>
+          </td>
+          <td className="w-[90px] pl-[0] text-[#517CA8] text-[17.5px] font-normal text-left pt-[15px] pb-[13.5px]">
+            <div>{item?.CorrectAnswer}</div>
+          </td>
 
-            <td className="w-[110px] pl-[0] pr-[28px]">
-              {item?.QuestionImage === "no" ? (
-                ""
-              ) : (
-                <div className="w-[20px] h-[20px] bg-[#38C980] rounded-full mx-auto"></div>
-              )}
-            </td>
-            <td className="w-[114px] pl-[0] pr-[34px]">
-              {item?.AnswerImage === "no" ? (
-                ""
-              ) : (
-                <div className="w-[20px] h-[20px] bg-[#FFCE84] rounded-full mx-auto"></div>
-              )}
-            </td>
-            <td
-              className={`w-[140px] pr-[58px] ${
-                extratableitem[item?.QuestionNumber - 1]?.Passage == "Yes"
-                  ? "text-[#38C980]"
-                  : "text-[#FF7979]"
-              } text-[17.5px] font-semibold `}
-            >
-              {extratableitem[item?.QuestionNumber - 1]?.Passage}
-            </td>
-            <td className="w-[385px] pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-left max-w-[385px] text-ellipsis">
-              <div className="max-w-[342px] text-ellipsis overflow-hidden">
-                {item?.Concepts}
-              </div>
-            </td>
-            <td className="w-[220px] pr-[70.5px] text-[#517CA8] text-[17.5px] font-normal text-left">
-              <div className="max-w-[150px] text-ellipsis overflow-hidden">
-                {item?.Strategies}
-              </div>
-            </td>
-            <td className="w-[108px] pr-[28px] text-[#517CA8] text-[17.5px] font-normal text-left">
+          <td className="w-[110px] pl-[0] pr-[28px] pt-[15px] pb-[13.5px]">
+            {item?.QuestionImage==="no"?"":<div className="w-[20px] h-[20px] bg-[#38C980] rounded-full mx-auto"></div>}
+          </td>
+          <td className="w-[114px] pl-[0] pr-[34px] pt-[15px] pb-[13.5px]">
+            {item?.AnswerImage==="no"?"":<div className="w-[20px] h-[20px] bg-[#FFCE84] rounded-full mx-auto"></div>}
+          </td>
+          <td
+                className={`w-[140px] pr-[58px] ${
+                  extratableitem[item?.QuestionNumber - 1]?.Passage == "Yes"
+                    ? "text-[#38C980]"
+                    : "text-[#FF7979]"
+                } text-[17.5px] font-semibold `}
+              >
+                {extratableitem[item?.QuestionNumber - 1]?.Passage}
+              </td>
+              <td className="w-[385px] pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-left max-w-[385px] text-ellipsis pt-[15px] pb-[13.5px]">
+                <div className="max-w-[342px] text-ellipsis overflow-hidden">{item?.Concepts}</div>
+              </td>
+              <td className="w-[220px] pr-[70.5px] text-[#517CA8] text-[17.5px] font-normal text-left pt-[15px] pb-[13.5px]">
+              <div className="max-w-[150px] text-ellipsis overflow-hidden">{item?.Strategies}</div>
+              </td>
+              <td className="w-[108px] pr-[28px] text-[#517CA8] text-[17.5px] font-normal text-left">
               <div>{item?.AnswerChoices}</div>
-            </td>
-            <td className="w-[111.25px] pr-[45.25px] text-[#517CA8] text-[17.5px] font-normal text-left">
-              <div>{item?.scoring ?? "{Scale}"}</div>
-            </td>
-            <td className="font-medium flex justify-center px-1 min-w-[45px] py-[12.5px] pr-[20px]">
-              {!item.editable ? (
-                <></>
-              ) : (
-                <img
-                  src={editIcon3}
-                  className="cursor-pointer h-[25px] w-[25px]"
-                  onClick={() => onClick.handleEditTestClick(item)}
-                  alt=""
-                />
-              )}
-            </td>
-            {/* {MapData(item, dataFor, excludes)} */}
-            {/* {testtype === "DSAT" || testtype === "DSAT®" ? (
+              </td>
+              <td className="w-[111.25px] pr-[45.25px] text-[#517CA8] text-[17.5px] font-normal text-left pt-[15px] pb-[13.5px]">
+              <div>{item?.scoring??"{Scale}"}</div>
+              </td>
+              <td className="font-medium flex justify-center px-1 min-w-[45px] py-[12.5px] pr-[20px]">
+            {!item.editable ? (
+              <></>
+            ) : (
+              <img
+                src={editIcon3}
+                className="cursor-pointer h-[25px] w-[25px]"
+                onClick={() => onClick.handleEditTestClick(item)}
+                alt=""
+              />
+            )}
+          </td>
+          {/* {MapData(item, dataFor, excludes)} */}
+          {/* {testtype === "DSAT" || testtype === "DSAT®" ? (
          
             <>
               <td>
@@ -1150,11 +1128,10 @@ export default function TableItem({
               />
             )}
           </td> */}
-          </tr>
-        )}
-      {dataFor === "testsDetailQuestions" && testtype === "SAT" && (
-        <tr>
-          <td className="w-[174px] pl-[27px] pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-center">
+        </tr>
+      )}
+      {dataFor === "testsDetailQuestions" && (testtype === "SAT" || testtype === "ACT")&&(<tr>
+        <td className="w-[174px] pl-[27px] pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-center">
             <div>{item?.QuestionNumber}</div>
           </td>
           <td className="w-[124px] pl-[0] text-[#517CA8] text-[17.5px] font-normal text-left">
@@ -1398,6 +1375,9 @@ export default function TableItem({
           </td>
         </tr>
       )}
+      {dataFor === "starClients" &&(<th className="">
+
+      </th>)}
 
       {deleteAdminModalActive && (
         <Modal
