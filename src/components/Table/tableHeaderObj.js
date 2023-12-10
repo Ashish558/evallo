@@ -101,7 +101,7 @@ export function TableHeaderNew({
         )}
         {header.text === "Full Name" && dataFor === "allUsers" ? (
           <div onClick={() => header.onCick && header.onCick()}>
-            <span className="text-center text-[17.5px] ">{header.text}</span>
+            <span className="text-center text-[17.5px]">{header.text}</span>
           </div>
         ) : (
           <div

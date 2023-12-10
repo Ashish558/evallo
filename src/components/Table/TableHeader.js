@@ -92,9 +92,12 @@ export function TableHeader({
         } ${dataFor === "allUsers" ? "text-[17.5px]" : "text-[17.5px]"}
         ${header==="Tutor Name"||header==="Tutor Status"||header==="Average Hourly Rate"?"!p-[0]":""}
         ${header === "Q No." && "flex-col"}
+        ${header === "Correct Answer" && "justify-center text-center"}
+        ${header === "Student Response" && "justify-center text-center"}
+        ${header === "Accuracy" && "justify-center text-center"}
        `}
       >
-        {" "}
+        
         {header}
         {/* {header==="Q No."&&<p >(Raw Score)</p>} */}
       </div>
