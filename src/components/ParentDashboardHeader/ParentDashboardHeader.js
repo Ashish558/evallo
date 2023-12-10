@@ -162,20 +162,12 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                     >
                       {images.map((image, idx) => {
                         return (
-                          <div className={` rounded-md bg-cover	bg-center	 ${styles.img} !h-[250px] !relative !transform-none flex flex-col gap-[43px]  items-start justify-center`}
+                          <div className={` rounded-md bg-cover	bg-center	 ${styles.img} !h-[250px] !relative !transform-none flex flex-col gap-[43px]  items-start justify-end`}
                           style={{
                             backgroundImage: `url(${image?.image ? `${awsLink}${image?.image}` : AnnouncementsDefaultImage})`
                           }}
-                          >
-                             <div
-                              className="absolute top-0 left-0 w-full h-full bg-[#26435F] opacity-75 rounded-md"
-                            ></div>
-                            <div className="w-[422px] ml-[30px] z-10">
-                            <h2 className=" text-[35px] text-white ">SAT or ACT?</h2>
-                            <p className="z-10 font-bold text-[22px] text-white mt-[10px]">Learn which test is better suited for you by joining us for this webinar.</p>
-                            </div>
-
-                            <button onClick={() => openLink(image.link)} className="bg-[#FFA28D] text-white p-2 text-[17.5px] px-4 rounded-lg  ml-[30px] w-auto z-10">
+                          >                
+                            <button onClick={() => openLink(image.link)} className="bg-[#FFA28D] text-white p-2 text-[17.5px] px-4 rounded-lg  ml-[30px] w-auto z-10 mb-[26px]">
                               {image?.buttonText ? image?.buttonText : "Register"}
                             </button>
                           </div>

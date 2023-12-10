@@ -315,7 +315,7 @@ export default function Chart({ setSubjects, YHeader, subjects, selectedSubject,
             height={200}
             width={canvasWidth}
          />
-          <img src={upArrow} alt="arrow_right" className='absolute ms-8 bottom-0 mb-8 w-[50px] ml-[30px]' />
+          <img src={upArrow} alt="arrow_right" className='absolute ms-8 bottom-0 mb-8 w-[50px] ml-[55px]' />
          <img src={downArrow} alt="arrow_down" className='absolute left-[72px] lg:ms-24 md:ms-10 h-[85px]' />
 
       </div>

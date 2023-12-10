@@ -86,24 +86,24 @@ export default function InputSelectNew({
 
         }
         <div
-          className={`outline-0 w-full  relative ${optionClassName ? optionClassName : ""
+          className={`outline-0 w-full mr-3 relative ${optionClassName ? optionClassName : ""
             }`}
           name={label}
         >
          {value === "" || !value ? (
-            <span className={`text-[#667085] text-[15px] whitespace-nowrap ${false ? 'mr-0' : 'mr-[7px]'}  ${placeholderClass} `}>
+            <span className={`text-[#667085] text-[17.5px] whitespace-nowrap ${false ? 'mr-0' : 'mr-10'} ${placeholderClass} `}>
               {" "}
               {placeholder}{" "}
             </span>
           ) : (
-            <span className={` ${customFontSize?customFontSize:'text-[15px]'} whitespace-nowrap ${false ? 'mr-0' : 'mr-7'}  ${placeholderClass} `}>{value}</span>
+            <span className={`mr-10 ${customFontSize?customFontSize:'text-[17.5px]'} whitespace-nowrap ${false ? 'mr-0' : 'mr-10'} ${placeholderClass} `}>{value}</span>
           )}
           {ICON2 && <img src={ICON2} className={`ml-4 inline-block ${iconClass} mt-[-5px] `} alt="icon" />}
 
         </div>
         {selected && (
           <div
-            className={`scrollbar-content scrollbar-vertical shadow-md w-full  max-h-[165px] ${styles.options} ${optionContainerClassName} custom-scroller shadow-[0px_0px_3px_0px_#00000040] text-[17.5px] text-black`}
+          className={`scrollbar-content scrollbar-vertical shadow-md w-full max-h-[165px] ${styles.options} ${optionContainerClassName} custom-scroller shadow-[0px_0px_3px_0px_#00000040] text-[17.5px]`}
           >
             {optionData?.map((option, idx) => {
               // //console.log('option', option);

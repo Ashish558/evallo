@@ -274,17 +274,18 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
               </svg>
             </span>
           </h1>
-
           <div className="flex items-center justify-end absolute z-40 top-[42.5%] right-[39%] mt-[24px]">
-            <InputSelectNew
+        <InputSelectNew
               placeholder={""}
               parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
-              inputContainerClassName=" my-0 py-[5px] px-[35px]"
+              inputContainerClassName=" my-0 py-[7.5px] px-[35px] !pr-[7.5px]"
               placeHolderClass="text-[#FFA28D] "
               labelClassname="text-sm"
               inputClassName="bg-transparent"
-              value={selectedSubject}
+              optionContainerClassName="text-black"
+              value={selectedSubject?selectedSubject:"none"}
               IconDemography={true}
+              optionClassName="mr-0"
               optionData={subjects.map((item) => item.name)}
               onChange={(e) => handleSubjectChange(e)}
             />
@@ -389,10 +390,10 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
                           {tutor.tutorLevel && `${tutor.tutorLevel} Belt`}
                         </h5> */}
                   </div>
-                  <div className="w-[60%] flex items-center h-full flex-1">
+                  <div className="w-[60%] flex h-full flex-1 justify-end items-end">
                     <img
                       src={"/images/tutorDefault.svg"}
-                      className="mx-auto object-cover !w-[100px] !h-[100px] rounded-full"
+                      className="mr-[40px] mb-[40px]  object-cover !w-[128px] !h-[128px] rounded-full border-3 border-solid border-[#FFA28D]"
                       alt="profile-icon"
                     />
                   </div>
