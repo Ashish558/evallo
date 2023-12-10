@@ -36,6 +36,12 @@ function ReviewProduct({
     const [chosenExtentionObjectsFromAPI, SetChosenExtentionObjectsFromAPI] = useState([]);
     const [couponForSubscription, SetCouponForSubscription] = useState("");
     const [chosenExtensionPrice, SetChosenExtensionPrice] = useState(0);
+    const [isSubscriptionCouponProcessing, SetIsSubscriptionCouponProcessing] = useState(false);
+    const [isSubscriptionCouponSuccessfullyApplied, SetIsSubscriptionCouponSuccessfullyApplied] = useState(false);
+
+    const [couponForExtension, SetCouponForExtension] = useState("");
+    const [isExtensionCouponProcessing, SetIsExtensionCouponProcessing] = useState(false);
+    const [isExtensionCouponSuccessfullyApplied, SetIsExtensionCouponSuccessfullyApplied] = useState(false);
 
     const [chosenExtensionPlans, SetChosenExtensionPlans] = useState(
         extensionPlansInfo.filter(item => {
@@ -98,6 +104,7 @@ function ReviewProduct({
     }, [chosenSubscriptionPlan, paymentMethods]);
 
     async function OnApplyCouponForSubscriptionClicked(couponCode, chosenSubscriptionObjectFromAPI_Id){
+        SetIsSubscriptionCouponProcessing(true);
         const response = await applyCoupon({
             couponName: couponCode,
             subscriptionPrice: chosenSubscriptionObjectFromAPI_Id
@@ -105,6 +112,21 @@ function ReviewProduct({
 
         console.log("applyCoupon Response");
         console.log(response);
+        SetIsSubscriptionCouponProcessing(false);
+        SetIsSubscriptionCouponSuccessfullyApplied(true);
+    }
+
+    async function OnApplyCouponForExtensionClicked(couponCode, chosenSubscriptionObjectFromAPI_Id) {
+        SetIsExtensionCouponProcessing(true);
+        const response = await applyCoupon({
+            couponName: couponCode,
+            subscriptionPrice: chosenSubscriptionObjectFromAPI_Id
+        });
+
+        console.log("applyCoupon Response");
+        console.log(response);
+        SetIsExtensionCouponProcessing(false);
+        SetIsExtensionCouponSuccessfullyApplied(true);
     }
 
     return (
@@ -156,7 +178,9 @@ function ReviewProduct({
                         />
 
                         <PrimaryButton
-                            children={<span className="text-[#fff] text-[15px]" >Apply</span>}
+                            children={<span className="text-[#fff] text-[15px]" >{
+                                isSubscriptionCouponSuccessfullyApplied ? "Applied" : "Apply"
+                            }</span>}
                             className={"h-[30px] w-[60px] ml-[10px] px-[10px]"}
                             style={{
                                 // height: "10%",
@@ -167,7 +191,8 @@ function ReviewProduct({
                                     chosenSubscriptionObjectFromAPI.id
                                 )
                             }}
-                            // loading={isCouponApplyProcessOnGoing}
+                            loading={isSubscriptionCouponProcessing}
+                            disabled={isSubscriptionCouponProcessing || isSubscriptionCouponSuccessfullyApplied}
                         />
 
                         <div className="grow" ></div>
@@ -210,6 +235,13 @@ function ReviewProduct({
                                     {chosenExtensionPlans.map((item, index) => {
                                         const chosenPackageName = extensions.find(i => i.text === item.planName).packageName;
                                         const chosenPackage = item.extensionPriceOption.find(pack => pack.planName === chosenPackageName);
+                                        const apiObject = subscriptionsInfoFromAPI.find(i => {
+                                            if(i?.product?.name === item.planName &&
+                                               i?.lookup_key === chosenPackageName) {
+                                                return true;
+                                            }
+                                            return false;
+                                        })
                                         /* const extObjectFromAPI = chosenExtentionObjectsFromAPI.find(i => {
                                             return i.product.name === item.planName && i.lookup_key === chosenPackageName;
                                         }) */
@@ -241,23 +273,25 @@ function ReviewProduct({
                                                         inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[40px] w-[300px] text-md"
                                                         inputClassName="text-[15px]"
                                                         
-                                                        // value={couponForSubscription}
-                                                        /* onChange={(e) => {
-                                                            // setValues({
-                                                            //   ...values,
-                                                            //   firstName: e.target.value,
-                                                            // })
-                                                            SetCouponForSubscription(e.target.value);
-                                                        }} */
-                                                        //   totalErrors={error}
-                                                        //   error={error.firstName}
+                                                        value={couponForExtension}
+                                                        onChange={(e) => {
+                                                            SetCouponForExtension(e.target.value);
+                                                        }}
                                                     />
 
                                                     <PrimaryButton
-                                                        children={<span className="text-[#fff] text-[15px]" >Apply</span>}
+                                                        children={<span className="text-[#fff] text-[15px]" >{
+                                                            isExtensionCouponSuccessfullyApplied ? "Applied" : "Apply"
+                                                        }</span>}
                                                         className={"h-[30px] w-[60px] ml-[10px] px-[10px]"}
-                                                        // onClick={OnPressApplyCoupon}
-                                                        // loading={isCouponApplyProcessOnGoing}
+                                                        onClick={() => {
+                                                            OnApplyCouponForExtensionClicked(
+                                                                couponForExtension,
+                                                                apiObject.id
+                                                            )
+                                                        }}
+                                                        loading={isExtensionCouponProcessing}
+                                                        disabled={isExtensionCouponProcessing || isExtensionCouponSuccessfullyApplied}
                                                     />
 
                                                     <div className="grow" ></div>

@@ -165,6 +165,7 @@ const AppRoutes = () => {
                   planName: "Assignment",
                   planDisplayName: "Assignement",
                   productQuantity: productQuantity,
+                  packageName: activeSub.lookup_key,
                   currency: products[i].currency,
                   startDate: products[i].start_date * 1000,//new Date(products[i].start_date * 1000),
                   autoRenewalDate: products[i].current_period_end * 1000,//new Date(products[i].current_period_end * 1000),

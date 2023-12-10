@@ -23,6 +23,7 @@ const initialState = {
     activeExtensionInfo: {
         planName: "",
         planDisplayName: "",
+        packageName: "",
         productQuantity: 0,
         currency: "",
         subscriptionPricePerMonth: 0,

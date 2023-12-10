@@ -35,7 +35,8 @@ export const subscriptionApi = createApi({
             query: (body) => ({
                 url: `api/stripe/applyCoupon?couponName=${body.couponName}&subscriptionPrice=${body.subscriptionPrice}`,
                 method: 'GET',
-                headers: getAuthHeader()
+                headers: getAuthHeader(),
+                mode: "cors"
             })
         }),
         cancelSubscription: builder.mutation({
