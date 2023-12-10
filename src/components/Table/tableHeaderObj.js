@@ -7,7 +7,7 @@ export function TableHeaderNew({
   dataFor,
   Handler,
   noArrow,
-  wrapperClassName
+  wrapperClassName,
 }) {
   const [flag, setFlag] = useState(
     header?.className ? header.className.includes("no-arrow") : false
@@ -53,7 +53,7 @@ ${header.text==="Actively Using"&&"w-[168.5px] pr-[11.5px] text-left"} flex gap-
       } ${flag ? styles["no-arrow"] : ""} bg-[#26435F] ${header.text==="% of Business"?" rounded-r-[5.333px]":""}`}
     >
       <div
-        className={`flex 
+        className={`flex
         ${header.text === "Student Name" ? "ml-[40px] text-left " : ""} 
         ${header.text === "Assignment Name" ? "ml-[12px]" : ""} 
         ${
@@ -61,7 +61,8 @@ ${header.text==="Actively Using"&&"w-[168.5px] pr-[11.5px] text-left"} flex gap-
           header.text === "Phone" ||
           header.text === "Full Name" ||
           header.text === "Assignment Name" ||
-          header.text === "Assignment" || header.text === "Service"
+          header.text === "Assignment" ||
+          header.text === "Service"
             ? `justify-start ${
                 header.text === "Assignment" ? "ps-6 overflow-hidden" : ""
               }`
@@ -72,7 +73,9 @@ ${header.text==="Actively Using"&&"w-[168.5px] pr-[11.5px] text-left"} flex gap-
             : `${
                 header.willDisplayDownArrow ||
                 header.willDisplayDownArrow === undefined
-                  ? styles.marker: header.willDisplayDownArrow === null?""
+                  ? styles.marker
+                  : header.willDisplayDownArrow === null
+                  ? ""
                   : styles.upArrow
               }`
         } ${wrapperClassName ?? wrapperClassName} `}
@@ -89,10 +92,16 @@ ${header.text==="Actively Using"&&"w-[168.5px] pr-[11.5px] text-left"} flex gap-
         )}
         {header.text === "Full Name" && dataFor === "allUsers" ? (
           <div onClick={() => header.onCick && header.onCick()}>
-            <span className="text-center text-[17.5px] ">{header.text}</span>
+            <span className="text-center text-[17.5px]">{header.text}</span>
           </div>
         ) : (
-          <div className={`text-[17.5px] ${header.text === "Score" ? "text-center" : "text-left" }`}>{header.text}</div>
+          <div
+            className={` text-[17.5px] ${
+              header.text === "Score" ? "text-center" : "text-left"
+            }`}
+          >
+            {header.text}
+          </div>
         )}
       </div>
     </th>
