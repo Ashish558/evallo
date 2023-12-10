@@ -1376,7 +1376,7 @@ export default function Settings() {
 
   return (
     <>
-      <div className="  min-h-screen px-[140px] mx-auto">
+      <div className="  min-h-screen px-[140px] mx-auto pt-[100px]">
         <p className="text-[#24A3D9]   text-20">
           <span onClick={() => navigate("/")} className="cursor-pointer ">
             {organization?.company +
