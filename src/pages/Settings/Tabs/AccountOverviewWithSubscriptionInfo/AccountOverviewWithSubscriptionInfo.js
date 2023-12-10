@@ -49,6 +49,7 @@ import { CurrencyNameToSymbole, getFormattedDate } from "../../../../utils/utils
 import EnableAutoRenewal from "../../../../components/EnableAutoRenewal/EnableAutoRenewal";
 import ResetPasswordModal from "../../../../components/ResetPasswordModal/ResetPasswordModal";
 import ChangeEmailModal from "../../../../components/ChangeEmailModal/ChangeEmailModal";
+import { triggerSubscriptionUpdate } from "../../../../app/slices/subscription";
 
 function getDateAsString(date) {
     if(!(date && date.constructor && date.constructor.name === "Date")) return "05/12/23";
@@ -632,7 +633,7 @@ function AccountOverviewWithSubscriptionInfo() {
         }).then(data => {
             console.log("delete payment method api response");
             console.log(data);
-            loadOrgDetails();
+            dispatch(triggerSubscriptionUpdate());
         }).catch(error => {
             console.log("Error in delete payment method api");
             console.log(error);
@@ -800,8 +801,12 @@ function AccountOverviewWithSubscriptionInfo() {
                     <AddNewBankCardModal
                         className={`relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 aspect-[1110/382] w-[57.8125%]`}
                         OnCrossIconClicked={OnAddNewBankCardModalCrossIconClicked}
-                        OnAddClicked={OnAddNewPaymentModalAddButtonClicked}
+                        // OnAddClicked={OnAddNewPaymentModalAddButtonClicked}
                         stripeCustomerId={stripeCustomerId}
+                        OnSuccess={() => {
+                            SetIsAddNewBankCardModalActive(false);
+                            dispatch(triggerSubscriptionUpdate());
+                        }}
                     />
                     </div>
                 ) : (<></>)
@@ -1119,7 +1124,7 @@ function AccountOverviewWithSubscriptionInfo() {
                         }
 
                         {
-                            !(activeExtensionInfo === undefined || activeExtensionInfo === null) ? (
+                            !(activeExtensionInfo === undefined || activeExtensionInfo === null || activeExtensionInfo.planName === "") ? (
                                 <>
                                     <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[17.5px]" >Extensions</div>
 

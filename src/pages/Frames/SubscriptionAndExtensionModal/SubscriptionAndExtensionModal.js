@@ -166,7 +166,7 @@ function SubscriptionAndExtensionModal({
     }, [extensions]);
 
     useEffect(() => {
-        const chosenSubscriptionFromAPI = subscriptionsInfoFromAPI.find(item => {
+        const chosenSubscriptionFromAPI = subscriptionsInfoFromAPI?.find(item => {
             if(item.product) {
                 return item.product.name === chosenSubscriptionPlanName;
             }
@@ -255,6 +255,19 @@ function SubscriptionAndExtensionModal({
     useEffect(() => {
         loadOrgDetails();
 
+    }, []);
+
+    useEffect(() => {
+        if(!updateSubscriptionMode) return;
+        if(!activeExtensionInfo) return;
+
+        setExtensions([
+            {
+                text: activeExtensionInfo.planName,
+                checked: true,
+                packageName: activeExtensionInfo.packageName
+            }
+        ])
     }, []);
 
     function loadSubscriptionAndExtensionInfo(productList) {
@@ -833,6 +846,13 @@ function SubscriptionAndExtensionModal({
         }
     }
 
+    useEffect(() => {
+        return () => {
+            sessionStorage.removeItem(TEMPORARY_CHOSEN_SUBSCRIPTION_PLAN_NAME);
+            sessionStorage.removeItem(TEMPORARY_CHOSEN_EXTENSIONS_NAME);
+        }
+    }, []);
+
     return (
         <div className={`aspect-[1400/900] bg-[#FFFFFF] flex rounded-[15px]  ${className} overflow-auto`} >
             <div className="h-[500px] w-1/12" >
@@ -921,6 +941,7 @@ function SubscriptionAndExtensionModal({
                                     return "";
                                 })()}
                                 subscriptionsInfo={subscriptionPlanInfo}
+                                subscriptionsInfoFromAPI={subscriptionsInfoFromAPI}
                                 setFrames={setFrames}
                                 extensions={(() => {
                                     let ext = sessionStorage.getItem(TEMPORARY_CHOSEN_EXTENSIONS_NAME);
@@ -962,7 +983,7 @@ function SubscriptionAndExtensionModal({
                             backgroundColor: "#FFA28D"
                         }
                       )}
-                      className={`w-[150px] h-[50px] flex justify-center disabled:opacity-60   rounded text-white text-sm font-medium relative py-[11.5px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)]   
+                      className={`w-[150px] h-[50px] flex justify-center disabled:opacity-60   rounded py-[0px] px-[0px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)]   
                       `}
                       loading={frames.review ? isSubscriptionProcessGoingOn ? true : false : false}
                       /*
@@ -986,7 +1007,7 @@ function SubscriptionAndExtensionModal({
                     //   children={(frames.review ? isCCRequired ? "Checkout" : "Let’s Go!" : "Save & Next")}
                       children={(
                       <span 
-                        className="text-[16.67px] text-[#fff] font-[100]"
+                        className="text-[18.67px] text-[#fff] font-[500]"
                       >
                         {(frames.review ? isCCRequired ? "Checkout" : "Let’s Go!" : "Save & Next")}
                       </span>)}

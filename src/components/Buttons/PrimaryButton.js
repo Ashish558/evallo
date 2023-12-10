@@ -18,7 +18,7 @@ export default function PrimaryButton({
       style={{...style}}
       className={`bg-primary relative flex items-center justify-center  ${
         roundedClass ? roundedClass : "rounded-md"
-      } px-6 ${className} disabled:opacity-60 py-2`}
+      } ${className ? className : "px-6 py-2" } disabled:opacity-60 `}
       onClick={onClick}
       disabled={loading === true ? true : disabled}
       type={type ? type : "button"}
