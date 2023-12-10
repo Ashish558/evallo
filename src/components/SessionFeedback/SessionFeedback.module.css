@@ -65,3 +65,36 @@
 }
 
 
+.assignedTestsContainer {
+    overflow-x: auto;
+    background-color: #fff;
+    padding: 0 10px;
+    border-radius: 20px;
+   
+}
+
+.assignedTestsContainer::-webkit-scrollbar {
+    width: 5px;
+    height:3px;
+  
+}
+
+.assignedTestsContainer::-webkit-scrollbar-track {
+    background: #CBD6E2;
+    width:100px;
+    margin-top:20px;
+    margin-left: 16px;
+    margin-right: 40px;
+    border-radius: 20px;
+   
+  
+}
+
+.assignedTestsContainer::-webkit-scrollbar-thumb {
+    background-color: #7C98B6;
+    border-radius: 20px;
+}
+
+.assignedTestsContainer::-webkit-scrollbar-thumb:hover {
+    background: rgba(40, 68, 109, 0.6);
+}

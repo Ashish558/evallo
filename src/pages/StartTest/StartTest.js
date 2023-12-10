@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
-
+import styles from './StartTest.module.css'
 import BackIcon from "../../assets/assignedTests/back.svg";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import { TestDetail } from "../../components/TestDetail/TestDetail";
@@ -512,7 +512,7 @@ export default function StartTest() {
       <div className="w-[1600px] min-h-full">
           <div className="flex">
             <div className="flex-1">
-              <p className="text-[#24A3D9] ml-8 mt-[50px] mb-[31px] text-[20px] font-normal">
+              <p className="text-[#24A3D9] ml-0 mt-[50px] mb-[31px] text-[20px] font-normal">
                 <span onClick={() => navigate("/")} className="cursor-pointer">
                   {organization?.company +
                     "  >  " +
@@ -623,14 +623,15 @@ export default function StartTest() {
                 <div className="flex relative w-fit flex-row gap-2 mx-4 mt-12 overflow-x-auto">
                   {subjects.map((item, idx) => {
                     return (
+                      <div className="relative">
                       <PrimaryButton
                         roundedClass="rounded-0"
                         children={item.name}
                         onClick={() => handleSubjectChange(item)}
-                        className={`pt-2 pb-2 px-0 mr-0 rounded-0 text-[17.5px] font-normal w-fit bg-transparent
+                        className={`leading-[50px] px-0 mr-0 rounded-0 text-[17.5px] font-normal w-fit bg-transparent
                             ${
                               item.selected
-                                ? " text-[#FFA28D] border-b-2 border-b-[#FFA28D]"
+                                ? " text-[#FFA28D]"
                                 : ""
                             } disabled:`}
                         disabled={
@@ -641,6 +642,8 @@ export default function StartTest() {
                             : false
                         }
                       />
+                      <div style={{borderRadius:"3.75px 3.75px 0px 0px",background:item.selected?"#FFA28D":"transparent"}} className="absolute h-[3.75px] left-0 bottom-0 right-0"></div>
+                      </div>
                     );
                   })}
                   <div className="bg-gray-300 absolute bottom-[0px] z-10 h-[1px] w-full"></div>
@@ -693,7 +696,7 @@ export default function StartTest() {
           <div className="flex flex-row justify-between  ">
             {testStarted && (
               <div
-                className="mt-[15px] w-[962px] h-[776px] overflow-auto custom-scroller"
+                className={`mt-[15px] w-[962px] h-[776px] overflow-auto custom-scroller  ${styles.testOptionScroller}`}
               >
                 {answers.map((item, idx) => {
                   return (
