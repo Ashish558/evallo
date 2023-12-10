@@ -99,6 +99,8 @@ function SubscriptionAndExtensionModal({
     const [isExtensionStepComplete, SetIsExtensionStepComplete] = useState(false);
     const [isSubscriptionProcessGoingOn, SetIsSubscriptionProcessGoingOn] = useState(false);
 
+    const [couponIdForSubscription, SetCouponIdForSubscription] = useState(false);
+
     const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
     const [addSubscriptions, addSubscriptionsResp] = useAddSubscriptionsMutation();
     const [getPersonalDetail, getPersonalDetailResp] = useLazyGetPersonalDetailQuery();
@@ -679,6 +681,14 @@ function SubscriptionAndExtensionModal({
         }
         let chosenSubscriptionToBeSentThroughAPI = JSON.parse(subscriptionSessionStorageOutput);
 
+        if(couponIdForSubscription !== "" ) {
+            chosenSubscriptionToBeSentThroughAPI = {
+                ...chosenSubscriptionToBeSentThroughAPI,
+                coupon: couponIdForSubscription
+            }
+            // chosenSubscriptionToBeSentThroughAPI.coupon = couponIdForSubscription;
+        }
+
         let extentionSessionStorageOutput = sessionStorage.getItem("chosenExtentionObjectsFromAPI");
         if(extentionSessionStorageOutput === '' || extentionSessionStorageOutput === undefined ) {
             extentionSessionStorageOutput = null;
@@ -731,6 +741,13 @@ function SubscriptionAndExtensionModal({
                 if(item?.product?.name === chosenSub) return true;
                 return false;
             })
+        }
+
+        if(couponIdForSubscription !== "" ) {
+            subPriceObject = {
+                ...subPriceObject,
+                coupon: couponIdForSubscription
+            };
         }
 
         newPlans.push(subPriceObject);
@@ -956,6 +973,7 @@ function SubscriptionAndExtensionModal({
                                 SetIsPaymentSuccessfull={SetIsPaymentSuccessfullyComplete}
                                 updateSubscriptionMode={updateSubscriptionMode}
                                 renewProductMode={renewProductMode}
+                                SetCouponIdForSubscription={SetCouponIdForSubscription}
                             />
                         ) : (<></>)
                     }
@@ -963,7 +981,7 @@ function SubscriptionAndExtensionModal({
 
                 <div className="flex mt-[20px] w-[1100px]" >
                     {
-                        updateSubscriptionMode || renewProductMode ? (
+                        updateSubscriptionMode || (renewProductMode && !openSubscriptionModal) ? (
                             <button 
                                 className="font-[600] text-[#B3BDC7] text-[14px]" 
                                 onClick={() => {

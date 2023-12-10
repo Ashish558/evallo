@@ -46,16 +46,6 @@ function ActiveSubscriptionWidget({
     const [isCouponApplyProcessOnGoing, SetIsCouponApplyProcessOnGoing] = useState(false);
     const { dateFormat } = useSelector((state) => state.user);
 
-    /* const handleChangePlan = () => {
-        if(!setFrames) return;
-        setFrames((prev) => {
-            return { ...prev, review: false, subscription: true };
-        });
-    } */
-
-    console.log("activeTutorsAllowed");
-    console.log(activeTutorsAllowed);
-
     const OnPressApplyCoupon = async () => {
         if(couponCode === "") return;
 
