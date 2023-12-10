@@ -78,6 +78,12 @@ function SubscriptionAndExtensionModal({
         extensions: false,
         review: false,
     });
+    const {
+        stripeCustomerId,
+        subscriptionsInfoFromAPI,
+        activeSubscriptionInfo,
+        activeExtensionInfo,
+    } = useSelector((state) => state.subscription);
     const [restrictedIndices, SetRestrictedIndices] = useState([]);
     const [currentModalIndex, SetCurrentModalIndex] = useState(0);
     const [subscriptionPlanInfo, SetSubscriptionPlanInfo] = useState([]);
@@ -85,7 +91,7 @@ function SubscriptionAndExtensionModal({
     const [extensions, setExtensions] = useState(extensionsData);
     // const [subscriptionsInfoFromAPI, SetSubscriptionsInfoFromAPI] = useState([]);
     const [chosenSubscriptionPlanName, SetChosenSubscriptionPlanName] = useState(
-        (updateSubscriptionMode ? "" : "Professional")
+        (updateSubscriptionMode ? activeSubscriptionInfo?.planName : "Professional")
     );
     const [isCCRequired, SetIsCCRequired] = useState(false);
     // const [stripeCustomerId, SetStripeCustomerId] = useState("");
@@ -101,12 +107,7 @@ function SubscriptionAndExtensionModal({
     const [changeSubscriptions] = useChangeSubscriptionsMutation();
     const [renewProduct] = useRenewProductMutation();
     const { organization } = useSelector((state) => state.organization);
-    const {
-        stripeCustomerId,
-        subscriptionsInfoFromAPI,
-        activeSubscriptionInfo,
-        activeExtensionInfo,
-    } = useSelector((state) => state.subscription);
+    
 ;
     function OnExtensionsChanged() {
         let output = sessionStorage.getItem("chosenExtentionObjectsFromAPI");
