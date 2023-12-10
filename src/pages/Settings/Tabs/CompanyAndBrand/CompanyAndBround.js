@@ -53,7 +53,6 @@ const CompanyAndBround = () => {
   const [states, setStates] = useState([]);
   const [values, setValues] = useState({ role: userData.role });
   const [orgBussinessLogo, setOrgBussinessLogo] = useState(null)
-  const dispatch = useDispatch();
 
   const [error, setError] = useState({
     firstName: "",
