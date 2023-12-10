@@ -126,7 +126,7 @@ function ExtensionsChoosingModal({
                                 )
                             }
 
-                            if(updateExtensionMode && activeExtensionInfo) {
+                            if(updateExtensionMode && activeExtensionInfo?.planName !== "") {
                                 return (
                                     <UpdateExtensionWidget
                                         key={index}

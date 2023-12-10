@@ -62,14 +62,16 @@ function ReviewProduct({
 
     useEffect(() => {
         // console.log("chosenSubscriptionFromAPI from sessionStorage");
-        let subscriptionSessionStorageOutput = sessionStorage.getItem("chosenSubscriptionFromAPI");
+        /* let subscriptionSessionStorageOutput = sessionStorage.getItem("chosenSubscriptionFromAPI");
         if(subscriptionSessionStorageOutput === '' || subscriptionSessionStorageOutput === undefined) {
             subscriptionSessionStorageOutput = null;
         }
         let chosenSub = JSON.parse(subscriptionSessionStorageOutput);
         if(chosenSub === null) {
             chosenSub = subscriptionsInfoFromAPI.find(item => item.id === chosenSubscriptionPlan.id);
-        }
+        } */
+
+        let chosenSub = subscriptionsInfoFromAPI.find(item => item.id === chosenSubscriptionPlan?.id);
         SetChosenSubscriptionObjectFromAPI(chosenSub);
     }, []);
 
@@ -257,7 +259,7 @@ function ReviewProduct({
                                                     canChangePlan={true}
                                                     setFrames={setFrames}
                                                     planName={item.planName}
-                                                    freeTrialDays={30}
+                                                    freeTrialDays={(!updateSubscriptionMode ? 30 : 0)}
                                                     planDisplayName={item.planDisplayName}
                                                     extensionPriceOption={chosenPackage}
                                                     subscriptionPricePerMonth={chosenPackage.pricePerMonth}
