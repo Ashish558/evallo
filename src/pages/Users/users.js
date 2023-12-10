@@ -579,7 +579,7 @@ export default function Users() {
     {
       id: 2,
       text: "User Type",
-      className: "text-left pl-0",
+      className: "text-left pl-2",
       wrapperClassName: 'justify-start',
       onCick: sortByUserType, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
       willDisplayDownArrow: userTypeSortState !== SORT_STATES.DESCENDING_ORDER,
@@ -587,14 +587,14 @@ export default function Users() {
     {
       id: 3,
       text: "Email",
-      className: "text-left pl-1",
+      className: "text-left pl-4",
       onCick: sortByEmail, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
       willDisplayDownArrow: emailSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 4,
       text: "Phone",
-      className: "text-left pl-6",
+      className: "text-left pl-9",
       onCick: sortByPhone, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
       willDisplayDownArrow: phoneSortState !== SORT_STATES.DESCENDING_ORDER,
     },

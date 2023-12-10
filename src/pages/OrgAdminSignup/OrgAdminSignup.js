@@ -637,14 +637,17 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
   const [clientSecret, SetClientSecret] = useState();
 
   return (
-    <div className="pb-6 relative" id={styles.signUp}>
+    <div className="w-[1920px] flex justify-center items-center">
+       <div className="w-[1600px] relative" id={styles.signUp}>
+
+      {/*  some sort of modal */}
       <div className={`absolute bg-[#0000007a] flex items-center justify-center h-full w-full z-10`} 
         style={{
           display: isOtplessModalActive ? "" : "none"
         }}
       >
         <PrimaryButton
-          className={` absolute top-[0px] right-[0px] w-[200px] flex justify-center  bg-[#FFA28D]  disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative py-[9px]`}
+          className={`top-[0px] right-[0px] w-[200px] flex justify-center  bg-[#FFA28D]  disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative py-[9px]`}
           onClick={() => {
             SetIsOtplessModalActive(false);
           }}
@@ -657,30 +660,14 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
         </div>
       </div>
 
-      {/* <AdminNavbar></AdminNavbar> */}
-      <div className="flex justify-center flex-col items-center md:grid-cols-2  mb-[100px] ">
-        <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-4" />
+      <div className="flex justify-center flex-col items-center mt-[21.33px]">
+        <img src={cuate} alt="rocket" className="h-[121px] w-[193.336px]   " />
         <>
-          {/* {!frames.signupSuccessful ? (
-            <div className="lg:hidden bg-primary text-white pt-[79px] px-[49px]">
-              <h1 className="text-[28px] mb-[13px]">
-                {frames.signupActive
-                  ? "Sign Up"
-                  : frames.setPassword
-                  ? ""
-                  : "Profile Details"}
-              </h1>
-
-              <h6 className="mb-[10px]">Sign up with email address</h6>
-            </div>
-          ) : (
-            <></>
-          )} */}
-          <div className={` flex lg:items-center relative bg-white rounded-md py-4 px-5 md:px-[48px] 
-                          ${frames.extensions ? "lg:w-[1200px]" : "lg:w-[800px]"}`}>
-            <div className="w-full py-4 ">
+          <div className={`flex items-center relative mt-[13.45px] mb-[100px] bg-white rounded-md 
+          ${frames.extensions ? "lg:w-[1200px]" : "lg:w-[800px]"}`}>
+            <div className="w-full px-[50px] pt-[50px] pb-[64px]">
               {frames.signupActive ? (
-                <div className="relative" >
+                <div className="relative " >
                   {/* <p
                     className={`hidden lg:block mb-[26px] ${styles.textGrayed} `}
                   >
@@ -697,56 +684,54 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                       />
                   </div> */}
                   <label
-                    className="relative left-2/4 -translate-x-2/4 inline-block text-sm font-semibold ml-0 text-base-17-5"
+                    className="w-full flex justify-center items-center relative text-sm font-semibold ml-0 text-[18px] mb-[10px]"
                   >
                     One-Click Sign Up
                   </label>
 
-                  <div className="relative left-2/4 -translate-x-2/4 flex h-[50px] justify-around w-[120px]" >
+                  <div className="w-full relative flex h-[50px] justify-center items-center" >
                     <button
-                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px] hover:cursor-default"
-                      // onClick={google}
+                      className="aspect-square bg-[#fff] flex items-center justify-center h-full relative rounded-[7px] hover:cursor-default shadow-md mr-[20px]"
                     >
                       <img 
                         className="block"
-                        src={GoogleIcon} />
+                        src={GoogleIcon} alt="" />
                     </button>
 
-                    {/* <button
-                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]"
-                    >
-                      <img 
-                        className="block"
-                        src={LinkedinIcon} />
-                    </button> */}
-
                     <button
-                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px] hover:cursor-default"
+                      className="aspect-square bg-[#fff] flex items-center justify-center h-full relative rounded-[7px] hover:cursor-default shadow-md"
                     >
                       <img 
                         className="block"
-                        src={AppleIcon} />
+                        src={AppleIcon} 
+                        alt=""
+                        />
                     </button>
                   </div>
                   
                   <div
                     className="flex flex-col items-center w-full"
                   >
-                    <div className="font-[100] mt-[10px] text-[#667085] text-[16px]" >OR</div>
-                    <div className="font-[600] mt-[10px] text-[#26435F] text-[14px]" >Sign Up using Email</div>
-                    <div className="font-[100] text-[#667085] text-[12px]" >Please fill in your detail to create a new account with Evallo.</div>
+                    <div className="font-[100] mt-[15px] text-[#667085] text-[16px]" >OR</div>
+                    <div className="font-[600] mt-[15px] text-[#26435F] text-[18px]" >Sign Up using Email</div>
+                    <div className="mt-[8px] text-[#667085] text-[16px]" >Please fill in your detail to create a new account with Evallo.</div>
                   </div>
 
-                  <div className="border-t-[1px] border-[#26435F4D] mb-[35px] mt-[30px] w-full" ></div>
+                 {/* hr  */}
+
+                  <div className="border-t-[1px] border-[#26435F4D] border-opacity-30 mb-[35px] mt-[30px] w-full" ></div>
+                 
+                 {/* before form */}
+
                   <div
-                    className={`flex mt-[59px] justify-between lg:mt-1 ${styles.inputs}`}
+                    className={`flex justify-between ${styles.inputs}`}
                   >
                     <InputField
                       placeholder=""
-                      parentClassName="text-xs"
+                      parentClassName=""
                       label="First Name"
-                      labelClassname="text-[#26435F] font-semibold"
-                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
+                      labelClassname="text-[#26435F] font-medium mb-[7.45px] text-[18.667px]"
+                      inputContainerClassName=" border border-[#D0D5DD] rounded-md w-[325px] h-[53.33px] text-[18.667px]"
                       pattern="[a-zA-Z0-9]+"
                       value={values.firstName}
                       onChange={(e) => {
@@ -764,8 +749,8 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                     <InputField
                       placeholder=""
                       parentClassName="text-xs"
-                      labelClassname="text-[#26435F] font-semibold"
-                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
+                      labelClassname="text-[#26435F] font-medium mb-[7.45px] text-[18.667px]"
+                      inputContainerClassName=" border border-[#D0D5DD] rounded-md w-[325px] h-[53.33px] text-[18.667px]"
                       label="Last Name"
                       pattern="[a-zA-Z0-9]+"
                       value={values.lastName}
@@ -782,13 +767,15 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                       error={error.lastName}
                     />
                   </div>
-                  <div className={`flex mt-[20px] justify-between  `}>
+
+
+                  <div className={`w-full flex mt-[30px] justify-between  `}>
                     <InputField
                       label="Work Email"
                       placeholder=""
                       parentClassName="text-xs w-full "
-                      labelClassname="text-[#26435F] font-semibold"
-                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
+                      labelClassname="text-[#26435F] font-medium mb-[7.45px] text-[18.667px]"
+                      inputContainerClassName=" border border-[#D0D5DD] rounded-md w-[325px] h-[53.33px] text-[18.667px]"
                       value={values.email}
                       onChange={(e) =>
                         setValues({
@@ -803,8 +790,8 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                     <InputFieldDropdown
                       placeholder=""
                       parentClassName="text-xs w-4/5 ml-8 "
-                      labelClassname="text-[#26435F] font-semibold"
-                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
+                      labelClassname="text-[#26435F] font-medium mb-[7.45px] text-[18.667px]"
+                      inputContainerClassName=" border border-[#D0D5DD] rounded-md w-[275px] h-[53.33px] text-[18.667px]"
                       label="Phone"
                       value={values.phone}
                       codeValue={values.phoneCode}
@@ -829,10 +816,10 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
 
                   <InputField
                     placeholder=""
-                    parentClassName="text-xs mt-5 mb-6 w-full"
+                    parentClassName="w-full mt-[30px]"
                     label="Name Of Business"
-                    labelClassname="text-[#26435F] font-semibold"
-                    inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
+                    labelClassname="text-[#26435F] font-medium mb-[7.45px] text-[18.667px]"
+                    inputContainerClassName=" border border-[#D0D5DD] rounded-md w-[700px] h-[53.33px] text-[18.667px]"
                     value={values.company}
                     onChange={(e) =>
                       setValues({
@@ -843,7 +830,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                     totalErrors={error}
                     error={error.company}
                   />
-                  <p className="text-[15px]  font-semibold mb-4 text-[#26435F]">
+                  <p className="text-[15px]  font-semibold mt-[30px] mb-[18px] text-[#26435F] text-[18.667px]">
                     {" "}
                     Registering as{" "}
                   </p>
@@ -990,8 +977,9 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
         </>
       </div>
 
+      </div>
     </div>
-  );
+  ); 
 }
 
 /*

@@ -104,7 +104,7 @@ export default function InputFieldDropdown({
       {label && (
         <label
           className={`inline-block font-semibold ${
-            biggerText ? "text-lg" : "text-base-17-5"
+            biggerText ? "text-lg" : "text-[16.5px]"
           }  ${labelClassname} ml-0 `}
         >
           {label}
