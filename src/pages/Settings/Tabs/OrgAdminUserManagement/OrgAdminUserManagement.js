@@ -60,15 +60,34 @@ function OrgAdminUserManagement() {
 
     fetchAllUsers(urlParams).then((res) => {
       console.log('res tutors');
+      console.log(res);
       if (!res?.data?.data?.user) return;
-      let data = res.data.data.user.map((item) => {
+      /* let data = res.data.data.user.map((item) => {
         const { firstName, lastName } = item;
+        console.log("userStatus of tutor - " + firstName);
+        console.log(item.userStatus);
         return {
           _id: item._id,
           name: `${firstName} ${lastName}`,
         };
-      });
+      }); */
+      const data = [];
+      const activeT = [];
+      for(let i = 0; i < res.data.data.user.length; i++) {
+        const { firstName, lastName, _id, userStatus } = res.data.data.user[i];
+        data.push({
+          _id: _id,
+          name: `${firstName} ${lastName}`,
+        })
+        if(userStatus === "active") {
+          activeT.push({
+            _id: _id,
+            name: `${firstName} ${lastName}`,
+          });
+        }
+      }
       setAllTutors(data);
+      setSelectedTutors(activeT);
     });
   };
 
@@ -201,10 +220,10 @@ function OrgAdminUserManagement() {
   }
 
   const handleSave = () => {
-    if(selectedTutors.map(tutor => tutor._id).length<1){
+    /* if(selectedTutors.map(tutor => tutor._id).length<1){
       alert("Please select tutors");
       return;
-    }
+    } */
     bulkChangeUser({ tutorIds: selectedTutors.map(tutor => tutor._id) })
       .then(res => {
         if (res.error) {
@@ -212,7 +231,7 @@ function OrgAdminUserManagement() {
         } else {
           console.log('res', res.data);
           if(!res.error){
-            alert("Tutor is activated successfully")
+            // alert("Tutor is activated successfully")
           }
         }
 
@@ -220,7 +239,26 @@ function OrgAdminUserManagement() {
   }
   const [activeTutorsCount, setActiveTutorsCount] = useState(10)
 
-  console.log(selectedTutors);
+  // console.log(selectedTutors);
+
+  function OnChangingTutor(item) {
+    const newSelectedTutors = [...selectedTutors, {
+      idx: item.idx,
+      _id: item._id,
+      name: item.name
+    }];
+
+    setSelectedTutors(newSelectedTutors);
+    bulkChangeUser({ tutorIds: newSelectedTutors.map(i => i._id) })
+    .then(res => {
+      if (res.error) {
+        console.log('err', res.error);
+        return;
+      } 
+      console.log("response from bulkChangeUser");
+      console.log(res);
+    })
+  }
 
   useEffect(() => {
     getPersonalDetail()
@@ -377,7 +415,9 @@ function OrgAdminUserManagement() {
                         // label="Default Time Zone"
                         value={tutor ? tutor.name : ''}
                         onChange={val => {
-                          handlChange({...val, idx: index});
+                          /* handlChange({...val, idx: index});
+                          handleSave(); */
+                          OnChangingTutor({...val, idx: index});
                         }}
                       // onChange={(val) => handleChange("timeZone", val)}
                       />
