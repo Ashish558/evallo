@@ -6,6 +6,7 @@ import SubscriptionSelectionWidget from "../../../components/SubscriptionSelecti
 import { SubscriptionPackDescriptions } from "./DummyData/SubscriptionPackDescriptions";
 import { CurrencyNameToSymbole } from "../../../utils/utils";
 import greenCheckIcon from "../../../assets/icons/green-check-icon.svg";
+import { useSelector } from "react-redux";
 
 function SubscriptionChoosingModal({
     className,
@@ -15,8 +16,12 @@ function SubscriptionChoosingModal({
     SetChosenSubscriptionPlanName,
     activeSubscriptionName,
     updateSubscriptionMode = false,
+    renewProductMode = false,
 }) {
     const [productDescriptions, SetProductDescriptions] = useState([]);
+    const {
+        activeSubscriptionInfo
+    } = useSelector((state) => state.subscription);
 
     useEffect(() => {
         SetProductDescriptions(SubscriptionPackDescriptions);
@@ -46,7 +51,7 @@ function SubscriptionChoosingModal({
                                                 `${plan.freeTrialDays} Days Free Trial`;
 
 
-                        if(plan.planName === activeSubscriptionName && updateSubscriptionMode) {
+                        if(plan.planName === activeSubscriptionInfo?.planName && updateSubscriptionMode) {
                             return (
                                 <div className="mb-[40px] ml-[60px] mt-[40px] w-9/12" >
                                     <div className="flex w-full" >
