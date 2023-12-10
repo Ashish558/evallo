@@ -9,6 +9,7 @@ import shivam from "./../../assets/images/tutors/shivam-shrivastab.png";
 import { Link, useNavigate } from "react-router-dom";
 import josephBrown from "../../assets/images/joseph-brown.png";
 import rightArrow from "../../assets/icons/arrow-down.png";
+import AnnouncementsDefaultImage from  "../../assets/Dashboard/AnnouncementsDefaultImage.png";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import ImageSlideshow from "../ImageSlideshow/ImageSlideshow";
 import { useLazyGetUserDetailQuery } from "../../app/services/users";
@@ -142,12 +143,12 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
       >
           <div className="flex flex-row justify-between w-[1045px]">
             <div className="w-[550px]">
-              <p className="text-base-20 text-[#26435F] font-semibold text-base-20 mb-1">
+              <p className="text-base-20 text-[#26435F] font-semibold text-[20px] mb-1">
                 Announcements
               </p>
 
               <div
-                className="w-full h-[250px] relative flex rounded-md items-center  shadow-[0px_0px_2.500001907348633px_0px_#00000040]"
+                className="w-full h-[250px] relative flex rounded-md items-center  shadow-[0px_0px_2.500001907348633px_0px_#00000040] parentDashboardCarousel"
                 id={styles.exploreBgDisable}
               >
                 <div className={styles.images}>
@@ -161,12 +162,12 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                     >
                       {images.map((image, idx) => {
                         return (
-                          <div className={` rounded-md bg-cover	bg-center	 ${styles.img}`}
-                            style={{ backgroundImage: `url(${awsLink}${image.image})` }}
-                          >
-                            <p className="absolute top-5 left-4 z-10 font-bold text-base-25 text-white"></p>
-
-                            <button onClick={() => openLink(image.link)} className="bg-[#FFA28D] text-white p-2 text-[17.5px] px-4 rounded-lg absolute left-5 bottom-4">
+                          <div className={` rounded-md bg-cover	bg-center	 ${styles.img} !h-[250px] !relative !transform-none flex flex-col gap-[43px]  items-start justify-end`}
+                          style={{
+                            backgroundImage: `url(${image?.image ? `${awsLink}${image?.image}` : AnnouncementsDefaultImage})`
+                          }}
+                          >                
+                            <button onClick={() => openLink(image.link)} className="bg-[#FFA28D] text-white p-2 text-[17.5px] px-4 rounded-lg  ml-[30px] w-auto z-10 mb-[26px]">
                               {image?.buttonText ? image?.buttonText : "Register"}
                             </button>
                           </div>
@@ -193,26 +194,26 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
               </div>
             </div>
             <div className="w-[462.5px]">
-              <p className="text-base-20 text-[#26435F] font-semibold text-base-20 mb-1">
+              <p className="text-base-20 text-[#26435F] font-semibold text-[20px] mb-1">
                 Invoice Details
               </p>
 
               <div
                 className={`w-full h-[250px] flex flex-col items-center justify-center gap-7 bg-white rounded-md`}
               >
-                <div className="text-[#667085] bg-[#66708555] p-3 rounded-[15px] w-[354px] flex flex-col gap-7 justify-center items-center">
+                <div className="text-[#667085] bg-[#66708555] p-3 rounded-[15px] h-[102px] w-[355px] flex flex-col gap-7 justify-center items-center">
                   <p className="whitespace-nowrap text-3xl leading-none mb-1 translate-y-5">
                     {/* {credits < 0 ? -credits : credits} USD */}-
                   </p>
                   <p
-                    className="font-bold cursor-pointer text-[17.5px]"
+                    className="font-medium cursor-pointer text-[17.5px]"
                     onClick={() => setLedgerVisible(true)}
                   >
                     View Ledger
                   </p>
                 </div>
                 <button
-                  className={`bg-[#667085] rounded-md py-2 text-white w-[354px] text-[17.5px]`}
+                  className={`bg-[#667085] rounded-md py-2 text-white w-[354px] text-[17.5px] font-semibold`}
                   disabled={amountToPay === 0}
                   onClick={handlePay}
                 >
@@ -232,7 +233,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
               optionType="object"
               label={"Select Student "}
               labelClassname="text-[#26435F]  font-semibold text-[20px] mb-[5px]"
-              iconClass=" translate-y-[0px]  mb-1"
+              iconClass="text-[#26435F] ml-2 translate-y-[0px]  mb-1"
               parentClassName=""
               inputContainerClassName="pt-1 pb-1"
               optionData={associatedStudents.map((item) => ({
@@ -262,7 +263,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                 {associatedStudents.length > 0 && (
                   <>
                     <div className="w-1/2">
-                      <h2 className="mt-0 mb-8 font-semibold text-base-22-5  text-[#FFA28D]">
+                      <h2 className="mt-0 mb-8 text-[22px] font-semibold text-base-22-5  text-[#FFA28D]">
                         {/* {selectedStudent !== null && 'Joseph Brown'}  */}
                         {selectedStudent === null
                           ? "No students associated"
@@ -298,15 +299,16 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                   <p>No students Associated</p>
                 )}
                 {associatedStudents.length > 0 && selectedStudent !== null && (
-                  <div className="relative ml-3 mt-1">
+                  <div className="relative ml-3 mt-1 !w-[128px] !h-[128px]">
+                    {/* <img src=""/> */}
                     <img
-                      className="absolute z-[500] left-[-15px] top-[6px] rounded-full !w-[100px] !h-[100px] object-cover shrink-0"
+                      className="absolute z-[500] left-[-6px] top-[30px] rounded-full  object-cover shrink-0 !w-[128px] !h-[128px]"
                       src={
                         selectedStudent.photo ? `${selectedStudent.photo}` : ""
                       }
                       alt=""
                     />
-                    <svg
+                    {/* <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="z-5000 rotate-[0.7deg]"
                       width="100"
@@ -319,7 +321,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                         stroke="#26435F"
                         strokeWidth="3.19966"
                       />
-                    </svg>
+                    </svg> */}
                   </div>
                 )}
               </div>
