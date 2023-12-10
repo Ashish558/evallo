@@ -26,13 +26,13 @@ export default function SingleTutor({turorsLength, idx, tutor, handlePrev,handle
           <div className="w-full h-32 flex flex-col flex-1 flex-grow-1 justify-between items-start gap-[21.5px] mt-[25.5px]">
           
           <div className="flex flex-col justify-start items-start gap-[5px]">
-          <p className="text-[#517CA8] text-[17.5px]">
+          <p className="text-[#517CA8] text-[17.5px] leading-[22px]">
                 {tutor?.tagLine ?
                   tutor?.tagLine.length > 50 ?
                     `${tutor?.tagLine.slice(0, 50)}...` : tutor?.tagLine :
                   ''}
           </p>
-          <p className="text-[#517CA8]  text-[17.5px]">
+          <p className="text-[#517CA8]  text-[17.5px] leading-[19px]">
             {tutor?.topic ? tutor?.topic : "No topic"}
           </p>
           </div>
@@ -45,13 +45,13 @@ export default function SingleTutor({turorsLength, idx, tutor, handlePrev,handle
           </button>
           </div>
         </div>
-        <div className="  float-right translate-x-[7%] design:translate-x-[0%] h-fit pt-3" >
+        <div className="h-fit pt-3 absolute right-[26px] top-0" >
           <div className="relative mt-[-10px]">
             <img
               src={
                 tutor.photo ? `${awsLink}${tutor.photo}` : "/images/tutorDefault.svg"
               }
-              className="absolute z-[500] left-[-15px] top-[8.2px] rounded-full w-[126px] h-[126px] object-cover shrink-0"
+              className="absolute z-[500] left-[-15px] top-[6.2px] rounded-full w-[127.9px] h-[127.9px] object-cover shrink-0 border-2 border-[#26435F]"
               alt=""
             />
 
