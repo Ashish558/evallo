@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+    stripeCustomerId: "",
     subscriptionsInfoFromAPI: null,
     activeSubscriptionName: "",
     activeSubscriptionInfo: {
@@ -35,12 +36,16 @@ const initialState = {
         priceObject: null,
         subscriptionId: ""
     },
+    paymentMethods: []
 }
 
 const subscription = createSlice({
     name: "subscription",
     initialState,
     reducers: {
+        updateStripeCustomerId: (state, { payload }) => {
+            state.stripeCustomerId = payload;
+        },
         updateActiveSubscriptionName: (state, { payload }) => {
             state.activeSubscriptionName = payload;
         },
@@ -53,13 +58,20 @@ const subscription = createSlice({
         updateSubscriptionsInfoFromAPI: (state, { payload }) => {
             state.subscriptionsInfoFromAPI = payload;
         },
+        updatePaymentMethods: (state, { payload }) => {
+            console.log("payload in updatePaymentMethods");
+            console.log(payload);
+            state.paymentMethods = payload;
+        },
     }
 });
 
 export const {
+    updateStripeCustomerId,
     updateActiveSubscriptionName,
     updateActiveSubscriptionInfo,
     updateActiveExtensionInfo,
     updateSubscriptionsInfoFromAPI,
+    updatePaymentMethods,
 } = subscription.actions;
 export default subscription.reducer;

@@ -12,7 +12,7 @@ import ExtensionsChoosingModal from "../ExtensionsChoosingModal/ExtensionsChoosi
 import VerticalNumericSteppers from "../../../components/VerticalNumericSteppers/VerticalNumericSteppers";
 import { extensionsData } from "./data";
 import { comingSoonExtensionData } from "./DummyData/ComingSoonExtensionData";
-import { useAddSubscriptionsMutation } from "../../../app/services/subscription";
+import { useAddSubscriptionsMutation, useChangeSubscriptionsMutation } from "../../../app/services/subscription";
 import { useLazyGetAuthQuery, useLazyGetOrganizationQuery, useLazyGetPersonalDetailQuery } from "../../../app/services/users";
 import { useUpdateOrganizationDetailMutation } from "../../../app/services/organization";
 import { useSelector } from "react-redux";
@@ -26,6 +26,7 @@ function SubscriptionAndExtensionModal({
     openSubscriptionModal = true,
     openExtensionsModal,
     updateSubscriptionMode = false,
+    renewProductMode = false,
     OnCancelClicked,
     subscriptionsInfoFromAPI_Param,
     activeSubscriptionName = "",
@@ -82,12 +83,12 @@ function SubscriptionAndExtensionModal({
     const [subscriptionPlanInfo, SetSubscriptionPlanInfo] = useState([]);
     const [extensionPlansData, SetExtensionPlansData] = useState([]);
     const [extensions, setExtensions] = useState(extensionsData);
-    const [subscriptionsInfoFromAPI, SetSubscriptionsInfoFromAPI] = useState([]);
+    // const [subscriptionsInfoFromAPI, SetSubscriptionsInfoFromAPI] = useState([]);
     const [chosenSubscriptionPlanName, SetChosenSubscriptionPlanName] = useState(
-        (updateSubscriptionMode ? activeSubscriptionName : "Professional")
+        (updateSubscriptionMode ? "" : "Professional")
     );
     const [isCCRequired, SetIsCCRequired] = useState(false);
-    const [stripeCustomerId, SetStripeCustomerId] = useState("");
+    // const [stripeCustomerId, SetStripeCustomerId] = useState("");
     const [isPaymentSuccessfullyComplete, SetIsPaymentSuccessfullyComplete] = useState(false);
     const [isExtensionStepComplete, SetIsExtensionStepComplete] = useState(false);
     const [isSubscriptionProcessGoingOn, SetIsSubscriptionProcessGoingOn] = useState(false);
@@ -97,7 +98,12 @@ function SubscriptionAndExtensionModal({
     const [getPersonalDetail, getPersonalDetailResp] = useLazyGetPersonalDetailQuery();
     const [getOrgDetails, getOrgDetailsResp] = useLazyGetOrganizationQuery();
     const [updateOrgDetails, ] = useUpdateOrganizationDetailMutation();
+    const [changeSubscriptions] = useChangeSubscriptionsMutation();
     const { organization } = useSelector((state) => state.organization);
+    const {
+        stripeCustomerId,
+        subscriptionsInfoFromAPI,
+    } = useSelector((state) => state.subscription);
 ;
     function OnExtensionsChanged() {
         let output = sessionStorage.getItem("chosenExtentionObjectsFromAPI");
@@ -189,9 +195,9 @@ function SubscriptionAndExtensionModal({
                     console.log("getOrgDetails");
                     console.log(data);
                     sessionStorage.setItem("orgDetails", JSON.stringify(data.data));
-                    if(data && data.data && data.data.stripeCustomerDetails) {
+                    /* if(data && data.data && data.data.stripeCustomerDetails) {
                         SetStripeCustomerId(data.data.stripeCustomerDetails.id);
-                    }
+                    } */
 
                     if(data && data.data && data.data.organisation && data.data.user) {
                         const updatedValues = {
@@ -400,7 +406,7 @@ function SubscriptionAndExtensionModal({
             return newExtData;
           })
     
-          SetSubscriptionsInfoFromAPI(productList);
+        //   SetSubscriptionsInfoFromAPI(productList);
     }
 
     function fetchSubscriptionsInfo(){
@@ -687,6 +693,49 @@ function SubscriptionAndExtensionModal({
         }
     };
 
+    async function handleChangePlan() {
+        if(!updateSubscriptionMode) return;
+        SetIsSubscriptionProcessGoingOn(true);
+        const newPlans = [];
+
+        let chosenSub = sessionStorage.getItem(TEMPORARY_CHOSEN_SUBSCRIPTION_PLAN_NAME);
+        let subPriceObject = null;
+        if(!(chosenSub === undefined ||  chosenSub === null || chosenSub === "")) {
+            subPriceObject = subscriptionsInfoFromAPI.find(item => {
+                if(item?.product?.name === chosenSub) return true;
+                return false;
+            })
+        }
+
+        newPlans.push(subPriceObject);
+
+        changeSubscriptions({
+            customer_id: stripeCustomerId,
+            new_plans: newPlans
+        })
+        .then((data) => {
+            console.log("Change subscription response");
+            console.log(data);
+            
+            sessionStorage.removeItem(TEMPORARY_CHOSEN_SUBSCRIPTION_PLAN_NAME);
+            sessionStorage.removeItem(TEMPORARY_CHOSEN_EXTENSIONS_NAME);
+            if(OnSubscriptionAddedSuccessfully && 
+            OnSubscriptionAddedSuccessfully.constructor && 
+            OnSubscriptionAddedSuccessfully.constructor.name === "Function"
+            ) {
+                OnSubscriptionAddedSuccessfully();
+            }
+        })
+        .catch((error) => {
+            console.error("Error in change subscription");
+            console.error(error);
+        })
+        .finally(() => {
+            SetIsSubscriptionProcessGoingOn(false);
+        })
+
+    }
+
     function OnVerticalNumericSteppersStepClicked(index) {
         if(index === 0) {
             setFrames({
@@ -800,6 +849,7 @@ function SubscriptionAndExtensionModal({
                                 SetChosenSubscriptionPlanName={SetChosenSubscriptionPlanName}
                                 activeSubscriptionName={activeSubscriptionName}
                                 updateSubscriptionMode={updateSubscriptionMode}
+                                renewProductMode={renewProductMode}
                             />
                         ) : frames.extensions ? (
                             <ExtensionsChoosingModal
@@ -813,7 +863,7 @@ function SubscriptionAndExtensionModal({
                                 chosenSubscriptionPlanName={(() => {
                                     let chosenSub = sessionStorage.getItem(TEMPORARY_CHOSEN_SUBSCRIPTION_PLAN_NAME);
                                     if(!(chosenSub === undefined ||  chosenSub === null || chosenSub === "")) return chosenSub;
-                                    return "Professional";
+                                    return "";
                                 })()}
                                 subscriptionsInfo={subscriptionPlanInfo}
                                 setFrames={setFrames}
@@ -827,6 +877,7 @@ function SubscriptionAndExtensionModal({
                                 SetIsCCRequired={SetIsCCRequired}
                                 stripeCustomerId={stripeCustomerId}
                                 SetIsPaymentSuccessfull={SetIsPaymentSuccessfullyComplete}
+                                updateSubscriptionMode={updateSubscriptionMode}
                             />
                         ) : (<></>)
                     }
@@ -866,7 +917,7 @@ function SubscriptionAndExtensionModal({
                       onClick={
                         // (frames.review ? handleSub : onSaveAndNextClicked)
                         () => {
-                            (frames.review ? handleSub() : onSaveAndNextClicked());
+                            (frames.review ? updateSubscriptionMode ? handleChangePlan() : handleSub() : onSaveAndNextClicked());
                             if(OnCheckoutClicked.constructor && OnCheckoutClicked.constructor.name === "Function" && frames.review) {
                                 OnCheckoutClicked();
                             }

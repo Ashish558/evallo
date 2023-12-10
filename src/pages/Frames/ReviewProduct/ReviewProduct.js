@@ -21,6 +21,7 @@ function ReviewProduct({
     subscriptionsInfoFromAPI = [],
     stripeCustomerId,
     SetIsPaymentSuccessfull,
+    updateSubscriptionMode = false,
 }) {
     // const [isCCRequired, SetIsCCRequired] = useState(false);
     const [chosenSubscriptionPlan, SetChosenSubscriptionPlan] = useState(
@@ -74,6 +75,10 @@ function ReviewProduct({
 
     useEffect(() => {
         if(!(SetIsCCRequired.constructor && SetIsCCRequired.constructor.name === "Function")) return;
+        if(updateSubscriptionMode) {
+            SetIsCCRequired(true);
+            return;
+        }
         if(chosenSubscriptionPlan.ccRequired) {
             SetIsCCRequired(true);
             return;
@@ -119,7 +124,7 @@ function ReviewProduct({
                         activeTutorsAllowed={chosenSubscriptionPlan && chosenSubscriptionPlan.activeTutorsAllowed ? chosenSubscriptionPlan.activeTutorsAllowed : null}
                         currency={chosenSubscriptionPlan && chosenSubscriptionPlan.currency ? chosenSubscriptionPlan.currency : null}
                         subscriptionPricePerMonth={chosenSubscriptionPlan && chosenSubscriptionPlan.pricePerMonth ? chosenSubscriptionPlan.pricePerMonth : null}
-                        freeTrialDays={chosenSubscriptionPlan ? chosenSubscriptionPlan.freeTrialDays : null}
+                        freeTrialDays={!updateSubscriptionMode ? chosenSubscriptionPlan?.freeTrialDays : 0}
                     />
 
                     <div className="flex items-center mt-[10px] w-full" >

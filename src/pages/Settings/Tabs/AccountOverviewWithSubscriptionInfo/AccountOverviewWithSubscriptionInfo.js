@@ -190,7 +190,7 @@ function AccountOverviewWithSubscriptionInfo() {
     const [openSubscriptionModal, SetOpenSubscriptionModal] = useState(false);
     const [openExtensionsModal, SetOpenExtensionsModal] = useState(false);
     const [stripeCustomerId, SetStripeCustomerId] = useState("");
-    const [paymentMethods, SetPaymentMethods] = useState([]);
+    // const [paymentMethods, SetPaymentMethods] = useState([]);
     const [cancelProductSubscriptionId, SetCancelProductSubscriptionId] = useState("");
     const [enableAutoRenewalSubscriptionId, SetEnableAutoRenewalSubscriptionId] = useState("");
     const [deletePaymenMethodInfo, SetDeletePaymenMethodInfo] = useState(null);
@@ -201,6 +201,7 @@ function AccountOverviewWithSubscriptionInfo() {
     const {
         activeSubscriptionInfo,
         activeExtensionInfo,
+        paymentMethods,
     } = useSelector((state) => state.subscription);
     const dispatch = useDispatch();
 
@@ -355,7 +356,7 @@ function AccountOverviewWithSubscriptionInfo() {
                         SetStripeCustomerId(data.data.stripeCustomerDetails.id);
                     }
                     if(data && data.data && data.data.stripCustomerPaymentDetails) {
-                        SetPaymentMethods(data.data.stripCustomerPaymentDetails.data);
+                        // SetPaymentMethods(data.data.stripCustomerPaymentDetails.data);
                     }
                     
                     if(data.data && 
@@ -1258,6 +1259,8 @@ function AccountOverviewWithSubscriptionInfo() {
                                     if(item.card && item.card.brand === "visa") {
                                         cardLogo = visaIcon
                                     }
+                                    console.log("payment Method");
+                                    console.log(item);
                                     return (
                                         <BankCardWidgetContainer
                                             className="w-[33.15%]"
