@@ -70,6 +70,7 @@ function BankCardWidgetContainer({
     isDefault,
     cardNumber,
     cardNumberLastFourDigits,
+    expiresOn,
 }) {
     return (
         <div className={`flex flex-col items-end ${className}`} style={{...style}} >
@@ -80,11 +81,12 @@ function BankCardWidgetContainer({
                 cardLogo={cardLogo}
                 cardNumber={cardNumber}
                 cardNumberLastFourDigits={cardNumberLastFourDigits}
+                expiresOn={expiresOn}
             />
 
             <PrimaryButton
-                style={{width: "80px", ...deleteButtonStyle}}
-                className={` flex justify-center mt-[10px] bg-[#FFA28D]  disabled:opacity-60  rounded-[10px] text-white text-sm font-medium relative px-[10px] py-[7px] ${deleteButtonClassName}`}
+                style={{ ...deleteButtonStyle}}
+                className={` flex justify-center h-[24px] w-[58px] mt-[10px] bg-[#FFA28D]  disabled:opacity-60  rounded-[5px] text-white text-[12px] font-medium relative px-[10px] py-[7px] ${deleteButtonClassName}`}
                 /* loading={emailExistLoad}
                 disabled={
                     values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
@@ -1248,7 +1250,7 @@ function AccountOverviewWithSubscriptionInfo() {
 
                         <div className="font-[600] ml-[30px] mt-[30px] text-[#FFA28D] text-[17.5px]" >Saved Cards</div>
 
-                        <div className={`flex items-start gap-x-[45px] gap-y-[30px] flex-wrap ml-[30px] mt-[5px] pl-[0px] pb-[0px] pt-[0px] w-11/12`} >
+                        <div className={`flex items-start gap-x-[20px] gap-y-[30px] flex-wrap ml-[30px] mt-[5px] pl-[0px] pb-[0px] pt-[0px] w-[920px]`} >
 
                             {
                                 paymentMethods.map((item, index) => {
@@ -1264,32 +1266,25 @@ function AccountOverviewWithSubscriptionInfo() {
                                     if(item.card && item.card.brand === "visa") {
                                         cardLogo = visaIcon
                                     }
+                                    let expiresOn = "";
+                                    let month = item?.card?.exp_month;
+                                    let year = item?.card?.exp_year;
+
+                                    // month = month < 10 ? "0" + 
                                     console.log("payment Method");
                                     console.log(item);
                                     return (
                                         <BankCardWidgetContainer
-                                            className="w-[33.15%]"
-                                            bankCardClassName="aspect-square-[305/106] ml-[20px] w-full"
+                                            className="w-[305px]"
+                                            bankCardClassName="h-[106px] w-[305px]"
                                             cardNumber={cardNumber}
                                             cardLogo={cardLogo}
-
+                                            expiresOn={expiresOn}
                                             onDeleteClicked={() => {
                                                 SetIsDeletePaymentMethodModalActive(true);
                                                 SetDeletePaymenMethodInfo({
                                                     customerId: item.customer,
                                                     paymentMethodId: item.id
-                                                })
-                                                return;
-                                                deletePaymentMethod({
-                                                    customerId: item.customer,
-                                                    paymentMethodId: item.id
-                                                }).then(data => {
-                                                    console.log("delete payment method api response");
-                                                    console.log(data);
-                                                    loadOrgDetails();
-                                                }).catch(error => {
-                                                    console.log("Error in delete payment method api");
-                                                    console.log(error);
                                                 })
                                             }}
                                         />
@@ -1297,24 +1292,8 @@ function AccountOverviewWithSubscriptionInfo() {
                                 })
                             }
 
-                            {/* <BankCardWidgetContainer
-                                className="w-[33.15%]"
-                                bankCardClassName="aspect-square-[305/106] w-full"
-                                isDefault={true}
-                                
-                            />
-
-                            <BankCardWidgetContainer
-                                className="w-[33.15%]"
-                                bankCardClassName="aspect-square-[305/106] w-full"
-                                isDefault={false}
-                                cardLogo={mastercardIcon}
-                                // cardNumber={"245234234125"}
-                            /> */}
-                            
-
                             <button 
-                                className="box-border border-[#FFA28D] border-[3px] border-dashed rounded-[5px] aspect-[270/106] w-[29.34%]"
+                                className="box-border border-[#FFA28D] border-[3px] border-dashed rounded-[5px] h-[106px] w-[270px]"
                                 onClick={OnAddNewPaymentMethodClicked}
                             >
                                 <span className="text-[#FFA28D] text-[12px]" >Add New Payment Method</span>

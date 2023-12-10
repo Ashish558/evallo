@@ -122,7 +122,7 @@ function SubscriptionAndExtensionModal({
         //   if(!extensions[i].checked) continue;
           const ext = extensions[i];
     
-          const chosenExtension = subscriptionsInfoFromAPI.find(item => {
+          const chosenExtension = subscriptionsInfoFromAPI?.find(item => {
             if(item && item.product) {
                 return item.product.metadata.type === "extension" && 
                    item.product.name === ext.text && 

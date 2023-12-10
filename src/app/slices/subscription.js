@@ -36,7 +36,8 @@ const initialState = {
         priceObject: null,
         subscriptionId: ""
     },
-    paymentMethods: []
+    paymentMethods: [],
+    subscriptionUpdateTrigger: null
 }
 
 const subscription = createSlice({
@@ -63,6 +64,9 @@ const subscription = createSlice({
             console.log(payload);
             state.paymentMethods = payload;
         },
+        triggerSubscriptionUpdate: (state) => {
+            state.subscriptionUpdateTrigger = {};
+        }
     }
 });
 
@@ -73,5 +77,6 @@ export const {
     updateActiveExtensionInfo,
     updateSubscriptionsInfoFromAPI,
     updatePaymentMethods,
+    triggerSubscriptionUpdate,
 } = subscription.actions;
 export default subscription.reducer;

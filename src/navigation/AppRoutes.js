@@ -9,7 +9,7 @@ import Layout2 from "../pages/Layout/Layout2";
 import SubscriptionAndExtensionModal from "../pages/Frames/SubscriptionAndExtensionModal/SubscriptionAndExtensionModal";
 import { useLazyGetAuthQuery, useLazyGetOrganizationQuery, useLazyGetPersonalDetailQuery } from "../app/services/users";
 import { closeModal as closeSubscriptionAndExtensionModal, openModal as openSubscriptionAndExtensionModal } from "../app/slices/subscriptionUI";
-import { updateActiveExtensionInfo, updateActiveSubscriptionInfo, updatePaymentMethods, updateStripeCustomerId, updateSubscriptionsInfoFromAPI } from "../app/slices/subscription";
+import { triggerSubscriptionUpdate, updateActiveExtensionInfo, updateActiveSubscriptionInfo, updatePaymentMethods, updateStripeCustomerId, updateSubscriptionsInfoFromAPI } from "../app/slices/subscription";
 import { useLazyGetSubscriptionsInfoQuery } from "../app/services/orgSignup";
 
 
@@ -66,6 +66,7 @@ const AppRoutes = () => {
   const {
     subscriptionsInfoFromAPI,
     activeSubscriptionInfo,
+    activeExtensionInfo
   } = useSelector((state) => state.subscription);
   const { role: persona } = useSelector((state) => state.user);
   const [isOrgAdmin, SetIsOrgAdmin] = useState(false);
@@ -366,6 +367,7 @@ const AppRoutes = () => {
               activeSubscriptionName={activeSubscriptionInfo?.planName}
               OnSubscriptionAddedSuccessfully={() => {
                 // SetIsSubscriptionAndExtensionModalActive(false);
+                dispatch(triggerSubscriptionUpdate());
                 dispatch(closeSubscriptionAndExtensionModal());
               }}
 
