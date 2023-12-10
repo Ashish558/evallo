@@ -20,7 +20,12 @@ import styles from "./styles.module.css";
 
 import { useRef } from "react";
 
-import { useUpdateUserMutation } from "../../../../app/services/users";
+import { 
+  useUpdateUserMutation,
+  useLazyGetPersonalDetailQuery,
+  useLazyGetOrganizationQuery,
+} from "../../../../app/services/users";
+
 import {
   useUpdateOrgLogoMutation,
   useUpdateUserOrganizationMutation,
@@ -31,12 +36,15 @@ import { updateOrganization } from "../../../../app/slices/organization";
 // import { trim } from "jquery";
 
 const CompanyAndBround = () => {
+  const dispatch = useDispatch();
   const { organization } = useSelector((state) => state.organization);
   const userData = useSelector((state) => state.user);
   const [updateRole, updateRoleStatus] = useUpdateUserMutation();
   const [updateUserOrg, updateUserOrgStatus] =
     useUpdateUserOrganizationMutation();
   const [updateOrgLogo, updateOrgLogoStatus] = useUpdateOrgLogoMutation();
+  const [getPersonalDetail, getPersonalDetailResp] = useLazyGetPersonalDetailQuery();
+  const [getOrgDetails, getOrgDetailsResp] = useLazyGetOrganizationQuery();
 
   const [studentServed, setStudentServed] = useState(studentServedData);
   const [instructions, setInstructions] = useState(instructionFormat);
@@ -45,7 +53,6 @@ const CompanyAndBround = () => {
   const [states, setStates] = useState([]);
   const [values, setValues] = useState({ role: userData.role });
   const [orgBussinessLogo, setOrgBussinessLogo] = useState(null)
-  const dispatch = useDispatch();
 
   const [error, setError] = useState({
     firstName: "",
@@ -131,6 +138,31 @@ const CompanyAndBround = () => {
       console.error(e);
     }
   };
+
+  useEffect(() => {
+    getPersonalDetail()
+    .then(data => {
+        if(data?.error) {
+          console.error("Error in getPersonalDetail");
+          console.error(data?.error);
+          return;
+        }
+        const user = data?.data?.data?.user;
+    
+        getOrgDetails(user?.associatedOrg)
+        .then(data => {
+          if(data?.error) {
+            console.error("Error in getPersonalDetail");
+            console.error(data?.error);
+            return;
+          }
+          console.log("org data");
+          console.log(data);
+          dispatch(updateOrganization(data?.data?.organisation));
+        })
+    })
+
+  }, []);
 
   useEffect(() => {
     if (country.length === 0) {

@@ -52,7 +52,7 @@ else [ year, month, day] = value.split("-");
   return AdminLatestSignUp ? (
     <LatestSignUpTableItem item={item} onClick={onClick} />
   ) : (
-    <tr className={`my-5 box-content  shadow-[0px_0px_1.33333px_0px_rgba(0,0,0,0.25)] `}>
+    <tr className={`my-5 box-content  shadow-[0px_0px_1.33333px_0px_rgba(0,0,0,0.25)]`}>
      
       <td className={`${className}  text-sm px-1  min-w-14 py-[15px] text-left`}>
         <span
