@@ -9,6 +9,8 @@ import Layout2 from "../pages/Layout/Layout2";
 import SubscriptionAndExtensionModal from "../pages/Frames/SubscriptionAndExtensionModal/SubscriptionAndExtensionModal";
 import { useLazyGetAuthQuery, useLazyGetOrganizationQuery, useLazyGetPersonalDetailQuery } from "../app/services/users";
 import { closeModal as closeSubscriptionAndExtensionModal, openModal as openSubscriptionAndExtensionModal } from "../app/slices/subscriptionUI";
+import { updateActiveExtensionInfo, updateActiveSubscriptionInfo, updateSubscriptionsInfoFromAPI } from "../app/slices/subscription";
+import { useLazyGetSubscriptionsInfoQuery } from "../app/services/orgSignup";
 
 
 const AllTests = lazy(() => import("../pages/AllTests/AllTests"));
@@ -60,11 +62,27 @@ const AppRoutes = () => {
     openSubscriptionPanel,
     openExtensionsPanel,
   } = useSelector((state) => state.subscriptionUI);
+  const {
+    subscriptionsInfoFromAPI
+  } = useSelector((state) => state.subscription);
   const { role: persona } = useSelector((state) => state.user);
   const [isOrgAdmin, SetIsOrgAdmin] = useState(false);
   // const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(false);
   const [getPersonalDetail, getPersonalDetailResp] = useLazyGetPersonalDetailQuery();
   const [getOrgDetails, getOrgDetailsResp] = useLazyGetOrganizationQuery();
+  const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
+
+  function fetchSubscriptionsInfo() {
+    getSubscriptionsInfo().then((res) => {
+      console.log("Subscriptions info");
+      console.log(res.data)
+      dispatch(updateSubscriptionsInfoFromAPI(res.data.data));
+      // SetSubscriptionsInfoFromAPI(res.data.data);
+    }).catch((error) => {
+      console.error("Error while fetching subscriptions info")
+      console.error(error)
+    })
+  }
 
   useEffect(() => {
     if(persona === "parent" || persona === "student" || persona === "tutor" || 
@@ -77,6 +95,21 @@ const AppRoutes = () => {
   }, [persona]);
 
   useEffect(() => {
+    if(persona === "parent" || persona === "student" || persona === "tutor" || 
+       persona === "contributor" || persona === "superAdmin" || persona === "manager") {
+        return;
+    }
+
+    if(subscriptionsInfoFromAPI && subscriptionsInfoFromAPI.length > 0) return;
+    fetchSubscriptionsInfo();
+  }, [persona, subscriptionsInfoFromAPI]);
+
+  useEffect(() => {
+    if(persona === "parent" || persona === "student" || persona === "tutor" || 
+       persona === "contributor" || persona === "superAdmin" || persona === "manager") {
+        return;
+    }
+
     getPersonalDetail()
     .then(data => {
       console.log("getPersonalDetail");
@@ -88,7 +121,84 @@ const AppRoutes = () => {
         console.log("getOrgDetails - attempt with associatedOrg");
         console.log(data);
 
-        if(data.data === null || data.data === undefined ||
+        if(data?.data?.customerSubscriptions?.data?.length === 0) {
+          // SetIsSubscriptionAndExtensionModalActive(true);
+          dispatch(openSubscriptionAndExtensionModal());
+        } else {
+          // SetIsSubscriptionAndExtensionModalActive(false);
+          dispatch(closeSubscriptionAndExtensionModal());
+        }
+
+        if(data?.data?.customerSubscriptions?.data?.length > 0 && subscriptionsInfoFromAPI?.length > 0) {
+          const products = data.data.customerSubscriptions.data;
+          let activeSub;
+          const todayDate = new Date();
+          for(let i = 0; i < products.length; i++) {
+            let planId = products[i].plan.id;
+            activeSub = subscriptionsInfoFromAPI.find(item => item.id === planId);
+            if(products[i].metadata.type === "extension") {
+              /* SetActiveExtensionName("Assignement");
+              SetActiveExtensionPrice(products[i].plan.amount / 100); */
+              let productQuantity = 0;
+              if(activeSub.lookup_key === "p1") {
+                  productQuantity = 100;
+              }
+              if(activeSub.lookup_key === "p2") {
+                  productQuantity = 400;
+              }
+              if(activeSub.lookup_key === "p3") {
+                  productQuantity = 1500;
+              }
+              if(activeSub.lookup_key === "p4") {
+                  productQuantity = Infinity;
+              }
+
+              const expiryDate = new Date(products[i].current_period_end * 1000);
+              const isCancelled = products[i].canceled_at === null || products[i].canceled_at === undefined ? false : true;
+
+              dispatch(updateActiveExtensionInfo({
+                  planName: "Assignment",
+                  planDisplayName: "Assignement",
+                  productQuantity: productQuantity,
+                  currency: products[i].currency,
+                  startDate: new Date(products[i].start_date * 1000),
+                  autoRenewalDate: new Date(products[i].current_period_end * 1000),
+                  expiryDate: expiryDate,
+                  subscriptionPricePerMonth: products[i].plan.amount / 100,
+                  monthlyCostAfterDiscount: products[i].plan.amount / 100,
+                  freeTrialExpiryDate: new Date(products[i].trial_end * 1000),
+                  hasExpired: expiryDate < todayDate,
+                  isCancelled: isCancelled,
+                  priceObject: products[i].items?.data[0]?.price,
+                  subscriptionId: products[i].id,
+              }));
+
+              continue;
+            }
+
+            const expiryDate = new Date(products[i].current_period_end * 1000);
+            const isCancelled = products[i].canceled_at === null || products[i].canceled_at === undefined ? false : true;
+
+            dispatch(updateActiveSubscriptionInfo({
+              planName: activeSub.product.name,
+              planDisplayName: activeSub.product.name,
+              activeTutorsAllowed: products[i].metadata.active_tutors,
+              currency: activeSub.currency,
+              subscriptionPricePerMonth: activeSub.unit_amount / 100,
+              monthlyCostAfterDiscount: activeSub.unit_amount / 100,
+              startDate: new Date(products[i].start_date * 1000),
+              autoRenewalDate: new Date(products[i].current_period_end * 1000),
+              expiryDate: expiryDate,
+              freeTrialExpiryDate: new Date(products[i].trial_end * 1000),
+              hasExpired: expiryDate < todayDate,
+              isCancelled: isCancelled,
+              priceObject: products[i].items?.data[0]?.price,
+              subscriptionId: products[i].id,
+            }))
+          }
+        }
+
+        /* if(data.data === null || data.data === undefined ||
           data.data.customerSubscriptions === null || data.data.customerSubscriptions === undefined ||
           data.data.customerSubscriptions.data === null || data.data.customerSubscriptions.data === undefined ||
           data.data.customerSubscriptions.data.length === 0) {
@@ -97,7 +207,7 @@ const AppRoutes = () => {
         } else {
           // SetIsSubscriptionAndExtensionModalActive(false);
           dispatch(closeSubscriptionAndExtensionModal());
-        }
+        } */
       })
       .catch(error => {
         console.log("Error in getOrgDetails");
@@ -109,7 +219,7 @@ const AppRoutes = () => {
       console.log("Error in getPersonalDetail");
       console.log(error);
     })
-  }, []);
+  }, [persona, subscriptionsInfoFromAPI]);
 
   return (
     <BrowserRouter>

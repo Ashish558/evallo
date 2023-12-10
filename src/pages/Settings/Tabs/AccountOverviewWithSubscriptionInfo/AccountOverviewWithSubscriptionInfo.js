@@ -42,7 +42,7 @@ import Modal2 from "../../../../components/Modal2/Modal2";
 import ViewTransactionsModal from "../../../../components/ViewTransactionsModal/ViewTransactionsModal";
 import AddNewBankCardModal from "../../../../components/AddNewBankCardModal/AddNewBankCardModal";
 import visaIcon from "../../../../assets/BankCard/visa.svg";
-import { useCancelSubscriptionMutation } from "../../../../app/services/subscription";
+import { useCancelSubscriptionMutation, useEnableAutoRenewalMutation } from "../../../../app/services/subscription";
 import DeletePaymentMethodModal from "../../../../components/DeletePaymentMethodModal/DeletePaymentMethodModal";
 import { CurrencyNameToSymbole, getFormattedDate } from "../../../../utils/utils";
 import EnableAutoRenewal from "../../../../components/EnableAutoRenewal/EnableAutoRenewal";
@@ -139,13 +139,14 @@ function AccountOverviewWithSubscriptionInfo() {
     const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
     const [updateEmail, setUpdateEmail] = useUpdateEmailMutation();
     const [forgotPassword, forgotPasswordResp] = useForgotPasswordMutation();
+    const [enableAutoRenewal] = useEnableAutoRenewalMutation();
     const [subscriptionsInfoFromAPI, SetSubscriptionsInfoFromAPI] = useState([]);
     const [activeSubscriptionName, SetActiveSubscriptionName] = useState("");
     const [activeSubscriptionId, SetActiveSubscriptionId] = useState("");
     const [activeExtensionName, SetActiveExtensionName] = useState("");
     const [activeExtensionPrice, SetActiveExtensionPrice] = useState(100);
     const [activeExtensionProductQuantity, SetActiveExtensionProductQuantity] = useState(500);
-    const [activeExtensionInfo, SetActiveExtensionInfo] = useState({
+    /* const [activeExtensionInfo, SetActiveExtensionInfo] = useState({
         planName: "",
         planDisplayName: "",
         activeTutorsAllowed: 0,
@@ -160,9 +161,9 @@ function AccountOverviewWithSubscriptionInfo() {
         expiryDate: null,
         hasExpired: false,
         isCancelled: false,
-    });
+    }); */
 
-    const [activeSubscriptionInfo, SetActiveSubscriptionInfo] = useState({
+    /* const [activeSubscriptionInfo, SetActiveSubscriptionInfo] = useState({
         planName: "",
         planDisplayName: "",
         activeTutorsAllowed: 0,
@@ -176,7 +177,7 @@ function AccountOverviewWithSubscriptionInfo() {
         expiryDate: null,
         hasExpired: false,
         isCancelled: false,
-    });
+    }); */
     const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(false);
     const [isResetPasswordModalActive, SetIsResetPasswordModalActive] = useState(false);
     const [isPasswordResetLinkSentModalActive, SetIsPasswordResetLinkSentModalActive] = useState(false);
@@ -191,11 +192,16 @@ function AccountOverviewWithSubscriptionInfo() {
     const [stripeCustomerId, SetStripeCustomerId] = useState("");
     const [paymentMethods, SetPaymentMethods] = useState([]);
     const [cancelProductSubscriptionId, SetCancelProductSubscriptionId] = useState("");
+    const [enableAutoRenewalSubscriptionId, SetEnableAutoRenewalSubscriptionId] = useState("");
     const [deletePaymenMethodInfo, SetDeletePaymenMethodInfo] = useState(null);
     const [activeTutorsCount, setActiveTutorsCount] = useState(0);
     const [loading, setLoading] = useState(false);
     const [fetchedData, setFetchedData] = useState({});
     const { dateFormat } = useSelector((state) => state.user);
+    const {
+        activeSubscriptionInfo,
+        activeExtensionInfo,
+    } = useSelector((state) => state.subscription);
     const dispatch = useDispatch();
 
     const isEmail = (val) => {
@@ -387,7 +393,7 @@ function AccountOverviewWithSubscriptionInfo() {
                                 const expiryDate = new Date(products[i].current_period_end * 1000);
                                 const isCancelled = products[i].canceled_at === null || products[i].canceled_at === undefined ? false : true;
 
-                                SetActiveExtensionInfo({
+                                /* SetActiveExtensionInfo({
                                     planName: "Assignment",
                                     planDisplayName: "Assignement",
                                     productQuantity: productQuantity,
@@ -400,7 +406,7 @@ function AccountOverviewWithSubscriptionInfo() {
                                     freeTrialExpiryDate: new Date(products[i].trial_end * 1000),
                                     hasExpired: expiryDate < todayDate,
                                     isCancelled: isCancelled,
-                                })
+                                }) */
 
                                 continue;
                             }
@@ -413,7 +419,7 @@ function AccountOverviewWithSubscriptionInfo() {
                                 const isCancelled = products[i].canceled_at === null || products[i].canceled_at === undefined ? false : true;
 
                                 SetActiveSubscriptionName(activeSub.product.name);
-                                SetActiveSubscriptionInfo({
+                                /* SetActiveSubscriptionInfo({
                                     planName: activeSub.product.name,
                                     planDisplayName: activeSub.product.name,
                                     activeTutorsAllowed: products[i].metadata.active_tutors,
@@ -426,7 +432,7 @@ function AccountOverviewWithSubscriptionInfo() {
                                     freeTrialExpiryDate: new Date(products[i].trial_end * 1000),
                                     hasExpired: false,//expiryDate < todayDate,
                                     isCancelled: true,//isCancelled,
-                                });
+                                }); */
                             }
                             SetActiveSubscriptionId(products[i].id);
                             
@@ -460,7 +466,7 @@ function AccountOverviewWithSubscriptionInfo() {
     
     }, [subscriptionsInfoFromAPI]);
 
-    useEffect(() => {
+    /* useEffect(() => {
         return;
         if(!(subscriptionsInfoFromAPI && subscriptionsInfoFromAPI.length > 0)) return;
 
@@ -480,7 +486,7 @@ function AccountOverviewWithSubscriptionInfo() {
 
             return;
         }
-    }, [subscriptionsInfoFromAPI]);
+    }, [subscriptionsInfoFromAPI]); */
 
     const fetchSubscriptionsInfo = () => {
         getSubscriptionsInfo().then((res) => {
@@ -556,15 +562,18 @@ function AccountOverviewWithSubscriptionInfo() {
     }
 
     function OnCancelSubscriptionModalCancelSubscriptionButtonClicked() {
-        SetIsCancelSubscriptionModalActive(false);
+        
         cancelSubscription(cancelProductSubscriptionId)
         .then(data => {
             console.log("cancelSubscription");
             console.log(data);
         })
-        .error(error => {
+        .catch(error => {
             console.log("error in cancelSubscription");
             console.log(error);
+        })
+        .finally(() => {
+            SetIsCancelSubscriptionModalActive(false);
         })
     }
 
@@ -634,12 +643,30 @@ function AccountOverviewWithSubscriptionInfo() {
         loadOrgDetails();
     }
 
-    function OnEnableAutoRenewalClicked() {
+    function OnEnableAutoRenewalClicked(subId) {
         SetIsEnableAutoRenewalModalActive(true);
+        SetEnableAutoRenewalSubscriptionId(subId);
     }
 
     function OnEnableAutoRenewalModalCrossIconClicked() {
         SetIsEnableAutoRenewalModalActive(false);
+    }
+
+    function OnEnableAutoRenewalModalRenewClicked() {
+        enableAutoRenewal({
+            subscriptionId: enableAutoRenewalSubscriptionId
+        })
+        .then(data => {
+            console.log("Enable auto renewal response");
+            console.log(data);
+        })
+        .catch(error => {
+            console.error("Error in enable auto renewal api");
+            console.error(error);
+        })
+        .finally(() => {
+            SetIsEnableAutoRenewalModalActive(false);
+        })
     }
 
     return (
@@ -729,6 +756,7 @@ function AccountOverviewWithSubscriptionInfo() {
                     <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
                         <EnableAutoRenewal
                             OnCrossIconClicked={OnEnableAutoRenewalModalCrossIconClicked}
+                            OnEnableAutoRenewClicked={OnEnableAutoRenewalModalRenewClicked}
                         />
                     </div>
                 ) : (<></>)
@@ -1061,7 +1089,7 @@ function AccountOverviewWithSubscriptionInfo() {
                                                     className="font-[500] underline text-[#26435F] text-[15px]" 
                                                     onClick={
                                                         () => {
-                                                            OnEnableAutoRenewalClicked();
+                                                            OnEnableAutoRenewalClicked(activeSubscriptionInfo.subscriptionId);
                                                         }
                                                     } 
                                                 >Enable Auto-Renew</button>
@@ -1070,7 +1098,7 @@ function AccountOverviewWithSubscriptionInfo() {
                                                     className="font-[500] underline text-[#24A3D9] text-[15px]" 
                                                     onClick={
                                                         () => {
-                                                            OnCancelSubscriptionClicked(activeSubscriptionId);
+                                                            OnCancelSubscriptionClicked(activeSubscriptionInfo.subscriptionId);
                                                         }
                                                     } 
                                                 >Cancel Subscription</button>
@@ -1083,7 +1111,7 @@ function AccountOverviewWithSubscriptionInfo() {
                         }
 
                         {
-                            !(activeExtensionName === "") ? (
+                            !(activeExtensionInfo === undefined || activeExtensionInfo === null) ? (
                                 <>
                                     <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[17.5px]" >Extensions</div>
 
@@ -1095,9 +1123,9 @@ function AccountOverviewWithSubscriptionInfo() {
                                             // style={{width: "65%"}}
                                             className="h-[106px] w-[600px]"
                                             canChangePlan={true}
-                                            planDisplayName={activeExtensionName}
-                                            subscriptionPricePerMonth={activeExtensionPrice}
-                                            productQuantity={activeExtensionProductQuantity}
+                                            planDisplayName={activeExtensionInfo.planDisplayName}
+                                            subscriptionPricePerMonth={activeExtensionInfo.subscriptionPricePerMonth}
+                                            productQuantity={activeExtensionInfo.productQuantity}
                                             handleChangePlan={OnActiveExtensionChangePlanClicked}
                                             freeTrialExpiryDate={activeExtensionInfo.autoRenewalDate}
                                         />
@@ -1168,7 +1196,7 @@ function AccountOverviewWithSubscriptionInfo() {
                                                         className="font-[500] underline text-[#26435F] text-[15px]" 
                                                         onClick={
                                                             () => {
-                                                                OnEnableAutoRenewalClicked();
+                                                                OnEnableAutoRenewalClicked(activeExtensionInfo.subscriptionId);
                                                             }
                                                         } 
                                                     >Enable Auto-Renew</button>
@@ -1177,7 +1205,7 @@ function AccountOverviewWithSubscriptionInfo() {
                                                         className="font-[500] underline text-[#24A3D9] text-[15px]" 
                                                         onClick={
                                                             () => {
-                                                                OnCancelSubscriptionClicked("");
+                                                                OnCancelSubscriptionClicked(activeExtensionInfo.subscriptionId);
                                                             }
                                                         } 
                                                     >Cancel Subscription</button>
