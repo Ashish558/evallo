@@ -628,6 +628,7 @@ export default function AllTests({
 
           <div className="mt-[37.5px] w-[1600px]">
             <Table
+            tableClass="table-auto !mt-0"
               widthFullTable={true}
               testtype={testtype2}
               dataFor="allTests"
