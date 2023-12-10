@@ -1124,7 +1124,7 @@ function AccountOverviewWithSubscriptionInfo() {
                         }
 
                         {
-                            !(activeExtensionInfo === undefined || activeExtensionInfo === null) ? (
+                            !(activeExtensionInfo === undefined || activeExtensionInfo === null || activeExtensionInfo.planName === "") ? (
                                 <>
                                     <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[17.5px]" >Extensions</div>
 
