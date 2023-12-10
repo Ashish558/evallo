@@ -66,7 +66,8 @@ const AppRoutes = () => {
   const {
     subscriptionsInfoFromAPI,
     activeSubscriptionInfo,
-    activeExtensionInfo
+    activeExtensionInfo,
+    subscriptionUpdateTrigger
   } = useSelector((state) => state.subscription);
   const { role: persona } = useSelector((state) => state.user);
   const [isOrgAdmin, SetIsOrgAdmin] = useState(false);
@@ -232,124 +233,7 @@ const AppRoutes = () => {
     }
 
     loadOrgDetails();
-    return;
-
-    getPersonalDetail()
-    .then(data => {
-      console.log("getPersonalDetail");
-      console.log(data);
-      const user = data.data.data.user;
-
-      getOrgDetails(user.associatedOrg)
-      .then(data => {
-        console.log("getOrgDetails - attempt with associatedOrg");
-        console.log(data);
-        if(data?.data?.stripeCustomerDetails?.id) {
-          dispatch(updateStripeCustomerId(data.data.stripeCustomerDetails.id));
-        }
-
-        if(data?.data?.stripeCustomerPaymentDetails) {
-          console.log("data?.data?.stripCustomerPaymentDetails - ");
-          console.log(data?.data?.stripeCustomerPaymentDetails);
-          dispatch(updatePaymentMethods(data.data.stripeCustomerPaymentDetails.data));
-          // SetPaymentMethods(data.data.stripCustomerPaymentDetails.data);
-        }
-
-        if(data?.data?.customerSubscriptions?.data?.length === 0) {
-          dispatch(openSubscriptionAndExtensionModal());
-        } else {
-          dispatch(closeSubscriptionAndExtensionModal());
-        }
-
-        if(data?.data?.customerSubscriptions?.data?.length > 0 && subscriptionsInfoFromAPI?.length > 0) {
-          const products = data.data.customerSubscriptions.data;
-          let activeSub;
-          const todayDate = new Date();
-          for(let i = 0; i < products.length; i++) {
-            let planId = products[i].plan.id;
-            activeSub = subscriptionsInfoFromAPI.find(item => item.id === planId);
-            if(products[i].metadata.type === "extension") {
-              let productQuantity = 0;
-              if(activeSub.lookup_key === "p1") {
-                  productQuantity = 100;
-              }
-              if(activeSub.lookup_key === "p2") {
-                  productQuantity = 400;
-              }
-              if(activeSub.lookup_key === "p3") {
-                  productQuantity = 1500;
-              }
-              if(activeSub.lookup_key === "p4") {
-                  productQuantity = Infinity;
-              }
-
-              const expiryDate = new Date(products[i].current_period_end * 1000);
-              const isCancelled = products[i].canceled_at === null || products[i].canceled_at === undefined ? false : true;
-
-              dispatch(updateActiveExtensionInfo({
-                  planName: "Assignment",
-                  planDisplayName: "Assignement",
-                  productQuantity: productQuantity,
-                  currency: products[i].currency,
-                  startDate: products[i].start_date,//new Date(products[i].start_date * 1000),
-                  autoRenewalDate: products[i].current_period_end,//new Date(products[i].current_period_end * 1000),
-                  expiryDate: products[i].current_period_end,//expiryDate,
-                  subscriptionPricePerMonth: products[i].plan.amount / 100,
-                  monthlyCostAfterDiscount: products[i].plan.amount / 100,
-                  freeTrialExpiryDate: products[i].trial_end,//new Date(products[i].trial_end * 1000),
-                  hasExpired: expiryDate < todayDate,
-                  isCancelled: isCancelled,
-                  priceObject: products[i].items?.data[0]?.price,
-                  subscriptionId: products[i].id,
-              }));
-
-              continue;
-            }
-
-            const expiryDate = new Date(products[i].current_period_end * 1000);
-            const isCancelled = products[i].canceled_at === null || products[i].canceled_at === undefined ? false : true;
-
-            dispatch(updateActiveSubscriptionInfo({
-              planName: activeSub.product.name,
-              planDisplayName: activeSub.product.name,
-              activeTutorsAllowed: products[i].metadata.active_tutors,
-              currency: activeSub.currency,
-              subscriptionPricePerMonth: activeSub.unit_amount / 100,
-              monthlyCostAfterDiscount: activeSub.unit_amount / 100,
-              startDate: products[i].start_date,//new Date(products[i].start_date * 1000),
-              autoRenewalDate: products[i].current_period_end,//new Date(products[i].current_period_end * 1000),
-              expiryDate: products[i].current_period_end,//expiryDate,
-              freeTrialExpiryDate: products[i].trial_end,//new Date(products[i].trial_end * 1000),
-              hasExpired: expiryDate < todayDate,
-              isCancelled: isCancelled,
-              priceObject: products[i].items?.data[0]?.price,
-              subscriptionId: products[i].id,
-            }))
-          }
-        }
-
-        /* if(data.data === null || data.data === undefined ||
-          data.data.customerSubscriptions === null || data.data.customerSubscriptions === undefined ||
-          data.data.customerSubscriptions.data === null || data.data.customerSubscriptions.data === undefined ||
-          data.data.customerSubscriptions.data.length === 0) {
-          // SetIsSubscriptionAndExtensionModalActive(true);
-          dispatch(openSubscriptionAndExtensionModal());
-        } else {
-          // SetIsSubscriptionAndExtensionModalActive(false);
-          dispatch(closeSubscriptionAndExtensionModal());
-        } */
-      })
-      .catch(error => {
-        console.log("Error in getOrgDetails");
-        console.log(error);
-      });
-
-    })
-    .catch(error => {
-      console.log("Error in getPersonalDetail");
-      console.log(error);
-    })
-  }, [persona, subscriptionsInfoFromAPI]);
+  }, [persona, subscriptionsInfoFromAPI, subscriptionUpdateTrigger]);
 
   return (
     <BrowserRouter>
