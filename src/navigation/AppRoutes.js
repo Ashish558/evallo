@@ -19,7 +19,8 @@ import {
   updatePaymentMethods, 
   updateStripeCustomerId, 
   updateSubscriptionsInfoFromAPI, 
-  updateHasSubscriptionExpired } from "../app/slices/subscription";
+  updateHasSubscriptionExpired, 
+  updateDefaultPaymentMethodId} from "../app/slices/subscription";
 import { useLazyGetSubscriptionsInfoQuery } from "../app/services/orgSignup";
 
 
@@ -130,6 +131,10 @@ const AppRoutes = () => {
       .then(data => {
         console.log("getOrgDetails - attempt with associatedOrg");
         console.log(data);
+        if(data?.data?.stripeCustomerDetails?.invoice_settings?.default_payment_method) {
+          dispatch(updateDefaultPaymentMethodId(data.data.stripeCustomerDetails.invoice_settings.default_payment_method));
+        }
+
         if(data?.data?.stripeCustomerDetails?.id) {
           dispatch(updateStripeCustomerId(data.data.stripeCustomerDetails.id));
         }
@@ -195,6 +200,11 @@ const AppRoutes = () => {
 
             const expiryDate = new Date(products[i].current_period_end * 1000);
             const isCancelled = products[i].canceled_at === null || products[i].canceled_at === undefined ? false : true;
+            const subscriptionPricePerMonth = activeSub.unit_amount / 100;
+            let monthlyCostAfterDiscount = subscriptionPricePerMonth;
+            if(products[i]?.discount?.coupon) {
+              monthlyCostAfterDiscount = subscriptionPricePerMonth - products[i]?.discount?.coupon?.percent_off / 100.0 * subscriptionPricePerMonth;
+            }
 
             if(expiryDate < todayDate) {
               navigate("/settings");
@@ -208,8 +218,8 @@ const AppRoutes = () => {
               planDisplayName: activeSub.product.name,
               activeTutorsAllowed: products[i].metadata.active_tutors,
               currency: activeSub.currency,
-              subscriptionPricePerMonth: activeSub.unit_amount / 100,
-              monthlyCostAfterDiscount: activeSub.unit_amount / 100,
+              subscriptionPricePerMonth: subscriptionPricePerMonth,//activeSub.unit_amount / 100,
+              monthlyCostAfterDiscount: monthlyCostAfterDiscount,//activeSub.unit_amount / 100,
               startDate: products[i].start_date * 1000,//new Date(products[i].start_date * 1000),
               autoRenewalDate: products[i].current_period_end * 1000,//new Date(products[i].current_period_end * 1000),
               expiryDate: products[i].current_period_end * 1000,//expiryDate,

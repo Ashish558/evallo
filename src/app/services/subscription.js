@@ -69,7 +69,15 @@ export const subscriptionApi = createApi({
                 body: body,
                 headers: getAuthHeader()
             })
-        })
+        }),
+        makeDefaultPayment: builder.mutation({
+            query: (body) => ({
+                url: `api/stripe/make-default`,
+                method: "POST",
+                body: body,
+                header: getAuthHeader(),
+            })
+        }),
     })
 })
 
@@ -83,4 +91,5 @@ export const {
     useChangeSubscriptionsMutation,
     useEnableAutoRenewalMutation,
     useRenewProductMutation,
+    useMakeDefaultPaymentMutation,
 } = subscriptionApi;

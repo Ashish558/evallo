@@ -12,6 +12,7 @@ function BankCardInfoWidget({
     cardNumberLastFourDigits,
     isDefault,
     expiresOn = "",
+    OnSetAsDefaultClicked,
 }) {
     const cardLogoToBeDisplayed = cardLogo ? cardLogo : visaIcon;
     const [cardEndingIn, SetCardEndingIn] = useState("");
@@ -45,7 +46,14 @@ function BankCardInfoWidget({
                         isDefault ? (
                             <div className="block font-[100] text-[#38C980] text-[12px]" >Default Payment Method</div>
                         ) : (
-                            <button className="block font-[100] text-[#24A3D9] text-[12px]" >Set As Default</button>
+                            <button 
+                                className="block font-[100] text-[#24A3D9] text-[12px]"
+                                onClick={() => {
+                                    if(OnSetAsDefaultClicked?.constructor?.name === "Function") {
+                                        OnSetAsDefaultClicked();
+                                    }
+                                }}
+                            >Set As Default</button>
                         )
                     }
                 </div>
