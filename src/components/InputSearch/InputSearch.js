@@ -30,6 +30,7 @@ export default function InputSearch({
   IconSearch,
   onOptionClose,
   dropDownIconStatus,
+  onBlur
 }) {
   const [optionsVisible, setOptionsVisible] = useState(false);
   const inputRef = useRef();
@@ -84,6 +85,7 @@ export default function InputSearch({
           type={type ? type : "text"}
           onChange={(e) => (onChange !== undefined ? onChange(e) : "")}
           onFocus={() => setOptionsVisible(true)}
+          onBlur={onBlur ? onBlur : () => {}}
           // onBlur={()=> setOptionsVisible(false)}
         />
         {IconSearch ? (
