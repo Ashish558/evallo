@@ -262,7 +262,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
               <div className="flex flex-1 px-3 justify-between py-auto h-[250px] items-center">
                 {associatedStudents.length > 0 && (
                   <>
-                    <div className="w-1/2">
+                    <div className="w-1/2 z-20">
                       <h2 className="mt-0 mb-8 text-[22px] font-semibold text-base-22-5  text-[#FFA28D]">
                         {/* {selectedStudent !== null && 'Joseph Brown'}  */}
                         {selectedStudent === null
@@ -284,7 +284,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                       </ul>
 
                       <Link
-                        className="p-2 mt-8 rounded-lg whitespace-nowrap text-sm px-4 bg-[#FFA28D] text-white"
+                        className="p-2 mt-8 rounded-lg whitespace-nowrap text-sm px-4 bg-[#FFA28D] text-white relative z-20"
                         to={
                           selectedStudent !== null &&
                           `/profile/student/${selectedStudent._id}`

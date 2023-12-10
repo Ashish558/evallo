@@ -26,9 +26,9 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
                 alt="arrow down"
               />
             </span>
-            <span className=" h-full flex flex-grow-1 flex-col justify-start items-start">
-              <p className="font-semibold text-[#24A3D9]">Industry</p>
-              <p className=" text-[#517CA8]">
+            <span className=" h-full flex flex-grow-1 flex-col justify-start items-start gap-[12px]">
+              <p className="font-semibold text-[#24A3D9] leading-none text-[17.5px]">Industry</p>
+              <p className=" text-[#517CA8] ">
                 {userDetail?.industry ? userDetail?.industry : " "}
               </p>
             </span>
@@ -41,8 +41,8 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
                 alt="arrow down"
               />
             </span>
-            <span className=" h-full flex flex-grow-1 flex-col justify-start items-start">
-              <p className="font-semibold text-[#24A3D9]">Referral code</p>
+            <span className=" h-full flex flex-grow-1 flex-col justify-start items-start gap-[12px]">
+              <p className="font-semibold text-[#24A3D9] leading-none text-[17.5px]">Referral code</p>
               <p className=" text-[#517CA8] ">
                 {userDetail?.subscriptionCode
                   ? userDetail?.subscriptionCode
@@ -58,8 +58,8 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
                 alt="arrow down"
               />
             </span>
-            <span className=" h-full flex flex-grow-1 flex-col justify-start items-start">
-              <p className="font-semibold text-[#24A3D9]">Time Zone</p>
+            <span className=" h-full flex flex-grow-1 flex-col justify-start items-start gap-[12px]">
+              <p className="font-semibold text-[#24A3D9] leading-none text-[17.5px]">Time Zone</p>
               <p className=" text-[#517CA8] ">
                 {userDetail?.timeZone ? userDetail?.timeZone : "-"}
               </p>
@@ -74,8 +74,8 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
                 alt="arrow down"
               />
             </span>
-            <span className=" h-full flex flex-grow-1 flex-col justify-start items-start">
-              <p className="font-semibold text-[#24A3D9]">Birth Year</p>
+            <span className=" h-full flex flex-grow-1 flex-col justify-start items-start gap-[12px]">
+              <p className="font-semibold text-[#24A3D9] leading-none text-[17.5px]">Birth Year</p>
               <p className=" text-[#517CA8] ">
                 {userDetail?.birthyear ? userDetail?.birthyear : " "}
               </p>
@@ -89,8 +89,8 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
                 alt="arrow down"
               />
             </span>
-            <span className=" h-full flex flex-grow-1 flex-col justify-start items-start">
-              <p className="font-semibold text-[#24A3D9]">Location</p>
+            <span className=" h-full flex flex-grow-1 flex-col justify-start items-start gap-[12px]">
+              <p className="font-semibold text-[#24A3D9] leading-none text-[17.5px]">Location</p>
               <p className=" text-[#517CA8] ">
                 {userDetail?.accomodations ? userDetail?.accomodations : "-"}
               </p>
