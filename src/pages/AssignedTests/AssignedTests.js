@@ -795,7 +795,10 @@ export default function AssignedTests() {
   const [testToDelete, setTestToDelete] = useState({});
 
   const { role: persona, id } = useSelector((state) => state.user);
-  const handleClose = () => setAssignTestModalActive(false);
+  const handleClose = () =>{ 
+    setAssignTestModalActive(false);
+    setStudentMultiple([])
+  }
   const { organization } = useSelector((state) => state.organization);
   const [filterData, setFilterData] = useState({
     studentName: "",
