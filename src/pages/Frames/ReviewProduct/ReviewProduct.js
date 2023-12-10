@@ -8,6 +8,7 @@ import ReviewExtensionWidget from "../../../components/ReviewExtensionWidget/Rev
 import { useEffect } from "react";
 import StripeCardDetailWidget from "../../../components/StripeCardDetailWidget/StripeCardDetailWidget";
 import { useApplyCouponQuery, useLazyApplyCouponQuery } from "../../../app/services/subscription";
+import { useSelector } from "react-redux";
 
 function ReviewProduct({
     className,
@@ -22,8 +23,12 @@ function ReviewProduct({
     stripeCustomerId,
     SetIsPaymentSuccessfull,
     updateSubscriptionMode = false,
+    renewProductMode = false,
 }) {
     // const [isCCRequired, SetIsCCRequired] = useState(false);
+    const {
+        paymentMethods,
+    } = useSelector(state => state.subscription);
     const [chosenSubscriptionPlan, SetChosenSubscriptionPlan] = useState(
         subscriptionsInfo ? subscriptionsInfo.find(item => item.planName === chosenSubscriptionPlanName) : null
     );
@@ -75,7 +80,12 @@ function ReviewProduct({
 
     useEffect(() => {
         if(!(SetIsCCRequired.constructor && SetIsCCRequired.constructor.name === "Function")) return;
-        if(updateSubscriptionMode) {
+        if(paymentMethods?.length > 0) {
+            SetIsCCRequired(false);
+            return;
+        }
+
+        if(updateSubscriptionMode || renewProductMode) {
             SetIsCCRequired(true);
             return;
         }
@@ -85,7 +95,7 @@ function ReviewProduct({
         }
 
         SetIsCCRequired(false);
-    }, [chosenSubscriptionPlan]);
+    }, [chosenSubscriptionPlan, paymentMethods]);
 
     async function OnApplyCouponForSubscriptionClicked(couponCode, chosenSubscriptionObjectFromAPI_Id){
         const response = await applyCoupon({

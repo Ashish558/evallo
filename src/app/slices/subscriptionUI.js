@@ -60,6 +60,8 @@ export const {
     openModalInUpdateMode,
     openSubscriptionPanelInUpdateMode,
     openExtensionsPanelInUpdateMode,
+    openSubscriptionPanelInRenewProductMode,
+    openExtensionPanelInRenewProductMode,
     closeModal,
 } = subscriptionUI.actions;
 export default subscriptionUI.reducer;

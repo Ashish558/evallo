@@ -29,6 +29,7 @@ import {
     openModalInUpdateMode as openSubscriptionAndExtensionModalInUpdateMode,
     openSubscriptionPanelInUpdateMode,
     openExtensionsPanelInUpdateMode,
+    openSubscriptionPanelInRenewProductMode,
 } from "../../../../app/slices/subscriptionUI";
 
 import {
@@ -670,6 +671,10 @@ function AccountOverviewWithSubscriptionInfo() {
         })
     }
 
+    function OnRenewSubscriptionClicked() {
+        dispatch(openSubscriptionPanelInRenewProductMode());
+    }
+
     return (
         <div className="flex w-full" >
 
@@ -1081,7 +1086,7 @@ function AccountOverviewWithSubscriptionInfo() {
                                                     className="font-[500] underline text-[#38C980] text-[15px]" 
                                                     onClick={
                                                         () => {
-                                                            // OnCancelSubscriptionClicked(activeSubscriptionId);
+                                                            OnRenewSubscriptionClicked();
                                                         }
                                                     } 
                                                 >Renew Subscription</button>

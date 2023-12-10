@@ -12,7 +12,7 @@ import ExtensionsChoosingModal from "../ExtensionsChoosingModal/ExtensionsChoosi
 import VerticalNumericSteppers from "../../../components/VerticalNumericSteppers/VerticalNumericSteppers";
 import { extensionsData } from "./data";
 import { comingSoonExtensionData } from "./DummyData/ComingSoonExtensionData";
-import { useAddSubscriptionsMutation, useChangeSubscriptionsMutation } from "../../../app/services/subscription";
+import { useAddSubscriptionsMutation, useChangeSubscriptionsMutation, useRenewProductMutation } from "../../../app/services/subscription";
 import { useLazyGetAuthQuery, useLazyGetOrganizationQuery, useLazyGetPersonalDetailQuery } from "../../../app/services/users";
 import { useUpdateOrganizationDetailMutation } from "../../../app/services/organization";
 import { useSelector } from "react-redux";
@@ -99,10 +99,13 @@ function SubscriptionAndExtensionModal({
     const [getOrgDetails, getOrgDetailsResp] = useLazyGetOrganizationQuery();
     const [updateOrgDetails, ] = useUpdateOrganizationDetailMutation();
     const [changeSubscriptions] = useChangeSubscriptionsMutation();
+    const [renewProduct] = useRenewProductMutation();
     const { organization } = useSelector((state) => state.organization);
     const {
         stripeCustomerId,
         subscriptionsInfoFromAPI,
+        activeSubscriptionInfo,
+        activeExtensionInfo,
     } = useSelector((state) => state.subscription);
 ;
     function OnExtensionsChanged() {
@@ -509,7 +512,7 @@ function SubscriptionAndExtensionModal({
     }, [frames]);
 
     useEffect(() => {
-        if(updateSubscriptionMode && openSubscriptionModal) {
+        if((updateSubscriptionMode || renewProductMode) && openSubscriptionModal) {
             setFrames({
                 orgDetails: false,
                 subscription: true,
@@ -519,7 +522,7 @@ function SubscriptionAndExtensionModal({
             return;
         }
 
-        if(updateSubscriptionMode && openExtensionsModal) {
+        if((updateSubscriptionMode || renewProductMode) && openExtensionsModal) {
             setFrames({
                 orgDetails: false,
                 subscription: false,
@@ -531,10 +534,10 @@ function SubscriptionAndExtensionModal({
     }, []);
 
     useEffect(() => {
-        if(updateSubscriptionMode) {
+        if(updateSubscriptionMode || renewProductMode) {
             SetRestrictedIndices([0]);
         }
-    },[updateSubscriptionMode]);
+    },[updateSubscriptionMode, renewProductMode]);
 
     const onBackToPreviousStepClicked = () => {
         setFrames(frames => {
@@ -613,6 +616,15 @@ function SubscriptionAndExtensionModal({
             sessionStorage.setItem(TEMPORARY_CHOSEN_SUBSCRIPTION_PLAN_NAME,
                                    chosenSubscriptionPlanName
             );
+        }
+
+        if(frames.subscription && renewProductMode) {
+            setFrames({
+                ...frames,
+                subscription: false,
+                review: true,
+            })
+            return;
         }
 
         if(frames.extensions) {
@@ -736,6 +748,49 @@ function SubscriptionAndExtensionModal({
 
     }
 
+    async function handleRenewProduct() {
+        if(!renewProductMode) return;
+        SetIsSubscriptionProcessGoingOn(true);
+        let subscriptionId = "";
+        let priceId = "";
+
+        if(openSubscriptionModal) {
+            subscriptionId = activeSubscriptionInfo?.subscriptionId
+            const sub = subscriptionsInfoFromAPI?.find(item => {
+                if(item?.product?.name === chosenSubscriptionPlanName) return true;
+                return false;
+            })
+            priceId = sub?.id;
+        }
+
+        const data = await renewProduct({
+            customer_id: stripeCustomerId,
+            price_id: priceId,
+            subscription_id: subscriptionId
+        })
+
+        SetIsSubscriptionProcessGoingOn(false);
+
+        if(data?.error) {
+            console.error("Error in renew subscription api");
+            console.error(data?.error);
+            alert(data?.error?.data?.message);
+            return;
+        }
+
+        console.log("renew subscription api response");
+        console.log(data);
+        sessionStorage.removeItem(TEMPORARY_CHOSEN_SUBSCRIPTION_PLAN_NAME);
+        sessionStorage.removeItem(TEMPORARY_CHOSEN_EXTENSIONS_NAME);
+        if(OnSubscriptionAddedSuccessfully && 
+        OnSubscriptionAddedSuccessfully.constructor && 
+        OnSubscriptionAddedSuccessfully.constructor.name === "Function"
+        ) {
+            OnSubscriptionAddedSuccessfully();
+        }
+
+    }
+
     function OnVerticalNumericSteppersStepClicked(index) {
         if(index === 0) {
             setFrames({
@@ -796,7 +851,7 @@ function SubscriptionAndExtensionModal({
             <div className={`ml-[90px] w-9/12`} >
                 <div className="flex mt-[30px] w-full" >
                     {
-                        frames.orgDetails || updateSubscriptionMode && frames.subscription ? (
+                        frames.orgDetails || (updateSubscriptionMode || renewProductMode) && frames.subscription ? (
                             <></>
                         ) : (
                             <button className="text-[#B3BDC7] text-[18.67px]" onClick={onBackToPreviousStepClicked} >
@@ -878,6 +933,7 @@ function SubscriptionAndExtensionModal({
                                 stripeCustomerId={stripeCustomerId}
                                 SetIsPaymentSuccessfull={SetIsPaymentSuccessfullyComplete}
                                 updateSubscriptionMode={updateSubscriptionMode}
+                                renewProductMode={renewProductMode}
                             />
                         ) : (<></>)
                     }
@@ -885,7 +941,7 @@ function SubscriptionAndExtensionModal({
 
                 <div className="flex mt-[20px] w-[1100px]" >
                     {
-                        updateSubscriptionMode ? (
+                        updateSubscriptionMode || renewProductMode ? (
                             <button 
                                 className="font-[600] text-[#B3BDC7] text-[14px]" 
                                 onClick={() => {
@@ -917,7 +973,11 @@ function SubscriptionAndExtensionModal({
                       onClick={
                         // (frames.review ? handleSub : onSaveAndNextClicked)
                         () => {
-                            (frames.review ? updateSubscriptionMode ? handleChangePlan() : handleSub() : onSaveAndNextClicked());
+                            (
+                                frames.review ? 
+                                updateSubscriptionMode ? handleChangePlan() : 
+                                renewProductMode ? handleRenewProduct() : handleSub() : onSaveAndNextClicked()
+                            );
                             if(OnCheckoutClicked.constructor && OnCheckoutClicked.constructor.name === "Function" && frames.review) {
                                 OnCheckoutClicked();
                             }
