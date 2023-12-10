@@ -29,36 +29,40 @@ export default function TutorSchedule({
   };
 
   return (
-    <div className="bg-[#F5F8FA] shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]">
-      <div className="flex mb-5 justify-between items-center rounded-[5.333px]   pt-[25px] pb-[18.75px] pl-[48px] pr-[7.9167vw]">
-        <div>
-          <p className="text-[#24A3D9] text-[1.0417vw] font-medium">
+    <div className="w-full bg-[#F5F8FA] shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]">
+      <div className="flex  rounded-[5.333px] pt-[25px] pb-[18.75px] pl-[48px] pr-[152.83px]">
+        <div className="w-[159px] h-[57.0012px] mr-[169.8px]">
+          <p className="text-[#24A3D9] font-medium text-[20.003px] ">
             {studentName}
           </p>
-          <p className=" text-[#26435F] text-[0.911vw] ">
+          <p className=" text-[#26435F] text-[17.05px] mt-[10px]">
             {service} | {specialization}
+       
           </p>
         </div>
-        <div className="w-[318px] h-[70px] flex flex-row justify-center items-center " >
-          <div className="w-[30px] h-full py-2.5">
+        <div className="w-[197.75px] h-[54px] flex flex-row justify-start items-center mr-[92px]" >
+          <div className=" h-full flex justify-start items-start mr-[16.25px]">
           
-              <img width="20px" src={calendar} alt="" />
+              <img width="25px" height={`25px`} src={calendar} alt="" />
            
           </div>
-          <div className="w-5/6 flex flex-col justify-start items-start">
-            <div className="text-[#517CA8] text-[0.911vw]">
+          <div className=" flex flex-col justify-start items-start">
+            <div className="text-[#517CA8] text-[17.503px]">
               {getFormattedDate(dateStr, dateFormat)}
+              date
             </div>
-            <div className=" font-bold text-[#517CA8] mt-1 text-[0.911vw]">
+            <div className=" font-bold text-[#517CA8] mt-[10px] text-[17.503px]">
+
               {startTime.time} {startTime.timeType} {"-"} {endTime.time}{" "}
               {endTime.timeType} ({timeZone})
+ 
             </div>
           </div>
         </div>
         <div>
           <div>
             <button
-              className="bg-[#FFA28D] text-[0.78125vw]   rounded-5 px-4 py-[15px] text-white w-[136px] h-[43.8px] flex justify-center items-center"
+              className="bg-[#FFA28D] text-[15.002px]   rounded-5 px-[16px] py-[15px] text-white w-[136px] h-[43.8px] flex justify-center items-center"
               onClick={() => handleLinkClick(session)}
             >
               Meeting Link
@@ -66,7 +70,7 @@ export default function TutorSchedule({
           </div>
           <div className="mt-[10px]">
             <button
-              className="bg-[#667085] text-[0.78125vw]   rounded-5 px-5 py-[15px]  text-white w-[136px] h-[43.8px] flex justify-center items-center"
+              className="bg-[#667085] text-[15.002px] rounded-5 pl-[25px] pr-[23px] py-[13.75px]  text-white w-[136px] h-[43.8px] flex justify-center items-center"
               onClick={handleEdit}
             >
               Edit Session
