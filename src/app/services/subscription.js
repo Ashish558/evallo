@@ -44,6 +44,14 @@ export const subscriptionApi = createApi({
                 method: "DELETE",
                 header: getAuthHeader(),
             })
+        }),
+        changeSubscriptions: builder.mutation({
+            query: (body) => ({
+                url: `api/stripe/changeplan`,
+                method: "POST",
+                body: body,
+                headers: getAuthHeader()
+            })
         })
     })
 })
@@ -55,4 +63,5 @@ export const {
     useApplyCouponQuery,
     useLazyApplyCouponQuery,
     useCancelSubscriptionMutation,
+    useChangeSubscriptionsMutation,
 } = subscriptionApi;
