@@ -1123,7 +1123,7 @@ export default function StudentReport() {
           {/* {console.log(testDetails)} */}
 
           <div className="mt-[53px] flex justify-between items-end">
-            <div>
+            <div className="border-b-[1.25px] border-[#D3D3D3]">
               {subjects.map((item, idx) => {
                 return (
                   <>
@@ -1141,7 +1141,7 @@ export default function StudentReport() {
               })}
             </div>
           </div>
-          <hr className="border-t-[1.25px] border-[#D3D3D3] w-[461px]" />
+          {/* <hr className="border-t-[1.25px] border-[#D3D3D3] w-[461px]" /> */}
           <div className="mt-[32.5px] flex ">
 
             {/* concepts */}

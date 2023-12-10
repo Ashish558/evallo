@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { getFormattedDate, getMonthName } from "../../utils/utils";
 import DateIcon from "../../assets/icons/solar_calendar-date-outline.svg"
 
-const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, className, manualHide, inputContainerClassName, iconRightClass }) => {
+const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, className, manualHide, inputContainerClassName, iconRightClass,icon }) => {
 
   const [dateFormat, setDateFormat] = useState("dd/mm/yy")
   const { organization: organization2 } = useSelector((state) => state.organization)
@@ -25,11 +25,14 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
     sDate: "",
     eDate: "",
   });
+  const [redDate,setRedDate] = useState(null);
   const handleLocalDate = (e, value) => {
+    setRedDate(e);
     setSelectedDate({
       ...selectDate,
       [value]: e,
     });
+
   };
   const handleStartDate = () => {
     const requiredDate = getModifiedDate(selectDate);
@@ -161,7 +164,7 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
 
       <InputSelect
         placeholder="Select"
-        valueClassName={`${removeUnderline ? "" : "font-semibold text-[15px]"} ${allorg?"!text-gray-500 ":"text-[#FFA28D]"} cursor-pointer items-center`}
+        valueClassName={`${removeUnderline ? "" : "font-semibold text-[15px] underline"} ${allorg?"!text-gray-500 ":"text-[#FFA28D]"} cursor-pointer items-center`}
         parentClassName="border-none text-xs text-[#26435F] w-fit relative z-[500] text-[17.5px] items-center"
         labelClassname="text-sm text-[17.5px]"
         inputContainerClassName={`border-none text-[17.5px] whitespace-nowrap font-normal ${allorg?"":"text-[#FFA28D]"} text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]} `}
@@ -169,7 +172,7 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
         value={formattedDateRange}
         optionListClassName="text-[#517CA8] underline underline-offset-2"
         optionClassName={`${optionClassName} relative text-[17.5px]`}
-        optionContainerClassName={`${allorg?"translate-x-[30px]":""} !rounded-5  border-[#FFA28D] border-[1px] py-2`}
+        optionContainerClassName={`${allorg?"translate-x-[30px]":""} !rounded-5  border-[#FFA28D] border-[1px] py-2 scrollbar-content`}
         optionPadding="!py-1"
         optionData={[
           { name: "Lifetime", days: 1000 },
@@ -185,7 +188,7 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
         optionType={"object"}
         setSelectedDate={setSelectedDate}
         onChange={handleQuickOptions}
-        IconRight={allorg?DateIcon:downR}
+        IconRight={allorg?(icon===null||icon===undefined)?DateIcon:icon:downR}
         IconRightClass={`${allorg?iconRightClass??"w-[50px] h-[20px] ml-[-10px]":""}`}
         DateSelect={
           !manualHide &&
