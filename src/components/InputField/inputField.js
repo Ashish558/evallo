@@ -171,7 +171,7 @@ export default function InputField({
           onBlur={onBlur}
         />
         {IconLeft && !hideTooltip && (
-          <div className="group w-fit absolute top-50 end-0 me-[10px]">
+          <div className="group w-fit absolute top-50 right-[12.5px] end-0 me-[10px]">
             <img
               src={IconLeft}
               alt="icon-left"
