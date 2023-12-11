@@ -68,22 +68,22 @@ export const TestItem = ({
       
       <div className='max-w-[186.5px] col-span-1'>
         <h2 className='text-[18px] font-medium text-[#517CA8]'>{testName}</h2>
-        <div className='flex gap-[12px]'>
-          <h5 className='text-xs opacity-60 font-light text-[#517CA8]'>Due date:</h5>
-          <h6 className='text-xs opacity-60 font-light text-[#517CA8]'>{getFormattedDate(dueDate, dateFormat)}</h6>
+        <div className='flex gap-[5.5px]'>
+          <h5 className='text-[15px] font-light text-[#517CA8]'>Due date:</h5>
+          <h6 className='text-[15px] leading-[19px] font-light text-[#517CA8]'>{getFormattedDate(dueDate, dateFormat)}</h6>
         </div>
       </div>
         <div className='flex gap-[19.5px] col-span-1 justify-end items-center'>
-          <div className='flex items-center'>
-            <div className=' mr-3  p-1'>
+          {/* <div className='flex items-center'> */}
+            {/* <div className=' mr-3  p-1'> */}
              {testype!=="DSAT"&& <img
                 className='cursor-pointer h-[35px]'
                 src={Download}
                 onClick={() => window.open(`${awsLink}${pdfLink}`)}
                 alt='download'
               />}
-            </div>
-          </div>
+            {/* </div> */}
+          {/* </div> */}
           {
   isLoadingPage ? (
     <LoaderPage />

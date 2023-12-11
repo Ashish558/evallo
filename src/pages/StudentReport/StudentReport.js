@@ -144,10 +144,13 @@ export default function StudentReport() {
   const [scoreStr, setScoreStr] = useState("");
   const getSubjectScore = (response, selectedSubject) => {
     const tot = scaleData?.answer?.subjects[selectedSubject?.idx].totalQuestion;
-    const maxS =
+    let maxS = 0
+    if(scaleData?.scale?.score[tot - 1]){
+       maxS =
       tot > 0
-        ? scaleData?.scale?.score[tot - 1][selectedSubject?.scoreScale]
-        : 0;
+      ? scaleData?.scale?.score[tot - 1][selectedSubject?.scoreScale]
+      : 0;
+    }
     return maxS;
   };
 
@@ -1011,89 +1014,97 @@ export default function StudentReport() {
 
               {/*  details */}
               <div className="flex gap-x-20">
-                <div className="grid grid-cols-2 grid-rows-3  gap-y-[17.5px] gap-x-[50px] text-[#517CA8] text-[20px]">
-                  <div>
-                    <p className="inline-block w-[160px] font-bold text-[#26435F]">
+                {/* <div className="grid grid-cols-2 grid-rows-3  gap-y-[17.5px] gap-x-[50px] text-[#517CA8] text-[20px]"> */}
+                  <div className="flex flex-col gap-y-[17.5px]">
+                  <div className=" text-[#26435F] text-[20px] leading-[25px] w-full">
+                    <p className="inline-block w-[165px] font-bold text-[#26435F] text-[20px] leading-[25px]">
                       {" "}
                       Student Name
                     </p>
-                    <span className="inline-block mr-10">:</span>
-                    <p className="inline-block font-normal text-[#26435F]" style={{ opacity: 0.8 }}>
+                    <span className="inline-block mr-[1.5px] opacity-60">:</span>
+                    <p className="inline-block font-normal text-[#26435F] ml-[46.25px]" style={{ opacity: 0.8 }}>
                       {" "}
                       {testDetails.name}{" "}
                     </p>
                   </div>
-                  <div>
-                    <p className="inline-block w-[160px] text-[#26435F] text-[20px] font-bold">
-                      {" "}
-                      Due on{" "}
-                    </p>
-                    <span className="inline-block mr-10">:</span>
-                    <p className="inline-block text-[20px] font-normal text-[#26435F]" style={{ opacity: 0.8 }}>
-                      {" "}
-                      {testDetails.startedOn.split(" ")[0]}{" "}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="inline-block w-[160px] text-[#26435F] text-[20px] font-bold">
+                  <div className="text-[20px] leading-[25px] w-full text-[#26435F]">
+                    <p className="inline-block w-[165px] text-[#26435F] text-[20px] font-bold">
                       {" "}
                       Date Assigned{" "}
                     </p>
-                    <span className="inline-block mr-10">:</span>
-                    <p className="inline-block text-[20px] font-normal text-[#26435F]" style={{ opacity: 0.8 }}>
+                    <span className="inline-block mr-[1.5px] opacity-60">:</span>
+                    <p className="inline-block text-[20px] font-normal text-[#26435F] ml-[46.25px]" style={{ opacity: 0.8 }}>
                       {" "}
                       {assignDate}{" "}
-                      <span className="text-[#24A3D9] font-light opacity-100 text-[20px]">
+                      <span className="text-[#24A3D9] font-light opacity-100 text-[17.5px] ml-[11px]">
                         {assignTime} {assignFormat}{" "}
                         {organization?.settings?.timeZone}
                       </span>
                     </p>
                   </div>
-                  <div>
-                    <p className="inline-block w-[160px] text-[#26435F] text-[20px] font-bold">
+                  <div className="text-[20px] leading-[25px] w-full text-[#26435F]">
+                    <p className="inline-block w-[165px] text-[#26435F] text-[20px] font-bold">
+                      {" "}
+                      Duration{" "}
+                    </p>
+                    <span className="inline-block mr-[1.5px] opacity-60">:</span>
+                    <p className="inline-block text-[20px] font-normal text-[#26435F] ml-[46.25px]" style={{ opacity: 0.8 }}>
+                      {" "}
+                      {testDetails.duration}{" "}
+                    </p>
+                  </div>
+
+                  </div>
+
+
+                  <div className="flex flex-col  gap-y-[17.5px]">
+                  <div className=" text-[#26435F] text-[20px] leading-[25px] w-full">
+                    <p className="inline-block w-[165px] text-[#26435F] text-[20px] font-bold">
+                      {" "}
+                      Due on{" "}
+                    </p>
+                    <span className="inline-block mr-[1.5px] opacity-60">:</span>
+                    <p className="inline-block text-[20px] font-normal text-[#26435F] ml-[46.25px]" style={{ opacity: 0.8 }}>
+                      {" "}
+                      {testDetails.startedOn.split(" ")[0]}{" "}
+                    </p>
+                  </div>
+                  <div className=" text-[#26435F] text-[20px] leading-[25px] w-full">
+                    <p className="inline-block w-[165px] text-[#26435F] text-[20px] font-bold">
+                      {" "}
+                      Started on{" "}
+                    </p>
+                    <span className="inline-block mr-[1.5px] opacity-60">:</span>
+                    <p className="inline-block text-[20px] font-normal text-[#26435F] ml-[46.25px]" style={{ opacity: 0.8 }}>
+                      {" "}
+                      {startDate}{" "}
+                      <span className="text-[#24A3D9] font-light text-[17.5px] opacity-100 ml-[11px]">
+                        {startTime} {startFormat} {organization?.settings?.timeZone}
+                      </span>
+                    </p>
+                  </div>
+                  <div className=" text-[#26435F] text-[20px] leading-[25px] w-full">
+
+
+                    <p className="inline-block w-[165px] text-[#26435F] text-[20px] font-bold">
                       {" "}
                       Completed on{" "}
                     </p>
-                    <span className="inline-block mr-10">:</span>
-                    <p className="inline-block text-[20px] font-normal text-[#26435F]" style={{ opacity: 0.8 }}>
+                    <span className="inline-block mr-[1.5px] opacity-60">:</span>
+                    <p className="inline-block text-[20px] font-normal text-[#26435F] ml-[46.25px]" style={{ opacity: 0.8 }}>
                       {" "}
                       {completeDate ? completeDate : "-"}{" "}
                       {completeDate && (
-                        <span className="text-[#24A3D9] font-light text-[20px] opacity-100">
+                        <span className="text-[#24A3D9] font-light text-[17.5px] opacity-100 ml-[11px]">
                           {completeTime} {completeFormat}{" "}
                           {organization?.settings?.timeZone}
                         </span>
                       )}
                     </p>
                   </div>
-                  <div>
-                    <p className="inline-block w-[160px] text-[#26435F] text-[20px] font-bold">
-                      {" "}
-                      Duration{" "}
-                    </p>
-                    <span className="inline-block mr-10">:</span>
-                    <p className="inline-block text-[20px] font-normal text-[#26435F]" style={{ opacity: 0.8 }}>
-                      {" "}
-                      {testDetails.duration}{" "}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="inline-block w-[160px] text-[#26435F] text-[20px] font-bold">
-                      {" "}
-                      Started on{" "}
-                    </p>
-                    <span className="inline-block mr-10">:</span>
-                    <p className="inline-block text-[20px] font-normal text-[#26435F]" style={{ opacity: 0.8 }}>
-                      {" "}
-                      {startDate}{" "}
-                      <span className="text-[#24A3D9] font-light text-[20px]">
-                        {startTime} {startFormat} {organization?.settings?.timeZone}
-                      </span>
-                    </p>
-                  </div>
+                  {/* </div> */}
                 </div>
-                {persona === "student" && (
+                {/* {persona === "student" && (
                   <div className="  text-[20px] mt-16 text-[#517CA8]">
                     <p className="inline-block  font-medium">
                       {" "}
@@ -1102,7 +1113,7 @@ export default function StudentReport() {
                     <span className="inline-block mr-10 my-auto">:</span>
                     <p className="  !font-light">{testDetails.instruction} </p>
                   </div>
-                )}
+                )} */}
               </div>
 
             </div>
@@ -1131,10 +1142,11 @@ export default function StudentReport() {
                       item={item}
                       children={item.name}
                       onClick={() => handleChange(item)}
-                      className={`mr-[64px] ${item.selected
-                        ? "border-b-4 rounded border-[#FFA28D] text-[#FFA28D]"
+                      className={`mr-[64px] leading-[50px] last:mr-0 ${item.selected
+                        ? "text-[#FFA28D]"
                         : ""
                         }`}
+                        absoluteElemClass={`${item.selected?"bg-[#FFA28D]":"bg-transparent"}`}
                     />
                   </>
                 );
@@ -1292,6 +1304,7 @@ export default function StudentReport() {
 
           <div className="mt-[62px] w-[1600px] ">
             <Table
+            tableClass="table-auto !mt-0"
               widthFullTable={true}
               noArrow={true}
               dataFor={
@@ -1308,7 +1321,7 @@ export default function StudentReport() {
 
 
           {/* time taken charts */}
-          <p className="text-primary-dark font-bold text-[20px] mt-[83.75px]">
+          <p className="text-primary-dark font-bold text-[20px] leading-6 mt-[62.5px]">
             Time Taken
           </p>
           <div className="bg-white mt-[7.25px] rounded-5 h-[589px] w-full relative flex justify-center items-center"> 
@@ -1328,16 +1341,22 @@ export default function StudentReport() {
 
 
           {/* conceptual accuracy */}
-          <p className="text-primary-dark font-bold text-[20px] mt-[62.25px]">
+          <p className="text-primary-dark font-bold text-[20px] leading-6 mt-[62.25px]">
             Conceptual Accuracy
           </p>
-        <div className="bg-white mt-[7.25px] rounded-5 h-[589px] py-[81.25px] ps-[28px]">
+        <div className="bg-white mt-[7.25px] rounded-5 h-[589px] py-[81.25px] ps-[28px] relative w-full">
             <BarGraph
               series={[accuracySeries]}
               options={accuracyGraphOptions}
               height="475px"
               width={"1452px"}
             />
+            <p className="text-[#24A3D9] text-xl font-medium absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-[44px]">
+            Concepts
+            </p>
+            <p className="text-[#24A3D9] text-xl font-medium absolute top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2 -rotate-90 ml-[51.76px]">
+            Number of incorrect attempts
+            </p>
           </div> 
         </div>
       </div>

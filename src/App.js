@@ -30,7 +30,7 @@ function App() {
     if (id === undefined) return;
     fetchOrganization(id).then((res) => {
       if (res.error) {
-        console.log('error fetching organization',res.error);
+        console.log('error fetching organization', res.error);
         return;
       }
       dispatch(updateOrganization(res.data.organisation));
@@ -41,9 +41,9 @@ function App() {
   useEffect(() => {
     setLoading(true);
 
-    if (sessionStorage.getItem("token")||localStorage.getItem("evalloToken")) {
+    if (sessionStorage.getItem("token") || localStorage.getItem("evalloToken")) {
       fetchPersonalDetails().then((res) => {
-        console.log("personal details",res)
+        console.log("personal details", res)
         if (res.error) {
           return;
         }
@@ -56,6 +56,7 @@ function App() {
           role,
           email,
           phone,
+          about,
           associatedOrg,
         } = res.data.data.user;
         dispatch(updateAwsLink(res.data.data.baseLink));
@@ -80,7 +81,8 @@ function App() {
             email,
             phone,
             associatedOrg,
-            dateFormat: dateFormat ? dateFormat : 'dd/mm/yy'
+            about: about ? about : '',
+            dateFormat: dateFormat ? dateFormat : 'dd/mm/yy',
           })
         );
         getOrganizationDetail(associatedOrg);
@@ -107,7 +109,7 @@ function App() {
 
   return (
     <>
-    {/* <Layout2> */}
+      {/* <Layout2> */}
       <AppRoutes />
       {/* </Layout2> */}
     </>

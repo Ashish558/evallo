@@ -23,7 +23,7 @@ export function TableHeaderNew({
     <div className={``}>{header.text}</div>
   </th>):
   dataFor==="allTests"?(<th className={`pt-[26.25px] pb-[24.25px] text-white text-[17.5px] leading-[25px] font-medium ${header.text==="Assignment Name"?"text-left pl-[65.6px]":header.text==="Total Assignments"?"text-center":" text-left"}`}>
-  <div onClick={() => header.onCick && header.onCick()} className={`flex items-center gap-0 ${header.text==="Total Assignments"&&"justify-center"}`}><p className={`${header.text==="Type"? 'pl-11':''}`}>{header.text}</p>{
+  <div onClick={() => header.onCick && header.onCick()} className={`flex items-center gap-0 ${header.text==="Total Assignments"&&"justify-center"}`}><p className={`${header.text==="Type"? 'pl-11':''} ${header.text==="Student Name"?'pl-10':''} `}>{header.text}</p>{
     header.noArrow?"":
      header.willDisplayDownArrow=== null||header.text.lenght===0?"":
                 header.willDisplayDownArrow ||
@@ -48,7 +48,7 @@ ${header.text==="Actively Using"&&"w-[168.5px] pr-[11.5px] text-left"} flex gap-
   </th>):
   (
     <th
-      className={`px-6 py-[20px] font-normal whitespace-nowrap text-white text-center cursor-pointer ${
+      className={`px-6 py-[20px] font-normal whitespace-nowrap text-white text-center cursor-pointer first:rounded-l-[5.333px] last:rounded-r-[5.333px] ${
         header.className ? header.className : ""
       } ${flag ? styles["no-arrow"] : ""} bg-[#26435F] ${header.text==="% of Business"?" rounded-r-[5.333px]":""}`}
     >
@@ -94,7 +94,14 @@ ${header.text==="Actively Using"&&"w-[168.5px] pr-[11.5px] text-left"} flex gap-
           <div onClick={() => header.onCick && header.onCick()}>
             <span className="text-center text-[17.5px]">{header.text}</span>
           </div>
-        ) : (
+        ) :
+        header.text==="Assignment Name"&& dataFor==="assignedTestsStudents"?(
+          <div className="text-left text-[17.5px] font-medium ml-[39px]">
+            {header.text}
+          </div>
+        ):
+        
+        (
           <div
             className={` text-[17.5px] ${
               header.text === "Score" ? "text-center" : "text-left"

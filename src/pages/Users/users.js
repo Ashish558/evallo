@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as XLSX from "xlsx";
 import { CSVLink, CSVDownload } from "react-csv";
 import DeleteIcon2 from "../../assets/YIcons/Vectordel.svg";
@@ -109,7 +109,7 @@ export default function Users() {
   const [bulkUpload, setBulkUpload] = useState(false);
   const [xlsFile, setXlsFile] = useState();
   const [inviteUsers, setInviteUsers] = useState(false);
-
+  const csvLinkRef = useRef()
   useEffect(() => {
     setValidData(
       isEmail(modalData.email) &&
@@ -1134,47 +1134,57 @@ export default function Users() {
     link.click();
     document.body.removeChild(link);
   };
-  const handleBulkExport = async () => {
+
+  const handleBulkExportUsers = () => {
+    getAllUsers()
+      .then((res) => {
+        let result = res?.data?.data?.user;
+        console.log('exprting user..', result);
+        if (result) {
+          let arr = [];
+          result?.forEach((it) => {
+            let obj = {};
+            obj.name = it.firstName + " " + it.lastName;
+            obj._id = it._id;
+            obj.userType = it.role;
+            obj.block = it.block;
+            obj.createdAt = it.createdAt;
+            obj.specialization = it.specialization;
+            obj.tutorStatus = it.userStatus;
+            obj.leadStatus = "";
+            obj.assignedTutor = it.assiginedTutors;
+            obj.phone = it.phone;
+            obj.email = it.email;
+            arr.push(obj);
+          });
+          setCsvData(arr);
+          setCsvLoad(false)
+        }
+        setsuccessFetched(true);
+        setCsvLoad(false);
+      })
+      .catch((err) => {
+        console.log('err', err);
+        setCsvLoad(false);
+      });
+  }
+  
+  useEffect(() => {
+    handleBulkExportUsers()
+  }, [])
+
+  const handleBulkExport = async (event, done) => {
     getExportData().then((res) => {
-      console.log('exprting..');
       const csvSheetData = [
         { data: [{ name: true }], sheetName: 'parents' },
         { data: [{ name: true }], sheetName: 'students' },
         { data: [{ name: true }], sheetName: 'tutors' },
       ];
-      generateExcel(csvSheetData)
+      // generateExcel(csvSheetData)
     })
-    setCsvLoad(true);
     if (selectedId?.length === 0) {
-      getAllUsers()
-        .then((res) => {
-          let result = res?.data?.data?.user;
-          console.log('exprting user..', result);
-          if (result) {
-            let arr = [];
-            result?.forEach((it) => {
-              let obj = {};
-              obj.name = it.firstName + " " + it.lastName;
-              obj._id = it._id;
-              obj.userType = it.role;
-              obj.block = it.block;
-              obj.createdAt = it.createdAt;
-              obj.specialization = it.specialization;
-              obj.tutorStatus = it.userStatus;
-              obj.leadStatus = "";
-              obj.assignedTutor = it.assiginedTutors;
-              obj.phone = it.phone;
-              obj.email = it.email;
-              arr.push(obj);
-            });
-            setCsvData(arr);
-          }
-          setsuccessFetched(true);
-          setCsvLoad(false);
-        })
-        .catch((err) => {
-          setCsvLoad(false);
-        });
+      setCsvLoad(true);
+      handleBulkExportUsers()
     } else {
       setCsvData(selectedId);
       setsuccessFetched(true);
@@ -1406,6 +1416,9 @@ export default function Users() {
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
+
+
+
   //console.log("users",{selectedId,bulkEdits})
   return (
     <div className="px-[120px] mx-auto min-h-screen">
@@ -1427,26 +1440,23 @@ export default function Users() {
           <div className="flex mb-[46px]">
             <button className="bg-[#517CA8] w-[158px] text-[15px] justify-center flex  items-center text-white  rounded-lg mr-[25px]">
               {csvLoad ? <LoaderNew /> : ""}
-              {!csvLoad && !successFetched ? (
+              {/* {!csvLoad && !successFetched ? (
                 <p onClick={handleBulkExport}>Export Data</p>
               ) : (
                 ""
-              )}
+              )}  */}
 
-              {csvData.length > 0 && successFetched && (
-                <CSVLink
-                  filename={"Evallo_CRM_Data.csv"}
-                  data={csvData}
-                  headers={csvHeaders}
-                  onClick={(event, done) => {
-                    setCsvData([]);
-                    setsuccessFetched(false);
-                  }}
-                >
-                  {" "}
-                  Download File{" "}
-                </CSVLink>
-              )}
+              {/* {csvData.length > 0 && successFetched && ( */}
+              <CSVLink
+                filename={"Evallo_CRM_Data.csv"}
+                data={csvData}
+                asyncOnClick={true}
+                headers={csvHeaders}
+                onClick={handleBulkExport}
+              >
+                Export Data{" "}
+              </CSVLink>
+              {/* )} */}
 
               {!csvLoad && (
                 <img src={ExportIcon} className="ml-3" alt="ExportIcon" />
@@ -1878,13 +1888,11 @@ export default function Users() {
                   <img
                     src={ques}
                     onMouseEnter={(e) => {
-                      console.log("mouse enter");
                       e.preventDefault();
                       setTooltip(true);
                     }}
                     onMouseOut={(e) => {
                       e.preventDefault();
-                      console.log("mouse leave");
                       setTooltip(false);
                     }}
                     className="inline-block"

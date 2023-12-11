@@ -54,14 +54,14 @@ export function TableHeader({
   :
   (
     <th
-      className={`${
+      className={`first:rounded-l-[5.333px] last:rounded-r-[5.333px] ${
         headerWidth ? headerWidth : "px-6"
       }  py-[15px] font-medium whitespace-nowrap  ${
         header === "Full Name" || header === "Name" || header === "Student Name"
           ? "text-left pl-7 "
           : ""
       } ${dataFor === "allUsers" ? "text-sm" : "text-sm"} ${
-        flag ? styles["no-arrow"] : ""
+        flag ? styles["no-arrow"] + " py-[21.25px]" : ""
       }
       ${dataFor==="allOrgs"&&"rounded-[5.333px,0,0,5.333px]"}
        `}

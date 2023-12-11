@@ -744,9 +744,11 @@ export default function ParentEditables({
         <Modal
           fetchDetails={fetchDetails}
           key={key}
+          topClass="!absolute !h-[120vh]"
+          modalSize={currentField.name === "frame1"?"!w-[1106px] !max-w-[1106px]":""}
           classname={`${
             forCss.includes(currentField.name)
-              ? "max-w-[850px] md:pb-5 mx-auto overflow-visible pb-5 !px-[20px]":
+              ? "max-w-[850px] md:pb-5 mx-auto overflow-visible pb-5 !px-[35px]":
               currentField.name==="frame1"
               ? "max-w-[980px] md:pb-5 mx-auto overflow-visible pb-5 !px-10"
               : "max-w-fit md:pb-5 mx-auto overflow-visible pb-5 !px-[20px]"
@@ -804,17 +806,17 @@ export default function ParentEditables({
                               cameraClass=" translate-y-3"
                               imageClassName=" border-[4px] border-white"
                               className=""
-                              imgSizeClass="!w-[80px] !h-[80px] "
+                              imgSizeClass="!w-[93.456px] !h-[93.456px] "
                               handleChange={handleProfilePhotoChange}
                               editable={editable}
                             />
                           </div>
                           <InputField
                             label="First name"
-                            labelClassname="text-[#26435F] !font-semibold "
+                            labelClassname="text-[#26435F] !font-semibold text-[18.6px] mb-[5px]"
                             placeholder="First Name"
                             inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
-                            inputClassName="bg-transparent text-xs   "
+                            inputClassName="bg-transparent text-[16px] text-[#667085]  "
                             parentClassName="flex-1 "
                             type="text"
                             value={currentToEdit.firstName}
@@ -828,10 +830,10 @@ export default function ParentEditables({
 
                           <InputField
                             label="Last name"
-                            labelClassname="text-[#26435F] !font-semibold"
+                            labelClassname="text-[#26435F] !font-semibold text-[18.6px] mb-[5px]"
                             placeholder="Last Name"
                             inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
-                            inputClassName="bg-transparent text-xs   "
+                            inputClassName="bg-transparent text-[16px]  text-[#667085]"
                             parentClassName="flex-1 "
                             type="text"
                             value={currentToEdit.lastName}
@@ -846,9 +848,9 @@ export default function ParentEditables({
                         <div className="flex !text-sm gap-4 items-center ">
                           <InputFieldDropdown
                             placeholder="Phone"
-                            labelClassname="text-[#26435F] !font-semibold"
+                            labelClassname="text-[#26435F] !font-semibold text-[18.6px] mb-[5px]"
                             inputContainerClassName="flex gap-1 pt-0 pb-0 px-0 !py-0 !px-0  border-white"
-                            inputClassName=" text-[#667085] text-sm pt-3 pb-3 px-5 !py-[13px] bg-primary-50  text-400 rounded-[5px] "
+                            inputClassName=" text-[#667085] text-[16px] pt-3 pb-3 px-5 !py-[13px] bg-primary-50  text-400 rounded-[5px] "
                             codeClassName="!px-4 w-[70px] !gap-4 text-[#667085] text-sm !py-[22.5px]  bg-primary-50  text-400 rounded-[5px] "
                             parentClassName="flex-1 "
                             type="number"
@@ -871,10 +873,10 @@ export default function ParentEditables({
                           <InputField
                             IconLeft={caution}
                             label="Email"
-                            labelClassname="text-[#26435F] font-semibold"
+                            labelClassname="text-[#26435F] font-semibold text-[18.6px] mb-[5px]"
                             placeholder="Email"
                             inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
-                            inputClassName="bg-transparent !w-[200px] text-xs   "
+                            inputClassName="bg-transparent !w-[200px] text-[16px]  text-[#667085] "
                             parentClassName="flex-1 "
                             type="text"
                             value={currentToEdit.email}
@@ -904,11 +906,11 @@ export default function ParentEditables({
                           />
                           <InputField
                             label="Alternative Email"
-                            labelClassname="text-[#26435F] font-semibold"
+                            labelClassname="text-[#26435F] font-semibold text-[18.6px] mb-[5px]"
                             placeholder="Alternative Email"
                             inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
-                            inputClassName="bg-transparent !w-[200px] text-xs   "
-                            parentClassName="flex-1 "
+                            inputClassName="bg-transparent !w-[200px] text-[16px]  text-[#667085] "
+                            parentClassName="flex-1"
                             type="text"
                             value={currentToEdit.alternateEmail}
                             onChange={(e) =>
@@ -924,12 +926,12 @@ export default function ParentEditables({
 
                     <div>
                       <div className="flex-1 mt-5">
-                        <p className=" text-base-17-5 text-[#26435F] font-semibold">
+                        <p className=" text-[18.6px] mb-[5px] text-[#26435F] font-semibold">
                           About
                         </p>
                         <textarea
                           rows="3"
-                          className="mt-1 block w-full h-[100px] bg-[#F6F6F6] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm   border border-[0.917px_solid_#D0D5DD] rounded-[6px]
+                          className="mt-1 block w-full h-[100px] bg-[#F6F6F6] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-[16px]   border border-[0.917px_solid_#D0D5DD] rounded-[6px] text-[#667085]
                 "
                           placeholder="The parent can add their bio in this space. Here are a few ideas to get started:
 Likes, dislikes, personality, professional details, hobbies, favorite sports, activities, family details, habits, favorite movies and TV shows, music taste, strengths and weaknesses."
@@ -998,16 +1000,16 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
 
                 {currentField.name === "frame1" && (
                   <>
-                    <div className="flex flex-col gap-5 !w-[calc(1000*0.0522vw)] min-w-[550px]">
+                    <div className="flex flex-col gap-5 !w-[100%]">
                       <div className="flex  justify-between items-center">
                         <InputField
                           label="D.O.B"
                           biggerText={true}
                           labelClassname="text-[#26435F]  !font-medium"
                           placeholder=""
-                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[11vw] h-[54px]"
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px]  h-[54px]"
                           inputClassName="bg-transparent text-base  "
-                          parentClassName=""
+                          parentClassName="!w-[20%]"
                           type="date"
                           value={currentToEdit.dob}
                           onChange={(e) =>
@@ -1023,9 +1025,9 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           labelClassname="text-[#26435F] text-lg !font-medium"
                           label="Time zone"
                           placeholder="Select"
-                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px]  h-[54px]"
                           inputClassName="bg-transparent  "
-                          parentClassName=""
+                          parentClassName="!w-[35%]"
                           type="text"
                           value={currentToEdit.timeZone}
                           onChange={(val) =>
@@ -1044,9 +1046,9 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           labelClassname="text-[#26435F]  !font-medium"
                           label="Industry"
                           placeholder="Select"
-                          inputContainerClassName="text-base placeholder:text-[#667085]  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                          inputContainerClassName="text-base placeholder:text-[#667085]  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px]  h-[54px]"
                           inputClassName="bg-transparent placeholder:text-[#667085]"
-                          parentClassName=""
+                          parentClassName="!w-[35%]"
                           optionData={[
                             "IT",
                             "Finance",
@@ -1071,9 +1073,9 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           labelClassname="text-[#26435F] text-lg !font-medium"
                           label="Country"
                           placeholder="Select"
-                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px]  h-[54px]"
                           inputClassName="bg-transparent  "
-                          parentClassName=""
+                          parentClassName="!w-[35%]"
                           type="text"
                           optionData={country}
                           optionType={"object"}
@@ -1093,9 +1095,9 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           label="Street Address"
                           labelClassname="text-[#26435F]  !font-medium"
                           placeholder="Text"
-                          inputContainerClassName="text-base placeholder:text-[#667085] bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[31.40625vw] h-[54px]"
+                          inputContainerClassName="text-base placeholder:text-[#667085] bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] h-[54px]"
                           inputClassName="bg-transparent placeholder:text-[#667085] "
-                          parentClassName=""
+                          parentClassName="!w-[60%]"
                           type="text"
                           value={currentToEdit.address}
                           onChange={(e) =>
@@ -1111,9 +1113,9 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           labelClassname="text-[#26435F] text-lg !font-medium"
                           label="State"
                           placeholder="Select"
-                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px]  h-[54px]"
                           inputClassName="bg-transparent  "
-                          parentClassName=""
+                          parentClassName="!w-[35%]"
                           type="text"
                           optionData={states}
                           optionType={"object"}
@@ -1125,15 +1127,14 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           }}
                           value={currentToEdit.state}
                         />
-
-                        <InputField
+                        <InputSelectNew
                           biggerText={true}
                           labelClassname="text-[#26435F]  !font-medium"
                           label="City"
                           placeholder="Select"
-                          inputContainerClassName="text-base placeholder:text-[#667085]  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                          inputContainerClassName="text-base placeholder:text-[#667085]  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px]  h-[54px]"
                           inputClassName="bg-transparent placeholder:text-[#667085]"
-                          parentClassName=""
+                          parentClassName="!w-[35%]"
                           type="text"
                           optionData={timeZones}
                           value={currentToEdit.city}
@@ -1150,9 +1151,9 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           biggerText={true}
                           labelClassname="text-[#26435F]  !font-medium"
                           placeholder="Text"
-                          inputContainerClassName="text-base placeholder:text-[#667085] bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[10.7292vw] h-[54px]"
+                          inputContainerClassName="text-base placeholder:text-[#667085] bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px]  h-[54px]"
                           inputClassName="bg-transparent placeholder:text-[#667085]"
-                          parentClassName=""
+                          parentClassName="!w-[20%]"
                           type="text"
                           value={currentToEdit.pincode}
                           onChange={(e) =>

@@ -23,6 +23,7 @@ const initialState = {
     activeExtensionInfo: {
         planName: "",
         planDisplayName: "",
+        packageName: "",
         productQuantity: 0,
         currency: "",
         subscriptionPricePerMonth: 0,
@@ -37,7 +38,10 @@ const initialState = {
         subscriptionId: ""
     },
     paymentMethods: [],
-    subscriptionUpdateTrigger: null
+    subscriptionUpdateTrigger: null,
+    hasSubscriptionExpired: false,
+    hasExtensionsExpired: false,
+    defaultPaymentMethodId: "",
 }
 
 const subscription = createSlice({
@@ -60,13 +64,20 @@ const subscription = createSlice({
             state.subscriptionsInfoFromAPI = payload;
         },
         updatePaymentMethods: (state, { payload }) => {
-            console.log("payload in updatePaymentMethods");
-            console.log(payload);
             state.paymentMethods = payload;
         },
         triggerSubscriptionUpdate: (state) => {
             state.subscriptionUpdateTrigger = {};
-        }
+        },
+        updateHasSubscriptionExpired: (state, { payload }) => {
+            state.hasSubscriptionExpired = payload;
+        },
+        updateHasExtensionExpired: (state, { payload }) => {
+            state.hasExtensionsExpired = payload;
+        },
+        updateDefaultPaymentMethodId: (state, { payload }) => {
+            state.defaultPaymentMethodId = payload;
+        },
     }
 });
 
@@ -78,5 +89,8 @@ export const {
     updateSubscriptionsInfoFromAPI,
     updatePaymentMethods,
     triggerSubscriptionUpdate,
+    updateHasSubscriptionExpired,
+    updateHasExtensionExpired,
+    updateDefaultPaymentMethodId,
 } = subscription.actions;
 export default subscription.reducer;

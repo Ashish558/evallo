@@ -504,9 +504,13 @@ export default function UserSignup() {
                 sessionStorage.clear();
                 return;
               }
-              if (res?.error?.data?.message === "Referral code not match.")
+              if (res?.error?.data?.message === "Referral code not match."){
                 alert("Referal code is not valid! Enter valid referal code.");
-              else alert("something went wrong , please try again");
+              }else if (res?.error?.data?.message){
+                alert(res.error.data.message);
+              }else{
+                alert("something went wrong , please try again");
+              }
             })
             .catch((err) => {
               setLoading(false);
@@ -644,7 +648,6 @@ export default function UserSignup() {
                       label="First name"
                       value={values.firstName}
                       onChange={(e) => {
-
                         setValues({
                           ...values,
                           firstName: e.target.value,
@@ -661,12 +664,6 @@ export default function UserSignup() {
                       label="Last name"
                       value={values.lastName}
                       onChange={(e) => {
-                        // const alphabeticOnly = e.target.value.replace(
-                        //   /[^a-zA-Z]/g,
-                        //   ""
-                        // );
-                        // e.target.value = alphabeticOnly;
-                        // e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
                         setValues({
                           ...values,
                           lastName: e.target.value,

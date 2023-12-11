@@ -245,7 +245,6 @@ export default function UserDetails({
           setOtherDetails({ ...otherDetails, referalCode: e.target.value })
         }
       />
-
       <div className={style.shy}>
         <div className="flex items-center mt-2">
           <CCheckbox checked={!otherDetails.referalCode||otherDetails.referalCode?.trim()?.length === 0}

@@ -88,7 +88,7 @@ const StudentDashboardHeader = () => {
 
       <div className="flex justify-between relative  gap-8 mb-[57px] mt-[31px] ">
         <div className="flex flex-col justify-start items-start gap-2.5">
-          <p className="text-[20px] text-[#26435F] font-semibold">
+          <p className="text-[20px] leading-[12.5px] text-[#26435F] font-semibold">
             Announcements
           </p>
 
@@ -119,24 +119,18 @@ const StudentDashboardHeader = () => {
                           onClick={() => openLink(image.link)}
                           className="bg-[#FFA28D] text-white p-2 text-base-17-5 px-4 rounded-lg absolute left-[30px] bottom-[26px]"
                         >
-                          {image?.buttonText ? image?.buttonText : "Register"}
+                          {image?.buttonText ? image?.buttonText : ""}
                         </button>
                       </div>
                     );
                   })}
                 </OwlCarousel>
               ) : (
-                <p
-                  className="text-white  text-center w-full font-semibold pt-8 not-italic pb-8 text-lg"
-                  style={{
-                    fontSize: "18px",
-                    fontStyle: "normal",
-                    fontWeight: "500",
-                  }}
-                >
-                  No Announcements
-                </p>
-              )}
+                <div className="w-full h-full flex justify-center items-center bg-white">
+                 <button className="bg-[#FF7979] text-white rounded-md p-2 py-1">
+                 No Announcements
+                    </button>
+              </div>)}
             </div>
             {/* {images?.length >= 1 && (
               <ImageSlideshow images={images} text="text" />
@@ -148,10 +142,10 @@ const StudentDashboardHeader = () => {
         <svg className="absolute bottom-0 left-0 z-10" xmlns="http://www.w3.org/2000/svg" width="490" height="99" viewBox="0 0 490 99" fill="none">
   <path d="M489.25 93.7501V0C486.489 0 484.25 2.23853 484.25 4.99989L484.25 50.6251L484.25 88.1251C484.25 90.8865 482.012 93.1251 479.25 93.1251H11.125C8.36358 93.1251 6.125 90.8865 6.125 88.1251V49.3751L6.125 5.625C6.125 2.5184 3.6066 0 0.5 0V93.7501C0.5 96.5115 2.73858 98.7501 5.5 98.7501H484.25C487.012 98.7501 489.25 96.5115 489.25 93.7501Z" fill="#26435F"/>
 </svg>
-          <p className=" text-base-20 text-[#26435F] font-semibold">
+          <p className=" text-[20px] leading-[12.5px] text-[#26435F] font-semibold">
             Assigned Tutors
           </p>
-          <div className=".mybox bg-white relative shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)] rounded-md w-[489px] h-[250px]">
+          <div className=".mybox relative shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)] rounded-md w-[489px] h-[250px] z-5000">
             <div id="borderLeft" className="rounded-t-r-md"></div>
             <TutorCarousel />
 
@@ -161,7 +155,7 @@ const StudentDashboardHeader = () => {
         </div>
 
         <div className=" flex flex-col justify-start items-start gap-2.5 relative ">
-          <p className=" text-[20px] text-[#26435F] font-semibold ">
+          <p className=" text-[20px] leading-[12.5px] text-[#26435F] font-semibold ">
             Session Feedback
           </p>
           <div className=" bg-white  rounded-md  shadow-[0px_0px_2.500001907348633px_0px_#00000040] w-[480px] h-[250px]">
