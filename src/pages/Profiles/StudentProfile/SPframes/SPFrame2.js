@@ -85,9 +85,9 @@ const SPFrame2 = ({
         year: year,
         monthName: monthName
       }
-    );
-
-    const formattedDate = `${monthName}` + " " + `${month}` + `,` + `${year}`;
+   );
+    
+    const formattedDate = `${monthName.substring(0,3)}` + " " + `${month}` + `,` + `${year}`;
     return formattedDate
   }
 

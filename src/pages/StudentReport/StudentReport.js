@@ -144,10 +144,13 @@ export default function StudentReport() {
   const [scoreStr, setScoreStr] = useState("");
   const getSubjectScore = (response, selectedSubject) => {
     const tot = scaleData?.answer?.subjects[selectedSubject?.idx].totalQuestion;
-    const maxS =
+    let maxS = 0
+    if(scaleData?.scale?.score[tot - 1]){
+       maxS =
       tot > 0
-        ? scaleData?.scale?.score[tot - 1][selectedSubject?.scoreScale]
-        : 0;
+      ? scaleData?.scale?.score[tot - 1][selectedSubject?.scoreScale]
+      : 0;
+    }
     return maxS;
   };
 

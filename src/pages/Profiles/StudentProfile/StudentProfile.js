@@ -127,7 +127,7 @@ const subjects2 = [
     name: "Maths",
     bg: "#A4FFA7",
   },
-];
+]; 
 export default function StudentProfile({ isOwn }) {
   ////console.log({isOwn})
   const navigate = useNavigate();
@@ -960,7 +960,7 @@ const [toEdit, setToEdit] = useState({
                 <div className="flex flex-col ml-5   text-[#24A3D9] ">
                   <p
                     onClick={() =>
-                      associatedParent &&
+                      associatedParent?.length > 1 &&
                       navigate(`/profile/parent/${associatedParent?._id}`)
                     }
                     className=" cursor-pointer text-base-20 "
@@ -1037,6 +1037,7 @@ const [toEdit, setToEdit] = useState({
           />}
           <SPFrame0 isOwn={isOwn} userDetail={userDetail} settings={settings} toEdit={toEdit} setToEdit={setToEdit} />
           <SPFrame1
+            fetchDetailss={fetchDetails}
             session_no={session_no}
             isOwn={isOwn}
             userDetail={userDetail}

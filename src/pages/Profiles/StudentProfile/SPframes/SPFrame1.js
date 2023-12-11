@@ -17,10 +17,11 @@ const SPFrame1 = ({
   userId,
   settings,
   userDetail,
+  fetchDetails,
   editable,
   setToEdit,
   toEdit,
-  fetchDetails,
+  fetchDetailss,
 }) => {
   const [xlsFile, setXlsFile] = useState({});
   const { awsLink } = useSelector((state) => state.user);
@@ -61,6 +62,7 @@ const SPFrame1 = ({
     formData.append("studentId", userDetail?.userId);
     addDoc(formData).then((res) => {
       console.log("docc", res);
+      fetchDetailss()
       if (res?.data) {
         alert(res?.data?.message);
         setXlsFile({});
@@ -367,7 +369,12 @@ const SPFrame1 = ({
                 className="w-full h-full rounded-md bg-white flex justify-center flex-col text-center items-center"
               >
                 <div className="flex flex-col justify-center items-center h-full">
-                  <button className="bg-[#38C980] text-white rounded-md p-2 py-1">
+                  <button className="bg-[#38C980] text-white rounded-md p-2 py-1" onClick={() =>
+                    setToEdit({
+                      ...toEdit,
+                      interest: { ...toEdit.interest, active: true },
+                    })
+                  }>
                     Add Interests +
                   </button>
                 </div>
@@ -463,7 +470,12 @@ const SPFrame1 = ({
                 className="w-full h-full rounded-md bg-white flex justify-center flex-col text-center items-center"
               >
                 <div className="flex flex-col justify-center items-center h-full">
-                  <button className="bg-[#38C980] text-white rounded-md p-2 py-1">
+                  <button className="bg-[#38C980] text-white rounded-md p-2 py-1" onClick={() =>
+                    setToEdit({
+                      ...toEdit,
+                      personality: { ...toEdit.personality, active: true },
+                    })
+                  }>
                     Add Personality +
                   </button>
                 </div>{" "}

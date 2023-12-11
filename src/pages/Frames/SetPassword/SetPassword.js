@@ -142,7 +142,7 @@ export default function SetPassword({
                 placeholder=""
                 inputContainerClassName="border border-[0.98px_solid_#D0D5DD] w-[266px] h-[53px]"
                 inputClassName={"py-[2px] "}
-                label="Set New Passworzd"
+                label="Set New Password"
                 labelClassname="ml-2 mb-2 !font-semibold !text-[0.9719vw]"
                 value={password}
                 onChange={(e) => {
