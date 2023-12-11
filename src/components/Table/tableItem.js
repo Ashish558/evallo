@@ -1585,9 +1585,6 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
         ${
           data[key] === "Cancelled" && "text-[#7C859C]"
         }
-        ${
-          key === "Email" ? "text-start bg-green-400" : null
-        }
          min-w-14 py-4 
         ${
           dataFor === "studentTestsReport" && !data["isCorrect"]
@@ -1596,6 +1593,9 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
         }
         ${
           dataFor === "testsDetailQuestions" && "text-left pl-7"
+        } 
+        ${
+          dataFor === "assignedStudents" && "text-left ps-[60px] "
         } 
         ${
           dataFor === "studentTestsReport" && key === "Concept"
