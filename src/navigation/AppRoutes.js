@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useState , useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
 import { RequireAuth } from "./PrivateRoute";
 import Footer from "../components/Footer/Footer"
@@ -8,8 +8,19 @@ import Layout from "../pages/Layout/Layout";
 import Layout2 from "../pages/Layout/Layout2";
 import SubscriptionAndExtensionModal from "../pages/Frames/SubscriptionAndExtensionModal/SubscriptionAndExtensionModal";
 import { useLazyGetAuthQuery, useLazyGetOrganizationQuery, useLazyGetPersonalDetailQuery } from "../app/services/users";
-import { closeModal as closeSubscriptionAndExtensionModal, openModal as openSubscriptionAndExtensionModal } from "../app/slices/subscriptionUI";
-import { triggerSubscriptionUpdate, updateActiveExtensionInfo, updateActiveSubscriptionInfo, updatePaymentMethods, updateStripeCustomerId, updateSubscriptionsInfoFromAPI } from "../app/slices/subscription";
+import { 
+  closeModal as closeSubscriptionAndExtensionModal, 
+  openModal as openSubscriptionAndExtensionModal, 
+  openSubscriptionPanelInRenewProductMode } from "../app/slices/subscriptionUI";
+import { 
+  triggerSubscriptionUpdate, 
+  updateActiveExtensionInfo, 
+  updateActiveSubscriptionInfo, 
+  updatePaymentMethods, 
+  updateStripeCustomerId, 
+  updateSubscriptionsInfoFromAPI, 
+  updateHasSubscriptionExpired, 
+  updateDefaultPaymentMethodId} from "../app/slices/subscription";
 import { useLazyGetSubscriptionsInfoQuery } from "../app/services/orgSignup";
 
 
@@ -55,6 +66,7 @@ const OrgAdminSignup = lazy(() => import("../pages/OrgAdminSignup/OrgAdminSignup
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { isLoggedIn } = useSelector((state) => state.user);
   const { 
     isActive: isSubscriptionAndExtensionModalActive , 
@@ -119,6 +131,10 @@ const AppRoutes = () => {
       .then(data => {
         console.log("getOrgDetails - attempt with associatedOrg");
         console.log(data);
+        if(data?.data?.stripeCustomerDetails?.invoice_settings?.default_payment_method) {
+          dispatch(updateDefaultPaymentMethodId(data.data.stripeCustomerDetails.invoice_settings.default_payment_method));
+        }
+
         if(data?.data?.stripeCustomerDetails?.id) {
           dispatch(updateStripeCustomerId(data.data.stripeCustomerDetails.id));
         }
@@ -165,6 +181,7 @@ const AppRoutes = () => {
                   planName: "Assignment",
                   planDisplayName: "Assignement",
                   productQuantity: productQuantity,
+                  packageName: activeSub.lookup_key,
                   currency: products[i].currency,
                   startDate: products[i].start_date * 1000,//new Date(products[i].start_date * 1000),
                   autoRenewalDate: products[i].current_period_end * 1000,//new Date(products[i].current_period_end * 1000),
@@ -183,14 +200,26 @@ const AppRoutes = () => {
 
             const expiryDate = new Date(products[i].current_period_end * 1000);
             const isCancelled = products[i].canceled_at === null || products[i].canceled_at === undefined ? false : true;
+            const subscriptionPricePerMonth = activeSub.unit_amount / 100;
+            let monthlyCostAfterDiscount = subscriptionPricePerMonth;
+            if(products[i]?.discount?.coupon) {
+              monthlyCostAfterDiscount = subscriptionPricePerMonth - products[i]?.discount?.coupon?.percent_off / 100.0 * subscriptionPricePerMonth;
+            }
+
+            if(expiryDate < todayDate) {
+              navigate("/settings");
+              dispatch(openSubscriptionPanelInRenewProductMode());
+              dispatch(updateHasSubscriptionExpired(true));
+              continue;
+            }
 
             dispatch(updateActiveSubscriptionInfo({
               planName: activeSub.product.name,
               planDisplayName: activeSub.product.name,
               activeTutorsAllowed: products[i].metadata.active_tutors,
               currency: activeSub.currency,
-              subscriptionPricePerMonth: activeSub.unit_amount / 100,
-              monthlyCostAfterDiscount: activeSub.unit_amount / 100,
+              subscriptionPricePerMonth: subscriptionPricePerMonth,//activeSub.unit_amount / 100,
+              monthlyCostAfterDiscount: monthlyCostAfterDiscount,//activeSub.unit_amount / 100,
               startDate: products[i].start_date * 1000,//new Date(products[i].start_date * 1000),
               autoRenewalDate: products[i].current_period_end * 1000,//new Date(products[i].current_period_end * 1000),
               expiryDate: products[i].current_period_end * 1000,//expiryDate,
@@ -199,20 +228,11 @@ const AppRoutes = () => {
               isCancelled: isCancelled,
               priceObject: products[i].items?.data[0]?.price,
               subscriptionId: products[i].id,
-            }))
+            }));
+
+            
           }
         }
-
-        /* if(data.data === null || data.data === undefined ||
-          data.data.customerSubscriptions === null || data.data.customerSubscriptions === undefined ||
-          data.data.customerSubscriptions.data === null || data.data.customerSubscriptions.data === undefined ||
-          data.data.customerSubscriptions.data.length === 0) {
-          // SetIsSubscriptionAndExtensionModalActive(true);
-          dispatch(openSubscriptionAndExtensionModal());
-        } else {
-          // SetIsSubscriptionAndExtensionModalActive(false);
-          dispatch(closeSubscriptionAndExtensionModal());
-        } */
       })
       .catch(error => {
         console.log("Error in getOrgDetails");
@@ -236,7 +256,8 @@ const AppRoutes = () => {
   }, [persona, subscriptionsInfoFromAPI, subscriptionUpdateTrigger]);
 
   return (
-    <BrowserRouter>
+    <>
+    {/* <BrowserRouter> */}
       {/* <Navbar /> */}
       <Layout2>
       {
@@ -586,7 +607,8 @@ const AppRoutes = () => {
       </Routes>
       </Layout2>
       {/* <Footer /> */}
-    </BrowserRouter>
+    {/* </BrowserRouter> */}
+   </>
   );
 };
 

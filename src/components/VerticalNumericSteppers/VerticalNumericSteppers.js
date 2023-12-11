@@ -61,7 +61,7 @@ function VerticalNumericSteppers({
                                             {index + 1}
                                         </div>
                                     </div>
-                                    <div className={`font-[100] text-[18px]
+                                    <div className={`font-[500] text-[18px]
                                                     ${styles.label}
                                                     ${isRestricted ? styles.restricted : currentIndex > index && !isIncomplete ? styles.completed : ""}
                                                     ${currentIndex === index ? styles.currentIndex : ""}
@@ -71,7 +71,7 @@ function VerticalNumericSteppers({
                                 </div>
                                 {
                                     index < labels.length - 1 ? (
-                                        <div className={`border-l-[1px] mt-[5px] mb-[5px] grow
+                                        <div className={`mt-[5px] mb-[5px] h-[100px] w-[1.73px]
                                                          ${styles.verticalLine}
                                                          ${isRestricted ? styles.restricted : currentIndex > index && !isIncomplete ? styles.completed : ""}
                                                          ${currentIndex === index ? styles.currentIndex : ""}

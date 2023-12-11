@@ -25,7 +25,12 @@ function SubscriptionChoosingModal({
 
     useEffect(() => {
         SetProductDescriptions(SubscriptionPackDescriptions);
-    },[])
+    },[]);
+
+    useEffect(() => {
+        console.log("updateSubscriptionMode");
+        console.log(updateSubscriptionMode);
+    }, []);
 
     return (
         <div
@@ -92,7 +97,7 @@ function SubscriptionChoosingModal({
                                     (plan.freeTrialDays === 0 ? "Flat Monthly Subscription - " : "Flat Monthly Subscription After Free Trial Ends - ")     
                                 ]}
                                 activeTutorsAllowed={plan.activeTutorsAllowed}
-                                freeTrialDays={plan.freeTrialDays}
+                                freeTrialDays={!(updateSubscriptionMode || renewProductMode) ? plan.freeTrialDays : 0}
                                 pricePerMonth={plan.pricePerMonth}
                                 currency={plan.currency}
                                 selected={plan.planName === chosenSubscriptionPlanName ? true : false}

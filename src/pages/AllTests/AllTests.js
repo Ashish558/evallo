@@ -485,7 +485,7 @@ export default function AllTests({
         headers: getAuthHeader(),
       })
       .then((res) => {
-        alert("CSV UPLOADED");
+        alert("CSV and PDF uploaded");
         console.log("csv post resp", res);
         setModalData(initialState);
         setModalActive(false);
@@ -629,6 +629,7 @@ export default function AllTests({
 
           <div className="mt-[37.5px] w-[1600px]">
             <Table
+            tableClass="table-auto !mt-0"
               widthFullTable={true}
               testtype={testtype2}
               dataFor="allTests"

@@ -78,6 +78,12 @@ function SubscriptionAndExtensionModal({
         extensions: false,
         review: false,
     });
+    const {
+        stripeCustomerId,
+        subscriptionsInfoFromAPI,
+        activeSubscriptionInfo,
+        activeExtensionInfo,
+    } = useSelector((state) => state.subscription);
     const [restrictedIndices, SetRestrictedIndices] = useState([]);
     const [currentModalIndex, SetCurrentModalIndex] = useState(0);
     const [subscriptionPlanInfo, SetSubscriptionPlanInfo] = useState([]);
@@ -85,13 +91,15 @@ function SubscriptionAndExtensionModal({
     const [extensions, setExtensions] = useState(extensionsData);
     // const [subscriptionsInfoFromAPI, SetSubscriptionsInfoFromAPI] = useState([]);
     const [chosenSubscriptionPlanName, SetChosenSubscriptionPlanName] = useState(
-        (updateSubscriptionMode ? "" : "Professional")
+        (updateSubscriptionMode ? activeSubscriptionInfo?.planName : "Professional")
     );
     const [isCCRequired, SetIsCCRequired] = useState(false);
     // const [stripeCustomerId, SetStripeCustomerId] = useState("");
     const [isPaymentSuccessfullyComplete, SetIsPaymentSuccessfullyComplete] = useState(false);
     const [isExtensionStepComplete, SetIsExtensionStepComplete] = useState(false);
     const [isSubscriptionProcessGoingOn, SetIsSubscriptionProcessGoingOn] = useState(false);
+
+    const [couponIdForSubscription, SetCouponIdForSubscription] = useState(false);
 
     const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
     const [addSubscriptions, addSubscriptionsResp] = useAddSubscriptionsMutation();
@@ -101,12 +109,7 @@ function SubscriptionAndExtensionModal({
     const [changeSubscriptions] = useChangeSubscriptionsMutation();
     const [renewProduct] = useRenewProductMutation();
     const { organization } = useSelector((state) => state.organization);
-    const {
-        stripeCustomerId,
-        subscriptionsInfoFromAPI,
-        activeSubscriptionInfo,
-        activeExtensionInfo,
-    } = useSelector((state) => state.subscription);
+    
 ;
     function OnExtensionsChanged() {
         let output = sessionStorage.getItem("chosenExtentionObjectsFromAPI");
@@ -166,7 +169,7 @@ function SubscriptionAndExtensionModal({
     }, [extensions]);
 
     useEffect(() => {
-        const chosenSubscriptionFromAPI = subscriptionsInfoFromAPI.find(item => {
+        const chosenSubscriptionFromAPI = subscriptionsInfoFromAPI?.find(item => {
             if(item.product) {
                 return item.product.name === chosenSubscriptionPlanName;
             }
@@ -255,6 +258,19 @@ function SubscriptionAndExtensionModal({
     useEffect(() => {
         loadOrgDetails();
 
+    }, []);
+
+    useEffect(() => {
+        if(!updateSubscriptionMode) return;
+        if(!activeExtensionInfo) return;
+
+        setExtensions([
+            {
+                text: activeExtensionInfo.planName,
+                checked: true,
+                packageName: activeExtensionInfo.packageName
+            }
+        ])
     }, []);
 
     function loadSubscriptionAndExtensionInfo(productList) {
@@ -665,6 +681,14 @@ function SubscriptionAndExtensionModal({
         }
         let chosenSubscriptionToBeSentThroughAPI = JSON.parse(subscriptionSessionStorageOutput);
 
+        if(couponIdForSubscription !== "" ) {
+            chosenSubscriptionToBeSentThroughAPI = {
+                ...chosenSubscriptionToBeSentThroughAPI,
+                coupon: couponIdForSubscription
+            }
+            // chosenSubscriptionToBeSentThroughAPI.coupon = couponIdForSubscription;
+        }
+
         let extentionSessionStorageOutput = sessionStorage.getItem("chosenExtentionObjectsFromAPI");
         if(extentionSessionStorageOutput === '' || extentionSessionStorageOutput === undefined ) {
             extentionSessionStorageOutput = null;
@@ -717,6 +741,13 @@ function SubscriptionAndExtensionModal({
                 if(item?.product?.name === chosenSub) return true;
                 return false;
             })
+        }
+
+        if(couponIdForSubscription !== "" ) {
+            subPriceObject = {
+                ...subPriceObject,
+                coupon: couponIdForSubscription
+            };
         }
 
         newPlans.push(subPriceObject);
@@ -833,6 +864,13 @@ function SubscriptionAndExtensionModal({
         }
     }
 
+    useEffect(() => {
+        return () => {
+            sessionStorage.removeItem(TEMPORARY_CHOSEN_SUBSCRIPTION_PLAN_NAME);
+            sessionStorage.removeItem(TEMPORARY_CHOSEN_EXTENSIONS_NAME);
+        }
+    }, []);
+
     return (
         <div className={`aspect-[1400/900] bg-[#FFFFFF] flex rounded-[15px]  ${className} overflow-auto`} >
             <div className="h-[500px] w-1/12" >
@@ -921,6 +959,7 @@ function SubscriptionAndExtensionModal({
                                     return "";
                                 })()}
                                 subscriptionsInfo={subscriptionPlanInfo}
+                                subscriptionsInfoFromAPI={subscriptionsInfoFromAPI}
                                 setFrames={setFrames}
                                 extensions={(() => {
                                     let ext = sessionStorage.getItem(TEMPORARY_CHOSEN_EXTENSIONS_NAME);
@@ -934,6 +973,7 @@ function SubscriptionAndExtensionModal({
                                 SetIsPaymentSuccessfull={SetIsPaymentSuccessfullyComplete}
                                 updateSubscriptionMode={updateSubscriptionMode}
                                 renewProductMode={renewProductMode}
+                                SetCouponIdForSubscription={SetCouponIdForSubscription}
                             />
                         ) : (<></>)
                     }
@@ -941,7 +981,7 @@ function SubscriptionAndExtensionModal({
 
                 <div className="flex mt-[20px] w-[1100px]" >
                     {
-                        updateSubscriptionMode || renewProductMode ? (
+                        updateSubscriptionMode || (renewProductMode && !openSubscriptionModal) ? (
                             <button 
                                 className="font-[600] text-[#B3BDC7] text-[14px]" 
                                 onClick={() => {
@@ -962,7 +1002,7 @@ function SubscriptionAndExtensionModal({
                             backgroundColor: "#FFA28D"
                         }
                       )}
-                      className={`w-[150px] h-[50px] flex justify-center disabled:opacity-60   rounded text-white text-sm font-medium relative py-[11.5px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)]   
+                      className={`w-[150px] h-[50px] flex justify-center disabled:opacity-60   rounded py-[0px] px-[0px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)]   
                       `}
                       loading={frames.review ? isSubscriptionProcessGoingOn ? true : false : false}
                       /*
@@ -986,7 +1026,7 @@ function SubscriptionAndExtensionModal({
                     //   children={(frames.review ? isCCRequired ? "Checkout" : "Let’s Go!" : "Save & Next")}
                       children={(
                       <span 
-                        className="text-[16.67px] text-[#fff] font-[100]"
+                        className="text-[18.67px] text-[#fff] font-[500]"
                       >
                         {(frames.review ? isCCRequired ? "Checkout" : "Let’s Go!" : "Save & Next")}
                       </span>)}

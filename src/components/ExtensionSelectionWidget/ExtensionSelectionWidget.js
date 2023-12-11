@@ -33,6 +33,7 @@ function ExtensionSelectionWidget({
     setExtensions,
     isDisabled,
     descriptionInDisabledState,
+    freeTrialDays,
 }) {
 
     const handleRadioButtonClick = (packageName, arr, extensionName, setValue) => {

@@ -48,7 +48,7 @@ ${header.text==="Actively Using"&&"w-[168.5px] pr-[11.5px] text-left"} flex gap-
   </th>):
   (
     <th
-      className={`px-6 py-[20px] font-normal whitespace-nowrap text-white text-center cursor-pointer ${
+      className={`px-6 py-[20px] font-normal whitespace-nowrap text-white text-center cursor-pointer first:rounded-l-[5.333px] last:rounded-r-[5.333px] ${
         header.className ? header.className : ""
       } ${flag ? styles["no-arrow"] : ""} bg-[#26435F] ${header.text==="% of Business"?" rounded-r-[5.333px]":""}`}
     >
@@ -94,7 +94,14 @@ ${header.text==="Actively Using"&&"w-[168.5px] pr-[11.5px] text-left"} flex gap-
           <div onClick={() => header.onCick && header.onCick()}>
             <span className="text-center text-[17.5px]">{header.text}</span>
           </div>
-        ) : (
+        ) :
+        header.text==="Assignment Name"&& dataFor==="assignedTestsStudents"?(
+          <div className="text-left text-[17.5px] font-medium ml-[39px]">
+            {header.text}
+          </div>
+        ):
+        
+        (
           <div
             className={` text-[17.5px] ${
               header.text === "Score" ? "text-center" : "text-left"
