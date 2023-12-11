@@ -1235,10 +1235,10 @@ export default function TableItem({
       )}
       {dataFor === "allTests" && (
         <tr className="odd:bg-white font-medium text-[17.5px]  lead">
-          <td className="text-left pl-[66.5px] w-[350px] max-w-[350px] overflow-hidden text-ellipsis">
+          <td className="text-left pl-[66.5px] w-[350px] max-w-[350px] overflow-hidden text-ellipsis" style={{paddingLeft: '25px'}}>
             {item.testName}
           </td>
-          <td className="w-[223px] text-left pl-14">
+          <td className="w-[223px] text-left" style={{paddingLeft: '45px'}}>
             {item.testType.endsWith("®")
               ? item.testType
               : item.testType.includes("Other")

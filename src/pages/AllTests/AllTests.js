@@ -332,6 +332,7 @@ export default function AllTests({
       id: 1,
       text: "Assignment Name",
       // className: "text-left pl-6",
+      // className:"pl-3",
       // onCick: () => sortByString("testName"),
       onCick: sortByAssignmentName,
       willDisplayDownArrow:

@@ -23,7 +23,7 @@ export function TableHeaderNew({
     <div className={``}>{header.text}</div>
   </th>):
   dataFor==="allTests"?(<th className={`pt-[26.25px] pb-[24.25px] text-white text-[17.5px] leading-[25px] font-medium ${header.text==="Assignment Name"?"text-left pl-[65.6px]":header.text==="Total Assignments"?"text-center":" text-left"}`}>
-  <div onClick={() => header.onCick && header.onCick()} className={`flex items-center gap-0 ${header.text==="Total Assignments"&&"justify-center"}`}><p className={`${header.text==="Type"? 'pl-11':''}`}>{header.text}</p>{
+  <div onClick={() => header.onCick && header.onCick()} className={`flex items-center gap-0 ${header.text==="Total Assignments"&&"justify-center"}`}><p className={`${header.text==="Type"? 'pl-11':''} ${header.text==="Student Name"?'pl-10':''} `}>{header.text}</p>{
     header.noArrow?"":
      header.willDisplayDownArrow=== null||header.text.lenght===0?"":
                 header.willDisplayDownArrow ||
@@ -54,7 +54,7 @@ ${header.text==="Actively Using"&&"w-[168.5px] pr-[11.5px] text-left"} flex gap-
     >
       <div
         className={`flex
-        ${header.text === "Student Name" ? "ml-[40px] text-left " : ""} 
+        ${header.text === "Student Name" ? "ml-[40px]  text-left " : ""} 
         ${header.text === "Assignment Name" ? "ml-[12px]" : ""} 
         ${
           header.text === "Email" ||
