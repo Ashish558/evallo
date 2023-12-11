@@ -698,7 +698,7 @@ export default function TutorProfile({ isOwn }) {
             className=" w-[1600px] h-[297.54px]"
             body={
               <>
-                <div className="w-[1313.95px] bg-white rounded-md shadow-[0px_0px_2px_0px_#00000040] h-[297.547px]">
+                <div className="w-[1313.95px] rounded-md shadow-[0px_0px_2px_0px_#00000040] h-[297.547px] bg-white">
                   <div className="h-[125.519px]  rounded-t-md shadow-t-[0px_0px_2px_0px_#00000040] flex relative bg-[#26435F]">
                     <div className="ml-8  pt-1  w-4/6">
                       <div className="flex h-full  items-end">
@@ -821,7 +821,7 @@ export default function TutorProfile({ isOwn }) {
               </>
             }
           />
-          <div className="flex-grow-1">
+          <div className="ml-[26.26px] flex-grow-1 bg-transparent">
             <div className="flex items-start">
               <img className="mt-[7px]" src={experience} alt="experience"></img>
               <div className="ml-[22.5px]">
@@ -1325,8 +1325,8 @@ export default function TutorProfile({ isOwn }) {
             <div className="mt-[50px] border-4 mx-[40px]  border-t border-[#CBD6E2]-300 justify-center border-dotted"></div>
           )}
           {/* address row */}
-          {(isOwn === true || persona === "admin") && (
-            <div className="flex justify-between mt-[55px] gap-x-[37px]">
+          {(isOwn === true || persona === "admin" ) && (
+            <div className={`flex justify-between mt-[55px] gap-x-[37px]  ${persona === "tutor" ? "hidden" : null} `}>
               <div className="w-[1023.744px]">
                 <div className="flex items-center mb-1">
                   {(isOwn === true || persona === "admin") && (
