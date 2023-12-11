@@ -406,6 +406,48 @@ export default function TableItem({
           </tr>
         </>
       )}
+      {dataFor === "tutorPerformance" && (
+        <>
+          <tr className=" text-[17.5px] font-medium">
+            <td className="py-4 px-[10px]">{item.tutor_name}</td>
+
+            <td className="py-4 px-[10px]">{item.tutor_status}</td>
+            <td className="py-4 px-[10px]">
+              {item.avg_hourly_rate ? item.avg_hourly_rate : '-'}
+              </td>
+            <td className="py-4 px-[10px]">
+                {item.no_of_referrals}
+            </td>
+            <td className="py-4 px-[10px]">
+                {item.no_of_hours_completed}
+            </td>
+            <td className="py-4 px-[10px]">
+                {item.no_of_hours_scheduled}
+            </td>
+            <td className="py-4 px-[10px]">
+                {item.no_of_hours_cancelled}
+            </td>
+            <td className="py-4 px-[10px]">
+                {item.no_of_hours_missed}
+            </td>
+            <td className="py-4 px-[10px]">
+                {item.avg_sat_improvement ? item.avg_sat_improvement : '-'}
+            </td>
+            <td className="py-4 px-[10px]">
+                {item.avg_act_improvement ? item.avg_act_improvement : '-'}
+            </td>
+            <td className="py-4 px-[10px]">
+                {item.no_of_active_students}
+            </td>
+            <td className="py-4 px-[10px]">
+                {item.no_of_total_students}
+            </td>
+            <td className="py-4 px-[10px]">
+            {item.avg_hourly_rate ? item.avg_hourly_rate : '-'}
+            </td>
+          </tr>
+        </>
+      )}
 
       {dataFor === "allUsers" && (
         <tr className="odd:bg-white h-full leading-8">

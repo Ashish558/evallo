@@ -769,8 +769,7 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
       });
     }
   }, [associatedStudents]);
-  console.log({ selectedStudent, associatedStudents })
-  console.log({ allTests })
+
   const navigate=useNavigate()
   useEffect(() => {
     if (selectedStudent === null) return;
