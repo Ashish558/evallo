@@ -262,8 +262,8 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
             <span className="inline-block my-auto ml-2 translate-y-1 h-[18px] w-[18px]">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="15"
-                height="15"
+                width="18"
+                height="18"
                 viewBox="0 0 19 19"
                 fill="none"
               >
@@ -355,7 +355,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
                             {tutor?.tagline}
                           </p>
                           <button
-                            className="p-2 mt-7 !w-fit rounded-lg whitespace-nowrap text-sm px-4 bg-[#FFA28D] text-white text-base-17-5"
+                            className="py-[10px] px-[20px] mt-7 !w-fit rounded-lg whitespace-nowrap text-[15px] font-medium  bg-[#FFA28D] text-white"
                             onClick={() =>
                               tutor._id &&
                               navigate(`/profile/tutor/${tutor._id}`)

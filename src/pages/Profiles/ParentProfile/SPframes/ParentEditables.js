@@ -744,6 +744,7 @@ export default function ParentEditables({
         <Modal
           fetchDetails={fetchDetails}
           key={key}
+          topClass="!absolute !h-[120vh]"
           modalSize={currentField.name === "frame1"?"!w-[1106px] !max-w-[1106px]":""}
           classname={`${
             forCss.includes(currentField.name)
