@@ -571,7 +571,7 @@ export default function AllTests({
   useEffect(() => {
     console.log(testtype2);
   }, [testtype2]);
-  console.log("profile", fromProfile);
+  
   if (fromProfile)
     return (
       <StudentTest
