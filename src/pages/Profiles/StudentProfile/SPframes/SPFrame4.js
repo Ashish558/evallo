@@ -10,7 +10,6 @@ import {
 } from "../../../../app/services/users";
 
 import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew";
-import { object } from "yup";
 import { useLazyGetSessionNotesQuery } from "../../../../app/services/session";
 import { useEffect } from "react";
 
@@ -238,7 +237,7 @@ const SPFrame1 = ({
                   placeholder={"Lead Status"}
                   parentClassName="ml-0 w-full  items-center flex text-[#517CA8] text-xs  whitespace-nowrap "
                   inputContainerClassName="bg-white h-[55px] items-center shadow-[0px_0px_2.500001907348633px_0px_#00000040] my-0 py-[5px] px-[35px]"
-                  placeHolderClass="text-[#517CA8] "
+                  placeholderClass="!text-[#517CA8] "
                   labelClassname="text-sm text-base-17-5"
                   inputClassName="bg-transparent"
                   optionContainerClassName="!w-[170px]"

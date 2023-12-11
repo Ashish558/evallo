@@ -14,6 +14,9 @@ import NumericSteppers from "../../components/NumericSteppers/NumericSteppers";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
 
 import DownArrow from "../../assets/icons/down-chevron.svg";
+import GoogleIcon from "../../assets/icons/google.svg";
+import LinkedinIcon from "../../assets/icons/linkedin-round.svg";
+import AppleIcon from "../../assets/icons/apple.svg";
 
 import selectStyles from "../../components/InputSelect/style.module.css";
 
@@ -258,12 +261,17 @@ export default function OrgSignup() {
   };
 
   useEffect(() => {
+    return;
     const script = document.createElement("script");
     script.src = "https://otpless.com/auth.js";
     script.id = "otplessIdScript";
+    // script.cid = "TO0UXKO9U0HN2LL17BMI303UJSYZ8YO8";
+    script.setAttribute("cid", "TO0UXKO9U0HN2LL17BMI303UJSYZ8YO8");
     document.body.appendChild(script);
+
     window.otpless = (otplessUser) => {
-     console.log('otpless',otplessUser);
+     console.log('otpless');
+     console.log(otplessUser);
     };
   }, []);
  
@@ -626,7 +634,9 @@ export default function OrgSignup() {
         setLoading(true);
         signupUser(reqBody)
           .then((res) => {
+            console.log("signupUser");
             console.log(res);
+            return;
             setFrames({
               ...frames,
               signupSuccessful: true,
@@ -687,80 +697,84 @@ export default function OrgSignup() {
    }
   }
 const [emailExistLoad,setEmailExistLoad]=useState(false)
-  const handleClick = () => {
-    const emailAlreadyExists = async () => {
-        setEmailExistLoad(true)
-        let cc=0;
-      let checked = false;
-      try {
-        
-        let data = {
-          workemail: values.email,
-        };
-        //   alert(data.workemail)
-        let result = await axios.post(
-          `${process.env.REACT_APP_BASE_URL}api/user/CheckEmail`,
-          data,
-          {
-            headers: {
-              "content-Type": "application/json",
-            },
-          }
-        );
-        if (result) checked = true;
-        cc++;
-      } catch (e) {
-        console.error(e.response?.data?.message);
-        cc++;
-        setError({
-          ...error,
-          email: e.response?.data?.message,
-        });
-      }
-      try {
-        let data = {
-          company: values.company,
-        };
-        //   alert(data.workemail)
-        let result = await axios.post(
-          `${process.env.REACT_APP_BASE_URL}api/user/CheckCompany`,
-          data,
-          {
-            headers: {
-              "content-Type": "application/json",
-            },
-          }
-        );
-        cc++;
-      } catch (e) {
-        checked = false;
-        cc++;
-        setError({
-          ...error,
-          company: e.response.data.message,
-        });
-      }
-      if (checked === true ) {
-        
-        setFrames({
-          ...frames,
-          signupActive: false,
-          subscription: true,
-        });
-        // setcurrentStep(currentStep => currentStep + 1)
-      }
-      if(cc>=2){
-        setEmailExistLoad(false)
-      }
-    };
-   
-    if(!handleNextErrors(true)){
-      return 
+const handleClick = () => {
+
+  handleSignup();
+  return;
+
+  const emailAlreadyExists = async () => {
+      setEmailExistLoad(true)
+      let cc=0;
+    let checked = false;
+    try {
+      
+      let data = {
+        workemail: values.email,
+      };
+      //   alert(data.workemail)
+      let result = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}api/user/CheckEmail`,
+        data,
+        {
+          headers: {
+            "content-Type": "application/json",
+          },
+        }
+      );
+      if (result) checked = true;
+      cc++;
+    } catch (e) {
+      console.error(e.response?.data?.message);
+      cc++;
+      setError({
+        ...error,
+        email: e.response?.data?.message,
+      });
     }
- 
+    try {
+      let data = {
+        company: values.company,
+      };
+      //   alert(data.workemail)
+      let result = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}api/user/CheckCompany`,
+        data,
+        {
+          headers: {
+            "content-Type": "application/json",
+          },
+        }
+      );
+      cc++;
+    } catch (e) {
+      checked = false;
+      cc++;
+      setError({
+        ...error,
+        company: e.response.data.message,
+      });
+    }
+    if (checked === true ) {
+      
+      setFrames({
+        ...frames,
+        signupActive: false,
+        subscription: true,
+      });
+      // setcurrentStep(currentStep => currentStep + 1)
+    }
+    if(cc>=2){
+      setEmailExistLoad(false)
+    }
+  };
+  
+  if(!handleNextErrors(true)){
+    return 
+  }
+
   else
     emailAlreadyExists();
-  };
+};
  
 
 
@@ -842,9 +856,9 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
 
   const [clientSecret, SetClientSecret] = useState();
 
-  const secretKey = "sk_test_51O1tgLSFF3kgujFeaEQ6Uh7PkOtF4SgSk5ATR8xxmCgLGIW4lkkDzeLDKMoMfjAwZVQyTDJjBkTCwJiIMGgVqrlQ00b9M9MyKZ"
-  const publishableKey = "pk_test_51O1tgLSFF3kgujFe23VYSyhW5lbx2N3b7cjC1q1Q1alW9lwocUKObR8j4hBdpYx5xzDnFcPsNBbkzDu6hcDmHSP3004Sr0qX5e";
-  const stripePromise = loadStripe(publishableKey);
+  const secretKey = loadStripe(process.env.REACT_APP_STRIPE_SECRET_KEY)
+  
+  const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
   const stripe = require("stripe")(secretKey);
 
   const appearance = {
@@ -911,14 +925,48 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                     Please fill your detail to create your account.
                   </p> */}
                   {/* <div>
-                  <SecondaryButton
-                      children="Signup with OTPLess"
-                      className="mb-[40px] text-sm mr-6 bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 "
-                      onClick={() => {
-                        SetIsOtplessModalActive(true);
-                      }}
-                    />
+                    <SecondaryButton
+                        children="Signup with OTPLess"
+                        className="mb-[40px] text-sm mr-6 bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 "
+                        onClick={() => {
+                          window.otplessInit();
+                          SetIsOtplessModalActive(true);
+                        }}
+                      />
                   </div> */}
+                  <label
+                    className="inline-block text-sm font-semibold ml-0 text-base-17-5"
+                  >
+                    One-Click Sign Up
+                  </label>
+
+                  <div className="flex h-[50px] justify-between w-[180px]" >
+                    <button
+                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]"
+                    >
+                      <img 
+                        className="block"
+                        src={GoogleIcon} />
+                    </button>
+
+                    <button
+                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]"
+                    >
+                      <img 
+                        className="block"
+                        src={LinkedinIcon} />
+                    </button>
+
+                    <button
+                      className="aspect-square bg-[#EEEEEE] flex items-center justify-center h-full relative rounded-[7px]"
+                    >
+                      <img 
+                        className="block"
+                        src={AppleIcon} />
+                    </button>
+                  </div>
+
+                  <div className="border-t-[1px] border-[#26435F4D] mb-[35px] mt-[30px] w-full" ></div>
                   <div
                     className={`flex mt-[59px] justify-between lg:mt-1 ${styles.inputs}`}
                   >
@@ -1137,10 +1185,10 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                       } 
                       
                       `}
-                      loading={emailExistLoad}
+                      /* loading={emailExistLoad}
                       disabled={
                         values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
-                      }
+                      } */
                       onClick={handleClick}
                       children={`Next`}
                     />

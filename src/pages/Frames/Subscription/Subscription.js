@@ -54,7 +54,7 @@ export default function Subscription({
                             planDisplayName={plan.planDisplayName}
                             description={[
                                 `Active Tutors Allowed - ${plan.activeTutorsAllowed === Infinity ? "unlimited" : plan.activeTutorsAllowed}`,
-                                `Active Students Allowed - ${plan.activeStudentsAllowed === Infinity ? "unlimited" : plan.activeStudentsAllowed}`,
+                                // `Active Students Allowed - ${plan.activeStudentsAllowed === Infinity ? "unlimited" : plan.activeStudentsAllowed}`,
                                 freeTrialStatement + (plan.ccRequired ? " (CC required)" : " (no CC required)"),
                                 (plan.freeTrialDays === 0 ? "Flat Monthly Subscription - " : "Flat Monthly Subscription After Free Trial Ends - ")     
                             ]}

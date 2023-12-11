@@ -35,9 +35,56 @@ export const subscriptionApi = createApi({
             query: (body) => ({
                 url: `api/stripe/applyCoupon?couponName=${body.couponName}&subscriptionPrice=${body.subscriptionPrice}`,
                 method: 'GET',
+                headers: getAuthHeader(),
+                mode: "cors"
+            })
+        }),
+        pastTransactions: builder.query({
+            query: () => ({
+                url: `/api/stripe/invoices`,
+                method: "GET",
+                headers: getAuthHeader(),
+            })     
+        }),
+        cancelSubscription: builder.mutation({
+            query: (subscriptionId) => ({
+                url: `api/stripe/cancel/${subscriptionId}`,
+                method: "DELETE",
+                header: getAuthHeader(),
+            })
+        }),
+        changeSubscriptions: builder.mutation({
+            query: (body) => ({
+                url: `api/stripe/changeplan`,
+                method: "POST",
+                body: body,
                 headers: getAuthHeader()
             })
-        })
+        }),
+        enableAutoRenewal: builder.mutation({
+            query: (body) => ({
+                url: `api/stripe/enable-auto-renew`,
+                method: "POST",
+                body: body,
+                headers: getAuthHeader()
+            })
+        }),
+        renewProduct: builder.mutation({
+            query: (body) => ({
+                url: `api/stripe/renew`,
+                method: "POST",
+                body: body,
+                headers: getAuthHeader()
+            })
+        }),
+        makeDefaultPayment: builder.mutation({
+            query: (body) => ({
+                url: `api/stripe/make-default`,
+                method: "POST",
+                body: body,
+                header: getAuthHeader(),
+            })
+        }),
     })
 })
 
@@ -46,5 +93,12 @@ export const {
     useCreateIntentMutation,
     useFinishSetupMutation,
     useApplyCouponQuery,
+    usePastTransactionsQuery,
+    useLazyPastTransactionsQuery,
     useLazyApplyCouponQuery,
+    useCancelSubscriptionMutation,
+    useChangeSubscriptionsMutation,
+    useEnableAutoRenewalMutation,
+    useRenewProductMutation,
+    useMakeDefaultPaymentMutation,
 } = subscriptionApi;

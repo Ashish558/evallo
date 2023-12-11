@@ -1,0 +1,6 @@
+.tutorsProfile .owl-dots{
+    margin-top: -10px !important;
+}
+.tutorsProfile .owl-dots .owl-dot.active span,.parentDashboardCarousel .owl-dots .owl-dot.active span{
+    background-color: #26435F;
+}

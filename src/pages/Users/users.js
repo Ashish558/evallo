@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as XLSX from "xlsx";
 import { CSVLink, CSVDownload } from "react-csv";
 import DeleteIcon2 from "../../assets/YIcons/Vectordel.svg";
@@ -39,6 +39,7 @@ import {
   useCRMBulkDeleteUserMutation,
   useCRMBulkInviteUserMutation,
   useDeleteUserMutation,
+  useLazyGetExportDataQuery,
   useUnblockUserMutation,
 } from "../../app/services/admin";
 import ques from "../../assets/icons/tooltip.svg";
@@ -108,14 +109,14 @@ export default function Users() {
   const [bulkUpload, setBulkUpload] = useState(false);
   const [xlsFile, setXlsFile] = useState();
   const [inviteUsers, setInviteUsers] = useState(false);
-
+  const csvLinkRef = useRef()
   useEffect(() => {
     setValidData(
       isEmail(modalData.email) &&
-        modalData.firstName &&
-        modalData.lastName &&
-        modalData.userType &&
-        modalData.phone
+      modalData.firstName &&
+      modalData.lastName &&
+      modalData.userType &&
+      modalData.phone
     );
   }, [
     modalData,
@@ -570,25 +571,30 @@ export default function Users() {
     {
       id: 1,
       text: "Full Name",
-      className: "text-left pl-6",
+      className: "text-left pl-5 text-white",
+      wrapperClassName: 'justify-start',
       onCick: sortByName, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
       willDisplayDownArrow: usernameSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 2,
       text: "User Type",
+      className: "text-left pl-2",
+      wrapperClassName: 'justify-start',
       onCick: sortByUserType, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
       willDisplayDownArrow: userTypeSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 3,
       text: "Email",
+      className: "text-left pl-4",
       onCick: sortByEmail, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
       willDisplayDownArrow: emailSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 4,
       text: "Phone",
+      className: "text-left pl-9",
       onCick: sortByPhone, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
       willDisplayDownArrow: phoneSortState !== SORT_STATES.DESCENDING_ORDER,
     },
@@ -624,7 +630,6 @@ export default function Users() {
     },
   ];
 
-  console.log(usersData);
 
   const [assignStudentModalActive, setAssignStudentModalActive] =
     useState(false);
@@ -639,7 +644,7 @@ export default function Users() {
   const [unblockUser, unblockUserResp] = useUnblockUserMutation();
   const [fetchSettings, settingsResp] = useLazyGetSettingsQuery();
   const [userToDelete, setUserToDelete] = useState({});
-
+  const [getExportData, getExportDataStatus] = useLazyGetExportDataQuery()
   const [fetchUsers, fetchUsersResp] = useLazyGetAllUsersQuery();
   const [getAllUsers, setAllUsers] = useLazyGetAllOrgUsersQuery();
   const [addUser, addUserResp] = useAddUserMutation();
@@ -1111,38 +1116,75 @@ export default function Users() {
 
   const [csvLoad, setCsvLoad] = useState(false);
   const [successFetched, setsuccessFetched] = useState(false);
-  const handleBulkExport = async () => {
-    setCsvLoad(true);
-    if (selectedId?.length === 0) {
-      getAllUsers()
-        .then((res) => {
-          let result = res?.data?.data?.user;
 
-          if (result) {
-            let arr = [];
-            result?.forEach((it) => {
-              let obj = {};
-              obj.name = it.firstName + " " + it.lastName;
-              obj._id = it._id;
-              obj.userType = it.role;
-              obj.block = it.block;
-              obj.createdAt = it.createdAt;
-              obj.specialization = it.specialization;
-              obj.tutorStatus = it.userStatus;
-              obj.leadStatus = "";
-              obj.assignedTutor = it.assiginedTutors;
-              obj.phone = it.phone;
-              obj.email = it.email;
-              arr.push(obj);
-            });
-            setCsvData(arr);
-          }
-          setsuccessFetched(true);
-          setCsvLoad(false);
-        })
-        .catch((err) => {
-          setCsvLoad(false);
-        });
+
+  const generateExcel = (csvData) => {
+    const wb = XLSX.utils.book_new();
+
+    csvData.forEach(sheet => {
+      const ws = XLSX.utils.json_to_sheet(sheet.data);
+      XLSX.utils.book_append_sheet(wb, ws, sheet.sheetName);
+    });
+    const blob = XLSX.write(wb, { bookType: 'xlsx', type: "base64", mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const blobObject = new Blob([blob], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blobObject);
+    link.download = 'data.xlsx';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleBulkExportUsers = () => {
+    getAllUsers()
+      .then((res) => {
+        let result = res?.data?.data?.user;
+        console.log('exprting user..', result);
+        if (result) {
+          let arr = [];
+          result?.forEach((it) => {
+            let obj = {};
+            obj.name = it.firstName + " " + it.lastName;
+            obj._id = it._id;
+            obj.userType = it.role;
+            obj.block = it.block;
+            obj.createdAt = it.createdAt;
+            obj.specialization = it.specialization;
+            obj.tutorStatus = it.userStatus;
+            obj.leadStatus = "";
+            obj.assignedTutor = it.assiginedTutors;
+            obj.phone = it.phone;
+            obj.email = it.email;
+            arr.push(obj);
+          });
+          setCsvData(arr);
+          setCsvLoad(false)
+        }
+        setsuccessFetched(true);
+        setCsvLoad(false);
+      })
+      .catch((err) => {
+        console.log('err', err);
+        setCsvLoad(false);
+      });
+  }
+  
+  useEffect(() => {
+    handleBulkExportUsers()
+  }, [])
+
+  const handleBulkExport = async (event, done) => {
+    getExportData().then((res) => {
+      const csvSheetData = [
+        { data: [{ name: true }], sheetName: 'parents' },
+        { data: [{ name: true }], sheetName: 'students' },
+        { data: [{ name: true }], sheetName: 'tutors' },
+      ];
+      // generateExcel(csvSheetData)
+    })
+    if (selectedId?.length === 0) {
+      setCsvLoad(true);
+      handleBulkExportUsers()
     } else {
       setCsvData(selectedId);
       setsuccessFetched(true);
@@ -1201,10 +1243,14 @@ export default function Users() {
           setCsvLength("XX");
           alert("Bulk Users Saved!");
           setBulkUpload(false);
-          //setBulkUpload(false)
+
         })
         .catch((err) => {
-          alert("Error Occured");
+          if (err.response?.data?.message) {
+            alert(err.response?.data?.message);
+          } else {
+            alert('An error occured while uploading the file!')
+          }
           setXlsFile(undefined);
           setBulkUpload(false);
         });
@@ -1228,6 +1274,12 @@ export default function Users() {
           // setXlsFile(undefined);
         })
         .catch((err) => {
+          if (err.response?.data?.message) {
+            alert(err.response?.data?.message);
+          } else {
+            alert('An error occured while uploading the file!')
+          }
+
           //console.log("error in bulk upload and invite");
           setXlsFile(undefined);
           setInviteUsers(false);
@@ -1359,14 +1411,18 @@ export default function Users() {
       setAdminSelectedForDelete(check ? true : false);
     }
   }, [selectedId]);
-  console.log("selected ", selectedId, adminSelectedForDelete);
 
   const numberKey = Object.keys(bulkEdits)?.length > 0;
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
+
+
 
   //console.log("users",{selectedId,bulkEdits})
   return (
-    <div className="w-[83.6989583333vw] mx-auto  min-h-screen">
-      <div className="pb-10  mt-[50px] !mt-[calc(50*0.0522vw)]">
+    <div className="px-[120px] mx-auto min-h-screen">
+      <div className="pb-10  mt-[50px] ">
         <div className="flex justify-between items-center mb-3">
           <p className="text-[#24A3D9] mb-6 text-xl text-base-20 cursor-pointer">
             <span onClick={() => navigate("/")}>
@@ -1382,28 +1438,25 @@ export default function Users() {
         </div>
         <div>
           <div className="flex mb-[46px]">
-            <button className="bg-[#517CA8] text-base-15 w-[158px] text-[15px] justify-center flex  items-center text-white  rounded-lg mr-[25px]">
+            <button className="bg-[#517CA8] w-[158px] text-[15px] justify-center flex  items-center text-white  rounded-lg mr-[25px]">
               {csvLoad ? <LoaderNew /> : ""}
-              {!csvLoad && !successFetched ? (
+              {/* {!csvLoad && !successFetched ? (
                 <p onClick={handleBulkExport}>Export Data</p>
               ) : (
                 ""
-              )}
+              )}  */}
 
-              {csvData.length > 0 && successFetched && (
-                <CSVLink
-                  filename={"Evallo_CRM_Data.csv"}
-                  data={csvData}
-                  headers={csvHeaders}
-                  onClick={(event, done) => {
-                    setCsvData([]);
-                    setsuccessFetched(false);
-                  }}
-                >
-                  {" "}
-                  Download File{" "}
-                </CSVLink>
-              )}
+              {/* {csvData.length > 0 && successFetched && ( */}
+              <CSVLink
+                filename={"Evallo_CRM_Data.csv"}
+                data={csvData}
+                asyncOnClick={true}
+                headers={csvHeaders}
+                onClick={handleBulkExport}
+              >
+                Export Data{" "}
+              </CSVLink>
+              {/* )} */}
 
               {!csvLoad && (
                 <img src={ExportIcon} className="ml-3" alt="ExportIcon" />
@@ -1411,7 +1464,7 @@ export default function Users() {
             </button>
             <button
               onClick={upload}
-              className="bg-[#517CA8] text-base-15 w-[160px] text-[15px] justify-center flex  items-center text-white  rounded-lg mr-[25px]"
+              className="bg-[#517CA8] w-[160px] text-[15px] justify-center flex  items-center text-white  rounded-lg mr-[25px]"
             >
               Bulk Upload{" "}
               <img src={UploadIcon} className="ml-3" alt="UploadIcon" />
@@ -1426,14 +1479,14 @@ export default function Users() {
                 </>
               }
               onClick={() => setModalActive(true)}
-              className=" flex items-center  !text-white font-semibold py-[10px]  text-base-17-5 w-[203px] h-[45px] !px-1"
+              className=" flex items-center  !text-white font-semibold py-[10px]  w-[203px] h-[45px] !px-1"
             />
             <button
-              className="bg-[#FFA28D]  text-base-17-5 justify-center flex py-2 pr-[12px] pl-4 design:px-4 items-center text-white font-semibold rounded-lg text-base-15  ml-auto"
+              className="bg-[#FFA28D] justify-center flex py-2 pr-[17.9px] pl-[17px]  items-center text-white text-[17.5px] font-semibold rounded-lg ml-auto"
               onClick={() => setAssignedTutorOpen(true)}
             >
               Tutor Mapping
-              <img src={PlusIcon} className="ml-3" alt="PlusIcon" />
+              <img src={PlusIcon} className="ml-[5px]" alt="PlusIcon" />
             </button>
             {bulkUpload && (
               <Modal
@@ -1483,7 +1536,8 @@ export default function Users() {
                         <button
                           data-modal-target="popup-modal"
                           data-modal-toggle="popup-modal"
-                          className="block mr-6 text-white bg-[#FFA28D] hover:bg-[#FFA28D]  font-medium rounded-lg  px-[13.33px] py-3 text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
+                          disabled={!xlsFile}
+                          className="block mr-6 text-white bg-[#FFA28D] hover:bg-[#FFA28D]  font-medium rounded-lg  px-[13.33px] py-3 text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] disabled:opacity-60"
                           type="button"
                           onClick={saveData}
                         >
@@ -1496,7 +1550,7 @@ export default function Users() {
                             setInviteUsers(true);
                             setBulkUpload(false);
                           }}
-                          className="  block text-[#FFA28D] border-[1.33px] border-[#FFA28D] bg-white hover:shadow-md ms-3 font-medium rounded-lg  px-[13.33px] py-3 text-center dark:bg-white "
+                          className="  block text-[#FFA28D] border-[1.33px] border-[#FFA28D] bg-white hover:shadow-md ms-3 font-medium rounded-lg  px-[13.33px] py-3 text-center dark:bg-white disabled:opacity-50"
                         >
                           Save Data and Invite Users
                         </button>
@@ -1562,16 +1616,15 @@ export default function Users() {
           </div>
         </div>
         <div
-          className={`flex justify-between items-center gap-7 mb-6 relative ${
-            showTooltip ? "z-[1]" : "z-[50]"
-          }`}
+          className={`flex justify-between items-center gap-x-[46.25px] mb-6 relative ${showTooltip ? "z-[1]" : "z-[50]"
+            }`}
         >
           <InputField
             IconRight={SearchIcon}
             placeholder="Search"
             inputClassName="text-base-17-5 pl-4 text-[#667085] placeholder:text-[#667085]"
-            parentClassName="w-[22.03125vw]  py-1"
-            inputContainerClassName="text-base-17-5  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1  !py-[15px]"
+            parentClassName="w-[423.75px]"
+            inputContainerClassName="text-base-17-5 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white !py-[14.5px]"
             type="text"
             value={filterData.typeName}
             onChange={(e) =>
@@ -1584,9 +1637,9 @@ export default function Users() {
             customArrowClassName={`w-[12px] h-[12px]`}
             optionData={userTypesList}
             optionListClassName="text-base-17-5 text-[#667085]"
-            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
+            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] h-[50px] py-[14.5px]"
             placeholder="User type"
-            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085]"
+            parentClassName="flex-1 relative w-[247.83px] relative z-[50]  text-[#667085]"
             type="select"
             value={filterData.userType.length > 0 ? filterData.userType[0] : ""}
             checkbox={{
@@ -1610,8 +1663,8 @@ export default function Users() {
             placeholderClass="text-base-17-5"
             optionData={settings.leadStatus}
             placeholder="Lead Status"
-            parentClassName="w-[12.8541666667vw] relative  relative  border-none text-[#667085]"
-            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
+            parentClassName="flex-1 w-[247.83px] relative  relative  border-none text-[#667085]"
+            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] h-[50px] py-[14.5px]"
             type="select"
             checkbox={{
               visible: true,
@@ -1635,9 +1688,9 @@ export default function Users() {
             placeholderClass="text-base-17-5"
             optionData={specializations}
             placeholder="Services"
-            parentClassName="w-[12.8541666667vw] relative  relative   text-[#667085] -z-5000"
+            parentClassName="flex-1 relative w-[247.83px] relative text-[#667085] -z-5000"
             type="select"
-            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px] "
+            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] h-[50px] py-[14.5px]"
             value={
               filterData.specialization.length > 0
                 ? filterData.specialization[0]
@@ -1670,9 +1723,9 @@ export default function Users() {
               };
             })}
             placeholder="Tutor"
-            parentClassName="w-[12.8541666667vw] relative  relative   text-[#667085] -z-5000"
+            parentClassName="flex-1 w-[247.83px] relative relative text-[#667085] -z-5000"
             type="select"
-            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
+            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] h-[50px] py-[14.5px]"
             optionType="object"
             value={filterData.tutor.length > 0 ? filterData.tutor[0] : ""}
             checkbox={{
@@ -1716,8 +1769,8 @@ export default function Users() {
             </label> */}
           </div>
           <InputSelect
-            optionListClassName="text-base-17-5 text-[#667085]"
-            placeholderClass="text-base-17-5 !custom-scroller-2 overflow-x-auto !text-[#26435F] !mr-0"
+            optionListClassName="text-medium text-[#667085]"
+            placeholderClass="text-medium !custom-scroller-2 overflow-x-auto !text-[#26435F] !mr-0"
             optionData={organization?.settings?.leadStatus?.map((iyt) => {
               return {
                 value: iyt,
@@ -1726,7 +1779,7 @@ export default function Users() {
             })}
             hideRight={true}
             placeholder="Lead Status"
-            parentClassName="w-[9.1146vw] text-[#26435F]"
+            parentClassName=" text-[#26435F]"
             type="select"
             IconSearch={Dropdown}
             inputClassName="bg-white border border-white  w-[125px]"
@@ -1746,8 +1799,8 @@ export default function Users() {
           />
 
           <InputSelect
-            optionListClassName="text-base-17-5 text-[#667085]"
-            placeholderClass="text-base-17-5 !custom-scroller-2 overflow-x-auto !text-[#26435F] !mr-0"
+            optionListClassName="text-[#667085] text-medium"
+            placeholderClass="!custom-scroller-2 text-medium overflow-x-auto !text-[#26435F] !mr-0"
             optionData={organization?.settings?.tutorStatus?.map((iyt) => {
               return {
                 value: iyt,
@@ -1755,7 +1808,7 @@ export default function Users() {
               };
             })}
             placeholder="Tutor Status"
-            parentClassName="w-[10vw]  text-[#26435F]"
+            parentClassName="text-[#26435F]"
             type="select"
             IconSearch={Dropdown}
             inputClassName="bg-white border border-[rgb(255,255,255)]  w-[125px]"
@@ -1778,8 +1831,8 @@ export default function Users() {
 
           <InputSelect
             hideRight={true}
-            optionListClassName="text-base-17-5 text-[#667085] !font-normal"
-            placeholderClass="text-base-17-5 !custom-scroller-2  overflow-x-auto !text-[#26435F] !mr-0 !whitespace-normal !font-normal"
+            optionListClassName="text-medium text-[#667085] !font-normal"
+            placeholderClass="text-medium !custom-scroller-2  overflow-x-auto !text-[#26435F] !mr-0 !font-normal"
             optionData={allTutors?.map((iyt) => {
               return {
                 ...iyt,
@@ -1787,11 +1840,11 @@ export default function Users() {
               };
             })}
             placeholder="Assigned Tutor"
-            parentClassName="  text-[#26435F] "
+            parentClassName="text-[#26435F] flex-shrink-0"
             type="select"
             IconSearch={Dropdown}
             inputClassName="bg-white border   "
-            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] w-[175px] px-[20px] lg:pl-2 2xl:pl-3 rounded-[5px] !font-normal !w-[10.2vw]"
+            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] w-[175px] px-[20px] lg:pl-2 2xl:pl-3 rounded-[5px] !font-normal"
             optionType="object"
             value={bulkEdits?.assignedTutor?.value}
             onChange={(val) => {
@@ -1814,36 +1867,32 @@ export default function Users() {
               onClick={() =>
                 selectedId?.length > 0 && setSaveBulkModalActive(true)
               }
-              className={`bg-[rgba(38,67,95,1)] font-medium text-[15px] px-[10px] py-[10px] rounded-[7.5px] text-white ml-auto  h-[43px] w-[5.1563vw] ${
-                selectedId?.length === 0 || !numberKey ? "opacity-75" : ""
-              } `}
+              className={`bg-[rgba(38,67,95,1)] font-medium text-[15px] px-[10px] py-[10px] rounded-[7.5px] text-white ml-auto  h-[43.75px] w-[100px] ${selectedId?.length === 0 || !numberKey ? "opacity-75" : ""
+                } `}
             >
               Save
             </button>
           </div>
-          <div className="flex justify-end flex-1 gap-5 design:gap-10 relative z-[50] ">
+          <div className="flex justify-end flex-1 items-end gap-x-5 relative z-[50] ">
             <button
               disabled={selectedId?.length === 0 ? true : false}
               onClick={() =>
                 selectedId?.length > 0 && setInviteBulkModalActive(true)
               }
-              className={`bg-[#517CA8] opacity-100 text-base-17-5  font-semibold tracking-wider relative px-[20px] py-[10px] rounded-[7.5px] text-white  text-base-17-5 h-[43px] ${
-                selectedId?.length === 0 ? "opacity-75" : ""
-              } `}
+              className={`bg-[#517CA8] flex justify-center opacity-100 text-[17.5px]  font-semibold tracking-wider relative whitespace-nowrap py-[9px] pb-[13px] rounded-[7.5px] text-white w-[157px] h-[44px] ${selectedId?.length === 0 ? "opacity-75" : ""
+                } `}
             >
               + Invite Users
-              <span className="absolute right-[-10px] z-[500] top-[-10px]">
+              <span className="absolute right-[-9px] z-[500] top-[-12px]">
                 <div className="group relative z-[500]">
                   <img
                     src={ques}
                     onMouseEnter={(e) => {
-                      console.log("mouse enter");
                       e.preventDefault();
                       setTooltip(true);
                     }}
                     onMouseOut={(e) => {
                       e.preventDefault();
-                      console.log("mouse leave");
                       setTooltip(false);
                     }}
                     className="inline-block"
@@ -1851,10 +1900,10 @@ export default function Users() {
                   />
                   {showTooltip && (
                     <span className="absolute top-[-237px]  design:top-[-248px]  left-[-140px] z-5000 w-[336px] design:w-[380px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-[20px] px-[13px] text-left">
-                      <h3 className="text-[#517CA8] text-left text-[0.8333vw] py-0 font-semibold mb-1">
+                      <h3 className="text-[#517CA8] text-left  py-0 font-semibold mb-1">
                         Invite Users
                       </h3>
-                      <span className="text-[0.6948vw] font-light relative z-40 text-left">
+                      <span className="font-light relative z-40 text-left">
                         This will allow you to invite the selected users to
                         create an account within your Organization’s database.
                         They will receive a verification email to set a new
@@ -1884,11 +1933,10 @@ export default function Users() {
                 selectedId?.length > 0 &&
                 setDeleteBulkModalActive(true)
               }
-              className={`bg-[#FF7979] opacity-100 flex items-center gap-2 px-[20px] tracking-wider font-semibold py-[10px] rounded-[5px] text-white  text-base-17-5 ${
-                selectedId?.length === 0 || true || adminSelectedForDelete
-                  ? "opacity-75 cursor-not-allowed"
-                  : ""
-              } `}
+              className={`bg-[#FF7979] opacity-100  text-[17.5px] flex gap-x-[10px] justify-center items-center gap-2 w-[175px] h-[43.75px] font-semibold py-[9.5px] rounded-[5px] text-white ${selectedId?.length === 0 || true || adminSelectedForDelete
+                ? "opacity-75 cursor-not-allowed"
+                : ""
+                } `}
             >
               <span>
                 <img
@@ -1903,7 +1951,6 @@ export default function Users() {
         </div>
 
         <div className="mt-6">
-          {console.log(tableHeaders)}
           <Table
             dataFor="allUsers"
             selectedId2={selectedId}
@@ -2022,9 +2069,8 @@ export default function Users() {
                 </div>
               </div>
               <div
-                className={`flex items-center justify-center gap-4 ${
-                  addUserBtnDisabled ? "opacity-80" : ""
-                }`}
+                className={`flex items-center justify-center gap-4 ${addUserBtnDisabled ? "opacity-80" : ""
+                  }`}
               >
                 <button
                   disabled={addUserBtnDisabled || loading || loadingInvite}
@@ -2169,8 +2215,15 @@ export default function Users() {
             <>
               <p className="text-base -mt-[21px] text-[#667085] mb-6">
                 <span className="font-semibold mr-1">⚠️Note:</span>
-                Once the users are deleted from your Organization, you will not be able to recover their data. Read detailed documentation in Evallo’s{" "}
-                <span className="text-[#24A3D9] underline cursor-pointer font-medium" onClick={()=>navigate('/support')}>knowledge base.</span>
+                Once the users are deleted from your Organization, you will not
+                be able to recover their data. Read detailed documentation in
+                Evallo’s{" "}
+                <span
+                  className="text-[#24A3D9] underline cursor-pointer font-medium"
+                  onClick={() => navigate("/support")}
+                >
+                  knowledge base.
+                </span>
               </p>
             </>
           }

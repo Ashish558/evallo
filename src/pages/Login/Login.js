@@ -19,6 +19,13 @@ import Loader from "../../components/Loader";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
 import EvalloLogo from "../../assets/icons/evallo_new.svg";
 import cuate from "../../assets/signup/cuate.svg";
+import GoogleIcon from "../../assets/icons/google.svg";
+import LinkedinIcon from "../../assets/icons/linkedin-round.svg";
+import AppleIcon from "../../assets/icons/apple.svg";
+import AdminNavbar from "../AdminDashboard/AdminNavbar";
+import SCheckbox from "../../components/CCheckbox/SCheckbox";
+import { BASE_URL } from "../../app/constants/constants";
+
 // import AdminNavbar from "../AdminDashboard/AdminNavbar";
 // import SCheckbox from "../../components/CCheckbox/SCheckbox";
 
@@ -60,13 +67,42 @@ export default function Login({ setLoginFormActive }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (loginLoading || !(emailValidation.test(email.trim()) && password.length > 0))
-      return;
+    if(!email || email === ''){
+      setError((prev) => {
+        return {
+          password: "",
+          email: "This field is required",
+        };
+      });
+      return
+    }
+    
+    if(!password || password === ''){
+      setError((prev) => {
+        return {
+          email: "",
+          password: "This field is required",
+        };
+      });
+      return
+    }
+    if(!emailValidation.test(email.trim())){
+      setError((prev) => {
+        return {
+          password: "",
+          email: "Enter a valid email",
+        };
+      });
+      return
+    }
+    // if (loginLoading || !(emailValidation.test(email.trim()) && password.length > 0))
+    //   return;
     setLoginLoading(true);
     const promiseState = async (state) =>
       new Promise((resolve) => {
         resolve(resetErrors());
       });
+      
     promiseState().then(() => {
       loginUser({ email:email?.trim(), password }).then((res) => {
         setLoginLoading(false);
@@ -121,6 +157,12 @@ export default function Login({ setLoginFormActive }) {
             //    return { ...prev, password: 'Wrong password' }
             // })
           }
+          if (res.error.data.message) {
+            alert(res.error.data.message);
+            // setError(prev => {
+            //    return { ...prev, password: 'Wrong password' }
+            // })
+          }
           return;
         }
         sessionStorage.setItem("token", res.data.data.token);
@@ -137,35 +179,39 @@ export default function Login({ setLoginFormActive }) {
     });
   };
 
+  const google = () => {
+    window.open(`${BASE_URL}api/v1/auth/google`, "_self");
+  };
+
   const props = { setActiveFrame, setResetPasswordActive };
 
   return (
-    <div className={styles.bg}>
-      <div className="flex  flex-col items-center md:grid-cols-2  ">
+    <div className={"w-[1920px] flex justify-center items-center"}>
+      <div className="flex flex-col items-center">
         <img
           src={cuate}
           alt="rocket"
-          className="h-[113.64px] w-[181px] mt-3 mb-7 scale-[0.86] mt-[-5px] design:mt-[0px] design:scale-100"
+          className="h-[113.64px] w-[181px] mt-[44px]"
         />
-        <div className="bg-primary hidden lg:block ">
+        <div className="bg-primary block mt-[13px]">
           <ImageSlider
             className={styles.loginCarousel}
             images={[CarouselImg, CarouselImg]}
             pagination={true}
           />
         </div>
-        <div className="lg:flex scale-[0.75] design:scale-100 mt-[-100px] design:mt-[0px]   lg:items-center bg-white rounded-[10px] pt-[40px] pb-6 px-5 md:px-[66px] lg:min-w-[561px] shadow-[5px_5px_87.5px_0px_rgba(166,166,166,0.25)]">
+        <div className="flex items-center mb-[80.33px] bg-white rounded-[10px] pt-[40px] pb-[40px] px-[66px] w-[561px] h-[650px] shadow-[5px_5px_87.5px_0px_rgba(166,166,166,0.25)]">
           {loginActive ? (
             <div className="w-full">
               <div className="flex justify-center">
                 <img
                   src={EvalloLogo}
                   alt="logo"
-                  className=" h-[29.796px] scale-[.97] "
+                  className=" h-[29.796px]"
                 />
               </div>
               <p
-                className={`font-semibold text-lg mt-[40px] mb-1 bg-transparent text-[#26435F]  pb-[34px] lg:pt-0 lg:pb-0 `}
+                className={`font-semibold text-lg mt-[40px] bg-transparent text-[#26435F] mb-[8px]`}
               >
                 Login
               </p>
@@ -174,7 +220,7 @@ export default function Login({ setLoginFormActive }) {
               </p>
               <form
                 onSubmit={handleSubmit}
-                className={` mt-[105px] tracking-[0.03em] lg:mt-0 ${
+                className={`tracking-[0.03em] mt-0  ${
                   wait ? "cursor-wait" : "cursor-default"
                 }`}
               >
@@ -183,7 +229,7 @@ export default function Login({ setLoginFormActive }) {
                     email?.length > 0 ? (
                       <img
                         onClick={() => setEmail("")}
-                        className="ml-3 cursor-pointer  w-[17.31px] h-[17.31px]"
+                        className="ml-3 cursor-pointer  w-[22.249px] h-[22.249px]"
                         src={cutEmail}
                         alt="right icon"
                       />
@@ -195,9 +241,9 @@ export default function Login({ setLoginFormActive }) {
                   parentClassName="mb-[18px]"
                   label="Email "
                   removeResponsive={true}
-                  labelClassname="text-[#26435F] font-medium"
-                  inputClassName="bg-transparent  !text-lg"
-                  inputContainerClassName="hover:border-[#FFA28D] border-[0.936px] !text-lg border-[#D0D5DD]  h-[49px]  rounded-[6px] w-full"
+                  labelClassname="text-[#26435F] font-medium mb-[2px]"
+                  inputClassName="bg-transparent !text-lg"
+                  inputContainerClassName="hover:border-[#FFA28D] border-[0.936px] !text-lg border-[#D0D5DD]  h-[49.69px]  rounded-[6px] w-[430px]"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   error={error.email}
@@ -207,7 +253,7 @@ export default function Login({ setLoginFormActive }) {
                 <InputField
                   // Icon={Passwordicon}
                   iconSize="medium"
-                  parentClassName="mb-[10px]"
+                  parentClassName="mb-[11px]"
                   placeholder=""
                   biggerText={true}
                   removeResponsive={true}
@@ -215,7 +261,8 @@ export default function Login({ setLoginFormActive }) {
                   type="password"
                   labelClassname="text-[#26435F] font-medium"
                   inputClassName="bg-transparent "
-                  inputContainerClassName="hover:border-[#FFA28D] border-[0.936px] border-[#D0D5DD] !text-lg h-[49px]  rounded-[6px] w-full"
+                  inputContainerClassName="hover:border-[#FFA28D] border-[0.936px] border-[#D0D5DD] !text-lg h-[49.69px] rounded-[6px] w-[430px]"
+                  customEyeIconSize={"w-[17.5px] h-[14.761px]"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   error={error.password}
@@ -227,27 +274,44 @@ export default function Login({ setLoginFormActive }) {
                   }}
                 />
                 <div className="flex justify-between items-center">
-                  <div className="flex items-center justify-center -ml-[3px]">
+                  <div className="flex items-center justify-center ">
                     <CCheckbox
-                      className="scale-[0.8]"
+                      customSize={`w-[16px] h-[16px]`}
                       checked={remember}
                       onChange={() => setRemember(!remember)}
                     />{" "}
-                    <span className="text-base text-[#26435F]  font-semibold">
+                    <span className="text-[16px] text-[#26435F]  font-medium">
                       {" "}
                       Remember me{" "}
                     </span>
                   </div>
                   <p
-                    className=" lg:text-base inline-block cursor-pointer text-[#24A3D9]  leading-[18.715px]  font-semibold ml-auto"
+                    className="inline-block cursor-pointer text-[#24A3D9] text-[16px] font-medium ml-auto"
                     onClick={() => setActiveFrame(setIsPasswordForgot)}
                   >
                     Forgot Password?
                   </p>
                 </div>
-                <div className="flex justify-center">
+
+              {/* <div className="flex justify-center">
+                <button
+                  disabled={
+                    loginLoading === true
+                      ? true
+                      : !(emailValidation.test(email) && password.length > 0)
+                  }
+                  className={`w-[80%] relative mx-auto  bg-[#FFA28D] disabled:opacity-70 pt-3.5 pb-3.5 lg:pt-[9px] lg:pb-[9px] mt-[30px]   rounded-7 text-white text-lg ${
+                    loginLoading ? "cursor-wait" : "cursor-pointer"
+                  }`}
+                  onClick={handleSubmit}
+                >
+                  Sign in
+                  {loginLoading && <Loader />}
+                </button>
+                </div> */}
+                <div className="flex justify-center my-[30px]">
                   <button
-                    className={`w-[337px] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] relative mx-auto  bg-[#FFA28D] disabled:opacity-60 pt-3.5 pb-3.5 lg:py-[11px]  mt-[56px]   rounded-5 text-white text-lg font-medium ${
+                    className={`w-[337px] h-[50px] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] relative mx-auto  bg-[#FFA28D] disabled:opacity-60  rounded-5 text-white text-lg font-medium ${
                       loginLoading ? "cursor-wait opacity-60" : "cursor-pointer"
                     }`}
                     onClick={handleSubmit}
@@ -256,14 +320,36 @@ export default function Login({ setLoginFormActive }) {
                     {loginLoading && <Loader />}
                   </button>
                 </div>
-                <div className="flex justify-center mt-[19px] pb-4">
+
+                <div className="w-full flex justify-center items-center gap-[30px] mt-[11px]" >
+                    <div
+                      className="aspect-square bg-[#fff] flex items-center justify-center h-[50px] w-[50px] relative rounded-[7px] shadow-md"
+                      
+                      // onClick={google}
+                    >
+                      <img 
+                        className="block"
+                        src={GoogleIcon} alt="google_icon" />
+                    </div>
+
+                  
+                    <div
+                      className="aspect-square bg-[#fff] flex items-center justify-center h-[50px] w-[50px] relative rounded-[7px] shadow-md"
+                      
+                    >
+                      <img 
+                        className="block"
+                        src={AppleIcon} alt="appleIcon" />
+                    </div>
+                  </div>
+                <div className="flex justify-center mt-[19.71px]">
                   <p
                     className={`relative text-base  text-[#26435F]  ml-2  inline-block  `}
                   >
                     <span className="cursor-text">Don’t have an account?{" "}</span>
                     <span
                       className={`text-[#24A3D9] cursor-pointer relative  font-bold     inline-block `}
-                      onClick={() => navigate("/signup")}
+                      onClick={() => navigate("/signup?step=1")}
                     >
                       Sign up
                     </span>

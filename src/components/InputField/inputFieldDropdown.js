@@ -9,6 +9,7 @@ import styles from "./styles.module.css";
 
 export default function InputFieldDropdown({
   parentClassName,
+  parentStyle,
   inputContainerClassName,
   Icon,
   biggerText,
@@ -84,13 +85,7 @@ export default function InputFieldDropdown({
     fetch("/countryCode.json")
       .then((res) => res.json())
       .then((data) => {
-        console.log({ data });
-        // data.sort((a, b) => {
-        //   return (
-        //     parseInt(a.dial_code.split("+")[1]) -
-        //     parseInt(b.dial_code.split("+")[1])
-        //   );
-        // });
+     
         data.sort((a, b) => {
           if (a.code < b.code) {
             return -1;
@@ -105,11 +100,11 @@ export default function InputFieldDropdown({
   }, []);
 
   return (
-    <div className={`relative text-sm ${parentClassName && parentClassName} `}>
+    <div className={`relative text-sm ${parentClassName && parentClassName} `} style={{...parentStyle}} >
       {label && (
         <label
           className={`inline-block font-semibold ${
-            biggerText ? "text-lg" : "text-base-17-5"
+            biggerText ? "text-lg" : "text-[16.5px]"
           }  ${labelClassname} ml-0 `}
         >
           {label}

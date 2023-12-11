@@ -110,7 +110,7 @@ export default function AssignedTests() {
   };
 
   const sortByStudentName = () => {
-    if(studentNameSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (studentNameSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -142,7 +142,7 @@ export default function AssignedTests() {
 
       setStudentNameSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(studentNameSortState === SORT_STATES.UNSORTED || studentNameSortState === SORT_STATES.ASCENDING_ORDER) {
+    else if (studentNameSortState === SORT_STATES.UNSORTED || studentNameSortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -157,7 +157,7 @@ export default function AssignedTests() {
         });
         return arr;
       });
-      
+
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -177,7 +177,7 @@ export default function AssignedTests() {
   }
 
   const sortByTestName = () => {
-    if(testNameSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (testNameSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -209,7 +209,7 @@ export default function AssignedTests() {
 
       setTestNameSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(testNameSortState === SORT_STATES.UNSORTED || testNameSortState === SORT_STATES.ASCENDING_ORDER) {
+    else if (testNameSortState === SORT_STATES.UNSORTED || testNameSortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -224,7 +224,7 @@ export default function AssignedTests() {
         });
         return arr;
       });
-      
+
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -244,7 +244,7 @@ export default function AssignedTests() {
   }
 
   const sortByAssignedDate = () => {
-    if(assignedOnSortState === SORT_STATES.DESCENDING_ORDER) { 
+    if (assignedOnSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -278,7 +278,7 @@ export default function AssignedTests() {
 
       setAssignedOnSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(assignedOnSortState === SORT_STATES.UNSORTED || assignedOnSortState === SORT_STATES.ASCENDING_ORDER) {  
+    else if (assignedOnSortState === SORT_STATES.UNSORTED || assignedOnSortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -316,7 +316,7 @@ export default function AssignedTests() {
 
   const sortByDueDate = () => {
 
-    if(dueOnSortState === SORT_STATES.DESCENDING_ORDER) { 
+    if (dueOnSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -350,7 +350,7 @@ export default function AssignedTests() {
 
       setDueOnSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(dueOnSortState === SORT_STATES.UNSORTED || dueOnSortState === SORT_STATES.ASCENDING_ORDER) {  
+    else if (dueOnSortState === SORT_STATES.UNSORTED || dueOnSortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -387,7 +387,7 @@ export default function AssignedTests() {
   };
 
   const sortByAssignedBy = () => {
-    if(assignedBySortState === SORT_STATES.DESCENDING_ORDER) {
+    if (assignedBySortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -419,7 +419,7 @@ export default function AssignedTests() {
 
       setAssignedBySortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(assignedBySortState === SORT_STATES.UNSORTED || assignedBySortState === SORT_STATES.ASCENDING_ORDER) {
+    else if (assignedBySortState === SORT_STATES.UNSORTED || assignedBySortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -434,7 +434,7 @@ export default function AssignedTests() {
         });
         return arr;
       });
-      
+
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -454,7 +454,7 @@ export default function AssignedTests() {
   }
 
   const sortByStatus = () => {
-    if(statusSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (statusSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -486,7 +486,7 @@ export default function AssignedTests() {
 
       setStatusSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(statusSortState === SORT_STATES.UNSORTED || statusSortState === SORT_STATES.ASCENDING_ORDER) {
+    else if (statusSortState === SORT_STATES.UNSORTED || statusSortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -501,7 +501,7 @@ export default function AssignedTests() {
         });
         return arr;
       });
-      
+
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -521,7 +521,7 @@ export default function AssignedTests() {
   }
 
   const sortByDuration = () => {
-    if(durationSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (durationSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -553,7 +553,7 @@ export default function AssignedTests() {
 
       setDurationSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(durationSortState === SORT_STATES.UNSORTED || durationSortState === SORT_STATES.ASCENDING_ORDER) {
+    else if (durationSortState === SORT_STATES.UNSORTED || durationSortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
@@ -568,7 +568,7 @@ export default function AssignedTests() {
         });
         return arr;
       });
-      
+
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -591,32 +591,32 @@ export default function AssignedTests() {
     /* console.log("sortByScore");
     console.log(filteredTests); */
     const hasProperScoresProperty = (item) => {
-      if(item.scores === "-" || item.scores === undefined || item.scores === null || Object.keys(item).length === 0) {
+      if (item.scores === "-" || item.scores === undefined || item.scores === null || Object.keys(item).length === 0) {
         return false;
       }
 
-      if(item.scores.cumulative === undefined || item.scores.cumulative === null) {
+      if (item.scores.cumulative === undefined || item.scores.cumulative === null) {
         return false;
       }
 
       return true;
     }
 
-    if(scoreSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (scoreSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
-          
-          if(!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+
+          if (!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return -1;
           }
 
-          if(!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
+          if (!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
             return -1;
           }
 
-          if(hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+          if (hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return 1;
           }
 
@@ -634,19 +634,19 @@ export default function AssignedTests() {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
-          
-          if(!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+
+          if (!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return -1;
           }
 
-          if(!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
+          if (!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
             return -1;
           }
 
-          if(hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+          if (hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return 1;
           }
-          
+
           if (a.scores.cumulative < b.scores.cumulative) {
             return -1;
           }
@@ -660,21 +660,21 @@ export default function AssignedTests() {
 
       setScoreSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(scoreSortState === SORT_STATES.UNSORTED || scoreSortState === SORT_STATES.ASCENDING_ORDER) {
+    else if (scoreSortState === SORT_STATES.UNSORTED || scoreSortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
 
-          if(!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+          if (!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return -1;
           }
 
-          if(!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
+          if (!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
             return 1;
           }
 
-          if(hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+          if (hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return -1;
           }
 
@@ -688,20 +688,20 @@ export default function AssignedTests() {
         });
         return arr;
       });
-      
+
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
 
-          if(!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+          if (!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return -1;
           }
 
-          if(!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
+          if (!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
             return 1;
           }
 
-          if(hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+          if (hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return -1;
           }
 
@@ -795,7 +795,10 @@ export default function AssignedTests() {
   const [testToDelete, setTestToDelete] = useState({});
 
   const { role: persona, id } = useSelector((state) => state.user);
-  const handleClose = () => setAssignTestModalActive(false);
+  const handleClose = () =>{ 
+    setAssignTestModalActive(false);
+    setStudentMultiple([])
+  }
   const { organization } = useSelector((state) => state.organization);
   const [filterData, setFilterData] = useState({
     studentName: "",
@@ -834,33 +837,32 @@ export default function AssignedTests() {
   useEffect(() => {
     setValidData(
       modalData.name &&
-        modalData.limit &&
-        modalData.date &&
-        modalData.test === "" &&
-        modalData.instruction === ""
+      modalData.limit &&
+      modalData.date &&
+      modalData.test === "" &&
+      modalData.instruction === ""
     );
   }, [modalData.name, modalData.limit, modalData.date, modalData.test]);
 
   const handleMultipleStudent = (student) => {
-   console.log(student);
     let bool = studentMultiple?.find(
       (student1) => student1?._id === student?._id
     );
     if (bool) {
       let updated = studentMultiple.filter((test) => test?._id !== student._id);
       setStudentMultiple(updated);
-      let updated2= selectedstudent.filter((test)=>test?._id !== student._id)
+      let updated2 = selectedstudent.filter((test) => test?._id !== student._id)
       setslecetedstudent(updated2)
     } else {
       setStudentMultiple((prev) => {
         return [...prev, { _id: student?._id, value: student?.value }];
       });
       const foundObject = alldata.find(obj => obj._id === student?._id);
-      const updated2=selectedstudent;
+      const updated2 = selectedstudent;
       updated2.push(foundObject);
       setslecetedstudent(updated2)
-     }
-     checkTextWidth()
+    }
+    checkTextWidth()
   };
   const getCurrentDate = () => {
     const today = new Date();
@@ -917,7 +919,7 @@ export default function AssignedTests() {
     navigate(`/profile/${role}/${id}`);
   };
 
-  
+
   useEffect(() => {
      if (modalData.name.length >= 0) {
       if (persona === "admin"|| persona=='tutor') {
@@ -941,6 +943,7 @@ export default function AssignedTests() {
           if (res.error) {
             return;
           }
+          setalldata(res.data.data.students)
           let tempData = res.data.data.students.map((student) => {
             return {
               _id: student._id,
@@ -987,9 +990,8 @@ export default function AssignedTests() {
           isStarted,
           assignedBy,
         } = item;
-        const assignedByName = `${
-          assignedBy?.firstName ? assignedBy?.firstName : "-"
-        } ${assignedBy?.lastName ? assignedBy?.lastName : ""}`;
+        const assignedByName = `${assignedBy?.firstName ? assignedBy?.firstName : "-"
+          } ${assignedBy?.lastName ? assignedBy?.lastName : ""}`;
         if (assignedBy) {
           if (!allAssignedBys.includes(assignedByName)) {
             allAssignedBys.push(assignedByName);
@@ -1014,8 +1016,8 @@ export default function AssignedTests() {
             isCompleted === true
               ? "completed"
               : isStarted
-              ? "started"
-              : "notStarted",
+                ? "started"
+                : "notStarted",
           createdAt,
           assignedTestId: item._id,
         };
@@ -1054,9 +1056,8 @@ export default function AssignedTests() {
           isStarted,
           assignedBy,
         } = item;
-        const assignedByName = `${
-          assignedBy?.firstName ? assignedBy?.firstName : "-"
-        } ${assignedBy?.lastName ? assignedBy?.lastName : ""}`;
+        const assignedByName = `${assignedBy?.firstName ? assignedBy?.firstName : "-"
+          } ${assignedBy?.lastName ? assignedBy?.lastName : ""}`;
         if (assignedBy) {
           if (!allAssignedBys.includes(assignedByName)) {
             allAssignedBys.push(assignedByName);
@@ -1069,9 +1070,8 @@ export default function AssignedTests() {
           studentId: studentId ? studentId._id : "-",
           assignedOn: getFormattedDate(createdAt),
           assignedBy: assignedBy
-            ? `${assignedBy?.firstName ? assignedBy?.firstName : "-"} ${
-                assignedBy?.lastName ? assignedBy?.lastName : ""
-              }`
+            ? `${assignedBy?.firstName ? assignedBy?.firstName : "-"} ${assignedBy?.lastName ? assignedBy?.lastName : ""
+            }`
             : "-",
           testName: testId ? testId.testName : "-",
           testId: testId ? testId._id : null,
@@ -1082,8 +1082,8 @@ export default function AssignedTests() {
             isCompleted === true
               ? "completed"
               : isStarted
-              ? "started"
-              : "notStarted",
+                ? "started"
+                : "notStarted",
           createdAt,
           dueDate: getFormattedDate(dueDate),
           assignedTestId: item._id,
@@ -1406,7 +1406,7 @@ export default function AssignedTests() {
   const [markSelectLoading, setMarkSelectLoading] = useState(false);
   const [resendBulkModalActive, setResendBulkModalActive] = useState(false);
   const [resendSelectLoading, setResendSelectLoading] = useState(false);
-  const [selectedtext,selselectedtext]= useState('');
+  const [selectedtext, selselectedtext] = useState('');
   const checkTextWidth = () => {
     const container = document.querySelector('.student-name-container');
     const text = document.querySelector('.text-container');
@@ -1443,15 +1443,18 @@ export default function AssignedTests() {
         selselectedtext(stri)
     }
   };
-  
+
 
 
   return (
     <>
-      <div className="w-[83.3333333333vw] mx-auto min-h-screen mb-[40px]">
-        <div className="">
+     <div className="w-[1920px] flex justify-center items-center">
+      <div className="w-[1600px] h-auto mb-[40px] flex flex-col justify-center items-center">
+        <div className=" w-full">
+
+          {/* pathName */}
           <div className="flex justify-between items-center ">
-            <p className="text-[#24A3D9] text-base-20 mb-8 mt-[50px]">
+            <p className="text-[#24A3D9] text-[20px] mt-[50px] mb-[41.23px]">
               <span onClick={() => navigate("/")} className="cursor-pointer">
                 {organization?.company +
                   "  >  " +
@@ -1475,9 +1478,9 @@ export default function AssignedTests() {
                     })
                   }
                   placeholder="Search Student"
-                  inputClassName="text-base-17-5 pl-4 text-[#667085] placeholder:text-base-15"
+                  inputClassName="text-[17.5px] pl-4 text-[#667085] placeholder:text-base-15"
                   parentClassName="w-[22.03125vw]  py-1"
-                  inputContainerClassName="text-base-17-5  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1"
+                  inputContainerClassName="text-[17.5px]  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1"
                   type="text"
                 />
                 <div className="flex items-center justify-end gap-[20px] mt-[10px]">
@@ -1495,7 +1498,7 @@ export default function AssignedTests() {
 
           {(persona === "admin" || persona === "tutor") && (
             <>
-              <div className="flex gap-4 justify-between items-start">
+              <div className="flex justify-start items-start">
                 {persona === "student" ? (
                   <p className={`font-bold text-4xl text-primary-dark`}>
                     Assigned Tests
@@ -1503,7 +1506,8 @@ export default function AssignedTests() {
                 ) : (
                   <></>
                 )}
-
+                  
+                {/* search Input */}
                 <InputField
                   IconRight={SearchIcon}
                   value={filterData.studentName}
@@ -1514,20 +1518,22 @@ export default function AssignedTests() {
                     })
                   }
                   placeholder="Search Student"
-                  inputClassName="pl-4 py-[12px] text-base-17-5 text-md text-[#667085]   placeholder:text-base-17-5 placeholder:text-[#667085] pl-2"
-                  parentClassName="w-[20.83vw]  text-md"
-                  inputContainerClassName=" shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  !py-0 h-[50px]"
+                  inputClassName="h-full w-full text-[17.5px] text-[#667085] placeholder:text-[17.5px] placeholder:text-[#667085] pl-[18px] "
+                  parentClassName="w-[400px] h-[50px] text-md me-[30px]"
+                  inputContainerClassName="shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white !py-0 h-full"
                   type="text"
                 />
-                <div>
-                  <InputSearch
+                {/* search Assignment */}
+                <InputSearch
                     IconRight={SearchIcon}
-                    placeholderClass="text-base-17-5 text-[#667085]"
-                    optionListClassName="text-base-17-5 text-[#667085]"
-                    inputClassName="placeholder:text-[#667085] text-base-17-5 !py-3 text-[#667085]"
-                    inputContainerClassName=" !py-3 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  h-[50px] text-[#667085]"
+                    placeholderClass="text-[17.5px] text-[#667085]"
+                    optionListClassName="text-[17.5px] text-[#667085]"
+                    inputClassName="placeholder:text-[#667085] text-[17.5px] text-[#667085]"
+                    labelClassname={"hidden"}
+                    // dropDownIconStatus={true}
+                    inputContainerClassName="shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white h-full text-[#667085]"
                     placeholder="Search Assignment"
-                    parentClassName="w-[20.83vw] -mt-[20px] design:-mt-[26px] text-base-17-5 text-[#667085] h-[50px]"
+                    parentClassName="w-[400px] text-[17.5px] text-[#667085] h-[50px] me-[30px]"
                     type="select"
                     value={filterData.testName}
                     onChange={(e) => {
@@ -1541,36 +1547,23 @@ export default function AssignedTests() {
                     onOptionClick={(item) => {
                       setFilterData({ ...filterData, testName: item?.value });
                     }}
-                  />
-                </div>
-                {/* <InputSelect
-                  IconSearch={SearchIcon}
-                  value={filterData.testName}
-                  onChange={(val) =>
-                    setFilterData({ ...filterData, testName: val })
-                  }
-                  placeholderClass="text-base-17-5"
-                  optionData={testNameOptions}
-                  optionListClassName="text-base-17-5 text-[#667085]"
-                  inputClassName="text-base-17-5 !py-3"
-                  inputContainerClassName=" !py-3 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  h-[50px]"
-                  placeholder="Search Assignment"
-                  parentClassName="w-[23.75vw] text-base-17-5 text-[#667085] h-[50px]"
-                  type="select"
-                /> */}
+                />
+                {/*  */}
                 <InputSelect
                   value={filterData.status}
                   onChange={(val) => handleStatus(val)}
-                  optionListClassName="text-base-17-5 text-[#667085]"
-                  placeholderClass="text-base-17-5"
+                  optionListClassName="text-[17.5px] text-[#667085]"
+                  placeholderClass="text-[17.5px]"
                   optionData={["Started", "Not Started", "Completed"]}
-                  inputClassName="text-base-17-5 !py-3"
+                  inputClassName="text-[17.5px] !py-3"
                   inputContainerClassName=" shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px]  bg-white !py-3 h-[50px]"
                   optionClassName=""
                   placeholder="Completion"
-                  parentClassName="w-[11.98vw] text-base-17-5 text-[#667085]"
+                  parentClassName="w-[250px] text-[17.5px] text-[#667085] me-[30px]"
                   type="select"
                 />
+
+
                 {persona === "tutor" ? (
                   <div className="w-2/6 flex justify-end">
                     <div>
@@ -1589,11 +1582,11 @@ export default function AssignedTests() {
                     onChange={(val) =>
                       setFilterData({ ...filterData, assignedBy: val })
                     }
-                    optionListClassName="text-base-17-5 text-[#667085]"
-                    parentClassName="w-[11.98vw] text-base-17-5 "
-                    inputClassName="text-base-17-5 py-3"
+                    optionListClassName="text-[17.5px] text-[#667085]"
+                    parentClassName="w-[230px] text-[17.5px] "
+                    inputClassName="text-[17.5px] py-3"
                     inputContainerClassName="shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] bg-white h-[50px]"
-                    placeholderClass="text-base-17-5"
+                    placeholderClass="text-[17.5px]"
                     optionData={assignedBys}
                     placeholder="Tutor"
                     type="text"
@@ -1603,7 +1596,7 @@ export default function AssignedTests() {
                   persona !== "student" &&
                   persona !== "tutor" && (
                     <button
-                      className="bg-[#FFA28D] text-[15px] justify-center flex py-[7px]  pl-1 items-center text-white font-bold rounded-[7.5px] text-base-15 w-[10.05vw] h-[50px]"
+                      className="bg-[#FFA28D] ms-[57px] justify-center flex py-[7px]  pl-1 items-center text-white font-bold rounded-[7.5px] text-[15px] w-[193px] h-[50px]"
                       onClick={() => setAssignTestModalActive(true)}
                     >
                       New Assignment
@@ -1619,30 +1612,22 @@ export default function AssignedTests() {
                   onRemoveFilter={onRemoveFilter}
                 />
               </div>
-
-              <div className="flex items-center  justify-between gap-[20px] mt-[10px]">
-                <div className="flex text-[#26435F] items-center text-[17.5px] text-base-17-5">
-                  <div className="ml-6 flex gap-3 items-center">
+            
+              {/* filter options */}
+              <div className="flex items-center  justify-between gap-[20px] mt-[10px] ">
+                <div className="flex text-[#26435F] items-center text-[17.5px]">
+                  <div className="ml-[33px] flex items-center">
                     <SCheckbox
                       stopM={true}
                       checked={isChecked}
                       onChange={handleCheckboxChange}
                     />
-                    <span className="inline-block text-[17.5px] mt-[-1px] text-base-17-5">
+                    <span className="inline-block text-[17.5px] ml-[23.75px]"
+                     style={{opacity: "0.8"}}
+                    >
                       {selectedId?.length} Selected
                     </span>
-                    {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
-              <input
-                type="checkbox"
-                checked={isChecked}
-                onChange={handleCheckboxChange}
-              />
-              <span
-                className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
-                  }`}
-              ></span>
-             
-            </label> */}
+                   
                   </div>
                   {(persona === "admin" ||
                     (persona === "tutor" &&
@@ -1655,7 +1640,7 @@ export default function AssignedTests() {
                       }
                       className="cursor-pointer gap-x-[5px] px-1 w-[5.9375vw] py-[9px] bg-[#FFF] rounded-5 ml-6 flex items-center justify-center text-base-17-5"
                     >
-                      <p>Delete</p>
+                      <p className="mr-[5px]">Delete</p>
                       <p>
                         <img className="w-5 h-5" src={DeleteIcon} alt="delete-icon" />
                       </p>
@@ -1665,21 +1650,21 @@ export default function AssignedTests() {
                     onClick={() =>
                       selectedId?.length > 0 && setResendBulkModalActive(true)
                     }
-                    className="cursor-pointer gap-x-[5px] px-1 py-[11px] bg-[#FFF] rounded-5 ml-6 flex w-[5.9375vw] items-center justify-center text-base-17-5"
+                    className="cursor-pointer bg-[#FFF] rounded-5 ml-[25px] flex w-[114px] h-[44px] items-center justify-center text-[17.5px]"
                   >
-                    <p>Resend</p>
+                    <p className="mr-[5px]">Resend</p>
                     <img src={ResendIcon} alt="" />
                   </div>
                   <div
                     onClick={() =>
                       selectedId?.length > 0 && setMarkBulkModalActive(true)
                     }
-                    className="px-1 py-[11px] cursor-pointer bg-[#FFF] rounded-5 ml-6 w-[8.9583vw] text-center"
+                    className="cursor-pointer bg-[#FFF] rounded-5 ml-[25px] w-[172px] h-[44px] text-center flex justify-center items-center"
                   >
-                    <p>Mark Completed</p>
+                   Mark Completed
                   </div>
                 </div>
-                <div className="flex items-center justify-between gap-x-[20px] text-base-17-5">
+                <div className="flex items-center justify-between gap-x-[20px] text-[17.5px]">
                   {status.map(({ text, color }, idx) => (
                     <AssignedTestIndicator
                       key={idx}
@@ -1691,8 +1676,9 @@ export default function AssignedTests() {
               </div>
             </>
           )}
-          <div className="mt-3">
+          <div className="mt-[21.25px]">
             <Table
+              widthFullTable={true}
               selectedId2={selectedId}
               setSelectedId2={setSelectedId}
               onClick={{ handleResend, handleDelete, handleNavigate }}
@@ -1705,6 +1691,7 @@ export default function AssignedTests() {
               setMaxPageSize={setMaxPageSize}
               setAllAssignedTests={setAllAssignedTests}
               setFilteredTests={setFilteredTests}
+              theadWidth={"bg-[#26435F]"}
             />
           </div>
         </div>
@@ -1713,13 +1700,13 @@ export default function AssignedTests() {
         <Modal
           title="New Assignment"
           buttonParentClassName="justify-center"
-          titleClassName=" text-start pb-2"
-          classname={"max-w-[700px] mx-auto"}
+          titleClassName="text-start pb-2"
+          modalSize={"w-[667px] h-[585px] mx-auto"}
           cancelBtn={true}
-          cancelBtnClassName="max-w-140 !bg-[rgba(38,67,95,0.20)] !text-[#26435F]"
+          cancelBtnClassName="w-[146.67px] h-[46.667px] !bg-[rgba(38,67,95,0.20)] !text-[#26435F]"
           primaryBtn={{
             text: "Assign",
-            className: "max-w-140 pl-8 pr-8 !bg-[#FFA28D] !text-white ",
+            className: "w-[140px] pl-8 pr-8 !bg-[#FFA28D] !text-white ",
             onClick: () => handleAssignTestSubmit(),
             disabled: submitBtnDisabled,
 
@@ -1728,18 +1715,18 @@ export default function AssignedTests() {
           handleClose={handleClose}
           body={
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-6  gap-y-0 mb-7">
-                <div className="mb-10 student-name-container">
+              <div className="h-[200px] grid grid-cols-1 md:grid-cols-2 gap-x-[36px] gap-y-[15px]">
+                <div className=" student-name-container">
                   <InputSearch
                     label="Student Name"
-                    labelClassname="text-base-20 text-[#26435F] mb-1"
+                    labelClassname="text-[20px] text-[#26435F] mb-[8px]"
                     placeholder="Search Student"
-                    placeholderClass="text-base-17-5"
-                    parentClassName=" text-base-17-5 py-0 w-full"
-                    inputContainerClassName=" text-base-17-5 bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
+                    placeholderClass="text-[17.5px]"
+                    parentClassName=" text-[17.5px] py-0 w-[280px] h-[53.33px]"
+                    inputContainerClassName="text-[17.5px] bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
                     inputClassName="bg-[#F3F5F7]"
                     type="text"
-                    value={modalData.name}
+                    value={modalData.name ? modalData.name : studentMultiple.length > 0 ? studentMultiple[0].value : ''}
                     checkbox={{
                       visible: true,
                       name: "student",
@@ -1752,55 +1739,26 @@ export default function AssignedTests() {
                       })
                     }
                     onOptionClose={handleOptionCLose}
-                    optionListClassName="text-base-17-5"
-                    optionClassName="text-base-17-5"
+                    optionListClassName="text-[17.5px]"
+                    optionClassName="text-[17.5px]"
                     optionData={students}
                     // right={<img className="" src={down} />}
                     onOptionClick={(item) => {
                       handleMultipleStudent(item);
-                      // handleTestChange(item);
-                      // setStudent(item.value);
-                      // handleStudentsChange(item)
-                      // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
+                    
                     }}
                   />
-                  {/* <InputSearch
-                    label="Student Name"
-                    value={modalData.name}
-                    onChange={(val) =>
-                      setModalData({
-                        ...modalData,
-                        name: val.target.value,
-                      })
-                    }
-                    placeholderClass="text-base-17-5"
-                    optionData={students}
-                    onOptionClick={(item) => {
-                      setModalData({
-                        ...modalData,
-                        name: item.value,
-                        studentId: item._id,
-                      });
-                    }}
-                    optionPrefix="s"
-                    parentClassName="w-full mr-4"
-                    labelClassname=" !font-medium text-[#26435F] ml-2 mb-0.5 !font-semibold text-[#26435F]"
-
-                    inputContainerClassName="px-5 py-3.5 text-base-17-5 bg-primary-50 border-0"
-                    inputClassName="text-base-17-5 bg-transparent "
-                    placeholder="Student Name"
-                    type="select"
-                  /> */}
+               
                   <div className="flex flex-row items-center">
                     <p className="font-medium whitespace-nowrap text-container text-base-15 mt-1 text-[#667085]">
-                  {selectedtext}
-                  </p>
+                      {selectedtext}
+                    </p>
 
                   </div>
                 </div>
                 <div>
                   <InputSearch
-                    placeholderClass="text-base-17-5"
+                    placeholderClass="text-[17.5px]"
                     optionData={testsData}
                     value={modalData.test}
                     onChange={(e) =>
@@ -1818,10 +1776,10 @@ export default function AssignedTests() {
                     }}
                     label="Assignment"
                     placeholder="Select Assignment Name"
-                    parentClassName="w-full mr-4"
-                    labelClassname=" !font-medium text-[#26435F] text-base-20 ml-2 mb-0.5 !font-semibold text-[#26435F]"
-                    inputContainerClassName="px-5 py-3.5 text-base-17-5 bg-primary-50 border-0"
-                    inputClassName="text-base-17-5 bg-transparent"
+                    parentClassName=" w-[280px] h-[53.33px]"
+                    labelClassname=" !font-medium text-[#26435F] text-[20px] ml-2 mb-[8px] text-[#26435F]"
+                    inputContainerClassName="px-5 py-3.5 text-[17.5px] bg-primary-50 border-0"
+                    inputClassName="text-[17.5px] bg-transparent"
                     type="select"
                   />
                 </div>
@@ -1832,12 +1790,12 @@ export default function AssignedTests() {
                     onChange={(val) =>
                       setModalData({ ...modalData, limit: val })
                     }
-                    placeholderClass="text-base-17-5"
+                    placeholderClass="text-[17.5px]"
                     optionData={timeLimits}
-                    parentClassName="w-full mr-4 "
-                    labelClassname=" !font-medium text-[#26435F] text-base-20 ml-2 mb-1 !font-semibold text-[#26435F]"
-                    inputContainerClassName="px-5 text-base-17-5 py-3.5 bg-primary-50 border-0"
-                    inputClassName="text-base-17-5 bg-transparent"
+                    parentClassName="w-[280px] h-[53.33px]"
+                    labelClassname=" !font-medium text-[#26435F] text-[20px] ml-2 mb-[8px] text-[#26435F]"
+                    inputContainerClassName="px-5 text-[17.5px] py-3.5 bg-primary-50 border-0"
+                    inputClassName="text-[17.5px] bg-transparent"
                     placeholder="Select Duration"
                     type="select"
                   />
@@ -1846,7 +1804,7 @@ export default function AssignedTests() {
                   <InputField
                     label="Due Date"
                     iconSize="medium"
-                    labelClassname=" !font-medium text-[#26435F] text-base-20 ml-2 mb-0.5 !font-semibold text-[#26435F]"
+                    labelClassname="!font-medium text-[#26435F] text-[20px] ml-2 mb-[16px] text-[#26435F]"
                     min={getCurrentDate()}
                     value={modalData.date}
                     onChange={(val) =>
@@ -1855,18 +1813,18 @@ export default function AssignedTests() {
                         date: val.target.value,
                       })
                     }
-                    parentClassName="w-full mr-4"
-                    inputContainerClassName="px-5 py-3.5 bg-primary-50 border-0"
-                    inputClassName="text-base-17-5 bg-transparent text-base-17-5"
-                    placeholderClass="text-base-17-5"
+                    parentClassName="w-[280px] h-[53.33px]"
+                    inputContainerClassName="w-full h-full px-5 bg-primary-50 border-0 py-3.5"
+                    inputClassName="text-[17.5px] w-full h-full bg-transparent text-[17.5px] font-normal"
+                    placeholderClass="text-[17.5px]"
                     optionData={optionData}
                     placeholder="Date"
                     type="date"
                   />
                 </div>
               </div>
-              <div className="relative  mx-1">
-                <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
+              <div className="relative mx-1 mt-[20px]">
+                <p className=" text-[18.667px] text-[#26435F] font-semibold mb-1">
                   Assignment Instructions{" "}
                   <span className="text-[#667085]">(optional)</span>
                 </p>
@@ -1879,7 +1837,7 @@ export default function AssignedTests() {
                       instruction: val.target.value,
                     })
                   }
-                  className="mt-2 block  mb-7 resize-none focus:!ring-blue-500 p-3 focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18  placeholder:text-base-18  w-full h-[100px] shadow-small  rounded-[5px]"
+                  className="mt-[2px] block mb-[71.33px] resize-none focus:!ring-blue-500 px-[20px] pt-[12.67px] focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18  placeholder:text-base-18  w-full h-[100px] shadow-small  rounded-[5px]"
                   placeholder="Please add any custom instructions related to the test here. These will be visible to the students before they start a section during the assignment."
                 ></textarea>
               </div>
@@ -1899,8 +1857,8 @@ export default function AssignedTests() {
                 labelClassname=" !font-medium text-[#26435F] ml-2 mb-0.5"
                 
                 inputContainerClassName="px-5 py-3.5 bg-primary-50 border-0 mb-5"
-                inputClassName="text-base-17-5 bg-transparent text-base-17-5"
-                placeholderClass="text-base-17-5"
+                inputClassName="text-[17.5px] bg-transparent text-[17.5px]"
+                placeholderClass="text-[17.5px]"
                 optionData={optionData}
                 placeholder="Instruction"
               /> */}
@@ -1911,21 +1869,21 @@ export default function AssignedTests() {
       {resendModalActive && (
         <Modal
           title={
-            <span className="leading-10  capitalize">
+            <span className="leading-10 capitalize text-[21.332px]">
               Do you want to resend the assignments via email?
             </span>
           }
-          titleClassName="mb-5 leading-10"
+          titleClassName="mb-[22.87px] leading-10"
           cancelBtn={true}
-          cancelBtnClassName="max-w-140"
+          cancelBtnClassName="w-[146.67px] h-[46.67px]"
           primaryBtn={{
             text: "Send Email",
-            className: "w-[140px] pl-4 px-4",
+            className: "w-[146.667px] h-[46.67px] flex justify-center items-center",
             onClick: () => handleResendTestSubmit(),
             loading: resendLoading,
           }}
           handleClose={() => setResendModalActive(false)}
-          classname={"max-w-[630px] mx-auto"}
+          classname={"w-[666px] h-[194.667px] mx-auto"}
         />
       )}
       {deleteModalActive && (
@@ -1935,18 +1893,18 @@ export default function AssignedTests() {
               Are you sure you want to delete the assigned test ?
             </span>
           }
-          titleClassName="mb-5 leading-10"
+          titleClassName="mb-[22.87px] leading-10"
           cancelBtn={true}
-          cancelBtnClassName="w-[140px] px-3"
+          cancelBtnClassName="w-[146.667px] h-[46.67px]"
           primaryBtn={{
             text: "Delete",
-            className: "w-[140px] pl-4 px-4",
+            className: "w-[146.667px] h-[46.67px]",
             onClick: () => deleteTest(),
             bgDanger: true,
             loading: deleteLoading,
           }}
           handleClose={() => setDeleteModalActive(false)}
-          classname={"max-w-[630px] mx-auto"}
+          classname={"w-[666px] h-[194.667px] mx-auto"}
         />
       )}
       {deleteBulkModalActive && (
@@ -1956,21 +1914,22 @@ export default function AssignedTests() {
               Are you sure you want to Delete the Assignments?
             </span>
           }
-          titleClassName="mb-5 leading-10"
+          titleClassName="mb-[22.87px] leading-10"
           cancelBtn={true}
           crossBtn={true}
-          cancelBtnClassName="w-[140px] !bg-[#26435F1A] px-3  !text-[#26435F] !rounded-md"
+          cancelBtnClassName="w-[146.667px] h-[46.67px] !bg-[#26435F1A] px-3 !text-[#26435F] !rounded-md"
           primaryBtn={{
             text: "Delete",
-            className: "w-[140px]  pl-4 px-4 !bg-[#FF7979] text-white",
+            className: "w-[146.667px] h-[46.67px] !bg-[#FF7979] text-white",
             onClick: () => bulkSelectDelete(),
             bgDanger: true,
             loading: deleteSelectLoading,
           }}
           handleClose={() => setDeleteBulkModalActive(false)}
-          classname={"max-w-[630px]  mx-auto"}
+          classname={"w-[666px] h-[194.667px] mx-auto"}
         />
       )}
+      
       {markBulkModalActive && (
         <Modal
           title={
@@ -1991,9 +1950,9 @@ export default function AssignedTests() {
           }}
           body={
             <>
-              <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-6">
+              <p className="text-[17.5px] mt-[-5px] text-[#667085] mb-6">
                 <span className="font-semibold mr-1">
-                  <div className="!scale-[0.8] mr-[-4px] mt-[-4px] inline-block">
+                  <div className="!scale-[0.8] mr-[-4px] inline-block">
                     ⚠️
                   </div>{" "}
                   Note:
@@ -2002,7 +1961,7 @@ export default function AssignedTests() {
                 not be able to attempt any remaining sections and will be able
                 to access the score report. Read detailed documentation in
                 Evallo’s{" "}
-                <span className="text-[#24A3D9]  border-b border-b-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}>
+                <span className="text-[#24A3D9]  border-b border-b-[#24A3D9] cursor-pointer" onClick={() => window.location.href = process.env.REACT_APP_SUPPORT_LINK}>
                   {" "}
                   knowledge base.
                 </span>
@@ -2033,13 +1992,13 @@ export default function AssignedTests() {
           }}
           body={
             <>
-              <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-6">
+              <p className="text-[17.5px] mt-[-5px] text-[#667085] mb-6">
                 <span className="font-semibold mr-1">⚠️ Note:</span>
                 This will NOT create another assignment for the students.
                 Instead, it will resend the email with the PDF file (containing
                 the assignment content) attached to it. Read detailed
                 documentation in Evallo’s{" "}
-                <span className="text-[#24A3D9] cursor-pointer border-b border-b-[#24A3D9]" onClick={()=>navigate('/support')}>
+                <span className="text-[#24A3D9] cursor-pointer border-b border-b-[#24A3D9]" onClick={() => window.location.href = process.env.REACT_APP_SUPPORT_LINK}>
                   {" "}
                   knowledge base.
                 </span>
@@ -2050,6 +2009,7 @@ export default function AssignedTests() {
           classname={"max-w-[630px]  mx-auto"}
         />
       )}
+      </div>
     </>
   );
 }

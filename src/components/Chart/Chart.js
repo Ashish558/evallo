@@ -308,15 +308,14 @@ export default function Chart({ setSubjects, YHeader, subjects, selectedSubject,
    return (
       <>
      {data&&data !== undefined ?
-      <div className='wrapper w-full min-w-2/3 overflow-x-auto h-[460px] pt-[80px] pl-[30px] relative flex justify-center items-center'  >
-
+      <div className='wrapper w-full min-w-2/3 overflow-x-auto h-[460px] pt-[80px]   relative flex justify-center items-center'  >
          <Bubble ref={chartRef}
             options={options} data={data}
             height={200}
             width={canvasWidth}
          />
-          <img src={upArrow} alt="arrow_right" className='absolute ms-8 bottom-0 mb-8' />
-         <img src={downArrow} alt="arrow_down" className='absolute left-0 lg:ms-24 md:ms-10' />
+          <img src={upArrow} alt="arrow_right" className='absolute ms-8 bottom-0 mb-[20px] w-[50px] !ml-[-48px]' />
+         <img src={downArrow} alt="arrow_down" className='absolute left-[72px] lg:ms-24 md:ms-10 h-[85px]' />
 
       </div>
       : 

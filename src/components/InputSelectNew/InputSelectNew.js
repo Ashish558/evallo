@@ -56,8 +56,8 @@ export default function InputSelectNew({
       onClick={() => setSelected(!selected)}
     >
       {label && (
-        <label className={`font-semibold  inline-block ${biggerText ? "text-lg" : 'text-base-17-5'} ${labelClassname}`}>
-          {label}
+        <label className={`font-semibold  inline-block ${biggerText ? "text-lg" : 'text-[17.5px]'} ${labelClassname}`}>
+          {label} 
           {required && (
             <span className="text-primaryRed inline-block pl-1">*</span>
           )}
@@ -91,19 +91,20 @@ export default function InputSelectNew({
           name={label}
         >
          {value === "" || !value ? (
-            <span className={`text-[#667085] text-base-17-5 whitespace-nowrap ${false ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>
+            <span className={`text-[#667085] text-[17.5px] whitespace-nowrap ${false ? 'mr-0' : 'mr-10'} ${placeholderClass} `}>
               {" "}
               {placeholder}{" "}
             </span>
           ) : (
-            <span className={`mr-10 ${customFontSize?customFontSize:'text-base-17-5'} whitespace-nowrap ${false ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>{value}</span>
+
+            <span className={`mr-10 ${customFontSize?customFontSize:'text-[17.5px]'} whitespace-nowrap ${false ? 'mr-0' : 'mr-10'} ${placeholderClass} `}>{value}</span>
           )}
           {ICON2 && <img src={ICON2} className={`ml-4 inline-block ${iconClass} mt-[-5px] `} alt="icon" />}
 
         </div>
         {selected && (
           <div
-            className={`scrollbar-content scrollbar-vertical shadow-md w-full  max-h-[165px] ${styles.options} ${optionContainerClassName} custom-scroller shadow-[0px_0px_3px_0px_#00000040] text-base-17-5`}
+          className={`scrollbar-content scrollbar-vertical shadow-md w-full max-h-[165px] ${styles.options} ${optionContainerClassName} custom-scroller shadow-[0px_0px_3px_0px_#00000040] text-[17.5px]`}
           >
             {optionData?.map((option, idx) => {
               // //console.log('option', option);
@@ -114,7 +115,7 @@ export default function InputSelectNew({
                   key={idx}
                   onClick={() => handleOptionSelect(option, idx)}
                 >
-                  <p className={`${optionListClassName} ${customFontSize?customFontSize:"text-base-17-5"}  `}>
+                  <p className={`${optionListClassName} ${customFontSize?customFontSize:"text-[17.5px]"}  `}>
                     {optionType !== undefined && optionType === "object"
                       ? option.value
                         ? option.value

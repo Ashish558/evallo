@@ -7,11 +7,21 @@ export default function CheckBoxOptionContainer({
     className,
     checkBoxClassName,
     selected = false,
-    onChange = function(c){}
+    onChange = function(c){},
+    onBodyClicked,
+    isCheckBoxDisabled,
 }) {
     return (
         <div
-            className={`border-2 flex rounded-5 w-full ${className}`}
+            className={`flex rounded-5 w-full 
+                        ${selected ? "shadow-[0px_0px_10px_rgba(255,162,141,0.5)]" : "shadow-[0px_0px_2px_rgba(0,0,0,0.25)]"}
+                        ${className}
+            `}
+            onClick={() => {
+                if(onBodyClicked.constructor && onBodyClicked.constructor.name === "Function") {
+                    onBodyClicked();
+                }
+            }}
         >   
             {/* <div 
                 className={`h-[15px] ml-[20px] mt-[20px] w-[15px] ${radioButtonClassName} ${selected ? styles.selectedRadio : styles.unSelectedRadio}`}
@@ -20,6 +30,7 @@ export default function CheckBoxOptionContainer({
                 checked={selected}
                 className={`ml-[20px] mt-[20px] ${checkBoxClassName}`}
                 onChange={onChange}
+                disabled={isCheckBoxDisabled}
             />
             {children}
         </div>

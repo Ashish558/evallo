@@ -1,19 +1,19 @@
-import React, { useState } from 'react'
+import React from 'react'
 import ReactApexChart from 'react-apexcharts'
-
-export default function BarGraph({ series, options, height }) {
-
-   
-console.log("value", series)
+ 
+function BarGraph({ series, options, height, width }) {
+ 
    return (
-      
+
       <div>
          <ReactApexChart options={options}
             height={height ? height : '700px'}
             series={series}
             type='bar'
-            width='100%'
-           />
+            width={width ? width : '100%'}
+         />
       </div>
    )
 }
+
+export default BarGraph;

@@ -1,0 +1,4 @@
+.permission > div:last-child{
+    border-bottom: 0px;
+    /* border-bottom: 2px solid #CBD6E2; */
+ }

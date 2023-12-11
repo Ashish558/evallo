@@ -64,27 +64,26 @@ export const TestItem = ({
   };
 
   return (
-    <div className='flex py-[8px] mb-2 last:mb-0'>
+    <div className='grid grid-cols-2 py-[8px] mb-2 last:mb-0'>
       
-      <div className='w-1/2'>
+      <div className='max-w-[186.5px] col-span-1'>
         <h2 className='text-[18px] font-medium text-[#517CA8]'>{testName}</h2>
-        <div className='flex gap-[12px]'>
-          <h5 className='text-xs opacity-60 font-light text-[#517CA8]'>Due date:</h5>
-          <h6 className='text-xs opacity-60 font-light text-[#517CA8]'>{getFormattedDate(dueDate, dateFormat)}</h6>
+        <div className='flex gap-[5.5px]'>
+          <h5 className='text-[15px] font-light text-[#517CA8]'>Due date:</h5>
+          <h6 className='text-[15px] leading-[19px] font-light text-[#517CA8]'>{getFormattedDate(dueDate, dateFormat)}</h6>
         </div>
       </div>
-      <div className='flex-1 ml-5'>
-        <div className='flex gap-[12px]'>
-          <div className='flex items-center'>
-            <div className=' mr-3  p-1'>
+        <div className='flex gap-[19.5px] col-span-1 justify-end items-center'>
+          {/* <div className='flex items-center'> */}
+            {/* <div className=' mr-3  p-1'> */}
              {testype!=="DSAT"&& <img
                 className='cursor-pointer h-[35px]'
                 src={Download}
                 onClick={() => window.open(`${awsLink}${pdfLink}`)}
                 alt='download'
               />}
-            </div>
-          </div>
+            {/* </div> */}
+          {/* </div> */}
           {
   isLoadingPage ? (
     <LoaderPage />
@@ -97,26 +96,25 @@ export const TestItem = ({
   ) : pageState === 'test' ? (
     <TestPage /> 
   ) : isCompleted === true ? (
-                      <div className='cursor-pointer     bg-[#38C980] px-2 py-2 text-center text-white rounded-[5px] w-[6.25vw] text-base-17-5'
+                      <div className='cursor-pointer  h-[31.25px] flex justify-center items-center   bg-[#38C980] text-center text-white rounded-[5px] w-[120px] text-[17.5px]'
       onClick={handleReportNavigate}
     >
-      {/* {score} */}Report
+      {/* {score} */}
+      <p>Report</p>
     </div>
   ) : isStarted === true ? (
-                        <div className='cursor-pointer  bg-[#FFCE84] px-2 py-2 text-center text-white rounded-[5px] w-[6.25vw] text-base-17-5'
+                        <div className='cursor-pointer h-[31.25px] flex justify-center items-center bg-[#FFCE84] text-center text-white rounded-[5px] w-[120px] text-[17.5px]'
       onClick={handleNavigate}
     >
-      Continue
+       <p>Continue</p>
     </div>
-  ) : (   <div className='cursor-pointer w-[6.25vw]  bg-[#FF7979] px-2 py-2 text-center text-white rounded-[5px] text-base-17-5'
+  ) : (   <div className='cursor-pointer w-[120px] h-[31.25px] flex justify-center items-center bg-[#FF7979] text-center text-white rounded-[5px] text-[17.5px]'
       onClick={handleNavigate}
     >
-      Start
+      <p>Start</p>
     </div>
   )
 }
-
-        </div>
       </div>
     </div>
   );

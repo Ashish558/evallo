@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLazyGetParentsByNameQuery } from "../../../../app/services/admin";
 import { useLazyGetStudentsByNameQuery } from "../../../../app/services/session";
 import {
@@ -12,7 +12,7 @@ import InputField from "../../../../components/InputField/inputField";
 import InputSearch from "../../../../components/InputSearch/InputSearch";
 import InputSelect from "../../../../components/InputSelect/InputSelect";
 import Modal from "../../../../components/Modal/Modal";
-import { Country } from "country-state-city";
+import { City, Country } from "country-state-city";
 // import SimpleCalendar from "../../../../components/SimpleCalendar/SimpleCalendar";
 // import demoUser from "../../../../assets/icons/demo-user.png";
 import Slider from "../../../../components/Slider/Slider";
@@ -500,11 +500,10 @@ export default function ParentEditables({
       handleAddReview();
       return;
     }
-    if(currentField.name === "videoLink"){
+    if (currentField.name === "videoLink") {
       const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-     let check=false
-        if (!urlRegex.test(currentToEdit.videoLink)) check = true;
-      
+      let check = false;
+      if (!urlRegex.test(currentToEdit.videoLink)) check = true;
 
       if (check) {
         alert("Enter valid video url!");
@@ -518,29 +517,34 @@ export default function ParentEditables({
       delete body["phones"];
       delete body["phoneCode"];
       const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-        let check = false;
-        const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-      
-          if (!urlRegex.test(currentToEdit?.linkedIn)) check = true;
-        
-         if(!emailValidation.test(currentToEdit.email)){
-          alert("Enter valid email!");
-          return;
-         }
-         if(!currentToEdit.firstName || currentToEdit.firstName?.trim()?.length===0){
-          alert("first name cannot be empty!");
-          return;
-         }
-         if(!currentToEdit.lastName || currentToEdit.lastName?.trim()?.length===0){
-          alert("last name cannot be empty!");
-          return;
-         }
-        if (check) {
-          alert("Enter valid linkedin url!");
-          return;
-        }
-       
-      
+      let check = false;
+      const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+
+      if (!urlRegex.test(currentToEdit?.linkedIn)) check = true;
+
+      if (!emailValidation.test(currentToEdit.email)) {
+        alert("Enter valid email!");
+        return;
+      }
+      if (
+        !currentToEdit.firstName ||
+        currentToEdit.firstName?.trim()?.length === 0
+      ) {
+        alert("first name cannot be empty!");
+        return;
+      }
+      if (
+        !currentToEdit.lastName ||
+        currentToEdit.lastName?.trim()?.length === 0
+      ) {
+        alert("last name cannot be empty!");
+        return;
+      }
+      if (check) {
+        alert("Enter valid linkedin url!");
+        return;
+      }
+
       updateTutorDetails({ id: userId, fields: reqBody }).then((res) => {
         console.log("patched", res);
         setLoading(false);
@@ -715,13 +719,16 @@ export default function ParentEditables({
   const [startDate, setStartDate] = useState(new Date());
   const [country, setCountry] = useState([]);
   const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [currentCountry, setCurrentCountry] = useState(null);
   const handleState = (c) => {
     if (!c) return;
     //console.log("country", c);
     if (typeof c === "object") c = c.name;
     const state = country.filter((x) => x.name === c);
     const currentState = state.map((s) => s.states);
-
+    setCurrentCountry(state);
+    
     setStates([...currentState[0]]);
   };
   const countryData = Country.getAllCountries().map((city) => ({
@@ -729,9 +736,8 @@ export default function ParentEditables({
     displayValue: city.name,
   }));
   useEffect(() => {
-    if (!currentToEdit.hasOwnProperty("country")) return;
-    console.log("countries usseffect ", currentToEdit);
-
+  
+    
     fetch("/countryData.json")
       .then((res) => res.json())
       .then((data) => {
@@ -739,13 +745,9 @@ export default function ParentEditables({
         setCountry(data);
       });
 
-    const c = currentToEdit.country;
-    if (c) {
-      const state = country.filter((x) => x.name === c);
-      const currentState = state.map((s) => s.states);
-      if (currentState.length > 0) setStates([...currentState[0]]);
-    }
-  }, [currentToEdit]);
+    const c = currentToEdit?.country;
+    handleState(c);
+  }, [currentToEdit?.country]);
   const forCss = [
     "profileData",
     "interest",
@@ -754,13 +756,30 @@ export default function ParentEditables({
     "tutorAddress",
     "videoLink",
   ];
-  const forCss2 = [
-    
-    "interest",
-    "serviceSpecializations",
-   
-    "videoLink",
-  ];
+  const bottomEl = useRef(null);
+useEffect(()=>{
+  if(states?.length>0 && currentToEdit?.state){
+    let currentState=null;
+    states?.map((it)=>{
+      if(it?.name===currentToEdit.state){
+        currentState=it?.state_code
+      }
+    })
+    const cities5 = City.getCitiesOfState(
+      currentCountry[0].iso2,
+      currentState
+    );
+    setCities(cities5);
+  }
+ 
+},[currentToEdit.state,states])
+  const scrollToBottom = () => {
+    bottomEl?.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+  useEffect(()=>{
+    scrollToBottom()
+  },[currentToEdit?.tutorReviews?.length])
+  const forCss2 = ["interest", "serviceSpecializations", "videoLink"];
   return Object.keys(toEdit).map((key) => {
     return (
       toEdit[key].active === true && (
@@ -944,16 +963,15 @@ export default function ParentEditables({
                             }}
                           />
                         }
-                        onChange={(e) =>
-                          {
-                            const regex = /^[0-9 ]*$/;
-                        const isValid = regex.test(e.target.value);
-                        if(isValid  && e.target.value?.length<11)
+                        onChange={(e) => {
+                          const regex = /^[0-9 ]*$/;
+                          const isValid = regex.test(e.target.value);
+                          if (isValid && e.target.value?.length < 11)
                             setCurrentToEdit({
-                            ...currentToEdit,
-                            phone: e.target.value,
-                          })}
-                        }
+                              ...currentToEdit,
+                              phone: e.target.value,
+                            });
+                        }}
                       />
                     </div>
                   </div>
@@ -1369,6 +1387,8 @@ export default function ParentEditables({
                             setCurrentToEdit({
                               ...currentToEdit,
                               country: e.name,
+                              state:"",
+                              city:""
                             });
                           }}
                         />
@@ -1414,8 +1434,14 @@ export default function ParentEditables({
                             setCurrentToEdit({
                               ...currentToEdit,
                               state: e.name,
+                              city:""
                             });
-                          }}
+                            const cities5 = City.getCitiesOfState(
+                              currentCountry[0].iso2,
+                              e.state_code
+                            );
+                            setCities(cities5);
+                              }}
                           value={currentToEdit.state}
                         />
                       </div>
@@ -1431,7 +1457,7 @@ export default function ParentEditables({
                           inputClassName="bg-transparent  "
                           parentClassName=""
                           type="text"
-                          optionData={[{name:"",value:""}]}
+                          optionData={cities}
                           optionType={"object"}
                           onChange={(e) =>
                             setCurrentToEdit({
@@ -1441,7 +1467,6 @@ export default function ParentEditables({
                           }
                           value={currentToEdit.city}
                         />
-                      
                       </div>
                       <div className="col-span-3">
                         <div>
@@ -1455,15 +1480,20 @@ export default function ParentEditables({
                           parentClassName="flex-1"
                           type="text"
                           value={currentToEdit.pincode}
-                          onChange={(e) =>{
+                          onChange={(e) => {
                             const regex = /^[0-9 ]*$/;
                             const isValid = regex.test(e.target.value);
-                            if(isValid  && e.target.value?.length<11)
-                            setCurrentToEdit({
-                              ...currentToEdit,
-                              pincode: e.target.value,
-                            })}
-                          }
+                            if (isValid && e.target.value?.length < 11){
+                              
+
+                              setCurrentToEdit({
+                                ...currentToEdit,
+                                pincode: e.target.value,
+                              });
+                            }
+                            else e.target.value=currentToEdit.pincode||""
+                           
+                          }}
                         />
                       </div>
                     </div>
@@ -1569,7 +1599,10 @@ export default function ParentEditables({
                       The hourly rates you set for the tutor here will directly
                       affect automatic invoicing wherever applicable. Read
                       detailed documentation in Evallo’s{" "}
-                      <span onClick={()=>navigate('/support')} className="text-[#24A3D9] cursor-pointer border-b-[0.6px] border-b-[#24A3D9] h-[8px]">
+                      <span
+                        onClick={() => navigate("/support")}
+                        className="text-[#24A3D9] cursor-pointer border-b-[0.6px] border-b-[#24A3D9] h-[8px]"
+                      >
                         {" "}
                         knowledge base.
                       </span>
@@ -1771,6 +1804,7 @@ export default function ParentEditables({
                           );
                         })
                       }
+                       <div className="" ref={bottomEl}></div>
                     </div>
                     <div
                       onClick={() => {
@@ -1991,14 +2025,14 @@ export default function ParentEditables({
                                 inputContainerClassName="text-sm pt-3 pb-3 !px-2 bg-primary-50 border-white !text-[18.667px]"
                                 inputClassName="bg-transparent text-[#667085] text-400"
                                 value={currentToEdit.firstName}
-                                onChange={(e) =>{
+                                onChange={(e) => {
                                   const regex = /^[a-zA-Z ]*$/;
                                   const isValid = regex.test(e.target.value);
-                                  if(isValid)
-                                  setCurrentToEdit({
-                                    ...currentToEdit,
-                                    firstName: e.target.value,
-                                  })
+                                  if (isValid)
+                                    setCurrentToEdit({
+                                      ...currentToEdit,
+                                      firstName: e.target.value,
+                                    });
                                 }}
                               />
                             </div>
@@ -2015,15 +2049,15 @@ export default function ParentEditables({
                                 inputContainerClassName="text-sm pt-3 pb-3 !px-2 bg-primary-50 border-white"
                                 inputClassName="bg-transparent text-[#667085] text-400"
                                 value={currentToEdit.lastName}
-                                onChange={(e) =>{
+                                onChange={(e) => {
                                   const regex = /^[a-zA-Z ]*$/;
                                   const isValid = regex.test(e.target.value);
-                                  if(isValid)
-                                  setCurrentToEdit({
-                                    ...currentToEdit,
-                                    lastName: e.target.value,
-                                  })}
-                                }
+                                  if (isValid)
+                                    setCurrentToEdit({
+                                      ...currentToEdit,
+                                      lastName: e.target.value,
+                                    });
+                                }}
                               />
                             </div>
 
@@ -2125,15 +2159,22 @@ export default function ParentEditables({
                                         phoneCode: e.target.value,
                                       })
                                     }
-                                    onChange={(e) =>{
+                                   
+                                    onChange={(e) => {
                                       const regex = /^[0-9 ]*$/;
-                        const isValid = regex.test(e.target.value);
-                        if(isValid  && e.target.value?.length<11)
-                                      setCurrentToEdit({
-                                        ...currentToEdit,
-                                        phone: e.target.value,
-                                      })}
-                                    }
+                                      const isValid = regex.test(
+                                        e.target.value
+                                      );
+                                      if (
+                                        isValid &&
+                                        e.target.value?.length < 11
+                                      )
+                                        setCurrentToEdit({
+                                          ...currentToEdit,
+                                          phone: e.target.value,
+                                        });
+                                        else e.target.value=currentToEdit.phone||""
+                                    }}
                                   />
                                 </div>
                               </div>

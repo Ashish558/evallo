@@ -271,18 +271,21 @@ export default function AllTests() {
       text: "Assignment", //testName
       onCick: sortByAssignment,
       willDisplayDownArrow: assignmentSortState !== SORT_STATES.DESCENDING_ORDER,
+      className:'pl-[55px]'
     },
     {
       id: 2,
       text: "Type", // testType
       onCick: sortByType,
       willDisplayDownArrow: typeSortState !== SORT_STATES.DESCENDING_ORDER,
+      className:'pr-[50px]'
     },
     {
       id: 3,
       text: "Created On", // createdAt
       onCick: sortBycreateDate,
       willDisplayDownArrow: createdOnSortState !== SORT_STATES.DESCENDING_ORDER,
+      className:'pl-[40px]'
     },
     {
       id: 4,
@@ -309,7 +312,8 @@ export default function AllTests() {
     {
       id: 8,
       text: "Available For",
-      noArrow: true
+      noArrow: true,
+      className:'pr-[50px]'
     },
   ];
 
@@ -449,7 +453,7 @@ export default function AllTests() {
   return (
     <div className=" bg-lightWhite min-h-screen">
       <div className="py-14  pt-0">
-        <div className="flex justify-end items-center">
+        <div className="flex justify-end items-center w-[1700px]">
           <button
             className="bg-[#FFA28D] py-3.5 px-6 flex items-center text-white  rounded-lg "
             onClick={() => setModalActive(true)}
@@ -471,13 +475,16 @@ export default function AllTests() {
                />
             </div> */}
 
-        <div className="mt-6">
+        <div className="mt-3 w-[1700px] ">
           <Table
+          widthFullTable={true}
+          theadWidth={"w-[1700px]"}
             headerWidth="pl-6 pr-1"
             // noArrow={true}
             dataFor="allTestsSuperAdmin"
             data={filteredTests}
             tableHeaders={tableHeaders}
+            wrapperClassName={'pl-2'}
             headerObject={true}
             maxPageSize={10}
             onClick={{ openRemoveTestModal }}

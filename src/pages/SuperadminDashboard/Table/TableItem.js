@@ -24,16 +24,35 @@ navigate(`orgadmin-profile/${item?._id}`)
 
   //  format monthName date, year
   const formatDate= (value)=>{
-    const [ month, day, year] = value.split("-");
+    return value
+    let [ year, month, day] = value.split("-");
+     if(dateFormat==="dd/mm/yy"){
+      [ day, month,  year] = value.split("-");
+     }
+    else  if(dateFormat==="mm/dd/yy"){
+      [ month, day, year] = value.split("-");
+     }
+else [ year, month, day] = value.split("-");
     const monthName = getMonthName(month-1);
-    const formattedDate = `${monthName}` + " " + `${day}` + `,` + `${year}`;
+    console.log(
+     { 
+       value : value,
+       day : day,
+       month : month,
+       year : year,
+       monthName :monthName
+      }
+   );
+    
+    let formattedDate = `${monthName}` + " " + `${year}` + `,` + `${day}`;
+   
     return formattedDate
    }
 
   return AdminLatestSignUp ? (
     <LatestSignUpTableItem item={item} onClick={onClick} />
   ) : (
-    <tr className={`my-5 box-content  shadow-[0px_0px_1.33333px_0px_rgba(0,0,0,0.25)] `}>
+    <tr className={`my-5 box-content  shadow-[0px_0px_1.33333px_0px_rgba(0,0,0,0.25)]`}>
      
       <td className={`${className}  text-sm px-1  min-w-14 py-[15px] text-left`}>
         <span

@@ -119,21 +119,21 @@ export default function AssignedTutors({ setAssignedTutorOpen, assignedTutorOpen
    //fetch names
    useEffect(() => {
       console.log("calling names for students")
-      let name2=""
+      let name2 = ""
       if (modalData?.studentName?.length > 0) {
-name2=modalData?.studentName
+         name2 = modalData?.studentName
       }
-         fetchStudents(name2).then((res) => {
-             console.log("students",res)
-            let tempData = res?.data?.data?.students.map((tutor) => {
-               return {
-                  _id: tutor._id,
-                  value: `${tutor.firstName} ${tutor.lastName}`,
-               };
-            });
-            setStudents(tempData);
+      fetchStudents(name2).then((res) => {
+         console.log("students", res)
+         let tempData = res?.data?.data?.students.map((tutor) => {
+            return {
+               _id: tutor._id,
+               value: `${tutor.firstName} ${tutor.lastName}`,
+            };
          });
-      
+         setStudents(tempData);
+      });
+
    }, [modalData.studentName]);
 
    useEffect(() => {
@@ -230,7 +230,7 @@ name2=modalData?.studentName
                return
             }
             console.log('assignedtutors-', res.data);
-            let data = res.data.assignedTutors.map(item => {
+            let data = res.data.assignedTutors?.map(item => {
                const { assignedTutor, associatedParent, firstName, lastName, specialization, student_id, timeZone, tutorFirstName, tutorLastName, parentFirstName, parentLast } = item
                return {
                   tutorName: `${tutorFirstName} ${tutorLastName}`,
@@ -246,7 +246,7 @@ name2=modalData?.studentName
                   score: '-',
                }
             })
-            setTableData(data)
+            setTableData(data ? data : [])
             console.log(res.data);
          })
    }
@@ -256,6 +256,7 @@ name2=modalData?.studentName
 
 
    useEffect(() => {
+      console.log("tableData", tableData);
       let tempdata = [...tableData]
       // console.log(usersData)
 
@@ -516,7 +517,7 @@ name2=modalData?.studentName
                               inputContainerClassName=" text-base-17-5 bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
                               inputClassName="bg-[#F3F5F7]"
                               type="text"
-                              value={studentMultiple.length==0?modalData?.studentName:studentMultiple?.map(itt => itt?.value)}
+                              value={studentMultiple.length == 0 ? modalData?.studentName : studentMultiple?.map(itt => itt?.value)}
                               checkbox={{
                                  visible: true,
                                  name: "student",
@@ -528,7 +529,7 @@ name2=modalData?.studentName
                                     studentName: e.target.value,
                                  })
                               }
-                              rightIcon={down} 
+                              rightIcon={down}
                               optionListClassName="text-base-17-5"
                               optionClassName="text-base-17-5"
                               optionData={students}
@@ -549,7 +550,9 @@ name2=modalData?.studentName
 
                            <InputSearch
                               label="Tutor Name"
-                              value={modalData.tutorName}
+                              // value={modalData.tutorName}
+                              value={tutors.length == 0 ? modalData?.tutorName : tutors?.map(itt => itt?.value)}
+
                               onChange={e =>
                                  setModalData({
                                     ...modalData,
@@ -564,7 +567,7 @@ name2=modalData?.studentName
                                     tutorId: item._id
                                  })
                               }}
-                              rightIcon={down} 
+                              rightIcon={down}
                               optionPrefix='t'
                               parentClassName="w-full mr-4"
                               labelClassname=" mb-1 text-base-20 tracking-wide text-[#26435F]"

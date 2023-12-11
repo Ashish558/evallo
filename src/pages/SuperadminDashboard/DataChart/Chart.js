@@ -12,6 +12,10 @@ import { useState } from "react";
 import arrow from "../../../assets/icons/arrow-chart.svg";
 import "chartjs-adapter-moment";
 import arrow1 from "../../../assets/icons/arrow-up-chart.svg";
+import styles from './styles.module.css'
+import {Chart, LinearScale, PointElement, Tooltip, Legend, TimeScale} from "chart.js"; 
+
+Chart.register(LinearScale, PointElement, Tooltip, Legend, TimeScale); 
 const BubbleChart = ({ dateRange }) => {
   const [userDailyActivity, setDailyActivity] = useState([]);
   const [userDailyActivityData, status] =
@@ -89,7 +93,7 @@ const BubbleChart = ({ dateRange }) => {
       setChartData(mainData);
     }
   }, [userDailyActivity, dateRange]);
-  console.log("dailyActivity chart", chartData, minDate, dateRange);
+  
   return (
     <div className="bg-[#FFFFFF] relative flex flex-col justify-center items-center border-[1.3px] border-[#FFF]  mt-[6px] rounded-[5.33px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)]">
       <div className="flex  gap-[3%] p-5  pl-[100px] w-full flex-1 border-b border-[1.33px_solid_#EBEBEB]">
@@ -111,7 +115,7 @@ const BubbleChart = ({ dateRange }) => {
         </div>
       </div>
 
-      <div className="flex mt-6 relative max-w-full justify-center w-full p-4">
+      <div className={`flex mt-6 relative max-w-full justify-center w-full p-4 ${styles.canvas}`}>
         <Scatter
           data={chartData ? chartData : bubbleChartData}
           // data={chartData}

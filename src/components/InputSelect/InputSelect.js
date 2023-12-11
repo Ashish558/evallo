@@ -21,6 +21,7 @@ export default function InputSelect({
   optionData,
   inputContainerClassName,
   onChange,
+  noAsteric,
   radio,
   checkbox,
   optionClassName,
@@ -35,6 +36,7 @@ export default function InputSelect({
   tableDropdown,
   customArrow,
   customArrowClassName,
+  downArrowClassName,
   questionMarkIcon,
   questionMarkMargin
 }) {
@@ -110,7 +112,7 @@ export default function InputSelect({
               className={`font-medium ${label == 'User Type' && 'text-sm'} text-[#26435F] inline-block  ${labelClassname}`}
             >
               {label}
-              {required && (
+              {required && !noAsteric && (
                 <span className="text-primaryRed inline-block pl-1">*</span>
               )}
             </label>
@@ -137,8 +139,8 @@ export default function InputSelect({
             IconRight
           ) : !IconLeft && !hideRight && (
             <img
-              src={customArrow ? customArrow : downArrow22 ? DownArrow2 : DownArrow}
-              className={`${customArrow ? `${customArrowClassName ? customArrowClassName : "w-[20px] h-[20px]"}` : `w-[15px] h-[12px]`}   ${styles.downArrow}`}
+            src={customArrow ? customArrow :DownArrow}
+            className={`${customArrow ?`w-[20px] h-[20px] rotate-180 ${customArrowClassName}`:`w-[15px] h-[12px]`}   ${styles.downArrow} ${downArrowClassName}`}
               alt="down-arrow"
             />
           )
@@ -146,8 +148,8 @@ export default function InputSelect({
           IconRight
         ) : !IconLeft && !hideRight && (
           <img
-            src={customArrow ? customArrow : downArrow22 ? DownArrow2 : DownArrow}
-            className={`${customArrow ? `${customArrowClassName ? customArrowClassName : "w-[20px] h-[20px]"}` : `w-[15px] h-[12px]`} ${styles.downArrow} `}
+            src={customArrow ? customArrow :DownArrow}
+            className={`${customArrow ?`w-[20px] h-[20px] ${customArrowClassName}`:`w-[15px] h-[12px]`}   ${styles.downArrow} ${downArrowClassName}`}
             alt="down-arrow"
           />
         )}
@@ -158,12 +160,12 @@ export default function InputSelect({
           name={label}
         >
           {value === "" || !value ? (
-            <span className={`text-[#667085] text-base-17-5 whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>
+            <span className={`text-[#667085] text-[17.5px] whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>
               {" "}
               {placeholder}{" "}
             </span>
           ) : (
-            <span className={`mr-10 text-base-17-5 whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>{value}</span>
+            <span className={`mr-10 text-[17.5px] whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>{value}</span>
           )}
         </div>
         {selected && (

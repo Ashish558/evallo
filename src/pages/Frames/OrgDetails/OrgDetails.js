@@ -10,6 +10,7 @@ import style from "./styles.module.css";
 import InputFieldDropdown from "../../../components/InputField/inputFieldDropdown";
 import InputSelectNew from "../../../components/InputSelectNew/InputSelectNew";
 import lockIcon from "../../../assets/icons/lock2.svg"
+import { useNavigate } from "react-router-dom";
 const grades = [6, 7, 8, 9, 10, 11, 12, "College"];
 const companyType = [
   "Sole proprietorship",
@@ -47,37 +48,48 @@ export default function OrgDetails({
     value: city.name,
     displayValue: city.name,
   }));
+  const handleBack = () => {
+    console.log("pophandleBackcalled")
+    setFrames((prev) => {
+      return { ...prev, orgDetails: false, signupActive: true };
+    });
+    navigate("/signup?step=1")
+    setcurrentStep(1);
+  };
+  const navigate = useNavigate()
+
+  const isValidURL = (websiteString) => {
+    const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+    return urlRegex.test(websiteString);
+  }
 
   const handleSubmit = () => {
+
     if (!handleEmpty(values?.company) || !handleEmpty(values?.companyType) || !handleEmpty(values?.website) || !handleEmpty(values?.address)
-      || !handleEmpty(values?.country) || !handleEmpty(values?.city) || (states?.length>0 && !handleEmpty(values?.state)) || !handleEmpty(values?.zip)) {
+      || !handleEmpty(values?.country) || !handleEmpty(values?.city) || (states?.length > 0 && !handleEmpty(values?.state)) || !handleEmpty(values?.zip)) {
       alert("Please Fill All The Fields!")
       return
-    } 
-
-   let alphadigit= new RegExp("^[a-zA-Z0-9 ]*[a-zA-Z][a-zA-Z0-9 ]*$");
-    var regex = /^\d+$/;
-    if(!regex.test(values?.zip)&&values?.zip?.length>10){
-      alert("Zip code should conatain digits only!")
-   return 
     }
-    if (!alphadigit.test(values?.company) || !alphadigit.test(values?.address)
-    || !alphadigit.test(values?.country) || !alphadigit.test(values?.city) || (states?.length>0 && !alphadigit.test(values?.state))) {
-    alert("Please fill valid details!")
-    return
-  } 
-  if (values?.address?.length<3) {
-  alert("Address must be at least 3 characters long!")
-  return
-} 
-if (values?.website?.length<3) {
-  alert("Website Address must be at least 3 characters long!")
-  return
-} 
-if (values?.city?.length<3) {
-  alert("City name must be at least 3 characters long!")
-  return
-} 
+
+    let alphadigit = new RegExp("^[a-zA-Z0-9 ]*[a-zA-Z][a-zA-Z0-9 ]*$");
+    var regex = /^\d+$/;
+    if (companyType === '') {
+      alert("Choose Your Company Type")
+      return
+    }
+    if (!isValidURL(values?.website)) {
+      alert("Website Address must be at least 3 characters long!")
+      return
+    }
+    if (values?.address?.length < 3) {
+      alert("Address must be at least 3 characters long!")
+      return
+    }
+    if (!regex.test(values?.zip) && values?.zip?.length > 10) {
+      alert("Zip code should conatain digits only!")
+      return
+    }
+
     setFrames((prev) => {
       console.log(prev);
       return {
@@ -86,6 +98,7 @@ if (values?.city?.length<3) {
         furtherDetails: true,
       };
     });
+    navigate("/signup?step=3")
   };
 
   const [country, setCountry] = useState([]);
@@ -111,12 +124,7 @@ if (values?.city?.length<3) {
       .then((data) => setCountry(data));
   }, []);
 
-  const handleBack = () => {
-    setFrames((prev) => {
-      return { ...prev, orgDetails: false, signupActive: true };
-    });
-    setcurrentStep(1);
-  };
+
   const handleCompanyTypeChange = (e) => {
     setValues({
       ...values,
@@ -139,7 +147,7 @@ if (values?.city?.length<3) {
           placeholder=""
           right={<img src={lockIcon} alt="lock" />}
           parentClassName=" min-w-[118px] w-full "
-          inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[44px] text-md "
+          inputContainerClassName=" border-[0.994px] border-[#D0D5DD] rounded-md py-[9px] h-[44px] text-md "
           inputClassName="!text-[rgba(179,189,199,1)] bg-transparent text-base-18"
           type="text"
           value={values.company}
@@ -149,6 +157,7 @@ if (values?.city?.length<3) {
           {/* <label>Company Type</label> */}
           <InputSelectNew
             value={values.companyType}
+            biggerText={"true"}
             parentClassName="w-[300px] "
             optionContainerClassName="text-[13px]"
             optionsEachClassName="py-[7px]"
@@ -157,10 +166,10 @@ if (values?.city?.length<3) {
             customFontSize="text-[15px]"
             placeholder={"Select"}
             label={`Company Type`}
-            placeholderClass="!mr-0"
-            labelClassname="text-[#26435F] font-medium  mb-1 !text-[18.6px] "
-            inputContainerClassName="py-1 text-sm h-[53px] border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[5px] "
-            inputClassName="ml-80"
+            placeholderClass="!mr-0 text-[#B3BDC7]"
+            labelClassname="text-[#26435F] font-bold mb-1 text-[18.6px] "
+            inputContainerClassName="py-1 text-sm h-[53px] border-[0.994px]  border-[#D0D5DD] my-0 mt-[-2px] rounded-[5px] text-[#B3BDC7] placeholder-[#B3BDC7]"
+            inputClassName="ml-80 text-[#B3BDC7] placeholder-[#B3BDC7]"
             required={persona === "student" ? true : false}
             onChange={(e) => handleCompanyTypeChange(e)}
           />
@@ -172,7 +181,7 @@ if (values?.city?.length<3) {
             biggerText={true}
             placeholder=""
             parentClassName="w-[350px] ml-[50px] "
-            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
+            inputContainerClassName=" border-[0.994px] border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
             inputClassName="bg-transparent text-xs"
             type="text"
             value={values.website}
@@ -192,7 +201,7 @@ if (values?.city?.length<3) {
             biggerText={true}
             placeholder=""
             parentClassName="w-full max-w-[350px] "
-            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
+            inputContainerClassName=" border-[0.994px] border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
             inputClassName="bg-transparent text-xs"
             type="text"
             value={values.address}
@@ -210,10 +219,12 @@ if (values?.city?.length<3) {
             optionData={country}
             optionType="object"
             placeholder={"Select"}
+            biggerText={"true"}
+            placeHolderClass={"placeholder-[#B3BDC7] text-[#B3BDC7]"}
             label={`Country`}
-            labelClassname="text-[#26435F] font-bold   !text-[18.6px] "
-            inputContainerClassName="py-1 text-sm h-[53px] border border-[#D0D5DD] my-0 mt-[-3px] rounded-[4.3px]"
-            inputClassName="ml-80"
+            labelClassname="text-[#26435F] font-bold !text-[18.6px] "
+            inputContainerClassName="py-1 text-sm h-[53px] border-[0.994px] border-[#D0D5DD] my-0 mt-[-3px] rounded-[4.3px] placeholder-[#B3BDC7] text-[#B3BDC7]"
+            inputClassName="ml-80 placeholder-[#B3BDC7] text-[#B3BDC7]"
             required={persona === "student" ? true : false}
             value={values.country}
             onChange={(e) =>
@@ -247,13 +258,14 @@ if (values?.city?.length<3) {
 
         <div className="flex justify-between items-center mt-[30px] ">
           <InputSelectNew
-       parentClassName="w-full max-w-[250px]"
+            parentClassName="w-full max-w-[250px]"
             optionContainerClassName="text-[13px]   max-h-[180px]"
             optionsEachClassName="py-[5px]"
             optionData={states}
             placeholder={"Select"}
             optionType="object"
-            placeholderClass="!mr-2"
+            biggerText={"true"}
+            placeholderClass="!mr-2 placeholder-[#B3BDC7] text-[#B3BDC7]"
             label={`State`}
             labelClassname="text-[#26435F] font-bold   !text-[18.6px]"
             inputContainerClassName="py-1 text-sm   h-[53px] border border-[#D0D5DD] my-0 mt-[-3px] rounded-[4.3px] "
@@ -327,15 +339,15 @@ if (values?.city?.length<3) {
             placeholderClass="!mx-1 custom-scroller-2"
             type="text"
             value={values.zip}
-            onChange={(e) =>
-             { 
+            onChange={(e) => {
               const regex = /^[0-9 ]*$/;
               const isValid = regex.test(e.target.value);
-              if(isValid && e.target.value?.length<10)
-              setValues({
-                ...values,
-                zip: e.target.value,
-              })}
+              if (isValid && e.target.value?.length < 10)
+                setValues({
+                  ...values,
+                  zip: e.target.value,
+                })
+            }
             }
           />
         </div>

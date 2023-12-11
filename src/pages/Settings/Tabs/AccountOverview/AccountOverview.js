@@ -23,7 +23,7 @@ import {
 import { BASE_URL, getAuthHeader } from "../../../../app/constants/constants";
 import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
 import { useUpdateEmailMutation } from "../../../../app/services/organization";
-import TextArea from "antd/es/input/TextArea";
+// import TextArea from "antd/es/input/TextArea";
 const AccountOverview = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [reset, setReset] = useState(false);
@@ -63,11 +63,24 @@ const AccountOverview = () => {
   const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
   const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
   const [fetchedData, setFetchedData] = useState({});
-  
+
   // tooltip handler state
   const [hideTooltip, setTooltip] = useState(false);
 
-
+  useEffect(() => {
+    userDetails()
+      .then((res) => {
+        setValues({
+          ...res?.data.data.user,
+        });
+        setFetchedData({
+          ...res?.data.data.user,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   const isEmail = (val) => {
     let regEmail =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -98,6 +111,15 @@ const AccountOverview = () => {
       });
     }
   };
+  const checkName = (inputString) => {
+    const letterRegex = /^[a-zA-Z]+$/;
+    return letterRegex.test(inputString);
+  }
+  const checkPhoneNumber = (inputString) => {
+    const numberRegex = /^[0-9]+$/;
+    return numberRegex.test(inputString);
+  }
+
   const [loading, setLoading] = useState(false);
   const handleDataUpdate = () => {
     const arr = ["email", "firstName", "lastName", "phone", "phoneCode"];
@@ -115,6 +137,18 @@ const AccountOverview = () => {
     }
     if (!isEmail(values?.email)) {
       alert("Enter valid email!");
+      return;
+    }
+    if (!checkName(values?.firstName)) {
+      alert("Enter valid First Name!");
+      return;
+    }
+    if (!checkName(values?.lastName)) {
+      alert("Enter valid Last Name!");
+      return;
+    }
+    if (!checkPhoneNumber(values?.phone)) {
+      alert("Enter valid Phone Number!");
       return;
     }
     if (
@@ -137,7 +171,7 @@ const AccountOverview = () => {
           .then((res) => {
             setLoading(false);
             if (res?.error) {
-              alert("Error occured while updating!");
+              alert("Error occured while updating!", res?.error?.message);
             }
             if (res?.data) {
               alert("changes saved!");
@@ -187,12 +221,12 @@ const AccountOverview = () => {
       alert("Password reset link sent to your email.");
     });
   };
-console.log({fetchedData})
+
   return (
     <div>
       <div className="flex flex-col gap-10 py-[25px]">
         <div className="gap-8  flex justify-between items-center">
-          <div className="w-4/5 flex justify-start items-center ">
+          <div className="w-4/5 flex justify-start items-center gap-7">
             <InputField
               placeholder=""
               labelClassname="font-medium text-base"
@@ -228,14 +262,15 @@ console.log({fetchedData})
             />
 
             <InputField
-              IconLeft={fetchedData?.isVerified?null:                caution}
+              IconLeft={fetchedData?.isVerified ? null : caution}
+              label="Email"
               placeholder=""
               inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] border-0 !rounded-[5px] bg-white !shadow-[0px_0px_2.500000476837158px_0px_#00000040] "
-              inputClassName="bg-white w-[376px] h-[22px] pt-[13.752px] pe-[14.688px] pb-[14.248px] ps-[15px] text-xs font-normal"
+              inputClassName="bg-white w-[376px] h-[22px] pt-[13.752px] pe-[14.688px] pb-[14.248px] ps-[15px] text-xs font-normal  w-[calc(250*0.0522vw)]"
               parentClassName=""
               type="text"
               value={values.email}
-              onChange={(e) =>{
+              onChange={(e) => {
                 setValues({
                   ...values,
                   email: e.target.value,
@@ -264,7 +299,7 @@ console.log({fetchedData})
                 labelClassname="font-medium text-base"
                 parentClassName="text-[#26435F] "
                 inputContainerClassName="!shadow-[0px_0px_2.500000476837158px_0px_#00000040]  bg-white  text-[#667085]"
-                inputClassName="font-normal py-[7.5px] bg-transparent w-[calc(377*0.0522vw)]"
+                inputClassName="font-normal py-[7.5px] bg-transparent w-[calc(200*0.0522vw)]"
                 label="Phone"
                 value={values.phone}
                 codeValue={values.phoneCode}
@@ -288,9 +323,8 @@ console.log({fetchedData})
             <button
               disabled={loading}
               onClick={handleDataUpdate}
-              className={` bg-[#FFA28D] h-[50px] w-[175px]  py-[13.5px] mt-[20px] rounded-md px-10  text-sm text-[#fff] text-base-17-5 ${
-                loading ? "cursor-wait" : "cursor-pointer"
-              }`}
+              className={` bg-[#FFA28D] h-[50px] w-[175px]  py-[13.5px] mt-[20px] rounded-md px-10  text-sm text-[#fff] text-base-17-5 ${loading ? "cursor-wait" : "cursor-pointer"
+                }`}
             >
               Save
             </button>
@@ -305,9 +339,9 @@ console.log({fetchedData})
               <p className="">
                 <img className=" inline-block" src={userPic} alt="" />
               </p>
-          
-                <img src={camera} className="absolute right-0 bottom-0 mx-5" alt="camera-icon" />
-             
+
+              <img src={camera} className="absolute right-0 bottom-0 mx-5" alt="camera-icon" />
+
             </div>
             <InputField
               placeholder="What is your role?"
@@ -377,7 +411,7 @@ console.log({fetchedData})
           {reset && (
             <div className="flex gap-2">
               <p className="bg-[#38C980] rounded-xl text-sm text-white px-3 py-1 text-base-15 flex justify-center items-center">
-                
+
                 {/*  svg here */}
                 <img src={passwordResetTickIcon} alt="password-reset-tick-icpn" />
 

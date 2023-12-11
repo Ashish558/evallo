@@ -131,7 +131,7 @@ export default function UserDetails({
           inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-base-17-5 h-[53px]"
           parentClassName="mb-6  relative w-full "
           required={persona === "student" ? true : false}
-          label={`${personaText} First Name`}
+          label={`${personaText} First name`}
           labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5"
           value={otherDetails.FirstName}
 
@@ -150,7 +150,7 @@ export default function UserDetails({
         <InputField
           parentClassName="mb-6 relative w-full "
           inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-base-17-5 h-[53px]"
-          label={`${personaText} Last Name`}
+          label={`${personaText} Last name`}
           required={persona === "student" ? true : false}
           labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5"
           value={otherDetails.LastName}
@@ -245,7 +245,6 @@ export default function UserDetails({
           setOtherDetails({ ...otherDetails, referalCode: e.target.value })
         }
       />
-
       <div className={style.shy}>
         <div className="flex items-center mt-2">
           <CCheckbox checked={!otherDetails.referalCode||otherDetails.referalCode?.trim()?.length === 0}
@@ -260,15 +259,15 @@ export default function UserDetails({
       <div className="flex justify-between items-center mt-16">
         {!isAddedByAdmin && (
           <SecondaryButton
-            children="Go Back"
-            className="!text-[0.9688vw] whitespace-nowrap mr-6 bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] font-medium h-[50px] design:h-[53px] rounded-5 w-[8vw]"
+            children="Go back"
+            className="!text-[18.667] whitespace-nowrap mr-6 bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] w-[146.67px] font-medium h-[50px] design:h-[53px] rounded-5"
             onClick={handleBack}
           />
         )}
         <PrimaryButton
         loading={newLoader}
           children={!customFields||customFields?.length===0?"Submit":"Next"}
-          className={` bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[7.6042vw]   text-[#FFF] !text-[0.9688vw] font-medium relative h-[50px] design:h-[53px] rounded-5`}
+          className={` bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[146.67px] text-[#FFF] !text-[18.667px] font-medium relative h-[50px] design:h-[53px] rounded-5`}
           onClick={() => handleClick()}
           disabled={disabled}
         />

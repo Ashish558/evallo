@@ -40,7 +40,7 @@ export default function CurrentSection({ answers,activeSection, submitSection, s
 
   return (
     <>
-    <div className='h-[414px] mt-4 flex-1 flex flex-col mb-6 bg-white rounded w-full py-3 px-6'>
+    <div className='min-h-[414px] mt-[21.25px] flex-1 flex flex-col mb-6 bg-white rounded w-full px-[32.5px] pt-[16.5px] pb-[23.75px]'>
       <p className='font-medium text-[#26435F] text-[20px] mb-1'>Total Questions: {totalQues}</p>
       <p className='font-medium text-[#38C980] text-[20px] mb-1'>Attempted: {attempted}</p>
       <p className='font-medium text-[#FF7979] text-[20px] mb-1'>Marked for Review: {marked}</p>
@@ -57,6 +57,8 @@ export default function CurrentSection({ answers,activeSection, submitSection, s
       {popUp && (
         <Modal
         classname="max-w-[700px] mx-auto"
+        parentClass="flex flex-col justify-center items-center"
+        topClass={"!h-[110%] !mt-0"}
         handleClose={() => setPopUp(false)}
           title="Are you sure you want to Submit the Section?"
           primaryBtn={{

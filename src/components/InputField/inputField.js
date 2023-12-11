@@ -10,6 +10,7 @@ import styles from "./styles.module.css";
 
 export default function InputField({
   parentClassName,
+  parentStyle,
   inputContainerClassName,
   Icon,
   hideTooltip,
@@ -25,6 +26,7 @@ export default function InputField({
   label,
   labelClassname,
   IconRight,
+  iconRIghtClassName,
   IconLeft,
   inputClassName,
   inputLeftField,
@@ -51,6 +53,7 @@ export default function InputField({
   iconPadding,
   biggerText,
   min,
+  customEyeIconSize,
   calenderIconClass,
 }) {
   //console.log({ hideTooltip })
@@ -68,11 +71,11 @@ export default function InputField({
   }, [value]);
 
   return (
-    <div className={`relative  ${parentClassName && parentClassName}`}>
+    <div className={`relative text-sm ${parentClassName && parentClassName}`} style={{...parentStyle}} >
       {label && (
         <label
           className={`${
-            biggerText ? "text-lg" : "text-base-17-5"
+            biggerText ? "text-lg" : "text-[16.5px]"
           }  inline-block  font-semibold ${labelClassname} ml-0 `}
         >
           <span className="inline-block !cursor-default">{label}</span>
@@ -111,7 +114,7 @@ export default function InputField({
         </label>
       )}
       <div
-        className={`py-[13px] px-[21px] flex items-center rounded  ${
+        className={`py-[13px] px-[21px]  flex items-center rounded  ${
           inputContainerClassName ? inputContainerClassName : ""
         } ${disabled === true ? "cursor-not-allowed" : ""} `}
       >
@@ -130,13 +133,13 @@ export default function InputField({
         {prefix && <span className="mr-3">{prefix}</span>}
         {dateBody && dateBody}
         {IconRight && !hideTooltip && (
-          <div className="group relative w-fit">
+          <div className={`group relative w-fit ${iconRIghtClassName}`}>
             <img
               src={IconRight}
               alt="icon-right"
               className={` cursor-pointer ${
                 iconSize === "medium" && "w-[24px]"
-              }`}
+              } ${iconRIghtClassName}`}
             />
             {Tooltip}
           </div>
@@ -168,7 +171,7 @@ export default function InputField({
           onBlur={onBlur}
         />
         {IconLeft && !hideTooltip && (
-          <div className="group w-fit absolute top-50 end-0 me-[10px]">
+          <div className="group w-fit absolute top-50 right-[12.5px] end-0 me-[10px]">
             <img
               src={IconLeft}
               alt="icon-left"
@@ -182,7 +185,7 @@ export default function InputField({
         {type === "password" && (
           <img
             src={inputType === "password" ? EyeIcon : EyeIcon2}
-            className={`ml-4 w-[20px] cursor-pointer ${
+            className={`ml-4 ${customEyeIconSize ? customEyeIconSize :  "w-[22.45px] h-[22.45px]"} cursor-pointer ${
               inputType === "password" ? "" : "opacity-[0.7]"
             }`}
             alt="eye-active"

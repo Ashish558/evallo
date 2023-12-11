@@ -31,7 +31,9 @@ export default function Modal({
   wrapperClassName,
   btnClassName,
   buttonParentClassName,
-  cancelIconState
+  cancelIconState,
+  parentClass,
+  topClass
 }) {
   const selectRef = useRef();
   // console.log(selectRef)
@@ -41,25 +43,29 @@ export default function Modal({
   });
 
   useEffect(() => {
+    // 
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "unset";
     };
   }, []);
 
-  console.log(cancelIconState , underline);
-
+  const screenWidth = document.body.clientWidth;
+  const scale = screenWidth > 0 ? screenWidth / 1920 : 0;
   return (
     <>
       {
-        <div className={styles.modalContainer}>
-          <div className="w-full p-1">
+        <div className={`${styles.modalContainer}  ${topClass??""}`}>
+          <div className={` h-full pt-[100px] pb-[20px] ${parentClass??""}`}>
+            {/* <div style={{marginTop:`-${(1/(scale > 1 ? 1 : scale))*70}px`,marginBottom:`-${(1-(scale > 1 ? 1 : scale))*70}px`}} className={styles.modalContainer+" "}>
+          <div className="w-full p-1"> */}
+          {/* <div className="absolute top-[150px] right-[150px]">X</div> */}
             <div
               ref={handleClose ? selectRef : null}
-              className={`${modalSize ? modalSize : "w-full"} bg-white pt-[28px] pb-[33.34px] md:px-[33.33px] rounded-lg relative ${
-                classname ? classname : ""
-              }`}
+              className={`${modalSize ? modalSize : "w-full"} bg-white pt-[28px] pb-[33.34px] md:px-[33.33px] rounded-lg relative ${classname ? classname : ""
+                }`}
             >
+            <div onClick={handleClose} className="absolute top-[20px] right-[50px]">X</div>
               <div className={wrapperClassName ? wrapperClassName : ""}>
                 <p
                   className={`font-semibold text-xl md:text-[21px] text-left text-[#26435F] 
@@ -96,11 +102,9 @@ export default function Modal({
                       onClick={primaryBtn.onClick ? primaryBtn.onClick : null}
                       form={primaryBtn.form ? primaryBtn.form : null}
                       type={primaryBtn.type ? primaryBtn.type : "button"}
-                      className={`w-[120px] ${
-                        primaryBtn.bgDanger ? "bg-[#FFA28D]" : "bg-[#FFA28D]"
-                      } relative disabled:opacity-75 rounded-lg font-medium text-white cursor-pointer  ml-9 ${
-                        primaryBtn.className ? primaryBtn.className : ""
-                      }`}
+                      className={`w-[120px] ${primaryBtn.bgDanger ? "bg-[#FFA28D]" : "bg-[#FFA28D]"
+                        } relative disabled:opacity-75 rounded-lg font-medium text-white cursor-pointer  ml-9 ${primaryBtn.className ? primaryBtn.className : ""
+                        }`}
                       disabled={
                         primaryBtn?.loading === true
                           ? true
@@ -134,21 +138,21 @@ export default function Modal({
                     onClick={handleClose}
                   >
                     <div className="w-full h-full flex justify-center items-center relative ">
-                    <img
-                      className={`${cancelIconState ? "block" : "hidden"}`}
-                      src={
-                        primaryCancel ? primaryCancelIcon : primaryCancelIcon
-                      }
-                      alt="close-btn"
-                      onClick={handleClose}
+                      <img
+                        className={`${cancelIconState ? "block" : "hidden"}`}
+                        src={
+                          primaryCancel ? primaryCancelIcon : primaryCancelIcon
+                        }
+                        alt="close-btn"
+                        onClick={handleClose}
 
-                    />
+                      />
                     </div>
                   </button>
                 )}
               </div>
             </div>
-            <div className={styles.modalOverlay}></div>
+            {/* <div className={styles.modalOverlay}></div> */}
           </div>
         </div>
       }

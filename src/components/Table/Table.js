@@ -51,6 +51,11 @@ export default function Table(props) {
     setFilteredTests,
     setAllTestsForStudentTest,
     setfilteredTestsForStudentTest,
+    widthFullTable,
+    theadWidth,
+    customScrollBarClass,
+    signupTable,
+    tableClass
   } = props;
   const [dummy, setDummy] = useState([]);
   const [tableData, setTableData] = useState(data);
@@ -99,17 +104,17 @@ export default function Table(props) {
   if (isCallingApi) return <ApiTable noArrow={noArrow} {...props} />;
 
   return (
-    <div className="w-full">
+    <div className="min-w-full">
       <div
         className={`  ${
           noScrollbar
-            ? ` lg:overflow-x-auto scrollbar-content custom-scroller-2 scroll-m-1 ${styles.noOverflow}`
-            : "overflow-x-auto scrollbar-content custom-scroller-2 scroll-m-1"
-        }  p-[2px]  `}
+            ? ` lg:overflow-x-auto ${customScrollBarClass??'scrollbar-content custom-scroller-2'} scroll-m-1 ${styles.noOverflow}`
+            : `overflow-x-auto ${customScrollBarClass??'scrollbar-content custom-scroller-2'} scroll-m-1`
+        }`}
       >
-        <table className="bg-white customTable mb-3 text-center w-full whitespace-nowrap">
-          <thead className="pb-2 whitespace-nowrap bg-[#26435f]">
-            <tr className=" whitespace-nowrap bg-[#26435f]">
+        <table className={`bg-white customTable mb-3 text-center whitespace-nowrap ${widthFullTable===true?"w-full":""} ${tableClass??""}`}>
+          <thead className={`pb-2 whitespace-nowrap bg-[#26435f] ${theadWidth??"w-[1601px]"}`}>
+            <tr className={`whitespace-nowrap bg-[#26435f] text-white `}>
               {tableHeaders.map((item, idx) => {
                 return headerObject === true ? (
                   <React.Fragment key={idx}>
@@ -135,7 +140,7 @@ export default function Table(props) {
               })}
             </tr>
           </thead>
-          <tbody className=" whitespace-nowrap">
+          <tbody className={`whitespace-nowrap ${styles.tBody} `} >
             {loading ? (
               <div
                 className={`absolute w-full min-h-[100px] flex justify-center items-center`}
@@ -209,15 +214,15 @@ export default function Table(props) {
                 return (
                   <tr
                     key={index}
-                    className="bg-white leading-8 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] text-[17.5px] "
+                    className="bg-transparent shadow-[0px_0px_2px_rgba(0,0,0,0.25)] text-[17.5px] text-[#517CA8] font-normal leading-[21px]"
                   >
-                    <td className="opacity-0 text-[17.5px] px-[10px] min-w-14 py-4 ">
+                    <td className="opacity-1 text-[17.5px] px-[10px] !pt-[18.5px] !pb-[19.5px] min-w-14 py-4 ">
                       {it.service}
                     </td>
-                    <td className="opacity-0 text-[17.5px] px-[10px] min-w-14 py-4 ">
+                    <td className="opacity-1 text-[17.5px] px-[10px] !pt-[18.5px] !pb-[19.5px] min-w-14 py-4 ">
                       {it.actively_using}
                     </td>
-                    <td className="opacity-0 text-[17.5px] px-[10px] min-w-14 py-4 ">
+                    <td className="opacity-1 text-[17.5px] px-[10px] !pt-[18.5px] !pb-[19.5px] min-w-14 py-4 ">
                       {it.total_used}
                     </td>
                   </tr>
@@ -233,7 +238,7 @@ export default function Table(props) {
           >
             <button
               onClick={() => navigate(`/${belowBoxLink}`)}
-              className="inline-block rounded-[5.33px] bg-[#FFA28D] text-[#FFF] font-semibold py-[10px] px-[15.5px] text-base"
+              className={`inline-block rounded-[5.33px] bg-[#FFA28D] text-[#FFF] font-semibold py-[10px] ${signupTable?"px-[8px]":"pr-[16.5px] pl-[15.5px]"} text-base`}
             >
               {belowBoxText}
               <img className="inline-block pl-2" src={belowBoxIcon} alt="" />

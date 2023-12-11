@@ -18,7 +18,7 @@ export default function AnnotatorComponent() {
   }, [annotations]);
 
   return (
-    <div>
+    <div className='w-[1920px] flex flex-col items-center'>
       <TextAnnotator
         content="Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation..."
         value={annotations}

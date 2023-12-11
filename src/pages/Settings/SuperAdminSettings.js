@@ -98,6 +98,7 @@ export default function SuperAdminSettings() {
   const [tagModalActive, setTagModalActive] = useState(false);
   const [addCodeModalActive, setAddCodeModalActive] = useState(false);
   const [subModalData, setSubModalData] = useState(subModalInitialState);
+  const [company,setCompany]=useState("Company Name")
   const timeZones = moment.tz.names(); // String[]
 
   const [addTestModalActive, setAddTestModalActive] = useState(false);
@@ -180,6 +181,9 @@ export default function SuperAdminSettings() {
   const [fetchedPermissions, setThePermission] = useState([]);
   const dispatch = useDispatch();
   const [selectedtest, setselectedtest] = useState([])
+
+
+  console.log("for company name",organization)
 
   const handlePermissionOption = (value, key) => {
     let nvalue = value;
@@ -1273,14 +1277,14 @@ export default function SuperAdminSettings() {
   };
   return (
     <>
-      <div className=" bg-lightWhite min-h-screen px-24 pt-[30px] pb-[50px]">
-        <p className="text-[#24A3D9]  mb-9 ">
-          <span className="font-medium text-lg">
+      <div className={` bg-lightWhite min-h-screen px-24 pt-[30px] pb-[50px] ${activeTab===1? 'mt-0':'mt-5' } `}>
+        <p className="text-[#24A3D9]  mb-9">
+          <span className="font-[400] text-[23px] ">
             {" "}
            Settings
           </span>
         </p>
-        <div className="w-[1706.67px] flex justify-between items-center mb-[45px]">
+        <div className="w-[1706.67px] flex justify-between items-center mb-[40px]">
           <div className={`${styles.tabsContainer} w-full`}>
             {tabs.map((item, idx) => {
               return (
@@ -1290,16 +1294,17 @@ export default function SuperAdminSettings() {
                   } cursor-pointer`}
                   onClick={() => changeTab(idx + 1)}
                 >
-                  <div className={` flex justify-center w-full `}>
-                    <div>
+                
+                  <div className={` flex justify-center items-center w-full `}>
+                    <div className="">
                       {activeTab === idx + 1 && (
-                        <img src={item.Icon} className="" alt="item-logo" />
+                        <img src={item.Icon} className="mb-1 w-[18px] h-[18px]" alt="item-logo" />
                       )}
                       {activeTab === idx + 1 || (
-                        <img src={item.Icon2} className="" alt="item-logo" />
+                        <img src={item.Icon2} className="mb-1 w-[18px] h-[18px]" alt="item-logo" />
                       )}
                     </div>
-                    <p className="">{item.name} </p>
+                    <p className="font-medium">{item.name}</p>
                   </div>
                   {activeTab === idx + 1 && (
                     <img
@@ -1343,11 +1348,19 @@ export default function SuperAdminSettings() {
         </div>
         {activeTab === 1 || !activeTab ? <AccountOverview /> : <></>}
         {activeTab === 3 ? (
-          <div>
-            <div className="flex items-center gap-x-[50px] mb-4">
+          <div className="ml-14 w-[93%]">
+          <div className="company_name flex  ml-1 mb-9 item-center">
+          {/* in below this company state variable  created on line no.101 */}
+              <p className="text-[#24A3D9] pr-1 text-[22px] ">&#123;<span>{company}</span> &#125;</p> 
+              <p className="text-[#24A3D9]  text-[22px]"> <span className="pl-[2px] pr-[2px]">&gt; </span> <span className="text-[#24A3D9] font-medium pt-[3px]">Settings</span></p>
+            </div>
+            <div className="flex items-center gap-x-[50px]  mb-4">
+            
               <div>
+
+          
                 <InputSelect
-                  labelClassname="mb-1 text-[20px]"
+                    labelClassname="text-20 mb-1"
                   IconRight={
                     <img
                       src={down}
@@ -1357,10 +1370,10 @@ export default function SuperAdminSettings() {
                       alt="down-arrow"
                     />
                   }
-                  inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF] w-[20.15625vw]"
+                  inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF] w-[387px]"
                   placeholder="Select"
                   optionData={timeZones}
-                  parentClassName=""
+                  parentClassName="py-0 min-w-[387.5px]"
                   label="Default Time Zone"
                   value={settingsData.timeZone}
                   onChange={(val) => handleChange("timeZone", val)}
@@ -1378,9 +1391,9 @@ export default function SuperAdminSettings() {
                     alt="down-arrow"
                   />
                 }
-                inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF] w-[20.15625vw]"
+                inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF] w-[387px]"
                 optionData={["dd/mm/yy", "mm/dd/yy", "yy/mm/dd"]}
-                parentClassName=""
+                parentClassName=" text-base-17-5 py-0 min-w-[387.5px]"
                 label="Default Date Format"
                 value={settingsData.dateFormat}
                 onChange={(val) => handleChange("dateFormat", val)}
@@ -1391,15 +1404,15 @@ export default function SuperAdminSettings() {
               titleClassName="font-medium text-[20px] !text-[#26435F]"
               title="Lead Status Items (Parent / Student)"
               body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-6 rounded-5">
-                  <AddTag onAddTag={handleAddTag} keyName="leadStatus" />
+                <div className="flex items-center flex-wrap gap-x-[18.75px] gap-y-[25px] [&>*]:mb-[10px] px-[31.25px] py-[26.25px] bg-white shadow-small rounded-5">
+                  <AddTag onAddTag={handleAddTag} keyName="leadStatus" className='w-[143.25px] bg-primary mr-[1px]' />
                   <FilterItems
                     onlyItems={true}
                     isString={true}
                     items={leadStatus ? leadStatus : []}
                     keyName="leadStatus"
                     onRemoveFilter={onRemoveFilter}
-                    className="pt-1 pb-1 mr-15"
+                    className="pt-1 pb-1"
                   />
                 </div>
               }
@@ -1409,15 +1422,15 @@ export default function SuperAdminSettings() {
               titleClassName="font-medium text-[20px] !text-[#26435F]"
               title="Tutor Status Items"
               body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-6 rounded-5">
-                  <AddTag onAddTag={handleAddTag} keyName="tutorStatus" />
+                <div className="flex items-center flex-wrap [&>*]:mb-[10px] gap-x-[18.75px] gap-y-[25px] px-[31.25px] py-[26.25px]  bg-white shadow-small p-4 rounded-5 text-base-17-5">
+                  <AddTag onAddTag={handleAddTag} keyName="tutorStatus" className='w-[143.25px] bg-primary mr-[1px]'  />
                   <FilterItems
                     onlyItems={true}
                     isString={true}
                     items={tutorStatus ? tutorStatus : []}
                     keyName="tutorStatus"
                     onRemoveFilter={onRemoveFilter}
-                    className="pt-1 pb-1 mr-15"
+                    className="pt-1 pb-1 text-base-17-5"
                   />
                 </div>
               }
@@ -1433,17 +1446,17 @@ export default function SuperAdminSettings() {
                     subscriptionCode.map((subscription, i) => {
                       return (
                         <div
-                          key={i}
-                          className="bg-white p-4 mb-3 items-center rounded-[5px] shadow-[0px_0px_2.500000476837158px_0px_#00000040] "
-                        >
-                          <div className="flex items-center justify-between  pr-8 ">
-                            <p className="font-medium text-[#24A3D9] min-w-[170px]">
+                        key={i}
+                        className="bg-white px-[31.25px] py-[26.25px] shadow-small mb-3 shadow-[0px_0px_2.500000476837158px_0px_#00000040] rounded-md"
+                      >
+                         <div className="flex items-center justify-between gap-3 pr-8">
+                              <p className="font-medium text-[#24A3D9] text-medium">
                               {subscription.code}
-                              <span className="inline-block ml-4 text-base-17-5 !font-normal text-[#517CA8]">
+                              <span className="inline-block ml-6 -mt-1 font-light text-[#517CA8]">
                                 {subscription.expiry} Weeks
                               </span>
                             </p>
-                            <div className="flex items-center flex-wrap flex-1 ml-16 ">
+                            <div className="flex items-center ml-6 gap-x-[27.5px] gap-y-[25px] flex-1 flex-wrap">
                             {/* <AddTag
                               openModal={true}
                               onAddTag={(code) => handleAddTest(subscription)}
@@ -1459,7 +1472,7 @@ export default function SuperAdminSettings() {
                               fetchData={true}
                               api="test"
                               onRemoveFilter={onRemoveCodeTest}
-                              className="pt-1 pb-1 mr-15"
+                              className="pt-1 pb-1 "
                             />
                           </div>
                             <div className="flex items-center gap-x-4">
@@ -1514,7 +1527,7 @@ export default function SuperAdminSettings() {
                     })}
                   <AddTag
                     children="Add New Code"
-                    className="pl-3 pr-3 pt-1.4 pb-1.5 mt-5 bg-primary text-white"
+                    className="pl-3 pr-3 pt-1.4 pb-1.5 mt-5 bg-primary text-white  w-[189.25px]"
                     text="Add New Code"
                     hideIcon={false}
                     openModal={true}
@@ -1530,19 +1543,19 @@ export default function SuperAdminSettings() {
               className={styles["bordered-settings-container"]}
               body={
                 <div>
-                  <div className="max-h-[360px] overflow-auto custom-scroller p-1 scrollbar-vertical">
+                  <div className="max-h-[360px]  overflow-auto custom-scroller p-1 scrollbar-vertical">
                     {servicesAndSpecialization !== undefined &&
                       servicesAndSpecialization.map((service, i) => {
                         return (
                           <div
                             key={i}
-                            className="bg-white shadow-small rounded-md p-4 mb-3 shadow-[0px_0px_2.500000476837158px_0px_#00000040] "
+                            className="bg-white shadow-small rounded-md px-[31.25px] py-[26.25px]  mb-3 shadow-[0px_0px_2.500000476837158px_0px_#00000040] "
                           >
-                            <div className="flex items-center py-1 justify-between pr-8 ">
-                              <p className="font-medium text-[#24A3D9] min-w-[150px]">
+                             <div className="flex items-center gap-3 justify-between pr-8">
+                              <p className="font-medium text-[#24A3D9] text-medium min-w-[100px]">
                                 {service.service}
                               </p>
-                              <div className="flex items-center flex-wrap flex-1 ml-16">
+                              <div className="flex ml-16 flex-1 gap-x-[27.5px] gap-y-[25px] items-center flex-wrap ">
                               {/* <AddTag
                                 onAddTag={handleAddSpecialization}
                                 keyName={service.service}
@@ -1554,7 +1567,7 @@ export default function SuperAdminSettings() {
                                 keyName={service.service}
                                 items={service.specialization}
                                 onRemoveFilter={onRemoveSpecialization}
-                                className="pt-1 pb-1 mr-15"
+                                className="pt-1 pb-1"
                               />
                             </div>
                               <div className="flex items-center gap-x-4">
@@ -1699,13 +1712,13 @@ export default function SuperAdminSettings() {
                         return (
                           <div
                             key={i}
-                            className="bg-white shadow-small p-4 mb-3 rounded-md"
+                            className="bg-white shadow-small px-[31.25px] py-[26.25px] mb-3 rounded-md"
                           >
                             <div className="flex items-center justify-between py-1 pr-8">
-                              <p className="font-medium text-[#24A3D9] min-w-[150px]">
+                            <p className="font-medium text-[#24A3D9] text-medium min-w-[100px]">
                                 {service.heading}
                               </p>
-                              <div className="flex items-center flex-1 flex-wrap ml-16">
+                              <div className="flex items-center gap-x-[27.5px] gap-y-[25px] flex-wrap flex-1 ml-16">
                               {/* <AddTag
                                 onAddTag={handleAddSessionTag}
                                 keyName={service.heading}
@@ -1717,7 +1730,7 @@ export default function SuperAdminSettings() {
                                 keyName={service.heading}
                                 items={service.items}
                                 onRemoveFilter={onRemoveSessionTagItem}
-                                className="pt-1 pb-1 mr-15 text-base-17-5"
+                                className="pt-1 pb-1"
                               />
                             </div>
                               <div className="flex items-center gap-x-4">
@@ -1779,7 +1792,7 @@ export default function SuperAdminSettings() {
               }
             />
            <SettingsCard
-              titleClassName="font-medium text-[17.5px] !text-[#26435F]"
+              titleClassName="font-medium text-20 !text-[#26435F]"
               title="Edit Announcements"
               toggle={{ value: toggleImage.offer, key: "offer" }}
               onToggle={onToggle}
@@ -1796,7 +1809,7 @@ export default function SuperAdminSettings() {
                     see as soon as they log into their Evallo dashboard. You can
                     add a maximum of 4 Announcements at a time. Read detailed
                     documentation in Evallo’s
-                    <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
+                    <span className="text-[#24A3D9] cursor-pointer" onClick={()=>window.location.href = process.env.REACT_APP_SUPPORT_LINK}> knowledge base.</span>
                   </p>
                   <div className="flex items-center gap-5 pr-3  flex-1 !w-[100%] overflow-x-auto custom-scroller-2    [&>*]:mb-[10px] bg-white  gap-x-5 p-4 rounded-br-5 rounded-bl-5 mb-3 !px-6 py-5 ">
                     {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
@@ -1824,7 +1837,7 @@ export default function SuperAdminSettings() {
                 
                     {offerImages?.map((offer) => {
                       return (
-                        <div className="flex-1" key={offer._id}>
+                        <div className="flex-shrink-0 w-[300px]" key={offer._id}>
                         
                           <div className="relative">
                             {toggleImage.offer || true&& (
@@ -1837,7 +1850,6 @@ export default function SuperAdminSettings() {
                                       className="w-full h-full object-cover rounded-7"
                                     />
                                   </div>
-                                  <div className="w-[1.25px] h-[150px] bg-[#CBD6E2] ml-5" />
                                 </div>
                               </div>
                             )}
@@ -1890,10 +1902,10 @@ export default function SuperAdminSettings() {
                     {offersNew?.length > 0 &&
                       offersNew?.map((off, idx) => {
                         return (
-                          <div className="flex-1 flex gap-2 min-w-[250px] ">
-                            <div className=" relative w-[2px] rounded-md  bg-[#00000030] !h-[300px] mx-4"></div>
+                          <div className="relative flex min-w-[250px] ">
+                          <div className=" relative w-[2px] rounded-md  bg-[#00000030] !h-[300px] mx-[45px]"></div>
 
-                            <div className="w-full flex-1">
+                          <div className="flex-shrink-0 w-[300px]">
                               <div className="flex w-[100%] bg-[#F5F8FA] rounded-md mb-8 flex-col justify-center items-center">
                                 <div className="mt-[20px] mb-[10px] items-center flex justify-center">
                                   <img
@@ -1922,6 +1934,7 @@ export default function SuperAdminSettings() {
                                     </label>
                                     <input
                                      accept="image/*"
+                                     className="hidden"
                                      disabled={loading2}
                                        
                                       onChange={(e) => {
@@ -2278,7 +2291,7 @@ export default function SuperAdminSettings() {
                 provide them this access and what assignments should show up
                 automatically after they sign up with your organization. Read
                 detailed documentation in Evallo’s{" "}
-                <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
+                <span className="text-[#24A3D9] cursor-pointer" onClick={()=>window.location.href = process.env.REACT_APP_SUPPORT_LINK}> knowledge base.</span>
               </p>
 
               <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
@@ -2445,7 +2458,7 @@ export default function SuperAdminSettings() {
                 specialize in while providing these services. For example, Test
                 Prep can be a “Service” with “SAT” and “ACT” as two topics under
                 it. Read detailed documentation in Evallo's
-                <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
+                <span className="text-[#24A3D9] cursor-pointer" onClick={()=>window.location.href = process.env.REACT_APP_SUPPORT_LINK}> knowledge base.</span>
               </p>
 
               <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
@@ -2582,7 +2595,7 @@ export default function SuperAdminSettings() {
                 used to add further details about the session, such as the
                 topics covered, homework assigned, student mood, etc. Read
                 detailed documentation in Evallo’s
-                <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
+                <span className="text-[#24A3D9] cursor-pointer" onClick={()=>window.location.href = process.env.REACT_APP_SUPPORT_LINK}> knowledge base.</span>
               </p>
 
               <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">

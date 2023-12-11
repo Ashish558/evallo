@@ -4,6 +4,7 @@ import Loader from "../Loader";
 export default function PrimaryButton({
   children,
   className,
+  style,
   onClick,
   disabled,
   roundedClass,
@@ -14,8 +15,10 @@ export default function PrimaryButton({
 }) {
   return (
     <button
-      className={`bg-primary relative flex items-center justify-center  ${roundedClass ? roundedClass : "rounded-md"
-        }   px-6 ${className} disabled:opacity-60 py-2`}
+      style={{...style}}
+      className={`bg-primary relative flex items-center justify-center  ${
+        roundedClass ? roundedClass : "rounded-md"
+      } ${className ? className : "px-6 py-2" } disabled:opacity-60 `}
       onClick={onClick}
       disabled={loading === true ? true : disabled}
       type={type ? type : "button"}

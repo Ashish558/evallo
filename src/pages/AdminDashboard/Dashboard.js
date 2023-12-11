@@ -28,6 +28,9 @@ import { useState } from "react";
 import RangeDate from "../../components/RangeDate/RangeDate";
 import ArrowDown from "../../assets/Dashboard/sort-down.svg";
 import { useEffect } from "react";
+import SubscriptionAndExtensionModal from "../Frames/SubscriptionAndExtensionModal/SubscriptionAndExtensionModal";
+import { useLazyGetAuthQuery, useLazyGetOrganizationQuery, useLazyGetPersonalDetailQuery } from "../../app/services/users";
+import { BASE_URL } from "../../app/constants/constants";
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
@@ -35,6 +38,10 @@ const Dashboard = () => {
   const { organization } = useSelector((state) => state.organization);
   const { firstName, lastName } = useSelector((state) => state.user);
   const { data: userStats } = useGetUserStatsQuery();
+  // const [] = useLazyGetPersonalDetailQuery();
+  const [getPersonalDetail, getPersonalDetailResp] = useLazyGetPersonalDetailQuery();
+  const [getOrgDetails, getOrgDetailsResp] = useLazyGetOrganizationQuery();
+  const [getAuth, getAuthResp] = useLazyGetAuthQuery();
 
   console.log({ userStats });
   const [completedRevenue, completedRevenueStatus] = useGetAllRevenueMutation();
@@ -58,6 +65,7 @@ const Dashboard = () => {
     useGetFilteredActionLogMutation();
   const [filteredActionLog, setFilteredActionLog] = useState([]);
   const [userData, setUserData] = useState([]);
+  const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(true);
   const [latestSignUp_flag,setlatestsignup_flag]=useState([1,1,1,1,1,1,1,1,1])
   const [popular_Service_flag,setpopular_Service_flag] = useState([1,1,1,1,1,1])
   const [star_client_flag,setstar_client_flag] = useState([1,1,1])
@@ -87,6 +95,87 @@ const Dashboard = () => {
     });
   }, []);
 
+  useEffect(() => {
+    getPersonalDetail()
+    .then(data => {
+      console.log("getPersonalDetail");
+      console.log(data);
+      const user = data.data.data.user;
+
+      getOrgDetails(user.associatedOrg)
+      .then(data => {
+        console.log("getOrgDetails - attempt with associatedOrg");
+        console.log(data);
+
+        if(data.data === null || data.data === undefined ||
+          data.data.customerSubscriptions === null || data.data.customerSubscriptions === undefined ||
+          data.data.customerSubscriptions.data === null || data.data.customerSubscriptions.data === undefined ||
+          data.data.customerSubscriptions.data.length === 0) {
+          SetIsSubscriptionAndExtensionModalActive(true);
+        } else {
+          SetIsSubscriptionAndExtensionModalActive(false);
+        }
+      })
+      .catch(error => {
+        console.log("Error in getOrgDetails");
+        console.log(error);
+      });
+
+    })
+    .catch(error => {
+      console.log("Error in getPersonalDetail");
+      console.log(error);
+    })
+  }, []);
+
+  useEffect(() => {
+    // return;
+    /* getAuth()
+    .then(data => {
+      console.log("getAut");
+      console.log(data);
+    })
+    .catch(error => {
+      console.log("error in getAuth");
+      console.log(error);
+    }); */
+  }, []);
+
+  useEffect(() => {
+    fetch("https://testapi.evallo.org/api/v1/auth/login/success", {
+      method: "GET",
+      credentials: "include",
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("auth/login/success api");
+      console.log(data);
+    })
+    .catch(error => {
+      console.log(error);
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }, []);
+
+  useEffect(() => {
+    fetch("https://testapi.evallo.org/api/user?role=tutor", {
+      method: "GET"
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("tutor api");
+      console.log(data);
+    })
+    .catch(error => {
+      console.log(error);
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }, []);
+
   const sortByName = () => {
     setUserData((prev) => {
       let arr = [...prev];
@@ -104,7 +193,6 @@ const Dashboard = () => {
     });
   };
   const sortByString = (key) => {
-    console.log('asda',key);
     setUserData((prev) => {
       let arr = [...prev];
       arr = arr.sort(function (a, b) {
@@ -160,31 +248,24 @@ const Dashboard = () => {
     }
     setlatestsignup_flag(changeflag)
   };
-  const sortByString2 = (key) => {
-    setPopularServices((prev) => {
-      let arr = [...prev];
-      arr = arr.sort(function (a, b) {
-        if (plus && plus[key]) {
-          if (a[key] < b[key]) {
-            return -1;
-          }
-          if (a[key] > b[key]) {
-            return 1;
-          }
-          return 0;
-        } else {
-          if (a[key] < b[key]) {
-            return 1;
-          }
-          if (a[key] > b[key]) {
-            return -1;
-          }
-          return 0;
-        }
-      });
-      return arr;
-    });
-  };
+  
+  function sortByString2(key, ascending) {
+    const sortOrder = ascending ? 1 : -1;
+    const array = [...popularServices];
+    array.sort((a, b) => {
+      const aValue = a[key];
+      const bValue = b[key];
+      console.log(aValue,bValue);
+      if (aValue < bValue) {
+        return -1 * sortOrder;
+      } else if (aValue > bValue) {
+        return 1 * sortOrder;
+      } else {
+        return 0;
+      }
+    })
+    setPopularServices(array)
+  }
   const sortByString3 = (key) => {
     // setPopularServices((prev) => {
     //   let arr = [...prev];
@@ -257,6 +338,9 @@ const Dashboard = () => {
 
       return arr;
     });
+    let finalflag=latestSignUp_flag
+      finalflag[8]=!finalflag[8]
+      setlatestsignup_flag(finalflag)
     setPlus({
       ...plus,
       lastSignUp: !plus?.lastSignUp,
@@ -297,7 +381,7 @@ const Dashboard = () => {
       id: 1,
       text: "Service",
       willDisplayDownArrow : popular_Service_flag[0],
-      onCick: () => {sortByString2("service")
+      onCick: () => {sortByString2("service",popular_Service_flag[0])
       let finalflag=popular_Service_flag
         finalflag[0]=!finalflag[0]
         setpopular_Service_flag(finalflag)},
@@ -307,7 +391,7 @@ const Dashboard = () => {
       willDisplayDownArrow : 0,
       text: "Actively Using",
       willDisplayDownArrow : popular_Service_flag[1],
-      onCick: () => {sortByString2("actively_using")
+      onCick: () => {sortByString2("actively_using",popular_Service_flag[1])
       let finalflag=popular_Service_flag
         finalflag[1]=!finalflag[1]
         setpopular_Service_flag(finalflag)},
@@ -316,7 +400,7 @@ const Dashboard = () => {
       id: 3,
       text: "Total Used",
       willDisplayDownArrow : popular_Service_flag[2],
-      onCick: () => {sortByString2("total_used")
+      onCick: () => {sortByString2("total_used",popular_Service_flag[2])
       let finalflag=popular_Service_flag
         finalflag[2]=!finalflag[2]
         setpopular_Service_flag(finalflag)},
@@ -325,7 +409,7 @@ const Dashboard = () => {
       id: 4,
       text: "Scheduled Hours",
       willDisplayDownArrow : popular_Service_flag[3],
-      onCick: () => {sortByString2("scheduled_hours")
+      onCick: () => {sortByString2("scheduled_hours",popular_Service_flag[3])
       let finalflag=popular_Service_flag
         finalflag[3]=!finalflag[3]
         setpopular_Service_flag(finalflag)},
@@ -334,7 +418,7 @@ const Dashboard = () => {
       id: 5,
       text: "Completed Hours",
       willDisplayDownArrow : popular_Service_flag[4],
-      onCick: () => {sortByString2("completed_hours")
+      onCick: () => {sortByString2("completed_hours",popular_Service_flag[4])
       let finalflag=popular_Service_flag
         finalflag[4]=!finalflag[4]
         setpopular_Service_flag(finalflag)},
@@ -343,7 +427,7 @@ const Dashboard = () => {
       id: 6,
       text: "% of Business",
       willDisplayDownArrow : popular_Service_flag[5],
-      onCick: () => {sortByString2("percent_of_business")
+      onCick: () => {sortByString2("percent_of_business",popular_Service_flag[5])
       let finalflag=popular_Service_flag
         finalflag[5]=!finalflag[5]
         setpopular_Service_flag(finalflag)},
@@ -381,13 +465,13 @@ const Dashboard = () => {
       id: 5,
       text: "Assigned Tutor",
       willDisplayDownArrow : latestSignUp_flag[4],
-      onCick: () => sortByString("userStatus"),
+      onCick: () => sortByString("assiginedTutors"),
     },
     {
       id: 6,
       text: "Lead Status",
       willDisplayDownArrow : latestSignUp_flag[5],
-      onCick: () => {sortByString("userStatus")
+      onCick: () => {sortByString("credits")
     let finalflag=latestSignUp_flag
       finalflag[5]=!finalflag[5]
       setlatestsignup_flag(finalflag)},
@@ -396,7 +480,7 @@ const Dashboard = () => {
       id: 7,
       text: "Tutor Status",
       willDisplayDownArrow : latestSignUp_flag[6],
-      onCick: () => sortByString("assiginedTutors"),
+      onCick: () => sortByString("userStatus"),
     },
     {
       id: 8,
@@ -411,7 +495,7 @@ const Dashboard = () => {
       onCick: sortByDate,
     },
   ];
-  console.log({ userData });
+  // console.log({ userData });
   const convertDateToRange = (startDate) => {
     let startD = startDate.split("-")[0];
 
@@ -487,6 +571,26 @@ const Dashboard = () => {
   const redirect = (item) => navigate(`/profile/${item.role}/${item._id}`);
   return (
     <div className={styles.container}>
+
+    {
+      isSubscriptionAndExtensionModalActive ? (
+        <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
+          <SubscriptionAndExtensionModal
+            className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-5/6 w-9/12"
+            OnCheckoutClicked={() => {
+              SetIsSubscriptionAndExtensionModalActive(false);
+            }}
+          />
+        </div>
+      ) : (<></>)
+    }
+
+      {/* <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
+        <SubscriptionAndExtensionModal
+          className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-5/6 w-9/12"
+        />
+      </div> */}
+
       <div className=" mt-[28px] bg-#2E2E2E">
         <div className="mt-[50px] flex justify-center">
           <div className="w-[90vw]">
@@ -767,7 +871,7 @@ const Dashboard = () => {
             </div>
 
             <div className="  pl-[17.5px]">
-              <p className="mb-1 font-semibold text-[#26435F] mb-1 text-base-20  ">
+              <p className="mb-1 font-semibold text-[#26435F] text-base-20  ">
                 Action Log
               </p>
               <ActionLog
@@ -782,7 +886,6 @@ const Dashboard = () => {
           <p className="font-semibold text-[#26435F]  text-base-20">
             Latest Sign-Ups <span className="font-light">(Last 7 Days)</span>
           </p>
-
           <div className="-mt-3">
             <Table
               data={userData}

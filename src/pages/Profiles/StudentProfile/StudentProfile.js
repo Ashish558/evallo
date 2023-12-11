@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./style.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -13,14 +13,8 @@ import SubjectSlider from "../../../components/SubjectSlider/SubjectSlider";
 import ProfilePhoto from "./SPframes/ProfilePhoto";
 import ParentEditables from "./SPframes/ParentEditables";
 import clickArrowIcon from "../../../assets/YIcons/clickArrow.svg";
-import ProfileImg from "../../../assets/images/profile.png";
-import EditIcon from "../../../assets/icons/edit.svg";
-import MailIcon from "../../../assets/icons/mail.svg";
 import emailIcon from "../../../assets/icons/emailIcons.svg";
 import phoneIcon from "../../../assets/icons/phoneIcon.svg";
-import WhatsappIcon from "../../../assets/icons/whatsapp.svg";
-import RightIcon from "../../../assets/icons/chevron-right.svg";
-import LeftIcon from "../../../assets/profile/left.svg";
 import ValueOneIcon from "../../../assets/images/val-1.svg";
 import ValueTwoIcon from "../../../assets/images/val-2.svg";
 import ValueThreeIcon from "../../../assets/images/val-3.svg";
@@ -39,8 +33,6 @@ import SPFrame1 from "./SPframes/SPFrame1";
 import SPFrame2 from "./SPframes/SPFrame2";
 import SPFrame0 from "./SPframes/SPFrame0";
 
-import StudentTest from "../../StudentTest/StudentTest";
-import Chart from "../../../components/Chart/Chart";
 import SPFrame3 from "./SPframes/SPFrame3";
 import SPFrame4 from "./SPframes/SPFrame4";
 import AllTests from "../../AllTests/AllTests";
@@ -743,7 +735,7 @@ const [toEdit, setToEdit] = useState({
 
   return (
     <>
-      <div className={`w-[83.3vw] mx-auto pb-[70px]`}>
+      <div className={`w-[1600px] mx-auto pb-[70px]`}>
         <p className="text-[#24A3D9] mt-[50px] mb-[30px] text-base-22-5">
           {persona === "admin" ?
             <span >
@@ -814,21 +806,21 @@ const [toEdit, setToEdit] = useState({
                   }
                   text="Edit Profile"
                   textClassName=" ml-2   mx-auto text-center text-[#26435F] text-underline text-base-15 font-semibold"
-                  className=" my-0 flex items-center justify-center text-center   absolute -bottom-[60%] design:-bottom-[35%] design:left-[23%] left-[26%]"
+                  className=" my-0 flex items-center justify-center text-center   absolute -bottom-[60%] design:-bottom-[35%] left-[34px]"
                 />}
               </div>
               <div className="flex-1 flex justify-between  items-center">
                 <div className="ml-4 my-auto design:-translate-y-4">
-                  <div className="flex  items-center font-semibold text-[#F3F5F7] text-[1.5625vw]">
+                  <div className="flex  items-center font-semibold text-[#F3F5F7] text-[30px]">
                     {user.firstName} {user.lastName}
 
                   </div>
-                  <div className="flex mt-1 text-base-17-5 items-center text-[#F3F5F7]">
+                  <div className="flex text-[17.5px]  items-center text-[#F3F5F7]">
                     {userDetail?.schoolName
                       ? userDetail?.schoolName
                       : "Sample School Name"}
                   </div>
-                  <div className="flex  text-base-17-5 mt-1 items-center text-[#F3F5F7]">
+                  <div className="flex  text-[17.5px] mt-1 items-center text-[#F3F5F7]">
                     {userDetail?.grade ? userDetail?.grade + `${' '} Grade` : "12th Grade"}
 
                     {/* <p className='font-semibold text-[22px] mr-4'>
@@ -863,7 +855,7 @@ const [toEdit, setToEdit] = useState({
                         <p>
                           <span>
                             <img
-                              className="inline-block  w-[22.521px] h-[18px] mr-2 cursor-pointer "
+                              className="inline-block  w-[24px] h-[18px] mr-2 cursor-pointer "
                               src={emailIcon}
                               alt="email"
                             />
@@ -872,17 +864,17 @@ const [toEdit, setToEdit] = useState({
                           <span>
                             <img
                               onClick={() => handleCopyClick(user?.email)}
-                              className="inline-block ml-2 w-[22.521px] h-[18px] mr-2 cursor-pointer"
+                              className="inline-block ml-2 w-[10.94px] h-[13.13px] mr-2 cursor-pointer"
                               src={copy1}
                               alt="copy"
 
                             />
                           </span>
                         </p>
-                        <p>
-                          <span>
+                        <p className="ml-[2px] mt-1">
+                          <span className=" ">
                             <img
-                              className="inline-block  w-[22.521px] h-[18px] mr-2 cursor-pointer"
+                              className="inline-block  w-[24px] h-[18px] mr-2 cursor-pointer"
                               src={phoneIcon}
                               alt="phone"
                             />
@@ -953,7 +945,7 @@ const [toEdit, setToEdit] = useState({
               {userDetail?.about}
             </div>
             <div className="min-w-[250px] ml-6 design:!ml-0  my-0 relative">
-              <div className="flex items-center absolute top-[20%] -left-[10%] design:-left-[25%]">
+              <div className="flex items-center absolute top-[20%] -left-[25%]">
                 <ProfilePhoto
                   src={
                     associatedParent?.photo
@@ -1044,7 +1036,6 @@ const [toEdit, setToEdit] = useState({
             className="text-sm my-0 flex justify-end translate-y-7  float-right"
           />}
           <SPFrame0 isOwn={isOwn} userDetail={userDetail} settings={settings} toEdit={toEdit} setToEdit={setToEdit} />
-
           <SPFrame1
             fetchDetailss={fetchDetails}
             session_no={session_no}
@@ -1057,7 +1048,7 @@ const [toEdit, setToEdit] = useState({
             setToEdit={setToEdit}
             toEdit={toEdit}
           />
-          <div className="h-[2px] mt-[84px] mb-14   bg-[#CBD6E2] w-[95%] mx-auto"></div>
+          <div className="h-[2px] mt-[173px] mb-14   bg-[#CBD6E2] w-[95%] mx-auto"></div>
           <SPFrame2
             session_no={session_no}
             isOwn={isOwn}
@@ -1072,7 +1063,7 @@ const [toEdit, setToEdit] = useState({
             toEdit={toEdit}
           />
           <div className="flex-1 mt-16 min-h-[400px]">
-            <p className="mb-[-40px] text-sm text-[#26435F] font-semibold text-base-20 ">
+            <p className="mb-[-33px] text-sm text-[#26435F] font-semibold text-[20px] pb-[2px] pl-[2px]">
               Latest Assignments
             </p>
 
@@ -1080,12 +1071,12 @@ const [toEdit, setToEdit] = useState({
             <div
 
 
-              className="border !border-[#CBD6E2] w-[calc(1500*0.0522vw)] mx-auto mb-[calc(50*0.0522vw)]"
+              className="border !border-[#CBD6E2] w-[1500px] mx-auto mb-[50px]"
             ></div>
             <SPFrame3 isOwn={isOwn} userDetail={userDetail} user={user} />
             <div
               id="borderDashed"
-              className="border !border-[#CBD6E3] w-[calc(1500*0.0522vw)] mx-auto my-[calc(50*0.0522vw)]"
+              className="border !border-[#CBD6E3] w-[1500px] mx-auto my-[50px]"
             ></div>
             {
               persona === "admin" &&

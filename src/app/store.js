@@ -12,14 +12,18 @@ import { orgServicesApi } from "./services/organization";
 import { superAdminServicesApi } from "./services/superAdmin";
 import userReducer from './slices/user'
 import organizationReducer from './slices/organization'
+import subscriptionUIReducer from "./slices/subscriptionUI";
 import { adminDashboardServicesApi } from "./services/adminDashboard";
 import { orgSignupApi } from "./services/orgSignup";
 import { subscriptionApi } from "./services/subscription";
+import subscription from "./slices/subscription";
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     organization: organizationReducer,
+    subscriptionUI: subscriptionUIReducer,
+    subscription: subscription,
     [sessionServicesApi.reducerPath]: sessionServicesApi.reducer,
     [authServicesApi.reducerPath]: authServicesApi.reducer,
     [userServicesApi.reducerPath]: userServicesApi.reducer,

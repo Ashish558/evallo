@@ -25,7 +25,7 @@ import {
 import ParentTest from "./ParentTest/ParentTest";
 import InputSelectNew from "../InputSelectNew/InputSelectNew";
 import RangeDate from "../RangeDate/RangeDate";
-
+import "./Owlcarousel.css"
 const initData = [
   {
     firstName: "Shivam",
@@ -254,16 +254,16 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
   //  console.log('tutors', tutors,filteredTutors);
 
   return (
-    <div className="flex flex-row justify-between !gap-[calc(68*0.0522vw)] lg:py-[20px] py-[10px] mt-8 design:!mt-12">
-      <div className=" flex-1 w-[70%] h-full">
+    <div className="flex flex-row justify-between mt-8">
+      <div className=" flex-1 w-[1045px] h-full">
         <div className="flex items-center justify-between">
-          <h1 className="text-[#26435F]  text-base-20 font-semibold mb-1">
+          <h1 className="text-[#26435F]  text-[20px] font-semibold mb-1">
             Conceptual Accuracy
-            <span className="inline-block my-auto ml-2 translate-y-1">
+            <span className="inline-block my-auto ml-2 translate-y-1 h-[18px] w-[18px]">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="15"
-                height="15"
+                width="18"
+                height="18"
                 viewBox="0 0 19 19"
                 fill="none"
               >
@@ -274,17 +274,18 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
               </svg>
             </span>
           </h1>
-
-          <div className="flex  justify-end absolute z-40 top-[51.5%] right-[38%]">
-            <InputSelectNew
+          <div className="flex items-center justify-end absolute z-40 top-[42.5%] right-[39%] mt-[24px]">
+        <InputSelectNew
               placeholder={""}
               parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
-              inputContainerClassName=" my-0 py-[5px] px-[35px]"
+              inputContainerClassName=" my-0 py-[7.5px] px-[35px] !pr-[7.5px]"
               placeHolderClass="text-[#FFA28D] "
               labelClassname="text-sm"
               inputClassName="bg-transparent"
-              value={selectedSubject}
+              optionContainerClassName="text-black"
+              value={selectedSubject?selectedSubject:"none"}
               IconDemography={true}
+              optionClassName="mr-0"
               optionData={subjects.map((item) => item.name)}
               onChange={(e) => handleSubjectChange(e)}
             />
@@ -299,7 +300,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
         </div>
         <div
           id={styles.chartContainer}
-          className="!rounded-md  bg-white w-full flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller !w-[calc(1050*0.0522vw)]"
+          className="!rounded-md  bg-white flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller w-[1045px] h-[541px]"
         >
           <Chart
             selectedStudent={selectedStudent}
@@ -313,17 +314,17 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
         </div>
       </div>
 
-      <div className="w-full lg:w-1/3 flex flex-col gap-3 mt-1 h-full">
+      <div className="w-[491px] flex flex-col gap-3 mt-1 h-full">
         <div className="concept" id={styles.studentCarousel}>
           <div>
-            <h1 className="text-[#26435F]  text-base-20 font-semibold ">
+            <h1 className="text-[#26435F]  text-[20px] font-semibold ">
               Tutor Profile
             </h1>
-            <div className="mb-3 bg-[#26435F] flex items-center h-[180px] rounded-md !w-[calc(489*0.0522vw)]">
+            <div className="mb-3 bg-[#26435F] flex items-center h-[204px] rounded-md w-[491px] tutorsProfile">
               {filteredTutors.length > 0 ? (
                 <OwlCarousel
                   ref={tutorCarouselRef}
-                  className="owl-theme h-full"
+                  className="owl-theme h-[240px]"
                   loop
                   margin={8}
                   items={1}
@@ -332,10 +333,10 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
                     return (
                       <div
                         key={idx}
-                        className="item flex gap-2 my-auto  h-full"
+                        className="item flex gap-2 my-auto  h-[240px]"
                       >
                         <div className="w-[40%] ml-10 flex justify-center flex-col h-full ">
-                          <h3 className="mb-1 mt-2.5 text-[#FFA28D] font-semibold max-w-[130px] overflow-x-auto">
+                          <h3 className="mb-1 mt-2.5 text-[#FFA28D] font-semibold  overflow-x-auto text-[22.5px]">
                             {" "}
                             {`${tutor.firstName}  ${tutor.lastName} `}
                           </h3>
@@ -354,7 +355,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
                             {tutor?.tagline}
                           </p>
                           <button
-                            className="p-2 mt-7 !w-fit rounded-lg whitespace-nowrap text-sm px-4 bg-[#FFA28D] text-white text-base-17-5"
+                            className="py-[10px] px-[20px] mt-7 !w-fit rounded-lg whitespace-nowrap text-[15px] font-medium  bg-[#FFA28D] text-white"
                             onClick={() =>
                               tutor._id &&
                               navigate(`/profile/tutor/${tutor._id}`)
@@ -363,14 +364,14 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
                             View Profile
                           </button>
                         </div>
-                        <div className="w-[60%] flex items-center h-full flex-1">
+                        <div className="w-[60%] flex h-full flex-1 justify-end items-end">
                           <img
                             src={
                               tutor.photo
                                 ? `${awsLink}${tutor.photo}`
                                 : "/images/tutorDefault.svg"
                             }
-                            className="mx-auto object-cover !w-[100px] !h-[100px] rounded-full"
+                            className="mr-[40px] mb-[40px]  object-cover !w-[128px] !h-[128px] rounded-full border-3 border-solid border-[#FFA28D] "
                             alt="profile-icon"
                           />
                         </div>
@@ -389,10 +390,10 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
                           {tutor.tutorLevel && `${tutor.tutorLevel} Belt`}
                         </h5> */}
                   </div>
-                  <div className="w-[60%] flex items-center h-full flex-1">
+                  <div className="w-[60%] flex h-full flex-1 justify-end items-end">
                     <img
                       src={"/images/tutorDefault.svg"}
-                      className="mx-auto object-cover !w-[100px] !h-[100px] rounded-full"
+                      className="mr-[40px] mb-[40px]  object-cover !w-[128px] !h-[128px] rounded-full border-3 border-solid border-[#FFA28D]"
                       alt="profile-icon"
                     />
                   </div>
@@ -402,20 +403,20 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
           </div>
         </div>
 
-        <div id={styles.practiceTestContainer}>
-          <h1 className="text-[#26435F]  text-base-20 font-semibold mb-1">
+        <div id={styles.practiceTestContainer} className="">
+          <h1 className="text-[#26435F]  text-[20px] font-semibold mb-[6px]">
             Assignments
           </h1>
           <div
             id={styles.listedData}
-            className=" overflow-y-auto custom-scroller !w-[calc(489*0.0522vw)]"
+            className=" overflow-y-auto custom-scroller h-[277.5px] w-[488.25px]"
           >
             {filteredAssignedTests?.length > 0 ? (
               filteredAssignedTests?.map((test) => {
                 return <ParentTest styles={styles} {...test} />;
               })
             ) : (
-              <div id="stest2" className=" w-full  z-[5000] h-full rounded-md bg-white flex justify-center items-center flex-col text-center items-center">
+              <div id="stest2" className=" w-full  z-[5000] h-full rounded-md bg-white flex justify-center flex-col text-center items-center">
                 <div className="w-[70%] mx-auto   flex flex-col items-center">
                   <button className="bg-[#FF7979] text-white rounded-md p-2 py-1 mb-3">
                     No Assignments Yet

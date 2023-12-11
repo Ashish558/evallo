@@ -683,7 +683,7 @@ export default function ParentEditables({
       } else {
         let newserv =
           organization.settings?.servicesAndSpecialization[
-            currentToEdit.selectedIdx
+          currentToEdit.selectedIdx
           ];
         updated.push({ ...newserv, price: value });
         setUpdatedService({ ...newserv, price: value });
@@ -709,7 +709,7 @@ export default function ParentEditables({
     "personality",
     "subjects",
   ];
-  console.log(user);
+
   return Object.keys(toEdit).map((key) => {
     return (
       toEdit[key].active === true && (
@@ -718,18 +718,13 @@ export default function ParentEditables({
           key={key}
           classname={
             forCss.includes(currentField.name)
-              ? "max-w-[800px] md:pb-5 mx-auto overflow-visible pb-5 "
-              : "max-w-fit md:pb-5 mx-auto overflow-visible pb-5 "
+              ? "max-w-[1038px] md:pb-5 mx-auto overflow-auto pb-5 "
+              : currentField.name === 'frame1' ?
+                'max-w-[488px] md:pb-5 mx-auto overflow-auto pb-5 '
+                : currentField.name === 'notes' ? 'max-w-[660px] md:pb-5 mx-auto overflow-auto pb-5 ' :
+                  "max-w-fit md:pb-5 mx-auto overflow-auto pb-5 "
           } /*{ ` max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5`}*/
           title=""
-          // primaryBtn={{
-          //    text: "Save",
-          //    className: 'w-[100px] bg-primaryOrange text-base pt-2 ml-0 pb-2 text-lg pl-3 pr-3 ',
-          //    form: 'editable-form',
-          //    // onClick: handleSubmit,
-          //    type: 'submit',
-          //    loading,
-          // }}
           crossBtn={true}
           cancelBtnStyle={{ top: "18px" }}
           titleClassName="!hidden"
@@ -742,8 +737,8 @@ export default function ParentEditables({
                   {currentField.title
                     ? currentField.title
                     : toEdit.tutorServices
-                    ? "Service"
-                    : ""}
+                      ? "Service"
+                      : ""}
                 </div>
                 <button
                   className="w-[125px] bg-[#FFA28D] p-1 rounded-[7.5px] text-white  text-base pl-3 pr-3 ml-auto h-[37.5px]"
@@ -758,10 +753,9 @@ export default function ParentEditables({
                 id="editable-form"
                 onSubmit={handleSubmit}
               >
-                {console.log({ user })}
                 {/* {currentField.fields && currentField.fields} */}
                 {currentField.name === "frame0" && (
-                  <div className="flex flex-col px-2 max-h-[60vh] !w-[50.63vw]">
+                  <div className="flex flex-col px-2 max-h-[60vh] !w-[1030px]">
                     <div className="flex gap-3 items-center justify-between">
                       <div className="!w-[140px]">
                         <ProfilePhoto
@@ -777,13 +771,13 @@ export default function ParentEditables({
                           editable={editable}
                         />
                       </div>
-                      <div className="flex flex-col gap-5  w-[80%]">
-                        <div className="flex !text-sm gap-4 justify-between">
+                      <div className="flex flex-col gap-5 mr-[65px]  w-[80%]">
+                        <div className="flex !text-sm gap-4 justify-around mr-10 ">
                           <InputField
                             label="First name"
                             labelClassname="text-[#26435F] font-medium my-2"
-                            placeholder="First name"
-                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040]  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] !w-[10.05208vw]"
+                            placeholder="Student First name"
+                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040]  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] !w-[193px]"
                             inputClassName="bg-transparent text-xs   "
                             parentClassName=""
                             type="text"
@@ -802,8 +796,8 @@ export default function ParentEditables({
                           <InputField
                             label="Last name"
                             labelClassname="text-[#26435F] font-medium my-2"
-                            placeholder="Last name"
-                            inputContainerClassName="text-xs  !shadow-[0px_0px_2px_0px_#00000040] bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] !w-[10.05208vw]"
+                            placeholder="Student Last name"
+                            inputContainerClassName="text-xs  !shadow-[0px_0px_2px_0px_#00000040] bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] !w-[193px]"
                             inputClassName="bg-transparent text-xs   "
                             parentClassName=""
                             type="text"
@@ -822,7 +816,7 @@ export default function ParentEditables({
                             label="School / College"
                             labelClassname="text-[#26435F] font-medium my-2"
                             placeholder="School / College"
-                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] w-[14.89583vw]"
+                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] w-[270px]"
                             inputClassName="bg-transparent text-xs   "
                             parentClassName=" "
                             type="text"
@@ -835,14 +829,16 @@ export default function ParentEditables({
                             }
                           />
                         </div>
-                        <div className="flex !text-sm  justify-between">
+                        <div className="flex !text-sm ml-1  justify-around  mt-[-10px]">
                           <InputField
-                            IconLeft={caution}
+                            // IconLeft={caution}
+                            IconRight={caution}
+                            iconRIghtClassName={'mr-1 ml-1' }
                             hideTooltip={hideTooltip}
                             label="Email"
                             labelClassname="text-[#26435F] font-medium my-2"
-                            placeholder="Email Id"
-                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040]  bg-primary-50 border-0 !py-3 !px-1 !rounded-[5px] h-[50px] w-[15.625vw]"
+                            placeholder="Student Email Id"
+                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040]  bg-primary-50 border-0 !py-3 !px-1 !rounded-[5px] h-[50px] w-[290px]"
                             inputClassName="bg-transparent !w-[200px] text-xs   "
                             parentClassName=""
                             type="text"
@@ -876,8 +872,8 @@ export default function ParentEditables({
                               codeClassName="!bg-white !rounded-sm"
                               placeholder="Student's Phone"
                               labelClassname="text-[#26435F] font-medium my-2"
-                              inputContainerClassName="!text-xs  !border-none  bg-primary-50  !shadow-[0px_0px_2px_0px_#00000040] h-[50px] w-[14.32292vw]"
-                              inputClassName="bg-transparent !w-[90px] !text-xs rounded-[4px] "
+                              inputContainerClassName="!text-xs flex-1 !border-none  bg-primary-50  !shadow-[0px_0px_2px_0px_#00000040] h-[50px] w-[250px]"
+                              inputClassName="bg-transparent flex-1 !w-[90px]  !text-xs rounded-[4px] "
                               parentClassName=""
                               label="Student Phone"
                               value={currentToEdit.phone}
@@ -904,7 +900,7 @@ export default function ParentEditables({
                             labelClassname={`text-[#26435F] font-medium  my-2`}
                             label="Grade"
                             placeholder="Select"
-                            inputContainerClassName="text-xs  bg-primary-50 !py-3 border-0 !rounded-[5px] !shadow-[0px_0px_2px_0px_#00000040] h-[50px] w-[7.13542vw]"
+                            inputContainerClassName="text-xs  bg-primary-50 !py-3 border-0 !rounded-[5px] !shadow-[0px_0px_2px_0px_#00000040] h-[50px] w-[190px]"
                             inputClassName="bg-transparent text-xs  "
                             parentClassName=""
                             type="text"
@@ -1026,15 +1022,15 @@ export default function ParentEditables({
                   </div>
                 )}
                 {currentField.name === "frame1" && (
-                  <div className="flex flex-col gap-y-6 !w-[21.97917vw]">
-                    <div className="flex justify-between !text-sm">
+                  <div className="flex flex-col gap-y-6">
+                    <div className="flex justify-between !text-sm gap-x-[37.5px]">
                       <InputField
                         label="D.O.B"
-                        labelClassname="text-[#26435F]"
+                        labelClassname="text-[#26435F] mb-[6.71px]"
                         placeholder=""
-                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] !w-[10.09896vw] !h-[50px] text-[#667085]"
+                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]  !h-[50px] text-[#667085]"
                         inputClassName="bg-transparent text-xs   "
-                        parentClassName=""
+                        parentClassName="flex-1"
                         type="date"
                         value={currentToEdit.dob}
                         onChange={(e) =>
@@ -1047,12 +1043,12 @@ export default function ParentEditables({
                       />
 
                       <InputSelectNew
-                        labelClassname="text-[#26435F] !font-bold text-base-17-5"
+                        labelClassname="text-[#26435F] !font-bold text-base-17-5 mb-[6.71px]"
                         label="Time zone"
                         placeholder="Time Zone"
-                        inputContainerClassName="text-xs  bg-primary-50 !py-3 border-0 !rounded-[5px] !w-[10.09896vw] !h-[50px]"
+                        inputContainerClassName="text-xs  bg-primary-50 !py-3 border-0 !rounded-[5px] !h-[50px]"
                         inputClassName="bg-transparent text-xs  "
-                        parentClassName=""
+                        parentClassName="flex-1"
                         type="text"
                         value={currentToEdit.timeZone}
                         onChange={(val) =>
@@ -1065,7 +1061,7 @@ export default function ParentEditables({
                     <div className="flex !text-sm gap-4 ">
                       <InputField
                         label="Dropbox"
-                        labelClassname="text-[#26435F]"
+                        labelClassname="text-[#26435F] mb-[6.71px]"
                         placeholder="Paste your link here"
                         inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] !h-[50px]"
                         inputClassName="bg-transparent text-xs   "
@@ -1084,7 +1080,7 @@ export default function ParentEditables({
                     <div className="flex !text-sm gap-4 ">
                       <InputField
                         label="Drive"
-                        labelClassname="text-[#26435F]"
+                        labelClassname="text-[#26435F] mb-[6.71px]"
                         placeholder="Paste your link here"
                         inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] !h-[50px]"
                         inputClassName="bg-transparent text-xs   "
@@ -1100,14 +1096,14 @@ export default function ParentEditables({
                         }
                       />
                     </div>
-                    <div className="flex !text-sm gap-4 ">
+                    <div className="flex !text-sm gap-x-[35px] ">
                       <InputSelectNew
                         label="Referral Code"
                         labelClassname="text-[#26435F] text-base-17-5"
                         placeholder="Select"
-                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] !w-[10.09896vw] !h-[50px]"
+                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]  !h-[50px]"
                         inputClassName="bg-transparent text-xs   "
-                        parentClassName=""
+                        parentClassName="flex-1"
                         optionData={organization?.settings?.subscriptionCode?.map(
                           (it) => {
                             return {
@@ -1131,9 +1127,9 @@ export default function ParentEditables({
                         label="Accomodations"
                         labelClassname="text-[#26435F]"
                         placeholder="Select"
-                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] !w-[10.09896vw] !h-[50px]"
+                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] !h-[50px]"
                         inputClassName="bg-transparent text-xs   "
-                        parentClassName=""
+                        parentClassName="flex-1"
                         type="text"
                         value={currentToEdit.accomodations}
                         onChange={(e) =>
@@ -1428,7 +1424,7 @@ export default function ParentEditables({
                 )}
                 {currentField.name === "notes" && (
                   <div>
-                    <div className="flex items-center mb-5 pt-0 w-[660px]">
+                    <div className="flex items-center mb-5 pt-0">
                       {/* <p className='font-medium mr-4 min-w-[60px]'>  </p> */}
                       <div className="border w-full h-full rounded-md">
                         {textOpen && (
@@ -1456,7 +1452,10 @@ export default function ParentEditables({
                             className=" text-[#CBD6E2] text-xs flex-1 text-base-17-5 p-3 h-[150px] bg-[#F6F6F6]                              "
                           >
                             Use this space to add notes about the student that
-                            are only visible to you as the Org Admin. Here are
+                            are only visible to you as the Org Admin.
+                            <br></br>
+                            <br></br>
+                            Here are
                             some ideas to get you started: personality,
                             preferences, goals, sports, habits, academic scores,
                             activities, family, likes or dislikes, and schedule
@@ -1957,8 +1956,8 @@ export default function ParentEditables({
                       <p className="font-medium mr-4 min-w-[150px]">
                         {currentToEdit.selectedIdx !== undefined
                           ? organization.settings.servicesAndSpecialization[
-                              currentToEdit.selectedIdx
-                            ].service
+                            currentToEdit.selectedIdx
+                          ].service
                           : ""}
                       </p>
                       <InputField
@@ -2617,7 +2616,7 @@ export default function ParentEditables({
                         (it, selectedScoreIndex) => {
                           return (
                             <div className="flex flex-col ">
-                              <p className="font-semibold !text-lg cursor-pointer mb-2  text-[#24A3D9]">
+                              <p className="font-semibold !text-[20px] cursor-pointer mb-2  text-[#24A3D9]">
                                 SAT&reg; {selectedScoreIndex + 1}
                               </p>
                               <div className="flex gap-5">
@@ -2731,8 +2730,8 @@ export default function ParentEditables({
                                 <div className="text-md  rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[120px] h-[40px] text-[#FFA28D]">
                                   {currentToEdit.satScores[selectedScoreIndex]
                                     ?.maths +
-                                  currentToEdit.satScores[selectedScoreIndex]
-                                    ?.verbal ? (
+                                    currentToEdit.satScores[selectedScoreIndex]
+                                      ?.verbal ? (
                                     currentToEdit.satScores[selectedScoreIndex]
                                       ?.maths +
                                     currentToEdit.satScores[selectedScoreIndex]
@@ -2747,12 +2746,13 @@ export default function ParentEditables({
                               <div className="mt-[15px]">
                                 <InputField
                                   label="Test Date"
-                                  labelClassname="text-[#26435F]"
+                                  labelClassname="text-[#26435F] !text-[15px]"
                                   placeholder=""
                                   inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]  !h-[50px] w-[206px] text-[#507CA8]"
                                   inputClassName="bg-transparent text-xs   "
                                   parentClassName=""
                                   type="date"
+                                  biggerText={true}
                                   value={currentToEdit.dob}
                                   onChange={(e) =>
                                     setCurrentToEdit({
@@ -2861,8 +2861,8 @@ export default function ParentEditables({
                                 },
                               });
                             }}
-                            // tempScores[selectedScoreIndex].maths = checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800)
-                            // //console.log('tempScores', tempScores);
+                          // tempScores[selectedScoreIndex].maths = checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800)
+                          // //console.log('tempScores', tempScores);
                           />
 
                           <div className="text-md  rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[120px] text-[#FFA28D]h-[40px]">
@@ -2870,10 +2870,10 @@ export default function ParentEditables({
                               currentToEdit.baseLineScore?.satBaseLineScore
                                 ?.maths
                             ) +
-                            parseInt(
-                              currentToEdit.baseLineScore?.satBaseLineScore
-                                ?.verbal
-                            ) ? (
+                              parseInt(
+                                currentToEdit.baseLineScore?.satBaseLineScore
+                                  ?.verbal
+                              ) ? (
                               parseInt(
                                 currentToEdit.baseLineScore?.satBaseLineScore
                                   ?.maths
@@ -3012,18 +3012,18 @@ export default function ParentEditables({
                               currentToEdit.baseLineScore?.actBaseLineScore
                                 ?.maths
                             ) +
-                            parseInt(
-                              currentToEdit.baseLineScore?.actBaseLineScore
-                                ?.science
-                            ) +
-                            parseInt(
-                              currentToEdit.baseLineScore?.actBaseLineScore
-                                ?.reading
-                            ) +
-                            parseInt(
-                              currentToEdit.baseLineScore?.actBaseLineScore
-                                ?.english
-                            ) ? (
+                              parseInt(
+                                currentToEdit.baseLineScore?.actBaseLineScore
+                                  ?.science
+                              ) +
+                              parseInt(
+                                currentToEdit.baseLineScore?.actBaseLineScore
+                                  ?.reading
+                              ) +
+                              parseInt(
+                                currentToEdit.baseLineScore?.actBaseLineScore
+                                  ?.english
+                              ) ? (
                               parseInt(
                                 currentToEdit.baseLineScore?.actBaseLineScore
                                   ?.maths
@@ -3059,7 +3059,7 @@ export default function ParentEditables({
                           (it, selectedScoreIndex) => {
                             return (
                               <div className="flex flex-col ">
-                                <p className="font-semibold !text-lg cursor-pointer mb-2  text-[#24A3D9]">
+                                <p className="font-semibold text-[20px] cursor-pointer mb-2  text-[#24A3D9]">
                                   ACT&reg; {selectedScoreIndex + 1}
                                 </p>
                                 <div className="flex gap-5 items-center !text-md">
@@ -3309,9 +3309,9 @@ export default function ParentEditables({
 
                                   <div className="text-md py-2 rounded-[4px] flex items-center  font-semibold  text-center py-auto px-2 bg-primary-50 border-0 !w-[120px] text-[#FFA28D] !h-[40px] ">
                                     {it?.maths +
-                                    it?.science +
-                                    it?.reading +
-                                    it?.english ? (
+                                      it?.science +
+                                      it?.reading +
+                                      it?.english ? (
                                       it?.maths +
                                       it?.science +
                                       it?.reading +

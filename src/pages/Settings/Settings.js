@@ -5,7 +5,7 @@ import ActiveTab from "../../assets/icons/active-tab.svg";
 import SettingsCard from "../../components/SettingsCard/SettingsCard";
 import ToggleBar from "../../components/SettingsCard/ToogleBar";
 import AddTag from "../../components/Buttons/AddTag";
-import "./tab.css";
+import "./tab2.css"
 import FilterItems from "../../components/FilterItems/filterItems";
 import InputField from "../../components/InputField/inputField";
 import Modal from "../../components/Modal/Modal";
@@ -54,6 +54,10 @@ import InputSelect from "../../components/InputSelect/InputSelect";
 import { permissionsStaticData } from "./Tabs/staticData";
 import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
 import moment from "moment-timezone";
+import AccountOverviewWithSubscriptionInfo from "./Tabs/AccountOverviewWithSubscriptionInfo/AccountOverviewWithSubscriptionInfo";
+import OrgAdminUserManagement from "./Tabs/OrgAdminUserManagement/OrgAdminUserManagement";
+import UserManagementLogo1 from "../../assets/icons/User-Management-1.svg";
+import UserManagementLogo2 from "../../assets/icons/User-Management-2.svg";
 
 // import questionMark from '../../assets/images/question-mark.svg'
 const initialState = {
@@ -72,12 +76,16 @@ const initialTabs = [
   {
     Icon: OrgDefaultLogo2,
     Icon2: OrgDefaultLogo,
+    selectedStateIcon: OrgDefaultLogo2,
+    unselectedStateIcon: OrgDefaultLogo,
     name: "Organization Defaults",
     selected: true,
   },
   {
     Icon: CAndBLogo2,
     Icon2: CAndBLogo,
+    selectedStateIcon: CAndBLogo2,
+    unselectedStateIcon: CAndBLogo,
     name: "Company and Brand",
     selected: false,
   },
@@ -85,13 +93,25 @@ const initialTabs = [
   {
     Icon: AccOverviewLogo2,
     Icon2: AccOverviewLogo,
+    selectedStateIcon: AccOverviewLogo2,
+    unselectedStateIcon: AccOverviewLogo,
     name: `Account  Overview`,
     selected: false,
   },
   {
     Icon: ClientsSignupLogo2,
     Icon2: ClientsSignupLogo,
+    selectedStateIcon: ClientsSignupLogo2,
+    unselectedStateIcon: ClientsSignupLogo,
     name: "Clients Sign Up",
+    selected: false,
+  },
+  {
+    Icon: UserManagementLogo2,
+    Icon2: UserManagementLogo1,
+    selectedStateIcon: UserManagementLogo2,
+    unselectedStateIcon: UserManagementLogo1,
+    name: "User Management",
     selected: false,
   },
 ];
@@ -301,19 +321,20 @@ export default function Settings() {
   };
 
   const fetchSettings = () => {
-    if (organization.settings) {
-      setSettingsData(organization.settings);
-      if (organization?.settings?.permissions)
-        setThePermission(organization.settings.permissions);
-    }
+    getSettings().then((res) => {
+      setSettingsData(organization?.settings);
+
+      setThePermission(organization?.settings?.permissions);
+    });
+
   };
-  //console.log(organization);
+
   const onRemoveTextImageTag = (item, key, idx) => {
     let updatedField = settingsData[key].filter((item, i) => i !== idx);
     let updatedSetting = {
       [key]: updatedField,
     };
-    // //console.log(updatedSetting)
+
     updateAndFetchsettings(updatedSetting);
   };
 
@@ -345,7 +366,7 @@ export default function Settings() {
     updateAndFetchsettings(updatedSetting);
   };
 
-  const updateAndFetchsettings = (updatedSetting,setloadingCustom) => {
+  const updateAndFetchsettings = (updatedSetting, setloadingCustom) => {
     if (!organization || !settingsData || !updatedSetting) return;
     const settings = {
       ...settingsData,
@@ -354,19 +375,18 @@ export default function Settings() {
     const body = {
       settings,
     };
-    //console.log("body", body);
-    setloadingCustom && setloadingCustom(true)
+
+    setloadingCustom && setloadingCustom(true);
     setSaveLoading(true);
     updateSetting(body)
       .then((res) => {
-        //console.log("updated", res.data.data);
-         setloadingCustom && setloadingCustom(false)
+        setloadingCustom && setloadingCustom(false);
         setSaveLoading(false);
         setSettingsData(res.data.data.updatedOrg.settings);
         dispatch(updateOrganizationSettings(res.data.data.updatedOrg.settings));
       })
       .catch((err) => {
-          setloadingCustom && setloadingCustom(false)
+        setloadingCustom && setloadingCustom(false);
         setSaveLoading(false);
         //console.log("err", err);
       });
@@ -396,7 +416,6 @@ export default function Settings() {
       formData.delete("text");
       formData.delete("image");
     }
-    console.log({ selectedImageTag, tagText, tagImage });
     // //console.log(append)
 
     if (append === "") return;
@@ -408,7 +427,7 @@ export default function Settings() {
         maxContentLength: Infinity,
       })
       .then((res) => {
-        // //console.log('resp--' ,res.data.data.updatedSetting.settings);
+        console.log('resp--', res.data);
         dispatch(
           updateOrganizationSettings(res.data.data.updatedSetting.settings)
         );
@@ -421,7 +440,7 @@ export default function Settings() {
         setSaveLoading(false);
       })
       .catch((err) => {
-        //console.log("err", err);
+        console.log("err", err);
         alert("Could not upload image");
         setSaveLoading(false);
       });
@@ -461,81 +480,78 @@ export default function Settings() {
     //console.log(updatedSetting);
     updateAndFetchsettings(updatedSetting);
   };
-  const handleaddimage=(idx,file)=>{
-//     const arr = [...offerImages]; // Create a shallow copy of the array
-// // Create a new object with the same properties as the first object in arr
-// console.log(file);
-// const modifiedObject = { ...arr[idx], image: file };
+  const handleaddimage = (idx, file) => {
+    //     const arr = [...offerImages]; // Create a shallow copy of the array
+    // // Create a new object with the same properties as the first object in arr
+    // console.log(file);
+    // const modifiedObject = { ...arr[idx], image: file };
 
-// // Update the array with the modified object
-// arr[idx] = modifiedObject;
-// console.log('asdasd',arr);
-//    let updatedSetting = {
-//      offerImages: arr,
-//    };
-//    console.log(arr);
+    // // Update the array with the modified object
+    // arr[idx] = modifiedObject;
+    // console.log('asdasd',arr);
+    //    let updatedSetting = {
+    //      offerImages: arr,
+    //    };
+    //    console.log(arr);
 
-//   updateAndFetchsettings(updatedSetting);
-// user/setting/updateSpecificImg
-const formData = new FormData();
-
+    //   updateAndFetchsettings(updatedSetting);
+    // user/setting/updateSpecificImg
+    const formData = new FormData();
+    console.log({ file, idx })
     formData.append("file", file);
     formData.append("imageIndex", idx);
-  
-axios.patch(`${BASE_URL}api/user/setting/updateSpecificImg`, formData, {
-  headers: getAuthHeader(),
-  maxBodyLength: Infinity,
-  maxContentLength: Infinity,
-}).then((res) => {
-  console.log(res.data.data.setting.settings);
-  dispatch(
-    updateOrganizationSettings(res.data.data.setting.settings)
-  );
-  setTagImage(null);
-  setTagText("");
-  setSelectedImageTag("");
-  setImageName("");
-  setTagModalActive(false);
-  fetchSettings();
-  setSaveLoading(false);
-})
-.catch((err) => {
-  console.log("err", err);
-  alert("Could not upload image");
-  setSaveLoading(false);
-});
- }
- const handleImageRemoval = (idx) => {
-   console.log(idx);
-  if(offerImages[idx]?.link==''&& offerImages[idx]?.buttonText==''){
-   const arr = offerImages.filter((item,i) => {
-     return i!==idx;
-    });
-    let updatedSetting = {
-      offerImages: arr,
-    };
-    console.log('arasrra r',arr);
-
-    updateAndFetchsettings(updatedSetting);
+    setSaveLoading(true);
+    axios.patch(`${BASE_URL}api/user/setting/updateSpecificImg`, formData, {
+      headers: getAuthHeader(),
+      maxBodyLength: Infinity,
+      maxContentLength: Infinity,
+    }).then((res) => {
+      console.log(res.data.data.setting.settings);
+      dispatch(
+        updateOrganizationSettings(res.data.data.setting.settings)
+      );
+      setTagImage(null);
+      setTagText("");
+      setSelectedImageTag("");
+      setImageName("");
+      setTagModalActive(false);
+      fetchSettings();
+      setSaveLoading(false);
+    })
+      .catch((err) => {
+        console.log("err", err);
+        alert("Could not upload image");
+        setSaveLoading(false);
+      });
   }
-  else{
-     const arr = [...offerImages]; // Create a shallow copy of the array
-// Create a new object with the same properties as the first object in arr
-const modifiedObject = { ...arr[idx], image: '' };
+  const handleImageRemoval = (idx) => {
+    console.log(idx);
+    if (offerImages[idx]?.link == '' && offerImages[idx]?.buttonText == '') {
+      const arr = offerImages.filter((item, i) => {
+        return i !== idx;
+      });
+      let updatedSetting = {
+        offerImages: arr,
+      };
 
-// Update the array with the modified object
-arr[idx] = modifiedObject;
-   console.log(idx,arr);
-   let updatedSetting = {
-     offerImages: arr,
-   };
-  updateAndFetchsettings(updatedSetting);
- }
+      updateAndFetchsettings(updatedSetting);
+    }
+    else {
+      const arr = [...offerImages]; // Create a shallow copy of the array
+      // Create a new object with the same properties as the first object in arr
+      const modifiedObject = { ...arr[idx], image: '' };
+
+      // Update the array with the modified object
+      arr[idx] = modifiedObject;
+      let updatedSetting = {
+        offerImages: arr,
+      };
+      updateAndFetchsettings(updatedSetting);
+    }
   };
   const handleOfferChange = (i, key, value) => {
-    console.log('asASAsaS',key,value,i);
-    let updatedField = settingsData.offerImages.map((item,idx) => {
-      if (idx==i) {
+    let updatedField = settingsData.offerImages.map((item, idx) => {
+      if (idx == i) {
         return { ...item, [key]: value };
       } else {
         return item;
@@ -618,12 +634,11 @@ arr[idx] = modifiedObject;
         return { ...serv };
       }
     });
-    ////console.log("upper",updated)
+
     let updatedSetting = {
       servicesAndSpecialization: updated,
     };
     updateAndFetchsettings(updatedSetting);
-    // //console.log('updatedSetting', updatedSetting)
   };
 
   const handleAddSessionTag = (text, key) => {
@@ -867,7 +882,7 @@ arr[idx] = modifiedObject;
       }
       //  window.location.reload();
       // //console.log("reshi", res);
-    
+
       fetchSettings();
       setFetchS(res);
     });
@@ -934,6 +949,54 @@ arr[idx] = modifiedObject;
 
   const [addOne, setOne] = useState(false);
   const [loading2, setLoading2] = useState(false);
+  const onRemoveSpecialization2 = (text, service) => {
+
+
+    let arr = [...selectedServiceData?.specialization];
+
+    arr = arr.filter((it) => it !== text);
+
+    setSelectedServiceData({
+      ...selectedServiceData,
+      specialization: arr,
+    });
+  };
+  const onRemoveSessionTagItem2 = (text, heading) => {
+
+    let arr = [...selectedSessionData?.items];
+
+    arr = arr.filter((it) => it !== text);
+
+    setSelectedSessionData({
+      ...selectedSessionData,
+      items: arr,
+    });
+
+  };
+  const handleAddSpecialization2 = (text, key) => {
+    let tempSettings = { ...settingsData };
+
+    let arr = [...selectedServiceData?.specialization];
+    arr.push(text);
+    setSelectedServiceData({
+      ...selectedServiceData,
+      specialization: arr,
+    });
+  };
+  const handleAddSessionTag2 = (text, key) => {
+    let arr = [...selectedSessionData?.items];
+
+    arr.push(text);
+
+    setSelectedSessionData({
+      ...selectedSessionData,
+      items: arr,
+    });
+
+
+
+  };
+
   useEffect(() => {
     if (settingsData && settingsData?.offerImages) {
       let arr = [];
@@ -1035,28 +1098,25 @@ arr[idx] = modifiedObject;
     updateAndFetchsettings(updatedSetting);
   };
 
-  const handleAddServiceName = (text, key) => {
+  const handleAddServiceName2 = (text, key) => {
     let tempSettings = { ...settingsData };
 
     let updated = servicesAndSpecialization.map((serv) => {
       if (serv._id === key) {
-        return {
-          ...serv,
-          service: text,
-        };
+        return selectedServiceData;
       } else {
         return { ...serv };
       }
     });
-    ////console.log("upper",updated)
+
     let updatedSetting = {
       servicesAndSpecialization: updated,
     };
     updateAndFetchsettings(updatedSetting);
     setAddServiceModalActive(false);
     setSubModalServiceData(subModalInitialServiceState);
-    // //console.log('updatedSetting', updatedSetting)
   };
+
   const handleAddSessionName = (text, key) => {
     let tempSettings = { ...settingsData };
 
@@ -1079,8 +1139,24 @@ arr[idx] = modifiedObject;
     setSubModalSessionData(subModalInitialSessionState);
     // //console.log('updatedSetting', updatedSetting)
   };
+  const handleAddSessionName2 = (text, key) => {
+    let tempSettings = { ...settingsData };
 
-  console.log({ offersNew, offerImages });
+    let updated = sessionTags.map((serv) => {
+      if (serv._id === key) {
+        return selectedSessionData
+      } else {
+        return { ...serv };
+      }
+    });
+
+    let updatedSetting = {
+      sessionTags: updated,
+    };
+    updateAndFetchsettings(updatedSetting);
+    setAddSessionModalActive(false);
+    setSubModalSessionData(subModalInitialSessionState);
+  };
 
   const submitImageModalNew = (file2, val, e) => {
     // //console.log(tagText)
@@ -1108,7 +1184,6 @@ arr[idx] = modifiedObject;
     formData.append("link", val?.link);
     formData.append("offer", file);
     formData.append("buttonText", val?.buttonText);
-    console.log({ file, val, link: val?.link });
 
     setLoading2(true);
     setSaveLoading(true);
@@ -1121,7 +1196,7 @@ arr[idx] = modifiedObject;
       .then((res) => {
         setSaveLoading(false);
         setLoading2(false);
-        console.log("resp--", res.data.data.updatedSetting.settings);
+        console.log("resp--", res.data);
         dispatch(
           updateOrganizationSettings(res.data.data.updatedSetting.settings)
         );
@@ -1298,12 +1373,11 @@ arr[idx] = modifiedObject;
       }));
     }
   };
-  console.log({ subModalData, addOne, addServices2, addSession2 });
 
   return (
     <>
-      <div className="  min-h-screen w-[83.6989583333vw] mx-auto">
-        <p className="text-[#24A3D9]  !my-[calc(50*0.052vw)] text-base-20">
+      <div className="  min-h-screen px-[140px] mx-auto pt-[50px]">
+        <p className="text-[#24A3D9]   text-20 mb-7">
           <span onClick={() => navigate("/")} className="cursor-pointer ">
             {organization?.company +
               "  >  " +
@@ -1314,43 +1388,63 @@ arr[idx] = modifiedObject;
           </span>
           <span className="font-semibold">Settings</span>
         </p>
-        <div className="shivam-tabs rounded-md">
-          <ul className="tabs group">
-            {tabs.map((item, idx) => {
+        <div className={`flex items-end overflow-hidden pl-[17px] ${styles.navBar}`} >
+          {
+            tabs.map((item, index) => {
+              const isActive = activeTab === index + 1;
               return (
-                <li
-                  className={`" ${activeTab === idx + 1 ? "active" : ""}`}
-                  onClick={() => changeTab(idx + 1)}
+                <button
+                  key={index}
+                  style={{ height: "88.88%" }}
+                  className={`relative flex items-center ${styles.navItem}
+                                  ${isActive ? styles.active : ""}
+              `}
+                  onClick={() => changeTab(index + 1)}
                 >
-                  <a
-                    className={`"w-full cursor-pointer flex justify-center items-center ${
-                      activeTab === idx + 1 ? "!text-[#26435F]" : "!text-white"
-                    }`}
-                  >
-                    <span className="pb-1">
-                      {activeTab === idx + 1 && (
-                        <img
-                          src={item.Icon}
-                          className="!w-[15px] !h-[15px] "
-                          alt="item-logo"
-                        />
-                      )}
-                      {activeTab === idx + 1 || (
-                        <img
-                          src={item.Icon2}
-                          className="!w-[15px] !h-[15px]"
-                          alt="item-logo"
-                        />
-                      )}
-                    </span>
-                    <p className="py-2 px-2 pb-3 font-medium  text-base-17-5  whitespace-nowrap">
-                      {item.name}{" "}
-                    </p>
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
+                  <div className="mr-[10px]" >
+                    <img
+                      src={
+                        isActive ? item.selectedStateIcon : item.unselectedStateIcon
+                      }
+                    />
+                  </div>
+                  <div className={`${styles.name}`} >
+                    {item.name}
+                  </div>
+
+                  {
+                    isActive ? (
+                      <>
+                        <div className="absolute bg-[#fff] h-full w-[10px] -translate-x-full z-[3]"
+                          style={{
+                            left: "1px",
+                          }}
+                        ></div>
+                        <div className="absolute bg-[#26435F] h-full w-[12px] left-0 -translate-x-full z-[3]"
+                          style={{
+                            left: "1px",
+                            borderBottomRightRadius: "100px"
+                          }}
+                        ></div>
+
+                        <div className="absolute bg-[#fff] h-full w-[10px] translate-x-full z-[3]"
+                          style={{
+                            right: "1px"
+                          }}
+                        ></div>
+                        <div className="absolute bg-[#26435F] h-full w-[11px] translate-x-full z-[3]"
+                          style={{
+                            right: "1px",
+                            borderBottomLeftRadius: "100px"
+                          }}
+                        ></div>
+                      </>
+                    ) : (<></>)
+                  }
+                </button>
+              )
+            })
+          }
         </div>
         <div className=" flex w-full flex-1 items-center mb-[30px]">
           <div
@@ -1421,26 +1515,26 @@ arr[idx] = modifiedObject;
             <div className="flex items-center gap-x-8 mb-4">
               <div>
                 <InputSelect
-                  labelClassname="text-base-20 mb-1"
+                  labelClassname="text-20 mb-1"
                   inputContainerClassName=" text-base-17-5 shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
                   optionListClassName="text-base-17-5"
                   optionClassName="text-base-17-5"
                   optionData={timeZones}
                   placeholderClass="text-base-17-5"
-                  parentClassName=" text-base-17-5 py-0 w-[calc(387*0.0522vw)] min-w-[300px]"
+                  parentClassName=" text-base-17-5 py-0 min-w-[387.5px]"
                   label="Default Time Zone"
                   value={settingsData.timeZone}
                   onChange={(val) => handleChange("timeZone", val)}
                 />
               </div>
               <InputSelect
-                labelClassname="text-base-20 mb-1"
+                labelClassname="text-20 mb-1"
                 inputContainerClassName=" text-base-17-5 shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
                 optionListClassName="text-base-17-5"
                 optionClassName="text-base-17-5"
                 optionData={["dd/mm/yy", "mm/dd/yy", "yy/mm/dd"]}
                 placeholderClass="text-base-17-5"
-                parentClassName=" text-base-17-5 py-0 w-[calc(387*0.0522vw)] min-w-[300px]"
+                parentClassName=" text-base-17-5 py-0 min-w-[387.5px]"
                 label="Default Date Format"
                 value={settingsData.dateFormat}
                 onChange={(val) => handleChange("dateFormat", val)}
@@ -1448,43 +1542,43 @@ arr[idx] = modifiedObject;
             </div>
             <div className="h-[1.25px] bg-[#CBD6E2] mb-4 mt-8"></div>
             <SettingsCard
-              titleClassName="text-base-20"
+              titleClassName="text-20"
               title="Lead Status Items (Parent / Student)"
               body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-4 rounded-5">
-                  <AddTag onAddTag={handleAddTag} keyName="leadStatus" />
+                <div className="flex items-center flex-wrap gap-x-[18.75px] gap-y-[25px] [&>*]:mb-[10px] px-[31.25px] py-[26.25px] bg-white shadow-small rounded-5">
+                  <AddTag onAddTag={handleAddTag} keyName="leadStatus" className='w-[143.25px] bg-primary mr-[1px]' />
                   <FilterItems
                     onlyItems={true}
                     isString={true}
                     items={leadStatus ? leadStatus : []}
                     keyName="leadStatus"
                     onRemoveFilter={onRemoveFilter}
-                    className="pt-1 pb-1 mr-15 text-base-17-5"
+                    className="pt-1 pb-1"
                   />
                 </div>
               }
             />
             <div className="h-[1.25px] bg-[#CBD6E2] my-4"></div>
             <SettingsCard
-              titleClassName="text-base-20"
+              titleClassName="text-20"
               title="Tutor Status Items"
               body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-4 rounded-5 text-base-17-5">
-                  <AddTag onAddTag={handleAddTag} keyName="tutorStatus" />
+                <div className="flex items-center flex-wrap [&>*]:mb-[10px] gap-x-[18.75px] gap-y-[25px] px-[31.25px] py-[26.25px]  bg-white shadow-small p-4 rounded-5 text-base-17-5">
+                  <AddTag onAddTag={handleAddTag} keyName="tutorStatus" className='w-[143.25px] bg-primary mr-[1px]' />
                   <FilterItems
                     onlyItems={true}
                     isString={true}
                     items={tutorStatus ? tutorStatus : []}
                     keyName="tutorStatus"
                     onRemoveFilter={onRemoveFilter}
-                    className="pt-1 pb-1 mr-15 text-base-17-5"
+                    className="pt-1 pb-1 text-base-17-5"
                   />
                 </div>
               }
             />
             <div className="h-[1.25px] bg-[#CBD6E2] mb-8"></div>
             <SettingsCard
-              titleClassName="text-base-20"
+              titleClassName="text-20"
               title="Manage Referral Codes"
               className={styles["bordered-settings-container"]}
               body={
@@ -1495,18 +1589,18 @@ arr[idx] = modifiedObject;
                         return (
                           <div
                             key={i}
-                            className="bg-white shadow-small mb-3 p-3 shadow-[0px_0px_2.500000476837158px_0px_#00000040] rounded-md"
+                            className="bg-white px-[31.25px] py-[26.25px] shadow-small mb-3 shadow-[0px_0px_2.500000476837158px_0px_#00000040] rounded-md"
                           >
-                            <div className="flex items-center justify-between gap-3 pr-8 py-1">
-                              <p className="font-medium text-[#24A3D9] ">
+                            <div className="flex items-center justify-between gap-3 pr-8">
+                              <p className="font-medium text-[#24A3D9] text-medium">
                                 {subscription.code}
-                                <span className="inline-block ml-6 -mt-1 !font-normal text-base-17-5 text-[#517CA8]">
+                                <span className="inline-block ml-6 -mt-1 font-light text-[#517CA8]">
                                   {subscription.expiry} Weeks
                                 </span>
                               </p>
-                              <div className="flex items-center ml-6 flex-1 flex-wrap  ">
+                              <div className="flex items-center ml-6 gap-x-[27.5px] gap-y-[25px] flex-1 flex-wrap">
                                 {/* <AddTag
-                              openModal={true}
+                              openModal={true
                               onAddTag={(code) => handleAddTest(subscription)}
                               keyName={subscription.code}
                               text="Add Tests"
@@ -1520,7 +1614,7 @@ arr[idx] = modifiedObject;
                                   filteredTests={filteredTests}
                                   api="test"
                                   onRemoveFilter={onRemoveCodeTest}
-                                  className="pt-1 pb-1 mr-15 text-base-17-5"
+                                  className="pt-1 pb-1 text-base-17-5"
                                 />
                               </div>
                               <div className="flex items-center gap-x-4">
@@ -1561,7 +1655,7 @@ arr[idx] = modifiedObject;
                   </div>
                   <AddTag
                     children="Add New Code"
-                    className="px-[18px] py-3 mt-5 bg-primary text-white"
+                    className="px-[12px] py-3 mt-5 bg-primary text-white w-[189.25px]"
                     text="Add New Code"
                     hideIcon={false}
                     openModal={true}
@@ -1572,7 +1666,7 @@ arr[idx] = modifiedObject;
             />
 
             <SettingsCard
-              titleClassName="text-base-20"
+              titleClassName="text-20"
               title="Manage Services & Topics"
               className={styles["bordered-settings-container"]}
               body={
@@ -1583,13 +1677,13 @@ arr[idx] = modifiedObject;
                         return (
                           <div
                             key={i}
-                            className="bg-white shadow-small p-4 mb-3 rounded-md"
+                            className="bg-white shadow-small px-[31.25px] py-[26.25px] mb-3 rounded-md"
                           >
-                            <div className="flex items-center gap-3 py-1 justify-between pr-8">
-                              <p className="font-medium text-[#24A3D9] min-w-[100px]">
+                            <div className="flex items-center gap-3 justify-between pr-8">
+                              <p className="font-medium text-[#24A3D9] text-medium min-w-[100px]">
                                 {service.service}
                               </p>
-                              <div className="flex ml-16 flex-1 items-center flex-wrap ">
+                              <div className="flex ml-16 flex-1 gap-x-[27.5px] gap-y-[25px] items-center flex-wrap ">
                                 {/* <AddTag
                                 onAddTag={handleAddSpecialization}
                                 keyName={service.service}
@@ -1601,7 +1695,7 @@ arr[idx] = modifiedObject;
                                   keyName={service.service}
                                   items={service.specialization}
                                   onRemoveFilter={onRemoveSpecialization}
-                                  className="pt-1 pb-1 mr-15 text-base-17-5"
+                                  className="pt-1 pb-1 text-base-17-5"
                                 />
                               </div>
                               <div className="flex items-center gap-x-4">
@@ -1612,7 +1706,7 @@ arr[idx] = modifiedObject;
                                     key: "code",
                                   }}
                                   manual={true}
-                                  // onToggle={() => handleServicePause(service)}
+                                // onToggle={() => handleServicePause(service)}
                                 ></ToggleBar>
                                 <div
                                   className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
@@ -1667,7 +1761,7 @@ arr[idx] = modifiedObject;
             />
 
             <SettingsCard
-              titleClassName="text-base-20"
+              titleClassName="text-20"
               title="Session Tags & Reconciliation"
               className={styles["bordered-settings-container"]}
               body={
@@ -1678,13 +1772,13 @@ arr[idx] = modifiedObject;
                         return (
                           <div
                             key={i}
-                            className="bg-white shadow-small p-4 mb-3 rounded-md"
+                            className="bg-white shadow-small px-[31.25px] py-[26.25px] mb-3 rounded-md"
                           >
                             <div className="flex items-center  py-1 justify-between pr-8">
-                              <p className="font-medium text-[#24A3D9]  min-w-[100px]">
+                              <p className="font-medium text-[#24A3D9] text-medium min-w-[100px]">
                                 {service.heading}
                               </p>
-                              <div className="flex items-center flex-wrap flex-1 ml-16">
+                              <div className="flex items-center gap-x-[27.5px] gap-y-[25px] flex-wrap flex-1 ml-16">
                                 {/* <AddTag
                               onAddTag={handleAddSessionTag}
                               keyName={service.heading}
@@ -1696,7 +1790,7 @@ arr[idx] = modifiedObject;
                                   keyName={service.heading}
                                   items={service.items}
                                   onRemoveFilter={onRemoveSessionTagItem}
-                                  className="pt-1 pb-1 mr-15 text-base-17-5"
+                                  className="pt-1 pb-1 text-base-17-5"
                                 />
                               </div>
                               <div className="flex items-center gap-x-4">
@@ -1708,7 +1802,7 @@ arr[idx] = modifiedObject;
                                     key: "code",
                                   }}
                                   manual={true}
-                                  // onToggle={() => }
+                                // onToggle={() => }
                                 ></ToggleBar>
                                 <div
                                   className=" flex items-center justify-center  rounded-full cursor-pointer"
@@ -1758,13 +1852,13 @@ arr[idx] = modifiedObject;
             />
 
             <SettingsCard
-              titleClassName="text-base-20"
+              titleClassName="text-20"
               title="Edit Announcements"
               toggle={{ value: toggleImage.offer, key: "offer" }}
               onToggle={onToggle}
               body={
-                <div className=" bg-white w-full  gap-x-5 p-4 rounded-br-5 rounded-bl-5 !pr-4">
-                  <p className="text-base-17-5 font-medium mt-[-5px] text-[#667085] mb-6">
+                <div className=" bg-white w-full  gap-x-5 py-5 px-[52px] rounded-br-5 rounded-bl-5 pr-12">
+                  <p className="text-medium font-medium mt-[-5px] text-[#667085] mb-6">
                     <span className="font-bold mr-1">⚠️ Note:</span>
                     Announcements, as the name implies, can be used to announce
                     important aspects of your business. Displayed on the
@@ -1775,9 +1869,15 @@ arr[idx] = modifiedObject;
                     see as soon as they log into their Evallo dashboard. You can
                     add a maximum of 4 Announcements at a time. Read detailed
                     documentation in Evallo’s
-                    <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
+                    <span
+                      className="text-[#24A3D9] cursor-pointer"
+                      onClick={() => navigate("/support")}
+                    >
+                      {" "}
+                      knowledge base.
+                    </span>
                   </p>
-                  <div className="flex items-center gap-5 pr-3  flex-1 !w-[100%] overflow-x-auto custom-scroller-2    [&>*]:mb-[10px] bg-white  gap-x-5 p-4 rounded-br-5 rounded-bl-5 mb-3 !px-6 py-5 ">
+                  <div className="flex items-center flex-1 !w-[100%] overflow-x-auto custom-scroller-2 [&>*]:mb-[10px] bg-white rounded-br-5 rounded-bl-5 mb-3 py-5 ">
                     {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
                            onChange={e => onImageChange(e)} /> */}
 
@@ -1798,128 +1898,125 @@ arr[idx] = modifiedObject;
                     baseLink={awsLink}
                     onRemoveFilter={onRemoveImage}
                     // onRemoveFilter={onRemoveFilter}
-                    className="pt-1 pb-1 mr-15 text-base-17-5"
+                    className="pt-1 pb-1 text-base-17-5"
                   /> */}
 
-                    {offerImages?.map((offer,i) => {
+                    {offerImages?.map((offer, i) => {
                       return (
-                        <div className="flex-1" key={offer._id}>
-                          <div className="relative">
-                            {toggleImage.offer && (
-                              <div className=" overflow-hidden mb-5">
-                                <div className="flex">
-                                {offer.image!==''?
-                                <div className="w-[300px] h-[150px]">
-                                    <img
-                                      src={`${awsLink}${offer.image}`}
-                                      alt="offer-image3"
-                                      className="w-full h-full object-cover rounded-7"
-                                    />
+                        <>
+                          <div className="flex-shrink-0 w-[300px]" key={offer._id}>
+                            <div className="relative">
+                              {toggleImage.offer && (
+                                <div className=" overflow-hidden mb-5">
+                                  <div className="flex">
+                                    {offer.image !== '' ?
+                                      <div className="w-[300px] h-[150px]">
+                                        <img
+                                          src={`${awsLink}${offer.image}`}
+                                          alt="offer-image3"
+                                          className="w-full h-full object-cover rounded-7"
+                                        />
+                                      </div>
+                                      : <div className="w-[300px] h-[150px] flex-1">
+                                        <div className="flex w-[100%] bg-[#F5F8FA] rounded-md mb-8 flex-col justify-center items-center">
+                                          <div className="mt-[20px] mb-[10px] items-center flex justify-center">
+                                            <img
+                                              src={fileupload}
+                                              alt="fileuploadIcon"
+                                            ></img>
+                                          </div>
+                                          <div className="flex justify-center">
+                                            <label
+                                              htmlFor="file3"
+                                              className={`block cursor-pointer text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ${loading2 ? "cursor-wait" : ""
+                                                }`}
+                                            >
+                                              {loading2 && offer?.image
+                                                ? "Submitting..."
+                                                : " Choose File"}
+                                            </label>
+                                            <input
+                                              accept="image/*"
+                                              className="hidden"
+                                              onChange={(e) => {
+                                                console.log('szszs', e.target.files[0]);
+                                                handleaddimage(i, e.target.files[0])
+                                                // setImageName(e.target.files[0].name);
+                                              }}
+                                              id="file3"
+                                              type="file"
+                                            />
+                                          </div>
+
+                                          <label
+                                            htmlFor="file"
+                                            className="block text-xs items-center justify-center  rounded-[5px]  px-4 py-2 font-normal text-center text-[#517CA8] text-base-15"
+                                          >
+                                            Less than 1 MB
+                                          </label>
+                                        </div>
+                                      </div>
+                                    }
                                   </div>
-                                     : <div className="w-[300px] h-[150px] flex-1">
-                                     <div className="flex w-[100%] bg-[#F5F8FA] rounded-md mb-8 flex-col justify-center items-center">
-                                       <div className="mt-[20px] mb-[10px] items-center flex justify-center">
-                                         <img
-                                           src={fileupload}
-                                           alt="fileuploadIcon"
-                                         ></img>
-                                       </div>
-       
-                                       <div className="flex items-center text-center justify-center text-base-15">
-                                         {/* {xlsFile == undefined ? (
-                           <p className=""></p>
-                         ) : (
-                           <p className="block ">{xlsFile.name}</p>
-                         )} */}
-                                       </div>
-       
-                                       <div className="flex justify-center">
-                                         <label
-                                           htmlFor="file3"
-                                           className={`block cursor-pointer text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ${
-                                             loading2 ? "cursor-wait" : ""
-                                           }`}
-                                         >
-                                           {loading2 && offer?.image
-                                             ? "Submitting..."
-                                             : " Choose File"}
-                                         </label>
-                                         <input
-                                           accept="image/*"
-                                           onChange={(e) => {
-                                             console.log('szszs',e.target.files[0]);
-                                             handleaddimage(i, e.target.files[0])
-                                             // setImageName(e.target.files[0].name);
-                                           }}
-                                           id="file3"
-                                           type="file"
-                                         />
-                                       </div>
-       
-                                       <label
-                                         htmlFor="file"
-                                         className="block text-xs items-center justify-center  rounded-[5px]  px-4 py-2 font-normal text-center text-[#517CA8] text-base-15"
-                                       >
-                                         Less than 1 MB
-                                       </label>
-                                     </div>
-                                   </div>
-                           }
-                                  <div className="w-[1.25px] h-[150px] bg-[#CBD6E2] ml-5" />
                                 </div>
-                              </div>
-                            )}
-                            <div>
-                            {offer.image!==''&&<div
-                                onClick={() => handleImageRemoval(i)}
-                                className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center  rounded-full cursor-pointer"
-                              >
-                                <img
-                                  src={DeleteIcon}
-                                  className="w-5"
-                                  alt="delete"
+                              )}
+                              <div>
+                                {offer.image !== '' && <div
+                                  onClick={() => handleImageRemoval(i)}
+                                  className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center  rounded-full cursor-pointer"
+                                >
+                                  <img
+                                    src={DeleteIcon}
+                                    className="w-5"
+                                    alt="delete"
+                                  />
+                                </div>}
+                                <InputField
+                                  defaultValue={offer?.link?.trim()}
+                                  inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
+                                  parentClassName={"mb-3 bg-[#F5F8FA]"}
+                                  placeholder={"Hyperlink"}
+                                  onBlur={(e) =>
+                                    handleOfferChange(
+                                      i,
+                                      "link",
+                                      e.target.value
+                                    )
+                                  }
                                 />
-                              </div>}
-                              <InputField
-                                defaultValue={offer?.link?.trim()}
-                                inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
-                                parentClassName={"mb-3 bg-[#F5F8FA]"}
-                                placeholder={"Hyperlink"}
-                                onBlur={(e) =>
-                                  handleOfferChange(
-                                    i,
-                                    "link",
-                                    e.target.value
-                                  )
-                                }
-                              />
-                              <InputField
-                                defaultValue={offer.buttonText}
-                                parentClassName={"bg-[#F5F8FA]"}
-                                inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
-                                placeholder={
-                                  "Button Text (eg. View, Enroll, etc.)"
-                                }
-                                onBlur={(e) =>
-                                  handleOfferChange(
-                                    i,
-                                    "buttonText",
-                                    e.target.value
-                                  )
-                                }
-                              />
+                                <InputField
+                                  defaultValue={offer.buttonText}
+                                  parentClassName={"bg-[#F5F8FA]"}
+                                  inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
+                                  placeholder={
+                                    "Button Text (eg. View, Enroll, etc.)"
+                                  }
+                                  onBlur={(e) =>
+                                    handleOfferChange(
+                                      i,
+                                      "buttonText",
+                                      e.target.value
+                                    )
+                                  }
+                                />
+                              </div>
                             </div>
                           </div>
-                        </div>
+                          {
+                            offerImages.length - 1 > i ?
+                              <div className=" relative w-[2px] rounded-md  bg-[#00000030] !h-[300px] mx-[50px]"></div>
+                              : <></>
+                          }
+                        </>
                       );
                     })}
                     {offersNew?.length > 0 &&
                       offersNew?.map((off, idx) => {
                         return (
-                          <div className="flex-1 relative flex gap-2 min-w-[250px] ">
-                            <div className=" relative w-[2px] rounded-md  bg-[#00000030] !h-[300px] mx-4"></div>
+                          <div className="relative flex min-w-[250px] ">
+                            <div className=" relative w-[2px] rounded-md  bg-[#00000030] !h-[300px] mx-[50px]"></div>
 
-                            <div className="w-full flex-1">
+                            <div className="flex-shrink-0 w-[300px]">
                               <div className="flex w-[100%] bg-[#F5F8FA] rounded-md mb-8 flex-col justify-center items-center">
                                 <div className="mt-[20px] mb-[10px] items-center flex justify-center">
                                   <img
@@ -1929,20 +2026,14 @@ arr[idx] = modifiedObject;
                                 </div>
 
                                 <div className="flex items-center text-center justify-center text-base-15">
-                                  {/* {xlsFile == undefined ? (
-                    <p className=""></p>
-                  ) : (
-                    <p className="block ">{xlsFile.name}</p>
-                  )} */}
                                 </div>
 
                                 <div className="flex justify-center">
                                   <label
                                     htmlFor="file2"
                                     disabled={loading2}
-                                    className={`block cursor-pointer text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ${
-                                      loading2 ? "cursor-wait" : ""
-                                    }`}
+                                    className={`block cursor-pointer text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ${loading2 ? "cursor-wait" : ""
+                                      }`}
                                   >
                                     {loading2 && off?.image
                                       ? "Submitting..."
@@ -1950,6 +2041,7 @@ arr[idx] = modifiedObject;
                                   </label>
                                   <input
                                     accept="image/*"
+                                    className="hidden"
                                     disabled={loading2}
                                     onChange={(e) => {
                                       let arr = offersNew;
@@ -2032,7 +2124,8 @@ arr[idx] = modifiedObject;
                 </div>
               }
             />
-            <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl text-base-20">
+
+            {/* <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl text-20">
               <p className="pr-2">Set Permissions </p>
               <div className="group relative">
                 <p>
@@ -2046,10 +2139,10 @@ arr[idx] = modifiedObject;
                 </p>
 
                 <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
-                  <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
+                  <h3 className="text-[#24A3D9] text-[20px] py-1 font-medium mb-1">
                     Set Permissions
                   </h3>
-                  <span className="font-light leading-[0.5px] text-[0.69vw]">
+                  <span className="font-light leading-[0.5px] text-[18px]">
                     Here, you can select Viewing, Editing or Deleting
                     permissions for various users. Use the toggles below to
                     select these permissions for specific items related to
@@ -2068,38 +2161,45 @@ arr[idx] = modifiedObject;
                 return (
                   <>
                     {item.choosedValue === true ||
-                    item.choosedValue === false ? (
+                      item.choosedValue === false ? (
                       <div
                         key={id}
-                        className={`${
-                          id === 3 ? "!opacity-[0.7]" : ""
-                        } pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between text-base-17-5`}
+                        className={`${id === 3 ? "!opacity-[0.7]" : ""
+                          } pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between text-base-17-5`}
                       >
-                        <div className="flex items-center flex-row justify-start"><p>{renderColoredText(item.name)}</p>
-                        {id==5||id==7?<div className="pl-4 group relative">
-                <p>
-                  <img
-                    src={questionMark}
-                    alt=""
-                    onClick={() => {
-                      console.log("set perm tool tip");
-                    }}
-                  />
-                </p>
+                        <div className="flex items-center flex-row justify-start">
+                          <p>{renderColoredText(item.name)}</p>
+                          {id == 5 || id == 7 ? (
+                            <div className="pl-4 group relative">
+                              <p>
+                                <img
+                                  src={questionMark}
+                                  alt=""
+                                  onClick={() => {
+                                    console.log("set perm tool tip");
+                                  }}
+                                />
+                              </p>
 
-                <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
-                  <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
-                 {id==5? 'Set Permissions':
-                  id==7?
-                 ' New Assignment Email Notifications ' :null}                 </h3>
-                  <span className="font-light leading-[0.5px] text-[0.69vw]">
-                  {id==5?'Enable or disable tutor access to add, update or delete sessions scheduled on a calendar. When disabled, tutors in your Organization will only be able to reconcile sessions and add session notes & tags, but will not be able to make any changes to the remaining details of a session. Enable this if you want to provide more autonomy to your tutors. Disable if you want to discourage them from managing their own schedule.':
-                  id==7?
-                  'Select whether you want to send email notifications when a new test is assigned to a student by a tutor or an admin.'
-                  :null}</span>
-                </span>
-              </div>:null}
-              </div>
+                              <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                                <h3 className="text-[#24A3D9] text-[20px] py-1 font-medium mb-1">
+                                  {id == 5
+                                    ? "Set Permissions"
+                                    : id == 7
+                                      ? " New Assignment Email Notifications "
+                                      : null}{" "}
+                                </h3>
+                                <span className="font-light leading-[0.5px] text-[17.5px]">
+                                  {id == 5
+                                    ? "Enable or disable tutor access to add, update or delete sessions scheduled on a calendar. When disabled, tutors in your Organization will only be able to reconcile sessions and add session notes & tags, but will not be able to make any changes to the remaining details of a session. Enable this if you want to provide more autonomy to your tutors. Disable if you want to discourage them from managing their own schedule."
+                                    : id == 7
+                                      ? "Select whether you want to send email notifications when a new test is assigned to a student by a tutor or an admin."
+                                      : null}
+                                </span>
+                              </span>
+                            </div>
+                          ) : null}
+                        </div>
 
                         <ToggleBar
                           toggle={{ value: item.choosedValue, key: item._id }}
@@ -2109,31 +2209,41 @@ arr[idx] = modifiedObject;
                     ) : (
                       <div
                         className={`pt-[34px] pb-[30px]   text-[#24A3D9] font-medium text-[17.5px] flex justify-between border-b-2 border-[#CBD6E2] ${styles.permission} text-base-17-5`}
-                      > <div className="flex items-center flex-row justify-start">
-                        <p>{renderColoredText(item.name)}</p>
-                        {id==5||id==7?<div className="pl-4 group relative">
-                <p>
-                  <img
-                    src={questionMark}
-                    alt=""
-                    onClick={() => {
-                      console.log("set perm tool tip");
-                    }}
-                  />
-                </p>
-                  
-                <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
-                  <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
-                 {id==5? 'Set Permissions':
-                  id==7?
-                 ' New Assignment Email Notifications ' :null}                 </h3>
-                  <span className="font-light leading-[0.5px] text-[0.69vw]">
-                  {id==5?'Enable or disable tutor access to add, update or delete sessions scheduled on a calendar. When disabled, tutors in your Organization will only be able to reconcile sessions and add session notes & tags, but will not be able to make any changes to the remaining details of a session. Enable this if you want to provide more autonomy to your tutors. Disable if you want to discourage them from managing their own schedule.':
-                  id==7?
-                  'Select whether you want to send email notifications when a new test is assigned to a student by a tutor or an admin.'
-                  :null}</span>
-                </span>
-              </div>:null} </div>
+                      >
+                        {" "}
+                        <div className="flex items-center flex-row justify-start">
+                          <p>{renderColoredText(item.name)}</p>
+                          {id == 5 || id == 7 ? (
+                            <div className="pl-4 group relative">
+                              <p>
+                                <img
+                                  src={questionMark}
+                                  alt=""
+                                  onClick={() => {
+                                    console.log("set perm tool tip");
+                                  }}
+                                />
+                              </p>
+
+                              <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                                <h3 className="text-[#24A3D9] text-[20px] py-1 font-medium mb-1">
+                                  {id == 5
+                                    ? "Set Permissions"
+                                    : id == 7
+                                      ? " New Assignment Email Notifications "
+                                      : null}{" "}
+                                </h3>
+                                <span className="font-light leading-[0.5px] text-[17.5px]">
+                                  {id == 5
+                                    ? "Enable or disable tutor access to add, update or delete sessions scheduled on a calendar. When disabled, tutors in your Organization will only be able to reconcile sessions and add session notes & tags, but will not be able to make any changes to the remaining details of a session. Enable this if you want to provide more autonomy to your tutors. Disable if you want to discourage them from managing their own schedule."
+                                    : id == 7
+                                      ? "Select whether you want to send email notifications when a new test is assigned to a student by a tutor or an admin."
+                                      : null}
+                                </span>
+                              </span>
+                            </div>
+                          ) : null}{" "}
+                        </div>
                         <p>
                           <select
                             onChange={(e) =>
@@ -2143,27 +2253,25 @@ arr[idx] = modifiedObject;
                             className="border border-gray-300 px-2  rounded-md text-[#26435F] bg-[#E9ECEF]"
                           >
                             <option value={item.choosedValue}>
-                              {`   ${
-                                item.permissionActionName ===
+                              {`   ${item.permissionActionName ===
                                 "notifyParentBefSession"
-                                  ? item.choosedValue === 0
-                                    ? "OFF"
-                                    : item.choosedValue + " hours before"
-                                  : item.choosedValue
-                              }`}
+                                ? item.choosedValue === 0
+                                  ? "OFF"
+                                  : item.choosedValue + " hours before"
+                                : item.choosedValue
+                                }`}
                             </option>
                             {item.values.map((values, i) => {
                               return (
                                 item.choosedValue !== values && (
                                   <option key={i} value={values}>
-                                    {` ${
-                                      item.permissionActionName ===
+                                    {` ${item.permissionActionName ===
                                       "notifyParentBefSession"
-                                        ? values === 0
-                                          ? "OFF"
-                                          : values + " hours before"
-                                        : values
-                                    }`}
+                                      ? values === 0
+                                        ? "OFF"
+                                        : values + " hours before"
+                                      : values
+                                      }`}
                                   </option>
                                 )
                               );
@@ -2175,7 +2283,7 @@ arr[idx] = modifiedObject;
                   </>
                 );
               })}
-            </div>
+            </div> */}
           </div>
         ) : (
           <></>
@@ -2191,12 +2299,13 @@ arr[idx] = modifiedObject;
             updateAndFetchsettings={updateAndFetchsettings}
           />
         )}
-        {activeTab === 3 && <AccountOverview />}
+        {activeTab === 3 && <AccountOverviewWithSubscriptionInfo />}
+        {activeTab === 5 && <OrgAdminUserManagement />}
       </div>
       {modalActive && (
         <Modal
           classname={"max-w-840 mx-auto"}
-          titleClassName="text-base-20 mb-[18px]"
+          titleClassName="text-20 mb-[18px]"
           title="Edit Details"
           cancelBtn={true}
           cancelBtnClassName="w-140"
@@ -2213,7 +2322,7 @@ arr[idx] = modifiedObject;
                 <div>
                   <InputField
                     label="Admin First Name"
-                    labelClassname="text-base-20 ml-4 mb-0.5"
+                    labelClassname="text-20 ml-4 mb-0.5"
                     placeholder="Admin Name"
                     inputContainerClassName=" text-base-17-5 px-5 bg-primary-50 border-0"
                     inputClassName="bg-transparent"
@@ -2233,7 +2342,7 @@ arr[idx] = modifiedObject;
                 <div>
                   <InputField
                     label="Admin Last Name"
-                    labelClassname="text-base-20 ml-4 mb-0.5"
+                    labelClassname="text-20 ml-4 mb-0.5"
                     placeholder="Admin Name"
                     inputContainerClassName=" text-base-17-5 px-5 bg-primary-50 border-0"
                     inputClassName="bg-transparent"
@@ -2253,7 +2362,7 @@ arr[idx] = modifiedObject;
                 <div>
                   <InputField
                     label="Phone No."
-                    labelClassname="text-base-20 ml-4 mb-0.5"
+                    labelClassname="text-20 ml-4 mb-0.5"
                     isRequired={true}
                     placeholder="+91 Phone Number"
                     inputContainerClassName=" text-base-17-5 px-5 bg-primary-50 border-0"
@@ -2273,7 +2382,7 @@ arr[idx] = modifiedObject;
                 <div>
                   <InputField
                     label="Email Address"
-                    labelClassname="text-base-20 ml-4 mb-0.5"
+                    labelClassname="text-20 ml-4 mb-0.5"
                     isRequired={true}
                     placeholder="Email Address"
                     type="email"
@@ -2298,7 +2407,7 @@ arr[idx] = modifiedObject;
       {addCodeModalActive && (
         <Modal
           classname={"max-w-[560px] mx-auto"}
-          titleClassName="text-base-20 mb-[18px]"
+          titleClassName="text-20 mb-[18px]"
           title="Add / Edit Referral Code"
           cancelBtn={false}
           cancelBtnClassName="w-140 "
@@ -2321,7 +2430,13 @@ arr[idx] = modifiedObject;
                 provide them this access and what assignments should show up
                 automatically after they sign up with your organization. Read
                 detailed documentation in Evallo’s{" "}
-                <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
+                <span
+                  className="text-[#24A3D9] cursor-pointer"
+                  onClick={() => navigate("/support")}
+                >
+                  {" "}
+                  knowledge base.
+                </span>
               </p>
 
               <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
@@ -2329,7 +2444,7 @@ arr[idx] = modifiedObject;
                   <div className="flex-1">
                     <InputField
                       label="Referral Code"
-                      labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                      labelClassname="text-20 text-[#26435F] mb-0.5"
                       placeholder="Add a single-word referral code"
                       inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"
                       inputClassName="bg-transparent"
@@ -2350,7 +2465,7 @@ arr[idx] = modifiedObject;
                   <div className="flex-1">
                     <InputField
                       label="Duration (in weeks)"
-                      labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                      labelClassname="text-20 text-[#26435F] mb-0.5"
                       isRequired={true}
                       placeholder="Access duration allowed in weeks"
                       inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"
@@ -2380,7 +2495,7 @@ arr[idx] = modifiedObject;
                 <div className="mt-3 flex-1">
                   <InputSearch
                     label="Select Assignments (optional)"
-                    labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                    labelClassname="text-20 text-[#26435F] mb-0.5"
                     placeholder="Select"
                     placeholderClass="text-base-17-5"
                     parentClassName=" text-base-17-5 py-0 w-full  mb-10"
@@ -2407,7 +2522,7 @@ arr[idx] = modifiedObject;
                   />
                   {/* <InputField
                   label="Select Assignments (optional)"
-                  labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                  labelClassname="text-20 text-[#26435F] mb-0.5"
                   placeholder="Select"
                   inputContainerClassName="bg-primary-50 w-[100%]"
                   inputClassName="bg-transparent"
@@ -2417,9 +2532,8 @@ arr[idx] = modifiedObject;
                 <div className="flex gap-4 items-center justify-center mt-3">
                   <button
                     disabled={saveLoading}
-                    className={`${
-                      saveLoading ? "cursor-wait" : ""
-                    } rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}
+                    className={`${saveLoading ? "cursor-wait" : ""
+                      } rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}
                   >
                     Save{" "}
                   </button>
@@ -2438,7 +2552,7 @@ arr[idx] = modifiedObject;
       {addServiceModalActive && (
         <Modal
           classname={"max-w-[560px] mx-auto"}
-          titleClassName="text-base-20 mb-[18px]"
+          titleClassName="text-20 mb-[18px]"
           title="Add / Edit Services"
           cancelBtn={false}
           cancelBtnClassName="w-140 "
@@ -2459,7 +2573,7 @@ arr[idx] = modifiedObject;
                 if (addOne) {
                   handleAddNewService();
                 } else {
-                  handleAddServiceName(
+                  handleAddServiceName2(
                     selectedServiceData?.service,
                     subModalServiceData?._id
                   );
@@ -2473,7 +2587,13 @@ arr[idx] = modifiedObject;
                 specialize in while providing these services. For example, Test
                 Prep can be a “Service” with “SAT” and “ACT” as two topics under
                 it. Read detailed documentation in Evallo's
-                <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
+                <span
+                  className="text-[#24A3D9] cursor-pointer"
+                  onClick={() => navigate("/support")}
+                >
+                  {" "}
+                  knowledge base.
+                </span>
               </p>
 
               <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
@@ -2481,7 +2601,7 @@ arr[idx] = modifiedObject;
                   <div className="flex-1">
                     <InputField
                       label="Service Name"
-                      labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                      labelClassname="text-20 text-[#26435F] mb-0.5"
                       placeholder="Add a service you provide (Test Prep, Career Counseling, Evaluations, etc.)"
                       inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"
                       inputClassName="bg-transparent"
@@ -2510,12 +2630,12 @@ arr[idx] = modifiedObject;
                     />
                   </div>
                 </div>
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px] mt-5">
+                <div className="flex items-center flex-wrap [&>*]:mb-[10px] px-[31.25px] py-[26.25px]  mt-5">
                   <AddTag
                     onAddTag={
                       addOne
                         ? handleAddNewSpecialisation
-                        : handleAddSpecialization
+                        : handleAddSpecialization2
                     }
                     keyName={
                       addOne
@@ -2530,26 +2650,25 @@ arr[idx] = modifiedObject;
                     keyName={
                       addOne
                         ? addServices2?.service
-                        : subModalServiceData.service
+                        : selectedServiceData.service
                     }
                     items={
                       addOne
                         ? addServices2?.specialization
-                        : subModalServiceData.specialization
+                        : selectedServiceData.specialization
                     }
                     onRemoveFilter={
-                      addOne ? handleNewServiceRemove : onRemoveSpecialization
+                      addOne ? handleNewServiceRemove : onRemoveSpecialization2
                     }
-                    className="pt-1 pb-1 mr-15 text-base-17-5"
+                    className="pt-1 pb-1 text-base-17-5"
                   />
                 </div>
                 <div className="w-full border-[1.33px_solid_#00000033] bg-[#00000033] my-5 h-[1.3px]"></div>
                 <div className="flex gap-4 items-center justify-center mt-3">
                   <button
                     disabled={saveLoading}
-                    className={`${
-                      saveLoading ? "cursor-wait" : ""
-                    } rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}
+                    className={`${saveLoading ? "cursor-wait" : ""
+                      } rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}
                   >
                     Save{" "}
                   </button>
@@ -2576,7 +2695,7 @@ arr[idx] = modifiedObject;
       {addSessionModalActive && (
         <Modal
           classname={"max-w-[560px] mx-auto"}
-          titleClassName="text-base-20 mb-[18px]"
+          titleClassName="text-20 mb-[18px]"
           title="Add / Edit Sessions"
           cancelBtn={false}
           cancelBtnClassName="w-140 "
@@ -2600,7 +2719,7 @@ arr[idx] = modifiedObject;
                 if (addOne) {
                   handleAddNewSession();
                 } else {
-                  handleAddSessionName(
+                  handleAddSessionName2(
                     selectedSessionData?.heading,
                     subModalSessionData?._id
                   );
@@ -2615,7 +2734,13 @@ arr[idx] = modifiedObject;
                 used to add further details about the session, such as the
                 topics covered, homework assigned, student mood, etc. Read
                 detailed documentation in Evallo’s
-                <span className="text-[#24A3D9] cursor-pointer" onClick={()=>navigate('/support')}> knowledge base.</span>
+                <span
+                  className="text-[#24A3D9] cursor-pointer"
+                  onClick={() => navigate("/support")}
+                >
+                  {" "}
+                  knowledge base.
+                </span>
               </p>
 
               <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
@@ -2623,7 +2748,7 @@ arr[idx] = modifiedObject;
                   <div className="flex-1">
                     <InputField
                       label="Session Name"
-                      labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                      labelClassname="text-20 text-[#26435F] mb-0.5"
                       placeholder="Add a heading for session tags (such as “Topics Covered”)"
                       inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"
                       inputClassName="bg-transparent"
@@ -2652,9 +2777,9 @@ arr[idx] = modifiedObject;
                     />
                   </div>
                 </div>
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px] mt-5">
+                <div className="flex items-center flex-wrap [&>*]:mb-[10px] px-[31.25px] py-[26.25px]  mt-5">
                   <AddTag
-                    onAddTag={addOne ? handleAddNewTags : handleAddSessionTag}
+                    onAddTag={addOne ? handleAddNewTags : handleAddSessionTag2}
                     keyName={
                       addOne
                         ? addSession2?.heading
@@ -2668,24 +2793,23 @@ arr[idx] = modifiedObject;
                     keyName={
                       addOne
                         ? addSession2?.heading
-                        : subModalSessionData.heading
+                        : selectedSessionData.heading
                     }
                     items={
-                      addOne ? addSession2?.items : subModalSessionData.items
+                      addOne ? addSession2?.items : selectedSessionData.items
                     }
                     onRemoveFilter={
-                      addOne ? handleNewSessionRemove : onRemoveSessionTagItem
+                      addOne ? handleNewSessionRemove : onRemoveSessionTagItem2
                     }
-                    className="pt-1 pb-1 mr-15 text-base-17-5"
+                    className="pt-1 pb-1 text-base-17-5"
                   />
                 </div>
                 <div className="w-full border-[1.33px_solid_#00000033] bg-[#00000033] my-5 h-[1.3px]"></div>
                 <div className="flex gap-4 items-center justify-center mt-3">
                   <button
                     disabled={saveLoading}
-                    className={`${
-                      saveLoading ? "cursor-wait" : ""
-                    } rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}
+                    className={`${saveLoading ? "cursor-wait" : ""
+                      } rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}
                   >
                     Save{" "}
                   </button>
@@ -2715,7 +2839,7 @@ arr[idx] = modifiedObject;
       {addTestModalActive && (
         <Modal
           classname={"max-w-[700px] mx-auto"}
-          titleClassName="text-base-20 mb-[18px]"
+          titleClassName="text-20 mb-[18px]"
           title="Add Tests"
           cancelBtn={false}
           cancelBtnClassName="w-0"
@@ -2734,7 +2858,7 @@ arr[idx] = modifiedObject;
               <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5">
                 <div>
                   <InputSearch
-                    labelClassname="text-base-20 hidden"
+                    labelClassname="text-20 hidden"
                     placeholder="Type Test Name"
                     placeholderClass="text-base-17-5"
                     parentClassName=" text-base-17-5 py-0 w-full  mb-10"
@@ -2768,17 +2892,16 @@ arr[idx] = modifiedObject;
       {tagModalActive && (
         <Modal
           classname={"max-w-[540px] mx-auto"}
-          titleClassName="text-base-20 mb-[18px]"
+          titleClassName="text-20 mb-[18px]"
           title=""
           cancelBtn={true}
           cancelBtnClassName="w-140 hidden"
           primaryBtn={{
             text: "Save",
-            className: `w-140 ml-0 bg-primaryOrange mt-2 ${
-              tagText.trim().length < 1 || tagImage === null
-                ? "pointer-events-none opacity-60"
-                : ""
-            } `,
+            className: `w-140 ml-0 bg-primaryOrange mt-2 ${tagText.trim().length < 1 || tagImage === null
+              ? "pointer-events-none opacity-60"
+              : ""
+              } `,
             form: "settings-form",
             type: "submit",
             loading: saveLoading,
@@ -2789,7 +2912,7 @@ arr[idx] = modifiedObject;
               <div className="flex flex-col items-start mb-5">
                 <InputField
                   label="Text"
-                  labelClassname="text-base-20 ml-4 mb-0.5"
+                  labelClassname="text-20 ml-4 mb-0.5"
                   placeholder="Text"
                   inputContainerClassName=" text-base-17-5 px-5 pt-3 pb-3 bg-primary-50 border-0"
                   inputClassName="bg-transparent"
@@ -2828,7 +2951,7 @@ arr[idx] = modifiedObject;
       {addNewQuestionModalActive && (
         <Modal
           classname={"max-w-[650px] mx-auto"}
-          titleClassName="text-base-20 mb-[18px]"
+          titleClassName="text-20 mb-[18px]"
           title="Add Question"
           cancelBtn={true}
           buttonParentClassName="justify-center"

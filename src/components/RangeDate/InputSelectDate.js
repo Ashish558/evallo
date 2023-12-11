@@ -29,7 +29,8 @@ export default function InputSelect({
   DateSelect,
   setSelectedDate,
   optionContainerClassName,
-  optionPadding
+  optionPadding,
+  valueClass
 }) {
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
@@ -64,7 +65,7 @@ export default function InputSelect({
       )}
 
       <div
-        className={`py-[10px]  lg:py-[10px]  border border-[#D0D5DD] flex items-center justify-end rounded relative  z-50 ${inputContainerClassName ? inputContainerClassName : ""
+        className={`py-[10px] border border-[#D0D5DD] flex items-center justify-end rounded relative  z-50 ${inputContainerClassName ? inputContainerClassName : ""
           } `}
       >
         {Icon && <img src={Icon} className={`mr-5  w-[28px]}`} alt="icon" />}
@@ -76,13 +77,13 @@ export default function InputSelect({
           name={label}
         >
           {value === "" || !value ? (
-            <span className="text-primary-60 mr-5 pl-5 cursor-default  text-[13px]  !text-[calc(17*0.050vw)]  whitespace-nowrap">
+            <span className="text-primary-60 mr-5 pl-5 cursor-default  text-[17.5px]  whitespace-nowrap">
               {" "}
               <span > {placeholder}</span>
               {" "}
             </span>
           ) : (
-            <div className={`mr-5 pl-5 text-[15px] !text-[calc(17*0.050vw)] cursor-default whitespace-nowrap h-full flex items-center justify-between`} >
+            <div className={`pl-5 ${valueClass??"mr-5"} text-[17.5px] cursor-default whitespace-nowrap h-full flex items-center justify-between`} >
               <span className={`${valueClassName}`} onClick={handleOption}>{value}</span>
              {IconRight&& <img
                 className={`w-[30px] inline-block relative h-[10px] text-lg cursor-pointer  z-[5000] ${IconRightClass} mx-4`}
@@ -155,7 +156,7 @@ export default function InputSelect({
               );
             })}
 
-            {DateSelect && <> <p className="px-[26px]  underline underline-offset-4 font-semibold py-2 !text-[calc(17*0.050vw) ]">Custom</p>
+            {DateSelect && <> <p className="px-[26px]  underline underline-offset-4 font-semibold py-2 text-[17.5px]">Custom</p>
               {DateSelect}
             </>}
           </div>

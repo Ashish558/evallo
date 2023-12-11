@@ -93,14 +93,31 @@ const StudentSettings = () => {
         console.log("Email Link sent", res);
       });
   };
+  const handleEmpty = (val) => {
+    if (!val || val.length === 0 || val?.trim()?.length === 0) {
+      return true;
+    }
+    return false;
+  };
   const handleDataUpdate = () => {
-    setSaving(true)
+  
+    let arr=["firstName", "lastName", "email"]
+    let  emptyCheck=false;
+    for (let i=0; i<arr.length; i++) {
+      if(handleEmpty(values[arr[i]])) {
+        alert(`${arr[i]} cannot be empty.`)
+       emptyCheck=true;
+        return false;
+      }
+    }
+    if(emptyCheck) return false;
+   
     const updateUserAccount = async () => {
       try {
         let reqBody = { ...values };
         delete reqBody["_id"];
         delete reqBody["email"];
-
+        setSaving(true)
         updateAccount(reqBody)
           .then((res) => {
             alert("Account details updated succesfully")
@@ -193,35 +210,40 @@ const StudentSettings = () => {
   }
 
   return (
-    <div className="w-[83.23vw] mx-auto">
-      <div className="flex flex-col gap-10   my-12">
-        <div className="text-[#24A3D9] font-lexend-deca text-md design:text-xl  font-semibold leading-normal">
+    <div className="w-[1600px] mx-auto">
+      <div className="flex flex-col    my-12">
+        <div className="text-[#24A3D9] font-lexend-deca text-xl  font-semibold leading-normal mb-[60px]">
           <span onClick={() => navigate('/')}
-            className=" font-medium text-base-22-5 cursor-pointer">{organization?.company + ' > '}   {firstName + ' ' + lastName}</span>
+            className="font-normal text-[20px] cursor-pointer">{organization?.company + ' > '}   {firstName + ' ' + lastName+' >'}</span>
 
-          <span className="font-semibold text-base-22-5">{"  > Settings"}</span>
+          <span className="font-bold text-[20px]">{"  Settings"}</span>
         </div>
-        <div className="flex gap-6 design:gap-8 items-center">
+        {console.log(error)}
+        <div className="flex gap-[37px] items-center mb-[40.5px]">
           <InputField
-            placeholder=""
-            labelClassname="mb-1 text-md text-base-20 text-[#26435F] font-semibold"
+            placeholder="First Name"
+            labelClassname="mb-1 !text-[17.5px] text-base-20 text-[#26435F] font-medium"
             parentClassName="text-[#26435F]"
-            inputContainerClassName="h-[50px] bg-white  border border-white text-[#667085]"
-            inputClassName=" text-400 bg-transparent"
+            inputContainerClassName="h-[50px] bg-white  !w-[275px] border border-white text-[#667085] !px-[15px]"
+            inputClassName=" text-400 bg-transparent  !pl-0"
             label="First name"
             value={values.firstName}
             onChange={(e) =>
-              handleFirstName(e)
+              
+             {const regex = /^[a-zA-Z0-9 ]*$/;
+             const isValid = regex.test(e.target.value);
+             if(isValid)
+             handleFirstName(e)}
             }
             error={error.firstName}
           />
 
           <InputField
-            placeholder=""
-            labelClassname="mb-1 text-md text-base-20 text-[#26435F] font-semibold"
+            placeholder="Last Name"
+            labelClassname="mb-1 !text-[17.5px] text-base-20 text-[#26435F] font-medium"
             parentClassName="text-[#26435F]"
-            inputContainerClassName="h-[50px] bg-white border border-white text-[#667085]"
-            inputClassName=" text-400 bg-transparent"
+            inputContainerClassName="h-[50px] bg-white !w-[275px] border border-white text-[#667085] !px-[15px]"
+            inputClassName=" text-400 bg-transparent  pl-0"
             label="Last name"
             value={values.lastName}
             onChange={(e) =>
@@ -241,11 +263,11 @@ const StudentSettings = () => {
 
           <InputField
             IconLeft={caution}
-            placeholder=""
-            labelClassname="mb-1 text-md text-base-20 text-[#26435F] font-semibold"
+            placeholder="sampleemail@gmail.com"
+            labelClassname="mb-1 !text-[17.5px] text-base-20 text-[#26435F] font-medium"
             parentClassName="text-[#26435F]"
-            inputContainerClassName=" h-[50px] bg-white border  w-[calc(376*0.05050vw)] min-w-[230px] border-white text-[#667085]"
-            inputClassName=" text-400 bg-transparent"
+            inputContainerClassName=" h-[50px] bg-white border  !w-[376px] min-w-[230px] border-white text-[#667085] !px-[15px]"
+            inputClassName=" text-400 bg-transparent  pl-0"
             label="Email"
 
             value={values.email}
@@ -257,8 +279,8 @@ const StudentSettings = () => {
             }}
             error={error.email}
             Tooltip={
-              <span className="absolute top-10 w-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
-                <h3 className="text-[#24A3D9] font-semibold mb-1">
+              <span className="absolute top-10 w-[333px] scale-0 rounded-[13.33px] bg-gray-800 p-[20px] font-light text-[13.3px] text-white group-hover:scale-100">
+                <h3 className="text-[#24A3D9] font-medium mb-1 text-[16px]">
                   Email Confirmation Sent
                 </h3>
                 You need to verify your email if
@@ -275,11 +297,11 @@ const StudentSettings = () => {
 
           <div id="number" >
             <InputFieldDropdown
-              placeholder=""
-              labelClassname=" text-md text-base-20 text-[#26435F] !mb-2 design:!mb-3 font-semibold"
+              placeholder="+91 999303601X"
+              labelClassname=" !text-[17.5px] text-base-20 text-[#26435F] !mb-3 font-medium"
               parentClassName="text-[#26435F]"
-              inputContainerClassName="h-[50px] !py-[14px] px-[14px]   flex items-center rounded   bg-white border  min-w-[230px] border-white text-[#667085]  "
-              inputClassName=" outline-0 w-full text-[17.5px]  pl-1 placeholder:text-base-17-5  text-400 bg-transparent  text-base-17-5"
+              inputContainerClassName="h-[50px] !py-[14px] px-[14px]   flex items-center rounded   bg-white border  min-w-[230px] border-white text-[#667085] !w-[275px] !px-[15px]"
+              inputClassName=" outline-0 w-full text-[17.5px]  pl-1 placeholder:text-base-17-5  text-400 bg-transparent  text-base-17-5 "
               label="Phone"
               value={values.phone}
               codeColor="bg-white"
@@ -299,9 +321,7 @@ const StudentSettings = () => {
                 setValues({
                   ...values,
                   phone: e.target.value,
-                })
-              }
-               
+                })}
               }
               error={error.phone}
             />
@@ -312,7 +332,7 @@ const StudentSettings = () => {
               disabled={saving||!emailValidation.test(values?.email)}
               loading={saving}
 
-              className={`bg-[#FFA28D]   mt-7 ml-10 rounded-md px-[50px] py-[14.3px] text-sm text-base-20 text-white  `}
+              className={`bg-[#FFA28D]  font-semibold mt-7  rounded-md  text-sm text-[20px] text-white  w-[175px] h-[50px]`}
 
             >
               Save
@@ -320,34 +340,34 @@ const StudentSettings = () => {
           </div>
         </div>
 
-        <div className="flex gap-7 flex-1">
+        <div className="flex gap-7 flex-1 mb-[133.18px] flex-col">
           <div>
-            <h1 className="my-0 mb-1 text-[#26435F] font-semibold text-base-20">
+            <h1 className="my-0 mb-1 text-[#26435F] font-semibold text-[17.5px]">
               Send Link
             </h1>
             <button
               onClick={handleClose}
-              className="bg-[#517CA8] text-white rounded-md text-base-17-5  px-5 py-3 text-sm"
+              className="bg-[#517CA8] text-white rounded-md  text-[17.5px] h-[50px] w-[175px]"
             >
               Reset Password
             </button>
           </div>
-        </div>
         <div>
           {reset && (
-            <div className="flex -mt-3 gap-2 text-xs">
-              <p className="bg-[rgba(119,221,119,0.2)] rounded-xl text-[11px] text-[#77DD77] px-3 py-1">
-                <img className="inline-block mr-3" src={resetSendIcon} alt="" />
+            <div className="flex pt-3 gap-[8px] text-xs">
+              <p className="bg-[rgba(119,221,119,0.2)] flex gap-[8.75px] font-light rounded-xl text-[15px] text-[#77DD77] px-[20px] py-[15px]">
+                <img className="h-[18px] w-[18px]" src={resetSendIcon} alt="secureIcon" />
                 Password Reset Link Sent To {values?.email}
               </p>
             </div>
           )}
         </div>
+        </div>
 
-        <div className="flex  gap-x-[100px] mt-16 mb-[163px]">
-          <div className="relative w-[33.54vw]">
+        <div className="flex  gap-x-[100px]  mb-[163px]">
+          <div className="relative w-[643.968px]">
 
-            <p className=" text-sm text-[#26435F] font-semibold text-base-20">
+            <p className=" text-sm text-[#26435F] font-medium text-[18.667px]">
               Submit Feedback
             </p>
             <textarea
@@ -359,7 +379,7 @@ const StudentSettings = () => {
                   support: e.target.value
                 })
               }}
-              className="mt-1 block  resize-none focus:!ring-blue-500 p-5 focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18  placeholder:text-base-18  w-[33.54vw] h-[352px] "
+              className="mt-1 block  resize-none focus:!ring-blue-500 p-5 focus:!border-blue-500 placeholder-[#CBD6E2] text-[18.6px] placeholder:font-normal placeholder:text-[18.6px] font-normal w-[643.968px] h-[352px] text-[#667085]"
               placeholder=" If you have any feedback for this online platform, please submit it here. Our team takes every suggestion seriously."
             ></textarea>
 
@@ -369,13 +389,13 @@ const StudentSettings = () => {
                 if(feedBack.support?.length>1)
                 handleFeedback(feedBack.support, "feedback")
               }}
-              className="bg-[#517CA8] text-white rounded-lg mt-2 float-right px-4 py-2  absolute bottom-[-14%] right-0"
+              className="bg-[#517CA8] text-white rounded-lg mt-2 float-right  absolute bottom-[-16%] right-0 text-[16px] w-[98px] h-[48px]"
             >
               Submit
             </button>
           </div>
-          <div className=" relative w-[33.54vw]">
-            <p className=" text-sm text-[#26435F] font-semibold text-base-20">
+          <div className=" relative w-[644px]">
+            <p className=" text-sm text-[#26435F] font-medium text-base-20 text-[18.667px]">
               Request Technical Support
             </p>
 
@@ -388,7 +408,7 @@ const StudentSettings = () => {
                   tech: e.target.value
                 })
               }}
-              className="mt-1 block w-[33.54vw] h-[352px] resize-none focus:!ring-blue-500 p-5 focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18   placeholder:text-base-18  "
+              className="mt-1 block w-[644px] h-[352px] resize-none focus:!ring-blue-500 p-5 focus:!border-blue-500 placeholder-[#CBD6E2] text-[18.6px]   placeholder:text-[18.6px] text-[#667085] "
               placeholder=" If you require technical support, please submit your request here and our team will help you out accordingly."
             ></textarea>
             <button
@@ -396,7 +416,7 @@ const StudentSettings = () => {
                 if(feedBack.tech?.length>1)
                 handleFeedback(feedBack.tech, "tech")
               }}
-              className="bg-[#517CA8] text-white rounded-lg mt-2 float-right px-4 py-2 absolute bottom-[-14%] right-0"
+              className="bg-[#517CA8] text-white rounded-lg mt-2 float-right  absolute bottom-[-16%] right-0 text-[16px] w-[98px] h-[48px]"
             >
               Submit
             </button>
@@ -408,19 +428,27 @@ const StudentSettings = () => {
           handleClose={handleClose}
           crossBtn={true}
           underline={true}
-          classname="!w-[666px] mx-auto"
+          classname="!w-[666px] mx-auto px-[36px] "
           body={
-            <div className="text-center -mt-4 ">
-              <h1 className="font-normal text-[21px] text-[#26435F]">
+            <div className="text-center ">
+              <h1 className="font-normal text-[21.333px] text-[#26435F]  capitalize">
                 A Password Reset Link will be sent to you. Please click on it to
                 change your password.
               </h1>
+              <div className="flex justify-center items-center gap-[20px]">
+              <button
+                onClick={handleClose}
+                className="border border-solid border-[#FF7979] mt-[30px] text-[#FF7979] w-[146px] h-[46px] py-2 px-4 rounded-lg font-medium"
+              >
+                Cancel
+              </button>
               <button
                 onClick={showResetConfirmation}
                 className="bg-[#FF7979] mt-[30px] text-white w-[146px] h-[46px] py-2 px-4 rounded-lg font-medium"
               >
                 Okay
               </button>
+              </div>
             </div>
           }
         />
