@@ -91,16 +91,16 @@ export default function TableItem({
   }, [organization2]);
 
   useEffect(() => {
-    if (item.userType === "tutor") setTutorStatus(item?.tutorStatus);
+    if (item?.userType === "tutor") setTutorStatus(item?.tutorStatus);
   }, [item]);
   useEffect(() => {
     if (dataFor === "assignedTestsStudents") {
       let params = {};
-      let url = `/api/test/getresponse/${item.assignedTestId}`;
+      let url = `/api/test/getresponse/${item?.assignedTestId}`;
       if (persona !== "student") {
-        url = `/api/test/admin/getresponse/${item.assignedTestId}`;
+        url = `/api/test/admin/getresponse/${item?.assignedTestId}`;
       }
-      if (item.isCompleted === true) {
+      if (item?.isCompleted === true) {
         getTestResponse({ url, params: params }).then((res) => {
           if (res.error) {
             //console.log("resp err", res.error);
@@ -303,7 +303,7 @@ export default function TableItem({
   //   setnumberChecked && setnumberChecked(numberChecked - fl)
   // };
 
-  const timestamp = item.createdAt;
+  const timestamp = item?.createdAt;
   const date = new Date(timestamp);
 
   const options = { year: "numeric", month: "long", day: "numeric" };
@@ -378,10 +378,10 @@ export default function TableItem({
         <>
           <tr className=" text-[17.5px] font-medium">
             <td className="pb-[15px] pt-[15px] px-[10px]">
-              {item.studentName}
+              {item?.studentName}
             </td>
-            <td className="pb-[15px] pt-[15px] px-[10px]">{item.service}</td>
-            <td className="pb-[15px] pt-[15px] px-[10px]">{item.rating}</td>
+            <td className="pb-[15px] pt-[15px] px-[10px]">{item?.service}</td>
+            <td className="pb-[15px] pt-[15px] px-[10px]">{item?.rating}</td>
 
             <td className="pb-[15px] pt-[15px] px-[10px]">
               {getFormattedDate(formattedDate, dateFormat)}
@@ -392,25 +392,25 @@ export default function TableItem({
       {dataFor === "popularServices" && (
         <>
           <tr className=" text-[17.5px] font-medium">
-            <td className="!py-[18.5px] px-[10px] w-[205.6px] !pl-[31.25px] text-left">{item.service?.length>15?<div className="flex flex-col"><p>{item.service?.slice(0,15)}</p><p>{item.service?.slice(15,item?.service?.length)}</p></div>:item.service}</td>
-            <td className="!py-[18.5px] px-[10px] w-[178.5px] !pr-[31.5px] text-center">{item.actively_using}</td>
-            <td className="!py-[18.5px] px-[10px] w-[147.13px] !pr-[36.13px] text-center">{item.total_used}</td>
-            <td className="!py-[18.5px] px-[10px] w-[207.13px] !pr-[31.13px] text-center">{item.scheduled_hours}</td>
-            <td className="!py-[18.5px] px-[10px] w-[211.11px] !pr-[31.11px] text-center">{item.completed_hours}</td>
-            <td className="!py-[18.5px] px-[10px] w-[174.37px] !pr-[31.37px] text-center">{item.percent_of_business}</td>
+            <td className="!py-[18.5px] px-[10px] w-[205.6px] !pl-[31.25px] text-left">{item?.service?.length>15?<div className="flex flex-col"><p>{item.service?.slice(0,15)}</p><p>{item?.service?.slice(15,item?.service?.length)}</p></div>:item?.service}</td>
+            <td className="!py-[18.5px] px-[10px] w-[178.5px] !pr-[31.5px] text-center">{item?.actively_using}</td>
+            <td className="!py-[18.5px] px-[10px] w-[147.13px] !pr-[36.13px] text-center">{item?.total_used}</td>
+            <td className="!py-[18.5px] px-[10px] w-[207.13px] !pr-[31.13px] text-center">{item?.scheduled_hours}</td>
+            <td className="!py-[18.5px] px-[10px] w-[211.11px] !pr-[31.11px] text-center">{item?.completed_hours}</td>
+            <td className="!py-[18.5px] px-[10px] w-[174.37px] !pr-[31.37px] text-center">{item?.percent_of_business}</td>
           </tr>
         </>
       )}
       {dataFor === "serviceRates" && (
         <>
           <tr className=" text-[17.5px] font-medium">
-            <td className="py-4 px-[10px]">{item.service}</td>
+            <td className="py-4 px-[10px]">{item?.service}</td>
 
             <td className="py-4 px-[10px]">
               <div className="text-[#517CA8] font-semibold text-base-20 mr-[2px] inline-block">
                 $
               </div>
-              {item.price}
+              {item?.price}
             </td>
           </tr>
         </>
@@ -442,7 +442,7 @@ export default function TableItem({
             </div>
           </td>
           <td className=" text-[17.5px] px-1 min-w-14  capitalize text-left">
-            <div className="my-[6px]">{item.userType}</div>
+            <div className="my-[6px]">{item?.userType}</div>
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 text-left">
             <div className="my-[6px]">
@@ -454,8 +454,8 @@ export default function TableItem({
 
           <td className=" text-[17.5px] !pl-6 pr-1  min-w-14  text-left capitalize">
             <div className="my-[6px]">
-              {item.phoneCode}
-              {item.phone}
+              {item?.phoneCode}
+              {item?.phone}
             </div>
           </td>
           <td className=" text-[17.5px] px-1  min-w-14  capitalize flex justify-center">
@@ -473,7 +473,7 @@ export default function TableItem({
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 ">
             <div className="my-[6px]">
-              {item.specialization?.map((specialization, idx) => {
+              {item?.specialization?.map((specialization, idx) => {
                 return `${specialization}${
                   idx + 1 === item.specialization.length ? "" : ","
                 }`;
