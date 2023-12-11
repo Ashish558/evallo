@@ -200,14 +200,14 @@ export default function Login({ setLoginFormActive }) {
             pagination={true}
           />
         </div>
-        <div className="flex items-center mb-[80.33px] bg-white rounded-[10px] pt-[40px] pb-[40px] px-[66px] w-[561px] h-[650px] shadow-[5px_5px_87.5px_0px_rgba(166,166,166,0.25)]">
+        <div className="flex items-center mb-[80.33px] bg-white rounded-[10px] pt-[40px] pb-[40px] px-[66px] w-[561px] h-[650px] shadow-[5px_5px_93.33px_0px_rgba(166,166,166,0.25)]">
           {loginActive ? (
             <div className="w-full">
               <div className="flex justify-center">
                 <img
                   src={EvalloLogo}
                   alt="logo"
-                  className=" h-[29.796px]"
+                  className=" h-[29.796px] w-[131.1px]"
                 />
               </div>
               <p
@@ -323,7 +323,7 @@ export default function Login({ setLoginFormActive }) {
 
                 <div className="w-full flex justify-center items-center gap-[30px] mt-[11px]" >
                     <div
-                      className="aspect-square bg-[#fff] flex items-center justify-center h-[50px] w-[50px] relative rounded-[7px] shadow-md"
+                      className="aspect-square bg-[#fff] flex items-center justify-center h-[50px] w-[50px] relative rounded-[7px] shadow-none border-[1px] border-solid"
                       
                       // onClick={google}
                     >
@@ -334,7 +334,7 @@ export default function Login({ setLoginFormActive }) {
 
                   
                     <div
-                      className="aspect-square bg-[#fff] flex items-center justify-center h-[50px] w-[50px] relative rounded-[7px] shadow-md"
+                      className="aspect-square bg-[#fff] flex items-center justify-center h-[50px] w-[50px] relative rounded-[7px] border-[1px] border-solid"
                       
                     >
                       <img 

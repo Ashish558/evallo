@@ -132,7 +132,7 @@ export default function InputSelect({
           } `}
       >
         {Icon && <img src={Icon} className={`mr-5  w-[28px]}`} alt="icon" />}
-        {IconLeft && <img src={IconLeft} className={`mr-5  w-[28px]}`} alt="IconLeft" />}
+        {IconLeft && <img src={IconLeft} className={`mr-5 ${customArrowClassName? "!h-[18.75px] !max-w-[18.75px]":""}}`} alt="IconLeft" />}
         {IconSearch && <img src={IconSearch} className={`mr-2 mt-[3px]  w-[28px]}`} alt="IconLeft" />}
         {selected ? (
           IconRight ? (

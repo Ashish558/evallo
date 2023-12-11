@@ -586,7 +586,7 @@ export default function UserSignup() {
             <></>
           )}
           <div
-            className={`relative bg-white rounded-md w-[800px] h-auto mb-[140px] px-[50px] pt-[40px] pb-[66px] ${customFields?.length > 0 && isAddedByAdmin
+            className={`relative bg-white rounded-md w-[800px] h-full  px-[50px] pt-[20px] pb-[66px] ${customFields?.length > 0 && isAddedByAdmin
                 ? "!w-[45vw] min-w-[650px]"
                 : ""
               }`}
@@ -604,7 +604,7 @@ export default function UserSignup() {
 
               {currentStep > 0 && !frames.signupSuccessful && (
                 <NumericSteppers
-                  className={`mt-3 !w-[520px] !mx-auto design:!w-[550px] ${customFields?.length > 0 && isAddedByAdmin
+                  className={`!lg:mt-0 !h-[73px] !w-[520px] !mx-auto design:!w-[550px] ${customFields?.length > 0 && isAddedByAdmin
                       ? "!w-[650px] design:!w-[650px]"
                       : ""
                     }`}
@@ -635,7 +635,7 @@ export default function UserSignup() {
               {frames.signupActive ? (
                 <div>
                   <div
-                    className={`flex mt-[59px] justify-between ${stepOneDisabled
+                    className={`flex mt-[38px] justify-between ${stepOneDisabled
                         ? "pointer-events-none cursor-not-allowed opacity-70"
                         : ""
                       }`}
@@ -643,8 +643,9 @@ export default function UserSignup() {
                     <InputField
                       placeholder=""
                       inputContainerClassName="text-[17.5px]  bg-white   border border-[#D0D5DD] h-[53px]"
-                      parentClassName="text-[17.5px] w-[325px] h-[53.33px]"
-                      labelClassname="mb-1 text-[#26435F] !font-medium"
+                      parentClassName="text-[17.5px] w-[325px] "
+                      inputClassName="h-[53.33px]"
+                      labelClassname="mb-1 !text-[17.5px] text-[#26435F] !font-medium"
                       label="First name"
                       value={values.firstName}
                       onChange={(e) => {
@@ -662,8 +663,9 @@ export default function UserSignup() {
                     <InputField
                       placeholder=""
                       inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
-                      parentClassName="text-[17.5px] w-[325px] h-[53.33px]"
-                      labelClassname="mb-1 text-[#26435F] !font-medium"
+                      parentClassName="text-[17.5px] w-[325px]"
+                      inputClassName="h-[53.33px]"
+                      labelClassname="mb-1 !text-[17.5px] text-[#26435F] !font-medium"
                       label="Last name"
                       value={values.lastName}
                       onChange={(e) => {
@@ -686,12 +688,12 @@ export default function UserSignup() {
                       }`}
                   >
                     <InputField
-                      labelClassname="mb-1 text-[#26435F] !font-medium"
+                      labelClassname="mb-1 text-[#26435F] !font-medium !text-[17.5px]"
                       label="Email"
                       placeholder=""
                       inputClassName={"h-[52.5px]"}
                       inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
-                      parentClassName=" text-base-17-5  w-[375px] h-[54px]"
+                      parentClassName=" text-base-17-5  w-[375px]"
                       value={values.email}
                       onChange={(e) =>
                         setValues({
@@ -705,9 +707,9 @@ export default function UserSignup() {
                     <InputFieldDropdown
                       placeholder=""
                       inputContainerClassName="text-[17.5px] bg-white h-[53px]  border border-[#D0D5DD]"
-                      parentClassName="text-base-17-5 w-[275px] h-[53.33px]"
-                      inputClassName="  bg-transparent text-400 text-base-17-5 h-[52.5px]"
-                      labelClassname="mb-1 text-[#26435F]  !font-medium text-[#26435F] design:mb-2"
+                      parentClassName="text-base-17-5 w-[275px]"
+                      inputClassName="  bg-transparent text-400 text-base-17-5 h-[53.33px]"
+                      labelClassname="!text-[17.5px] mb-1 text-[#26435F]  !font-medium text-[#26435F] design:mb-2"
                       label="Phone"
                       codeClassName="!min-w-[40px] "
                       value={values.phone}
@@ -763,7 +765,7 @@ export default function UserSignup() {
                           <div
                             className={`relative  ml-[2px] w-[25px] h-[25px] rounded-full border-[1.25px] flex justify-center items-center ${values.role === "parent"
                                 ? "border-[#FFA28D]"
-                                : "border-gray-600"
+                                : "border-[#507CA8]"
                               } cursor-pointer`}
                           >
                             {values.role === "parent" && (
@@ -794,7 +796,7 @@ export default function UserSignup() {
                           <div
                             className={`relative w-[25px] h-[25px] p-1 rounded-full border flex justify-center items-center ${values.role === "student"
                                 ? "border-[#FFA28D]"
-                                : "border-gray-600"
+                                : "border-[#507CA8]"
                               } cursor-pointer`}
                           >
                             {values.role === "student" && (
@@ -810,31 +812,31 @@ export default function UserSignup() {
                     </div>
                   </div>
                   <div className=" mt-[31.75px]">
-                    <div className={`flex justify-start items-center ${styles.textLight} `}>
+                    <div className={`flex justify-start gap-[16.25px] items-center ${styles.textLight} `}>
                       <CCheckbox
                         className={`border-[#507CA8] `}
-                        customSize={`w-[22.5px] h-[22.5px] mt-[5px]`}
+                        customSize={`w-[22.5px] h-[22.5px] mt-[5px] !pl-0`}
                         customTickIconSize={`w-[17.5px] h-[17.5px]`}
                         checked={values.ageChecked}
                         onChange={handleCheckboxChangeAge}
                       />
 
-                      <div className="ml-[16.25px] text-[17.5px] text-[#507CA8]">
+                      <div className="text-[17.5px] text-[#507CA8] !pl-0">
                         I confirm that I am 13 years or older
                       </div>
                     </div>
                   </div>
 
                   <div className="mt-[31.75px] mb-[50px]">
-                    <div className={` flex justify-start items-start ${styles.textLight}`}>
+                    <div className={` flex justify-start gap-[16.25px] items-start ${styles.textLight}`}>
                       <CCheckbox
                         className={`border-[#507CA8]`}
-                        customSize={`w-[22.5px] h-[22.5px] mt-[5px]`}
+                        customSize={`w-[22.5px] h-[22.5px] mt-[5px] !pl-0`}
                         customTickIconSize={`w-[17.5px] h-[17.5px]`}
                         checked={values.terms}
                         onChange={handleCheckboxChangeTerms}
                       />
-                      <div className={`ml-[15px] text-[17.5px] text-[#507CA8`}>
+                      <div className={`text-[17.5px] text-[#507CA8] w-[543px] pl-0`}>
                         I have carefully read and agree to the{" "}
                         <a
                           href="http://evallo.org/tou"
@@ -843,6 +845,7 @@ export default function UserSignup() {
                           Terms of Use
                         </a>
                         and
+                        <br/>
                         <a
                           href="http://evallo.org/privacy-policy"
                           className=" ml-1 font-medium text-[#26435F]"
@@ -854,13 +857,13 @@ export default function UserSignup() {
                   </div>
 
                   {/*  buttons */}
-                  <div className="flex items-center justify-between">
-                    <SecondaryButton
+                  <div className={`flex items-center  ${currentStep>1?"justify-between":"justify-end"}`}>
+           {currentStep>1 &&   <SecondaryButton
                       children="Go back"
                       disabled={true}
-                      className="!text-[18.667px] bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] font-medium h-[53px] rounded-5 w-[146.67px] "
+                      className="!text-[18.667px] !bg-transparent text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] font-medium h-[53px] rounded-5 w-[146.67px] "
                       onClick={() => navigate("/")}
-                    />
+                    />}
 
                     <PrimaryButton
                       className={`bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[146.67px]   text-[#FFF] !text-[18.667px] font-medium relative h-[50px] design:h-[53px] rounded-5 ${loading

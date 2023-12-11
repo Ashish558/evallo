@@ -232,6 +232,7 @@ export default function UserDetails({
         onChange={(e) => setOtherDetails({ ...otherDetails, grade: e })}
         totalErrors={detailsError}
         error={detailsError.grade}
+        customArrowClassName="h-[18.7px] w-[18.75px]"
       />
 
       <InputField
@@ -248,9 +249,9 @@ export default function UserDetails({
       <div className={style.shy}>
         <div className="flex items-center mt-2">
           <CCheckbox checked={!otherDetails.referalCode||otherDetails.referalCode?.trim()?.length === 0}
-            onChange={() => setOtherDetails({ ...otherDetails, referalCode: "" })} />
+            onChange={() => setOtherDetails({ ...otherDetails, referalCode: "" })} customTickIconSize="!w-[22.5px] !h-[22.5px]"/>
 
-          <span className="ml-1  text-[#507CA8] text-base-17-5 pt-1">
+          <span className="ml-1  text-[#507CA8] text-[17.5px] pt-1 leading-none ">
             I don't have one
           </span>
         </div>
@@ -260,7 +261,7 @@ export default function UserDetails({
         {!isAddedByAdmin && (
           <SecondaryButton
             children="Go back"
-            className="!text-[18.667] whitespace-nowrap mr-6 bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] w-[146.67px] font-medium h-[50px] design:h-[53px] rounded-5"
+            className="!text-[18.667] whitespace-nowrap mr-6 !bg-transparent text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] w-[146.67px] font-medium h-[50px] design:h-[53px] rounded-5"
             onClick={handleBack}
           />
         )}

@@ -176,7 +176,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                     </OwlCarousel>
                   ) : (
                     <p
-                      className="text-white  text-center w-full font-semibold pt-8 not-italic pb-8 text-lg"
+                      className="text-[#26435F]  text-center w-full font-semibold pt-8 not-italic pb-8 text-lg"
                       style={{
                         fontSize: "18px",
                         fontStyle: "normal",
