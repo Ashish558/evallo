@@ -5,12 +5,15 @@ import evallo_logo from "../../assets/icons/navbar-icons/evallo-logo.svg";
 import logoutIcon from "../../assets/images/Vectorlogout new.svg";
 import Dashboard1 from "../../assets/icons/navbar-icons/Dashboard_red.svg";
 import Dashboard from "../../assets/icons/Dashboard_light.svg";
+import DashboardDisabled from "../../assets/icons/navbar-icons/Dashboard_grey.svg";
 import UsersIcon from "../../assets/icons/crm_light.svg";
 import StudentIcon from "../../assets/icons/mdi_account-studentstudent.svg";
 import StudentIcon2 from "../../assets/icons/mdi_account-studentstudent2.svg";
 import UsersIcon1 from "../../assets/icons/navbar-icons/crm_red.svg";
+import UsersIconDisabled from "../../assets/icons/navbar-icons/crm_grey.svg";
 import Schedule from "../../assets/icons/Calendar_light.svg";
 import Schedule1 from "../../assets/icons/navbar-icons/calender-red.png";
+import ScheduleDisabled from "../../assets/icons/navbar-icons/Calendar_grey.svg";
 import Assignment from "../../assets/icons/Assignments_light.svg";
 import Assignment1 from "../../assets/icons/navbar-icons/Assignments_red.svg";
 import AssignmentDisabled from "../../assets/icons/navbar-icons/Assignments_grey.svg";
@@ -19,6 +22,7 @@ import Content2 from "../../assets/icons/navbar-icons/contents_red.svg";
 import ContentDisabled from "../../assets/icons/navbar-icons/contents_grey.svg";
 import Invoice from "../../assets/images/invoice-logo.svg";
 import Invoice2 from "../../assets/images/invoice-logo-red.svg";
+import InvoiceDisabled from "../../assets/images/invoice-logo-grey.svg";
 import Settings from "../../assets/images/Settings 1 new.svg";
 import Settings1 from "../../assets/icons/navbar-icons/settings_red.png";
 import Profile from "../../assets/Navbar/profile.svg";
@@ -41,6 +45,7 @@ let tempnavdata = [
    {
       icon: Dashboard,
       activeIcon: Dashboard1,
+      disabledIcon: DashboardDisabled,
       path: "/",
       excludes: ["student", "parent", "tutor"],
       tooltip: "Dashboard",
@@ -49,6 +54,7 @@ let tempnavdata = [
    {
       icon: UsersIcon,
       activeIcon: UsersIcon1,
+      disabledIcon: UsersIconDisabled,
       path: "/users",
       tooltip: "CRM",
       isDisabled: false,
@@ -56,6 +62,7 @@ let tempnavdata = [
    {
       icon: Schedule,
       activeIcon: Schedule1,
+      disabledIcon: ScheduleDisabled,
       path: "/calendar",
       tooltip: "Schedule",
       isDisabled: false,
@@ -79,6 +86,7 @@ let tempnavdata = [
    {
       icon: Invoice,
       activeIcon: Invoice2,
+      disabledIcon: InvoiceDisabled,
       path: "/invoice",
       tooltip: "Invoicing",
       isDisabled: false,
@@ -271,7 +279,10 @@ const managerNavData = [
 
 const Navbar = ({myRef}) => {
    const {
-      hasSubscriptionExpired
+      hasSubscriptionExpired,
+      hasExtensionsExpired,
+      activeSubscriptionInfo,
+      activeExtensionInfo,
    } = useSelector(state => state.subscription);
    const [navData, setNavData] = useState(tempnavdata);
    const location = useLocation();
@@ -385,6 +396,137 @@ const [loading2,setLoading2]=useState(false)
    //    };
    //  }, []);
 
+   useEffect(() => {
+      if(hasSubscriptionExpired || activeSubscriptionInfo.planName === "") {
+         let tempnavdata = [
+            {
+               icon: Dashboard,
+               activeIcon: Dashboard1,
+               disabledIcon: DashboardDisabled,
+               path: "/",
+               excludes: ["student", "parent", "tutor"],
+               tooltip: "Dashboard",
+               isDisabled: true,
+            },
+            {
+               icon: UsersIcon,
+               activeIcon: UsersIcon1,
+               disabledIcon: UsersIconDisabled,
+               path: "/users",
+               tooltip: "CRM",
+               isDisabled: true,
+            },
+            {
+               icon: Schedule,
+               activeIcon: Schedule1,
+               disabledIcon: ScheduleDisabled,
+               path: "/calendar",
+               tooltip: "Schedule",
+               isDisabled: true,
+            },
+            {
+               icon: Assignment,
+               activeIcon: Assignment1,
+               disabledIcon: AssignmentDisabled,
+               path: "/assigned-tests",
+               tooltip: "Assignments",
+               isDisabled: true,
+            },
+            {
+               icon: Content,
+               activeIcon: Content2,
+               disabledIcon: ContentDisabled,
+               path: "/all-tests",
+               tooltip: "Content",
+               isDisabled: true,
+            },
+            {
+               icon: Invoice,
+               activeIcon: Invoice2,
+               disabledIcon: InvoiceDisabled,
+               path: "/invoice",
+               tooltip: "Invoicing",
+               isDisabled: true,
+            },
+            {
+               icon: Settings,
+               activeIcon: Settings1,
+               path: "/settings",
+               excludes: ["student", "parent", "tutor"],
+               tooltip: "Settings",
+               isDisabled: false,
+            },
+         ];
+
+         setNavData(tempnavdata);
+         return;
+      }
+
+      if(!(hasSubscriptionExpired || activeSubscriptionInfo.planName === "")) {
+         let tempnavdata = [
+            {
+               icon: Dashboard,
+               activeIcon: Dashboard1,
+               disabledIcon: DashboardDisabled,
+               path: "/",
+               excludes: ["student", "parent", "tutor"],
+               tooltip: "Dashboard",
+               isDisabled: false,
+            },
+            {
+               icon: UsersIcon,
+               activeIcon: UsersIcon1,
+               disabledIcon: UsersIconDisabled,
+               path: "/users",
+               tooltip: "CRM",
+               isDisabled: false,
+            },
+            {
+               icon: Schedule,
+               activeIcon: Schedule1,
+               disabledIcon: ScheduleDisabled,
+               path: "/calendar",
+               tooltip: "Schedule",
+               isDisabled: false,
+            },
+            {
+               icon: Assignment,
+               activeIcon: Assignment1,
+               disabledIcon: AssignmentDisabled,
+               path: "/assigned-tests",
+               tooltip: "Assignments",
+               isDisabled: (hasExtensionsExpired || activeExtensionInfo.planName === "") ? true : false,
+            },
+            {
+               icon: Content,
+               activeIcon: Content2,
+               disabledIcon: ContentDisabled,
+               path: "/all-tests",
+               tooltip: "Content",
+               isDisabled: (hasExtensionsExpired || activeExtensionInfo.planName === "") ? true : false,
+            },
+            {
+               icon: Invoice,
+               activeIcon: Invoice2,
+               disabledIcon: InvoiceDisabled,
+               path: "/invoice",
+               tooltip: "Invoicing",
+               isDisabled: false,
+            },
+            {
+               icon: Settings,
+               activeIcon: Settings1,
+               path: "/settings",
+               excludes: ["student", "parent", "tutor"],
+               tooltip: "Settings",
+               isDisabled: false,
+            },
+         ];
+
+         setNavData(tempnavdata);
+      }
+   }, [hasSubscriptionExpired, activeSubscriptionInfo, hasExtensionsExpired, activeExtensionInfo]);
+
    function loadOrgDetails() {
       getPersonalDetail()
           .then(data => {
@@ -481,7 +623,7 @@ const [loading2,setLoading2]=useState(false)
        persona === "contributor" || persona === "superAdmin" || persona === "manager") {
          return;
    }
-   loadOrgDetails();
+   // loadOrgDetails();
   }, [])
 
    return (
