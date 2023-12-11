@@ -95,11 +95,12 @@ export function TableHeader({
         ${header === "Correct Answer" && "justify-center text-center"}
         ${header === "Student Response" && "justify-center text-center"}
         ${header === "Accuracy" && "justify-center text-center"}
+
+
+        ${header == "Email" && dataFor === "assignedStudents" && "w-full flex justify-start text-left"}
        `}
       >
-        
         {header}
-        {/* {header==="Q No."&&<p >(Raw Score)</p>} */}
       </div>
     </th>
   );

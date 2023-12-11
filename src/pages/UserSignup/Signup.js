@@ -649,9 +649,6 @@ export default function UserSignup() {
                       label="First name"
                       value={values.firstName}
                       onChange={(e) => {
-                        const regex = /^[a-zA-Z]*$/;
-                        const isValid = regex.test(e.target.value);
-                        if (isValid)
                         setValues({
                           ...values,
                           firstName: e.target.value,
@@ -669,9 +666,6 @@ export default function UserSignup() {
                       label="Last name"
                       value={values.lastName}
                       onChange={(e) => {
-                        const regex = /^[a-zA-Z]*$/;
-                        const isValid = regex.test(e.target.value);
-                        if (isValid)
                         setValues({
                           ...values,
                           lastName: e.target.value,

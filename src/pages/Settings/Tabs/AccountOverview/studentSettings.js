@@ -165,8 +165,7 @@ const StudentSettings = () => {
         return;
       }
       console.log(res.data);
-      alert("Password reset link sent to your email.");
-    });
+     });
   };
   const handleFirstName = (e) => {
     const regex = /^[a-zA-Z ]*$/;
@@ -183,16 +182,28 @@ const StudentSettings = () => {
   })
   const navigate = useNavigate()
   const handleFeedback = (message, type) => {
-    console.log({ message, feedBack })
+    console.log({ message, type })
     const body = {
       message, type
     }
     studentFeedback(body).then((res) => {
       if (res?.error) {
-        alert("Coudn't send feedback , try again")
+        alert("Coudn't send feedback, try again")
       }
       if (res?.data) {
         alert("Feedback successfully sent")
+        if(type=='feedback'){
+        setFeedback({
+          ...feedBack,
+          support: ''
+        })
+      }
+      else if(type=='tech'){
+        setFeedback({
+          ...feedBack,
+          tech: ''
+        })
+      }
       }
       console.log({ res })
     })
@@ -306,7 +317,7 @@ const StudentSettings = () => {
               onChange={(e) =>{
                 const regex = /^[0-9 ]*$/;
                 const isValid = regex.test(e.target.value);
-                if (isValid && e.target.value?.length < 11)
+                if (isValid && e.target.value?.length < 15)
                 setValues({
                   ...values,
                   phone: e.target.value,
@@ -375,6 +386,7 @@ const StudentSettings = () => {
 
             <button
               onClick={() => {
+                if(feedBack.support?.length>1)
                 handleFeedback(feedBack.support, "feedback")
               }}
               className="bg-[#517CA8] text-white rounded-lg mt-2 float-right  absolute bottom-[-16%] right-0 text-[16px] w-[98px] h-[48px]"
@@ -401,7 +413,8 @@ const StudentSettings = () => {
             ></textarea>
             <button
               onClick={() => {
-                handleFeedback(feedBack.tech, "")
+                if(feedBack.tech?.length>1)
+                handleFeedback(feedBack.tech, "tech")
               }}
               className="bg-[#517CA8] text-white rounded-lg mt-2 float-right  absolute bottom-[-16%] right-0 text-[16px] w-[98px] h-[48px]"
             >

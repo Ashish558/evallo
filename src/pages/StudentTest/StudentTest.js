@@ -50,7 +50,7 @@ const SORT_STATES = {
   UNSORTED: "UNSORTED",
 }
 
-export default function StudentTest({ fromProfile,testtype, setTotaltest,studentId }) {
+export default function StudentTest({ fromProfile, testtype, setTotaltest, studentId }) {
   const [user, setUser] = useState({});
   const [associatedStudents, setAssociatedStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -81,7 +81,7 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
   const [scoreSortState, setScoreSortState] = useState(SORT_STATES.UNSORTED);
 
   const sortByAssignmentName = () => {
-    if(assignmentNameSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (assignmentNameSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllTests((prev) => {
         let arr = [...prev];
@@ -113,7 +113,7 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
 
       setAssignmentNameSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(assignmentNameSortState === SORT_STATES.UNSORTED || assignmentNameSortState === SORT_STATES.ASCENDING_ORDER) {
+    else if (assignmentNameSortState === SORT_STATES.UNSORTED || assignmentNameSortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllTests((prev) => {
         let arr = [...prev];
@@ -128,7 +128,7 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
         });
         return arr;
       });
-      
+
       setfilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -148,8 +148,8 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
   }
 
   const sortByAssignedDate = () => {
-    
-    if(assignedOnSortState === SORT_STATES.DESCENDING_ORDER) { 
+
+    if (assignedOnSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllTests((prev) => {
         let arr = [...prev];
@@ -183,7 +183,7 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
 
       setAssignedOnSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(assignedOnSortState === SORT_STATES.UNSORTED || assignedOnSortState === SORT_STATES.ASCENDING_ORDER) {  
+    else if (assignedOnSortState === SORT_STATES.UNSORTED || assignedOnSortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllTests((prev) => {
         let arr = [...prev];
@@ -217,12 +217,12 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
 
       setAssignedOnSortState(SORT_STATES.DESCENDING_ORDER);
     }
-    
+
   };
 
   const sortByDueDate = () => {
 
-    if(dueDateSortState === SORT_STATES.DESCENDING_ORDER) { 
+    if (dueDateSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllTests((prev) => {
         let arr = [...prev];
@@ -256,7 +256,7 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
 
       setDueDateSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(dueDateSortState === SORT_STATES.UNSORTED || dueDateSortState === SORT_STATES.ASCENDING_ORDER) {  
+    else if (dueDateSortState === SORT_STATES.UNSORTED || dueDateSortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllTests((prev) => {
         let arr = [...prev];
@@ -293,7 +293,7 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
   };
 
   const sortByDuration = () => {
-    if(durationSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (durationSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllTests((prev) => {
         let arr = [...prev];
@@ -325,7 +325,7 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
 
       setDurationSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(durationSortState === SORT_STATES.UNSORTED || durationSortState === SORT_STATES.ASCENDING_ORDER) {
+    else if (durationSortState === SORT_STATES.UNSORTED || durationSortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllTests((prev) => {
         let arr = [...prev];
@@ -340,7 +340,7 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
         });
         return arr;
       });
-      
+
       setfilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -360,7 +360,7 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
   }
 
   const sortByStatus = () => {
-    if(statusSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (statusSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllTests((prev) => {
         let arr = [...prev];
@@ -392,7 +392,7 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
 
       setStatusSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(statusSortState === SORT_STATES.UNSORTED || statusSortState === SORT_STATES.ASCENDING_ORDER) {
+    else if (statusSortState === SORT_STATES.UNSORTED || statusSortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllTests((prev) => {
         let arr = [...prev];
@@ -407,7 +407,7 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
         });
         return arr;
       });
-      
+
       setfilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -430,32 +430,32 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
     /* console.log("sortByScore");
     console.log(filteredTests); */
     const hasProperScoresProperty = (item) => {
-      if(item.scores === "-" || item.scores === undefined || item.scores === null || Object.keys(item).length === 0) {
+      if (item.scores === "-" || item.scores === undefined || item.scores === null || Object.keys(item).length === 0) {
         return false;
       }
 
-      if(item.scores.cumulative === undefined || item.scores.cumulative === null) {
+      if (item.scores.cumulative === undefined || item.scores.cumulative === null) {
         return false;
       }
 
       return true;
     }
 
-    if(scoreSortState === SORT_STATES.DESCENDING_ORDER) {
+    if (scoreSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
-          
-          if(!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+
+          if (!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return -1;
           }
 
-          if(!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
+          if (!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
             return -1;
           }
 
-          if(hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+          if (hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return 1;
           }
 
@@ -473,19 +473,19 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
       setfilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
-          
-          if(!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+
+          if (!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return -1;
           }
 
-          if(!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
+          if (!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
             return -1;
           }
 
-          if(hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+          if (hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return 1;
           }
-          
+
           if (a.scores.cumulative < b.scores.cumulative) {
             return -1;
           }
@@ -499,21 +499,21 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
 
       setScoreSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(scoreSortState === SORT_STATES.UNSORTED || scoreSortState === SORT_STATES.ASCENDING_ORDER) {
+    else if (scoreSortState === SORT_STATES.UNSORTED || scoreSortState === SORT_STATES.ASCENDING_ORDER) {
 
       setAllTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
 
-          if(!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+          if (!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return -1;
           }
 
-          if(!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
+          if (!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
             return 1;
           }
 
-          if(hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+          if (hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return -1;
           }
 
@@ -527,20 +527,20 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
         });
         return arr;
       });
-      
+
       setfilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
 
-          if(!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+          if (!hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return -1;
           }
 
-          if(!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
+          if (!hasProperScoresProperty(a) && hasProperScoresProperty(b)) {
             return 1;
           }
 
-          if(hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
+          if (hasProperScoresProperty(a) && !hasProperScoresProperty(b)) {
             return -1;
           }
 
@@ -612,13 +612,13 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
   ];
   const [tableHeaders, setTableHeaders] = useState(studentTableHeaders);
   const params = useParams()
-  
+
   useEffect(() => {
-    if (persona === "student"||persona=='admin') {
+    if (persona === "student" || persona == 'admin') {
       getTest(studentId).then((res) => {
         console.log("all-assigned-tests", res?.data?.data);
         setAwsLink(res?.data?.data?.baseLink);
-        let tempAllTests = res?.data?.data?.test?res?.data?.data?.test?.map((test) => {
+        let tempAllTests = res?.data?.data?.test ? res?.data?.data?.test?.map((test) => {
           const {
             testId,
             studentId,
@@ -632,12 +632,12 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
           } = test;
           if (testId === null) return;
           return {
-           // assignedBy: assignedBy ? assignedBy.firstName + " " + assignedBy.lastName : "-",
+            // assignedBy: assignedBy ? assignedBy.firstName + " " + assignedBy.lastName : "-",
 
             testName: testId ? testId.testName : "-",
             assignedOn: new Date(createdAt).toDateString(),
             studentId: studentId ? studentId : "-",
-            testtype:testId ? testId.testType : "-",
+            testtype: testId ? testId.testType : "-",
             dueDate: new Date(test.dueDate).toDateString(),
             duration: multiple ? getDuration(multiple) : "Unlimited",
             status:
@@ -656,7 +656,7 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
             assignedTestId: test._id,
             updatedAt,
           };
-        }):[];
+        }) : [];
 
         let sortedArr = tempAllTests.sort(function (a, b) {
           return new Date(b.updatedAt) - new Date(a.updatedAt);
@@ -702,7 +702,8 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
         if (res.error)
           return console.log("assigned test parent resp", res.error);
         console.log("assigned test parent resp", res.data);
-        let tempAllTests = res.data.data.test.map((test) => {
+        let tempAllTests = res?.data?.data?.test?.map((test) => {
+          console.log("parent", test)
           const {
             testId,
             studentId,
@@ -714,15 +715,16 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
             createdAt,
             updatedAt,
           } = test;
+          
           if (testId === null) return;
-          console.log("parent", test)
+          
           return {
-           // assignedBy: assignedBy ? assignedBy.firstName + " " + assignedBy.lastName : "-",
+            // assignedBy: assignedBy ? assignedBy.firstName + " " + assignedBy.lastName : "-",
             testName: testId ? testId.testName : "-",
-            testtype:testId ? testId.testType : "-",
-            assignedOn:new Date(createdAt).toLocaleDateString(),
+            testtype: testId ? testId.testType : "-",
+            assignedOn: new Date(createdAt).toLocaleDateString(),
             studentId: studentId ? studentId : "-",
-            dueDate:new Date(test.dueDate).toLocaleDateString(),
+            dueDate:new Date(test?.dueDate).toLocaleDateString(),
             duration: multiple ? getDuration(multiple) : "Unlimited",
             status:
               isCompleted === true
@@ -732,18 +734,18 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
                   : "notStarted",
             scores: "-",
             _id: test._id,
-            pdfLink: testId ? testId.pdf : null,
+            pdfLink: testId ? testId.pdf ? testId.pdf : null : null,
             testId: testId ? testId._id : "-",
             isCompleted: test.isCompleted,
             assignedTestId: test._id,
             updatedAt,
           };
         });
-        let sortedArr = tempAllTests.sort(function (a, b) {
+        let sortedArr = tempAllTests?.sort(function (a, b) {
           return new Date(b.updatedAt) - new Date(a.updatedAt);
         });
         console.log({ tempAllTests, sortedArr })
-        setAllTests(sortedArr.filter((item) => item !== undefined));
+        setAllTests(sortedArr?.filter((item) => item !== undefined));
       });
     }
   }, [persona, id]);
@@ -769,23 +771,22 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
       });
     }
   }, [associatedStudents]);
-  console.log({ selectedStudent, associatedStudents })
-  console.log({ allTests })
-  const navigate=useNavigate()
+
+  const navigate = useNavigate()
   useEffect(() => {
     if (selectedStudent === null) return;
     if (Object.keys(selectedStudent).length === 0) return;
-    if (allTests.length === 0) return;
+    if (allTests?.length === 0) return;
 
     const selected = associatedStudents.find(
       (student) => student.selected === true
     );
     if (!selected) return;
-    let tempdata = allTests.filter(
+    let tempdata = allTests?.filter(
       (test) => test.studentId._id === selected._id
     );
     setfilteredTests(tempdata);
-  }, [selectedStudent,associatedStudents, allTests]);
+  }, [selectedStudent, associatedStudents, allTests]);
 
   const handleStudentChange = (item) => {
     let tempdata = associatedStudents.map((student) => {
@@ -812,7 +813,7 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
       color: "#FFCE84",
     },
   ];
-console.log("profile",fromProfile)
+  console.log("profile", fromProfile)
 
 
 
@@ -826,14 +827,14 @@ console.log("profile",fromProfile)
                 }`}
             >
               <p className="text-[#24A3D9]   text-[20px] font-normal">
-               <span className="cursor-pointer" onClick={()=>navigate('/')}>
-               {organization?.company +
-                  "  >  " +
-                  firstName +
-                  "  " +
-                  lastName +
-                  "  >  "}
-               </span>
+                <span className="cursor-pointer" onClick={() => navigate('/')}>
+                  {organization?.company +
+                    "  >  " +
+                    firstName +
+                    "  " +
+                    lastName +
+                    "  >  "}
+                </span>
                 <span className="font-bold">Assignments</span>
               </p>
               <div className="flex justify-end items-center">
@@ -918,14 +919,13 @@ console.log("profile",fromProfile)
             </div>
           )}
           <div className={`mt-6 ${fromProfile ? '!mt-0' : ''}`}>
-            {console.log(allTests)}
             <Table
-            tableClass="table-auto !mt-0 !bg-transparent"
-            theadWidth={"w-[1598px]"}
-            widthFullTable={true}
+              tableClass="table-auto !mt-0 !bg-transparent"
+              theadWidth={"w-[1598px]"}
+              widthFullTable={true}
               testtype={testtype}
               fromProfile={fromProfile}
-              awsLink={awsLink}            
+              awsLink={awsLink}
               dataFor="assignedTestsStudents"
               headerObject={true}
               data={persona === "parent" ? filteredTests : allTests}

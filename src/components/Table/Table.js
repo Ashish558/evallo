@@ -86,7 +86,7 @@ export default function Table(props) {
 
       setTableData(temp);
       setSorted(temp);
-      setCurrentPage(1);
+      // setCurrentPage(1);
     }
   }, [data, maxPageSize, data?.length]);
 
@@ -217,13 +217,13 @@ export default function Table(props) {
                     className="bg-transparent shadow-[0px_0px_2px_rgba(0,0,0,0.25)] text-[17.5px] text-[#517CA8] font-normal leading-[21px]"
                   >
                     <td className="opacity-1 text-[17.5px] px-[10px] !pt-[18.5px] !pb-[19.5px] min-w-14 py-4 ">
-                      {it.service}
+                      {it?.service}
                     </td>
                     <td className="opacity-1 text-[17.5px] px-[10px] !pt-[18.5px] !pb-[19.5px] min-w-14 py-4 ">
-                      {it.actively_using}
+                      {it?.actively_using}
                     </td>
                     <td className="opacity-1 text-[17.5px] px-[10px] !pt-[18.5px] !pb-[19.5px] min-w-14 py-4 ">
-                      {it.total_used}
+                      {it?.total_used}
                     </td>
                   </tr>
                 );

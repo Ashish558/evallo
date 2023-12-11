@@ -39,6 +39,13 @@ export const subscriptionApi = createApi({
                 mode: "cors"
             })
         }),
+        pastTransactions: builder.query({
+            query: () => ({
+                url: `/api/stripe/invoices`,
+                method: "GET",
+                headers: getAuthHeader(),
+            })     
+        }),
         cancelSubscription: builder.mutation({
             query: (subscriptionId) => ({
                 url: `api/stripe/cancel/${subscriptionId}`,
@@ -86,6 +93,8 @@ export const {
     useCreateIntentMutation,
     useFinishSetupMutation,
     useApplyCouponQuery,
+    usePastTransactionsQuery,
+    useLazyPastTransactionsQuery,
     useLazyApplyCouponQuery,
     useCancelSubscriptionMutation,
     useChangeSubscriptionsMutation,

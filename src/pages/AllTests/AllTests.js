@@ -332,6 +332,7 @@ export default function AllTests({
       id: 1,
       text: "Assignment Name",
       // className: "text-left pl-6",
+      // className:"pl-3",
       // onCick: () => sortByString("testName"),
       onCick: sortByAssignmentName,
       willDisplayDownArrow:
@@ -571,7 +572,7 @@ export default function AllTests({
   useEffect(() => {
     console.log(testtype2);
   }, [testtype2]);
-  console.log("profile", fromProfile);
+  
   if (fromProfile)
     return (
       <StudentTest

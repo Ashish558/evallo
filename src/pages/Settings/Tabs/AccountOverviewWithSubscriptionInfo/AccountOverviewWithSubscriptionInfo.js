@@ -37,6 +37,7 @@ import {
     useLazyGetOrganizationQuery,
     useDeletePaymentMethodMutation,
     useUpdateUserAccountMutation,
+    useUpdateUserDetailsMutation,
   } from "../../../../app/services/users";
 import Modal from "../../../../components/Modal/Modal";
 import Modal2 from "../../../../components/Modal2/Modal2";
@@ -103,6 +104,8 @@ function BankCardWidgetContainer({
 
 function AccountOverviewWithSubscriptionInfo() {
     const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
+    const user = useSelector((state) => state.user);
+
 
     const [error, setError] = useState({
         firstName: "",
@@ -123,7 +126,7 @@ function AccountOverviewWithSubscriptionInfo() {
         role: "",
         userId: "",
         registrationAs: "Company",
-
+        about: user.about ? user.about : '',
         orgName: "",
         companyType: "",
         website: "",
@@ -214,6 +217,7 @@ function AccountOverviewWithSubscriptionInfo() {
         defaultPaymentMethodId,
     } = useSelector((state) => state.subscription);
     const dispatch = useDispatch();
+    const [updateDetails, updateDetailsResp] = useUpdateUserDetailsMutation();
 
     const isEmail = (val) => {
         let regEmail =
@@ -318,6 +322,7 @@ function AccountOverviewWithSubscriptionInfo() {
                 setLoading(false);
                 console.log(err?.message);
               });
+              updateDetails({id: user.id, fields: {about: values.about}})
           } catch (e) {
             console.error(e?.response?.data?.message);
           }
@@ -817,7 +822,7 @@ function AccountOverviewWithSubscriptionInfo() {
                 isViewTransactionsModalActive ? (
                     <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
                         <ViewTransactionsModal
-                            className={`relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 aspect-[1110/382] w-[57.8125%]`}
+                            className={`relative rounded-[15px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[382px] w-[1110px]`}
                             OnCrossIconClicked={OnViewTransactionsModalCrossIconClicked}
                         />
                     </div>
@@ -1275,7 +1280,7 @@ function AccountOverviewWithSubscriptionInfo() {
                             <div className="font-[500] text-[#26435F] text-[18.67px]" >Manage Payments</div>
                             <button 
                                 className="font-[500] text-[#24A3D9] text-[15px] underline" 
-                                // onClick={OnViewPastTransactionsClicked}
+                                onClick={OnViewPastTransactionsClicked}
                             >View Past Transactions</button>
                         </div>
                         

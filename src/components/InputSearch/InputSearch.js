@@ -37,6 +37,12 @@ export default function InputSearch({
   const handleClose = () => {
     setOptionsVisible(false);
   };
+
+  useEffect(() => {
+    if(!optionsVisible){
+      onBlur && onBlur() 
+    }
+  }, [optionsVisible])
   useEffect(() => {
     if (optionsVisible === false && onOptionClose) {
       onOptionClose();
@@ -85,7 +91,7 @@ export default function InputSearch({
           type={type ? type : "text"}
           onChange={(e) => (onChange !== undefined ? onChange(e) : "")}
           onFocus={() => setOptionsVisible(true)}
-          onBlur={onBlur ? onBlur : () => {}}
+          // onBlur={onBlur ? onBlur : () => {}}
           // onBlur={()=> setOptionsVisible(false)}
         />
         {IconSearch ? (

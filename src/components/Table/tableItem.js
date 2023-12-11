@@ -91,16 +91,16 @@ export default function TableItem({
   }, [organization2]);
 
   useEffect(() => {
-    if (item.userType === "tutor") setTutorStatus(item?.tutorStatus);
+    if (item?.userType === "tutor") setTutorStatus(item?.tutorStatus);
   }, [item]);
   useEffect(() => {
     if (dataFor === "assignedTestsStudents") {
       let params = {};
-      let url = `/api/test/getresponse/${item.assignedTestId}`;
+      let url = `/api/test/getresponse/${item?.assignedTestId}`;
       if (persona !== "student") {
-        url = `/api/test/admin/getresponse/${item.assignedTestId}`;
+        url = `/api/test/admin/getresponse/${item?.assignedTestId}`;
       }
-      if (item.isCompleted === true) {
+      if (item?.isCompleted === true) {
         getTestResponse({ url, params: params }).then((res) => {
           if (res.error) {
             //console.log("resp err", res.error);
@@ -303,7 +303,7 @@ export default function TableItem({
   //   setnumberChecked && setnumberChecked(numberChecked - fl)
   // };
 
-  const timestamp = item.createdAt;
+  const timestamp = item?.createdAt;
   const date = new Date(timestamp);
 
   const options = { year: "numeric", month: "long", day: "numeric" };
@@ -378,10 +378,10 @@ export default function TableItem({
         <>
           <tr className=" text-[17.5px] font-medium">
             <td className="pb-[15px] pt-[15px] px-[10px]">
-              {item.studentName}
+              {item?.studentName}
             </td>
-            <td className="pb-[15px] pt-[15px] px-[10px]">{item.service}</td>
-            <td className="pb-[15px] pt-[15px] px-[10px]">{item.rating}</td>
+            <td className="pb-[15px] pt-[15px] px-[10px]">{item?.service}</td>
+            <td className="pb-[15px] pt-[15px] px-[10px]">{item?.rating}</td>
 
             <td className="pb-[15px] pt-[15px] px-[10px]">
               {getFormattedDate(formattedDate, dateFormat)}
@@ -392,25 +392,67 @@ export default function TableItem({
       {dataFor === "popularServices" && (
         <>
           <tr className=" text-[17.5px] font-medium">
-            <td className="!py-[18.5px] px-[10px] w-[205.6px] !pl-[31.25px] text-left">{item.service?.length>15?<div className="flex flex-col"><p>{item.service?.slice(0,15)}</p><p>{item.service?.slice(15,item?.service?.length)}</p></div>:item.service}</td>
-            <td className="!py-[18.5px] px-[10px] w-[178.5px] !pr-[31.5px] text-center">{item.actively_using}</td>
-            <td className="!py-[18.5px] px-[10px] w-[147.13px] !pr-[36.13px] text-center">{item.total_used}</td>
-            <td className="!py-[18.5px] px-[10px] w-[207.13px] !pr-[31.13px] text-center">{item.scheduled_hours}</td>
-            <td className="!py-[18.5px] px-[10px] w-[211.11px] !pr-[31.11px] text-center">{item.completed_hours}</td>
-            <td className="!py-[18.5px] px-[10px] w-[174.37px] !pr-[31.37px] text-center">{item.percent_of_business}</td>
+            <td className="!py-[18.5px] px-[10px] w-[205.6px] !pl-[31.25px] text-left">{item?.service?.length>15?<div className="flex flex-col"><p>{item.service?.slice(0,15)}</p><p>{item?.service?.slice(15,item?.service?.length)}</p></div>:item?.service}</td>
+            <td className="!py-[18.5px] px-[10px] w-[178.5px] !pr-[31.5px] text-center">{item?.actively_using}</td>
+            <td className="!py-[18.5px] px-[10px] w-[147.13px] !pr-[36.13px] text-center">{item?.total_used}</td>
+            <td className="!py-[18.5px] px-[10px] w-[207.13px] !pr-[31.13px] text-center">{item?.scheduled_hours}</td>
+            <td className="!py-[18.5px] px-[10px] w-[211.11px] !pr-[31.11px] text-center">{item?.completed_hours}</td>
+            <td className="!py-[18.5px] px-[10px] w-[174.37px] !pr-[31.37px] text-center">{item?.percent_of_business}</td>
           </tr>
         </>
       )}
       {dataFor === "serviceRates" && (
         <>
           <tr className=" text-[17.5px] font-medium">
-            <td className="py-4 px-[10px]">{item.service}</td>
+            <td className="py-4 px-[10px]">{item?.service}</td>
 
             <td className="py-4 px-[10px]">
               <div className="text-[#517CA8] font-semibold text-base-20 mr-[2px] inline-block">
                 $
               </div>
-              {item.price}
+              {item?.price}
+            </td>
+          </tr>
+        </>
+      )}
+      {dataFor === "tutorPerformance" && (
+        <>
+          <tr className=" text-[17.5px] font-medium">
+            <td className="py-4 px-[10px]">{item.tutor_name}</td>
+
+            <td className="py-4 px-[10px]">{item.tutor_status}</td>
+            <td className="py-4 px-[10px]">
+              {item.avg_hourly_rate ? item.avg_hourly_rate : '-'}
+              </td>
+            <td className="py-4 px-[10px]">
+                {item.no_of_referrals}
+            </td>
+            <td className="py-4 px-[10px]">
+                {item.no_of_hours_completed}
+            </td>
+            <td className="py-4 px-[10px]">
+                {item.no_of_hours_scheduled}
+            </td>
+            <td className="py-4 px-[10px]">
+                {item.no_of_hours_cancelled}
+            </td>
+            <td className="py-4 px-[10px]">
+                {item.no_of_hours_missed}
+            </td>
+            <td className="py-4 px-[10px]">
+                {item.avg_sat_improvement ? item.avg_sat_improvement : '-'}
+            </td>
+            <td className="py-4 px-[10px]">
+                {item.avg_act_improvement ? item.avg_act_improvement : '-'}
+            </td>
+            <td className="py-4 px-[10px]">
+                {item.no_of_active_students}
+            </td>
+            <td className="py-4 px-[10px]">
+                {item.no_of_total_students}
+            </td>
+            <td className="py-4 px-[10px]">
+            {item.avg_hourly_rate ? item.avg_hourly_rate : '-'}
             </td>
           </tr>
         </>
@@ -442,7 +484,7 @@ export default function TableItem({
             </div>
           </td>
           <td className=" text-[17.5px] px-1 min-w-14  capitalize text-left">
-            <div className="my-[6px]">{item.userType}</div>
+            <div className="my-[6px]">{item?.userType}</div>
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 text-left">
             <div className="my-[6px]">
@@ -454,8 +496,8 @@ export default function TableItem({
 
           <td className=" text-[17.5px] !pl-6 pr-1  min-w-14  text-left capitalize">
             <div className="my-[6px]">
-              {item.phoneCode}
-              {item.phone}
+              {item?.phoneCode}
+              {item?.phone}
             </div>
           </td>
           <td className=" text-[17.5px] px-1  min-w-14  capitalize flex justify-center">
@@ -473,7 +515,7 @@ export default function TableItem({
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 ">
             <div className="my-[6px]">
-              {item.specialization?.map((specialization, idx) => {
+              {item?.specialization?.map((specialization, idx) => {
                 return `${specialization}${
                   idx + 1 === item.specialization.length ? "" : ","
                 }`;
@@ -537,6 +579,7 @@ export default function TableItem({
                   <img
                     src={TrashIcon}
                     className="cursor-pointer"
+                    alt=""
                     onClick={() => onClick.handleDelete(item)}
                   />
                 </div>
@@ -794,7 +837,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "assignedStudents" && (
-        <tr className="odd:bg-white text-[17.5px]  leading-7">
+        <tr className="odd:bg-white text-[17.5px] leading-7">
           {MapData(item, "assignedStudents", excludes, onClick)}
         </tr>
       )}
@@ -1041,59 +1084,72 @@ export default function TableItem({
           {MapData(item, dataFor, excludes, onClick)}
         </tr>
       )}
-      {dataFor === "testsDetailQuestions" && (testtype === "DSAT" || testtype === "DSAT®")&& (
-        <tr className="bg-white text-[17.5px]   leading-7 mt-[10px]">
-          <td className="w-[174px] pl-[27px] pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-center pt-[15px] pb-[13.5px]">
-            <div>{item?.QuestionNumber}</div>
-          </td>
-          <td className="w-[124px] pl-[0] text-[#517CA8] text-[17.5px] font-normal text-left pt-[15px] pb-[13.5px]">
-            <div>{item?.QuestionType}</div>
-          </td>
-          <td className="w-[90px] pl-[0] text-[#517CA8] text-[17.5px] font-normal text-left pt-[15px] pb-[13.5px]">
-            <div>{item?.CorrectAnswer}</div>
-          </td>
+      {dataFor === "testsDetailQuestions" &&
+        (testtype === "DSAT" || testtype === "DSAT®") && (
+          <tr className="bg-white text-[17.5px]   leading-7 mt-[10px]">
+            <td className="w-[174px] pl-[27px] pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-center pt-[15px] pb-[13.5px]">
+              <div>{item?.QuestionNumber}</div>
+            </td>
+            <td className="w-[124px] pl-[0] text-[#517CA8] text-[17.5px] font-normal text-left pt-[15px] pb-[13.5px]">
+              <div>{item?.QuestionType}</div>
+            </td>
+            <td className="w-[90px] pl-[0] text-[#517CA8] text-[17.5px] font-normal text-left pt-[15px] pb-[13.5px]">
+              <div>{item?.CorrectAnswer}</div>
+            </td>
 
-          <td className="w-[110px] pl-[0] pr-[28px] pt-[15px] pb-[13.5px]">
-            {item?.QuestionImage==="no"?"":<div className="w-[20px] h-[20px] bg-[#38C980] rounded-full mx-auto"></div>}
-          </td>
-          <td className="w-[114px] pl-[0] pr-[34px] pt-[15px] pb-[13.5px]">
-            {item?.AnswerImage==="no"?"":<div className="w-[20px] h-[20px] bg-[#FFCE84] rounded-full mx-auto"></div>}
-          </td>
-          <td
-                className={`w-[140px] pr-[58px] ${
-                  extratableitem[item?.QuestionNumber - 1]?.Passage == "Yes"
-                    ? "text-[#38C980]"
-                    : "text-[#FF7979]"
-                } text-[17.5px] font-semibold `}
-              >
-                {extratableitem[item?.QuestionNumber - 1]?.Passage}
-              </td>
-              <td className="w-[385px] pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-left max-w-[385px] text-ellipsis pt-[15px] pb-[13.5px]">
-                <div className="max-w-[342px] text-ellipsis overflow-hidden">{item?.Concepts}</div>
-              </td>
-              <td className="w-[220px] pr-[70.5px] text-[#517CA8] text-[17.5px] font-normal text-left pt-[15px] pb-[13.5px]">
-              <div className="max-w-[150px] text-ellipsis overflow-hidden">{item?.Strategies}</div>
-              </td>
-              <td className="w-[108px] pr-[28px] text-[#517CA8] text-[17.5px] font-normal text-left">
+            <td className="w-[110px] pl-[0] pr-[28px] pt-[15px] pb-[13.5px]">
+              {item?.QuestionImage === "no" ? (
+                ""
+              ) : (
+                <div className="w-[20px] h-[20px] bg-[#38C980] rounded-full mx-auto"></div>
+              )}
+            </td>
+            <td className="w-[114px] pl-[0] pr-[34px] pt-[15px] pb-[13.5px]">
+              {item?.AnswerImage === "no" ? (
+                ""
+              ) : (
+                <div className="w-[20px] h-[20px] bg-[#FFCE84] rounded-full mx-auto"></div>
+              )}
+            </td>
+            <td
+              className={`w-[140px] pr-[58px] ${
+                extratableitem[item?.QuestionNumber - 1]?.Passage == "Yes"
+                  ? "text-[#38C980]"
+                  : "text-[#FF7979]"
+              } text-[17.5px] font-semibold `}
+            >
+              {extratableitem[item?.QuestionNumber - 1]?.Passage}
+            </td>
+            <td className="w-[385px] pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-left max-w-[385px] text-ellipsis pt-[15px] pb-[13.5px]">
+              <div className="max-w-[342px] text-ellipsis overflow-hidden">
+                {item?.Concepts}
+              </div>
+            </td>
+            <td className="w-[220px] pr-[70.5px] text-[#517CA8] text-[17.5px] font-normal text-left pt-[15px] pb-[13.5px]">
+              <div className="max-w-[150px] text-ellipsis overflow-hidden">
+                {item?.Strategies}
+              </div>
+            </td>
+            <td className="w-[108px] pr-[28px] text-[#517CA8] text-[17.5px] font-normal text-left">
               <div>{item?.AnswerChoices}</div>
-              </td>
-              <td className="w-[111.25px] pr-[45.25px] text-[#517CA8] text-[17.5px] font-normal text-left pt-[15px] pb-[13.5px]">
-              <div>{item?.scoring??"{Scale}"}</div>
-              </td>
-              <td className="font-medium flex justify-center px-1 min-w-[45px] py-[12.5px] pr-[20px]">
-            {!item.editable ? (
-              <></>
-            ) : (
-              <img
-                src={editIcon3}
-                className="cursor-pointer h-[25px] w-[25px]"
-                onClick={() => onClick.handleEditTestClick(item)}
-                alt=""
-              />
-            )}
-          </td>
-          {/* {MapData(item, dataFor, excludes)} */}
-          {/* {testtype === "DSAT" || testtype === "DSAT®" ? (
+            </td>
+            <td className="w-[111.25px] pr-[45.25px] text-[#517CA8] text-[17.5px] font-normal text-left pt-[15px] pb-[13.5px]">
+              <div>{item?.scoring ?? "{Scale}"}</div>
+            </td>
+            <td className="font-medium flex justify-center px-1 min-w-[45px] py-[12.5px] pr-[20px]">
+              {!item.editable ? (
+                <></>
+              ) : (
+                <img
+                  src={editIcon3}
+                  className="cursor-pointer h-[25px] w-[25px]"
+                  onClick={() => onClick.handleEditTestClick(item)}
+                  alt=""
+                />
+              )}
+            </td>
+            {/* {MapData(item, dataFor, excludes)} */}
+            {/* {testtype === "DSAT" || testtype === "DSAT®" ? (
          
             <>
               <td>
@@ -1143,71 +1199,73 @@ export default function TableItem({
               />
             )}
           </td> */}
-        </tr>
-      )}
-      {dataFor === "testsDetailQuestions" && (testtype === "SAT" || testtype === "ACT")&&(<tr>
-        <td className="w-[174px] pl-[27px] pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-center">
-            <div>{item?.QuestionNumber}</div>
-          </td>
-          <td className="w-[124px] pl-[0] text-[#517CA8] text-[17.5px] font-normal text-left">
-            <div>{item?.QuestionType}</div>
-          </td>
-          <td className="w-[394px] pl-[0] pr-[42.5px] text-[#517CA8] text-[17.5px] font-normal text-left">
-            <div className="max-w-[349px] overflow-hidden text-ellipsis">
-              {item?.CorrectAnswer}
-            </div>
-          </td>
-          <td className="w-[445px] pl-[0] pr-[103px] text-[#517CA8] text-[17.5px] font-normal text-left">
-            <div className="max-w-[342px] overflow-hidden text-ellipsis">
-              {item?.Concepts}
-            </div>
-          </td>
-          <td className="w-[219.5px] pl-[0] pr-[60.75px] text-[#517CA8] text-[17.5px] font-normal text-left">
-            <div className="max-w-[158.75px] overflow-hidden text-ellipsis">
-              {item?.Strategies}
-            </div>
-          </td>
-          <td className="w-[219.5px] pl-[0] pr-[60.75px] text-[#517CA8] text-[17.5px] font-normal text-left">
-            <div className="max-w-[158.75px] overflow-hidden text-ellipsis">
-              {item?.Strategies}
-            </div>
-          </td>
-          <td className="w-[108px] pl-[0] pr-[28px] text-[#517CA8] text-[17.5px] font-normal text-left">
-            <div className="max-w-[80px] overflow-hidden text-ellipsis">
-              {item?.scoring ?? "{Scale}"}
-            </div>
-          </td>
-          <td className="font-medium flex justify-center px-1 min-w-[45px] py-[12.5px] pr-[20px]">
-            {!item.editable ? (
-              <></>
-            ) : (
-              <img
-                src={editIcon3}
-                className="cursor-pointer h-[25px] w-[25px]"
-                onClick={() => onClick.handleEditTestClick(item)}
-                alt=""
-              />
-            )}
-          </td>
-        </tr>
-      )}
+          </tr>
+        )}
+      {dataFor === "testsDetailQuestions" &&
+        (testtype === "SAT" || testtype === "ACT") && (
+          <tr>
+            <td className="w-[174px] pl-[27px] pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-center">
+              <div>{item?.QuestionNumber}</div>
+            </td>
+            <td className="w-[124px] pl-[0] text-[#517CA8] text-[17.5px] font-normal text-left">
+              <div>{item?.QuestionType}</div>
+            </td>
+            <td className="w-[394px] pl-[0] pr-[42.5px] text-[#517CA8] text-[17.5px] font-normal text-left">
+              <div className="max-w-[349px] overflow-hidden text-ellipsis">
+                {item?.CorrectAnswer}
+              </div>
+            </td>
+            <td className="w-[445px] pl-[0] pr-[103px] text-[#517CA8] text-[17.5px] font-normal text-left">
+              <div className="max-w-[342px] overflow-hidden text-ellipsis">
+                {item?.Concepts}
+              </div>
+            </td>
+            <td className="w-[219.5px] pl-[0] pr-[60.75px] text-[#517CA8] text-[17.5px] font-normal text-left">
+              <div className="max-w-[158.75px] overflow-hidden text-ellipsis">
+                {item?.Strategies}
+              </div>
+            </td>
+            <td className="w-[219.5px] pl-[0] pr-[60.75px] text-[#517CA8] text-[17.5px] font-normal text-left">
+              <div className="max-w-[158.75px] overflow-hidden text-ellipsis">
+                {item?.Strategies}
+              </div>
+            </td>
+            <td className="w-[108px] pl-[0] pr-[28px] text-[#517CA8] text-[17.5px] font-normal text-left">
+              <div className="max-w-[80px] overflow-hidden text-ellipsis">
+                {item?.scoring ?? "{Scale}"}
+              </div>
+            </td>
+            <td className="font-medium flex justify-center px-1 min-w-[45px] py-[12.5px] pr-[20px]">
+              {!item.editable ? (
+                <></>
+              ) : (
+                <img
+                  src={editIcon3}
+                  className="cursor-pointer h-[25px] w-[25px]"
+                  onClick={() => onClick.handleEditTestClick(item)}
+                  alt=""
+                />
+              )}
+            </td>
+          </tr>
+        )}
       {dataFor === "allTests" && (
         <tr className="odd:bg-white font-medium text-[17.5px]  lead">
-          <td className="text-left pl-[66.5px] w-[350px] max-w-[350px] overflow-hidden text-ellipsis">
+          <td className="text-left pl-[66.5px] w-[350px] max-w-[350px] overflow-hidden text-ellipsis" style={{paddingLeft: '25px'}}>
             {item.testName}
           </td>
-          <td className="w-[223px] text-left pl-14">
+          <td className="w-[223px] text-left" style={{paddingLeft: '55px'}}>
             {item.testType.endsWith("®")
               ? item.testType
               : item.testType.includes("Other")
               ? item.testType
               : item.testType + "®"}
           </td>
-          <td className="w-[241px] text-left pl-[8.75px]">
+          <td className="w-[241px] text-left pl-[8.75px]" style={{paddingLeft: '20px'}}>
             {" "}
             {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}
           </td>
-          <td className="w-[235.5px] text-left pl-[16px]">
+          <td className="w-[235.5px] text-left pl-[16px]" style={{paddingLeft: '30px'}}>
             {getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}
           </td>
           <td className="w-[249px] text-center">
@@ -1276,12 +1334,6 @@ export default function TableItem({
             </div>
           </td>
           <td className="font-medium px-1 justify-center flex gap-x-2 py-3">
-            {/* <img
-              src={EditIcon}
-              className="cursor-pointer p-1"
-              onClick={() => navigate(`/all-tests/${item._id}`, { state: { testype: item.testType } })}
-              alt="edit"
-            /> */}
             <img
               src={DeleteIcon}
               className="cursor-pointer p-1"
@@ -1306,6 +1358,7 @@ export default function TableItem({
             <img
               src={DeleteTutorIcon}
               className="cursor-pointer"
+              alt=""
               onClick={() => onClick.handleDelete(item)}
             />
           </td>
@@ -1313,14 +1366,14 @@ export default function TableItem({
       )}
       {dataFor === "allOrgs" && (
         <tr className="odd:bg-white  leading-8">
-          <td className="font-medium text-[17.5px] !pl-[60px]  min-w-14 py-4  text-left !max-w-[346px]">
+          <td className="font-medium text-[17.5px] !pl-[60px]  min-w-10 py-4  text-left !max-w-[346px]  overflow-hidden">
             <span
               className="inline-block cursor-pointer pl-4"
               onClick={() => navigate(`/orgadmin-profile/${item._id}`)}
             >
               {item.associatedOrg?.company
                 ? item.associatedOrg?.company?.toLowerCase()
-                : item.company?.toLowerCase()}
+                : item.company?.toLowerCase()} 
             </span>
           </td>
           <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left  !max-w-[286px]">
@@ -1390,9 +1443,7 @@ export default function TableItem({
           </td>
         </tr>
       )}
-      {dataFor === "starClients" &&(<th className="">
-
-      </th>)}
+      {dataFor === "starClients" && <th className=""></th>}
 
       {deleteAdminModalActive && (
         <Modal
@@ -1557,18 +1608,33 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
           }`}
         </p>
       </td>
-    ) : (
+    ) :
+          
+    (
       <td
         key={i}
-        className={`font-medium px-1 ${
+        className={`font-medium px-1 
+        ${
           data[key] === "Unpaid" && "text-[#E02B1D]"
-        } ${data[key] === "Paid" && "text-[#009262]"} ${
+        } 
+        ${
+          data[key] === "Paid" && "text-[#009262]"
+        } 
+        ${
           data[key] === "Cancelled" && "text-[#7C859C]"
-        } min-w-14 py-4  ${
+        }
+         min-w-14 py-4 
+        ${
           dataFor === "studentTestsReport" && !data["isCorrect"]
             ? "!bg-[#FF79791A]/[0.05]"
             : ""
-        } ${dataFor === "testsDetailQuestions" && "text-left pl-7"} 
+        }
+        ${
+          dataFor === "testsDetailQuestions" && "text-left pl-7"
+        } 
+        ${
+          dataFor === "assignedStudents" && "text-left ps-[60px] "
+        } 
         ${
           dataFor === "studentTestsReport" && key === "Concept"
             ? "w-[100px] text-start ps-[20px]"
@@ -1576,11 +1642,10 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
         }
         
         ${
-          dataFor === "studentTestsReport" &&  key === "Strategy"
+          dataFor === "studentTestsReport" && key === "Strategy"
             ? "text-start ps-[28px]"
             : null
         }
-
         `}
       >
         {data[key]}

@@ -20,7 +20,8 @@ import {
   updateStripeCustomerId, 
   updateSubscriptionsInfoFromAPI, 
   updateHasSubscriptionExpired, 
-  updateDefaultPaymentMethodId} from "../app/slices/subscription";
+  updateDefaultPaymentMethodId,
+  updateHasExtensionExpired} from "../app/slices/subscription";
 import { useLazyGetSubscriptionsInfoQuery } from "../app/services/orgSignup";
 
 
@@ -79,7 +80,8 @@ const AppRoutes = () => {
     subscriptionsInfoFromAPI,
     activeSubscriptionInfo,
     activeExtensionInfo,
-    subscriptionUpdateTrigger
+    subscriptionUpdateTrigger,
+    hasSubscriptionExpired,
   } = useSelector((state) => state.subscription);
   const { role: persona } = useSelector((state) => state.user);
   const [isOrgAdmin, SetIsOrgAdmin] = useState(false);
@@ -152,6 +154,7 @@ const AppRoutes = () => {
           dispatch(closeSubscriptionAndExtensionModal());
         }
 
+        let foundSubscription = false;
         if(data?.data?.customerSubscriptions?.data?.length > 0 && subscriptionsInfoFromAPI?.length > 0) {
           const products = data.data.customerSubscriptions.data;
           let activeSub;
@@ -177,6 +180,7 @@ const AppRoutes = () => {
               const expiryDate = new Date(products[i].current_period_end * 1000);
               const isCancelled = products[i].canceled_at === null || products[i].canceled_at === undefined ? false : true;
 
+              dispatch(updateHasExtensionExpired(expiryDate < todayDate ? true : false));
               dispatch(updateActiveExtensionInfo({
                   planName: "Assignment",
                   planDisplayName: "Assignement",
@@ -198,6 +202,7 @@ const AppRoutes = () => {
               continue;
             }
 
+            foundSubscription = true;
             const expiryDate = new Date(products[i].current_period_end * 1000);
             const isCancelled = products[i].canceled_at === null || products[i].canceled_at === undefined ? false : true;
             const subscriptionPricePerMonth = activeSub.unit_amount / 100;
@@ -212,6 +217,8 @@ const AppRoutes = () => {
               dispatch(updateHasSubscriptionExpired(true));
               continue;
             }
+
+            dispatch(updateHasSubscriptionExpired(false));
 
             dispatch(updateActiveSubscriptionInfo({
               planName: activeSub.product.name,
@@ -232,6 +239,12 @@ const AppRoutes = () => {
 
             
           }
+        }
+
+        if(!foundSubscription) {
+          dispatch(openSubscriptionAndExtensionModal());
+        } else {
+          dispatch(closeSubscriptionAndExtensionModal());
         }
       })
       .catch(error => {

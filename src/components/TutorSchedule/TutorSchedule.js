@@ -31,17 +31,17 @@ export default function TutorSchedule({
   return (
     <div className="w-full bg-[#F5F8FA] shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]">
       <div className="flex  rounded-[5.333px] pt-[25px] pb-[18.75px] pl-[48px] pr-[152.83px]">
-        <div className="w-[159px] h-[57.0012px] mr-[169.8px]">
+        <div className="mr-[169.8px]">
           <p className="text-[#24A3D9] font-medium text-[20.003px] ">
             {studentName}
           </p>
-          <p className=" text-[#26435F] text-[17.05px] mt-[10px]">
+          <div className=" text-[#26435F] text-[17.05px] mt-[10px] flex w-[135px]">
             {service} | {specialization}
        
-          </p>
+          </div>
         </div>
-        <div className="w-[197.75px] h-[54px] flex flex-row justify-start items-center mr-[92px]" >
-          <div className=" h-full flex justify-start items-start mr-[16.25px]">
+        <div className="flex flex-row justify-start items-center mr-[92px]" >
+          <div className="h-full flex justify-start items-start mr-[16.25px] pt-[9px]">
           
               <img width="25px" height={`25px`} src={calendar} alt="" />
            
@@ -49,7 +49,6 @@ export default function TutorSchedule({
           <div className=" flex flex-col justify-start items-start">
             <div className="text-[#517CA8] text-[17.503px]">
               {getFormattedDate(dateStr, dateFormat)}
-              date
             </div>
             <div className=" font-bold text-[#517CA8] mt-[10px] text-[17.503px]">
 
