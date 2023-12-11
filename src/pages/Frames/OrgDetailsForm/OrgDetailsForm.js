@@ -182,7 +182,7 @@ function OrgDetailsForm({
                 placeholder=""
                 parentClassName="mt-[31.33px] text-xs"
                 label="Website"
-                labelClassname="text-[#26435F] text-[18.67px] font-semibold"
+                labelClassname="text-[#26435F] text-[18.67px] font-[500]"
                 inputContainerClassName=" border border-[#D0D5DD] mt-[8px] rounded-md py-[9px] h-[54px] w-[1000px] text-md"
             
                 value={values.website}
