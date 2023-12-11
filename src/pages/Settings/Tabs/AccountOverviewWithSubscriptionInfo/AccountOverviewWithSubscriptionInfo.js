@@ -37,6 +37,7 @@ import {
     useLazyGetOrganizationQuery,
     useDeletePaymentMethodMutation,
     useUpdateUserAccountMutation,
+    useUpdateUserDetailsMutation,
   } from "../../../../app/services/users";
 import Modal from "../../../../components/Modal/Modal";
 import Modal2 from "../../../../components/Modal2/Modal2";
@@ -103,6 +104,8 @@ function BankCardWidgetContainer({
 
 function AccountOverviewWithSubscriptionInfo() {
     const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
+    const user = useSelector((state) => state.user);
+
 
     const [error, setError] = useState({
         firstName: "",
@@ -123,7 +126,7 @@ function AccountOverviewWithSubscriptionInfo() {
         role: "",
         userId: "",
         registrationAs: "Company",
-
+        about: user.about ? user.about : '',
         orgName: "",
         companyType: "",
         website: "",
@@ -214,6 +217,7 @@ function AccountOverviewWithSubscriptionInfo() {
         defaultPaymentMethodId,
     } = useSelector((state) => state.subscription);
     const dispatch = useDispatch();
+    const [updateDetails, updateDetailsResp] = useUpdateUserDetailsMutation();
 
     const isEmail = (val) => {
         let regEmail =
@@ -318,6 +322,7 @@ function AccountOverviewWithSubscriptionInfo() {
                 setLoading(false);
                 console.log(err?.message);
               });
+              updateDetails({id: user.id, fields: {about: values.about}})
           } catch (e) {
             console.error(e?.response?.data?.message);
           }

@@ -80,7 +80,7 @@ function App() {
             email,
             phone,
             associatedOrg,
-            dateFormat: dateFormat ? dateFormat : 'dd/mm/yy'
+            dateFormat: dateFormat ? dateFormat : 'dd/mm/yy',
           })
         );
         getOrganizationDetail(associatedOrg);
