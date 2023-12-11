@@ -795,7 +795,10 @@ export default function AssignedTests() {
   const [testToDelete, setTestToDelete] = useState({});
 
   const { role: persona, id } = useSelector((state) => state.user);
-  const handleClose = () => setAssignTestModalActive(false);
+  const handleClose = () =>{ 
+    setAssignTestModalActive(false);
+    setStudentMultiple([])
+  }
   const { organization } = useSelector((state) => state.organization);
   const [filterData, setFilterData] = useState({
     studentName: "",
@@ -1528,7 +1531,7 @@ export default function AssignedTests() {
                     optionListClassName="text-[17.5px] text-[#667085]"
                     inputClassName="placeholder:text-[#667085] text-[17.5px] text-[#667085]"
                     labelClassname={"hidden"}
-                    dropDownIconStatus={true}
+                    // dropDownIconStatus={true}
                     inputContainerClassName="shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white h-full text-[#667085]"
                     placeholder="Search Assignment"
                     parentClassName="w-[400px] text-[17.5px] text-[#667085] h-[50px] me-[30px]"
@@ -1721,7 +1724,7 @@ export default function AssignedTests() {
                     inputContainerClassName="text-[17.5px] bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
                     inputClassName="bg-[#F3F5F7]"
                     type="text"
-                    value={modalData.name}
+                    value={modalData.name ? modalData.name : studentMultiple.length > 0 ? studentMultiple[0].value : ''}
                     checkbox={{
                       visible: true,
                       name: "student",

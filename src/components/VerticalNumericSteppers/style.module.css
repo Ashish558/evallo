@@ -40,16 +40,20 @@
 
 .verticalLine {
     border-color: #B3BDC7;
+    background-color: #B3BDC7;
 }
 
 .verticalLine.restricted {
     border-color: #E0E0E0;
+    background-color: #E0E0E0;
 }
 
 .verticalLine.currentIndex {
     border-color: #24A3D9;
+    background-color: #24A3D9;
 }
 
 .verticalLine.completed {
     border-color: #FFA28D;
+    background-color: #FFA28D;
 }

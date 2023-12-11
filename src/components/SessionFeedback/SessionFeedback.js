@@ -69,7 +69,7 @@ const SessionFeedback = () => {
       >
         <div
           id={styles.sessionFeedback}
-          className="bg-white px-[10px] custom-scroller !rounded-md h-full overflow-y-auto"
+          className={"bg-white px-[10px] custom-scroller !rounded-md h-full overflow-y-auto " + styles.assignedTestsContainer}
         >
           {/* {/* <TestItem name="name" status="due date" date="june 20, 2022" action="Start" marks="1250/1250" /> */}
 

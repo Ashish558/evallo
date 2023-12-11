@@ -920,6 +920,7 @@ console.log("profile",fromProfile)
           <div className={`mt-6 ${fromProfile ? '!mt-0' : ''}`}>
             {console.log(allTests)}
             <Table
+            tableClass="table-auto !mt-0 !bg-transparent"
             theadWidth={"w-[1598px]"}
             widthFullTable={true}
               testtype={testtype}

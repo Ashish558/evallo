@@ -57,7 +57,7 @@ function OrgDetailsForm({
                 placeholder="Business Name"
                 parentClassName="text-xs"
                 label="Name of Business"
-                labelClassname="text-[#26435F] font-semibold text-[18.67px]"
+                labelClassname="text-[#26435F] font-[500] text-[18.67px]"
                 inputContainerClassName=" border border-[#D0D5DD] mt-[6px] rounded-md py-[9px] h-[54px] text-md w-[999.99px]"
             
                 value={values.company}
@@ -78,7 +78,7 @@ function OrgDetailsForm({
                 // error={error.firstName}
             />
 
-            <p className="text-[18.67px]  font-semibold mb-[0px] mt-[30px] text-[#26435F]">
+            <p className="text-[18.67px]  font-[500] mb-[0px] mt-[30px] text-[#26435F]">
                 {" "}
                 Account Type:{" "}
             </p>
@@ -90,16 +90,8 @@ function OrgDetailsForm({
                           ...prev,
                           registrationAs: "Individual",
                         }))
-
-                        /* SetCompanyInfo((prev) => ({
-                          ...prev,
-                          accountType: "Individual"
-                        })) */
                       }
                     >
-                      {/* <input type="radio" defaultChecked={values.registrationAs === "Individual"
-                            ? true
-                            : false} className="w-3 h-3"/> */}
                       <div className="w-[30px]  flex justify-center">
                         <img
                           src={
@@ -130,16 +122,8 @@ function OrgDetailsForm({
                           ...prev,
                           registrationAs: "Company",
                         }))
-
-                        /* SetCompanyInfo((prev) => ({
-                          ...prev,
-                          accountType: "Company"
-                        })) */
                       }
                     >
-                      {/* <input type="radio"  defaultChecked={values.registrationAs === "Company"
-                            ? true
-                            : false}  className="w-3 h-3"/> */}
                       <div className="w-[30px] flex justify-center">
                         <img
                           src={
@@ -173,8 +157,8 @@ function OrgDetailsForm({
                 optionData={companyType}
                 placeholder={"Select"}
                 label={`Business Entity`}
-                labelClassname="text-[#26435F] font-bold  mb-1 text-[18.67] "
-                inputContainerClassName="py-1 text-sm h-[52.98px] w-[1000px] border  border-[#D0D5DD] my-0 mt-[7.37px] rounded-[2px]"
+                labelClassname="text-[#26435F] font-[500] text-[18.67px] "
+                inputContainerClassName="py-1 text-sm h-[52.98px] w-[1000px] border  border-[#D0D5DD] mt-[7.37px] rounded-[2px]"
                 inputClassName="ml-80"
                 // required={persona === "student" ? true : false}
                 onChange={(e) => handleCompanyTypeChange(e)}
@@ -207,7 +191,7 @@ function OrgDetailsForm({
                 placeholder=""
                 parentClassName="mt-[30px] text-xs"
                 label="Street Address"
-                labelClassname="text-[#26435F] text-[18.67px] font-semibold"
+                labelClassname="text-[#26435F] text-[18.67px] font-[500]"
                 inputContainerClassName=" border border-[#D0D5DD] mt-[8px] rounded-md py-[9px] h-[54px] w-[1000px] text-md"
             
                 value={values.address}
@@ -235,7 +219,7 @@ function OrgDetailsForm({
                     optionData={countryNames}
                     placeholder={"Select"}
                     label={`Country`}
-                    labelClassname="text-[#26435F]  font-bold text-[18.67px] "
+                    labelClassname="mb-[0px] text-[#26435F] font-[500] text-[18.67px] "
                     inputContainerClassName="text-sm h-[54px] w-[300px] mt-[8px] border  border-[#D0D5DD] rounded-[2px]"
                     inputClassName="ml-80"
                     // required={persona === "student" ? true : false}
@@ -262,7 +246,7 @@ function OrgDetailsForm({
                     optionData={stateNames}
                     placeholder={"Select"}
                     label={`State`}
-                    labelClassname="text-[#26435F] font-bold text-[18.67px] "
+                    labelClassname="mb-[0px] text-[#26435F] font-[500] text-[18.67px] "
                     inputContainerClassName="text-sm h-[54px] w-[250px] mt-[8.33px] border  border-[#D0D5DD] rounded-[2px]"
                     inputClassName="ml-80"
                     // required={persona === "student" ? true : false}
@@ -285,7 +269,7 @@ function OrgDetailsForm({
                     placeholder=""
                     parentClassName="text-xs w-[200px]"
                     label="City"
-                    labelClassname="text-[#26435F] text-[18.67px] font-semibold"
+                    labelClassname="mb-[0px] text-[#26435F] text-[18.67px] font-[500]"
                     inputContainerClassName=" border border-[#D0D5DD] mt-[8px] rounded-md py-[9px] h-[54px] w-[200px] text-md"
                 
                     value={values.city}
@@ -308,7 +292,7 @@ function OrgDetailsForm({
                     placeholder=""
                     parentClassName="text-xs w-[150px]"
                     label="Zip Code"
-                    labelClassname="text-[#26435F] text-[18.67px] font-semibold"
+                    labelClassname="text-[#26435F] text-[18.67px] font-[500]"
                     inputContainerClassName=" border border-[#D0D5DD] mt-[8px] rounded-md py-[9px] h-[54px] w-[150px] text-md"
                     type="number"
                     value={values.zip}

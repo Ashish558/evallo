@@ -6,6 +6,7 @@ import ExtensionSelectionWidget from "../../../components/ExtensionSelectionWidg
 import styles from "./style.module.css";
 import { extensionProductDescriptions } from "./DummyData/ExtensionsProductDescriptions";
 import UpdateExtensionWidget from "../../../components/UpdateExtensionWidget/UpdateExtensionWidget";
+import { useSelector } from "react-redux";
 
 const listOfExtensions = [
     {
@@ -41,7 +42,9 @@ function ExtensionsChoosingModal({
     extensionPlansInfo,
     updateExtensionMode = false,
 }) {
-
+    const {
+        activeExtensionInfo
+    } = useSelector(state => state.subscription);
     const [productDescriptions, SetProductDescriptions] = useState([]);
     const [productDescriptionsTitle, SetProductDescriptionsTitle] = useState("");
     const [extensionNameInFocus, SetExtensionNameInFocus] = useState("");
@@ -123,18 +126,18 @@ function ExtensionsChoosingModal({
                                 )
                             }
 
-                            if(updateExtensionMode && item.checked) {
+                            if(updateExtensionMode && activeExtensionInfo?.planName !== "") {
                                 return (
                                     <UpdateExtensionWidget
                                         key={index}
                                         className="mb-[20px] w-[650px]"
                                         extensions={extensions}
                                         setExtensions={setExtensions}
-                                        planName={extension.planName}
-                                        planDisplayName={extension.planDisplayName}
+                                        planName={activeExtensionInfo.planName}
+                                        planDisplayName={activeExtensionInfo.planDisplayName}
                                         productGraphStatement="Maximum number of Assignments per month"
                                         selected={item.checked}
-                                        chosenPackage={item.packageName}
+                                        chosenPackage={activeExtensionInfo.packageName}
                                         extensionPriceOption={extension.extensionPriceOption}
                                     />
                                 )

@@ -640,11 +640,11 @@ const [toEdit, setToEdit] = useState({
                     />}
                   </div>
                   <div className="flex-1 flex justify-between items-center">
-                    <div className="ml-4 my-auto">
+                    <div className="ml-[36px] my-auto">
                       <div className="flex  font-semibold items-center text-[#F3F5F7] text-[29.952px]">
                         {user.firstName} {user.lastName}
                       </div>
-                      {(persona !== "tutor" || ((persona === 'tutor') && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <div className="flex mt-1 text-base-17-5 items-center text-[#F3F5F7]">
+                      {(persona !== "tutor" || ((persona === 'tutor') && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <div className="flex mt-1 text-[17.5px] items-center text-[#F3F5F7]">
                         <p>
                           {persona == "admin" ? "" :<span>
                             <img
@@ -685,7 +685,7 @@ const [toEdit, setToEdit] = useState({
                           />
                         }
                         body={
-                          <div className="flex h-min !bg-transparent justify-center flex-col  text-base-17-5">
+                          <div className="flex h-min !bg-transparent justify-center flex-col  text-[17.5px]">
                             <p>
                               <span>
                                 <img
@@ -723,11 +723,11 @@ const [toEdit, setToEdit] = useState({
                 </div>
               </div>
               <div className="bg-white !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex design:h-[170px]  h-[170px] justify-between ">
-                <div className="ml-[220px] py-auto w-[80.33%] text-[12px] px-5    overflow-y-auto pt-3  ">
+                <div className="ml-[220px] py-auto w-[80.33%] text-[12px] px-5    overflow-y-auto pt-[20px] pl-[36px] ">
                   <p className=" font-semibold text-[#26435F] text-[15px]">
                     About
                   </p>
-                  <p className=" text-[#517CA8] text-base-17-5 overflow-y-auto">
+                  <p className=" text-[#517CA8] text-[17.5px] overflow-y-auto">
                     {userDetail?.about}
                   </p>
                 </div>
@@ -769,12 +769,12 @@ const [toEdit, setToEdit] = useState({
                           onClick={() =>
                             navigate(`/profile/student/${student._id}`)
                           }
-                          className="text-base-17-5 font-semibold cursor-pointer text-[#26435F]"
+                          className="text-[17.5px] font-semibold cursor-pointer text-[#26435F]"
                         >
                           {" "}
                           {student.name}
                         </p>
-                        {(persona !== "tutor" || (persona === "tutor" && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <p className="  text-[#667085] text-base-15 ml-4">
+                        {(persona !== "tutor" || (persona === "tutor" && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <p className="  text-[#667085] text-[15px] ml-4">
                           {student.email}
                           <span>
                             <img

@@ -35,7 +35,8 @@ export const subscriptionApi = createApi({
             query: (body) => ({
                 url: `api/stripe/applyCoupon?couponName=${body.couponName}&subscriptionPrice=${body.subscriptionPrice}`,
                 method: 'GET',
-                headers: getAuthHeader()
+                headers: getAuthHeader(),
+                mode: "cors"
             })
         }),
         cancelSubscription: builder.mutation({
@@ -68,7 +69,15 @@ export const subscriptionApi = createApi({
                 body: body,
                 headers: getAuthHeader()
             })
-        })
+        }),
+        makeDefaultPayment: builder.mutation({
+            query: (body) => ({
+                url: `api/stripe/make-default`,
+                method: "POST",
+                body: body,
+                header: getAuthHeader(),
+            })
+        }),
     })
 })
 
@@ -82,4 +91,5 @@ export const {
     useChangeSubscriptionsMutation,
     useEnableAutoRenewalMutation,
     useRenewProductMutation,
+    useMakeDefaultPaymentMutation,
 } = subscriptionApi;

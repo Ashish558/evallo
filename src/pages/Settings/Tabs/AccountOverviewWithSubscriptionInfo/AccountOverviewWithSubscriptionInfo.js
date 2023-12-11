@@ -43,7 +43,7 @@ import Modal2 from "../../../../components/Modal2/Modal2";
 import ViewTransactionsModal from "../../../../components/ViewTransactionsModal/ViewTransactionsModal";
 import AddNewBankCardModal from "../../../../components/AddNewBankCardModal/AddNewBankCardModal";
 import visaIcon from "../../../../assets/BankCard/visa.svg";
-import { useCancelSubscriptionMutation, useEnableAutoRenewalMutation } from "../../../../app/services/subscription";
+import { useCancelSubscriptionMutation, useEnableAutoRenewalMutation, useMakeDefaultPaymentMutation } from "../../../../app/services/subscription";
 import DeletePaymentMethodModal from "../../../../components/DeletePaymentMethodModal/DeletePaymentMethodModal";
 import { CurrencyNameToSymbole, getFormattedDate } from "../../../../utils/utils";
 import EnableAutoRenewal from "../../../../components/EnableAutoRenewal/EnableAutoRenewal";
@@ -72,6 +72,7 @@ function BankCardWidgetContainer({
     cardNumber,
     cardNumberLastFourDigits,
     expiresOn,
+    OnSetAsDefaultClicked,
 }) {
     return (
         <div className={`flex flex-col items-end ${className}`} style={{...style}} >
@@ -83,6 +84,7 @@ function BankCardWidgetContainer({
                 cardNumber={cardNumber}
                 cardNumberLastFourDigits={cardNumberLastFourDigits}
                 expiresOn={expiresOn}
+                OnSetAsDefaultClicked={OnSetAsDefaultClicked}
             />
 
             <PrimaryButton
@@ -144,6 +146,7 @@ function AccountOverviewWithSubscriptionInfo() {
     const [updateEmail, setUpdateEmail] = useUpdateEmailMutation();
     const [forgotPassword, forgotPasswordResp] = useForgotPasswordMutation();
     const [enableAutoRenewal] = useEnableAutoRenewalMutation();
+    const [makeDefaultPayment] = useMakeDefaultPaymentMutation();
     const [subscriptionsInfoFromAPI, SetSubscriptionsInfoFromAPI] = useState([]);
     const [activeSubscriptionName, SetActiveSubscriptionName] = useState("");
     const [activeSubscriptionId, SetActiveSubscriptionId] = useState("");
@@ -191,6 +194,8 @@ function AccountOverviewWithSubscriptionInfo() {
     const [isDeletePaymentMethodModalActive, SetIsDeletePaymentMethodModalActive] = useState(false);
     const [isEnableAutoRenewalModalActive, SetIsEnableAutoRenewalModalActive] = useState(false);
     const [isChangeEmailModalActive, SetIsChangeEmailModalActive] = useState(false);
+    const [isCancelSubscriptionModalOpenedBySubscription, SetIsCancelSubscriptionModalOpenedBySubscription] = useState(false);
+    const [isCancelSubscriptionModalOpenedByExtension, SetIsCancelSubscriptionModalOpenedByExtension] = useState(false);
     const [openSubscriptionModal, SetOpenSubscriptionModal] = useState(false);
     const [openExtensionsModal, SetOpenExtensionsModal] = useState(false);
     const [stripeCustomerId, SetStripeCustomerId] = useState("");
@@ -206,6 +211,7 @@ function AccountOverviewWithSubscriptionInfo() {
         activeSubscriptionInfo,
         activeExtensionInfo,
         paymentMethods,
+        defaultPaymentMethodId,
     } = useSelector((state) => state.subscription);
     const dispatch = useDispatch();
 
@@ -579,6 +585,7 @@ function AccountOverviewWithSubscriptionInfo() {
         })
         .finally(() => {
             SetIsCancelSubscriptionModalActive(false);
+            dispatch(triggerSubscriptionUpdate());
         })
     }
 
@@ -587,9 +594,15 @@ function AccountOverviewWithSubscriptionInfo() {
     }
 
     function OnCancelSubscriptionModalChangePlanClicked() {
+        if(isCancelSubscriptionModalOpenedBySubscription) {
+            dispatch(openSubscriptionPanelInUpdateMode());
+        }
+        if(isCancelSubscriptionModalOpenedByExtension) {
+            dispatch(openExtensionsPanelInUpdateMode());
+        }
         SetIsCancelSubscriptionModalActive(false);
-        SetOpenSubscriptionModal(true);
-        SetIsSubscriptionAndExtensionModalActive(true);
+        SetIsCancelSubscriptionModalOpenedBySubscription(false);
+        SetIsCancelSubscriptionModalOpenedByExtension(false);
     }
 
     function OnViewPastTransactionsClicked() {
@@ -671,11 +684,27 @@ function AccountOverviewWithSubscriptionInfo() {
         })
         .finally(() => {
             SetIsEnableAutoRenewalModalActive(false);
+            dispatch(triggerSubscriptionUpdate());
         })
     }
 
     function OnRenewSubscriptionClicked() {
         dispatch(openSubscriptionPanelInRenewProductMode());
+    }
+
+    function OnSetAsDefaultClicked(paymentMethodId) {
+        makeDefaultPayment({
+            customerId: stripeCustomerId,
+            paymentMethodId: paymentMethodId
+        })
+        .then(data => {
+            if(data?.error) {
+                alert("Unable to set card as default");
+                return;
+            }
+
+            dispatch(triggerSubscriptionUpdate());
+        })
     }
 
     return (
@@ -911,7 +940,7 @@ function AccountOverviewWithSubscriptionInfo() {
                         parentClassName="relative mt-[25px] left-2/4 -translate-x-2/4 text-xs w-[480px]"
                         label="Email"
                         // IconLeft={octIcon}
-                        IconLeft={fetchedData?.isVerified ? null : octIcon}
+                        IconRight={fetchedData?.isVerified ? null : octIcon}
                         labelClassname="text-[#26435F] text-[15px] font-semibold"
                         inputContainerClassName=" border border-[#D0D5DD] mt-[10px] rounded-md py-[9px] h-[40px] w-full text-md"
                         type="text"
@@ -1082,7 +1111,7 @@ function AccountOverviewWithSubscriptionInfo() {
 
                                         <div className="flex mt-[3px]" >
                                             <span className="font-[100] text-[#517CA8] text-[15px]" >Monthly Cost (after discount){" - "}</span>
-                                            <span className="font-[400] text-[#517CA8] text-[15px]" >{CurrencyNameToSymbole(activeSubscriptionInfo.currency) + activeSubscriptionInfo.subscriptionPricePerMonth}</span>
+                                            <span className="font-[400] text-[#517CA8] text-[15px]" >{CurrencyNameToSymbole(activeSubscriptionInfo.currency) + activeSubscriptionInfo.monthlyCostAfterDiscount}</span>
                                         </div>
 
                                         <div className="grow" ></div>
@@ -1111,6 +1140,7 @@ function AccountOverviewWithSubscriptionInfo() {
                                                     className="font-[500] underline text-[#24A3D9] text-[15px]" 
                                                     onClick={
                                                         () => {
+                                                            SetIsCancelSubscriptionModalOpenedBySubscription(true);
                                                             OnCancelSubscriptionClicked(activeSubscriptionInfo.subscriptionId);
                                                         }
                                                     } 
@@ -1124,7 +1154,7 @@ function AccountOverviewWithSubscriptionInfo() {
                         }
 
                         {
-                            !(activeExtensionInfo === undefined || activeExtensionInfo === null) ? (
+                            !(activeExtensionInfo === undefined || activeExtensionInfo === null || activeExtensionInfo.planName === "") ? (
                                 <>
                                     <div className="font-[600] ml-[30px] mt-[20px] text-[#FFA28D] text-[17.5px]" >Extensions</div>
 
@@ -1218,6 +1248,7 @@ function AccountOverviewWithSubscriptionInfo() {
                                                         className="font-[500] underline text-[#24A3D9] text-[15px]" 
                                                         onClick={
                                                             () => {
+                                                                SetIsCancelSubscriptionModalOpenedByExtension(true);
                                                                 OnCancelSubscriptionClicked(activeExtensionInfo.subscriptionId);
                                                             }
                                                         } 
@@ -1278,10 +1309,12 @@ function AccountOverviewWithSubscriptionInfo() {
                                     // month = month < 10 ? "0" + 
                                     console.log("payment Method");
                                     console.log(item);
+                                    const isDefault = defaultPaymentMethodId === item?.id;
                                     return (
                                         <BankCardWidgetContainer
                                             className="w-[305px]"
                                             bankCardClassName="h-[106px] w-[305px]"
+                                            isDefault={isDefault}
                                             cardNumber={cardNumber}
                                             cardLogo={cardLogo}
                                             expiresOn={expiresOn}
@@ -1291,6 +1324,9 @@ function AccountOverviewWithSubscriptionInfo() {
                                                     customerId: item.customer,
                                                     paymentMethodId: item.id
                                                 })
+                                            }}
+                                            OnSetAsDefaultClicked={() => {
+                                                OnSetAsDefaultClicked(item?.id);
                                             }}
                                         />
                                     )
