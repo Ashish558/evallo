@@ -259,10 +259,10 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
             <div
               className={` relative  w-100 h-[250px] px-[22px] z-5000`}
             >
-              <div className="flex flex-1 px-3 justify-between py-auto h-[250px] items-center">
+              <div className="flex flex-1 px-3 justify-between py-auto h-[250px] ">
                 {associatedStudents.length > 0 && (
                   <>
-                    <div className="w-1/2 z-20">
+                    <div className="w-1/2 z-20 mt-[38.42px]">
                       <h2 className="mt-0 mb-8 text-[22px] font-semibold text-base-22-5  text-[#FFA28D]">
                         {/* {selectedStudent !== null && 'Joseph Brown'}  */}
                         {selectedStudent === null
@@ -271,7 +271,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                       </h2>
                       {/* <h6 className="text-[10px]">SAT Tutoring <br />Subject Tutoring</h6> */}
 
-                      <ul className="text-[#517CA8] my-8 text-[17.5px]">
+                      <ul className="text-[#517CA8] mt-[10px] mb-[20px] text-[17.5px]">
                         {selectedStudent?.serviceSeeking?.length > 0 ? selectedStudent?.serviceSeeking?.map((item, idx) => (
                           <li>
                             {item}
@@ -284,7 +284,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                       </ul>
 
                       <Link
-                        className="p-2 mt-8 rounded-lg whitespace-nowrap text-sm px-4 bg-[#FFA28D] text-white relative z-20"
+                        className="p-2 py-[10px] mt-8 rounded-lg whitespace-nowrap text-[15px] font-medium px-[20px] bg-[#FFA28D] text-white absolute bottom-[40px] z-20"
                         to={
                           selectedStudent !== null &&
                           `/profile/student/${selectedStudent._id}`
@@ -299,10 +299,10 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                   <p>No students Associated</p>
                 )}
                 {associatedStudents.length > 0 && selectedStudent !== null && (
-                  <div className="relative ml-3 mt-1 !w-[128px] !h-[128px]">
-                    {/* <img src=""/> */}
+                  <div className="relative ml-3 mt-[82px] !w-[128px] !h-[128px]">
+                  
                     <img
-                      className="absolute z-[500] left-[-6px] top-[30px] rounded-full  object-cover shrink-0 !w-[128px] !h-[128px]"
+                      className="absolute z-[500] left-[-6px]  rounded-full  object-cover shrink-0 !w-[128px] !h-[128px] border-3 border-solid border-[#FFA28D]"
                       src={
                         selectedStudent.photo ? `${selectedStudent.photo}` : ""
                       }

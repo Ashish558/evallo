@@ -17,10 +17,11 @@ const SPFrame1 = ({
   userId,
   settings,
   userDetail,
+  fetchDetails,
   editable,
   setToEdit,
   toEdit,
-  fetchDetails,
+  fetchDetailss,
 }) => {
   const [xlsFile, setXlsFile] = useState({});
   const { awsLink } = useSelector((state) => state.user);
@@ -61,6 +62,7 @@ const SPFrame1 = ({
     formData.append("studentId", userDetail?.userId);
     addDoc(formData).then((res) => {
       console.log("docc", res);
+      fetchDetailss()
       if (res?.data) {
         alert(res?.data?.message);
         setXlsFile({});

@@ -60,6 +60,7 @@ function ExtensionSelectionWidget({
             selected={selected}
             onBodyClicked={onBodyClicked}
             isCheckBoxDisabled={isDisabled}
+            checkBoxClassName="mt-[22.22px]"
         >
             <div className="w-[650px] h-[270px]" >
                 <div className="flex items-center mt-[20px]" style={{width: "91%"}} >
@@ -74,7 +75,7 @@ function ExtensionSelectionWidget({
                         isDisabled ? (
                             <></>
                         ) : (
-                            <div className="font-[100] text-[#38C980] text-[18px]" >1 Month Free Trial</div>
+                            <div className="font-[500] text-[#38C980] text-[15px]" >1 Month Free Trial</div>
                         )
                     }
                     

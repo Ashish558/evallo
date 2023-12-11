@@ -63,7 +63,7 @@ function ReviewSubscriptionWidget({
         <div className={`flex flex-col pb-[20px] pl-[20px] pr-[30px] pt-[20px] rounded-[5px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] h-[106px] w-[600px] ${className}`}>
             <div className="flex justify-between">
                 <div>
-                    <div className="font-semibold text-[#26435F] text-[17.5px]">{planDisplayName + " - " + CurrencyNameToSymbole(currency) + subscriptionPricePerMonth + "/month"}</div>
+                    <div className="font-[500] text-[#26435F] text-[18.67px]">{planDisplayName + " - " + CurrencyNameToSymbole(currency) + subscriptionPricePerMonth + "/month"}</div>
                     <div className="font-[200] text-[#26435F] text-[15px]">Active Tutors Allowed - {activeTutorsAllowed === Infinity ? "unlimited" : activeTutorsAllowed}</div>
                     {
                         (() => {

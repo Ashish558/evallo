@@ -397,6 +397,11 @@ const [loading2,setLoading2]=useState(false)
    //  }, []);
 
    useEffect(() => {
+      if(persona === "parent" || persona === "student" || persona === "tutor" || 
+       persona === "contributor" || persona === "superAdmin" || persona === "manager") {
+         return;
+      }
+
       if(hasSubscriptionExpired || activeSubscriptionInfo.planName === "") {
          let tempnavdata = [
             {
@@ -525,7 +530,7 @@ const [loading2,setLoading2]=useState(false)
 
          setNavData(tempnavdata);
       }
-   }, [hasSubscriptionExpired, activeSubscriptionInfo, hasExtensionsExpired, activeExtensionInfo]);
+   }, [persona, hasSubscriptionExpired, activeSubscriptionInfo, hasExtensionsExpired, activeExtensionInfo]);
 
    function loadOrgDetails() {
       getPersonalDetail()

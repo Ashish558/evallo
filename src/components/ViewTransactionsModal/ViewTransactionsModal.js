@@ -36,8 +36,8 @@ function ViewTransactionsModal({
             }}
         >
             <div className="flex justify-center h-full w-full" >
-                <div className="overflow-y-scroll h-[245px] w-[1050px]" >
-                <table className="mt-[30px]  w-[1050px]" >
+                <div className="mt-[30px] overflow-y-scroll h-[245px] w-[1050px]" >
+                <table className=" w-[1050px]" >
                     <tr className="bg-[#26435F] mb-[8px] rounded-[5px] h-[62px] w-full" >
                         <th className="font-[500] text-[#fff] text-[20px]" >Invoice ID</th>
                         <th className="font-[500] text-[#fff] text-[20px]" >Date</th>
@@ -54,7 +54,7 @@ function ViewTransactionsModal({
                             const date = item?.effective_at;
                             const currency = item?.currency;
                             const currencySymbol = CurrencyNameToSymbole(currency);
-                            const subscriptionPrice = item?.amount_paid;
+                            const subscriptionPrice = item?.amount_paid / 100;
                             const extensionPrice = 0;
                             const discountPrice = 0;
                             const tax = "-"
@@ -67,7 +67,7 @@ function ViewTransactionsModal({
                                     <td className="text-center" >{currencySymbol + extensionPrice}</td>
                                     <td className="text-center" >{currencySymbol + discountPrice}</td>
                                     <td className="text-center" >{tax}</td>
-                                    <td className="text-center" >{total}</td>
+                                    <td className="text-center" >{currencySymbol + total}</td>
                                     <td className="text-center" >
                                         <img
                                             src={DownloadIcon}

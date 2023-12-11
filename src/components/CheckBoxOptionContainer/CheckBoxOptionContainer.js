@@ -28,7 +28,7 @@ export default function CheckBoxOptionContainer({
             ></div> */}
             <SCheckbox
                 checked={selected}
-                className={`ml-[20px] mt-[20px] ${checkBoxClassName}`}
+                className={`ml-[20px] mt-[22.22px] ${checkBoxClassName}`}
                 onChange={onChange}
                 disabled={isCheckBoxDisabled}
             />
