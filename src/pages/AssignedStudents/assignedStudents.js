@@ -45,15 +45,14 @@ export default function AssignedStudents() {
    const [filterItems, setFilterItems] = useState([])
    const [modalActive, setModalActive] = useState(false)
    const [modalData, setModalData] = useState(initialState)
-
+   const [user, setUser] = useState({});
    const { role: persona } = useSelector(state => state.user)
-
-   const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
-
+   const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery();
+   const { organization } = useSelector((state) => state.organization);
    const { id } = useSelector(state => state.user)
-   const [students, setStudents] = useState([])
-   const [filteredStudents, setFilteredStudents] = useState([])
-
+   const [students, setStudents] = useState([]);
+   const { firstName, lastName } = useSelector((state) => state.user);
+   const [filteredStudents, setFilteredStudents] = useState([]);
    const [filterData, setFilterData] = useState({
       tutorName: '',
       studentName: '',
@@ -179,15 +178,17 @@ export default function AssignedStudents() {
    useEffect(() => {
       setValidData(modalData.email && modalData.firstName && modalData.lastName && modalData.userType);
    }, [modalData, modalData.email.length, modalData.firstName.length, modalData.lastName.length, modalData.phone.length, modalData.userType.length,])
+   
+
+   
 
    return (
       <>
-         <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
+         <div className="w-[1920px] h-auto flex justify-center items-center bg-lightWhite">
+           <div className="w-[1600px] h-full flex flex-col justify-center items-center">
 
-
-{/*  route path  */}
-
-         {/* <p className="text-[#24A3D9] text-base-20 mb-8 my-[calc(50*0.0522vw)] ">
+            {/*  route path  */}
+               <p className="w-full text-[#24A3D9] text-[20px] mt-[50px] mb-[30px]">
           {persona === "admin" ? (
             <span>
               <span className="!cursor-pointer" onClick={() => navigate("/")}>
@@ -208,44 +209,43 @@ export default function AssignedStudents() {
               <span onClick={() => navigate("/")} className="cursor-pointer">
                 {organization?.company +
                   " > " +
-                  user?.firstName +
+                  firstName +
                   " " +
-                  user?.lastName +
+                  lastName +
                   " > "}
               </span>
               <span className="font-semibold">Profile</span>
             </span>
           )}
-        </p> */}
+          {/*  route path ends here */}
+         </p> 
 
-{/*  route path ends here */}
-
-            <div className="py-14 px-5 pl-8 text-sm">
-               <div className="flex justify-between items-center">
+               <div className="w-full flex justify-between items-center">
 
                   {
-                     persona == "tutor" || <p className={`font-bold text-4xl text-primary-dark`}
-                     // style={{ color: "#25335A" }}
+                     persona === "tutor" || <p className={`font-bold text-4xl text-primary-dark`}
                      >
                         Assigned Students
                      </p>
                   }
                </div>
+               
+
+               <div className="w-full flex justify-start items-center mb-[30px]">
                {
-                  persona == "tutor" ?
+                  persona === "tutor" ?
                      <InputField
                         value={filterData.studentName}
                         IconRight={SearchIcon}
                         onChange={e => setFilterData({ ...filterData, studentName: e.target.value })}
                         optionData={optionData}
                         placeholder="Search"
-                        iconPadding="pl-3"
-                        inputContainerClassName="border bg-white py-[16px] px-[20px] rounded-[7.5px]"
-                        parentClassName="w-full mr-4 max-w-[423.75px]"
+                        iconPadding="pl-[18.75px]"
+                        inputContainerClassName="border bg-white h-full w-full px-[21.25px] rounded-[7.5px]"
+                        parentClassName="w-[423.75px] h-[50px]"
                         type="text"
-
                      /> :
-                     <div className="flex align-center mt-8 max-w-[750px]">
+                     <div className="flex align-center">
                         <InputField
                            value={filterData.tutorName}
                            IconRight={SearchIcon}
@@ -322,13 +322,14 @@ export default function AssignedStudents() {
                   /> */}
                      </div>
                }
+               </div>
 
-               <div className="pt-4 ">
+               <div className="">
                   <FilterItems items={filterItems} setData={setFilterItems}
                      onRemoveFilter={onRemoveFilter} />
                </div>
                {console.log(filteredStudents, "students")}
-               <div className="mt-6">
+               <div className="w-full mb-[100px]">
                   <Table
                      onClick={{ handleNavigate }}
                      dataFor='assignedStudents'

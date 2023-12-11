@@ -1466,8 +1466,9 @@ export default function AssignedTests() {
               <span className="font-bold">Assignments</span>
             </p>
 
+                
             {persona === "parent" && (
-              <div className="flex justify-between whitespace-nowrap items-center gap-6">
+              <div className="flex justify-around whitespace-nowrap items-center gap-6">
                 <InputField
                   IconRight={SearchIcon}
                   value={filterData.studentName}
@@ -1498,7 +1499,7 @@ export default function AssignedTests() {
 
           {(persona === "admin" || persona === "tutor") && (
             <>
-              <div className="flex justify-start items-start">
+              <div className="flex justify-between items-start">
                 {persona === "student" ? (
                   <p className={`font-bold text-4xl text-primary-dark`}>
                     Assigned Tests

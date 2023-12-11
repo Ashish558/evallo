@@ -86,7 +86,7 @@ export default function InputField({
                 className="inline-block cursor-pointer"
                 alt=""
               />
-              <div className="absolute  top-0 left-6 z-5000 w-[450px] rounded-[13px] bg-[rgba(0,0,0,0.80)] group-hover:!bg-opacity-100  text-white  whitespace-normal pt-[20px] pb-[24px]  px-[15px] scale-0 group-hover:scale-100">
+              <div className="absolute  top-0 left-6 z-5000 w-[450px] rounded-[13px] bg-[rgba(0,0,0,0.80)] group-hover:!bg-opacity-100  text-white  whitespace-normal pt-[20px] pb-[24px] px-[15px] scale-0 group-hover:scale-100">
                 <h3 className="text-[#517CA8] text-left text-[0.8333vw] py-0 font-medium mb-1">
                   Support Email
                 </h3>
@@ -147,10 +147,10 @@ export default function InputField({
         <input
           className={`outline-0 w-full text-[17.5px]  ${
             iconPadding ? iconPadding : "pl-1"
-          } placeholder:text-base-17-5 ${
+          } placeholder:text-[17.5px] ${
             inputClassName ? inputClassName : ""
           } ${disabled === true ? "cursor-not-allowed" : ""} ${
-            removeResponsive ? "" : "text-base-17-5"
+            removeResponsive ? "" : "text-[17.5px]"
           } ${styles["input"]} `}
           placeholder={placeholder}
           type={inputType ? inputType : "text"}

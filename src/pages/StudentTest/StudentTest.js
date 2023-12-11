@@ -702,7 +702,8 @@ export default function StudentTest({ fromProfile, testtype, setTotaltest, stude
         if (res.error)
           return console.log("assigned test parent resp", res.error);
         console.log("assigned test parent resp", res.data);
-        let tempAllTests = res.data.data.test.map((test) => {
+        let tempAllTests = res?.data?.data?.test?.map((test) => {
+          console.log("parent", test)
           const {
             testId,
             studentId,
@@ -714,15 +715,16 @@ export default function StudentTest({ fromProfile, testtype, setTotaltest, stude
             createdAt,
             updatedAt,
           } = test;
+          
           if (testId === null) return;
-          console.log("parent", test)
+          
           return {
             // assignedBy: assignedBy ? assignedBy.firstName + " " + assignedBy.lastName : "-",
             testName: testId ? testId.testName : "-",
             testtype: testId ? testId.testType : "-",
             assignedOn: new Date(createdAt).toLocaleDateString(),
             studentId: studentId ? studentId : "-",
-            dueDate: new Date(test.dueDate).toLocaleDateString(),
+            dueDate:new Date(test?.dueDate).toLocaleDateString(),
             duration: multiple ? getDuration(multiple) : "Unlimited",
             status:
               isCompleted === true
@@ -732,18 +734,18 @@ export default function StudentTest({ fromProfile, testtype, setTotaltest, stude
                   : "notStarted",
             scores: "-",
             _id: test._id,
-            pdfLink: testId ? testId.pdf : null,
+            pdfLink: testId ? testId.pdf ? testId.pdf : null : null,
             testId: testId ? testId._id : "-",
             isCompleted: test.isCompleted,
             assignedTestId: test._id,
             updatedAt,
           };
         });
-        let sortedArr = tempAllTests.sort(function (a, b) {
+        let sortedArr = tempAllTests?.sort(function (a, b) {
           return new Date(b.updatedAt) - new Date(a.updatedAt);
         });
         console.log({ tempAllTests, sortedArr })
-        setAllTests(sortedArr.filter((item) => item !== undefined));
+        setAllTests(sortedArr?.filter((item) => item !== undefined));
       });
     }
   }, [persona, id]);
@@ -774,13 +776,13 @@ export default function StudentTest({ fromProfile, testtype, setTotaltest, stude
   useEffect(() => {
     if (selectedStudent === null) return;
     if (Object.keys(selectedStudent).length === 0) return;
-    if (allTests.length === 0) return;
+    if (allTests?.length === 0) return;
 
     const selected = associatedStudents.find(
       (student) => student.selected === true
     );
     if (!selected) return;
-    let tempdata = allTests.filter(
+    let tempdata = allTests?.filter(
       (test) => test.studentId._id === selected._id
     );
     setfilteredTests(tempdata);

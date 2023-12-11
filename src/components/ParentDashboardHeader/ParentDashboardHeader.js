@@ -207,7 +207,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                   </p>
                   <p
                     className="font-medium cursor-pointer text-[17.5px]"
-                    onClick={() => setLedgerVisible(true)}
+                    // onClick={() => setLedgerVisible(true)}
                   >
                     View Ledger
                   </p>
@@ -231,10 +231,10 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
           <div className="flex justify-between items-center ">
             <InputSelectNew
               optionType="object"
-              label={"Select Student "}
+              label={"Select Student"}
               labelClassname="text-[#26435F]  font-semibold text-[20px] mb-[5px]"
               iconClass="text-[#26435F] ml-2 translate-y-[0px]  mb-1"
-              parentClassName=""
+              parentClassName="cursor-pointer"
               inputContainerClassName="pt-1 pb-1"
               optionData={associatedStudents.map((item) => ({
                 _id: item._id,
@@ -244,8 +244,8 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                 serviceSeeking: item.serviceSeeking,
               }))}
               labelIcon={Drop}
-              optionClassName="w-[130px] text-sm"
-              optionListClassName="text-sm"
+              optionClassName="w-[130px]  text-sm"
+              optionListClassName="text-sm "
               value={""}
               onChange={(val) => setSelectedStudent(val)}
             />
@@ -257,13 +257,13 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
   <path d="M489.25 93.7501V0C486.489 0 484.25 2.23853 484.25 4.99989L484.25 50.6251L484.25 88.1251C484.25 90.8865 482.012 93.1251 479.25 93.1251H11.125C8.36358 93.1251 6.125 90.8865 6.125 88.1251V49.3751L6.125 5.625C6.125 2.5184 3.6066 0 0.5 0V93.7501C0.5 96.5115 2.73858 98.7501 5.5 98.7501H484.25C487.012 98.7501 489.25 96.5115 489.25 93.7501Z" fill="#26435F"/>
 </svg>
             <div
-              className={` relative  w-100 h-[250px] px-[22px] z-5000`}
+              className={` relative  w-100 h-[250px] px-[22px] z-1`}
             >
               <div className="flex flex-1 px-3 justify-between py-auto h-[250px] ">
                 {associatedStudents.length > 0 && (
                   <>
                     <div className="w-1/2 z-20 mt-[38.42px]">
-                      <h2 className="mt-0 mb-8 text-[22px] font-semibold text-base-22-5  text-[#FFA28D]">
+                      <h2 className="mt-0 mb-8 text-[22px] font-semibold text-base-22-5 z text-[#FFA28D]">
                         {/* {selectedStudent !== null && 'Joseph Brown'}  */}
                         {selectedStudent === null
                           ? "No students associated"
