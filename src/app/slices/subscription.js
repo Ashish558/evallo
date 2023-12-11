@@ -40,6 +40,7 @@ const initialState = {
     paymentMethods: [],
     subscriptionUpdateTrigger: null,
     hasSubscriptionExpired: false,
+    hasExtensionsExpired: false,
     defaultPaymentMethodId: "",
 }
 
@@ -71,6 +72,9 @@ const subscription = createSlice({
         updateHasSubscriptionExpired: (state, { payload }) => {
             state.hasSubscriptionExpired = payload;
         },
+        updateHasExtensionExpired: (state, { payload }) => {
+            state.hasExtensionsExpired = payload;
+        },
         updateDefaultPaymentMethodId: (state, { payload }) => {
             state.defaultPaymentMethodId = payload;
         },
@@ -86,6 +90,7 @@ export const {
     updatePaymentMethods,
     triggerSubscriptionUpdate,
     updateHasSubscriptionExpired,
+    updateHasExtensionExpired,
     updateDefaultPaymentMethodId,
 } = subscription.actions;
 export default subscription.reducer;
