@@ -957,12 +957,13 @@ const [toEdit, setToEdit] = useState({
                   className=" "
                   handleChange={handleProfilePhotoChange}
                 />
-                <div className="flex flex-col ml-5   text-[#24A3D9] ">
-                  <p
-                    onClick={() =>
-                      associatedParent?.length > 1 &&
-                      navigate(`/profile/parent/${associatedParent?._id}`)
-                    }
+                <div className="flex flex-col ml-5 text-[#24A3D9] ">
+                  <a
+                  href={`/profile/parent/${associatedParent?._id}`}
+                    // onClick={() =>
+                    //   associatedParent?._id > 0 &&
+                    //   navigate(`/profile/parent/${associatedParent?._id}`)
+                    // }
                     className=" cursor-pointer text-base-20 "
                   >
 
@@ -974,7 +975,7 @@ const [toEdit, setToEdit] = useState({
                       className="!ml-2 cursor-pointer !w-3 !h-3 inline-block"
                       alt="arrow"
                     />
-                  </p>
+                  </a>
 
                   {(persona !== "tutor" || (persona === 'tutor' && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <p className="font-medium ">
                     <span
