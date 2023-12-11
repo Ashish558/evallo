@@ -681,7 +681,7 @@ function SubscriptionAndExtensionModal({
         }
         let chosenSubscriptionToBeSentThroughAPI = JSON.parse(subscriptionSessionStorageOutput);
 
-        if(couponIdForSubscription !== "" ) {
+        if(couponIdForSubscription?.constructor?.name === "String" && couponIdForSubscription.length > 0 ) {
             chosenSubscriptionToBeSentThroughAPI = {
                 ...chosenSubscriptionToBeSentThroughAPI,
                 coupon: couponIdForSubscription
@@ -875,7 +875,7 @@ function SubscriptionAndExtensionModal({
         <div className={`aspect-[1400/900] bg-[#FFFFFF] flex rounded-[15px]  ${className} overflow-auto`} >
             <div className="h-[500px] w-1/12" >
                 <VerticalNumericSteppers
-                    className="ml-[34px] mt-[135px] h-[630px]"
+                    className="ml-[34px] mt-[135px] h-[630px] w-[107.99px]"
                     labels={["Account", "Subscription", "Extensions", "Review"]}
                     currentIndex={currentModalIndex}
                     restrictedIndices={restrictedIndices}
@@ -1018,7 +1018,7 @@ function SubscriptionAndExtensionModal({
                                 updateSubscriptionMode ? handleChangePlan() : 
                                 renewProductMode ? handleRenewProduct() : handleSub() : onSaveAndNextClicked()
                             );
-                            if(OnCheckoutClicked.constructor && OnCheckoutClicked.constructor.name === "Function" && frames.review) {
+                            if(OnCheckoutClicked?.constructor?.name === "Function" && frames.review) {
                                 OnCheckoutClicked();
                             }
                         }
