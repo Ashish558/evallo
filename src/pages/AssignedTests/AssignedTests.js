@@ -845,7 +845,6 @@ export default function AssignedTests() {
   }, [modalData.name, modalData.limit, modalData.date, modalData.test]);
 
   const handleMultipleStudent = (student) => {
-
     let bool = studentMultiple?.find(
       (student1) => student1?._id === student?._id
     );
@@ -922,11 +921,12 @@ export default function AssignedTests() {
 
 
   useEffect(() => {
-    if (modalData.name.length >= 0) {
-      if (persona === "admin") {
+     if (modalData.name.length >= 0) {
+      if (persona === "admin"|| persona=='tutor') {
         fetchStudents(modalData.name).then((res) => {
           console.log("res", res);
           if (res.error) {
+            console.log("res", res);
             return;
           }
           setalldata(res.data.data.students)
@@ -1411,36 +1411,36 @@ export default function AssignedTests() {
     const container = document.querySelector('.student-name-container');
     const text = document.querySelector('.text-container');
     console.log(text.innerHTML.length, container);
-
+  
     if (text && container) {
-
-      const limit22 = 3.4;
-      const maxStringLength = Math.floor((container.offsetWidth - 100) / limit22) - 20;
-      let stri = '';
-
-      let f = false;
-      let tot = 0;
-      console.log(selectedstudent);
-      for (const student of selectedstudent) {
-        console.log(stri.length + student.firstName.length, maxStringLength);
-        if (stri.length + student.firstName.length < maxStringLength) {
-          if (f) {
-            stri += ', ' + student.firstName;
+     
+        const limit22 = 3.4;
+        const maxStringLength = Math.floor((container.offsetWidth - 100) / limit22) - 20;
+        let stri = '';
+  
+        let f = false;
+        let tot = 0;
+        console.log(selectedstudent);
+        for (const student of selectedstudent) {
+          console.log(stri.length+ student?.firstName?.length,maxStringLength);
+          if (stri.length+ student?.firstName?.length < maxStringLength) {
+            if (f) {
+              stri += ', ' + student?.firstName;
+            } else {
+              f = true;
+              stri += student?.firstName;
+            }
           } else {
-            f = true;
-            stri += student.firstName;
+            stri += ` ... total ${studentMultiple?.length} selected`;
+            break;
           }
-        } else {
-          stri += ` ... total ${studentMultiple.length} selected`;
-          break;
+  
+          tot += student?.firstName?.length;
         }
-
-        tot += student.firstName.length;
-      }
-
-      console.log('Text has covered the whole width. Needs to be cropped.');
-      console.log('Cropped Text:', stri);
-      selselectedtext(stri)
+  
+        console.log('Text has covered the whole width. Needs to be cropped.');
+        console.log('Cropped Text:', stri);
+        selselectedtext(stri)
     }
   };
 
@@ -1635,11 +1635,14 @@ export default function AssignedTests() {
                       organization?.settings?.permissions[0]
                         ?.choosedValue)) && (
                     <div
-                      className="opacity-70 !cursor-not-allowed pointer-events-none w-[114px] h-[44px] bg-[#FFF] rounded-5 ml-[50px] flex items-center justify-center text-[17.5px]"
+                      onClick={() =>
+                        selectedId?.length > 0 && setDeleteBulkModalActive(true)
+                      }
+                      className="cursor-pointer gap-x-[5px] px-1 w-[5.9375vw] py-[9px] bg-[#FFF] rounded-5 ml-6 flex items-center justify-center text-base-17-5"
                     >
                       <p className="mr-[5px]">Delete</p>
                       <p>
-                        <img className="w-5 h-5" src={DeleteIcon} alt="" />
+                        <img className="w-5 h-5" src={DeleteIcon} alt="delete-icon" />
                       </p>
                     </div>
                   )}
