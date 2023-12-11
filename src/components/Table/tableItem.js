@@ -1235,10 +1235,10 @@ export default function TableItem({
       )}
       {dataFor === "allTests" && (
         <tr className="odd:bg-white font-medium text-[17.5px]  lead">
-          <td className="text-left pl-[66.5px] w-[350px] max-w-[350px] overflow-hidden text-ellipsis">
+          <td className="text-left pl-[66.5px] w-[350px] max-w-[350px] overflow-hidden text-ellipsis" style={{paddingLeft: '25px'}}>
             {item.testName}
           </td>
-          <td className="w-[223px] text-left pl-14">
+          <td className="w-[223px] text-left" style={{paddingLeft: '45px'}}>
             {item.testType.endsWith("®")
               ? item.testType
               : item.testType.includes("Other")
@@ -1355,14 +1355,14 @@ export default function TableItem({
       )}
       {dataFor === "allOrgs" && (
         <tr className="odd:bg-white  leading-8">
-          <td className="font-medium text-[17.5px] !pl-[60px]  min-w-14 py-4  text-left !max-w-[346px]">
+          <td className="font-medium text-[17.5px] !pl-[60px]  min-w-10 py-4  text-left !max-w-[346px]  overflow-hidden">
             <span
               className="inline-block cursor-pointer pl-4"
               onClick={() => navigate(`/orgadmin-profile/${item._id}`)}
             >
               {item.associatedOrg?.company
                 ? item.associatedOrg?.company?.toLowerCase()
-                : item.company?.toLowerCase()}
+                : item.company?.toLowerCase()} 
             </span>
           </td>
           <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left  !max-w-[286px]">
