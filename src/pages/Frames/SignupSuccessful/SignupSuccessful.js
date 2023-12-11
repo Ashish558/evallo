@@ -59,9 +59,10 @@ export default function SignupSuccessful({
 
   return (
     <div className="">
-      <div className="mb-[47px] hidden lg:block ">
-        <div className='h-[1px] bg-[#EBEBEB] mt-[-20px] mx-[6px] w-full mb-[60px]'>
-
+      <div className=" hidden lg:block ">
+        <div className='w-[563px]   mx-auto mb-[54px] text-center text-[18px] font-medium text-[#26435F]'>
+        A verification link has been sent to your email.<br/>
+Please click on it to verify your email and set a new password.
         </div>
         <div>
 

@@ -5,6 +5,10 @@
     transform: translateY(-50%);
     z-index: 200000;
 }
+.downArrowClassName{
+    height: 18.75px !important;
+    width: 18.75px !important;
+}
 .options {
     position: absolute;
     top: calc(100% + 3px);
