@@ -119,7 +119,7 @@ const StudentDashboardHeader = () => {
                           onClick={() => openLink(image.link)}
                           className="bg-[#FFA28D] text-white p-2 text-base-17-5 px-4 rounded-lg absolute left-[30px] bottom-[26px]"
                         >
-                          {image?.buttonText ? image?.buttonText : "Register"}
+                          {image?.buttonText ? image?.buttonText : ""}
                         </button>
                       </div>
                     );
@@ -145,7 +145,7 @@ const StudentDashboardHeader = () => {
           <p className=" text-[20px] leading-[12.5px] text-[#26435F] font-semibold">
             Assigned Tutors
           </p>
-          <div className=".mybox bg-white relative shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)] rounded-md w-[489px] h-[250px]">
+          <div className=".mybox relative shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)] rounded-md w-[489px] h-[250px] z-5000">
             <div id="borderLeft" className="rounded-t-r-md"></div>
             <TutorCarousel />
 

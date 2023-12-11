@@ -86,7 +86,7 @@ export default function Table(props) {
 
       setTableData(temp);
       setSorted(temp);
-      setCurrentPage(1);
+      // setCurrentPage(1);
     }
   }, [data, maxPageSize, data?.length]);
 

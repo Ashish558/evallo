@@ -43,8 +43,10 @@ export default function Modal({
   });
 
   useEffect(() => {
-    // 
-    document.body.style.overflow = "hidden";
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Optional: Use smooth scrolling behavior
+    });
     return () => {
       document.body.style.overflow = "unset";
     };
