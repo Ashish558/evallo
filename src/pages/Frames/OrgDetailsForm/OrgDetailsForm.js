@@ -92,7 +92,7 @@ function OrgDetailsForm({
                         }))
                       }
                     >
-                      <div className="w-[30px]  flex justify-center">
+                      {/* <div className="w-[30px]  flex justify-center">
                         <img
                           src={
                             values.registrationAs === "Individual"
@@ -102,10 +102,17 @@ function OrgDetailsForm({
                           alt="radio"
                           className=" mr-3"
                         />
-                      </div>
+                      </div> */}
+                      <div 
+                        className={`rounded-full h-[15px] w-[15px]
+                                    ${values.registrationAs === "Individual" ? "border-[#FFA28D]" : "border-[#D0D5DD]"}
+                                    ${values.registrationAs === "Individual" ? "border-[3px]" : "border-[2px]"}
+                                    ${values.registrationAs === "Individual" ? "shadow-[0px_0px_10px_rgba(255,162,141,1)]" : ""}
+                        `}
+                      ></div>
 
                       <p
-                        className={`${
+                        className={`ml-[10px] ${
                           values.registrationAs === "Individual"
                             ? "text-[#FFA28D] font-[500] "
                             : "text-[#7C98B6] font-[400]"
@@ -124,7 +131,7 @@ function OrgDetailsForm({
                         }))
                       }
                     >
-                      <div className="w-[30px] flex justify-center">
+                      {/* <div className="w-[30px] flex justify-center">
                         <img
                           src={
                             values.registrationAs === "Company"
@@ -134,9 +141,16 @@ function OrgDetailsForm({
                           alt="radio"
                           className="mr-3 p-0"
                         />
-                      </div>
+                      </div> */}
+                      <div 
+                        className={`rounded-full h-[15px] w-[15px]
+                                    ${values.registrationAs === "Company" ? "border-[#FFA28D]" : "border-[#D0D5DD]"}
+                                    ${values.registrationAs === "Company" ? "border-[3px]" : "border-[2px]"}
+                                    ${values.registrationAs === "Company" ? "shadow-[0px_0px_10px_rgba(255,162,141,1)]" : ""}
+                        `}
+                      ></div>
                       <p
-                        className={`${
+                        className={`ml-[10px] ${
                           values.registrationAs === "Company"
                             ? "text-[#FFA28D] font-[500] "
                             : "text-[#7C98B6] font-[400]"
