@@ -24,13 +24,8 @@ export const validateSignup = (values) => {
    if (!isEmail(email)) return { data: 'email', message: 'Please enter valid email' }
    if (phone?.trim() === '') return { data: 'phone', message: 'Fill Phone number' }
    if(!isPhoneNumber(phone))  return { data: 'phone', message: 'Please enter a valid phone number' }
-   if (phone?.length < 10 ) return { data: 'phone', message: 'Phone number must be greater than 9 digits' }
    if (phoneCode?.trim() === '') return { data: 'phoneCode', message: 'Fill country code' }
-   if (firstName?.length < 2) return { data: 'firstName', message: 'First name should be more than 2 characters' }
-   if (firstName?.length > 25) return { data: 'firstName', message: 'First name should be less than 25 characters' }
-   if (lastName?.length < 2) return { data: 'lastName', message: 'First name should be more than 2 characters' }
-   if (lastName?.length > 25) return { data: 'lastName', message: 'First name should be less than 25 characters' }
-
+  
    return { data: true, message: 'none' }
 }
 
