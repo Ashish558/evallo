@@ -93,10 +93,10 @@ function ExtensionsChoosingModal({
             <div className="h-full w-[750px]" >
                 <div className="ml-[30px] mt-[55px]" >
                     <div
-                        className={`block text-base font-[500] text-[#26435F] ml-0 text-[18.67px]`}
+                        className={`block font-[500] text-[#26435F] ml-0 text-[18.67px]`}
                     >Select Extensions / Add-Ons</div>
                     <div
-                        className={`text-[15px] text-[#26435F] font-[100]`}
+                        className={`text-[15px] text-[#26435F] font-[400]`}
                     >For detailed breakdown of features, please visit our <a href="#" className="text-[#24A3D9]">pricing page</a>.
                     </div>
                 </div>
