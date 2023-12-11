@@ -45,7 +45,6 @@ const Dashboard = () => {
   const { data: userStats } = useGetUserStatsQuery();
   const [getPersonalDetail, getPersonalDetailResp] = useLazyGetPersonalDetailQuery();
   const [getOrgDetails, getOrgDetailsResp] = useLazyGetOrganizationQuery();
-  console.log({ userStats }); 
   const [completedRevenue, completedRevenueStatus] = useGetAllRevenueMutation();
   const [leakedRevenue, leakedRevenueStatus] = useGetLeakedRevenueMutation();
   const [impendingRevenue, impendingRevenueStatus] =
@@ -454,7 +453,6 @@ const Dashboard = () => {
       onCick: sortByDate,
     },
   ];
-  console.log({ userData });
   const convertDateToRange = (startDate) => {
     let startD = startDate.split("-")[0];
 
@@ -481,7 +479,11 @@ const Dashboard = () => {
 
     fetchTutorPerformanceData(body)
       .then((res) => {
-        console.log(res?.data);
+        if(res.error){
+          return console.log('err', res.error);
+        }
+        // console.log(res?.data);
+        setTutorPerformance(res.data.all_tutors)
       })
       .catch((err) => {
         console.log(err);
@@ -492,7 +494,7 @@ const Dashboard = () => {
 
     fetchPopularServicesData(body)
       .then((res) => {
-        console.log(res?.data?.all_services, "popular-services");
+        // console.log(res?.data, "popular-services");
         setPopularServices(res?.data?.all_services);
       })
       .catch((err) => {
@@ -534,7 +536,7 @@ const Dashboard = () => {
 const plusSvg = (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
 <path d="M9.16602 9.16602V4.16602H10.8327V9.16602H15.8327V10.8327H10.8327V15.8327H9.16602V10.8327H4.16602V9.16602H9.16602Z" fill="white"/>
 </svg>)
-
+console.log('tutorPerformanceData', tutorPerformanceData);
   return (
     // <div className={styles.container}>
     <>
@@ -1067,6 +1069,7 @@ const plusSvg = (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" 
           <Table
             headerWidth="w-[150px] whitespace-normal px-5"
             data={tutorPerformanceData}
+            dataFor='tutorPerformance'
             tableHeaders={tutorTableHeaders}
             maxPageSize={5}
             belowBox={true}

@@ -147,12 +147,8 @@ export default function SetPassword({
                 value={password}
                 onChange={(e) => {
                   const value = e.target.value;
-                  // Check if the value contains any whitespace
-                  if (!/\s/.test(value)) {
-                    setPassword(value);
-                  }
-                }
-                }
+                  setPassword(value);
+                }}
                 error={error.password}
               />
 
@@ -167,12 +163,8 @@ export default function SetPassword({
                 value={confirmPassword}
                 onChange={(e) => {
                   const value = e.target.value;
-                  // Check if the value contains any whitespace
-                  if (!/\s/.test(value)) {
-                    setConfirmPassword(value);
-                  }
-                }
-                }
+                  setConfirmPassword(value);
+                }}
                 error={error.confirmPassword}
               />
             </div>

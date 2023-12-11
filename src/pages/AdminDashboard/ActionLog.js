@@ -15,9 +15,11 @@ export default function ActionLog({ actionLog, className,width }) {
       setDateFormat(organization2?.settings?.dateFormat);
     }
   }, [organization2]);
+
   const [currentElementIndex, setCurrentElementIndex] = useState(0);
   const [extraElement, setExtraElement] = useState(0);
   const [sortedAction, setSortedAction] = useState([]);
+
   const handleScroll = (e) => {
     const elementHeight = e.target.scrollHeight / actionLog?.length;
 
@@ -28,9 +30,9 @@ export default function ActionLog({ actionLog, className,width }) {
     setCurrentElementIndex(0);
     const sorting = (newarr, extra) => {
       let sortedData = [...actionLog];
-      sortedData.sort((a, b) => {
-        return a.createdAt - b.createdAt;
-      });
+      // sortedData.sort((a, b) => {
+      //   return a.createdAt - b.createdAt;
+      // });
       let i = 0,
         j = 0;
       let check = 0;
@@ -66,7 +68,11 @@ export default function ActionLog({ actionLog, className,width }) {
     let extra = 1;
     extra = sorting(newarr, extra);
     setExtraElement(extra);
-    setSortedAction(newarr);
+    let actions = actionLog.map(action => {
+      return {...action,topDate: new Date(action?.createdAt).toDateString(),}
+    })
+    
+    setSortedAction(actions);
   }, [actionLog]);
   let headerDate = sortedAction[currentElementIndex]
     ? new Date(sortedAction[currentElementIndex]?.createdAt).toDateString()
@@ -111,11 +117,11 @@ else [ year, month, day] = value.split("-");
         {sortedAction?.map((item, index) => {
           let date = new Date(item.createdAt);
           const offset = date.getTimezoneOffset() * 60000;
-          if (offset > 0) {
-            date = new Date(date.getTime() + offset);
-          }
-          let hours = date.getUTCHours();
-          var minutes = date.getUTCMinutes();
+          // if (offset > 0) {
+          //   date = new Date(date.getTime() + offset);
+          // }
+          let hours = date.getHours();
+          var minutes = date.getMinutes();
 
           if(0 <= minutes && minutes < 10){
             minutes = `0` + minutes;
@@ -125,6 +131,9 @@ else [ year, month, day] = value.split("-");
           if (hours >= 12) {
             hours-=12
             ampm = "PM";
+          }
+          if(ampm === "PM" && hours === 0){
+            hours = 12
           }
           return (
             
