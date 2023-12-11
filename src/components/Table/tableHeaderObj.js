@@ -53,8 +53,8 @@ ${header.text==="Actively Using"&&"w-[168.5px] pr-[11.5px] text-left"} flex gap-
       } ${flag ? styles["no-arrow"] : ""} bg-[#26435F] ${header.text==="% of Business"?" rounded-r-[5.333px]":""}`}
     >
       <div
-        className={`flex
-        ${header.text === "Student Name" ? "ml-[40px]  text-left " : ""} 
+        className={`flex  
+        ${header.text === "Student Name" ? "ml-[40px] text-left " : ""} 
         ${header.text === "Assignment Name" ? "ml-[12px]" : ""} 
         ${
           header.text === "Email" ||

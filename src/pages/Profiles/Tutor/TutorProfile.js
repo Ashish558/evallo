@@ -658,11 +658,9 @@ export default function TutorProfile({ isOwn }) {
   // console.log(formattedDate);
   return (
     <>
-      <div className="w-[1600px] mx-auto">
-        {/* <div className="py-8">
-               <p className='text-[#24A3D9] text-xl '>Org</p>
-            </div> */}
-        <p className="text-[#24A3D9] text-base-20 mb-8 my-[50px] ">
+      <div className="w-[1920px] flex justify-center items-center">
+         <div className="w-[1600px] mx-auto">
+        <p className="text-[#24A3D9] text-[20px] mt-[50px] mb-[31.6px]">
           {persona === "admin" ? (
             <span>
               <span className="!cursor-pointer" onClick={() => navigate("/")}>
@@ -692,35 +690,15 @@ export default function TutorProfile({ isOwn }) {
             </span>
           )}
         </p>
-        {/* {!isOwn ? (
-          <button
-            className="my-5 bg-primary text-white cursor-pointer relative z-[50] px-[14px] py-[8px] rounded-[8px]  text-[18px] font-medium top-[-8px] left-[0px] flex gap-[12px] cursor-pointer flex justify-center items-center"
-            onClick={() => window.history.back()}
-          >
-            <img className="w-4 h-4" src={LeftIcon} alt="icon" /> Back
-          </button>
-        ) : (
-          <></>
-        )} */}
-
-        <div className="flex  justify-between">
+        <div className="flex justify-between ">
           <ProfileCard
             hideShadow
             titleClassName="text-left"
             bgClassName="bg-profilecard"
-            className=" w-[1313.954px]"
-            // title={
-            //    <EditableText text=''
-            //       editable={editable}
-            //       onClick={() => setToEdit({ ...toEdit, about: { ...toEdit.about, active: true } })}
-            //       className='text-primary text-lg capitalize '
-            //       textClassName='flex-1'
-            //       imgClass='ml-auto' />
-            // }
-
+            className=" w-[1600px] h-[297.54px]"
             body={
               <>
-                <div className="bg-white rounded-md shadow-[0px_0px_2px_0px_#00000040] h-[297.547px]">
+                <div className="w-[1313.95px] bg-white rounded-md shadow-[0px_0px_2px_0px_#00000040] h-[297.547px]">
                   <div className="h-[125.519px]  rounded-t-md shadow-t-[0px_0px_2px_0px_#00000040] flex relative bg-[#26435F]">
                     <div className="ml-8  pt-1  w-4/6">
                       <div className="flex h-full  items-end">
@@ -828,13 +806,10 @@ export default function TutorProfile({ isOwn }) {
                           </div>
                         </div>
                       )}
-                    {/* <div>
-                                 <ProfilePhoto isTutor={true}
-                                    src={user.photo ? `${awsLink}${user.photo}` : '/images/default.jpeg'}
-                                    handleChange={handleProfilePhotoChange} />
-                              </div> */}
                   </div>
-                  <div className="flex ml-4  h-[120px] overflow-y-auto">
+
+                  {/*  about paragraph */}
+                  <div className="flex ml-4 h-[120px] overflow-y-auto">
                     <div className="min-w-[182px]"></div>
                     <div className="my-[33px] pl-[48px] pr-[41px]">
                       <p className="text-[17.503px] text-base-17-5 text-[#517CA8] whitespace-normal text-left">
@@ -843,18 +818,14 @@ export default function TutorProfile({ isOwn }) {
                     </div>
                   </div>
                 </div>
-
-                {/* <div>
-                                 <img src={user.photo ? user.photo : '/images/default.jpeg'} className={} />
-                              </div> */}
               </>
             }
           />
-          <div className="w-[249.6px]">
+          <div className="flex-grow-1">
             <div className="flex items-start">
               <img className="mt-[7px]" src={experience} alt="experience"></img>
               <div className="ml-[22.5px]">
-                <p className="text-[#24A3D9] font-semibold text-[20px] text-base-20">
+                <p className="text-[#24A3D9] font-semibold text-[20px]">
                   Education
                 </p>
                 <p className="text-[17.503px] text-base-17-5 text-[#517CA8]">
@@ -866,7 +837,7 @@ export default function TutorProfile({ isOwn }) {
               <img className="mt-[7px]" src={bag} alt="experience"></img>
 
               <div className="ml-[22.5px]">
-                <p className="text-[#24A3D9] font-semibold text-[20px] text-base-20">
+                <p className="text-[#24A3D9] font-semibold text-[20px]">
                   Experience
                 </p>
                 <p className="text-[17.503px] text-base-17-5 text-[#517CA8]">
@@ -880,26 +851,9 @@ export default function TutorProfile({ isOwn }) {
         <div className=" lg:pt-0 lg:pr-0 relative mt-[67px]">
           <div className="grid grid-cols-12 gap-x-[46px]">
             <div className="col-span-3 mt-53 lg:mt-0 flex flex-col  ">
-              {/* {
-                        !isOwn &&
-                        <div className={` mb-5 px-4 py-4 lg:bg-textGray-30 rounded-2xl`}
-                           style={{ backgroundColor: tutorLevelBg }}
-                        >
-                           <EditableText text={tutorLevel === undefined ? '' : `${tutorLevel} belt`}
-                              editable={editable}
-                              onClick={() => setToEdit({ ...toEdit, tutorLevel: { ...toEdit.tutorLevel, active: true } })}
-                              className={` justify-center font-bold text-lg capitalize `}
-                              textClassName={`flex-1 capitalize ${tutorLevelTextColor}`}
-                              imgClass='ml-auto' />
-                           <div className='flex mt-4 mb-6 justify-center'>
-                              <img src={tutorLevelIcon} />
-                           </div>
-                        </div>
-
-                     }  */}
               <div>
                 <div className="flex font-semibold items-center">
-                  <div className="text-xl text-[#26435F] text-base-20 mb-[7.3px] font-semibold">
+                  <div className="text-xl text-[#26435F] text-[20px] mb-[7.3px] font-semibold">
                     Expertise
                   </div>
                   {(isOwn == true || persona === "admin") && (
@@ -1009,7 +963,7 @@ export default function TutorProfile({ isOwn }) {
             </div>
             <div className="col-span-6">
               <div className="flex font-semibold items-center">
-                <div className="text-xl text-[#26435F] text-base-20 text-[#26435F] font-semibold mb-1">
+                <div className="text-xl text-[#26435F] text-[20px] text-[#26435F] font-semibold mb-1">
                   Tutor Highlight Video
                 </div>
 
@@ -1040,7 +994,7 @@ export default function TutorProfile({ isOwn }) {
                       <div className="absolute z-50 bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-fixed">
                         <div className="flex h-full mx-auto mt-8  max-w-[80%]  items-center justify-center">
                           <div className="text-[#517CA8]">
-                            <p className="mb-4 text-md font-semibold text-base-20">
+                            <p className="mb-4 text-md font-semibold text-[20px]">
                               Use this space to add a YouTube video highlighting
                               the tutor or your company.
                             </p>
@@ -1096,7 +1050,7 @@ export default function TutorProfile({ isOwn }) {
                   <></>
                 )}
               </div>
-              <div className="relative z-[100] flex justify-between text-xl text-[#26435F] font-semibold text-base-20">
+              <div className="relative z-[100] flex justify-between text-xl text-[#26435F] font-semibold text-[20px]">
                 <span>Reviews</span>
 
                 {(persona === "admin" || isOwn) && (
@@ -1215,7 +1169,7 @@ export default function TutorProfile({ isOwn }) {
 
             <div className="col-span-3">
               <div className="flex font-semibold items-center">
-                <div className="text-xl text-[#26435F] text-base-20 mb-[7.3px] font-semibold">
+                <div className="text-xl text-[#26435F] text-[20px] mb-[7.3px] font-semibold">
                   Interests
                 </div>
                 {(isOwn === true || persona === "admin") && (
@@ -1377,7 +1331,7 @@ export default function TutorProfile({ isOwn }) {
                 <div className="flex items-center mb-1">
                   {(isOwn === true || persona === "admin") && (
                     <>
-                      <div className=" text-[#26435F] text-xl font-semibold text-base-20">
+                      <div className=" text-[#26435F] text-xl font-semibold text-[20px]">
                         Address
                       </div>
                       <p
@@ -1406,7 +1360,7 @@ export default function TutorProfile({ isOwn }) {
                       body={
                         <div className="flex justify-between px-7 pt-[25px] pb-[24px]">
                           <div className="">
-                            <div className="text-[#24A3D9] font-semibold text-[15.002px] text-base-20">
+                            <div className="text-[#24A3D9] font-semibold text-[15.002px] text-[20px]">
                               Street Address
                             </div>
                             <div className="text-[#517CA8] font-normal text-[17.503px] text-base-17-5">
@@ -1415,7 +1369,7 @@ export default function TutorProfile({ isOwn }) {
                           </div>
 
                           <div className="">
-                            <div className="text-[#24A3D9] font-semibold text-[15.002px] text-base-20">
+                            <div className="text-[#24A3D9] font-semibold text-[15.002px] text-[20px]">
                               City
                             </div>
                             <div className="text-[#517CA8] font-normal text-[17.503px] text-base-17-5">
@@ -1424,7 +1378,7 @@ export default function TutorProfile({ isOwn }) {
                           </div>
 
                           <div className="">
-                            <div className="text-[#24A3D9] font-semibold text-[15.002px] text-base-20">
+                            <div className="text-[#24A3D9] font-semibold text-[15.002px] text-[20px]">
                               {" "}
                               State
                             </div>
@@ -1434,7 +1388,7 @@ export default function TutorProfile({ isOwn }) {
                           </div>
 
                           <div className="">
-                            <div className="text-[#24A3D9] font-semibold text-[15.002px] text-base-20">
+                            <div className="text-[#24A3D9] font-semibold text-[15.002px] text-[20px]">
                               Country
                             </div>
                             <div className="text-[#517CA8] font-normal text-[17.503px] text-base-17-5">
@@ -1443,7 +1397,7 @@ export default function TutorProfile({ isOwn }) {
                           </div>
 
                           <div className="">
-                            <div className="text-[#24A3D9] font-semibold text-[15.002px] text-base-20">
+                            <div className="text-[#24A3D9] font-semibold text-[15.002px] text-[20px]">
                               Zip
                             </div>
                             <div className="text-[#517CA8] font-normal text-[17.503px] text-base-17-5">
@@ -1461,7 +1415,7 @@ export default function TutorProfile({ isOwn }) {
               {persona === "admin" && false && (
                 <div className="w-[201.408px]">
                   <div className="flex items-center">
-                    <div className="text-xl text-[#26435F] font-semibold text-base-20">
+                    <div className="text-xl text-[#26435F] font-semibold text-[20px]">
                       Salary
                     </div>
                     <p
@@ -1494,7 +1448,7 @@ export default function TutorProfile({ isOwn }) {
               {isOwn === true || persona === "admin" ? (
                 <div className="w-[616.32px]">
                   <div className="flex items-center relative z-[99]">
-                    <div className="text-[#26435F] text-xl font-semibold text-base-20">
+                    <div className="text-[#26435F] text-xl font-semibold text-[20px]">
                       Payment Info
                     </div>
                     {persona === "admin" && (
@@ -1541,7 +1495,7 @@ export default function TutorProfile({ isOwn }) {
           {persona === "admin" && (
             <div className="flex justify-between mt-20 mb-[96px] min-h-[630px]">
               <div className="w-[700.8px]">
-                <div className="text-xl text-[#26435F] font-semibold mb-[-10px] text-base-20">
+                <div className="text-xl text-[#26435F] font-semibold mb-[-10px] text-[20px]">
                   Recent Feedback History
                 </div>
                 <div className="flex">
@@ -1571,7 +1525,7 @@ export default function TutorProfile({ isOwn }) {
               {persona === "admin" && (
                 <div className="w-[401.28px] ">
                   <div className="flex items-center">
-                    <div className="text-[#26435F] text-[20px] text-base-20 font-semibold">
+                    <div className="text-[#26435F] text-[20px] text-[20px] font-semibold">
                       Tutor Status
                     </div>
                     {(isOwn === true || persona === "admin") && (
@@ -1603,7 +1557,7 @@ export default function TutorProfile({ isOwn }) {
 
                   <div className="mt-[33.75px]">
                     <div className="flex justify-between mb-[-10px]">
-                      <div className=" text-[#26435F] text-xl font-semibold text-base-20">
+                      <div className=" text-[#26435F] text-xl font-semibold text-[20px]">
                         Service Rates
                       </div>
                       {persona === "admin" && (
@@ -1929,6 +1883,7 @@ export default function TutorProfile({ isOwn }) {
         {/* </div>
 
             </div> */}
+         </div>
       </div>
       <ParentEditables
         settings={settings}
