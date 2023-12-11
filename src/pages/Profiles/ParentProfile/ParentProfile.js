@@ -563,8 +563,8 @@ const [toEdit, setToEdit] = useState({
   //console.log({user,userDetail})
   return (
     <>
-      <div className={`w-[1600px] mx-auto pb-[70px]`}>
-        <p className="text-[#24A3D9] !my-[50px] text-base-20 relative z-[55]">
+      <div className={`w-[1600px] mx-auto pb-[70px] h-[100vh]`}>
+        <p className="text-[#24A3D9] !my-[50px] text-[20px] relative z-[55]">
           {persona === "admin" ?
             <span >
               <span  onClick={() => navigate('/')} className=" cursor-pointer">
