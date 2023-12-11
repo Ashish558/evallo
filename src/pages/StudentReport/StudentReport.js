@@ -12,6 +12,7 @@ import {
   accuracySeries,
   accuracyOptions,
 } from "./tempData";
+import momentTz from 'moment-timezone';
 import Table from "../../components/Table/Table";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import BarGraph from "../../components/BarGraph/BarGraph";
@@ -447,7 +448,7 @@ export default function StudentReport() {
   const [completeDate, completeTime, completeFormat] = testDetails?.completedOn
     ? testDetails?.completedOn?.split(" ")
     : ["", "", "", ""];
-  // console.log(completeDate,completeTime,completeFormat)
+  console.log('testDetails?.completedOn', new Date(testDetails?.completedOn))
 
   //change table data
   useEffect(() => {
@@ -978,6 +979,8 @@ export default function StudentReport() {
     getSortedConcepts();
   }, [selectedSubject, answerKey, answerKeySubjects]);
 
+  var userTimezone = momentTz.tz.guess();
+console.log('userTimezone', userTimezone);
   const [startSectionDate, startSectionTime, startSectionFormat] =
     selectedSubject?.startSectionTime
       ? getFormattedDateTime(selectedSubject?.startSectionTime)?.split(" ")
@@ -1038,7 +1041,7 @@ export default function StudentReport() {
                       {assignDate}{" "}
                       <span className="text-[#24A3D9] font-light opacity-100 text-[17.5px] ml-[11px]">
                         {assignTime} {assignFormat}{" "}
-                        {organization?.settings?.timeZone}
+                        {userTimezone ? userTimezone : ''}
                       </span>
                     </p>
                   </div>
@@ -1079,7 +1082,7 @@ export default function StudentReport() {
                       {" "}
                       {startDate}{" "}
                       <span className="text-[#24A3D9] font-light text-[17.5px] opacity-100 ml-[11px]">
-                        {startTime} {startFormat} {organization?.settings?.timeZone}
+                        {startTime} {startFormat} {userTimezone ? userTimezone : ''}
                       </span>
                     </p>
                   </div>
@@ -1097,7 +1100,7 @@ export default function StudentReport() {
                       {completeDate && (
                         <span className="text-[#24A3D9] font-light text-[17.5px] opacity-100 ml-[11px]">
                           {completeTime} {completeFormat}{" "}
-                          {organization?.settings?.timeZone}
+                          {userTimezone ? userTimezone : ''}
                         </span>
                       )}
                     </p>
