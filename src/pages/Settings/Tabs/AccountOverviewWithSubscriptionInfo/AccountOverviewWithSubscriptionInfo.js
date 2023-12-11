@@ -817,7 +817,7 @@ function AccountOverviewWithSubscriptionInfo() {
                 isViewTransactionsModalActive ? (
                     <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
                         <ViewTransactionsModal
-                            className={`relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 aspect-[1110/382] w-[57.8125%]`}
+                            className={`relative rounded-[15px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[382px] w-[1110px]`}
                             OnCrossIconClicked={OnViewTransactionsModalCrossIconClicked}
                         />
                     </div>
@@ -1275,7 +1275,7 @@ function AccountOverviewWithSubscriptionInfo() {
                             <div className="font-[500] text-[#26435F] text-[18.67px]" >Manage Payments</div>
                             <button 
                                 className="font-[500] text-[#24A3D9] text-[15px] underline" 
-                                // onClick={OnViewPastTransactionsClicked}
+                                onClick={OnViewPastTransactionsClicked}
                             >View Past Transactions</button>
                         </div>
                         
