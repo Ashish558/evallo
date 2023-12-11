@@ -20,7 +20,8 @@ import {
   updateStripeCustomerId, 
   updateSubscriptionsInfoFromAPI, 
   updateHasSubscriptionExpired, 
-  updateDefaultPaymentMethodId} from "../app/slices/subscription";
+  updateDefaultPaymentMethodId,
+  updateHasExtensionExpired} from "../app/slices/subscription";
 import { useLazyGetSubscriptionsInfoQuery } from "../app/services/orgSignup";
 
 
@@ -177,6 +178,7 @@ const AppRoutes = () => {
               const expiryDate = new Date(products[i].current_period_end * 1000);
               const isCancelled = products[i].canceled_at === null || products[i].canceled_at === undefined ? false : true;
 
+              dispatch(updateHasExtensionExpired(expiryDate < todayDate ? true : false));
               dispatch(updateActiveExtensionInfo({
                   planName: "Assignment",
                   planDisplayName: "Assignement",
@@ -212,6 +214,8 @@ const AppRoutes = () => {
               dispatch(updateHasSubscriptionExpired(true));
               continue;
             }
+
+            dispatch(updateHasSubscriptionExpired(false));
 
             dispatch(updateActiveSubscriptionInfo({
               planName: activeSub.product.name,
