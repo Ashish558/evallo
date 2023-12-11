@@ -681,7 +681,7 @@ function SubscriptionAndExtensionModal({
         }
         let chosenSubscriptionToBeSentThroughAPI = JSON.parse(subscriptionSessionStorageOutput);
 
-        if(couponIdForSubscription !== "" ) {
+        if(couponIdForSubscription?.constructor?.name === "String" && couponIdForSubscription.length > 0 ) {
             chosenSubscriptionToBeSentThroughAPI = {
                 ...chosenSubscriptionToBeSentThroughAPI,
                 coupon: couponIdForSubscription
@@ -1018,7 +1018,7 @@ function SubscriptionAndExtensionModal({
                                 updateSubscriptionMode ? handleChangePlan() : 
                                 renewProductMode ? handleRenewProduct() : handleSub() : onSaveAndNextClicked()
                             );
-                            if(OnCheckoutClicked.constructor && OnCheckoutClicked.constructor.name === "Function" && frames.review) {
+                            if(OnCheckoutClicked?.constructor?.name === "Function" && frames.review) {
                                 OnCheckoutClicked();
                             }
                         }

@@ -41,6 +41,7 @@ function ReviewProduct({
     const [isSubscriptionCouponProcessing, SetIsSubscriptionCouponProcessing] = useState(false);
     const [isSubscriptionCouponSuccessfullyApplied, SetIsSubscriptionCouponSuccessfullyApplied] = useState(false);
 
+    const [extensionPriceAfterDiscount, SetExtensionPriceAfterDiscount] = useState(0);
     const [couponForExtension, SetCouponForExtension] = useState("");
     const [isExtensionCouponProcessing, SetIsExtensionCouponProcessing] = useState(false);
     const [isExtensionCouponSuccessfullyApplied, SetIsExtensionCouponSuccessfullyApplied] = useState(false);
