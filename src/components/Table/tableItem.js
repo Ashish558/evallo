@@ -1313,14 +1313,14 @@ export default function TableItem({
       )}
       {dataFor === "allOrgs" && (
         <tr className="odd:bg-white  leading-8">
-          <td className="font-medium text-[17.5px] !pl-[60px]  min-w-14 py-4  text-left !max-w-[346px]">
+          <td className="font-medium text-[17.5px] !pl-[60px]  min-w-10 py-4  text-left !max-w-[346px]  overflow-hidden">
             <span
               className="inline-block cursor-pointer pl-4"
               onClick={() => navigate(`/orgadmin-profile/${item._id}`)}
             >
               {item.associatedOrg?.company
                 ? item.associatedOrg?.company?.toLowerCase()
-                : item.company?.toLowerCase()}
+                : item.company?.toLowerCase()} 
             </span>
           </td>
           <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left  !max-w-[286px]">

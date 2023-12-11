@@ -188,9 +188,9 @@ function SuperadminDashboard() {
 
         <div className="flex  justify-between mt-7 ">
           <section className="">
-            <div className="w-[587.5px] whitespace-nowrap ">
+            <div className="w-[570.34px] whitespace-nowrap pl-1">
               <p className={`${styles.subheading} `}> Organizations </p>
-              <div className={`flex mr-0 ${styles.orgCard} mt-1.5 justify-evenly items-center`}>
+              <div className={`flex  ${styles.orgCard} mt-1.5 justify-evenly items-center`}>
                 <div className={`  ${orgStyles.container}`}>
                   <p className={`${orgStyles.heading} `}>
                     {" "}
@@ -233,7 +233,7 @@ function SuperadminDashboard() {
                 </div>
               </div>
             </div>
-            <div className="mt-[40px] w-[585px]">
+            <div className="mt-[40px] w-[585.34px]">
               <p className="w-full font-semibold text-[#26435F] mb-[4px] text-[21.33px]">
                 {" "}
                 User Stats{" "}
@@ -299,7 +299,7 @@ function SuperadminDashboard() {
                       >
                         {currentUser?.no_of_new_users}
                       </p>
-                      <p className=" text-[#26435F]">New</p>
+                      <p className=" text-[#26435F]">New</p> 
                     </div>
                     <div className="w-1/5 flex flex-col items-center pt-[5px] pb-2">
                       <p
@@ -354,8 +354,8 @@ function SuperadminDashboard() {
               Latest Org Signup{" "}
             </p>
             <Table
-              tableClass="w-[1068px]"
-              className="!text-[18.6px] !font-normal"
+              tableClass="w-[1068px] overflow-x-auto"
+              className="!text-[18.6px] !font-normal "
               noArrow={true}
               data={orgSignUpData}
               tableHeaders={tableHeaders}
