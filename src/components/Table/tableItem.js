@@ -682,7 +682,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "assignedTests" && (
-        <tr className=" text-[17.5px] ">
+        <tr className="text-[17.5px] " style={{ borderRadius: '5px', background: '#FFF', boxShadow: '0px 0px 2.5px 0px rgba(0, 0, 0, 0.25)' ,paddingTop:'30px',paddingBottom:'30px' }}>
           <td className="px-1 font-medium  min-w-14  text-left flex items-center  pb-[14px] pt-4">
             <span className="inline-block cursor-pointer pl-[30px]">
               <div className="flex ">
