@@ -592,8 +592,9 @@ const Dashboard = () => {
 
               <RangeDate
                 optionClassName="!w-min"
-                inputContainerClassName="!w-min "
+                inputContainerClassName="!w-min underline"
                 handleRangeData={handleRevenue}
+                underline={true}
               />
             </div>
           </div>
@@ -777,6 +778,8 @@ const Dashboard = () => {
                   optionClassName="!w-min"
                   inputContainerClassName="!w-min "
                   handleRangeData={handleUserStats}
+                removeUnderline={true}
+
                 />
               </div>
             </div>
@@ -900,6 +903,8 @@ const Dashboard = () => {
               optionClassName="!w-min"
               inputContainerClassName="!w-min "
               handleRangeData={handlePopularServices}
+              removeUnderline={true}
+
             />
           </div>
         </div>

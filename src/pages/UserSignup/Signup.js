@@ -808,9 +808,9 @@ export default function UserSignup() {
                   <div className=" mt-[31.75px]">
                     <div className={`flex justify-start gap-[16.25px] items-center ${styles.textLight} `}>
                       <CCheckbox
-                        className={`border-[#507CA8] `}
+                        className={`border-[#507CA8] ${styles.confirmcheckBox}`}
                         customSize={`w-[22.5px] h-[22.5px] mt-[5px] !pl-0`}
-                        customTickIconSize={`w-[17.5px] h-[17.5px]`}
+                        customTickIconSize={`!w-[17.5px] !h-[17.5px] !after:h-[14px] !after:left-[5px]`}
                         checked={values.ageChecked}
                         onChange={handleCheckboxChangeAge}
                       />
@@ -824,7 +824,7 @@ export default function UserSignup() {
                   <div className="mt-[31.75px] mb-[50px]">
                     <div className={` flex justify-start gap-[16.25px] items-start ${styles.textLight}`}>
                       <CCheckbox
-                        className={`border-[#507CA8]`}
+                        className={`border-[#507CA8] ${styles.confirmcheckBox}`}
                         customSize={`w-[22.5px] h-[22.5px] mt-[5px] !pl-0`}
                         customTickIconSize={`w-[17.5px] h-[17.5px]`}
                         checked={values.terms}

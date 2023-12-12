@@ -108,11 +108,11 @@ export default function Table(props) {
       <div
         className={`  ${
           noScrollbar
-            ? ` lg:overflow-x-auto ${customScrollBarClass??'scrollbar-content custom-scroller-2'} scroll-m-1 ${styles.noOverflow}`
+            ? ` lg:overflow-x-auto ${customScrollBarClass??'scrollbar-content custom-scroller-2 '} scroll-m-1 ${styles.noOverflow} ${styles.noWidthScrollbar}`
             : `overflow-x-auto ${customScrollBarClass??'scrollbar-content custom-scroller-2'} scroll-m-1`
         }`}
       >
-        <table className={`bg-white customTable mb-3 text-center whitespace-nowrap ${widthFullTable===true?"w-full":""} ${tableClass??""}`}>
+        <table className={`bg-white customTable mb-[4px] text-center whitespace-nowrap ${widthFullTable===true?"w-full":""} ${tableClass??""}`}>
           <thead className={`pb-2 whitespace-nowrap bg-[#26435f] ${theadWidth??"w-[1601px]"}`}>
             <tr className={`whitespace-nowrap bg-[#26435f] text-white `}>
               {tableHeaders.map((item, idx) => {
@@ -140,6 +140,7 @@ export default function Table(props) {
               })}
             </tr>
           </thead>
+            {console.log(tableData)}
           <tbody className={`whitespace-nowrap ${styles.tBody} `} >
             {loading ? (
               <div

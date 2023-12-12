@@ -567,8 +567,8 @@ console.log('tutorPerformanceData', tutorPerformanceData);
               <span className="font-semibold">Dashboard</span>
             </p>
 
-            <div className="flex mt-[40px] justify-between items-center w-[1601px] mr-[-20px]">
-              <p className="font-bold  text-[#FFA28D] text-[20px]">
+            <div className="flex mt-[37px] justify-between items-center w-[1601px] mr-[-20px] h-[20px]">
+              <p className="font-bold  text-[#FFA28D] text-[20px] leading-none">
                 BUSINESS OVERVIEW{" "}
               </p>
 
@@ -752,8 +752,8 @@ console.log('tutorPerformanceData', tutorPerformanceData);
             </div>
           </div>
           <div className=" w-[1601px] text-[#FFA28D] mx-auto ">
-            <div className="flex justify-between items-center mt-[52px] h-min py-0 mb-3 ">
-              <p className="font-bold text-[20px] leading-6">USERS OVERVIEW </p>
+            <div className="flex justify-between items-center mt-[52px] py-0 mb-3 h-[20px] ">
+              <p className="font-bold text-[20px] leading-none">USERS OVERVIEW </p>
 
               <div className="flex font-semibold text-[#FFA28D] text-xs">
                 <RangeDate
@@ -864,7 +864,7 @@ console.log('tutorPerformanceData', tutorPerformanceData);
                 redirect,
               }}
               hidePagination={userData?.length===0?true:false}
-              belowBoxHeight={userData?.length===0?"h-[303px]":"h-[192px]"}
+              belowBoxHeight={userData?.length===0?"h-[303px] !mt-[-0px]":"h-[192px] !mt-[-4px]"}
               belowBoxText="Invite Parents or Students"
               belowBoxLink="users"
               belowBoxIcon={userLogo}
@@ -907,7 +907,7 @@ console.log('tutorPerformanceData', tutorPerformanceData);
               <p className="font-semibold text-[#26435F] text-[17.5px]">
                 Popular Services
               </p>
-              <div className="text-[17.5px] mt-0 pr-[32px]">
+              <div className="text-[17.5px] mt-0 pr-[32px] h-[435px]">
                 <Table
                 tableClass={"w-[1126.25px] table-auto !bg-transparent !mt-0"}
                   dataFor="popularServices"
@@ -925,7 +925,7 @@ console.log('tutorPerformanceData', tutorPerformanceData);
                   theadWidth={"w-[1126.25px]"}
                 />
               </div>
-              {popularServices?.length===0&&(<div className="absolute w-[1126px] h-[335px] top-[97px] rounded-[5.33px] bg-white">
+              {popularServices?.length===0&&(<div className="absolute mt-[10.14px] w-[1126px] h-[335px] top-[97px] rounded-[5.33px] bg-white">
                 <img src={noservices} alt=""className="absolute top-[13px] left-[50px]" />
                 <button className="absolute rounded-[5.333px] w-[189px] h-[40px] flex gap-[8px] py-[10px] px-[8px] top-[147px] left-[456px] bg-[#38C980] text-[16px] font-semibold leading-[20px] text-white">
                   <p>Add New Services</p>{plusSvg}
@@ -961,21 +961,21 @@ console.log('tutorPerformanceData', tutorPerformanceData);
                   widthFullTable={true}
                   theadWidth={"w-[411.25px]"}
                 />
-                {popularServices?.length===0&&(<div className="absolute w-[412px] h-[335px] top-[97px] rounded-[5.33px] bg-white">
-                <img src={nostarClients} alt=""className="absolute top-[13px] left-[50px]" />
+                {popularServices?.length===0&&(<div className="absolute w-[412px] h-[335px] top-[80px] rounded-[5.33px] bg-white">
+                <img src={nostarClients} alt=""className="absolute top-[13px] left-[0px]" />
                 <button className="absolute rounded-[5.333px] w-[199.5px] h-[40px] flex gap-[8px] py-[10px] px-[8px] top-[147px] left-[107px] bg-[#38C980] text-[16px] font-semibold leading-[20px] text-white">
                   <p>Add Referral Codes</p>{plusSvg}
                 </button>
               </div>)}
               </div>
-              <div className="h-[90%] absolute bottom-0 left-0 bg-[#CBD6E2] top-[55%] transform -translate-y-1/2 w-px"></div>
+              <div className="h-[407px] absolute top-[51%] left-0 bg-[#CBD6E2] transform -translate-y-1/2 w-px"></div>
             </div>
           </div>
         </section>
 
         <section className="mt-[37px] mx-auto w-[1601px]">
           <div className="grid grid-cols-2 gap-x-[105px]">
-            <div className="flex  justify-between gap-x-[37.5px]  mt-2 text-sm text-[#26435F]">
+            <div className="flex  justify-between gap-x-[27px]  mt-2 text-sm text-[#26435F]">
               <div>
                 <p className="font-semibold text-[17.5px] leading-[21px]">
                   Total # Of Referrals
@@ -1035,7 +1035,7 @@ console.log('tutorPerformanceData', tutorPerformanceData);
                 </div>
               </div>
               <div>
-                <p className="leading-3">Average IELTS Improvement</p>
+                <p className="leading-3">Other Score Improvements</p>
                 <div
                   className={`w-[217.5px] mt-2 h-[72.5px] ${styles.smallBox2} flex items-center justify-center font-medium`}
                 >
@@ -1076,8 +1076,8 @@ console.log('tutorPerformanceData', tutorPerformanceData);
             belowBoxText="Invite Tutors"
             belowBoxLink="users"
             belowBoxIcon={userLogo}
-            belowBoxHeight="h-[143px]"
-            // customScrollBarClass={"scrollbar-content1"}
+            belowBoxHeight="h-[143px] !mt-[0px]"
+            customScrollBarClass={`${styles.cutomSmallScrollbar}`}
           />
           {tutorPerformanceData?.length===0&&(<div className="absolute w-[1600px] h-[251px] rounded-[5.33px] bg-white top-[82px]">
                 <img src={notutorPerformance} alt=""className="absolute top-[5px] left-[416px]" />
