@@ -437,7 +437,7 @@ export default function TutorDashboard() {
                   ) : (
                     <div id="sschedule" className=" w-full z-[5000] h-full rounded-md bg-white flex justify-center items-center flex-col text-center">
                       <div className="w-[90%] mx-auto flex flex-col items-start">
-                        <button className="bg-[#FF7979] text-white rounded-md p-2 py-1 mb-3">
+                        <button className="bg-[#FF7979] text-white rounded-md cursor-text p-2 py-1 mb-3">
                           No Sessions Scheduled
                         </button>
                         <p className=" !whitespace-normal !text-left text-[#517CA8]">
@@ -503,11 +503,7 @@ export default function TutorDashboard() {
                               <div className=" font-medium text-[18px] text-white">
                                 {item?.status === "notStarted" ? (
                                   <button
-                                    onClick={() =>
-                                      navigate(
-                                        `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`
-                                      )
-                                    }
+                                    
                                     className="bg-[#D4D9DF] rounded-5 px-[14.5px] h-[31px]"
                                   >
                                     View Report
@@ -549,7 +545,7 @@ export default function TutorDashboard() {
                     ) : (
                       <div id="stest3" className=" w-full   h-full rounded-md bg-white flex justify-start flex-col text-center items-start">
                         <div className="w-[70%] mx-auto mt-32   flex flex-col items-center">
-                          <button className="bg-[#38C980] text-white rounded-md p-2 py-1 mb-3">
+                          <button className="bg-[#38C980] text-white rounded-md p-2 py-1 mb-3" onClick={()=>navigate('/assigned-tests')}>
                             Create New Assignment
                           </button>
                           <p className=" !whitespace-normal !text-center text-[#517CA8]">

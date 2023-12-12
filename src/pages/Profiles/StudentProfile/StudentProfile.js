@@ -904,10 +904,10 @@ const [toEdit, setToEdit] = useState({
                     }
                     body={
                       <div className="flex h-min !bg-transparent justify-center flex-col  ">
-                        <p>
+                        <p className="text-[11px]">
                           <span>
                             <img
-                              className="inline-block !w-4 !h-4 mr-2"
+                              className="inline-block !w-[18px] !h-[22.52px] mr-2"
                               src={emailIcon}
                               alt="email"
                             />
@@ -916,16 +916,16 @@ const [toEdit, setToEdit] = useState({
                           <span>
                             <img
                               onClick={() => handleCopyClick(user?.email)}
-                              className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
+                              className="inline-block ml-2 !w-[10.94px] !h-[13.13px] mr-2 cursor-pointer"
                               src={copy1}
                               alt="copy"
                             />
                           </span>
                         </p>
-                        <p>
+                        <p className="text-[11px]">
                           <span>
                             <img
-                              className="inline-block !w-4 !h-4 mr-2"
+                              className="inline-block w-[18px] h-[18px] pl-[2px] mr-2"
                               src={phoneIcon}
                               alt="phone"
                             />
@@ -941,7 +941,7 @@ const [toEdit, setToEdit] = useState({
           </div>
           <div className="bg-white   !rounded-b-5 shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex  h-[170px] design:!h-[170px] justify-between ">
 
-            <div className="ml-[223px] design:!ml-[248px] flex my-auto py-auto w-4/5 text-[12px] px-5  flex-1 h-full   overflow-y-auto custom-scroller pt-5  text-[#517CA8] text-base-17-5 ">
+            <div className="ml-[223px] design:!ml-[248px] flex my-auto py-auto w-4/5 text-[17.5px] px-5  flex-1 h-full   overflow-y-auto custom-scroller pt-5  text-[#517CA8] text-base-17-5 ">
               {userDetail?.about}
             </div>
             <div className="min-w-[250px] ml-6 design:!ml-0  my-0 relative">
@@ -957,12 +957,13 @@ const [toEdit, setToEdit] = useState({
                   className=" "
                   handleChange={handleProfilePhotoChange}
                 />
-                <div className="flex flex-col ml-5   text-[#24A3D9] ">
-                  <p
-                    onClick={() =>
-                      associatedParent?.length > 1 &&
-                      navigate(`/profile/parent/${associatedParent?._id}`)
-                    }
+                <div className="flex flex-col ml-5 text-[#24A3D9] ">
+                  <a
+                  href={`/profile/parent/${associatedParent?._id}`}
+                    // onClick={() =>
+                    //   associatedParent?._id > 0 &&
+                    //   navigate(`/profile/parent/${associatedParent?._id}`)
+                    // }
                     className=" cursor-pointer text-base-20 "
                   >
 
@@ -974,7 +975,7 @@ const [toEdit, setToEdit] = useState({
                       className="!ml-2 cursor-pointer !w-3 !h-3 inline-block"
                       alt="arrow"
                     />
-                  </p>
+                  </a>
 
                   {(persona !== "tutor" || (persona === 'tutor' && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <p className="font-medium ">
                     <span

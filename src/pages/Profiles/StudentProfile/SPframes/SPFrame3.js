@@ -172,7 +172,7 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
   return (
     <div className="flex flex-col gap-5 -mt-5 design:gap-10">
       {" "}
-      <h1 className="text-[#26435F] translate-y-8 text-sm font-semibold cursor-pointer  text-[20px] pb-4 flex items-center justify-start">
+      <h1 className="text-[#26435F] translate-y-8 text-sm font-semibold cursor-pointer  text-[20px] pb-1 flex items-center justify-start">
         Score progression
         <div className="inline-block my-auto ml-[18.75px] ">
           <svg
@@ -191,7 +191,7 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
       </h1>
       <div
         id={styles.chartContainer}
-        className="!rounded-md bg-white shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller py-5 pl-5"
+        className="!rounded-md bg-white shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller mt-4  pl-5"
       >
         {" "}
         <div className="flex-1 relative z-[6000] flex justify-end translate-y-4 mr-3">

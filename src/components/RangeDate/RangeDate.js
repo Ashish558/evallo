@@ -148,7 +148,7 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
   //     }
   //  );
     
-    const formattedDate = `${monthName}` + " " + `${year}` + `,` + `${month}`;
+    const formattedDate = `${monthName}` + " "  +  `${month}`+ `, ` +`${year}`;
     return formattedDate
    }
 

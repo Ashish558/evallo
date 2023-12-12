@@ -111,13 +111,13 @@ const SPFrame1 = ({
                   }
                   text="edit"
                   textClassName="text-sm text-[#517CA8] text-underline leading-[10px] "
-                  className="text-sm my-0 flex justify-end   float-right"
+                  className="text-sm my-0 flex justify-end pr-10  float-right"
                 />
               )}
             </p>
 
             <div
-              className="w-full relative custom-scroller !border-[1.25px_dashed_#517CA8] bg-white h-[168px]  flex flex-col rounded-md overflow-y-auto pt-[25px] pb-[10px]"
+              className="w-[337.5px] relative custom-scroller !border-[1.25px_dashed_#517CA8] bg-white h-[195px]   flex flex-col rounded-md overflow-y-auto pt-[25px] pb-[10px]"
               id={styles.borderDashed}
             >
               {userDetail?.whiteBoardLinks?.length > 0 ? (
@@ -175,7 +175,7 @@ const SPFrame1 = ({
           <div className="flex-1 ">
             <p className="mb-2.5 mt-[30px] text-[20px] text-[#26435F] leading-[12.5px] font-semibold flex justify-between items-end">
 
-              Associated Docs
+             <span className="pl-1"> Associated Docs</span>
             </p>
             <div
               id={styles.borderDashed}
@@ -276,7 +276,7 @@ const SPFrame1 = ({
         </div>
         <div className="flex-1 h-[300px]  design:h-[305px]">
           <p className="mb-1.5 text-[20px] text-[#26435F]  leading-[12.5px] font-semibold flex items-end justify-between">
-            Interests{" "}
+            <span className="pl-2">Interests{" "}</span>
             <EditableText
               editable={editable}
               onClick={() =>
@@ -385,7 +385,7 @@ const SPFrame1 = ({
 
         <div className="flex-1 h-[300px]  design:h-[305px]">
           <p className="mb-2.5 text-[20px] text-[#26435F] leading-[12.5px] font-semibold flex justify-between items-end">
-            Subjects{" "}
+           <span className="pl-2">Subjects{" "}</span>
             <EditableText
               editable={editable}
               onClick={() =>

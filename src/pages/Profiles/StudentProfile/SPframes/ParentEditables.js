@@ -727,6 +727,7 @@ export default function ParentEditables({
           title=""
           crossBtn={true}
           cancelBtnStyle={{ top: "18px" }}
+          crossBtn2={true}
           titleClassName="!hidden"
           underline={true}
           handleClose={handleClose}
