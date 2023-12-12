@@ -65,7 +65,7 @@ const Dashboard = () => {
     useGetFilteredActionLogMutation();
   const [filteredActionLog, setFilteredActionLog] = useState([]);
   const [userData, setUserData] = useState([]);
-  const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(true);
+  // const [isSubscriptionAndExtensionModalActive, SetIsSubscriptionAndExtensionModalActive] = useState(true);
   const [latestSignUp_flag,setlatestsignup_flag]=useState([1,1,1,1,1,1,1,1,1])
   const [popular_Service_flag,setpopular_Service_flag] = useState([1,1,1,1,1,1])
   const [star_client_flag,setstar_client_flag] = useState([1,1,1])
@@ -95,7 +95,7 @@ const Dashboard = () => {
     });
   }, []);
 
-  useEffect(() => {
+  /* useEffect(() => {
     getPersonalDetail()
     .then(data => {
       console.log("getPersonalDetail");
@@ -126,7 +126,7 @@ const Dashboard = () => {
       console.log("Error in getPersonalDetail");
       console.log(error);
     })
-  }, []);
+  }, []); */
 
   useEffect(() => {
     // return;
@@ -141,7 +141,7 @@ const Dashboard = () => {
     }); */
   }, []);
 
-  useEffect(() => {
+  /* useEffect(() => {
     fetch("https://testapi.evallo.org/api/v1/auth/login/success", {
       method: "GET",
       credentials: "include",
@@ -157,7 +157,7 @@ const Dashboard = () => {
     .catch(error => {
       console.log(error);
     })
-  }, []);
+  }, []); */
 
   useEffect(() => {
     fetch("https://testapi.evallo.org/api/user?role=tutor", {
@@ -571,25 +571,6 @@ const Dashboard = () => {
   const redirect = (item) => navigate(`/profile/${item.role}/${item._id}`);
   return (
     <div className={styles.container}>
-
-    {
-      isSubscriptionAndExtensionModalActive ? (
-        <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
-          <SubscriptionAndExtensionModal
-            className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-5/6 w-9/12"
-            OnCheckoutClicked={() => {
-              SetIsSubscriptionAndExtensionModalActive(false);
-            }}
-          />
-        </div>
-      ) : (<></>)
-    }
-
-      {/* <div className="fixed bg-[#00000080] top-0 left-0 right-0 bottom-0 z-[1000]" >
-        <SubscriptionAndExtensionModal
-          className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-5/6 w-9/12"
-        />
-      </div> */}
 
       <div className=" mt-[28px] bg-#2E2E2E">
         <div className="mt-[50px] flex justify-center">
