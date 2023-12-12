@@ -1886,6 +1886,7 @@ export default function TutorProfile({ isOwn }) {
          </div>
       </div>
       <ParentEditables
+        userphoto={user.photo}
         settings={settings}
         fetchDetails={fetchDetails}
         userId={isOwn ? id : params.id}
