@@ -645,6 +645,7 @@ export default function StudentProfile({ isOwn }) {
                           })}
                         </p>
                       </div>
+                     
                     </div>
                   );
                 })}
