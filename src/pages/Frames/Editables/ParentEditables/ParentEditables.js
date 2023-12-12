@@ -32,6 +32,7 @@ import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew
 // 637b9df1e9beff25e9c2aa83
 export default function ParentEditables({
   userId,
+  photolink,
   setToEdit,
   toEdit,
   userphoto,
@@ -318,7 +319,20 @@ export default function ParentEditables({
       api: "tutorDetail",
     },
   ];
+  function isImage(file) {
+    // Get the file extension
+    const fileName = file.name;
+    const fileExtension = fileName.slice((fileName.lastIndexOf(".") - 1 >>> 0) + 2);
 
+    // Check if the file extension indicates an image
+    const imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp"];
+    const isImageExtension = imageExtensions.includes(fileExtension.toLowerCase());
+
+    // Alternatively, you can check the MIME type
+    const isImageMIME = file.type.startsWith("image/");
+
+    return isImageExtension || isImageMIME;
+}
   const handleProfilePhotoChange = (file) => {
     // console.log(file)
     if(!isImage(file)){
@@ -2052,8 +2066,8 @@ useEffect(()=>{
                             isTutor={true}
                             customWidth={true}
                             src={
-                              userphoto
-                                ? `${awsLink}${userphoto}`
+                              photolink
+                                ? `${awsLink}${photolink}`
                                 : "/images/tutor.jpg"
                             }
                             handleChange={handleProfilePhotoChange}

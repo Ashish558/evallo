@@ -297,7 +297,7 @@ export default function ParentEditables({
     let url = "";
     const formData = new FormData();
     formData.append("photo", file);
-    if (persona === "admin") {
+    if (persona === "admin"||persona==='tutor') {
       url = `${BASE_URL}api/user/admin/addphoto/${userId} `;
     } else {
       url = `${BASE_URL}api/user/addphoto`;
@@ -888,7 +888,7 @@ export default function ParentEditables({
                               onChange={(e) => {
                                 const regex = /^[0-9 ]*$/;
                                 const isValid = regex.test(e.target.value);
-                                if (isValid && e.target.value?.length < 11)
+                                if (isValid && e.target.value?.length < 16)
                                   setCurrentToEdit({
                                     ...currentToEdit,
                                     phone: e.target.value,

@@ -45,6 +45,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
   //  //console.log({ driveLink, dropLink });
   return (
     <div>
+      {console.log('drodropLinkpbox,dropLink',dropLink)}
       <div className="bg-white mt-7 px-10 py-2 design:py-4  !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex gap-3 justify-between  text-[#24A3D9] h-[85px]">
         <div className="flex gap-3 text-sm items-center">
           <span>

@@ -614,7 +614,7 @@ export default function StudentTest({ fromProfile, testtype, setTotaltest, stude
   const params = useParams()
 
   useEffect(() => {
-    if (persona === "student" || persona == 'admin') {
+    if (persona === "student" || persona == 'admin'||persona==='tutor') {
       getTest(studentId).then((res) => {
         console.log("all-assigned-tests", res?.data?.data);
         setAwsLink(res?.data?.data?.baseLink);

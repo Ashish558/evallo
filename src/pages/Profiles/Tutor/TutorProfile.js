@@ -1898,6 +1898,7 @@ export default function TutorProfile({ isOwn }) {
         fetchDetails={fetchDetails}
         userId={isOwn ? id : params.id}
         toEdit={toEdit}
+        photolink={user.photo}
         setToEdit={setToEdit}
         persona={user.role}
         awsLink={awsLink}
