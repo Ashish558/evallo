@@ -341,3 +341,17 @@ th * {
 .removeDefaultScrollStyling::-webkit-scrollbar{
    display:  none;
 }
+
+
+
+/*  expertise and interests scoller */
+
+.profileInterestsAndExpertise::-webkit-scrollbar-thumb{
+   background: #7C98B6;
+   width: 5px;
+   height: 118px;
+}
+
+.profileInterestsAndExpertise::-webkit-scrollbar-track{
+  height: 200.77px;
+}

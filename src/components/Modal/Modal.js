@@ -33,7 +33,8 @@ export default function Modal({
   buttonParentClassName,
   cancelIconState,
   parentClass,
-  topClass
+  topClass,
+  crossIconDisplay
 }) {
 	const selectRef = useRef();
 	// console.log(selectRef)
