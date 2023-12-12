@@ -355,7 +355,7 @@ export default function ParentEditables({
   useEffect(() => {
     if (student.length > 0) {
       fetchStudents(student).then((res) => {
-        // //console.log('students', res.data.data.students);
+        console.log('students', res.data.data.students);
         let tempData = res.data.data.students.map((tutor) => {
           return {
             _id: tutor._id,
@@ -970,7 +970,7 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           awsLink={awsLink}
                         />
                       </div> */}
-
+                      {console.log('sadasd',students)}
                         <InputSearch
                           right={
                             <img
@@ -1023,6 +1023,7 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           inputClassName="bg-transparent text-base  "
                           parentClassName="!w-[20%]"
                           type="date"
+                          max={new Date().toISOString().split('T')[0]} 
                           value={currentToEdit.dob}
                           onChange={(e) =>
                             setCurrentToEdit({
@@ -1153,7 +1154,7 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           onChange={(e) =>
                             setCurrentToEdit({
                               ...currentToEdit,
-                              city: e.target.value,
+                              city: e,
                             })
                           }
                         />
@@ -1166,14 +1167,23 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           inputContainerClassName="text-base placeholder:text-[#667085] bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px]  h-[54px]"
                           inputClassName="bg-transparent placeholder:text-[#667085]"
                           parentClassName="!w-[20%]"
-                          type="text"
+                          type="number"
                           value={currentToEdit.pincode}
-                          onChange={(e) =>
-                            setCurrentToEdit({
-                              ...currentToEdit,
-                              pincode: e.target.value,
-                            })
-                          }
+                          onChange={(e) => {
+                            const enteredValue = e.target.value;
+                            if(enteredValue === ''){
+                              setCurrentToEdit({
+                                ...currentToEdit,
+                                pincode: '',
+                              });
+                            }
+                            if (/^[0-9\s]+$/.test(enteredValue)) {
+                              setCurrentToEdit({
+                                ...currentToEdit,
+                                pincode: enteredValue,
+                              });
+                            }
+                          }}
                         />
                       </div>
                       {persona === "admin" && (

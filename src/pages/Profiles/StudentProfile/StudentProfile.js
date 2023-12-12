@@ -904,10 +904,10 @@ const [toEdit, setToEdit] = useState({
                     }
                     body={
                       <div className="flex h-min !bg-transparent justify-center flex-col  ">
-                        <p>
+                        <p className="text-[11px]">
                           <span>
                             <img
-                              className="inline-block !w-4 !h-4 mr-2"
+                              className="inline-block !w-[18px] !h-[22.52px] mr-2"
                               src={emailIcon}
                               alt="email"
                             />
@@ -916,16 +916,16 @@ const [toEdit, setToEdit] = useState({
                           <span>
                             <img
                               onClick={() => handleCopyClick(user?.email)}
-                              className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
+                              className="inline-block ml-2 !w-[10.94px] !h-[13.13px] mr-2 cursor-pointer"
                               src={copy1}
                               alt="copy"
                             />
                           </span>
                         </p>
-                        <p>
+                        <p className="text-[11px]">
                           <span>
                             <img
-                              className="inline-block !w-4 !h-4 mr-2"
+                              className="inline-block w-[18px] h-[18px] pl-[2px] mr-2"
                               src={phoneIcon}
                               alt="phone"
                             />
@@ -941,7 +941,7 @@ const [toEdit, setToEdit] = useState({
           </div>
           <div className="bg-white   !rounded-b-5 shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex  h-[170px] design:!h-[170px] justify-between ">
 
-            <div className="ml-[223px] design:!ml-[248px] flex my-auto py-auto w-4/5 text-[12px] px-5  flex-1 h-full   overflow-y-auto custom-scroller pt-5  text-[#517CA8] text-base-17-5 ">
+            <div className="ml-[223px] design:!ml-[248px] flex my-auto py-auto w-4/5 text-[17.5px] px-5  flex-1 h-full   overflow-y-auto custom-scroller pt-5  text-[#517CA8] text-base-17-5 ">
               {userDetail?.about}
             </div>
             <div className="min-w-[250px] ml-6 design:!ml-0  my-0 relative">
@@ -979,7 +979,7 @@ const [toEdit, setToEdit] = useState({
 
                   {(persona !== "tutor" || (persona === 'tutor' && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <p className="font-medium ">
                     <span
-                      className="text-base-15 cursor-pointer   inline-block mr-1 text-[#7C98B6]"
+                      className="text-base-15 cursor-pointer flex  inline-block mr-1 text-[#7C98B6]"
 
                     // 
                     >
@@ -992,7 +992,7 @@ const [toEdit, setToEdit] = useState({
                           onClick={() => handleCopyClick(associatedParent && Object.keys(associatedParent).length > 1
                             ? `${associatedParent?.email}`
                             : `None`)}
-                          className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
+                          className="inline-block mb-[3px] ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                           src={copy2}
                           alt="copy"
                         />

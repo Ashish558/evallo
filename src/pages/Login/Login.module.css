@@ -28,7 +28,11 @@
     background-position: center;
    /* flex: 1 1 auto; */
   }
-
+.remembercheckBox span::after{
+height: 14px !important;
+width: 6px !important;
+left: 6px !important;
+}
 /* 
 .loginCarousel {
     height: 100%;

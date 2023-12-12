@@ -276,11 +276,11 @@ export default function Login({ setLoginFormActive }) {
                 <div className="flex justify-between items-center">
                   <div className="flex items-center justify-center ">
                     <CCheckbox
-                      customSize={`w-[16px] h-[16px]`}
+                      customSize={`w-[16px] h-[16px] after:left-[5px] after:w-[8px] after:h-[14px] ${styles.remembercheckBox}`}
                       checked={remember}
                       onChange={() => setRemember(!remember)}
                     />{" "}
-                    <span className="text-[16px] text-[#26435F]  font-medium">
+                    <span className="text-[16px] text-[#26435F]  font-medium ">
                       {" "}
                       Remember me{" "}
                     </span>

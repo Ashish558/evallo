@@ -1,3 +1,11 @@
-.text span span{ 
-  
-}
+input[type="date"] {
+    padding-right: 24px; /* Adjust the padding to accommodate the icon */
+    background-image: url('../../assets/calendar/calenderIcon.svg');
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 18px 18px; /* Adjust the size of the icon */
+    appearance: none;
+  }
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+  }

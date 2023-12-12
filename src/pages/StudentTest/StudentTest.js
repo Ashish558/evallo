@@ -630,7 +630,7 @@ export default function StudentTest({ fromProfile, testtype, setTotaltest, stude
             createdAt,
             updatedAt,
           } = test;
-          if (testId === null) return;
+          // if (testId === null) return;
           return {
             // assignedBy: assignedBy ? assignedBy.firstName + " " + assignedBy.lastName : "-",
 
@@ -701,9 +701,7 @@ export default function StudentTest({ fromProfile, testtype, setTotaltest, stude
       fetchAssignedTests(id).then((res) => {
         if (res.error)
           return console.log("assigned test parent resp", res.error);
-        console.log("assigned test parent resp", res.data);
         let tempAllTests = res?.data?.data?.test?.map((test) => {
-          console.log("parent", test)
           const {
             testId,
             studentId,
@@ -716,7 +714,7 @@ export default function StudentTest({ fromProfile, testtype, setTotaltest, stude
             updatedAt,
           } = test;
           
-          if (testId === null) return;
+          // if (testId === null) return;
           
           return {
             // assignedBy: assignedBy ? assignedBy.firstName + " " + assignedBy.lastName : "-",
@@ -826,7 +824,7 @@ export default function StudentTest({ fromProfile, testtype, setTotaltest, stude
               className={`${persona === "student" || true ? "flex justify-between items-center" : ""
                 }`}
             >
-              <p className="text-[#24A3D9]   text-[20px] font-normal">
+              <p className="text-[#24A3D9] pt-[32px]  text-[20px] font-normal">
                 <span className="cursor-pointer" onClick={() => navigate('/')}>
                   {organization?.company +
                     "  >  " +
