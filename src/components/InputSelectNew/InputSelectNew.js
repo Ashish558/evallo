@@ -27,7 +27,6 @@ export default function InputSelectNew({
   optionType,
   disabled,
   required,
-  placeHolderClass,
   IconDemography,
   optionListClassName,
   arrowWidth,
@@ -97,7 +96,7 @@ export default function InputSelectNew({
             </span>
           ) : (
 
-            <span className={`mr-10 ${customFontSize?customFontSize:'text-[17.5px]'} whitespace-nowrap ${false ? 'mr-0' : 'mr-10'} ${placeholderClass} `}>{value}</span>
+            <span className={` ${customFontSize?customFontSize:'text-[17.5px]'} whitespace-nowrap ${false ? 'mr-0' : 'mr-10'} ${placeholderClass} `}>{value}</span>
           )}
           {ICON2 && <img src={ICON2} className={`ml-4 inline-block ${iconClass} mt-[-5px] `} alt="icon" />}
 

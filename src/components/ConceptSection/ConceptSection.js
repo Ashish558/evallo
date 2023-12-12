@@ -279,7 +279,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
               placeholder={""}
               parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
               inputContainerClassName=" my-0 py-[7.5px] px-[35px] !pr-[7.5px]"
-              placeHolderClass="text-[#FFA28D] "
+              placeHolderClass="text-[#FFA28D] !mr-[7.5px] "
               labelClassname="text-sm"
               inputClassName="bg-transparent"
               optionContainerClassName="text-black"

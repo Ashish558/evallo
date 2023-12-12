@@ -1254,18 +1254,18 @@ export default function TableItem({
           <td className="text-left pl-[66.5px] w-[350px] max-w-[350px] overflow-hidden text-ellipsis" style={{paddingLeft: '25px'}}>
             {item.testName}
           </td>
-          <td className="w-[223px] text-left" style={{paddingLeft: '45px'}}>
+          <td className="w-[223px] text-left" style={{paddingLeft: '55px'}}>
             {item.testType.endsWith("®")
               ? item.testType
               : item.testType.includes("Other")
               ? item.testType
               : item.testType + "®"}
           </td>
-          <td className="w-[241px] text-left pl-[8.75px]">
+          <td className="w-[241px] text-left pl-[8.75px]" style={{paddingLeft: '20px'}}>
             {" "}
             {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}
           </td>
-          <td className="w-[235.5px] text-left pl-[16px]">
+          <td className="w-[235.5px] text-left pl-[16px]" style={{paddingLeft: '30px'}}>
             {getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}
           </td>
           <td className="w-[249px] text-center">

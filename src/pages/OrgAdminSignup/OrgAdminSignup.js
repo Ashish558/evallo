@@ -690,7 +690,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
 
                   <div className="w-full relative flex h-[50px] justify-center items-center" >
                     <button
-                      className="aspect-square bg-[#fff] flex items-center justify-center h-full relative rounded-[7px] hover:cursor-default shadow-md mr-[20px]"
+                      className="border-[rgba(0, 0, 0, 0.25)] border-solid border-[1px]  aspect-square bg-[#fff] flex items-center justify-center h-full relative rounded-[7px] hover:cursor-default  mr-[20px] "
                     >
                       <img 
                         className="block"
@@ -698,7 +698,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                     </button>
 
                     <button
-                      className="aspect-square bg-[#fff] flex items-center justify-center h-full relative rounded-[7px] hover:cursor-default shadow-md"
+                      className="border-[rgba(0, 0, 0, 0.25)] border-solid border-[1px] aspect-square bg-[#fff] flex items-center justify-center h-full relative rounded-[7px] hover:cursor-default "
                     >
                       <img 
                         className="block"
