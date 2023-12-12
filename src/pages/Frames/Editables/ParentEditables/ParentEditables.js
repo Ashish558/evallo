@@ -850,7 +850,7 @@ useEffect(()=>{
           key={key}
           classname={
             forCss2.includes(currentField.name)
-              ? "max-w-[1050px] md:pb-5 mx-auto overflow-visible pb-5"
+              ? "w-[1050px] md:pb-5 mx-auto overflow-visible pb-5"
               : forCss.includes(currentField.name)
               ? "max-w-[950px] md:pb-5 mx-auto overflow-visible pb-5"
               : currentField.name === "tutorServices"
@@ -869,6 +869,7 @@ useEffect(()=>{
           cancelBtn={false}
           crossBtn={true}
           underline={true}
+          crossIconDisplay={false}
           cancelBtnStyle={{ top: "1px" }}
           handleClose={handleClose}
           body={
@@ -888,7 +889,7 @@ useEffect(()=>{
                   Save
                 </button>
               </div>
-              <div className="border-b border-b-[1.33px] mt-[15px]  border-[#00000033] justify-center "></div>
+              <div className="border-b-[1.33px] border-opacity-20 mt-[15px]  border-[#00000033] justify-center "></div>
               <form
                 className="mt-5 mb-4"
                 id="editable-form"
@@ -1428,7 +1429,7 @@ useEffect(()=>{
                                     value={currentToEdit.address}
                                     onChange={e => setCurrentToEdit({ ...currentToEdit, address: e.target.value })} />
                               </div> */}
-                    <div className="max-w-[1107px] flex justify-between items-center">
+                    <div className="w-[1107px] flex justify-between items-center">
                       <div className="col-span-6">
                         <div>
                           <p className={styles.address}>Country</p>
@@ -1564,7 +1565,7 @@ useEffect(()=>{
                 )}
                 {currentField.name === "tagLine" && (
                   <div>
-                    <div className="flex items-center mb-5">
+                    <div className="flex items-center mb-5 ">
                       <InputField
                         labelClassname="hidden"
                         placeholder="Tagline"
@@ -2168,7 +2169,7 @@ useEffect(()=>{
                             </div>
                             <div className="col-span-7 ">
                               <div>
-                                <p className="text-[18.667px] text-[#26435F] font-medium cursor-default">
+                                <p className="text-[18.667px] text-[#26435F] font-medium cursor-default font-['Inter']">
                                   Phone
                                 </p>
                               </div>
@@ -2247,16 +2248,16 @@ useEffect(()=>{
                       </div>
                     </div>
 
-                    <div className="mt-8 grid grid-cols-12">
+                    <div className="grid grid-cols-12  mt-[23.06px]">
                       <div>
-                        <p className="text-[18.667px] text-[#26435F] font-medium cursor-default">
+                        <p className="text-[18.667px] text-[#26435F] font-medium cursor-default mb-[8px]">
                           Tagline
                         </p>
                       </div>
                       <div className="col-span-12 ">
                         <textarea
                           rows={2}
-                          className="bg-[#F6F6F6] pt-6  w-full p-2 rounded text-md focus:border-[#D0D5DD] border border-[#D0D5DD] text-[#667085]"
+                          className="bg-transparent pt-6 w-full p-2 rounded text-md focus:border-[#D0D5DD] border border-[#D0D5DD] text-[#667085]"
                           value={currentToEdit.tagLine}
                           placeholder="Add single line text here to highlight your tutor."
                           onChange={(e) => {
@@ -2271,7 +2272,7 @@ useEffect(()=>{
 
                     <div className="mt-8 grid grid-cols-12 ">
                       <div>
-                        <p className="text-[18.667px] font-medium text-[#26435F] cursor-default">
+                        <p className="text-[18.667px] font-medium text-[#26435F] cursor-default mb-[8px]">
                           About
                         </p>
                       </div>
@@ -2296,7 +2297,7 @@ useEffect(()=>{
                       <div className="grid grid-cols-12 gap-10">
                         <div className="col-span-6">
                           <div>
-                            <p className="text-[18.667px] text-[#26435F] font-medium cursor-default">
+                            <p className="text-[18.667px] text-[#26435F] font-medium cursor-default mb-[8px]">
                               Education
                             </p>
                           </div>
@@ -2316,7 +2317,7 @@ useEffect(()=>{
                         <div className="col-span-6">
                           <div>
                             <p
-                              className="text-[18.667px] cursor-default"
+                              className="text-[18.667px] cursor-default mb-[8px]"
                               style={{ color: "#26435F", fontWeight: "500" }}
                             >
                               Experience
@@ -2359,7 +2360,7 @@ useEffect(()=>{
                         </div>
                       ) : (
                         <div
-                          className={`px-3 mr-2 rounded rounded-md text-white py-1.5 border border-primary bg-primary text-primary cursor-pointer`}
+                          className={`px-3 mr-2 rounded-md text-white py-1.5 border border-primary bg-primary text-primary cursor-pointer`}
                           onClick={() =>
                             setCurrentToEdit({
                               ...currentToEdit,
@@ -2376,7 +2377,7 @@ useEffect(()=>{
                   </div>
                 )}
                 {currentField.name === "interest" && (
-                  <div className="flex flex-wrap">
+                  <div className="w-[1107px] flex flex-wrap">
                     {Interest.map((item) => {
                       return !currentToEdit?.interest?.includes(item) ? (
                         <div
@@ -2457,7 +2458,7 @@ useEffect(()=>{
                   </div>
                 )} */}
                 {currentField.name === "serviceSpecializations" && (
-                  <div className="flex flex-wrap">
+                  <div className="w-[1107px] flex flex-wrap">
                     {Expertise?.map((item) => {
                       return !currentToEdit?.serviceSpecializations?.includes(
                         item?.text

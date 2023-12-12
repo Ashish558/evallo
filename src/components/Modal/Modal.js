@@ -33,7 +33,8 @@ export default function Modal({
   buttonParentClassName,
   cancelIconState,
   parentClass,
-  topClass
+  topClass,
+  crossIconDisplay
 }) {
 	const selectRef = useRef();
 	// console.log(selectRef)
@@ -67,7 +68,7 @@ export default function Modal({
               className={`${modalSize ? modalSize : "w-full"} bg-white pt-[28px] pb-[33.34px] md:px-[33.33px] rounded-lg relative ${classname ? classname : ""
                 }`}
             >
-            <div onClick={handleClose} className={`absolute top-[20px] right-[50px] ${crossBtn2===true?'hidden':''} `}>X</div>
+            <div onClick={handleClose} className={`absolute top-[20px] right-[50px] bg-red-100 ${crossIconDisplay ? "block" : "hidden" }`}>X</div>
               <div className={wrapperClassName ? wrapperClassName : ""}>
                 <p
                   className={`font-semibold text-xl md:text-[21px] text-left text-[#26435F] 
