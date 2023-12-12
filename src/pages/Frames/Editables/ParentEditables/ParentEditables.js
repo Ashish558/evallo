@@ -36,6 +36,7 @@ export default function ParentEditables({
   toEdit,
   userphoto,
   fetchDetails,
+  getallreviews,
   settings,
   persona,
   awsLink,
@@ -411,6 +412,7 @@ export default function ParentEditables({
         }
       });
     });
+    getallreviews()
   };
 
   useEffect(() => {
