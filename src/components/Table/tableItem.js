@@ -1204,13 +1204,13 @@ export default function TableItem({
       {dataFor === "testsDetailQuestions" &&
         (testtype === "SAT" || testtype === "ACT") && (
           <tr>
-            <td className="w-[174px] pl-[27px] pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-center">
+            <td className="w-[174px] pl-[27px]  pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-center">
               <div>{item?.QuestionNumber}</div>
             </td>
-            <td className="w-[124px] pl-[0] text-[#517CA8] text-[17.5px] font-normal text-left">
+            <td className="w-[124px] pl-[5px] text-[#517CA8] text-[17.5px] font-normal text-left">
               <div>{item?.QuestionType}</div>
             </td>
-            <td className="w-[394px] pl-[0] pr-[42.5px] text-[#517CA8] text-[17.5px] font-normal text-left">
+            <td className="w-[394px] pl-[20px] pr-[42.5px] text-[#517CA8] text-[17.5px] font-normal text-left">
               <div className="max-w-[349px] overflow-hidden text-ellipsis">
                 {item?.CorrectAnswer}
               </div>
@@ -1251,7 +1251,7 @@ export default function TableItem({
         )}
       {dataFor === "allTests" && (
         <tr className="odd:bg-white font-medium text-[17.5px]  lead">
-          <td className="text-left pl-[66.5px] w-[350px] max-w-[350px] overflow-hidden text-ellipsis" style={{paddingLeft: '25px'}}>
+          <td className="text-left  pl-[66.5px] w-[350px] max-w-[350px] overflow-hidden text-ellipsis" style={{paddingLeft: '25px'}}>
             {item.testName}
           </td>
           <td className="w-[223px] text-left" style={{paddingLeft: '55px'}}>
