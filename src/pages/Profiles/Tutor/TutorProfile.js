@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ProfileCard from "../../../components/ProfileCard/ProfileCard";
 import styles from "./style.module.css";
+import "../../responsive.css";
 // import EditableText from "../../../components/EditableText/EditableText";
 // import dots from "../../../assets/icons/four-dot.svg";
 // import ProfileImg from "../../../assets/images/profile.png";
@@ -659,8 +660,8 @@ export default function TutorProfile({ isOwn }) {
   return (
     <>
       <div className="w-[1920px] flex justify-center items-center">
-         <div className="w-[1600px] mx-auto">
-        <p className="text-[#24A3D9] text-[20px] mt-[50px] mb-[31.6px]">
+         <div className="w-[1600px] flex flex-col justify-center items-center">
+        <p className="text-[#24A3D9] text-[20px] mt-[50px] mb-[31.6px] w-full flex justify-start">
           {persona === "admin" ? (
             <span>
               <span className="!cursor-pointer" onClick={() => navigate("/")}>
@@ -690,12 +691,12 @@ export default function TutorProfile({ isOwn }) {
             </span>
           )}
         </p>
-        <div className="flex justify-between ">
+        <div className="w-full flex justify-between items-start">
           <ProfileCard
             hideShadow
             titleClassName="text-left"
             bgClassName="bg-profilecard"
-            className=" w-[1600px] h-[297.54px]"
+            className=" w-[1313px] h-[297.54px]"
             body={
               <>
                 <div className="w-[1313.95px] rounded-md shadow-[0px_0px_2px_0px_#00000040] h-[297.547px] bg-white">
@@ -821,7 +822,7 @@ export default function TutorProfile({ isOwn }) {
               </>
             }
           />
-          <div className="ml-[26.26px] flex-grow-1 bg-transparent">
+          <div className="ml-[26.26px] flex-grow-1 bg-transparent ">
             <div className="flex items-start">
               <img className="mt-[7px]" src={experience} alt="experience"></img>
               <div className="ml-[22.5px]">
@@ -848,11 +849,11 @@ export default function TutorProfile({ isOwn }) {
           </div>
         </div>
 
-        <div className=" lg:pt-0 lg:pr-0 relative mt-[67px]">
-          <div className="grid grid-cols-12 gap-x-[46px]">
-            <div className="col-span-3 mt-53 lg:mt-0 flex flex-col  ">
+        <div className="w-[1600px] relative mt-[65.7px]">
+          <div className="w-full grid grid-cols-12 gap-x-[46px]">
+            <div className="col-span-3 flex flex-col  ">
               <div>
-                <div className="flex font-semibold items-center">
+                <div className="flex font-semibold items-center pr-[17.5px]">
                   <div className="text-xl text-[#26435F] text-[20px] mb-[7.3px] font-semibold">
                     Expertise
                   </div>
@@ -878,7 +879,7 @@ export default function TutorProfile({ isOwn }) {
                   hideShadow={true}
                   bgClassName="bg-profilecard"
                   body={
-                    <div className=" h-[660px]  custom-scroller scroll-mx- !bg-[#F5F8FA]">
+                    <div className=" h-[660px] profileInterestsAndExpertise !bg-[#F5F8FA] pr-[17.5px]">
                       {/* {settings &&
                         settings.Expertise?.length > 0 &&
                         userDetail.serviceSpecializations &&
@@ -963,7 +964,7 @@ export default function TutorProfile({ isOwn }) {
             </div>
             <div className="col-span-6">
               <div className="flex font-semibold items-center">
-                <div className="text-xl text-[#26435F] text-[20px] text-[#26435F] font-semibold mb-1">
+                <div className="text-xl text-[20px] text-[#26435F] font-semibold mb-[11px]">
                   Tutor Highlight Video
                 </div>
 
@@ -1168,7 +1169,7 @@ export default function TutorProfile({ isOwn }) {
             </div>
 
             <div className="col-span-3">
-              <div className="flex font-semibold items-center">
+              <div className="flex font-semibold items-center pr-[17.5px]">
                 <div className="text-xl text-[#26435F] text-[20px] mb-[7.3px] font-semibold">
                   Interests
                 </div>
@@ -1235,7 +1236,7 @@ export default function TutorProfile({ isOwn }) {
                   //    </div> */}
 
                   // </div>
-                  <div className="w-full relative  h-[660px] p-1 flex flex-col gap-[7.5px] !bg-[#F5F8FA]  rounded-md items-center overflow-y-auto custom-scroller">
+                  <div className="w-full relative  h-[660px] p-1 flex flex-col gap-[7.5px] !bg-[#F5F8FA]  rounded-md items-center overflow-y-auto profileInterestsAndExpertise pr-[17.5px]">
                     {/* {settings ? (
                              settings.interest.length > 0 &&
                              userDetail.interest.map((id, idx) => {
@@ -1282,7 +1283,7 @@ export default function TutorProfile({ isOwn }) {
                           it[0] !== "6" && (
                             <div
                               key={idx}
-                              className="bg-white px-2 py-[16px] h-min  text-[#517CA8] text-base-17-5 !rounded-5 shadow-[0px_0px_2.500001907348633px_0px_#00000040]  w-full"
+                              className="w-[350px] bg-white px-2 py-[16px] h-min  text-[#517CA8] text-base-17-5 !rounded-5 shadow-[0px_0px_2.500001907348633px_0px_#00000040]  w-full"
                             >
                               {it}
                             </div>
