@@ -292,8 +292,9 @@ const SPFrame2 = ({
                     <img
                       onClick={() => reduceArr(idx, "actScores", true)}
                       src={cancelIcon}
-                      className="absolute right-3 design:!w-5 design:!h-5 inline-block float-right !w-3 !h-3"
+                      className="absolute right-3 w-[18px] h-[18px] inline-block float-right "
                       alt="cancelIcon"
+                      
                     />
                   </div>
                 );
@@ -330,7 +331,7 @@ const SPFrame2 = ({
             )}
           </p>
 
-          <div className="w-full bg-white relative h-full p-1 flex flex-col gap-1 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] rounded-md its-center overflow-y-auto custom-scroller">
+          <div className="w-[341.16px] bg-white relative h-[216.25px]  p-1 flex flex-col gap-1 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] rounded-md its-center overflow-y-auto custom-scroller">
             {userDetail?.baseLineScore ? (
               <>
                 <div className="beforeDot  p-2 h-[45.75px] flex  w-full">
@@ -365,7 +366,7 @@ const SPFrame2 = ({
                   </div>
                   <img
                     src={cancelIcon}
-                    className="absolute right-3 design:!w-5 design:!h-5 inline-block float-right !w-3 !h-3"
+                    className="absolute right-3 w-[18px] h-[18px] inline-block float-right "
                     alt="cancelIcon"
                   />
                 </div>
@@ -409,7 +410,7 @@ const SPFrame2 = ({
                   </div>
                   <img
                     src={cancelIcon}
-                    className="absolute right-3 design:!w-5 design:!h-5 inline-block float-right !w-3 !h-3"
+                    className="absolute right-3 w-[18px] h-[18px] inline-block float-right "
                     alt="cancelIcon"
                   />
                 </div>
