@@ -150,17 +150,16 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
     
   const formattedDate =
   dateType === "start"
-    ? `${month} ${monthName} `
-    : `${monthName} ${month}, ${year}`;
+    ? `${year} ${monthName} `
+    : `${monthName} ${year}, ${month}`;
     return formattedDate
-   }
-
+  }
   const formattedStartDate =formatDate(`${startMonth}-${startDay}-${endYear}`,"start");
   endFull=formatDate(endFull)
   const formattedDateRange = `${formattedStartDate}  -  ${endFull}`;
+  console.log(endFull)
   // console.log(formattedDateRange);
 
-console.log(underline);
   return (
     <div className={`flex text-[15px] ${className}`}>
       <p className="font-semibold text-[#FFA28D]"> </p>
