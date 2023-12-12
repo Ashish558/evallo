@@ -1153,7 +1153,7 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           onChange={(e) =>
                             setCurrentToEdit({
                               ...currentToEdit,
-                              city: e.target.value,
+                              city: e,
                             })
                           }
                         />
@@ -1166,14 +1166,23 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           inputContainerClassName="text-base placeholder:text-[#667085] bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px]  h-[54px]"
                           inputClassName="bg-transparent placeholder:text-[#667085]"
                           parentClassName="!w-[20%]"
-                          type="text"
+                          type="number"
                           value={currentToEdit.pincode}
-                          onChange={(e) =>
-                            setCurrentToEdit({
-                              ...currentToEdit,
-                              pincode: e.target.value,
-                            })
-                          }
+                          onChange={(e) => {
+                            const enteredValue = e.target.value;
+                            if(enteredValue === ''){
+                              setCurrentToEdit({
+                                ...currentToEdit,
+                                pincode: '',
+                              });
+                            }
+                            if (/^[0-9\s]+$/.test(enteredValue)) {
+                              setCurrentToEdit({
+                                ...currentToEdit,
+                                pincode: enteredValue,
+                              });
+                            }
+                          }}
                         />
                       </div>
                       {persona === "admin" && (
