@@ -22,7 +22,7 @@ export function TableHeaderNew({
   return dataFor === "assignedTests" ? (<th className={`pt-[26.25px] pb-[24.25px] text-white text-[17.5px] leading-3 font-medium ${header.text === "Due On" || header.text === "Completion" || header.text === "Score" ? "text-center" : " "} ${header.text==="Student Name"?'pl-[40px]':''} ${header.text==="Assignment Name"?'text-left pl-8':''}`}>
     <div className={``}>{header.text}</div>
   </th>):
-  dataFor==="allTests"?(<th className={`pt-[26.25px] pb-[24.25px] text-white text-[17.5px] leading-[25px] font-medium ${header.text==="Assignment Name"?"text-left pl-[90px]":header.text==="Total Assignments"?"text-center":" text-left"}`}>
+  dataFor==="allTests"?(<th className={`pt-[26.25px] pb-[24.25px] text-white text-[17.5px] leading-[25px] font-medium ${header.text==="Assignment Name"?"text-left pl-[30px]":header.text==="Total Assignments"?"text-center":" text-left"}`}>
   <div onClick={() => header.onCick && header.onCick()} className={`flex items-center gap-0 ${header.text==="Total Assignments"&&"justify-center"}`}>
   <p className={`${header.text==="Type"? 'pl-11':''} ${header.text==="Student Name"?'pl-[100px]':''} `}>{header.text}</p>
   {
@@ -57,7 +57,7 @@ ${header.text==="Actively Using"&&"w-[168.5px] pr-[11.5px] text-left"} flex gap-
       <div
         className={`flex  
         ${header.text === "Student Name" ? "ml-[40px] text-left " : ""} 
-        ${header.text === "Assignment Name" ? "ml-[12px]" : ""} 
+        ${header.text === "Assignment Name" ? "ml-[12px]" : "pl-[20px]"} 
         ${
           header.text === "Email" ||
           header.text === "Phone" ||
