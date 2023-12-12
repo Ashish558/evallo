@@ -640,7 +640,7 @@ const [loading2,setLoading2]=useState(false)
                className={`${persona === "superAdmin" ? "translate-x-[-44.16px]" : ""}`}
             >
                <Link to="/" className="cursor-default">
-                  <div className="flex gap-x-[6px] items-center w-[135px] h-[29.5px]">
+                  <div className="flex gap-x-[6px] items-center w-[135px] h-[29.5px] ">
                   <img className="inline-block w-[25px] h-[25px]" src={evallo_logo} alt="evallo_logo" />
                   <p  className={`text-[43px] text-white font-bold pt-[3.2px] ${styles.customFont}`}>Evallo</p>
                   </div>
