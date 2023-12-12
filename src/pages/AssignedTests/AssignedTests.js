@@ -1322,7 +1322,20 @@ export default function AssignedTests() {
     setStudentNameOptions(studentNames);
   }, [allAssignedTests]);
   const handleStatus = (val) => {
-    setFilterData({ ...filterData, status: val });
+    if(filterData.status === val){
+      setFilterData({ ...filterData, status: '' });
+
+    }else{
+      setFilterData({ ...filterData, status: val });
+    }
+  };
+
+  const handleTutorChange = (val) => {
+    if(filterData.assignedBy === val){
+      setFilterData({ ...filterData, assignedBy: '' });
+    }else{
+      setFilterData({ ...filterData, assignedBy: val });
+    }
   };
   const [isChecked, setIsChecked] = useState(false);
 
@@ -1580,9 +1593,7 @@ export default function AssignedTests() {
                 ) : (
                   <InputSelect
                     value={filterData.assignedBy}
-                    onChange={(val) =>
-                      setFilterData({ ...filterData, assignedBy: val })
-                    }
+                    onChange={(val) => handleTutorChange(val)}
                     optionListClassName="text-[17.5px] text-[#667085]"
                     parentClassName="w-[230px] text-[17.5px] "
                     inputClassName="text-[17.5px] py-3"
