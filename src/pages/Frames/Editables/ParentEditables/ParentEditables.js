@@ -810,7 +810,7 @@ useEffect(()=>{
           handleClose={handleClose}
           body={
             <>
-              <div className="flex items-center">
+              <div className="flex items-center bg-red-100">
                 <p className="text-[#26435F] py-auto my-auto  font-semibold text-[18.33px]">
                   {currentField.title
                     ? currentField.title
@@ -825,7 +825,7 @@ useEffect(()=>{
                   Save
                 </button>
               </div>
-              <div className="border-b border-b-[1.33px] mt-[15px]  border-[#00000033] justify-center "></div>
+              <div className="border-b-[1.33px] border-opacity-20 mt-[15px]  border-[#00000033] justify-center "></div>
               <form
                 className="mt-5 mb-4"
                 id="editable-form"
@@ -1365,7 +1365,7 @@ useEffect(()=>{
                                     value={currentToEdit.address}
                                     onChange={e => setCurrentToEdit({ ...currentToEdit, address: e.target.value })} />
                               </div> */}
-                    <div className="max-w-[1107px] flex justify-between items-center">
+                    <div className="w-[1107px] flex justify-between items-center">
                       <div className="col-span-6">
                         <div>
                           <p className={styles.address}>Country</p>
@@ -1501,7 +1501,7 @@ useEffect(()=>{
                 )}
                 {currentField.name === "tagLine" && (
                   <div>
-                    <div className="flex items-center mb-5">
+                    <div className="flex items-center mb-5 bg-red-100">
                       <InputField
                         labelClassname="hidden"
                         placeholder="Tagline"
@@ -2184,7 +2184,7 @@ useEffect(()=>{
                       </div>
                     </div>
 
-                    <div className="mt-8 grid grid-cols-12">
+                    <div className="grid grid-cols-12 bg-red-100 mt-[23.06px]">
                       <div>
                         <p className="text-[18.667px] text-[#26435F] font-medium cursor-default">
                           Tagline
@@ -2193,7 +2193,7 @@ useEffect(()=>{
                       <div className="col-span-12 ">
                         <textarea
                           rows={2}
-                          className="bg-[#F6F6F6] pt-6  w-full p-2 rounded text-md focus:border-[#D0D5DD] border border-[#D0D5DD] text-[#667085]"
+                          className="bg-transparent pt-6 w-full p-2 rounded text-md focus:border-[#D0D5DD] border border-[#D0D5DD] text-[#667085]"
                           value={currentToEdit.tagLine}
                           placeholder="Add single line text here to highlight your tutor."
                           onChange={(e) => {
