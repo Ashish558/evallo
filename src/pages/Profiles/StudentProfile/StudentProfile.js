@@ -979,7 +979,7 @@ const [toEdit, setToEdit] = useState({
 
                   {(persona !== "tutor" || (persona === 'tutor' && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <p className="font-medium ">
                     <span
-                      className="text-base-15 cursor-pointer   inline-block mr-1 text-[#7C98B6]"
+                      className="text-base-15 cursor-pointer flex  inline-block mr-1 text-[#7C98B6]"
 
                     // 
                     >
@@ -992,7 +992,7 @@ const [toEdit, setToEdit] = useState({
                           onClick={() => handleCopyClick(associatedParent && Object.keys(associatedParent).length > 1
                             ? `${associatedParent?.email}`
                             : `None`)}
-                          className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
+                          className="inline-block mb-[3px] ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                           src={copy2}
                           alt="copy"
                         />

@@ -826,7 +826,7 @@ export default function StudentTest({ fromProfile, testtype, setTotaltest, stude
               className={`${persona === "student" || true ? "flex justify-between items-center" : ""
                 }`}
             >
-              <p className="text-[#24A3D9]   text-[20px] font-normal">
+              <p className="text-[#24A3D9] pt-[32px]  text-[20px] font-normal">
                 <span className="cursor-pointer" onClick={() => navigate('/')}>
                   {organization?.company +
                     "  >  " +
