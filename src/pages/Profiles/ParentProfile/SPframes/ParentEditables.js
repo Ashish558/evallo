@@ -355,7 +355,7 @@ export default function ParentEditables({
   useEffect(() => {
     if (student.length > 0) {
       fetchStudents(student).then((res) => {
-        // //console.log('students', res.data.data.students);
+        console.log('students', res.data.data.students);
         let tempData = res.data.data.students.map((tutor) => {
           return {
             _id: tutor._id,
@@ -970,7 +970,7 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           awsLink={awsLink}
                         />
                       </div> */}
-
+                      {console.log('sadasd',students)}
                         <InputSearch
                           right={
                             <img
@@ -1023,6 +1023,7 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           inputClassName="bg-transparent text-base  "
                           parentClassName="!w-[20%]"
                           type="date"
+                          max={new Date().toISOString().split('T')[0]} 
                           value={currentToEdit.dob}
                           onChange={(e) =>
                             setCurrentToEdit({

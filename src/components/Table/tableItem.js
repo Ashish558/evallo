@@ -925,7 +925,7 @@ export default function TableItem({
                   <>
                     <div className="flex flex-row items-center ">
                       <div className="min-w-[20px] ">
-                        {!item?.testtype.includes("DSAT") &&
+                        {!item?.testtype?.includes("DSAT") &&
                         persona == "student" &&
                         dataFor == "assignedTestsStudents" ? (
                           <img

@@ -464,7 +464,7 @@ export default function TutorDashboard() {
                   <div className="w-full overflow-auto bg-white rounded-20 removeDefaultScrollStyling">
                     {allAssignedTests?.length > 0? (
                       allAssignedTests?.slice(-10).map((item) => {
-                      
+
                         return (
                           <div className="" key={item._id}>
                             <div className=" flex justify-between items-center">
@@ -486,7 +486,7 @@ export default function TutorDashboard() {
                                   </p>
                                 </div>
                               </div>
-                              <div>
+                              <div>{item.pdf!==undefined?
                                 <img
                                   className="cursor-pointer"
                                   onClick={() =>
@@ -499,6 +499,7 @@ export default function TutorDashboard() {
                                   src={download}
                                   alt=""
                                 />
+                                :null}
                               </div>
                               <div className=" font-medium text-[18px] text-white">
                                 {item?.status === "notStarted" ? (
