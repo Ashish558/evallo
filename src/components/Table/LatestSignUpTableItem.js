@@ -42,31 +42,20 @@ const LatestSignUpTableItem = ({ item, onClick }) => {
   },[item]);
 
    //  format monthName date, year
-   const formatDate= (value)=>{
-    return value
-    let [ year, month, day] = value.split("-");
-     if(dateFormat==="dd/mm/yy"){
-      [ day, month,  year] = value.split("-");
-     }
-    else  if(dateFormat==="mm/dd/yy"){
-      [ month, day, year] = value.split("-");
-     }
-else [ year, month, day] = value.split("-");
-    const monthName = getMonthName(month-1);
-    console.log(
-     { 
-       value : value,
-       day : day,
-       month : month,
-       year : year,
-       monthName :monthName
-      }
-   );
-    
-    let formattedDate = `${monthName}` + " " + `${year}` + `,` + `${day}`;
-   
-    return formattedDate
-   }
+   function formatDate(inputDate) {
+    const months = [
+      "January", "February", "March", "April",
+      "May", "June", "July", "August",
+      "September", "October", "November", "December"
+    ];
+  
+    const dateObject = new Date(inputDate);
+    const month = months[dateObject.getUTCMonth()];
+    const year = dateObject.getUTCFullYear();
+  
+    const formattedDate = `${month} ${dateObject.getUTCDate()}, ${year}`;
+    return formattedDate;
+  }
   return (
     <tr className=" leading-8  border-separate border-spacing-2.5">
       <td className="  text-[17.5px] !px-[16px]  min-w-14 !py-4 text-left">
@@ -133,7 +122,7 @@ else [ year, month, day] = value.split("-");
       <td className=" text-[17.5px] !px-[16px]  min-w-14 !py-4">
         <div>
           {/* {new Date(item.lastSignUp).toDateString()} */}
-          {formatDate(getFormattedDate(item.lastSignUp, dateFormat))}
+          {formatDate(item.lastSignUp)}
         </div>
       </td>
     </tr>

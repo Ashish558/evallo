@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { getFormattedDate, getMonthName } from "../../utils/utils";
 import DateIcon from "../../assets/icons/solar_calendar-date-outline.svg"
 
-const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, className, manualHide, inputContainerClassName, iconRightClass,icon }) => {
+const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, className, manualHide, inputContainerClassName, iconRightClass,icon,underline }) => {
 
   const [dateFormat, setDateFormat] = useState("dd/mm/yy")
   const { organization: organization2 } = useSelector((state) => state.organization)
@@ -134,7 +134,7 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
 
   const [startMonth, startDay] = startFull.split("-");
 
-  const formatDate= (value)=>{
+  const formatDate= (value,dateType)=>{
     
     const [ month, day, year] = value.split("-");
     const monthName = getMonthName(day-1);
@@ -148,23 +148,25 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
   //     }
   //  );
     
-    const formattedDate = `${monthName}` + " "  +  `${month}`+ `, ` +`${year}`;
+  const formattedDate =
+  dateType === "start"
+    ? `${month} ${monthName} `
+    : `${monthName} ${month}, ${year}`;
     return formattedDate
    }
 
-  const formattedStartDate =formatDate(`${startMonth}-${startDay}-${endYear}`);
+  const formattedStartDate =formatDate(`${startMonth}-${startDay}-${endYear}`,"start");
   endFull=formatDate(endFull)
   const formattedDateRange = `${formattedStartDate}  -  ${endFull}`;
   // console.log(formattedDateRange);
 
-
+console.log(underline);
   return (
     <div className={`flex text-[15px] ${className}`}>
       <p className="font-semibold text-[#FFA28D]"> </p>
-
       <InputSelect
         placeholder="Select"
-        valueClassName={`${removeUnderline ? "" : "font-semibold text-[15px]"} ${allorg?"!text-gray-500 ":"text-[#FFA28D]"} cursor-pointer items-center`}
+        valueClassName={`${removeUnderline ? "" : "font-semibold text-[15px]"} ${allorg?"!text-gray-500 ":"text-[#FFA28D]"} cursor-pointer items-center` }
         parentClassName="border-none text-xs text-[#26435F] w-fit relative z-[500] text-[17.5px] items-center"
         labelClassname="text-sm text-[17.5px]"
         inputContainerClassName={`border-none text-[17.5px] whitespace-nowrap font-normal ${allorg?"":"text-[#FFA28D]"} text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]} `}
@@ -173,12 +175,12 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
         optionListClassName="text-[#517CA8] underline underline-offset-2"
         optionClassName={`${optionClassName} relative text-[17.5px]`}
         optionContainerClassName={`${allorg?"translate-x-[30px]":""} !rounded-5  border-[#FFA28D] border-[1px] py-2 scrollbar-content`}
-        optionPadding="!py-1"
+        optionPadding="!py-1 mb-[17px]"
         optionData={[
           { name: "Lifetime", days: 1000 },
           { name: "Last 7 Days", days: 7 },
           { name: "Last 30 Days", days: 30 },
-          {name:"Current Month",days: 31 },
+          // {name:"Current Month",days: 31 },
           { name: "This Year", days: 365 },
           
           // {name:"Last Year",days: 700},
@@ -214,7 +216,7 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
                 type="date"
                 min={selectDate.sDate}
                 name="edate"
-                className="rounded-md  text-[#FFA28D] py-1 px-[26px] uppercase"
+                className="rounded-md  text-[#FFA28D] py-1 pl-[] px-[26px] uppercase"
                 value={selectDate.eDate}
                 
                  placeholder="MM/DD/YYYY"

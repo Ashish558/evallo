@@ -1565,6 +1565,12 @@ export default function Settings() {
                   label="Default Time Zone"
                   value={settingsData.timeZone}
                   onChange={(val) => handleChange("timeZone", val)}
+                  Tooltip={
+                    <span className="absolute   left-[30px] z-[1000] w-[450px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                      <h2 className="text-[#24A3D9] font-medium text-[16px] capitalize mb-[16px]">Default Time Zone</h2>
+                       Note: Default Timezone will be used by default for calendar view and scheduling sessions. You can still view the calendar or schedule sessions in timezones different than the default timezone through the schedule tab. 
+                    </span>
+                  }
                 />
               </div>
               <InputSelect
@@ -1597,6 +1603,12 @@ export default function Settings() {
                   />
                 </div>
               }
+              Tooltip={
+                <span className="absolute   left-[30px] z-[1000] w-[450px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                  <h2 className="text-[#24A3D9] font-medium text-[16px] capitalize mb-[16px]">Lead Status Items (Parent / Student)</h2>
+                  Note: Lead Status Item can be used to manage and keep track of your exisitng or potential clients on the platform. You can create your own client tagging system by adding various items to manage your CRM. For example, "Cold", "Warm", "Interested", "Active" and "Finished" can be some of the tags that you use to manage your leads.
+                </span>
+              }
             />
             <div className="h-[1.25px] bg-[#CBD6E2] my-4"></div>
             <SettingsCard
@@ -1614,6 +1626,12 @@ export default function Settings() {
                     className="pt-1 pb-1 text-base-17-5"
                   />
                 </div>
+              }
+              Tooltip={
+                <span className="absolute   left-[30px] z-[1000] w-[450px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                  <h2 className="text-[#24A3D9] font-medium text-[16px] capitalize mb-[16px]">Tutor Status Items</h2>
+                  Note: Tutor Status Item can be used to manage and keep track of your tutors and their availability. You can create your own tutor tagging system by adding various items to manage your CRM. For example, "Applied", "Interviewd", "Under Training", "Working" and "Former" can be some of the tags that you use to manage your tutors.
+                </span>
               }
             />
             <div className="h-[1.25px] bg-[#CBD6E2] mb-8"></div>
@@ -1702,6 +1720,12 @@ export default function Settings() {
                     onAddTag={onAddCode}
                   />
                 </div>
+              }
+              Tooltip={
+                <span className="absolute   left-[30px] z-[1000] w-[450px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                  <h2 className="text-[#24A3D9] font-medium text-[16px] capitalize mb-[16px]">Manage Referral Codes</h2>
+                  Note: Referral codes can be used by your leads (parents and students) to sign up for accessing Evallo’s portal. You can choose how long you want to provide them this access and what assignments should show up automatically after they sign up with your organization.
+                </span>
               }
             />
 
@@ -1798,6 +1822,12 @@ export default function Settings() {
                   </button>
                 </div>
               }
+              Tooltip={
+                <span className="absolute   left-[30px] z-[1000] w-[450px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                  <h2 className="text-[#24A3D9] font-medium text-[16px] capitalize mb-[16px]">Manage Services & Topics</h2>
+                  Note: Services refer to the core offerings that your business provides in a broad category. Topics are more specific items that you specialize in while providing these services. For example, Test Prep can be a “Service” with “SAT” and “ACT” as two topics under it. Read detailed documentation in Evallo’s knowledge base.
+                </span>
+              }
             />
 
             <SettingsCard
@@ -1889,6 +1919,12 @@ export default function Settings() {
                   </button>
                 </div>
               }
+              Tooltip={
+                <span className="absolute   left-[30px] z-[1000] w-[450px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                  <h2 className="text-[#24A3D9] font-medium text-[16px] capitalize mb-[16px]">Session Tags & Reconciliation</h2>
+                  Note: Session Tags are used for optimizing the time it takes for your tutors to reconcile sessions. These are checkboxes available when reconciling sessions in the Calendar that can be quickly used to add further details about the session, such as the topics covered, homework assigned, student mood, etc. Read detailed documentation in Evallo’s knowledge base.
+                </span>
+              }
             />
 
             <SettingsCard
@@ -1910,7 +1946,7 @@ export default function Settings() {
                     add a maximum of 4 Announcements at a time. Read detailed
                     documentation in Evallo’s
                     <span
-                      className="text-[#24A3D9] cursor-pointer"
+                      className="text-[#24A3D9] cursor-pointer underline"
                       onClick={() => navigate("/support")}
                     >
                       {" "}
@@ -2001,7 +2037,7 @@ export default function Settings() {
                                 </div>
                               )}
                               <div>
-                                {offer.image !== '' && <div
+                                {/* {offer.image !== '' && <div
                                   onClick={() => handleImageRemoval(i)}
                                   className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center  rounded-full cursor-pointer"
                                 >
@@ -2010,7 +2046,7 @@ export default function Settings() {
                                     className="w-5"
                                     alt="delete"
                                   />
-                                </div>}
+                                </div>} */}
                                 <InputField
                                   defaultValue={offer?.link?.trim()}
                                   inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
@@ -2471,7 +2507,7 @@ export default function Settings() {
                 automatically after they sign up with your organization. Read
                 detailed documentation in Evallo’s{" "}
                 <span
-                  className="text-[#24A3D9] cursor-pointer"
+                  className="text-[#24A3D9] cursor-pointer underline"
                   onClick={() => navigate("/support")}
                 >
                   {" "}
@@ -2629,7 +2665,7 @@ export default function Settings() {
                 Prep can be a “Service” with “SAT” and “ACT” as two topics under
                 it. Read detailed documentation in Evallo's
                 <span
-                  className="text-[#24A3D9] cursor-pointer"
+                  className="text-[#24A3D9] cursor-pointer underline"
                   onClick={() => navigate("/support")}
                 >
                   {" "}
@@ -2735,9 +2771,9 @@ export default function Settings() {
       )}
       {addSessionModalActive && (
         <Modal
-          classname={"max-w-[560px] mx-auto"}
+          classname={"max-w-[667px] mx-auto"}
           titleClassName="text-20 mb-[18px]"
-          title="Add / Edit Sessions"
+          title="Add / Edit Sessions Tags"
           cancelBtn={false}
           cancelBtnClassName="w-140 "
           handleClose={() => {
@@ -2776,7 +2812,7 @@ export default function Settings() {
                 topics covered, homework assigned, student mood, etc. Read
                 detailed documentation in Evallo’s
                 <span
-                  className="text-[#24A3D9] cursor-pointer"
+                  className="text-[#24A3D9] cursor-pointer underline"
                   onClick={() => navigate("/support")}
                 >
                   {" "}
@@ -2788,7 +2824,7 @@ export default function Settings() {
                 <div className="flex-1 flex gap-5 ">
                   <div className="flex-1">
                     <InputField
-                      label="Session Name"
+                      label="Session Tag Heading"
                       labelClassname="text-20 text-[#26435F] mb-0.5"
                       placeholder="Add a heading for session tags (such as “Topics Covered”)"
                       inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"
