@@ -533,71 +533,71 @@ export default function StartTest() {
               {!testStarted && (
                 <div className="flex justify-start items-start ml-4 w-full text-sm px-4 gap-y-4 mt-2">
                   <div className=" grid grid-flow-col  grid-rows-3 mr-3 justify-start items-start">
-                    <div className="w-[384px] flex flex-1 flex-grow-1 mb-3 justify-between ">
-                      <p className="inline-block min-w-1/2 mr-4 font-medium text-[20px] text-[#517CA8] ">
+                    <div className="w-[384px] flex flex-1 flex-grow-1 mb-[17.5px] justify-between ">
+                      <p className="inline-block min-w-1/2 mr-4 font-[500] text-[20px] text-[#517CA8] ">
                         {" "}
                         Student Name
                       </p>
 
-                      <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]">
+                      <p className="inline-block w-1/2 font-[300]  text-[20px] text-[#517CA8]">
                         {testHeaderDetails?.name?.length > 18
                           ? testHeaderDetails?.name.substring(0, 15) + " ..."
                           : testHeaderDetails?.name}
                       </p>
                     </div>
-                    <div className="w-full flex mb-3 justify-between">
-                      <p className="inline-block w-1/2 font-medium  text-[20px] text-[#517CA8]">
+                    <div className="w-full flex mb-[17.5px] justify-between">
+                      <p className="inline-block w-1/2 font-[500]  text-[20px] text-[#517CA8]">
                         {" "}
                         Date Assigned{" "}
                       </p>
 
-                      <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]  ">
+                      <p className="inline-block w-1/2 font-[300]  text-[20px] text-[#517CA8]  ">
                           {testHeaderDetails?.dateAssigned}
                       </p>
                     </div>
-                    <div className="w-full flex mb-3 justify-between">
-                      <p className="inline-block w-1/2 font-medium  text-[20px] text-[#517CA8] ">
+                    <div className="w-full flex mb-[17.5px] justify-between">
+                      <p className="inline-block w-1/2 font-[500]  text-[20px] text-[#517CA8] ">
                         {" "}
                         Duration{" "}
                       </p>
 
-                      <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]">
+                      <p className="inline-block w-1/2 font-[300]  text-[20px] text-[#517CA8]">
                         {testHeaderDetails.duration}
                       </p>
                     </div>
                   </div>
-                  <div className=" grid grid-flow-col  grid-rows-3 justify-start items-start">
-                    <div className="w-full flex mb-3 justify-between">
-                      <p className="inline-block w-[138px] mr-4 font-medium  text-[20px] text-[#517CA8] ">
+                  <div className=" grid grid-flow-col ml-[-20px]  grid-rows-3 justify-start items-start">
+                    <div className="w-full flex mb-[17.5px] justify-between">
+                      <p className="inline-block w-[138px] mr-4 font-[500]  text-[20px] text-[#517CA8] ">
                         {" "}
                         Due on{" "}
                       </p>
 
-                      <p className="inline-block w-[87px] font-light  text-[20px] text-[#517CA8] ">
+                      <p className="inline-block w-[87px] font-[300]  text-[20px] text-[#517CA8] ">
                         {testHeaderDetails.dueDate
                           ? formatDate2(testHeaderDetails.dueDate)
                           : "-"}
                       </p>
                     </div>
                     <div className="w-full flex mb-3 justify-between">
-                      <p className="inline-block w-[138px] mr-4 font-medium  text-[20px] text-[#517CA8] ">
+                      <p className="inline-block w-[138px] mr-4 font-[500]  text-[20px] text-[#517CA8] ">
                         {" "}
                         Started on{" "}
                       </p>
 
-                      <p className="inline-block w-[87px] font-light  text-[20px] text-[#517CA8]">
+                      <p className="inline-block w-[87px] font-[300]  text-[20px] text-[#517CA8]">
                         {testHeaderDetails.startedOn
                           ? formatDate2(testHeaderDetails.startedOn)
                           : "-"}
                       </p>
                     </div>
                     <div className="w-full flex mb-3 justify-between min-w-[250px]">
-                      <p className="inline-block w-[138px] mr-4 font-medium  text-[20px] text-[#517CA8] ">
+                      <p className="inline-block w-[138px] mr-4 font-[500]  text-[20px] text-[#517CA8] ">
                         {" "}
                         Completed on{" "}
                       </p>
 
-                      <p className="inline-block w-[87px] font-light  text-[20px] text-[#517CA8]">
+                      <p className="inline-block w-[87px] font-[300]  text-[20px] text-[#517CA8]">
                         -{" "}
                       </p>
                     </div>
@@ -609,7 +609,7 @@ export default function StartTest() {
                         Instruction from tutor{" "}
                       </p>
 
-                      <p className="inline-block mt-2 font-light  text-[20px] text-[#517CA8]">
+                      <p className="inline-block mt-2 font-[300]  text-[20px] text-[#517CA8]">
                         {testHeaderDetails.instruction.length > 0
                           ? testHeaderDetails.instruction
                           : "-"}
