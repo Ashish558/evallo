@@ -631,7 +631,7 @@ export default function StudentProfile({ isOwn }) {
                           <span>
                             <img
                               onClick={() => handleCopyClick(student?.email)}
-                              className="inline-block !w-4 !h-4 mr-2 cursor-pointer"
+                              className="inline-block !w-4 !h-4 mr-2 mb-[3px] cursor-pointer"
                               src={copy2}
                               alt="copy2"
                             />
@@ -692,12 +692,14 @@ export default function StudentProfile({ isOwn }) {
             textClassName="text-[15px] text-[#26435F]  text-underline"
             className="text-sm my-0 flex justify-end translate-y-7  float-right"
           />}
-          <SPFrame0
+        <div className="mt-[83.55px]">
+        <SPFrame0
             userDetail={userDetail}
             settings={settings}
             toEdit={toEdit}
             setToEdit={setToEdit}
           />
+        </div>
 
           {
             persona === "admin" && <SPFrame1

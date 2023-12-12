@@ -102,8 +102,8 @@ const SPFrame2 = ({
   return (
     <div>
       {" "}
-      <div className="flex mt-0 justify-between gap-5 design:gap-10">
-        <div className="flex-1 h-[200px] design:h-[230px] gap-7  flex flex-col">
+      <div className="flex mt-0 justify-between w-[1625px] gap-5 design:gap-10">
+        <div className="flex-1 h-[200px]  design:h-[230px] gap-7  flex flex-col">
           <div className="flex-1  flex justify-between">
             <p className=" text-[20px] text-[#26435F] font-semibold text-base-20 !font-lexend-deca">
               Hours Tutored
@@ -201,7 +201,7 @@ const SPFrame2 = ({
                     <img
                       onClick={() => reduceArr(idx, "satScores", true)}
                       src={cancelIcon}
-                      className="absolute right-3 design:!w-5 design:!h-5 inline-block float-right !w-3 !h-3"
+                      className="absolute right-3 design:!w-5 design:!h-5 inline-block cursor-pointer float-right !w-3 !h-3"
                       alt="cancelIcon"
                     />
                   </div>
@@ -292,7 +292,7 @@ const SPFrame2 = ({
                     <img
                       onClick={() => reduceArr(idx, "actScores", true)}
                       src={cancelIcon}
-                      className="absolute right-3 w-[18px] h-[18px] inline-block float-right "
+                      className="absolute right-3 w-[18px] h-[18px] cursor-pointer inline-block float-right "
                       alt="cancelIcon"
                       
                     />
@@ -366,7 +366,7 @@ const SPFrame2 = ({
                   </div>
                   <img
                     src={cancelIcon}
-                    className="absolute right-3 w-[18px] h-[18px] inline-block float-right "
+                    className="absolute right-3 w-[18px] h-[18px] cursor-pointer inline-block float-right "
                     alt="cancelIcon"
                   />
                 </div>
@@ -410,7 +410,7 @@ const SPFrame2 = ({
                   </div>
                   <img
                     src={cancelIcon}
-                    className="absolute right-3 w-[18px] h-[18px] inline-block float-right "
+                    className="absolute right-3 w-[18px] cursor-pointer h-[18px] inline-block float-right "
                     alt="cancelIcon"
                   />
                 </div>
