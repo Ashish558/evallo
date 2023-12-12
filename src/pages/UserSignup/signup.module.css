@@ -131,3 +131,8 @@
   .dropdown-container{
     border: 0;
   }
+  .confirmcheckBox span::after{
+    left: 6px !important;
+    height: 14px !important;
+    width: 6px !important;
+      }
