@@ -314,8 +314,12 @@ function OrgAdminUserManagement() {
     <div>
       <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl text-base-20">
         <p className="pr-2 text-[20px]">Set Permissions </p>
-        <p>
-          <img src={questionMark} alt="" />
+        <p className="group relative">
+          <img src={questionMark} alt="questionMark" className="cursor-pointer" />
+                <span className="absolute   left-[30px] z-[1000] w-[450px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                  <h2 className="text-[#24A3D9] font-medium text-[16px] capitalize mb-[16px]">Set Permissions</h2>
+                  Here, you can select Viewing, Editing or Deleting permissions for various users. Use the toggles below to select these permissions for specific items related to specific users. By default, we have set some these up for you.
+                </span>
         </p>
       </div>
 
