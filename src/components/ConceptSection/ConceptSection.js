@@ -105,7 +105,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
           createdAt,
           updatedAt,
         } = test;
-        if (testId === null) return;
+        // if (testId === null) return;
         return {
           testName: testId ? testId.testName : "-",
           assignedOn: getFormattedDate(new Date(createdAt)),
@@ -167,7 +167,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
     let filtered = allTests.filter(
       (item) => item.studentId._id === selectedStudent._id
     );
-    // console.log('filtered', filtered);
+    console.log('filtered', filtered);
     // console.log('selectedStudent', selectedStudent._id);
     setFilteredAssignedTests(filtered);
   }, [selectedStudent, allTests]);
@@ -251,7 +251,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
     setSubjects(updated);
   };
 
-  //  console.log('tutors', tutors,filteredTutors);
+   console.log('filteredAssignedTests', filteredAssignedTests.length);
 
   return (
     <div className="flex flex-row justify-between mt-8">

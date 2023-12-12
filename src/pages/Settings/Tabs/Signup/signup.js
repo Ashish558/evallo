@@ -91,6 +91,7 @@ export default function SignupTab({
     };
     updateAndFetchsettings(body, setLoadingCustom);
     setQuestionToDelete(null)
+    setQuestionDeleteModal(false)
   };
 
   const handleCustomFieldType = (id, val) => {
