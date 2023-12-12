@@ -959,7 +959,7 @@ const [toEdit, setToEdit] = useState({
                 />
                 <div className="flex flex-col ml-5 text-[#24A3D9] ">
                   <a
-                  href={`/profile/parent/${associatedParent?._id}`}
+                  href={associatedParent?._id!==undefined?`/profile/parent/${associatedParent?._id}`:null}
                     // onClick={() =>
                     //   associatedParent?._id > 0 &&
                     //   navigate(`/profile/parent/${associatedParent?._id}`)

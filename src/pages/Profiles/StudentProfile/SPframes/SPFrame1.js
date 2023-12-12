@@ -369,13 +369,13 @@ const SPFrame1 = ({
                 className="w-full h-full rounded-md bg-white flex justify-center flex-col text-center items-center"
               >
                 <div className="flex flex-col justify-center items-center h-full">
-                  <button className="bg-[#38C980] text-white rounded-md p-2 py-1" onClick={() =>
+                  <button className={`${persona!=='tutor'?'bg-[#38C980]':'bg-[#FF7979]'} text-white rounded-md p-2 py-1`} onClick={() =>
                     setToEdit({
                       ...toEdit,
                       interest: { ...toEdit.interest, active: true },
                     })
                   }>
-                    Add Interests +
+                 {persona!=='tutor'?' Add Interests +' :'No Interests added' }
                   </button>
                 </div>
               </div>
@@ -425,9 +425,10 @@ const SPFrame1 = ({
                         subjects: { ...toEdit.subjects, active: true },
                       })
                     }
-                    className="bg-[#38C980] text-white rounded-md p-2 py-1"
+                    className={`${persona!=='tutor'?'bg-[#38C980]':'bg-[#FF7979]'} text-white rounded-md p-2 py-1`}
                   >
-                    Add Subjects +
+                {persona!=='tutor'?' Add Subjects +' :'No Subjects added' }
+
                   </button>
                 </div>{" "}
               </div>
