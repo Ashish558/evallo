@@ -1023,6 +1023,7 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           inputClassName="bg-transparent text-base  "
                           parentClassName="!w-[20%]"
                           type="date"
+                          max={new Date().toISOString().split('T')[0]} 
                           value={currentToEdit.dob}
                           onChange={(e) =>
                             setCurrentToEdit({

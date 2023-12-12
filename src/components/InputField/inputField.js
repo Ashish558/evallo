@@ -55,6 +55,7 @@ export default function InputField({
   min,
   customEyeIconSize,
   calenderIconClass,
+  max
 }) {
   //console.log({ hideTooltip })
   const [inputType, setInputType] = useState(type);
@@ -169,6 +170,7 @@ export default function InputField({
           onMouseEnter={onMouseEnter}
           onFocus={onFocus}
           onBlur={onBlur}
+          max={max ? max : ''}
         />
         {IconLeft && !hideTooltip && (
           <div className="group w-fit absolute top-50 right-[12.5px] end-0 me-[10px]">
