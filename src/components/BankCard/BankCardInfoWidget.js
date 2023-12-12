@@ -44,10 +44,10 @@ function BankCardInfoWidget({
                     <div className="font-[100] text-[#26435F] text-[12px]" >Expires on {expiresOn}</div>
                     {
                         isDefault ? (
-                            <div className="block font-[100] text-[#38C980] text-[12px]" >Default Payment Method</div>
+                            <div className="block font-[400] text-[#38C980] text-[12px]" >Default Payment Method</div>
                         ) : (
                             <button 
-                                className="block font-[100] text-[#24A3D9] text-[12px]"
+                                className="block font-[500] text-[#24A3D9] text-[12px]"
                                 onClick={() => {
                                     if(OnSetAsDefaultClicked?.constructor?.name === "Function") {
                                         OnSetAsDefaultClicked();

@@ -34,7 +34,9 @@ export default function ParentEditables({
   userId,
   setToEdit,
   toEdit,
+  userphoto,
   fetchDetails,
+  getallreviews,
   settings,
   persona,
   awsLink,
@@ -319,6 +321,10 @@ export default function ParentEditables({
 
   const handleProfilePhotoChange = (file) => {
     // console.log(file)
+    if(!isImage(file)){
+      alert('The file is not an image')
+      return
+    }
     let url = "";
     const formData = new FormData();
     formData.append("photo", file);
@@ -406,6 +412,7 @@ export default function ParentEditables({
         }
       });
     });
+    getallreviews()
   };
 
   useEffect(() => {
@@ -493,6 +500,7 @@ export default function ParentEditables({
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
+    console.log('currentedit',currentToEdit);
     let reqBody = { ...currentToEdit };
     delete reqBody["active"];
     // console.log(reqBody);
@@ -544,7 +552,34 @@ export default function ParentEditables({
         alert("Enter valid linkedin url!");
         return;
       }
-
+      if (
+        !currentToEdit.tagLine ||
+        currentToEdit.tagLine?.trim()?.length === 0
+      ) {
+        alert("TagLine cannot be empty!");
+        return;
+      }
+      if (
+        !currentToEdit.experience ||
+        currentToEdit.experience?.trim()?.length === 0
+      ) {
+        alert("Experience cannot be empty!");
+        return;
+      }
+      if (
+        !currentToEdit.about ||
+        currentToEdit.about?.trim()?.length === 0
+      ) {
+        alert("about cannot be empty!");
+        return;
+      }
+      if (
+        !currentToEdit.education ||
+        currentToEdit.education?.trim()?.length === 0
+      ) {
+        alert("Education cannot be empty!");
+        return;
+      }
       updateTutorDetails({ id: userId, fields: reqBody }).then((res) => {
         console.log("patched", res);
         setLoading(false);
@@ -647,6 +682,20 @@ export default function ParentEditables({
       }
     }
   };
+  function isImage(file) {
+    // Get the file extension
+    const fileName = file.name;
+    const fileExtension = fileName.slice((fileName.lastIndexOf(".") - 1 >>> 0) + 2);
+
+    // Check if the file extension indicates an image
+    const imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp"];
+    const isImageExtension = imageExtensions.includes(fileExtension.toLowerCase());
+
+    // Alternatively, you can check the MIME type
+    const isImageMIME = file.type.startsWith("image/");
+
+    return isImageExtension || isImageMIME;
+}
 
   const getLevel = (str) => {
     const levels = ["ORANGE", "PURPLE", "BROWN", "BLACK"];
@@ -667,7 +716,7 @@ export default function ParentEditables({
   };
 
   // console.log('awsLink', awsLink)
-  console.log("toedit--", currentToEdit);
+  console.log("toedit--", currentToEdit.photo);
   // console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
   // console.log('field', currentField)
   // console.log('sett', settings)
@@ -2003,8 +2052,8 @@ useEffect(()=>{
                             isTutor={true}
                             customWidth={true}
                             src={
-                              currentToEdit?.photo
-                                ? `${awsLink}${currentToEdit?.photo}`
+                              userphoto
+                                ? `${awsLink}${userphoto}`
                                 : "/images/tutor.jpg"
                             }
                             handleChange={handleProfilePhotoChange}

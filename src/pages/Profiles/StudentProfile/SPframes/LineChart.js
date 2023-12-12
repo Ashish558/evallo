@@ -172,7 +172,7 @@ const data1 = {
   ],
 };
 
-export default function Chart({ scoreProgression }) {
+export default function Chart({ scoreProgression, chartClassName }) {
   const [options, setOptions] = useState(iniOptions);
   const [chartData, setChartData] = useState([]);
   const [currentConcepts, setCurrentConcepts] = useState([]);
@@ -307,7 +307,7 @@ export default function Chart({ scoreProgression }) {
   console.log("linnnnnnnn", data);
   return (
     data !== undefined && (
-      <div className="wrapper w-full min-w-2/3 overflow-x-auto">
+      <div className={`wrapper w-full min-w-2/3 overflow-x-auto ${chartClassName ? chartClassName : ''}`}>
         <Line
           ref={chartRef}
           options={options}
