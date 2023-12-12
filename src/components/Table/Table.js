@@ -102,7 +102,7 @@ export default function Table(props) {
   }, [currentPage, data]);
 
   if (isCallingApi) return <ApiTable noArrow={noArrow} {...props} />;
-
+  console.log('tabledata',tableData)
   return (
     <div className="min-w-full">
       <div
@@ -188,7 +188,7 @@ export default function Table(props) {
                 );
               })
             )}
-            {!belowBox &&
+            {(!tableData || (tableData && tableData.length === 0)) && !belowBox &&
               dummy.map((it, iti) => {
                 return (
                   <tr
@@ -209,7 +209,7 @@ export default function Table(props) {
                 );
               })}
             {/* {console.log(dummyRowStarClients)} */}
-            {dummyRowStarClients &&
+            {(!tableData || (tableData && tableData.length === 0)) && dummyRowStarClients &&
               dummyRowStarClients.map((it, index) => {
                 return (
                   <tr
