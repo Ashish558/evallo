@@ -195,7 +195,7 @@ const AllOrgs = () => {
     setForceChange(!forceChange)
 
   }
-  console.log({organization,adminData})
+  console.log('idhar',{organization,adminData})
   return (
     <>
       <div className=" pt-7 mb-12 max-xl:mt-[20px] max-sm:mt-[40px]">
