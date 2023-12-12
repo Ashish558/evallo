@@ -663,7 +663,8 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
       <div className="flex justify-center flex-col items-center mt-[21.33px]">
         <img src={cuate} alt="rocket" className="h-[121px] w-[193.336px]   " />
         <>
-          <div className={`flex items-center relative mt-[13.45px] mb-[100px] bg-white rounded-md w-[800px]`}>
+          <div className={`flex items-center relative mt-[13.45px] mb-[100px] bg-white rounded-md 
+          ${frames.extensions ? "lg:w-[1200px]" : "lg:w-[800px]"}`}>
             <div className="w-full px-[50px] pt-[50px] pb-[64px]">
               {frames.signupActive ? (
                 <div className="relative " >
@@ -723,7 +724,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                  {/* before form */}
 
                   <div
-                    className={`w-full flex justify-between  ${styles.inputs}`}
+                    className={`flex justify-between ${styles.inputs}`}
                   >
                     <InputField
                       placeholder=""
@@ -747,8 +748,8 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                     />
                     <InputField
                       placeholder=""
-                      parentClassName="relative w-[325px] flex flex-col justify-end items-center p-0 px-0 py-0"
-                      labelClassname="w-full text-[#26435F] font-medium mb-[7.45px] text-[18.667px] ps-[7px]"
+                      parentClassName="text-xs"
+                      labelClassname="text-[#26435F] font-medium mb-[7.45px] text-[18.667px]"
                       inputContainerClassName=" border border-[#D0D5DD] rounded-md w-[325px] h-[53.33px] text-[18.667px]"
                       label="Last Name"
                       pattern="[a-zA-Z0-9]+"

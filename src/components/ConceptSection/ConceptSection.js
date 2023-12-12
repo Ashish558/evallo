@@ -105,7 +105,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
           createdAt,
           updatedAt,
         } = test;
-        if (testId === null) return;
+        // if (testId === null) return;
         return {
           testName: testId ? testId.testName : "-",
           assignedOn: getFormattedDate(new Date(createdAt)),
@@ -167,7 +167,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
     let filtered = allTests.filter(
       (item) => item.studentId._id === selectedStudent._id
     );
-    // console.log('filtered', filtered);
+    console.log('filtered', filtered);
     // console.log('selectedStudent', selectedStudent._id);
     setFilteredAssignedTests(filtered);
   }, [selectedStudent, allTests]);
@@ -251,7 +251,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
     setSubjects(updated);
   };
 
-  //  console.log('tutors', tutors,filteredTutors);
+   console.log('filteredAssignedTests', filteredAssignedTests.length);
 
   return (
     <div className="flex flex-row justify-between mt-8">
@@ -259,7 +259,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
         <div className="flex items-center justify-between">
           <h1 className="text-[#26435F]  text-[20px] font-semibold mb-1">
             Conceptual Accuracy
-            <span className="inline-block my-auto ml-2 translate-y-1 h-[18px] w-[18px]">
+            <span className="inline-block my-auto ml-2 translate-y-1 h-[18px] w-[18px] group relative cursor-pointer">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="18"
@@ -272,6 +272,10 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
                   fill="#26435F"
                 />
               </svg>
+              <span className="absolute  z-[99999] left-[30px] w-[275px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                      <h2 className="text-[#24A3D9] font-medium text-[15px] capitalize mb-[10px]">Conceptual Accuracy</h2>
+                      Note: This shows the accuracy for questions belonging to different concepts across various sections over a period of time. The bigger the radius of the bubble, the higher the total number of questions attempted from that concept.
+                    </span>
             </span>
           </h1>
           <div className="flex items-center justify-end absolute z-40 top-[42.5%] right-[39%] mt-[24px]">
@@ -279,7 +283,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
               placeholder={""}
               parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
               inputContainerClassName=" my-0 py-[7.5px] px-[35px] !pr-[7.5px]"
-              placeHolderClass="text-[#FFA28D] "
+              placeHolderClass="text-[#FFA28D] !mr-[7.5px] "
               labelClassname="text-sm"
               inputClassName="bg-transparent"
               optionContainerClassName="text-black"

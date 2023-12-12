@@ -289,48 +289,53 @@ export default function TutorProfile({ isOwn }) {
   const [tutorTotalReviews, setTutorReviews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   console.log("trts", tutorTotalReviews);
-  useEffect(() => {
-    let userId = "";
-    if (isOwn) {
-      userId = id;
-    } else {
-      console.log("userid" + params.id);
-      userId = params.id;
-    }
-    getFeedbacks({ id: userId }).then(({ error, data }) => {
-      if (error) {
-        console.log("feedback error", error);
-        return;
+  function getallreviews(){
+ 
+      let userId = "";
+      if (isOwn) {
+        userId = id;
+      } else {
+        console.log("userid" + params.id);
+        userId = params.id;
       }
-      console.log("newtr feedback", data);
-      let tempp = [];
-      data?.data?.feedback?.map((tr) => {
-        if (tr?.customCreatedAt && tr?.userTag) {
-          tempp.push(tr);
+      getFeedbacks({ id: userId }).then(({ error, data }) => {
+        if (error) {
+          console.log("feedback error", error);
+          return;
         }
-      });
-      setTutorReviews(tempp);
-
-      data.data.feedback.map((feedback) => {
-        getUserDetail({ id: feedback.studentId }).then((res) => {
-          const student = res?.data?.data?.user;
-          getSession(feedback?.sessionId).then((res) => {
-            const session = res?.data?.data?.session;
-            setFeedbacks((prev) => {
-              let obj = {
-                ...feedback,
-                studentName: `${student?.firstName} ${student?.lastName}`,
-                service: session?.service,
-              };
-              let allFeedbacks = [...prev, { ...obj }];
-              return allFeedbacks.sort(function (a, b) {
-                return new Date(b.updatedAt) - new Date(a.updatedAt);
+        console.log("newtr feedback", data);
+        let tempp = [];
+        data?.data?.feedback?.map((tr) => {
+          if (tr?.customCreatedAt && tr?.userTag) {
+            tempp.push(tr);
+          }
+        });
+        setTutorReviews(tempp);
+  
+        data.data.feedback.map((feedback) => {
+          getUserDetail({ id: feedback.studentId }).then((res) => {
+            const student = res?.data?.data?.user;
+            getSession(feedback?.sessionId).then((res) => {
+              const session = res?.data?.data?.session;
+              setFeedbacks((prev) => {
+                let obj = {
+                  ...feedback,
+                  studentName: `${student?.firstName} ${student?.lastName}`,
+                  service: session?.service,
+                };
+                let allFeedbacks = [...prev, { ...obj }];
+                return allFeedbacks.sort(function (a, b) {
+                  return new Date(b.updatedAt) - new Date(a.updatedAt);
+                });
               });
             });
           });
         });
       });
-    });
+ 
+  }
+  useEffect(() => {
+    getallreviews()
   }, []);
   // console.log(settings?.Expertise, "settings");
   const handleClose = () => {
@@ -1081,6 +1086,7 @@ export default function TutorProfile({ isOwn }) {
                   </p>
                 )}
               </div>
+              {console.log(tutorTotalReviews,'ikikik')}
               <ProfileCard
                 className="border border-[#00000010]"
                 hideShadow
@@ -1887,10 +1893,13 @@ export default function TutorProfile({ isOwn }) {
          </div>
       </div>
       <ParentEditables
+        getallreviews={getallreviews}
+        userphoto={user.photo}
         settings={settings}
         fetchDetails={fetchDetails}
         userId={isOwn ? id : params.id}
         toEdit={toEdit}
+        photolink={user.photo}
         setToEdit={setToEdit}
         persona={user.role}
         awsLink={awsLink}

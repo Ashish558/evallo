@@ -97,7 +97,7 @@ const SPFrame1 = ({
           <div className="flex-1 mb-1 mt-1.5">
             <p className="mb-2.5 text-[20px] text-[#26435F] leading-[12.5px] font-semibold flex justify-between items-end">
               Whiteboard Links
-              {persona !== "student" && persona !== "parent" && (
+              {persona !== "student" && persona !== "parent"  && persona!=='tutor' && (
                 <EditableText
                   editable={editable}
                   onClick={() =>
@@ -111,13 +111,13 @@ const SPFrame1 = ({
                   }
                   text="edit"
                   textClassName="text-sm text-[#517CA8] text-underline leading-[10px] "
-                  className="text-sm my-0 flex justify-end   float-right"
+                  className="text-sm my-0 flex justify-end pr-10  float-right"
                 />
               )}
             </p>
 
             <div
-              className="w-full relative custom-scroller !border-[1.25px_dashed_#517CA8] bg-white h-[168px]  flex flex-col rounded-md overflow-y-auto pt-[25px] pb-[10px]"
+              className="w-[337.5px] relative custom-scroller !border-[1.25px_dashed_#517CA8] bg-white h-[195px]   flex flex-col rounded-md overflow-y-auto pt-[25px] pb-[10px]"
               id={styles.borderDashed}
             >
               {userDetail?.whiteBoardLinks?.length > 0 ? (
@@ -175,7 +175,7 @@ const SPFrame1 = ({
           <div className="flex-1 ">
             <p className="mb-2.5 mt-[30px] text-[20px] text-[#26435F] leading-[12.5px] font-semibold flex justify-between items-end">
 
-              Associated Docs
+             <span className="pl-1"> Associated Docs</span>
             </p>
             <div
               id={styles.borderDashed}
@@ -276,8 +276,8 @@ const SPFrame1 = ({
         </div>
         <div className="flex-1 h-[300px]  design:h-[305px]">
           <p className="mb-1.5 text-[20px] text-[#26435F]  leading-[12.5px] font-semibold flex items-end justify-between">
-            Interests{" "}
-            <EditableText
+          <span className="pl-2">Interests{" "}</span>
+             { persona!=='tutor'&& <EditableText
               editable={editable}
               onClick={() =>
                 setToEdit({
@@ -288,7 +288,7 @@ const SPFrame1 = ({
               text="edit"
               textClassName="text-sm text-[#517CA8] text-underline  "
               className="text-sm my-0 flex justify-end   float-right"
-            />
+            />}
           </p>
 
           <div className="w-full relative p-1 flex flex-1 h-[300px] flex-col gap-2  rounded-md items-center overflow-y-auto custom-scroller">
@@ -385,8 +385,8 @@ const SPFrame1 = ({
 
         <div className="flex-1 h-[300px]  design:h-[305px]">
           <p className="mb-2.5 text-[20px] text-[#26435F] leading-[12.5px] font-semibold flex justify-between items-end">
-            Subjects{" "}
-            <EditableText
+          <span className="pl-2">Subjects{" "}</span>
+            {  persona!=='tutor' &&<EditableText
               editable={editable}
               onClick={() =>
                 setToEdit({
@@ -397,7 +397,7 @@ const SPFrame1 = ({
               text="edit"
               textClassName="text-sm text-[#517CA8] text-underline  "
               className="text-sm my-0 flex justify-end   float-right"
-            />
+            />}
           </p>
 
           <div className="w-full relative h-full p-1 flex flex-col gap-2   rounded-md items-center overflow-y-auto custom-scroller">
@@ -438,7 +438,7 @@ const SPFrame1 = ({
         <div className="flex-1 h-[300px]  design:h-[305px]">
           <p className="mb-2.5 text-[20px] text-[#26435F] leading-[12.5px] font-semibold flex justify-between items-end">
             Personality
-            <EditableText
+            { persona!=='tutor'&&<EditableText
               editable={editable}
               onClick={() =>
                 setToEdit({
@@ -449,7 +449,7 @@ const SPFrame1 = ({
               text="edit"
               textClassName="text-sm text-[#517CA8] text-underline  "
               className="text-sm my-0 flex justify-end   float-right"
-            />
+            />}
           </p>
 
           <div className="w-full relative h-full p-1 flex flex-col gap-2 rounded-md items-center overflow-y-auto custom-scroller">
@@ -470,13 +470,15 @@ const SPFrame1 = ({
                 className="w-full h-full rounded-md bg-white flex justify-center flex-col text-center items-center"
               >
                 <div className="flex flex-col justify-center items-center h-full">
-                  <button className="bg-[#38C980] text-white rounded-md p-2 py-1" onClick={() =>
-                    setToEdit({
+                  <button className={`${persona!=='tutor'?'bg-[#38C980]':'bg-[#FF7979]'} text-white rounded-md p-2 py-1`} onClick={() =>{
+                   if(persona!=='tutor') 
+                   {setToEdit({
                       ...toEdit,
                       personality: { ...toEdit.personality, active: true },
-                    })
+                    })}
+                  }
                   }>
-                    Add Personality +
+                   {persona!=='tutor'?' Add Personality +' :'No Personality added' }
                   </button>
                 </div>{" "}
               </div>

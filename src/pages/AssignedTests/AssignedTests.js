@@ -732,7 +732,7 @@ export default function AssignedTests() {
     {
       id: 2,
       // className: "no-arrow",
-      text: "Test Name", // testName
+      text: "Assignment Name", // testName
       onCick: sortByTestName,
       willDisplayDownArrow: testNameSortState !== SORT_STATES.DESCENDING_ORDER,
     },
@@ -1322,7 +1322,20 @@ export default function AssignedTests() {
     setStudentNameOptions(studentNames);
   }, [allAssignedTests]);
   const handleStatus = (val) => {
-    setFilterData({ ...filterData, status: val });
+    if(filterData.status === val){
+      setFilterData({ ...filterData, status: '' });
+
+    }else{
+      setFilterData({ ...filterData, status: val });
+    }
+  };
+
+  const handleTutorChange = (val) => {
+    if(filterData.assignedBy === val){
+      setFilterData({ ...filterData, assignedBy: '' });
+    }else{
+      setFilterData({ ...filterData, assignedBy: val });
+    }
   };
   const [isChecked, setIsChecked] = useState(false);
 
@@ -1531,7 +1544,7 @@ export default function AssignedTests() {
                     optionListClassName="text-[17.5px] text-[#667085]"
                     inputClassName="placeholder:text-[#667085] text-[17.5px] text-[#667085]"
                     labelClassname={"hidden"}
-                    // dropDownIconStatus={true}
+                    dropDownIconStatus={true}
                     inputContainerClassName="shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white h-full text-[#667085]"
                     placeholder="Search Assignment"
                     parentClassName="w-[400px] text-[17.5px] text-[#667085] h-[50px] me-[30px]"
@@ -1580,9 +1593,7 @@ export default function AssignedTests() {
                 ) : (
                   <InputSelect
                     value={filterData.assignedBy}
-                    onChange={(val) =>
-                      setFilterData({ ...filterData, assignedBy: val })
-                    }
+                    onChange={(val) => handleTutorChange(val)}
                     optionListClassName="text-[17.5px] text-[#667085]"
                     parentClassName="w-[230px] text-[17.5px] "
                     inputClassName="text-[17.5px] py-3"
@@ -1639,11 +1650,11 @@ export default function AssignedTests() {
                       onClick={() =>
                         selectedId?.length > 0 && setDeleteBulkModalActive(true)
                       }
-                      className="cursor-pointer gap-x-[5px] px-1 w-[5.9375vw] py-[9px] bg-[#FFF] rounded-5 ml-6 flex items-center justify-center text-base-17-5"
+                      className="cursor-pointer gap-x-[5px] px-1  w-[5.9375vw] py-[9px] bg-[#FFF] rounded-5 ml-10 flex items-center justify-center text-base-17-5"
                     >
                       <p className="mr-[5px]">Delete</p>
                       <p>
-                        <img className="w-5 h-5" src={DeleteIcon} alt="delete-icon" />
+                        <img className="" src={DeleteIcon} alt="delete-icon" style={{width:'22.5px',height:'22.5px'}} />
                       </p>
                     </div>
                   )}
@@ -1654,7 +1665,7 @@ export default function AssignedTests() {
                     className="cursor-pointer bg-[#FFF] rounded-5 ml-[25px] flex w-[114px] h-[44px] items-center justify-center text-[17.5px]"
                   >
                     <p className="mr-[5px]">Resend</p>
-                    <img src={ResendIcon} alt="" />
+                    <img src={ResendIcon} className="ml-1" alt="" />
                   </div>
                   <div
                     onClick={() =>
@@ -1702,7 +1713,7 @@ export default function AssignedTests() {
           title="New Assignment"
           buttonParentClassName="justify-center"
           titleClassName="text-start pb-2"
-          modalSize={"w-[667px] h-[585px] mx-auto"}
+          modalSize={"w-[667px] h-[585px] mx-auto mt-[100px]"}
           cancelBtn={true}
           cancelBtnClassName="w-[146.67px] h-[46.667px] !bg-[rgba(38,67,95,0.20)] !text-[#26435F]"
           primaryBtn={{
@@ -1716,7 +1727,7 @@ export default function AssignedTests() {
           handleClose={handleClose}
           body={
             <>
-              <div className="h-[200px] grid grid-cols-1 md:grid-cols-2 gap-x-[36px] gap-y-[15px]">
+              <div className="h-[200px] grid grid-cols-1 md:grid-cols-2  mt-10 gap-x-[36px] gap-y-[15px]">
                 <div className=" student-name-container">
                   <InputSearch
                     label="Student Name"

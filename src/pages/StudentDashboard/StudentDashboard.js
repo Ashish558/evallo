@@ -16,6 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import Chart from "../Profiles/StudentProfile/SPframes/ChartStudent";
 import { useChartBubbleStudentMutation, useLazyGetUserDetailQuery } from "../../app/services/users";
+import SPFrame3 from "../Profiles/StudentProfile/SPframes/SPFrame3";
 
 const circleQuestionIcon = (<svg
   xmlns="http://www.w3.org/2000/svg"
@@ -39,24 +40,25 @@ const StudentDashboard = () => {
   const [currentSubData, setCurrentSubData] = useState({});
   const [dates, setDates] = useState([]);
   const { organization } = useSelector((state) => state.organization);
-  const [accsubjects,setAccSubject]= useState([])
-  const [getBubbleChart,bubbleChartStatus]=useChartBubbleStudentMutation()
-  const user = useSelector((state) => state.user);
+  const [accsubjects, setAccSubject] = useState([])
+  const [getBubbleChart, bubbleChartStatus] = useChartBubbleStudentMutation()
+  const [user, setUser] = useState({})
+  const userData = useSelector(state => state.user)
+  const [officialTest, setOfficial] = useState("SAT");
   const [currentDate, setCurrentDate] = useState("");
-//   const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery();
-//   const [userDetail, setUserDetail] = useState({});
-//   useEffect(()=>{
-//     console.log("first",user)
-//   getUserDetail({ id: user?._id }).then((res) => {
-//     console.log("details -- ", res.data.data);
-//     // //console.log('tut id', id);
-   
- 
-   
-   
-//    // setUserDetail(res.data.data.userdetails);
-//   })
-// },[user]);
+  const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery();
+  const [userDetail, setUserDetail] = useState({});
+
+  useEffect(() => {
+    getUserDetail({ id: userData.id }).then((res) => {
+      if (res.error) {
+        return console.log('err', res.error);
+      }
+      console.log("details -- ", res.data.data);
+      setUser(res.data.data.user)
+      setUserDetail(res.data.data.userdetails);
+    })
+  }, [userData]);
 
 
 
@@ -131,29 +133,29 @@ const StudentDashboard = () => {
 
     return body;
   };
-  const handleConceptAccuracy=(startDate) => {
+  const handleConceptAccuracy = (startDate) => {
     let body = convertDateToRange(startDate);
-    body.studentId= user?.id ;
-    console.log({startDate})
-    body.chartType= "conceptAccuracy"
+    body.studentId = user?.id;
+    console.log({ startDate })
+    body.chartType = "conceptAccuracy"
     getBubbleChart(body).then(
       (res) => {
         console.log("conceptual res", res);
         if (res?.data?.chartData) {
-          let temp=[]
-          res?.data?.chartData?.map((it)=>{
-             temp.push({
-              concepts:{
-                [it?.conceptName]:it?.total,
+          let temp = []
+          res?.data?.chartData?.map((it) => {
+            temp.push({
+              concepts: {
+                [it?.conceptName]: it?.total,
               },
-              timeTaken:it?.noOfCorrect*5,
-              no_of_correct:it?.noOfCorrect
-              ,name:it?.conceptName
+              timeTaken: it?.noOfCorrect * 5,
+              no_of_correct: it?.noOfCorrect
+              , name: it?.conceptName
 
-             })
+            })
           })
           setAccSubject(temp)
-       //   setConceptualChartData(temp)
+          //   setConceptualChartData(temp)
         }// setConceptualChartData(res?.data?.chartData);
       }
     );
@@ -184,38 +186,15 @@ const StudentDashboard = () => {
 
       <div className="flex mt-10 pt-[10px] justify-between">
         <div className=" flex-1 w-[1076px] ">
-          <div className="flex items-center justify-between mb-1 w-[1076px] bg-pink-500">
+          {/* <div className="flex items-center justify-between mb-1 w-[1076px] bg-pink-500">
             <h1 className="text-[#26435F] text-[20px] font-semibold flex justify-center items-center">
             Score progression
               <div className="inline-block my-auto ml-2">
               {circleQuestionIcon}
               </div>
             </h1>
-
-            
-            <div className="flex  justify-end">
-              {/* <InputSelect
-                value={currentDate}
-                labelClassname="hidden"
-                parentClassName="w-[200px] mr-5"
-                inputContainerClassName="bg-[#d9d9d980] pt-2 pb-2"
-                optionData={dates}
-                onChange={(val, idx) => setSelectedConceptIdx(idx)}
-              /> */}
-              {/* <InputSelect
-                value={selectedSubject}
-                labelClassname="hidden"
-                parentClassName="w-[200px] mr-5"
-                inputContainerClassName="bg-[#d9d9d980] pt-2 pb-2"
-                optionData={subjects.map((item) => item.name)}
-                onChange={(val) => handleSubjectChange(val)}
-              /> */}
-
-
-              {/* <RangeDate removeUnderline={true} className="ml-0  font-normal flex justify-center items-center"  optionClassName="!w-min " inputContainerClassName="!w-min font-normal " handleRangeData={handleConceptAccuracy} /> */}
-
-            </div>
           </div>
+          
           <div
             id={styles.chartContainer}
             className="!rounded-md w-[1076px] flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller h-[451px] relative"
@@ -230,9 +209,11 @@ const StudentDashboard = () => {
                 inputClassName="bg-transparent"
                 value={selectedSubject}
                 IconDemography={true}
-                optionData={accsubjects.map((item) => item.name)}
+                optionData={["DSAT®", "SAT®", "ACT®", "Other"]}
 
-                onChange={(e) => handleSubjectChange(e)}
+                onChange={(e) => {
+                  setOfficial(e);
+                }}
               />  </div>
            {accsubjects && accsubjects?.length>0 ?<>
              <Chart
@@ -259,7 +240,10 @@ const StudentDashboard = () => {
            </p>
          </div>
        </div>}
-          </div>
+          </div> */}
+          <SPFrame3 isOwn={true} userDetail={userDetail} user={user} displayScoreProgressOnly={true} 
+          chartContainerClassName='h-[451px] '
+          chartClassName='h-[400px]' />
         </div>
 
         <div className="w-[480px] min-h-fit ml-[44px]">

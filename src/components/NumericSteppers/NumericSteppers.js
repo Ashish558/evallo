@@ -29,7 +29,7 @@ export default function NumericSteppers({
               className={`w-[40px] relative z-[5000]  h-[40px] bg-primary border rounded-full flex justify-center items-center font-medium cursor-default
              ${
                i + 1 < parseInt(currentStep)
-                 ? i+2===currentStep?"!bg-[#FFA28D] before:!bg-[#FFA28D]  !text-white ":"!bg-[#FFA28D] before:!bg-[#FFA28D]  !text-white "
+                 ? i+2===currentStep?"!bg-[#FFA28D]  !text-white ":"!bg-[#FFA28D] before:!bg-[#FFA28D]  !text-white "
                  : ""
              } 
              ${
@@ -60,13 +60,12 @@ export default function NumericSteppers({
             >
               <span className="relative z-[999999] text-white text-base-17-5">{i + 1}</span>
             </button>
-
             <p
-                className={`flex justify-center !tracking-wider  before:hidden items-center mt-2 mb-2 text-center ${NumericStepperfontSize} font-medium  
+                className={`flex text-[18.67px] justify-center !tracking-wider  before:hidden items-center mt-2 mb-2 text-center ${NumericStepperfontSize} font-medium
             ${i + 1 < parseInt(currentStep) ? "text-[#FFA28D]" : ""} 
-             ${i + 1 === parseInt(currentStep) ? " text-[#24A3D9]  " : ""} 
-             ${i + 1 > parseInt(currentStep) ? "opacity-35  text-[#26435F]" : ""}
-             ${i + 1 === parseInt(currentStep) ? "text-[#24A3D9]  " : ""} 
+             ${i + 1 === parseInt(currentStep) ? "text-[#24A3D9]" : ""} 
+             ${i + 1 > parseInt(currentStep) ? "opacity-20  text-[#26435F]" : ""}
+             ${i + 1 === parseInt(currentStep) ? "text-[#24A3D9]" : ""} 
              `}
 
              style={{fontFamily : "Lexend"}}

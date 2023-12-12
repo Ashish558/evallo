@@ -14,7 +14,8 @@ export default function SettingsCard({
   toggle,
   onToggle,
   questionMarkMargin,
-  questionMarkIcon
+  questionMarkIcon,
+  Tooltip
 }) {
   return (
     <div
@@ -27,10 +28,11 @@ export default function SettingsCard({
       >
         <div className="flex items-center">
           <p className="text-[#26435F]">{title}</p>
-          <div className="relative">
+          <div className="group relative">
             {
-              title === "Edit Announcements" || <img className={`${questionMarkMargin?questionMarkMargin:`ml-3`}`} src={questionMarkIcon?questionMarkIcon:QuestionMark} alt="question" />
+              title === "Edit Announcements" || <img className={`${questionMarkMargin?questionMarkMargin:`ml-3`} cursor-pointer`} src={questionMarkIcon?questionMarkIcon:QuestionMark} alt="question" />
             }
+            {Tooltip}
           </div>
         </div>
         {

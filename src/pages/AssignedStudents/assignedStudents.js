@@ -53,6 +53,7 @@ export default function AssignedStudents() {
    const [students, setStudents] = useState([]);
    const { firstName, lastName } = useSelector((state) => state.user);
    const [filteredStudents, setFilteredStudents] = useState([]);
+   const [latestSignUp_flag,setlatestsignup_flag]=useState([1,1,1,1,1,1,1,1,1])
    const [filterData, setFilterData] = useState({
       tutorName: '',
       studentName: '',
@@ -64,6 +65,84 @@ export default function AssignedStudents() {
       setTableData(tempTableData)
       setTableHeaders(tempTableHeaders)
    }, [])
+
+   const sortByString = (key,index) => {
+      console.log('asda',key);
+      setFilteredStudents((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (latestSignUp_flag && latestSignUp_flag[index]) {
+            if (a[key] < b[key]) {
+              return -1;
+            }
+            if (a[key] > b[key]) {
+              return 1;
+            }
+            return 0;
+          } else {
+            if (a[key] < b[key]) {
+              return 1;
+            }
+            if (a[key] > b[key]) {
+              return -1;
+            }
+            return 0;
+          }
+        });
+        return arr;
+      });
+      let changeflag=latestSignUp_flag
+     changeflag[index]=!changeflag[index]
+      setlatestsignup_flag(changeflag)
+    };
+   const latestSignUpHeaders = [
+      {
+        id: 1,
+        text: "Student Name",
+        className: "text-left pl-8",
+        willDisplayDownArrow : latestSignUp_flag[0],
+        onCick: () => sortByString("name",0),
+      },
+      {
+        id: 2,
+        // willDisplayDownArrow : 0,
+        text: "Email",
+        willDisplayDownArrow : latestSignUp_flag[1],
+        onCick: () => sortByString("email",1),
+      },
+      {
+        id: 3,
+        text: "Phone",
+        willDisplayDownArrow : latestSignUp_flag[2],
+        onCick: () => sortByString("phone",2),
+      },
+      {
+        id: 4,
+        text: "Service(s)",
+        willDisplayDownArrow : latestSignUp_flag[3],
+        onCick: () => sortByString("services",3),
+      },
+      {
+        id: 5,
+        text: "Topic(s)",
+        willDisplayDownArrow : latestSignUp_flag[4],
+        onCick: () => sortByString("topics",4),
+      },
+      {
+        id: 6,
+        text: "Status",
+        willDisplayDownArrow : latestSignUp_flag[5],
+        onCick: () => {sortByString("status",5)
+     },
+      },
+      {
+        id: 7,
+        text: "Date Assigned",
+        willDisplayDownArrow : latestSignUp_flag[6],
+        onCick: () => sortByString("assignedDate",6),
+      },
+    ];
+
 
    const handleSubmit = () => {
 
@@ -81,15 +160,15 @@ export default function AssignedStudents() {
                      .then(res => {
                         console.log('detail res', res?.data?.data)
                         if (res?.data?.data) {
-                           const { _id, firstName, lastName, email, phone, services, topics, userStatus, assignedDate } = res.data.data.user
-                           const { specialization, FirstName, LastName, timeZone } = res.data.data.userdetails
+                           const { _id, firstName, lastName, email, phone, userStatus, assignedDate } = res.data.data.user
+                           const { specialization, FirstName, LastName, subjects, service,timeZone } = res.data.data.userdetails
                            studentsData.push({
                               _id,
                               name: `${firstName} ${lastName}`,
                               email: `${email}`,
                               phone: `${phone}`,
-                              services: `${services == undefined ? '_' : services}`,
-                              topics: `${topics == undefined ? '_' : topics}`,
+                              services: `${service.length===0 ? '_' : service.length>2?service.slice(0,2).concat('...'):service}`,
+                              topics: `${subjects.length===0 ? '_' : subjects.length>2?subjects.slice(0,2).concat('...'):subjects}`,
                               status: `${userStatus == undefined ? '_' : userStatus}`,
                               assignedDate: `${assignedDate == undefined ? '_' : assignedDate}`
                               // specialization: ['we', 'ew'].join(','),
@@ -177,13 +256,10 @@ export default function AssignedStudents() {
    const [validData, setValidData] = useState(true);
    useEffect(() => {
       setValidData(modalData.email && modalData.firstName && modalData.lastName && modalData.userType);
-   }, [modalData, modalData.email.length, modalData.firstName.length, modalData.lastName.length, modalData.phone.length, modalData.userType.length,])
-   
-
-   
+   }, [modalData, modalData.email.length, modalData.firstName.length, modalData.lastName.length, modalData.phone.length, modalData.userType.length,])   
 
    return (
-      <>
+      <>{console.log(filteredStudents, "students")}
          <div className="w-[1920px] h-auto flex justify-center items-center bg-lightWhite">
            <div className="w-[1600px] h-full flex flex-col justify-center items-center">
 
@@ -328,14 +404,14 @@ export default function AssignedStudents() {
                   <FilterItems items={filterItems} setData={setFilterItems}
                      onRemoveFilter={onRemoveFilter} />
                </div>
-               {console.log(filteredStudents, "students")}
                <div className="w-full mb-[100px]">
                   <Table
+                  headerObject={true}s
                      onClick={{ handleNavigate }}
                      dataFor='assignedStudents'
                      data={filteredStudents}
                      excludes={['_id']}
-                     tableHeaders={tableHeaders}
+                     tableHeaders={latestSignUpHeaders}
                      maxPageSize={10}
                      widthFullTable={true}
                   />

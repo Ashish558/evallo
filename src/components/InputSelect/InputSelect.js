@@ -7,6 +7,7 @@ import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import CCheckbox from "../CCheckbox/CCheckbox";
 import questionMark from "../../assets/images/question-mark.svg";
 import { useSelector } from "react-redux";
+import { Tooltip } from "antd";
 
 export default function InputSelect({
   parentClassName,
@@ -38,6 +39,7 @@ export default function InputSelect({
   customArrowClassName,
   downArrowClassName,
   questionMarkIcon,
+  Tooltip,
   questionMarkMargin
 }) {
   const [selected, setSelected] = useState(false);
@@ -119,7 +121,10 @@ export default function InputSelect({
           )}
           <div>
             {label == "Default Time Zone" && (
-              <img className={`${questionMarkMargin ? questionMarkMargin : `ml-3`}`} questionMarkIcon src={questionMarkIcon ? questionMarkIcon : questionMark} alt=""></img>
+              <div className="group relative">
+              <img className={`${questionMarkMargin ? questionMarkMargin : `ml-3`} cursor-pointer`} questionMarkIcon src={questionMarkIcon ? questionMarkIcon : questionMark} alt=""></img>
+              {Tooltip}
+              </div>
             )}
           </div>
         </div>
@@ -132,7 +137,7 @@ export default function InputSelect({
           } `}
       >
         {Icon && <img src={Icon} className={`mr-5  w-[28px]}`} alt="icon" />}
-        {IconLeft && <img src={IconLeft} className={`mr-5  w-[28px]}`} alt="IconLeft" />}
+        {IconLeft && <img src={IconLeft} className={`mr-5 ${customArrowClassName? "!h-[18.75px] !max-w-[18.75px]":""}}`} alt="IconLeft" />}
         {IconSearch && <img src={IconSearch} className={`mr-2 mt-[3px]  w-[28px]}`} alt="IconLeft" />}
         {selected ? (
           IconRight ? (

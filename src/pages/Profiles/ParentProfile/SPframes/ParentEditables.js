@@ -293,22 +293,32 @@ export default function ParentEditables({
     }
   }, [currentToEdit]);
   const [addLink, addLinkStatus] = useAddLinkStudentMutation();
-  console.log("parentEditables", currentToEdit, country);
+  const [uploadedImage, setUploadedImage] = useState(null)
+
   const handleProfilePhotoChange = (file) => {
     // //console.log(file)
+    setUploadedImage(file)
     let url = "";
-    const formData = new FormData();
-    formData.append("photo", file);
-    if (persona === "admin") {
-      url = `${BASE_URL}api/user/admin/addphoto/${userId} `;
-    } else {
-      url = `${BASE_URL}api/user/addphoto`;
-    }
-    axios.patch(url, formData, { headers: getAuthHeader() }).then((res) => {
-      //  //console.log(res);
-      fetchDetails();
-    });
+
   };
+
+  const updateProfileImage = () => {
+    if (uploadedImage) {
+      let url = "";
+      const formData = new FormData();
+      formData.append("photo", uploadedImage);
+      if (persona === "admin") {
+        url = `${BASE_URL}api/user/admin/addphoto/${userId} `;
+      } else {
+        url = `${BASE_URL}api/user/addphoto`;
+      }
+      axios.patch(url, formData, { headers: getAuthHeader() }).then((res) => {
+        //  //console.log(res);
+        fetchDetails();
+        setUploadedImage(null)
+      });
+    }
+  }
 
   const getCurrentField = (keyName) => {
     Object.keys(data).map((key) => {
@@ -338,14 +348,14 @@ export default function ParentEditables({
     });
     setTextOpen(false);
     setToEdit(tempToEdit);
-
+    setUploadedImage(null)
     // setToEdit()
   };
 
   useEffect(() => {
     if (student.length > 0) {
       fetchStudents(student).then((res) => {
-        // //console.log('students', res.data.data.students);
+        console.log('students', res.data.data.students);
         let tempData = res.data.data.students.map((tutor) => {
           return {
             _id: tutor._id,
@@ -453,6 +463,7 @@ export default function ParentEditables({
     let reqBody = { ...currentToEdit };
     delete reqBody["active"];
     console.log({ reqBody, userId });
+    updateProfileImage()
     if (reqBody.hasOwnProperty("firstName")) {
       console.log("fiestName", reqBody.firstName?.length, { reqBody, userId });
       if (
@@ -481,12 +492,12 @@ export default function ParentEditables({
         return;
       }
     }
-    if (currentToEdit.hasOwnProperty("email")&&!emailValidation.test(currentToEdit.email)) {
+    if (currentToEdit.hasOwnProperty("email") && !emailValidation.test(currentToEdit.email)) {
       alert("Enter valid email.");
       return;
     }
-  
-   
+
+
     if (currentToEdit.hasOwnProperty("notes")) {
       reqBody = {
         internalNotes: [
@@ -523,15 +534,15 @@ export default function ParentEditables({
         // handleClose()
       });
     };
-    
-    if( currentToEdit.hasOwnProperty("alternateEmail") && currentToEdit?.alternateEmail?.length>0 ){
-      console.log({currentField,currentToEdit})
+
+    if (currentToEdit.hasOwnProperty("alternateEmail") && currentToEdit?.alternateEmail?.length > 0) {
+      console.log({ currentField, currentToEdit })
       if (!emailValidation.test(currentToEdit.alternateEmail)) {
-      //  alert("Enter valid alternate email.");
-      //  return;
+        //  alert("Enter valid alternate email.");
+        //  return;
       }
-     // else 
-      userDetailSave({Email:currentToEdit?.alternateEmail});
+      // else 
+      userDetailSave({ Email: currentToEdit?.alternateEmail });
     }
     if (currentField.api === "user") {
       updateFields({ id: userId, fields: reqBody }).then((res) => {
@@ -710,7 +721,7 @@ export default function ParentEditables({
       } else {
         let newserv =
           organization.settings?.servicesAndSpecialization[
-            currentToEdit.selectedIdx
+          currentToEdit.selectedIdx
           ];
         updated.push({ ...newserv, price: value });
         setUpdatedService({ ...newserv, price: value });
@@ -745,14 +756,13 @@ export default function ParentEditables({
           fetchDetails={fetchDetails}
           key={key}
           topClass="!absolute !h-[120vh]"
-          modalSize={currentField.name === "frame1"?"!w-[1106px] !max-w-[1106px]":""}
-          classname={`${
-            forCss.includes(currentField.name)
-              ? "max-w-[850px] md:pb-5 mx-auto overflow-visible pb-5 !px-[35px]":
-              currentField.name==="frame1"
-              ? "max-w-[980px] md:pb-5 mx-auto overflow-visible pb-5 !px-10"
-              : "max-w-fit md:pb-5 mx-auto overflow-visible pb-5 !px-[20px]"
-          } `} /*{ ` max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5`}*/
+          modalSize={currentField.name === "frame1" ? "!w-[1106px] !max-w-[1106px]" : ""}
+          classname={`${forCss.includes(currentField.name)
+              ? "max-w-[850px] md:pb-5 mx-auto overflow-visible pb-5 !px-[35px]" :
+              currentField.name === "frame1"
+                ? "max-w-[980px] md:pb-5 mx-auto overflow-visible pb-5 !px-10"
+                : "max-w-fit md:pb-5 mx-auto overflow-visible pb-5 !px-[20px]"
+            } `} /*{ ` max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5`}*/
           title=""
           // primaryBtn={{
           //    text: "Save",
@@ -774,8 +784,8 @@ export default function ParentEditables({
                   {currentField.title
                     ? currentField.title
                     : toEdit.tutorServices
-                    ? "Service"
-                    : ""}
+                      ? "Service"
+                      : ""}
                 </div>
                 <button
                   className="w-[133px] bg-[#FFA28D] py-1  text-white  text-base px-3 ml-auto h-[40px] rounded-lg"
@@ -799,6 +809,8 @@ export default function ParentEditables({
                           <div className="!w-[100px] mr-5">
                             <ProfilePhoto
                               src={
+                                uploadedImage ?
+                                URL.createObjectURL(uploadedImage) :
                                 user.photo
                                   ? `${awsLink}${user.photo}`
                                   : "/images/Rectangle 2347.svg"
@@ -958,7 +970,7 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           awsLink={awsLink}
                         />
                       </div> */}
-
+                      {console.log('sadasd',students)}
                         <InputSearch
                           right={
                             <img
@@ -1011,6 +1023,7 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           inputClassName="bg-transparent text-base  "
                           parentClassName="!w-[20%]"
                           type="date"
+                          max={new Date().toISOString().split('T')[0]} 
                           value={currentToEdit.dob}
                           onChange={(e) =>
                             setCurrentToEdit({
@@ -1141,7 +1154,7 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           onChange={(e) =>
                             setCurrentToEdit({
                               ...currentToEdit,
-                              city: e.target.value,
+                              city: e,
                             })
                           }
                         />
@@ -1154,14 +1167,23 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           inputContainerClassName="text-base placeholder:text-[#667085] bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px]  h-[54px]"
                           inputClassName="bg-transparent placeholder:text-[#667085]"
                           parentClassName="!w-[20%]"
-                          type="text"
+                          type="number"
                           value={currentToEdit.pincode}
-                          onChange={(e) =>
-                            setCurrentToEdit({
-                              ...currentToEdit,
-                              pincode: e.target.value,
-                            })
-                          }
+                          onChange={(e) => {
+                            const enteredValue = e.target.value;
+                            if(enteredValue === ''){
+                              setCurrentToEdit({
+                                ...currentToEdit,
+                                pincode: '',
+                              });
+                            }
+                            if (/^[0-9\s]+$/.test(enteredValue)) {
+                              setCurrentToEdit({
+                                ...currentToEdit,
+                                pincode: enteredValue,
+                              });
+                            }
+                          }}
                         />
                       </div>
                       {persona === "admin" && (
@@ -1726,8 +1748,8 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                       <p className="font-medium mr-4 min-w-[150px]">
                         {currentToEdit.selectedIdx !== undefined
                           ? organization.settings.servicesAndSpecialization[
-                              currentToEdit.selectedIdx
-                            ].service
+                            currentToEdit.selectedIdx
+                          ].service
                           : ""}
                       </p>
                       <InputField

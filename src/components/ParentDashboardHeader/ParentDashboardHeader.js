@@ -176,7 +176,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                     </OwlCarousel>
                   ) : (
                     <p
-                      className="text-white  text-center w-full font-semibold pt-8 not-italic pb-8 text-lg"
+                      className="text-[#26435F]  text-center w-full font-semibold pt-8 not-italic pb-8 text-lg"
                       style={{
                         fontSize: "18px",
                         fontStyle: "normal",
@@ -235,7 +235,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
               labelClassname="text-[#26435F]  font-semibold text-[20px] mb-[5px]"
               iconClass="text-[#26435F] ml-2 translate-y-[0px]  mb-1"
               parentClassName="cursor-pointer"
-              inputContainerClassName="pt-1 pb-1"
+              inputContainerClassName="pt-1 pb-1 relative bottom-[35px]"
               optionData={associatedStudents.map((item) => ({
                 _id: item._id,
                 name: item.name,

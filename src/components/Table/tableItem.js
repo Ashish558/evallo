@@ -682,7 +682,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "assignedTests" && (
-        <tr className=" text-[17.5px] ">
+        <tr className="text-[17.5px] " style={{ borderRadius: '5px', background: '#FFF', boxShadow: '0px 0px 2.5px 0px rgba(0, 0, 0, 0.25)' ,paddingTop:'30px',paddingBottom:'30px' }}>
           <td className="px-1 font-medium  min-w-14  text-left flex items-center  pb-[14px] pt-4">
             <span className="inline-block cursor-pointer pl-[30px]">
               <div className="flex ">
@@ -925,7 +925,7 @@ export default function TableItem({
                   <>
                     <div className="flex flex-row items-center ">
                       <div className="min-w-[20px] ">
-                        {!item?.testtype.includes("DSAT") &&
+                        {!item?.testtype?.includes("DSAT") &&
                         persona == "student" &&
                         dataFor == "assignedTestsStudents" ? (
                           <img
@@ -1254,18 +1254,18 @@ export default function TableItem({
           <td className="text-left pl-[66.5px] w-[350px] max-w-[350px] overflow-hidden text-ellipsis" style={{paddingLeft: '25px'}}>
             {item.testName}
           </td>
-          <td className="w-[223px] text-left" style={{paddingLeft: '45px'}}>
+          <td className="w-[223px] text-left" style={{paddingLeft: '55px'}}>
             {item.testType.endsWith("®")
               ? item.testType
               : item.testType.includes("Other")
               ? item.testType
               : item.testType + "®"}
           </td>
-          <td className="w-[241px] text-left pl-[8.75px]">
+          <td className="w-[241px] text-left pl-[8.75px]" style={{paddingLeft: '20px'}}>
             {" "}
             {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}
           </td>
-          <td className="w-[235.5px] text-left pl-[16px]">
+          <td className="w-[235.5px] text-left pl-[16px]" style={{paddingLeft: '30px'}}>
             {getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}
           </td>
           <td className="w-[249px] text-center">

@@ -68,11 +68,11 @@
 .line4::before {
   content: "";
   position: absolute;
-  right: -350px;
+  right: -315px;
   top: 50%;
   margin-top:-15px;
   transform: translateY(-50%);
-  width:350px;
+  width:302px;
   height: 1px;
   background-color: #B3BDC7;
   z-index: -99;

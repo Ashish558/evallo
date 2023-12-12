@@ -102,8 +102,8 @@ const SPFrame2 = ({
   return (
     <div>
       {" "}
-      <div className="flex mt-0 justify-between gap-5 design:gap-10">
-        <div className="flex-1 h-[200px] design:h-[230px] gap-7  flex flex-col">
+      <div className="flex mt-0 justify-between w-[1625px] gap-5 design:gap-10">
+        <div className="flex-1 h-[200px]  design:h-[230px] gap-7  flex flex-col">
           <div className="flex-1  flex justify-between">
             <p className=" text-[20px] text-[#26435F] font-semibold text-base-20 !font-lexend-deca">
               Hours Tutored
@@ -201,7 +201,7 @@ const SPFrame2 = ({
                     <img
                       onClick={() => reduceArr(idx, "satScores", true)}
                       src={cancelIcon}
-                      className="absolute right-3 design:!w-5 design:!h-5 inline-block float-right !w-3 !h-3"
+                      className="absolute right-3 design:!w-5 design:!h-5 inline-block cursor-pointer float-right !w-3 !h-3"
                       alt="cancelIcon"
                     />
                   </div>
@@ -292,8 +292,9 @@ const SPFrame2 = ({
                     <img
                       onClick={() => reduceArr(idx, "actScores", true)}
                       src={cancelIcon}
-                      className="absolute right-3 design:!w-5 design:!h-5 inline-block float-right !w-3 !h-3"
+                      className="absolute right-3 w-[18px] h-[18px] cursor-pointer inline-block float-right "
                       alt="cancelIcon"
+                      
                     />
                   </div>
                 );
@@ -330,7 +331,7 @@ const SPFrame2 = ({
             )}
           </p>
 
-          <div className="w-full bg-white relative h-full p-1 flex flex-col gap-1 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] rounded-md its-center overflow-y-auto custom-scroller">
+          <div className="w-[341.16px] bg-white relative h-[216.25px]  p-1 flex flex-col gap-1 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] rounded-md its-center overflow-y-auto custom-scroller">
             {userDetail?.baseLineScore ? (
               <>
                 <div className="beforeDot  p-2 h-[45.75px] flex  w-full">
@@ -365,7 +366,7 @@ const SPFrame2 = ({
                   </div>
                   <img
                     src={cancelIcon}
-                    className="absolute right-3 design:!w-5 design:!h-5 inline-block float-right !w-3 !h-3"
+                    className="absolute right-3 w-[18px] h-[18px] cursor-pointer inline-block float-right "
                     alt="cancelIcon"
                   />
                 </div>
@@ -409,7 +410,7 @@ const SPFrame2 = ({
                   </div>
                   <img
                     src={cancelIcon}
-                    className="absolute right-3 design:!w-5 design:!h-5 inline-block float-right !w-3 !h-3"
+                    className="absolute right-3 w-[18px] cursor-pointer h-[18px] inline-block float-right "
                     alt="cancelIcon"
                   />
                 </div>
