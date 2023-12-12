@@ -275,7 +275,12 @@ export default function Settings() {
     );
   };
 
-  const handleClose = () => setModalActive(false);
+  const handleClose = () =>{
+     setModalActive(false);
+     allTestData([])
+     setFilteredTests([])
+     searchedTest('')
+  }
   const handleTagModal = (text) => {
     //console.log(text);
     setTagModalActive(true);
@@ -1019,7 +1024,7 @@ export default function Settings() {
 
 
   const selectAssignmentOnblur = () => {
-    if (searchedTest.length === 0) {
+    // if (searchedTest.length === 0) {
       if (subModalData.tests.length > 0) {
         try {
           const test = filteredTests.find(test => test._id === subModalData.tests[0])
@@ -1031,7 +1036,7 @@ export default function Settings() {
         }
 
       }
-    }
+    // }
   }
 // console.log('settingsData', settingsData);
   if (!settingsData) return <></>;
@@ -1094,10 +1099,10 @@ export default function Settings() {
     setAddSessionModalActive(true);
   };
   const handleServicePause = (item) => {
-    //console.log({ item });
     let key = item?._id;
     let tempSettings = { ...settingsData };
-
+    
+    console.log('item', item);
     let updated = servicesAndSpecialization.map((serv) => {
       if (serv._id === key) {
         return {
@@ -1108,7 +1113,7 @@ export default function Settings() {
         return { ...serv };
       }
     });
-    //console.log("upper", updated);
+    console.log("updated", updated);
     let updatedSetting = {
       servicesAndSpecialization: updated,
     };
@@ -1118,7 +1123,7 @@ export default function Settings() {
   const handleServicePause2 = (item) => {
     let key = item?._id;
     let tempSettings = { ...settingsData };
-    console.log("sessionTags", sessionTags);
+    console.log("item--", item);
 
     let updated = sessionTags.map((serv) => {
       if (serv._id === key) {
@@ -1745,7 +1750,7 @@ export default function Settings() {
                                     value: !service.pause,
                                     key: "code",
                                   }}
-                                  manual={true}
+                                  // manual={true}
                                 onToggle={() => handleServicePause(service)}
                                 ></ToggleBar>
                                 <div
@@ -1836,9 +1841,8 @@ export default function Settings() {
                               <div className="flex items-center gap-x-4">
                                 <ToggleBar
                                   boxClass="!h-[16px]"
-                                  circleColor="bg-[rgba(119,221,119,1)]"
                                   toggle={{
-                                    value: service.pause,
+                                    value: !service.pause,
                                     key: "code",
                                   }}
                                   // manual={true}
