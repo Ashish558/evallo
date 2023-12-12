@@ -279,7 +279,8 @@ export default function Settings() {
      setModalActive(false);
      allTestData([])
      setFilteredTests([])
-     searchedTest('')
+     setSearchedTest('')
+
   }
   const handleTagModal = (text) => {
     //console.log(text);
