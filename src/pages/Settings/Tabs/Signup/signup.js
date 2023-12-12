@@ -46,6 +46,9 @@ export default function SignupTab({
   const [isCheckedTwo, setIsCheckedTwo] = useState(false);
   const [isCheckedThree, setIsCheckedThree] = useState(false);
   const [loadingCustom, setLoadingCustom] = useState(false);
+  const [questionToDelete, setQuestionToDelete] = useState(null)
+  const [questionDeleteModal, setQuestionDeleteModal] = useState(false)
+
   const [checkTerms, setCheckTerms] = useState();
   const handleCheckboxChangeTerms = () => {
     setCheckTerms(!checkTerms);
@@ -61,7 +64,23 @@ export default function SignupTab({
   };
 
   const handleDelete = (id) => {
-    let updatedCustomFields = customFields.filter((item) => item._id !== id);
+    setQuestionToDelete(id)
+    setQuestionDeleteModal(true)
+    // let updatedCustomFields = customFields.filter((item) => item._id !== id);
+    // updatedCustomFields = updatedCustomFields.map((item) => ({
+    //   name: item.name,
+    //   Values: item.Values,
+    //   dataType: item.dataType,
+    // }));
+    // const body = {
+    //   customFields: updatedCustomFields,
+    // };
+    // updateAndFetchsettings(body, setLoadingCustom);
+  };
+
+  const deleteQuestion = (id) => {
+  
+    let updatedCustomFields = customFields.filter((item) => item._id !== questionToDelete);
     updatedCustomFields = updatedCustomFields.map((item) => ({
       name: item.name,
       Values: item.Values,
@@ -71,6 +90,7 @@ export default function SignupTab({
       customFields: updatedCustomFields,
     };
     updateAndFetchsettings(body, setLoadingCustom);
+    setQuestionToDelete(null)
   };
 
   const handleCustomFieldType = (id, val) => {
@@ -332,8 +352,9 @@ export default function SignupTab({
   useEffect(()=>{
     scrollToBottom()
   },[selectedQuestionData?.Values?.length])
+
   return (
-    <div className="">
+    <div className="pb-[50px]">
       <div className="mb-[40px]">
         <div className="text-medium flex items-start w-300 text-[#507CA8] mb-4">
           <p className="mt-[3px]">
@@ -963,6 +984,26 @@ export default function SignupTab({
                 </div>
               </form>
             }
+          />
+        )}
+        {questionDeleteModal && (
+          <Modal
+            title={
+              <>
+                Are you sure you want to delete this question?
+              </>
+            }
+            titleClassName="leading-9 mb-2"
+            cancelBtn={true}
+            cancelBtnClassName="py-4 !bg-[#26435F1A]  !text-[#26435F] rounded-[5px]"
+            primaryBtn={{
+              text: "Delete",
+              className: "bg-danger  w-[123px]  pl-4 pr-4",
+              onClick: deleteQuestion,
+            }}
+            handleClose={()=> setQuestionDeleteModal(false)}
+            body={<div className="mb-10"></div>}
+            classname={"max-w-[600px] !mx-auto"}
           />
         )}
       </div>
