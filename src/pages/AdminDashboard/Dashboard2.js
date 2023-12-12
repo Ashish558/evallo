@@ -590,7 +590,7 @@ console.log('tutorPerformanceData', tutorPerformanceData);
                   <div className="w-[212.5px]  ">
                     <div className="flex justify-between items-center mb-[6px] text-[#26435F] text-sm">
                       <p className="font-medium text-[17.5px] text-[#26435F] leading-[21px]">
-                        Completed Revenue22
+                        Completed Revenue
                       </p>
                       <div className="group relative">
                         <p>
@@ -603,7 +603,7 @@ console.log('tutorPerformanceData', tutorPerformanceData);
 
                         <span className="absolute  -top-10 left-10 z-20 w-[333.3px]  rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white  whitespace-normal py-5 px-3 scale-0 group-hover:scale-100">
                           <h3 className="text-[#22A699] text-base mb-3 font-medium ">
-                            Completed Revenue22
+                            Completed Revenue
                           </h3>
                           <span className="font-light text-[13.3px]">
                             This value is calculated by adding up all the
