@@ -1,13 +1,8 @@
-import styles from "./styles.module.css";
-import {
-	useGetActionLogQuery,
-	useGetActionLogRangeMutation,
-} from "../../../app/services/superAdmin";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { useRef } from "react";
+import { useGetActionLogRangeMutation } from "../../../app/services/superAdmin";
 import { getFormattedDate } from "../../../utils/utils";
+import styles from "./styles.module.css";
 function ActionLog({ dateRange }) {
 	const [actionLogData, fetchStatus] = useGetActionLogRangeMutation();
 	const { role: persona } = useSelector((state) => state.user);
@@ -17,15 +12,19 @@ function ActionLog({ dateRange }) {
 	const [actionLog, setActionLog] = useState([]);
 	const ref = useRef();
 	const [dateFormat, setDateFormat] = useState("dd/mm/yy");
+
 	const { organization: organization2 } = useSelector(
 		(state) => state.organization
 	);
+
 	useEffect(() => {
 		if (organization2 && organization2?.settings) {
 			setDateFormat(organization2?.settings?.dateFormat);
 		}
 	}, [organization2]);
+
 	console.log("latest", { dateFormat, organization2 });
+
 	const handleScroll = (e) => {
 		const elementHeight = e.target.scrollHeight / actionLog?.length;
 
@@ -42,52 +41,123 @@ function ActionLog({ dateRange }) {
 		}
 		ref.current.textContent = headerDate;
 	};
+
+	// useEffect(() => {
+	// 	if (persona === "manager" || !actionLog || !Array.isArray(actionLog))
+	// 		return;
+	// 	setCurrentElementIndex(0);
+	// 	const sorting = (newarr, extra) => {
+	// 		let sortedData = [...actionLog];
+	// 		sortedData.sort((a, b) => {
+	// 			return a.createdAt - b.createdAt;
+	// 		});
+	// 		let i = 0,
+	// 			j = 0;
+	// 		let check = 0;
+
+	// 		while (j < sortedData.length && check <= 2 * sortedData.length) {
+	// 			check++;
+	// 			if (
+	// 				new Date(sortedData[i].createdAt).toDateString() ===
+	// 				new Date(sortedData[j].createdAt).toDateString()
+	// 			) {
+	// 				j++;
+	// 			} else {
+	// 				extra++;
+	// 				let k = j - 1;
+	// 				sortedData[k] = {
+	// 					...sortedData[k],
+	// 					topDate: new Date(sortedData[k]?.createdAt).toDateString(),
+	// 				};
+	// 				while (k >= i) newarr.push(sortedData[k--]);
+	// 				i = j;
+	// 			}
+	// 		}
+	// 		let k = j - 1;
+	// 		sortedData[k] = {
+	// 			...sortedData[k],
+	// 			topDate: new Date(sortedData[k]?.createdAt).toDateString(),
+	// 		};
+	// 		while (k >= i) newarr.push(sortedData[k--]);
+	// 		i = j;
+	// 		return extra;
+	// 	};
+	// 	let newarr = [];
+	// 	let extra = 1;
+	// 	extra = sorting(newarr, extra);
+	// 	setExtraElement(extra);
+	// 	setSortedAction(newarr);
+	// }, [actionLog]);
+
 	useEffect(() => {
 		if (persona === "manager" || !actionLog || !Array.isArray(actionLog))
-			return;
-		setCurrentElementIndex(0);
-		const sorting = (newarr, extra) => {
-			let sortedData = [...actionLog];
-			sortedData.sort((a, b) => {
-				return a.createdAt - b.createdAt;
-			});
-			let i = 0,
-				j = 0;
-			let check = 0;
+  return;
 
-			while (j < sortedData.length && check <= 2 * sortedData.length) {
-				check++;
-				if (
-					new Date(sortedData[i].createdAt).toDateString() ===
-					new Date(sortedData[j].createdAt).toDateString()
-				) {
-					j++;
-				} else {
-					extra++;
-					let k = j - 1;
-					sortedData[k] = {
-						...sortedData[k],
-						topDate: new Date(sortedData[k]?.createdAt).toDateString(),
-					};
-					while (k >= i) newarr.push(sortedData[k--]);
-					i = j;
-				}
-			}
-			let k = j - 1;
-			sortedData[k] = {
-				...sortedData[k],
-				topDate: new Date(sortedData[k]?.createdAt).toDateString(),
-			};
-			while (k >= i) newarr.push(sortedData[k--]);
-			i = j;
-			return extra;
-		};
-		let newarr = [];
-		let extra = 1;
-		extra = sorting(newarr, extra);
-		setExtraElement(extra);
-		setSortedAction(newarr);
+setCurrentElementIndex(0);
+const sorting = (newarr, extra) => {
+  let sortedData = [...actionLog];
+  sortedData.sort((a, b) => {
+    if (new Date(a.createdAt) < new Date(b.createdAt)) return 1;
+    if (new Date(a.createdAt) > new Date(b.createdAt)) return -1;
+    return 0;
+  });
+
+  let i = 0;
+  let j = 0;
+  let check = 0;
+
+  while (j < sortedData.length && check <= 2 * sortedData.length) {
+    check++;
+    if (
+      new Date(sortedData[i].createdAt).toDateString() ===
+      new Date(sortedData[j].createdAt).toDateString()
+    ) {
+      j++;
+    } else {
+      extra++;
+      let k = j - 1;
+      sortedData[k] = {
+        ...sortedData[k],
+        topDate: new Date(sortedData[k]?.createdAt).toDateString(),
+      };
+      // Sorting time in reverse order within each date group
+      const dateGroup = sortedData.slice(i, j);
+      dateGroup.sort((a, b) => {
+        if (new Date(a.createdAt) < new Date(b.createdAt)) return 1;
+        if (new Date(a.createdAt) > new Date(b.createdAt)) return -1;
+        return 0;
+      });
+      newarr.push(...dateGroup);
+
+      i = j;
+    }
+  }
+
+  let k = j - 1;
+  sortedData[k] = {
+    ...sortedData[k],
+    topDate: new Date(sortedData[k]?.createdAt).toDateString(),
+  };
+  const dateGroup = sortedData.slice(i, j);
+  dateGroup.sort((a, b) => {
+    if (new Date(a.createdAt) < new Date(b.createdAt)) return 1;
+    if (new Date(a.createdAt) > new Date(b.createdAt)) return -1;
+    return 0;
+  });
+  newarr.push(...dateGroup);
+
+  i = j;
+  return extra;
+};
+
+let newarr = [];
+let extra = 1;
+extra = sorting(newarr, extra);
+setExtraElement(extra);
+setSortedAction(newarr);
+
 	}, [actionLog]);
+
 	useEffect(() => {
 		if (dateRange === "" || !dateRange || persona === "manager") return;
 		const fetchActivity = () => {
@@ -98,14 +168,17 @@ function ActionLog({ dateRange }) {
 		};
 		fetchActivity();
 	}, [dateRange]);
+
 	let headerDate = sortedAction[currentElementIndex]
 		? new Date(sortedAction[currentElementIndex]?.createdAt).toDateString()
 		: new Date().toDateString();
+
 	if (headerDate) {
 		headerDate = headerDate.split(" ");
 		let temp = headerDate[1] + " " + headerDate[2] + ", " + headerDate[3];
 		headerDate = temp;
 	}
+
 	return (
 		<div className="flex-1">
 			<h2 className="font-semibold mb-1 text-[#26435F] text-[21.33px]">

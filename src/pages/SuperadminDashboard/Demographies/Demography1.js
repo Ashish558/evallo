@@ -13,6 +13,7 @@ const Demography1 = ({ dateRange }) => {
 	const [userName, setUserName] = useState("");
 	const [countryFlag, setCountryFlag] = useState("");
 	const [countryMarking, setCountryMarking] = useState({});
+
 	const handleState = async (c, stateData) => {
 		if (!c) return;
 		const state1 = country.filter((x) => x.name === c);
@@ -29,6 +30,7 @@ const Demography1 = ({ dateRange }) => {
 		setStates([...requiredStates]);
 		setCountryMarking(state1);
 	};
+
 	useEffect(() => {
 		if (country.length === 0) {
 			fetch("countryData.json")
@@ -39,37 +41,40 @@ const Demography1 = ({ dateRange }) => {
 
 	useEffect(() => {
 		fetchDemography({ country: countryName, ...dateRange }).then((res) => {
-			console.log("demog", res);
 			setCurrentDemographicArea(res?.data?.aggregatedData);
 		});
 	}, [fetchDemography, countryName, dateRange]);
+
 	useEffect(() => {
 		handleState(countryName, currentDemographicArea);
 	}, [currentDemographicArea, countryName]);
 
-	const [sortedColumn, setSortedColumn] = useState(null);
-	const [sortOrder, setSortOrder] = useState("asc");
 	const [sortedData, setSortedData] = useState([]);
 
+	const [sortedColumn, setSortedColumn] = useState(null);
+	const [sortOrder, setSortOrder] = useState("desc");
+
 	useEffect(() => {
-		setSortedData(currentDemographicArea); // Initialize sorted data
-	}, [currentDemographicArea]);
+		setSortedData(
+		  [...currentDemographicArea].sort((a, b) => b.no_of_orgs - a.no_of_orgs)
+		);
+	  }, [currentDemographicArea]);
 
 	const sortByOrgs = () => {
 		let sorted;
-		if (sortOrder === "asc") {
-			sorted = [...sortedData].sort((a, b) => a.no_of_orgs - b.no_of_orgs);
-			setSortOrder("desc");
-		} else {
-			sorted = [...sortedData].sort((a, b) => b.no_of_orgs - a.no_of_orgs);
-			setSortOrder("asc");
-		}
-		setSortedColumn("orgs");
+		sorted = [...sortedData].sort((a, b) => {
+			if (sortOrder === "desc") {
+				return a.no_of_orgs - b.no_of_orgs;
+			} else {
+				return b.no_of_orgs - a.no_of_orgs;
+			}
+		});
 		setSortedData(sorted);
 	};
 
 	const handleSortClick = () => {
 		sortByOrgs();
+		setSortOrder(sortOrder === "asc" ? "desc" : "asc");
 	};
 
 	return (
@@ -105,7 +110,7 @@ const Demography1 = ({ dateRange }) => {
 								placeholder={"Country"}
 								parentClassName="ml-0  scale-[0.8] items-center flex !text-[#FFA28D] text-xs !border-[1.7px] px-1 py-[9px] border-[#FFA28D] rounded-full  "
 								inputContainerClassName="bg-white py-[4.8px] px-[35px] text-[15px] w-[114px] whitespace-nowrap overflow-ellipsis"
-    optionContainerClassName="min-w-[114px]"
+								optionContainerClassName="min-w-[114px]"
 								labelClassname="text-[15px]"
 								inputClassName="bg-transparent "
 								value={countryName}
@@ -140,7 +145,7 @@ const Demography1 = ({ dateRange }) => {
 					</div>
 				</div>
 				<div className=" translate-y-[-35px] flex-1">
-					<p
+					<button
 						className="text-[#26435F]  font-semibold "
 						onClick={handleSortClick}
 					>
@@ -163,7 +168,7 @@ const Demography1 = ({ dateRange }) => {
 								transform: sortOrder === "asc" ? "rotate(180deg)" : "none",
 							}}
 						/>
-					</p>
+					</button>
 					<div className="overflow-y-auto custom-scroller-2 h-[445px] py-0 relative">
 						<table className=" !border-spacing-y-[6px] px-1 customTable border-separate w-full whitespace-nowrap">
 							<thead className="sticky top-0  ">
