@@ -275,11 +275,9 @@ export default function Settings() {
     );
   };
 
-  const handleClose = () =>{
-     setModalActive(false);
-     allTestData([])
-     setFilteredTests([])
-     searchedTest('')
+  const handleClose = () => {
+    setModalActive(false);
+
   }
   const handleTagModal = (text) => {
     //console.log(text);
@@ -1025,20 +1023,20 @@ export default function Settings() {
 
   const selectAssignmentOnblur = () => {
     // if (searchedTest.length === 0) {
-      if (subModalData.tests.length > 0) {
-        try {
-          const test = filteredTests.find(test => test._id === subModalData.tests[0])
-          if (test) {
-            setSearchedTest(test.value)
-          }
-        } catch (error) {
-
+    if (subModalData.tests.length > 0) {
+      try {
+        const test = filteredTests.find(test => test._id === subModalData.tests[0])
+        if (test) {
+          setSearchedTest(test.value)
         }
+      } catch (error) {
 
       }
+
+    }
     // }
   }
-// console.log('settingsData', settingsData);
+  // console.log('settingsData', settingsData);
   if (!settingsData) return <></>;
   if (Object.keys(settingsData).length === 0) return <></>;
   // if (Object.keys(settingsData).length === 0) return <></>
@@ -1101,7 +1099,7 @@ export default function Settings() {
   const handleServicePause = (item) => {
     let key = item?._id;
     let tempSettings = { ...settingsData };
-    
+
     console.log('item', item);
     let updated = servicesAndSpecialization.map((serv) => {
       if (serv._id === key) {
@@ -1142,7 +1140,7 @@ export default function Settings() {
 
     updateAndFetchsettings(updatedSetting);
   };
-  
+
   const handleAddServiceName2 = (text, key) => {
     let tempSettings = { ...settingsData };
 
@@ -1775,7 +1773,7 @@ export default function Settings() {
                                     key: "code",
                                   }}
                                   // manual={true}
-                                onToggle={() => handleServicePause(service)}
+                                  onToggle={() => handleServicePause(service)}
                                 ></ToggleBar>
                                 <div
                                   className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
@@ -1876,7 +1874,7 @@ export default function Settings() {
                                     key: "code",
                                   }}
                                   // manual={true}
-                                onToggle={() => handleServicePause2(service)}
+                                  onToggle={() => handleServicePause2(service)}
                                 ></ToggleBar>
                                 <div
                                   className=" flex items-center justify-center  rounded-full cursor-pointer"
@@ -2494,6 +2492,9 @@ export default function Settings() {
           handleClose={() => {
             setAddCodeModalActive(false);
             setSubModalData(subModalInitialState);
+            setAllTestData([])
+            setFilteredTests([])
+            setSearchedTest('')
           }}
           body={
             <form
