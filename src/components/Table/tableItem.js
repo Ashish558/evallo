@@ -1254,10 +1254,10 @@ export default function TableItem({
             <td className="w-[174px] pl-[27px] pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-center bg-red-100">
               <div>{item?.QuestionNumber}</div>
             </td>
-            <td className="w-[124px] pl-[0] text-[#517CA8] text-[17.5px] font-normal text-left">
+            <td className="w-[124px] pl-[5px] text-[#517CA8] text-[17.5px] font-normal text-left">
               <div>{item?.QuestionType}</div>
             </td>
-            <td className="w-[394px] pl-[0] pr-[42.5px] text-[#517CA8] text-[17.5px] font-normal text-left">
+            <td className="w-[394px] pl-[20px] pr-[42.5px] text-[#517CA8] text-[17.5px] font-normal text-left">
               <div className="max-w-[349px] overflow-hidden text-ellipsis">
                 {item?.CorrectAnswer}
               </div>

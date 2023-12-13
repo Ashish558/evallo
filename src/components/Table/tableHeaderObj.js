@@ -154,7 +154,7 @@ ${
       <div
         className={`flex  
         ${header.text === "Student Name" ? "ml-[40px] text-left " : ""} 
-        ${header.text === "Assignment Name" ? "ml-[12px]" : ""} 
+        ${header.text === "Assignment Name" ? "ml-[12px]" : "pl-[20px]"} 
         ${
           header.text === "Email" ||
           header.text === "Phone" ||
