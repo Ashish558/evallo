@@ -904,7 +904,7 @@ const [toEdit, setToEdit] = useState({
                     }
                     body={
                       <div className="flex h-min !bg-transparent justify-center flex-col  ">
-                        <p className="text-[11px]">
+                        <p className="text-[12px]">
                           <span>
                             <img
                               className="inline-block !w-[18px] !h-[22.52px] mr-2"

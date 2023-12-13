@@ -6,7 +6,10 @@ import EditableText from "../../../../components/EditableText/EditableText";
 import { useUpdateUserDetailsMutation } from "../../../../app/services/users";
 import act from "../../../../assets/YIcons/Official ACT® scores.svg";
 import sat from "../../../../assets/YIcons/Official SAT® scores.svg";
-import { useLazyGetSessionQuery, useLazyGetTotalHoursQuery } from "../../../../app/services/session";
+import {
+  useLazyGetSessionQuery,
+  useLazyGetTotalHoursQuery,
+} from "../../../../app/services/session";
 import { useSelector } from "react-redux";
 import { getFormattedDate } from "../../../../utils/utils";
 import { getFormattedDateWithSlash } from "../../../../utils/utils";
@@ -28,8 +31,8 @@ const SPFrame2 = ({
   const [updateDetails, updateDetailsResp] = useUpdateUserDetailsMutation();
   const [totalHours, setTotalHours] = useState(0);
   const [getHours, getHoursStatus] = useLazyGetTotalHoursQuery();
-  const [getTotalSessions, setGetTotalSessions] = useLazyGetSessionQuery()
-  const [totalSessions, setTotalSessions] = useState()
+  const [getTotalSessions, setGetTotalSessions] = useLazyGetSessionQuery();
+  const [totalSessions, setTotalSessions] = useState();
   const reduceArr = (id, key, update) => {
     //  //console.log({toEdit})
     let temp = [];
@@ -51,8 +54,8 @@ const SPFrame2 = ({
       });
     }
     getTotalSessions().then((res) => {
-      console.log("total sessions", res)
-    })
+      console.log("total sessions", res);
+    });
   }, [userId]);
   const dateFormat = settings?.dateFormat || "dd/mm/yyyy";
   const handleSubmit = (key, e) => {
@@ -77,27 +80,26 @@ const SPFrame2 = ({
   const formatDate = (value) => {
     const [month, day, year] = value.split("-");
     const monthName = getMonthName(day - 1);
-    console.log(
-      {
-        value: value,
-        day: day,
-        month: month,
-        year: year,
-        monthName: monthName
-      }
-   );
-    
-    const formattedDate = `${monthName.substring(0,3)}` + " " + `${month}` + `,` + `${year}`;
-    return formattedDate
-  }
+    console.log({
+      value: value,
+      day: day,
+      month: month,
+      year: year,
+      monthName: monthName,
+    });
+
+    const formattedDate =
+      `${monthName.substring(0, 3)}` + " " + `${month}` + `,` + `${year}`;
+    return formattedDate;
+  };
 
   const formatDate2 = (value) => {
     const [day, month, year] = value.split("-");
     const monthName = getMonthName(month - 1);
 
     const formattedDate = `${day}` + "/" + `${month}` + `/` + `${year}`;
-    return formattedDate
-  }
+    return formattedDate;
+  };
 
   return (
     <div>
@@ -128,7 +130,9 @@ const SPFrame2 = ({
             <p className=" text-[20px] text-[#26435F] font-semibold text-base-20 w-[165px] text-left !font-lexend-deca">
               Join Date
               <span className=" text-[#FFA28D] text-[25px] block mt-1 !font-lexend-deca">
-                {formatDate2(getFormattedDate(userDetail?.createdAt, dateFormat))}
+                {formatDate2(
+                  getFormattedDate(userDetail?.createdAt, dateFormat)
+                )}
               </span>
             </p>
           </div>
@@ -143,7 +147,7 @@ const SPFrame2 = ({
                 alt="copy"
               />
             </span> */}
-            {persona === "admin" && (
+            {(persona === "admin" || persona === "tutor") && (
               <EditableText
                 editable={editable}
                 onClick={() => {
@@ -157,8 +161,8 @@ const SPFrame2 = ({
                   });
                 }}
                 text="edit"
-                textClassName="text-sm text-[#517CA8] text-underline  "
-                className="text-sm my-0 flex justify-end   float-right"
+                textClassName="text-sm text-[#517CA8] text-underline"
+                className="text-sm my-0 flex justify-end float-right"
               />
             )}
           </p>
@@ -181,7 +185,9 @@ const SPFrame2 = ({
                     <div className="mx-2 flex flex-col text-xs text-base-15">
                       <p className="text-[#517CA8] mb-[6.25px]">
                         {it.createdAt
-                          ? formatDate(getFormattedDate(it.createdAt, dateFormat))
+                          ? formatDate(
+                              getFormattedDate(it.createdAt, dateFormat)
+                            )
                           : "NA"}
                       </p>
 
@@ -228,8 +234,7 @@ const SPFrame2 = ({
                 alt="copy"
               />
             </span> */}
-
-            {persona === "admin" && (
+            {(persona === "admin" || persona === "tutor") && (
               <EditableText
                 editable={editable}
                 onClick={() => {
@@ -243,8 +248,8 @@ const SPFrame2 = ({
                   });
                 }}
                 text="edit"
-                textClassName="text-sm text-[#517CA8] text-underline  "
-                className="text-sm my-0 flex justify-end   float-right"
+                textClassName="text-sm text-[#517CA8] text-underline"
+                className="text-sm my-0 flex justify-end float-right"
               />
             )}
           </p>
@@ -267,7 +272,9 @@ const SPFrame2 = ({
                     <div className="mx-2 flex flex-col text-xs text-base-15">
                       <p className="text-[#517CA8] mb-[6.25px]">
                         {it.createdAt
-                          ? formatDate(getFormattedDate(it.createdAt, dateFormat))
+                          ? formatDate(
+                              getFormattedDate(it.createdAt, dateFormat)
+                            )
                           : "NA"}
                       </p>
 
@@ -294,7 +301,6 @@ const SPFrame2 = ({
                       src={cancelIcon}
                       className="absolute right-3 w-[18px] h-[18px] cursor-pointer inline-block float-right "
                       alt="cancelIcon"
-                      
                     />
                   </div>
                 );
@@ -312,7 +318,7 @@ const SPFrame2 = ({
         <div className="flex-1 h-[200px] design:h-[230px]">
           <p className="mb-2.5 text-[20px] text-[#26435F] leading-[12.5px] font-semibold flex justify-between items-end">
             Baseline Scores
-            {persona == "admin" && (
+            {(persona === "admin" || persona === "tutor") && (
               <EditableText
                 editable={editable}
                 onClick={() =>
@@ -325,8 +331,8 @@ const SPFrame2 = ({
                   })
                 }
                 text="edit"
-                textClassName="text-sm text-[#517CA8] text-underline  "
-                className="text-sm my-0 flex justify-end   float-right"
+                textClassName="text-sm text-[#517CA8] text-underline"
+                className="text-sm my-0 flex justify-end pr-9 float-right"
               />
             )}
           </p>
@@ -355,7 +361,7 @@ const SPFrame2 = ({
                           " "}
                       </span>
                       <span className="text-[#517CA8]">
-                       {'| '} <span className="font-bold">M</span>
+                        {"| "} <span className="font-bold">M</span>
                         {
                           userDetail?.baseLineScore?.satBaseLineScore?.maths
                         }{" "}
@@ -393,7 +399,7 @@ const SPFrame2 = ({
                           " "}
                       </span>
                       <span className="text-[#517CA8]">
-                       {'| '} <span className="font-bold">E</span>
+                        {"| "} <span className="font-bold">E</span>
                         {
                           userDetail.baseLineScore?.actBaseLineScore?.english
                         }{" "}
