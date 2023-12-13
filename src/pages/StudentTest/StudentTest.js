@@ -565,44 +565,44 @@ export default function StudentTest({ fromProfile, testtype, setTotaltest, stude
       text: "Assignment Name", // testName
       className: "text-left pl-6",
       onCick: sortByAssignmentName,
-      // willDisplayDownArrow: assignmentNameSortState !== SORT_STATES.DESCENDING_ORDER,
-      willDisplayDownArrow: null,
+      willDisplayDownArrow: assignmentNameSortState !== SORT_STATES.DESCENDING_ORDER,
+      // willDisplayDownArrow: null,
     },
     {
       id: 2,
       text: "Assigned on", // assignedOn
       onCick: sortByAssignedDate,
-      // willDisplayDownArrow: assignedOnSortState !== SORT_STATES.DESCENDING_ORDER,
-      willDisplayDownArrow: null,
+      willDisplayDownArrow: assignedOnSortState !== SORT_STATES.DESCENDING_ORDER,
+      // willDisplayDownArrow: null,
     },
 
     {
       id: 3,
       text: "Due Date", // dueDate
       onCick: sortByDueDate,
-      // willDisplayDownArrow: dueDateSortState !== SORT_STATES.DESCENDING_ORDER,
-      willDisplayDownArrow: null,
+      willDisplayDownArrow: dueDateSortState !== SORT_STATES.DESCENDING_ORDER,
+      // willDisplayDownArrow: null,
     },
     {
       id: 4,
       text: "Duration", // duration
       onCick: sortByDuration,
-      // willDisplayDownArrow: durationSortState !== SORT_STATES.DESCENDING_ORDER,
-      willDisplayDownArrow: null,
+      willDisplayDownArrow: durationSortState !== SORT_STATES.DESCENDING_ORDER,
+      // willDisplayDownArrow: null,
     },
     {
       id: 1,
       text: "Status", // status
       onCick: sortByStatus,
-      // willDisplayDownArrow: statusSortState !== SORT_STATES.DESCENDING_ORDER,
-      willDisplayDownArrow: null,
+      willDisplayDownArrow: statusSortState !== SORT_STATES.DESCENDING_ORDER,
+      // willDisplayDownArrow: null,
     },
     {
       id: 5,
       text: "Scores",
       onCick: sortByScore,
-      // willDisplayDownArrow: scoreSortState !== SORT_STATES.DESCENDING_ORDER,
-      willDisplayDownArrow: null,
+      willDisplayDownArrow: scoreSortState !== SORT_STATES.DESCENDING_ORDER,
+      // willDisplayDownArrow: null,
     },
     {
       id: 6,
