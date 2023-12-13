@@ -152,7 +152,7 @@ export default function InputField({
             inputClassName ? inputClassName : ""
           } ${disabled === true ? "cursor-not-allowed" : ""} ${
             removeResponsive ? "" : "text-[17.5px]"
-          } ${styles["input"]} `}
+          } ${styles["inut"]} `}
           placeholder={placeholder}
           type={inputType ? inputType : "text"}
           onChange={(e) => (onChange !== undefined ? onChange(e) : "")}
