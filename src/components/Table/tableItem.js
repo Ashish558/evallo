@@ -1738,6 +1738,9 @@ const MapDataAssignedStudents = (data, dataFor, exclude = [], onClick) => {
         ${
           key === "status" ? "text-center" : ""
         }
+        ${
+          key === "assignedDate" ? "text-center ps-[50px]" : ""
+        }
         `}
       >
         {data[key]}
