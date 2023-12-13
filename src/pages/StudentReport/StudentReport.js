@@ -1351,15 +1351,15 @@ console.log('userTimezone', userTimezone);
             <BarGraph
               series={[accuracySeries]}
               options={accuracyGraphOptions}
-              height="475px"
+              height="450px"
               width={"1452px"}
             />
-            <p className="text-[#24A3D9] text-xl font-medium absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-[44px]">
+            {/* <p className="text-[#24A3D9] text-xl font-medium absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-[44px]">
             Concepts
             </p>
             <p className="text-[#24A3D9] text-xl font-medium absolute top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2 -rotate-90 ml-[51.76px]">
             Number of incorrect attempts
-            </p>
+            </p> */}
           </div> 
         </div>
       </div>

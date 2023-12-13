@@ -884,7 +884,7 @@ export default function TutorProfile({ isOwn }) {
                   hideShadow={true}
                   bgClassName="bg-profilecard"
                   body={
-                    <div className=" h-[660px] profileInterestsAndExpertise !bg-[#F5F8FA] pr-[17.5px]">
+                    <div className="profileInterestsAndExpertise !bg-[#F5F8FA] pr-[17.5px]">
                       {/* {settings &&
                         settings.Expertise?.length > 0 &&
                         userDetail.serviceSpecializations &&
@@ -925,7 +925,7 @@ export default function TutorProfile({ isOwn }) {
                             it[0] !== "6" && (
                               <div
                                 key={idx}
-                                className="bg-white px-2 py-[16px] h-min  text-[#517CA8] text-[17.5px] !rounded-5 mb-[7.5px] shadow-[0px_0px_2.500001907348633px_0px_#00000040]  w-full"
+                                className="bg-white text-[#517CA8] text-[17.5px] !rounded-5 mb-[7.5px] shadow-[0px_0px_2.500001907348633px_0px_#00000040] w-[350px] min-h-[56.52px] flex justify-start items-center px-2"
                               >
                                 {it}
                               </div>
