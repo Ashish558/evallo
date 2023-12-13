@@ -2492,7 +2492,7 @@ export default function Settings() {
           handleClose={() => {
             setAddCodeModalActive(false);
             setSubModalData(subModalInitialState);
-            setAllTestData([])
+            // setAllTestData([])
             setFilteredTests([])
             setSearchedTest('')
           }}
