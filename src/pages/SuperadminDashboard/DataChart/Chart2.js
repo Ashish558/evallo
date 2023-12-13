@@ -5,9 +5,9 @@ import arrow from '../../../assets/icons/arrow-chart.svg'
 import arrow1 from '../../../assets/icons/arrow-up-chart.svg'
 import styles from './styles.module.css'
 
-import {Chart, LinearScale, PointElement, Tooltip, Legend, TimeScale, CategoryScale} from "chart.js"; 
+import { Chart, LinearScale, PointElement, Tooltip, Legend, TimeScale, CategoryScale } from "chart.js";
 
-Chart.register(LinearScale, PointElement, Tooltip, Legend, TimeScale, CategoryScale); 
+Chart.register(LinearScale, PointElement, Tooltip, Legend, TimeScale, CategoryScale);
 const BubbleChart2 = () => {
   const customLegendStyle = {
     position: 'absolute',
@@ -16,21 +16,23 @@ const BubbleChart2 = () => {
   };
   return (
     <div className="bg-[#FFFFFF] flex flex-col justify-center items-center border border-gray-200  mt-[6px] rounded-md relative">
- <div className="flex  gap-[3%] p-5  pl-[100px] w-full flex-1 border-b border-[1.33px_solid_#EBEBEB]">
+      <div className="flex  gap-[3%] p-5  pl-[100px] w-full flex-1 border-b border-[1.33px_solid_#EBEBEB]">
         <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]"><span className="bg-[#26435F] inline-block  rounded-full w-3 h-3  "></span> Scheduled</div>
         <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]"><span className="bg-[#FF7714] inline-block  rounded-full w-3 h-3 text-[#507CA8] "></span> Completed</div>
         <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]"><span className="bg-[#24FF00] inline-block  rounded-full w-3 h-3 text-[#507CA8] "></span> Missed</div>
         <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]"><span className="bg-[#26435F] inline-block  rounded-full w-3 h-3 text-[#507CA8] "></span> Cancelled</div>
-      
+
       </div>
-      <div className={`flex flex-1 max-w-full justify-center p-4 mt-5 w-full ${styles.financialChart}`}>
+      <div className={`flex flex-1 max-w-full items-center justify-center p-4 mt-5 w-full ${styles.financialChart}`}>
+        <div className="flex-shrink-0"><img className="h-[70px]" src={arrow1} alt="" /></div>
+
         <Bubble
-          data={bubbleChartData} 
+          data={bubbleChartData}
           options={{
             layout: {
               padding: {
                 top: 20,
-                bottom:20
+                bottom: 20
               },
             },
             scales: {
@@ -47,7 +49,7 @@ const BubbleChart2 = () => {
                     size: 18,
                   },
                 },
-                
+
                 ticks: {
                   color: '#507CA8',
                   font: {
@@ -68,9 +70,9 @@ const BubbleChart2 = () => {
                     size: 18,
                   },
                 },
-                suggestedMin: 0, 
-                suggestedMax: 60, 
-                stepSize: 10, 
+                suggestedMin: 0,
+                suggestedMax: 60,
+                stepSize: 10,
                 ticks: {
                   color: '#507CA8',
                   font: {
@@ -88,7 +90,7 @@ const BubbleChart2 = () => {
                 display: false,
                 position: "top",
                 align: "center",
-               
+
 
                 labels: {
                   // boxHeight:400,
@@ -104,7 +106,7 @@ const BubbleChart2 = () => {
                   pointStyle: "circle",
 
                 },
-                  // marginBottom:30,
+                // marginBottom:30,
               },
             },
             title: {
@@ -114,7 +116,7 @@ const BubbleChart2 = () => {
             },
 
           }}
-          
+
         />
       </div>
       <div className="absolute bottom-[7%] flex items-center font-medium text-lg left-[7%] text-[#507CA8]">

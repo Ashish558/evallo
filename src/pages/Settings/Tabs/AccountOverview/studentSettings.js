@@ -101,7 +101,7 @@ const StudentSettings = () => {
   };
   const handleDataUpdate = () => {
   
-    let arr=["firstName", "lastName", "email"]
+    let arr=["firstName", "lastName", "email", "phone"]
     let  emptyCheck=false;
     for (let i=0; i<arr.length; i++) {
       if(handleEmpty(values[arr[i]])) {
