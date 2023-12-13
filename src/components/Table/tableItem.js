@@ -362,16 +362,32 @@ export default function TableItem({
       setIsChecked(bool ? true : false);
     }
   }, [selectedId2]);
-  const iconForReview = (<svg xmlns="http://www.w3.org/2000/svg" width="31" height="30" viewBox="0 0 31 30" fill="none">
-  <g clip-path="url(#clip0_19652_18826)">
-    <path d="M30.4722 28.4039C30.6578 28.5894 30.7505 28.8092 30.7505 29.0631C30.7505 29.317 30.6578 29.5367 30.4722 29.7223C30.2867 29.9078 30.067 30.0006 29.813 30.0006C29.5591 30.0006 29.3394 29.9078 29.1539 29.7223L17.6548 18.2379C16.7271 19.0191 15.7017 19.6099 14.5787 20.0103C13.4556 20.4107 12.2837 20.6158 11.063 20.6256C10.1158 20.6256 9.20269 20.5035 8.32379 20.2594C7.44488 20.0152 6.62457 19.6685 5.86285 19.2193C5.10113 18.7701 4.40289 18.233 3.76812 17.608C3.13336 16.983 2.59625 16.2896 2.15679 15.5279C1.71734 14.7662 1.37066 13.941 1.11675 13.0523C0.862847 12.1636 0.740777 11.2506 0.750543 10.3131C0.750543 9.36579 0.872613 8.4527 1.11675 7.57379C1.36089 6.69489 1.70757 5.87457 2.15679 5.11285C2.60601 4.35113 3.14312 3.65289 3.76812 3.01812C4.39312 2.38336 5.08648 1.84625 5.8482 1.40679C6.60992 0.967341 7.43511 0.620661 8.32379 0.366754C9.21246 0.112847 10.1255 -0.0092231 11.063 0.000542535C12.0103 0.000542535 12.9234 0.122613 13.8023 0.366754C14.6812 0.610895 15.5015 0.957575 16.2632 1.40679C17.025 1.85601 17.7232 2.39312 18.358 3.01812C18.9927 3.64313 19.5298 4.33649 19.9693 5.09821C20.4087 5.85993 20.7554 6.68512 21.0093 7.57379C21.2632 8.46247 21.3853 9.37556 21.3755 10.3131C21.3755 11.524 21.1754 12.691 20.775 13.814C20.3746 14.9371 19.7789 15.9674 18.9879 16.9049L30.4722 28.4039ZM12.0005 15.0006H10.1255V16.8756H12.0005V15.0006ZM12.1177 13.1256C12.1177 12.8326 12.2105 12.5689 12.3961 12.3345C12.5816 12.1002 12.8111 11.8707 13.0845 11.6461C13.358 11.4215 13.6607 11.1871 13.9927 10.9429C14.3248 10.6988 14.6226 10.4254 14.8863 10.1226C15.15 9.81989 15.3843 9.47809 15.5894 9.09723C15.7945 8.71637 15.8873 8.26715 15.8677 7.74958C15.8677 7.11481 15.7261 6.54352 15.4429 6.03571C15.1597 5.52789 14.7935 5.09821 14.3443 4.74664C13.8951 4.39508 13.3824 4.12164 12.8062 3.92633C12.23 3.73102 11.649 3.63336 11.063 3.63336C10.4869 3.63336 9.91558 3.71148 9.34918 3.86774C8.78277 4.02399 8.26519 4.26813 7.79644 4.60016C7.32769 4.93219 6.9566 5.33258 6.68316 5.80133C6.40972 6.27008 6.26812 6.83649 6.25836 7.50055H8.36773C8.36773 7.17829 8.45562 6.90485 8.6314 6.68024C8.80719 6.45563 9.03668 6.27496 9.31988 6.13825C9.60308 6.00153 9.89605 5.89899 10.1988 5.83063C10.5015 5.76227 10.7896 5.73297 11.063 5.74274C11.3462 5.74274 11.6441 5.78668 11.9566 5.87457C12.2691 5.96246 12.5621 6.08942 12.8355 6.25543C13.1089 6.42145 13.3287 6.62653 13.4947 6.87067C13.6607 7.11481 13.7486 7.40778 13.7584 7.74958C13.7584 8.04255 13.6656 8.30622 13.48 8.54059C13.2945 8.77497 13.065 9.00446 12.7916 9.22907C12.5181 9.45368 12.2154 9.68806 11.8834 9.9322C11.5513 10.1763 11.2535 10.4498 10.9898 10.7525C10.7261 11.0552 10.4918 11.397 10.2867 11.7779C10.0816 12.1588 9.98883 12.608 10.0084 13.1256H12.1177Z" fill="#FFC700"/>
-  </g>
-  <defs>
-    <clipPath id="clip0_19652_18826">
-      <rect width="30" height="30" fill="white" transform="translate(0.75 0.00390625)"/>
-    </clipPath>
-  </defs>
-</svg>)
+  const iconForReview = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="31"
+      height="30"
+      viewBox="0 0 31 30"
+      fill="none"
+    >
+      <g clip-path="url(#clip0_19652_18826)">
+        <path
+          d="M30.4722 28.4039C30.6578 28.5894 30.7505 28.8092 30.7505 29.0631C30.7505 29.317 30.6578 29.5367 30.4722 29.7223C30.2867 29.9078 30.067 30.0006 29.813 30.0006C29.5591 30.0006 29.3394 29.9078 29.1539 29.7223L17.6548 18.2379C16.7271 19.0191 15.7017 19.6099 14.5787 20.0103C13.4556 20.4107 12.2837 20.6158 11.063 20.6256C10.1158 20.6256 9.20269 20.5035 8.32379 20.2594C7.44488 20.0152 6.62457 19.6685 5.86285 19.2193C5.10113 18.7701 4.40289 18.233 3.76812 17.608C3.13336 16.983 2.59625 16.2896 2.15679 15.5279C1.71734 14.7662 1.37066 13.941 1.11675 13.0523C0.862847 12.1636 0.740777 11.2506 0.750543 10.3131C0.750543 9.36579 0.872613 8.4527 1.11675 7.57379C1.36089 6.69489 1.70757 5.87457 2.15679 5.11285C2.60601 4.35113 3.14312 3.65289 3.76812 3.01812C4.39312 2.38336 5.08648 1.84625 5.8482 1.40679C6.60992 0.967341 7.43511 0.620661 8.32379 0.366754C9.21246 0.112847 10.1255 -0.0092231 11.063 0.000542535C12.0103 0.000542535 12.9234 0.122613 13.8023 0.366754C14.6812 0.610895 15.5015 0.957575 16.2632 1.40679C17.025 1.85601 17.7232 2.39312 18.358 3.01812C18.9927 3.64313 19.5298 4.33649 19.9693 5.09821C20.4087 5.85993 20.7554 6.68512 21.0093 7.57379C21.2632 8.46247 21.3853 9.37556 21.3755 10.3131C21.3755 11.524 21.1754 12.691 20.775 13.814C20.3746 14.9371 19.7789 15.9674 18.9879 16.9049L30.4722 28.4039ZM12.0005 15.0006H10.1255V16.8756H12.0005V15.0006ZM12.1177 13.1256C12.1177 12.8326 12.2105 12.5689 12.3961 12.3345C12.5816 12.1002 12.8111 11.8707 13.0845 11.6461C13.358 11.4215 13.6607 11.1871 13.9927 10.9429C14.3248 10.6988 14.6226 10.4254 14.8863 10.1226C15.15 9.81989 15.3843 9.47809 15.5894 9.09723C15.7945 8.71637 15.8873 8.26715 15.8677 7.74958C15.8677 7.11481 15.7261 6.54352 15.4429 6.03571C15.1597 5.52789 14.7935 5.09821 14.3443 4.74664C13.8951 4.39508 13.3824 4.12164 12.8062 3.92633C12.23 3.73102 11.649 3.63336 11.063 3.63336C10.4869 3.63336 9.91558 3.71148 9.34918 3.86774C8.78277 4.02399 8.26519 4.26813 7.79644 4.60016C7.32769 4.93219 6.9566 5.33258 6.68316 5.80133C6.40972 6.27008 6.26812 6.83649 6.25836 7.50055H8.36773C8.36773 7.17829 8.45562 6.90485 8.6314 6.68024C8.80719 6.45563 9.03668 6.27496 9.31988 6.13825C9.60308 6.00153 9.89605 5.89899 10.1988 5.83063C10.5015 5.76227 10.7896 5.73297 11.063 5.74274C11.3462 5.74274 11.6441 5.78668 11.9566 5.87457C12.2691 5.96246 12.5621 6.08942 12.8355 6.25543C13.1089 6.42145 13.3287 6.62653 13.4947 6.87067C13.6607 7.11481 13.7486 7.40778 13.7584 7.74958C13.7584 8.04255 13.6656 8.30622 13.48 8.54059C13.2945 8.77497 13.065 9.00446 12.7916 9.22907C12.5181 9.45368 12.2154 9.68806 11.8834 9.9322C11.5513 10.1763 11.2535 10.4498 10.9898 10.7525C10.7261 11.0552 10.4918 11.397 10.2867 11.7779C10.0816 12.1588 9.98883 12.608 10.0084 13.1256H12.1177Z"
+          fill="#FFC700"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_19652_18826">
+          <rect
+            width="30"
+            height="30"
+            fill="white"
+            transform="translate(0.75 0.00390625)"
+          />
+        </clipPath>
+      </defs>
+    </svg>
+  );
   return (
     <>
       {dataFor === "tutorFeedback" && (
@@ -392,12 +408,31 @@ export default function TableItem({
       {dataFor === "popularServices" && (
         <>
           <tr className=" text-[17.5px] font-medium">
-            <td className="!py-[18.5px] px-[10px] w-[205.6px] !pl-[31.25px] text-left">{item?.service?.length>15?<div className="flex flex-col"><p>{item.service?.slice(0,15)}</p><p>{item?.service?.slice(15,item?.service?.length)}</p></div>:item?.service}</td>
-            <td className="!py-[18.5px] px-[10px] w-[178.5px] !pr-[31.5px] text-center">{item?.actively_using}</td>
-            <td className="!py-[18.5px] px-[10px] w-[147.13px] !pr-[36.13px] text-center">{item?.total_used}</td>
-            <td className="!py-[18.5px] px-[10px] w-[207.13px] !pr-[31.13px] text-center">{item?.scheduled_hours}</td>
-            <td className="!py-[18.5px] px-[10px] w-[211.11px] !pr-[31.11px] text-center">{item?.completed_hours}</td>
-            <td className="!py-[18.5px] px-[10px] w-[174.37px] !pr-[31.37px] text-center">{item?.percent_of_business}</td>
+            <td className="!py-[18.5px] px-[10px] w-[205.6px] !pl-[31.25px] text-left">
+              {item?.service?.length > 15 ? (
+                <div className="flex flex-col">
+                  <p>{item.service?.slice(0, 15)}</p>
+                  <p>{item?.service?.slice(15, item?.service?.length)}</p>
+                </div>
+              ) : (
+                item?.service
+              )}
+            </td>
+            <td className="!py-[18.5px] px-[10px] w-[178.5px] !pr-[31.5px] text-center">
+              {item?.actively_using}
+            </td>
+            <td className="!py-[18.5px] px-[10px] w-[147.13px] !pr-[36.13px] text-center">
+              {item?.total_used}
+            </td>
+            <td className="!py-[18.5px] px-[10px] w-[207.13px] !pr-[31.13px] text-center">
+              {item?.scheduled_hours}
+            </td>
+            <td className="!py-[18.5px] px-[10px] w-[211.11px] !pr-[31.11px] text-center">
+              {item?.completed_hours}
+            </td>
+            <td className="!py-[18.5px] px-[10px] w-[174.37px] !pr-[31.37px] text-center">
+              {item?.percent_of_business}
+            </td>
           </tr>
         </>
       )}
@@ -422,37 +457,23 @@ export default function TableItem({
 
             <td className="py-4 px-[10px]">{item.tutor_status}</td>
             <td className="py-4 px-[10px]">
-              {item.avg_hourly_rate ? item.avg_hourly_rate : '-'}
-              </td>
+              {item.avg_hourly_rate ? item.avg_hourly_rate : "-"}
+            </td>
+            <td className="py-4 px-[10px]">{item.no_of_referrals}</td>
+            <td className="py-4 px-[10px]">{item.no_of_hours_completed}</td>
+            <td className="py-4 px-[10px]">{item.no_of_hours_scheduled}</td>
+            <td className="py-4 px-[10px]">{item.no_of_hours_cancelled}</td>
+            <td className="py-4 px-[10px]">{item.no_of_hours_missed}</td>
             <td className="py-4 px-[10px]">
-                {item.no_of_referrals}
+              {item.avg_sat_improvement ? item.avg_sat_improvement : "-"}
             </td>
             <td className="py-4 px-[10px]">
-                {item.no_of_hours_completed}
+              {item.avg_act_improvement ? item.avg_act_improvement : "-"}
             </td>
+            <td className="py-4 px-[10px]">{item.no_of_active_students}</td>
+            <td className="py-4 px-[10px]">{item.no_of_total_students}</td>
             <td className="py-4 px-[10px]">
-                {item.no_of_hours_scheduled}
-            </td>
-            <td className="py-4 px-[10px]">
-                {item.no_of_hours_cancelled}
-            </td>
-            <td className="py-4 px-[10px]">
-                {item.no_of_hours_missed}
-            </td>
-            <td className="py-4 px-[10px]">
-                {item.avg_sat_improvement ? item.avg_sat_improvement : '-'}
-            </td>
-            <td className="py-4 px-[10px]">
-                {item.avg_act_improvement ? item.avg_act_improvement : '-'}
-            </td>
-            <td className="py-4 px-[10px]">
-                {item.no_of_active_students}
-            </td>
-            <td className="py-4 px-[10px]">
-                {item.no_of_total_students}
-            </td>
-            <td className="py-4 px-[10px]">
-            {item.avg_hourly_rate ? item.avg_hourly_rate : '-'}
+              {item.avg_hourly_rate ? item.avg_hourly_rate : "-"}
             </td>
           </tr>
         </>
@@ -682,7 +703,16 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "assignedTests" && (
-        <tr className="text-[17.5px] " style={{ borderRadius: '5px', background: '#FFF', boxShadow: '0px 0px 2.5px 0px rgba(0, 0, 0, 0.25)' ,paddingTop:'30px',paddingBottom:'30px' }}>
+        <tr
+          className="text-[17.5px] "
+          style={{
+            borderRadius: "5px",
+            background: "#FFF",
+            boxShadow: "0px 0px 2.5px 0px rgba(0, 0, 0, 0.25)",
+            paddingTop: "30px",
+            paddingBottom: "30px",
+          }}
+        >
           <td className="px-1 font-medium  min-w-14  text-left flex items-center  pb-[14px] pt-4">
             <span className="inline-block cursor-pointer pl-[30px]">
               <div className="flex ">
@@ -838,20 +868,30 @@ export default function TableItem({
       )}
       {dataFor === "assignedStudents" && (
         <tr className="odd:bg-white text-[17.5px] leading-7">
-          {MapData(item, "assignedStudents", excludes, onClick)}
+          {MapDataAssignedStudents(item, "assignedStudents", excludes, onClick)}
         </tr>
       )}
       {dataFor === "studentTestsReport" && (
         <tr
-        style={{boxShadow:"0px 0px 2px 0px rgba(0, 0, 0, 0.25)",borderRadius:"5px",minHeight:"50px"}}
+          style={{
+            boxShadow: "0px 0px 2px 0px rgba(0, 0, 0, 0.25)",
+            borderRadius: "5px",
+            minHeight: "50px",
+          }}
           className={`text-[17.5px] leading-7 ${
             !item.isCorrect ? "!bg-[#FF79791A]/[0.05]" : "odd:bg-white  "
           } pb-[11.8px] pt-[13.05px]`}
         >
-          {MapData(item, dataFor,["review"])}
-          <td className={`${!item.isCorrect ? "!bg-[#FF79791A]/[0.05]" : "odd:bg-white  "}`}>
-            <div className={`flex justify-center items-center pr-[54px] py-[10px] min-h-[50px]`}>
-                {item?.review?.length===0?"":iconForReview}
+          {MapData(item, dataFor, ["review"])}
+          <td
+            className={`${
+              !item.isCorrect ? "!bg-[#FF79791A]/[0.05]" : "odd:bg-white  "
+            }`}
+          >
+            <div
+              className={`flex justify-center items-center pr-[54px] py-[10px] min-h-[50px]`}
+            >
+              {item?.review?.length === 0 ? "" : iconForReview}
             </div>
           </td>
         </tr>
@@ -879,14 +919,19 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "assignedTestsStudents" && (
-        <tr style={{boxShadow:"0px 0px 2px 0px rgba(0, 0, 0, 0.25)"}} className="rounded-[5px] bg-white text-[17.5px] leading-7">
+        <tr
+          style={{ boxShadow: "0px 0px 2px 0px rgba(0, 0, 0, 0.25)" }}
+          className="rounded-[5px] bg-white text-[17.5px] leading-7"
+        >
           {Object.keys(item).map((key, i) =>
             excludes.includes(key) ? (
               <React.Fragment key={i}></React.Fragment>
             ) : key == "testtype" ? null : (
               <td
                 key={i}
-                className={`font-medium pl-[10px]  min-w-14 ${key==="testName"?"!pt-[7px] !pb-[8px]":"!py-[12px]"} first:rounded-l-[5px] last:rounded-r-[5px]`}
+                className={`font-medium pl-[10px]  min-w-14 ${
+                  key === "testName" ? "!pt-[7px] !pb-[8px]" : "!py-[12px]"
+                } first:rounded-l-[5px] last:rounded-r-[5px]`}
               >
                 {key === "status" ? (
                   <div className="flex justify-center">
@@ -895,7 +940,9 @@ export default function TableItem({
                 ) : key === "scores" ? (
                   <div
                     className={`cursor-pointer ${
-                      persona == "student" ? "w-[100%] flex justify-center items-center" : ""
+                      persona == "student"
+                        ? "w-[100%] flex justify-center items-center"
+                        : ""
                     } text-center`}
                     onClick={() =>
                       item.isCompleted === true &&
@@ -1204,7 +1251,7 @@ export default function TableItem({
       {dataFor === "testsDetailQuestions" &&
         (testtype === "SAT" || testtype === "ACT") && (
           <tr>
-            <td className="w-[174px] pl-[27px]  pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-center">
+            <td className="w-[174px] pl-[27px] pr-[43px] text-[#517CA8] text-[17.5px] font-normal text-center bg-red-100">
               <div>{item?.QuestionNumber}</div>
             </td>
             <td className="w-[124px] pl-[5px] text-[#517CA8] text-[17.5px] font-normal text-left">
@@ -1251,21 +1298,30 @@ export default function TableItem({
         )}
       {dataFor === "allTests" && (
         <tr className="odd:bg-white font-medium text-[17.5px]  lead">
-          <td className="text-left  pl-[66.5px] w-[350px] max-w-[350px] overflow-hidden text-ellipsis" style={{paddingLeft: '25px'}}>
+          <td
+            className="text-left pl-[66.5px] w-[350px] max-w-[350px] overflow-hidden text-ellipsis"
+            style={{ paddingLeft: "25px" }}
+          >
             {item.testName}
           </td>
-          <td className="w-[223px] text-left" style={{paddingLeft: '55px'}}>
+          <td className="w-[223px] text-left" style={{ paddingLeft: "55px" }}>
             {item.testType.endsWith("®")
               ? item.testType
               : item.testType.includes("Other")
               ? item.testType
               : item.testType + "®"}
           </td>
-          <td className="w-[241px] text-left pl-[8.75px]" style={{paddingLeft: '20px'}}>
+          <td
+            className="w-[241px] text-left pl-[8.75px]"
+            style={{ paddingLeft: "20px" }}
+          >
             {" "}
             {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}
           </td>
-          <td className="w-[235.5px] text-left pl-[16px]" style={{paddingLeft: '30px'}}>
+          <td
+            className="w-[235.5px] text-left pl-[16px]"
+            style={{ paddingLeft: "30px" }}
+          >
             {getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}
           </td>
           <td className="w-[249px] text-center">
@@ -1373,7 +1429,7 @@ export default function TableItem({
             >
               {item.associatedOrg?.company
                 ? item.associatedOrg?.company?.toLowerCase()
-                : item.company?.toLowerCase()} 
+                : item.company?.toLowerCase()}
             </span>
           </td>
           <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left  !max-w-[286px]">
@@ -1608,33 +1664,21 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
           }`}
         </p>
       </td>
-    ) :
-          
-    (
+    ) : (
       <td
         key={i}
         className={`font-medium px-1 
-        ${
-          data[key] === "Unpaid" && "text-[#E02B1D]"
-        } 
-        ${
-          data[key] === "Paid" && "text-[#009262]"
-        } 
-        ${
-          data[key] === "Cancelled" && "text-[#7C859C]"
-        }
+        ${data[key] === "Unpaid" && "text-[#E02B1D]"} 
+        ${data[key] === "Paid" && "text-[#009262]"} 
+        ${data[key] === "Cancelled" && "text-[#7C859C]"}
          min-w-14 py-4 
         ${
           dataFor === "studentTestsReport" && !data["isCorrect"]
             ? "!bg-[#FF79791A]/[0.05]"
             : ""
         }
-        ${
-          dataFor === "testsDetailQuestions" && "text-left pl-7"
-        } 
-        ${
-          dataFor === "assignedStudents" && "text-left ps-[60px] "
-        } 
+        ${dataFor === "testsDetailQuestions" && "text-left pl-7"} 
+        ${dataFor === "assignedStudents" && "text-left ps-[60px] "} 
         ${
           dataFor === "studentTestsReport" && key === "Concept"
             ? "w-[100px] text-start ps-[20px]"
@@ -1645,6 +1689,57 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
           dataFor === "studentTestsReport" && key === "Strategy"
             ? "text-start ps-[28px]"
             : null
+        }
+        `}
+      >
+        {data[key]}
+      </td>
+    )
+  );
+};
+
+
+//  tutor students 
+const MapDataAssignedStudents = (data, dataFor, exclude = [], onClick) => {
+  const [remarkText, setRemarkText] = useState("");
+  useEffect(() => {
+    if (data.remark) {
+      setRemarkText(data.remark);
+    } else {
+      setRemarkText("");
+    }
+  }, [data.remark]);
+
+  console.log(data);
+
+  const [disabled, setDisabled] = useState(true);
+  return Object.keys(data).map((key, i) =>
+    exclude.includes(key) ? (
+      <React.Fragment key={i}></React.Fragment>
+    ) : key === "isCorrect" ? (
+      <td className="">{data[key]}</td>
+    ) : (
+      <td
+        className={`pt-[12px] pb-[13px] ${
+          key === "name" ? "text-left ps-[76px]" : ""
+        }
+        ${
+          key === "email" ? "text-left pr-[166px]" : ""
+        }
+        ${
+          key === "phone" ? "text-left pr-[50px]" : ""
+        }
+        ${
+          key === "services" ? "text-left  pr-[123px]" : ""
+        }
+        ${
+          key === "topics" ? "text-left" : ""
+        }
+        ${
+          key === "status" ? "text-center" : ""
+        }
+        ${
+          key === "assignedDate" ? "text-center ps-[50px]" : ""
         }
         `}
       >

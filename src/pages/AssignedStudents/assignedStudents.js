@@ -294,7 +294,7 @@ export default function AssignedStudents() {
             </span>
           )}
           {/*  route path ends here */}
-         </p> 
+                </p> 
 
                <div className="w-full flex justify-between items-center">
 
@@ -404,6 +404,7 @@ export default function AssignedStudents() {
                   <FilterItems items={filterItems} setData={setFilterItems}
                      onRemoveFilter={onRemoveFilter} />
                </div>
+               
                <div className="w-full mb-[100px]">
                   <Table
                   headerObject={true}s

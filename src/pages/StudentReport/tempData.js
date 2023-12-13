@@ -1,3 +1,5 @@
+import { displayName } from "react-quill";
+
 export const tableData = [
    {
       questionNumber: 1,
@@ -296,7 +298,6 @@ export const ttOptions = {
             fontFamily: 'Inter',
             fontWeight: 500,
             color: '#8E76ED',
-            fontFamily: undefined,
             cssClass: ''
          }
       },
@@ -401,7 +402,8 @@ export const accuracyOptions = {
             fontSize: '20px',
             fontFamily: 'Lexend',
             fontWeight: 500,
-            color:"#24A3D9"
+            color:"#24A3D9",
+            display : "none"
          },
       },
    },
@@ -422,7 +424,8 @@ export const accuracyOptions = {
             color: '#24A3D9',
             fontFamily: 'Lexend',
             fontWeight: 500,
-            marginTop: "500px"
+            marginTop: "500px",
+            display : "none"
          },
       },
    },
